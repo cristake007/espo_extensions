@@ -1,0 +1,10 @@
+{
+  "name": "Example Extension Scaffold",
+  "version": "1.0.0",
+  "description": "Minimal EspoCRM extension scaffold. Rename this package before using it for a real extension.",
+  "author": "TUVTK",
+  "acceptableVersions": [
+    ">=8.0.0"
+  ],
+  "releaseDate": "2026-07-09"
+}
