@@ -19,7 +19,7 @@ files/custom/Espo/Modules/Planificari
 To build an installable ZIP from this directory:
 
 ```bash
-cd /opt/crm.cursurituv.ro/extensions/Planificari
+cd /source_folder
 zip -r ../planificari-perioade-cursuri-1.0.43.zip manifest.json files scripts
 ```
 
@@ -30,12 +30,3 @@ cd /var/www/html
 php command.php rebuild
 rm -rf data/cache/*
 ```
-
-To confirm the Word matcher review-panel patch is installed in the EspoCRM container:
-
-```bash
-grep -n "wordReviewRequiresSelection\|candidate.exact === true\|Number(candidate.score) === 100\|selected === selects.length\|wordReviewRequiresAllRows" \
-client/custom/modules/planificari/src/views/planificari-word-matcher/record/detail.js
-```
-
-Expected good output includes `wordReviewRequiresSelection` and `candidate.exact === true`. It should not include `wordReviewRequiresAllRows`, `Number(candidate.score) === 100`, or `selected === selects.length`.
