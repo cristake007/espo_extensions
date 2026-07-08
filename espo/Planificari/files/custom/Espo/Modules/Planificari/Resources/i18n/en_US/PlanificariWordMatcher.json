@@ -47,6 +47,7 @@
         "wordPreviewReady": "The Word conversion preview is ready.",
         "wordPreviewSummary": "{selected} of {total} rows are assigned.",
         "wordReviewRequiresAllRows": "Assign every row before generating the Word document.",
+        "wordReviewRequiresSelection": "Select at least one row before generating the Word document.",
         "noWordRows": "No compatible Word rows.",
         "noSuggestions": "No suggestions"
     }

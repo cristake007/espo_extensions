@@ -47,6 +47,7 @@
         "wordPreviewReady": "Previzualizarea conversiei Word este pregatita.",
         "wordPreviewSummary": "{selected} din {total} randuri sunt atribuite.",
         "wordReviewRequiresAllRows": "Atribuie toate randurile inainte de generarea documentului Word.",
+        "wordReviewRequiresSelection": "Selecteaza cel putin un rand inainte de generarea documentului Word.",
         "noWordRows": "Nu exista randuri Word compatibile.",
         "noSuggestions": "Nu exista sugestii"
     }

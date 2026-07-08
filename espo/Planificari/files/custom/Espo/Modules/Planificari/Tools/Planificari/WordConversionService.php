@@ -23,6 +23,8 @@ class WordConversionService
     private const MIN_MATCH_SCORE = 88.0;
     private const MIN_TOKEN_COVERAGE = 70.0;
     private const MIN_MATCH_GAP = 8.0;
+    private const WORD_ONLY_GENERATE_SCORE = 65.0;
+    private const GENERATED_ROW_OFFSET = 1000000;
 
     private const MONTH_NAMES = [
         1 => ['ianuarie', 'january'],
@@ -51,6 +53,11 @@ class WordConversionService
     {
         [$record, $wordBytes, $scheduleRows] = $this->loadConversionInput($id, $entityType);
         $matches = $input && property_exists($input, 'matches') ? $this->parseMatches($input->matches) : null;
+
+        if ($matches === null) {
+            throw new BadRequest('Verifica si atribuie toate randurile inainte de generarea documentului Word.');
+        }
+
         [$outputBytes, $matchedCount, $skippedCount] = $this->applyMatches($wordBytes, $scheduleRows, $matches);
 
         /** @var Attachment $convertedAttachment */
@@ -90,6 +97,7 @@ class WordConversionService
     {
         [, $wordBytes, $scheduleRows] = $this->loadConversionInput($id, $entityType);
         $wordRows = $this->readWordRows($wordBytes);
+        $scheduleContext = $this->buildScheduleContext($scheduleRows);
         $rows = [];
         $matchedCount = 0;
 
@@ -97,6 +105,9 @@ class WordConversionService
             $scoredMatches = $this->scoreMatches($wordRow['title'], $scheduleRows);
             $exactMatch = $this->exactMatchFromScores($scoredMatches);
             $selectedRowIndex = $exactMatch ? $exactMatch['rowIndex'] : null;
+            $generatedOption = $selectedRowIndex === null ?
+                $this->buildGeneratedOption($wordIndex, $wordRow, $scheduleContext, $scoredMatches) :
+                null;
 
             if ($selectedRowIndex !== null) {
                 $matchedCount++;
@@ -105,12 +116,15 @@ class WordConversionService
             $rows[] = [
                 'wordRowIndex' => $wordIndex,
                 'wordTitle' => $wordRow['title'],
+                'duration' => $wordRow['duration'],
+                'durationLabel' => $wordRow['durationLabel'],
                 'selectedRowIndex' => $selectedRowIndex,
                 'status' => $selectedRowIndex !== null ? 'matched' : 'needsReview',
                 'candidates' => array_map(
                     fn (array $match): array => $this->candidatePayload($match),
                     array_slice($scoredMatches, 0, 5)
                 ),
+                'generatedOption' => $generatedOption,
             ];
         }
 
@@ -122,6 +136,7 @@ class WordConversionService
                     'rowIndex' => $row['rowIndex'],
                     'title' => $row['title'],
                     'dates' => $row['dates'],
+                    'generated' => false,
                 ],
                 $scheduleRows
             ),
@@ -356,6 +371,10 @@ class WordConversionService
                 throw new BadRequest('Documentul Word nu contine randuri de curs compatibile.');
             }
 
+            if ($matches === null || count($matches) !== count($wordRows)) {
+                throw new BadRequest('Atribuie toate randurile inainte de generarea documentului Word.');
+            }
+
             $matchedCount = 0;
             $scheduleByIndex = [];
 
@@ -363,33 +382,39 @@ class WordConversionService
                 $scheduleByIndex[$scheduleRow['rowIndex']] = $scheduleRow;
             }
 
-            if ($matches !== null) {
-                if (count($matches) !== count($wordRows)) {
-                    throw new BadRequest('Atribuie toate randurile inainte de generarea documentului Word.');
-                }
+            $generatedByIndex = [];
+            $scheduleContext = $this->buildScheduleContext($scheduleRows);
 
-                foreach ($matches as $wordIndex => $scheduleIndex) {
-                    if ($wordIndex >= count($wordRows)) {
-                        throw new BadRequest('O selectie indica un rand Word inexistent.');
-                    }
+            foreach ($wordRows as $wordIndex => $wordRow) {
+                $generatedRow = $this->buildGeneratedScheduleRow($wordIndex, $wordRow, $scheduleContext);
 
-                    if (!isset($scheduleByIndex[$scheduleIndex])) {
-                        throw new BadRequest('O selectie indica un rand de program inexistent.');
-                    }
+                if ($generatedRow) {
+                    $generatedByIndex[$generatedRow['rowIndex']] = $generatedRow;
                 }
             }
 
             foreach ($wordRows as $wordIndex => $wordRow) {
-                if ($matches !== null && !array_key_exists($wordIndex, $matches)) {
-                    continue;
+                if (!array_key_exists($wordIndex, $matches)) {
+                    throw new BadRequest('Atribuie toate randurile inainte de generarea documentului Word.');
+                }
+            }
+
+            foreach ($matches as $wordIndex => $scheduleIndex) {
+                if ($wordIndex >= count($wordRows)) {
+                    throw new BadRequest('O selectie indica un rand Word inexistent.');
                 }
 
-                $scheduleRow = $matches !== null ?
-                    ($scheduleByIndex[$matches[$wordIndex]] ?? null) :
-                    $this->confidentMatch($wordRow['title'], $scheduleRows);
+                if (!isset($scheduleByIndex[$scheduleIndex]) && !isset($generatedByIndex[$scheduleIndex])) {
+                    throw new BadRequest('O selectie indica un rand de program inexistent.');
+                }
+            }
+
+            foreach ($wordRows as $wordIndex => $wordRow) {
+                $scheduleIndex = $matches[$wordIndex];
+                $scheduleRow = $scheduleByIndex[$scheduleIndex] ?? $generatedByIndex[$scheduleIndex] ?? null;
 
                 if (!$scheduleRow) {
-                    continue;
+                    throw new BadRequest('O selectie indica un rand de program inexistent.');
                 }
 
                 foreach ([3, 4, 5] as $offset => $cellIndex) {
@@ -419,7 +444,7 @@ class WordConversionService
     }
 
     /**
-     * @return array<int, array{title: string, normalizedTitle: string}>
+     * @return array<int, array{title: string, normalizedTitle: string, duration: ?int, durationLabel: string}>
      */
     private function readWordRows(string $wordBytes): array
     {
@@ -463,6 +488,8 @@ class WordConversionService
                 fn (array $row): array => [
                     'title' => $row['title'],
                     'normalizedTitle' => $row['normalizedTitle'],
+                    'duration' => $row['duration'],
+                    'durationLabel' => $row['durationLabel'],
                 ],
                 $this->getWordRows($xpath)
             );
@@ -482,7 +509,7 @@ class WordConversionService
     }
 
     /**
-     * @return array<int, array{title: string, normalizedTitle: string, cells: array<int, DOMElement>}>
+     * @return array<int, array{title: string, normalizedTitle: string, duration: ?int, durationLabel: string, cells: array<int, DOMElement>}>
      */
     private function getWordRows(DOMXPath $xpath): array
     {
@@ -528,9 +555,13 @@ class WordConversionService
                 continue;
             }
 
+            $durationLabel = trim($this->wordCellText($xpath, $cells[1]));
+
             $rows[] = [
                 'title' => $title,
                 'normalizedTitle' => $this->normalizeTitle($title),
+                'duration' => $this->parseDuration($durationLabel),
+                'durationLabel' => $durationLabel,
                 'cells' => $cells,
             ];
         }
@@ -694,7 +725,7 @@ class WordConversionService
 
         $best = $scored[0];
 
-        if (!empty($best['exact']) || (float) $best['score'] === 100.0) {
+        if (!empty($best['exact'])) {
             return $best['entry'];
         }
 
@@ -727,6 +758,10 @@ class WordConversionService
             throw new BadRequest('Selectiile pentru conversia Word trebuie trimise ca lista.');
         }
 
+        if (count($value) === 0) {
+            throw new BadRequest('Selecteaza cel putin un rand inainte de generarea documentului Word.');
+        }
+
         if (count($value) > self::MAX_SCHEDULE_ROWS) {
             throw new BadRequest('Selectiile pentru conversia Word sunt prea multe.');
         }
@@ -753,6 +788,173 @@ class WordConversionService
         }
 
         return $matches;
+    }
+
+    private function buildGeneratedOption(int $wordIndex, array $wordRow, ?array $scheduleContext, array $scoredMatches): ?array
+    {
+        $bestScore = (float) ($scoredMatches[0]['score'] ?? 0.0);
+
+        if ($bestScore >= self::MIN_MATCH_SCORE) {
+            return null;
+        }
+
+        $generatedRow = $this->buildGeneratedScheduleRow($wordIndex, $wordRow, $scheduleContext);
+
+        if (!$generatedRow) {
+            return null;
+        }
+
+        $mode = $bestScore < self::WORD_ONLY_GENERATE_SCORE ? 'primary' : 'secondary';
+        $duration = (int) $wordRow['duration'];
+        $label = $mode === 'primary' ?
+            'Genereaza perioade din durata Word' :
+            'Genereaza in locul sugestiilor';
+
+        return [
+            'rowIndex' => $generatedRow['rowIndex'],
+            'title' => $label . ' - ' . $duration . ($duration === 1 ? ' zi' : ' zile'),
+            'dates' => $generatedRow['dates'],
+            'generated' => true,
+            'generationMode' => $mode,
+            'duration' => $duration,
+            'score' => round($bestScore, 1),
+        ];
+    }
+
+    private function buildGeneratedScheduleRow(int $wordIndex, array $wordRow, ?array $scheduleContext): ?array
+    {
+        $duration = $wordRow['duration'] ?? null;
+
+        if (!is_int($duration) || $duration < 1 || $duration > 366 || !$scheduleContext) {
+            return null;
+        }
+
+        $dates = $this->generateDatesFromDuration(
+            (string) $wordRow['normalizedTitle'],
+            $wordIndex,
+            $duration,
+            $scheduleContext
+        );
+
+        if ($dates === [] || count(array_filter($dates)) === 0) {
+            return null;
+        }
+
+        while (count($dates) < 3) {
+            $dates[] = '';
+        }
+
+        return [
+            'rowIndex' => self::GENERATED_ROW_OFFSET + $wordIndex,
+            'title' => 'Generat din Word: ' . (string) $wordRow['title'],
+            'normalizedTitle' => (string) $wordRow['normalizedTitle'],
+            'dates' => array_slice($dates, 0, 3),
+        ];
+    }
+
+    /**
+     * @param array<int, array{rowIndex: int, title: string, normalizedTitle: string, dates: array<int, string>}> $scheduleRows
+     * @return ?array{year: int, months: array<int, int>}
+     */
+    private function buildScheduleContext(array $scheduleRows): ?array
+    {
+        $periods = [];
+        $yearCounts = [];
+
+        foreach ($scheduleRows as $scheduleRow) {
+            foreach ($scheduleRow['dates'] as $offset => $dateValue) {
+                if (!is_string($dateValue) || trim($dateValue) === '') {
+                    continue;
+                }
+
+                $dateContext = $this->dateContextFromRange($dateValue);
+
+                if (!$dateContext) {
+                    continue;
+                }
+
+                $periods[$offset] ??= $dateContext['month'];
+                $yearCounts[$dateContext['year']] = ($yearCounts[$dateContext['year']] ?? 0) + 1;
+            }
+        }
+
+        if ($periods === [] || $yearCounts === []) {
+            return null;
+        }
+
+        arsort($yearCounts);
+        ksort($periods);
+
+        return [
+            'year' => (int) array_key_first($yearCounts),
+            'months' => array_values($periods),
+        ];
+    }
+
+    /**
+     * @return ?array{month: int, year: int}
+     */
+    private function dateContextFromRange(string $value): ?array
+    {
+        if (!preg_match_all('/\b\d{1,2}\.(\d{1,2})\.(\d{4})\b/u', $value, $matches, PREG_SET_ORDER)) {
+            return null;
+        }
+
+        $last = end($matches);
+
+        if (!$last) {
+            return null;
+        }
+
+        $month = (int) $last[1];
+        $year = (int) $last[2];
+
+        if ($month < 1 || $month > 12 || $year < 2025 || $year > 2031) {
+            return null;
+        }
+
+        return ['month' => $month, 'year' => $year];
+    }
+
+    /**
+     * @param array{year: int, months: array<int, int>} $scheduleContext
+     * @return string[]
+     */
+    private function generateDatesFromDuration(string $normalizedTitle, int $wordIndex, int $duration, array $scheduleContext): array
+    {
+        $scheduler = new CourseScheduler($scheduleContext['year'], []);
+        $dates = [];
+
+        foreach (array_slice($scheduleContext['months'], 0, 3) as $month) {
+            $availableDates = $scheduler->getAvailableStartDays($month, $duration);
+
+            if ($availableDates === []) {
+                $dates[] = '';
+
+                continue;
+            }
+
+            $seed = abs((int) crc32($normalizedTitle . ':' . $wordIndex . ':' . $month));
+            $startDate = $availableDates[$seed % count($availableDates)];
+            $dates[] = $scheduler->formatDateRange($startDate, $duration);
+        }
+
+        return $dates;
+    }
+
+    private function parseDuration(string $value): ?int
+    {
+        if (!preg_match('/\b(\d{1,3})\s*(?:zi|zile)\b/iu', $value, $matches)) {
+            return null;
+        }
+
+        $duration = (int) $matches[1];
+
+        if ($duration < 1 || $duration > 366) {
+            return null;
+        }
+
+        return $duration;
     }
 
     private function combinedTitleScore(string $wordTitle, string $scheduleTitle): float

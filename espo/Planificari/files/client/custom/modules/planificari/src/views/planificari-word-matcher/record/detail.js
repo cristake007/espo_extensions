@@ -55,18 +55,19 @@ define('planificari:views/planificari-word-matcher/record/detail', ['views/recor
                 return;
             }
 
-            const selects = Array.from(container.querySelectorAll('[data-word-row-index]'));
+            const selects = Array.from(container.querySelectorAll('select[data-word-row-index]'));
+            const matches = selects
+                .filter(select => select.value !== '')
+                .map(select => ({
+                    wordRowIndex: Number(select.dataset.wordRowIndex),
+                    scheduleRowIndex: Number(select.value)
+                }));
 
-            if (selects.some(select => select.value === '')) {
+            if (selects.length === 0 || matches.length !== selects.length) {
                 Espo.Ui.warning(this.translate('wordReviewRequiresAllRows', 'messages', 'PlanificariWordMatcher'));
 
                 return;
             }
-
-            const matches = selects.map(select => ({
-                wordRowIndex: Number(select.dataset.wordRowIndex),
-                scheduleRowIndex: Number(select.value)
-            }));
 
             Espo.Ui.notify('Converting...');
 
@@ -96,9 +97,9 @@ define('planificari:views/planificari-word-matcher/record/detail', ['views/recor
         }
 
         actionDownloadWord() {
-            if (this.model.get('wordConvertedFileId')) {
-                window.open('?entryPoint=download&id=' + encodeURIComponent(this.model.get('wordConvertedFileId')), '_blank');
+            const container = this.element.querySelector('[data-name="word-conversion-preview"]');
 
+            if (!container) {
                 return;
             }
 
@@ -120,14 +121,14 @@ define('planificari:views/planificari-word-matcher/record/detail', ['views/recor
             button.title = disabled ? this.translate('wordConvertUnavailable', 'messages', 'PlanificariWordMatcher') : '';
         }
 
-        updateDownloadWordButtonState(complete) {
+        updateDownloadWordButtonState(canGenerate) {
             const button = this.element.querySelector('[data-action="downloadWord"]');
 
             if (!button) {
                 return;
             }
 
-            const enabled = !!this.model.get('wordConvertedFileId') || complete;
+            const enabled = canGenerate;
 
             button.disabled = !enabled;
             button.classList.toggle('disabled', !enabled);
@@ -178,7 +179,7 @@ define('planificari:views/planificari-word-matcher/record/detail', ['views/recor
             Array.from(container.querySelectorAll('[data-candidate-row-index]')).forEach(button => {
                 button.addEventListener('click', () => {
                     const select = container.querySelector(
-                        '[data-word-row-index="' + button.dataset.wordRowIndex + '"]'
+                        'select[data-word-row-index="' + button.dataset.wordRowIndex + '"]'
                     );
 
                     if (!select) {
@@ -191,9 +192,31 @@ define('planificari:views/planificari-word-matcher/record/detail', ['views/recor
                 });
             });
 
-            Array.from(container.querySelectorAll('[data-word-row-index]')).forEach(select => {
-                if (select.dataset.selectedRowIndex !== '') {
-                    select.value = select.dataset.selectedRowIndex;
+            Array.from(container.querySelectorAll('[data-generated-row-index]')).forEach(button => {
+                button.addEventListener('click', () => {
+                    const select = container.querySelector(
+                        'select[data-word-row-index="' + button.dataset.wordRowIndex + '"]'
+                    );
+
+                    if (!select) {
+                        return;
+                    }
+
+                    select.value = button.dataset.generatedRowIndex;
+                    this.updateWordPreviewSelectState(select, scheduleOptions);
+                    this.updateWordPreviewCompletionState(container);
+                });
+            });
+
+            Array.from(container.querySelectorAll('select[data-word-row-index]')).forEach(select => {
+                const selectedRowIndex = select.dataset.selectedRowIndex;
+
+                if (selectedRowIndex !== '') {
+                    const exactOption = Array.from(select.options).find(option =>
+                        option.value === selectedRowIndex && option.dataset.exact === '1'
+                    );
+
+                    select.value = exactOption ? selectedRowIndex : '';
                 }
 
                 select.addEventListener('change', () => {
@@ -239,6 +262,8 @@ define('planificari:views/planificari-word-matcher/record/detail', ['views/recor
         }
 
         composeWordPreviewRow(row, scheduleOptions) {
+            const generatedOption = row.generatedOption || null;
+            const rowScheduleOptions = generatedOption ? scheduleOptions.concat([generatedOption]) : scheduleOptions;
             const candidateButtons = (row.candidates || []).map(candidate => [
                 '<button type="button" class="btn btn-default btn-xs" style="display: block; width: 100%; height: auto; min-height: 24px; margin-bottom: 6px; padding: 4px 8px; white-space: normal; text-align: left; line-height: 1.35;"',
                 ' data-word-row-index="' + this.escapeHtml(row.wordRowIndex) + '"',
@@ -246,6 +271,16 @@ define('planificari:views/planificari-word-matcher/record/detail', ['views/recor
                 this.escapeHtml(candidate.title) + ' (' + this.escapeHtml(candidate.score) + ')',
                 '</button>'
             ].join('')).join('');
+            const generatedButton = generatedOption ? [
+                '<button type="button" class="btn ' + (generatedOption.generationMode === 'primary' ? 'btn-warning' : 'btn-info') + ' btn-xs" style="display: block; width: 100%; height: auto; min-height: 28px; margin-bottom: 6px; padding: 5px 8px; white-space: normal; text-align: left; line-height: 1.35; font-weight: 600;"',
+                ' data-word-row-index="' + this.escapeHtml(row.wordRowIndex) + '"',
+                ' data-generated-row-index="' + this.escapeHtml(generatedOption.rowIndex) + '">',
+                this.escapeHtml(generatedOption.title),
+                '</button>'
+            ].join('') : '';
+            const suggestionContent = [generatedButton, candidateButtons]
+                .filter(value => value !== '')
+                .join('') || this.escapeHtml(this.translate('noSuggestions', 'messages', 'PlanificariWordMatcher'));
 
             return [
                 '<tr style="height: auto;">',
@@ -254,14 +289,16 @@ define('planificari:views/planificari-word-matcher/record/detail', ['views/recor
                 '<td style="min-width: 320px; vertical-align: top;">',
                 '<select class="form-control input-sm" data-word-row-index="' + this.escapeHtml(row.wordRowIndex) + '" data-selected-row-index="' + this.escapeHtml(row.selectedRowIndex ?? '') + '">',
                 '<option value="">' + this.escapeHtml(this.translate('leaveUnchanged', 'labels', 'PlanificariWordMatcher')) + '</option>',
-                scheduleOptions.map(option => {
-                    const selected = String(option.rowIndex) === String(row.selectedRowIndex);
-                    const exact = this.isExactCandidate(row, option.rowIndex);
+                rowScheduleOptions.map(option => {
+                    const generated = option.generated === true;
+                    const exact = !generated && this.isExactCandidate(row, option.rowIndex);
+                    const selected = exact && String(option.rowIndex) === String(row.selectedRowIndex);
 
                     return [
                     '<option value="' + this.escapeHtml(option.rowIndex) + '"' +
                     ' data-dates="' + this.escapeHtml(JSON.stringify(option.dates || [])) + '"' +
                     ' data-exact="' + (exact ? '1' : '0') + '"' +
+                    ' data-generated="' + (generated ? '1' : '0') + '"' +
                     (selected ? ' selected' : '') + '>',
                     this.escapeHtml(option.title),
                     '</option>'
@@ -269,7 +306,7 @@ define('planificari:views/planificari-word-matcher/record/detail', ['views/recor
                 }).join(''),
                 '</select>',
                 '</td>',
-                '<td style="min-width: 260px; white-space: normal; vertical-align: top;">' + (candidateButtons || this.escapeHtml(this.translate('noSuggestions', 'messages', 'PlanificariWordMatcher'))) + '</td>',
+                '<td style="min-width: 260px; white-space: normal; vertical-align: top;">' + suggestionContent + '</td>',
                 '<td data-role="word-preview-dates" style="min-width: 160px; vertical-align: top;"></td>',
                 '</tr>'
             ].join('');
@@ -315,8 +352,7 @@ define('planificari:views/planificari-word-matcher/record/detail', ['views/recor
             }
 
             return (row.candidates || []).some(candidate =>
-                Number(candidate.rowIndex) === Number(selectedValue) &&
-                (candidate.exact || Number(candidate.score) === 100)
+                Number(candidate.rowIndex) === Number(selectedValue) && candidate.exact === true
             );
         }
 
@@ -335,7 +371,7 @@ define('planificari:views/planificari-word-matcher/record/detail', ['views/recor
         }
 
         updateWordPreviewCompletionState(container) {
-            const selects = Array.from(container.querySelectorAll('[data-word-row-index]'));
+            const selects = Array.from(container.querySelectorAll('select[data-word-row-index]'));
             const selected = selects.filter(select => select.value !== '').length;
             const complete = selects.length > 0 && selected === selects.length;
             const summary = container.querySelector('[data-role="word-preview-summary"]');
@@ -356,18 +392,48 @@ define('planificari:views/planificari-word-matcher/record/detail', ['views/recor
                 return fallback;
             }
 
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-                return xhr.responseJSON.message;
+            if (typeof xhr === 'string') {
+                return xhr || fallback;
             }
 
-            if (xhr.responseText && xhr.responseText.charAt(0) === '{') {
-                try {
-                    const data = JSON.parse(xhr.responseText);
+            if (xhr.message && typeof xhr.message === 'string') {
+                return xhr.message;
+            }
 
-                    if (data.message) {
-                        return data.message;
-                    }
-                } catch (e) {}
+            if (xhr.error && typeof xhr.error.message === 'string') {
+                return xhr.error.message;
+            }
+
+            if (xhr.data && typeof xhr.data.message === 'string') {
+                return xhr.data.message;
+            }
+
+            if (xhr.responseJSON) {
+                if (xhr.responseJSON.message) {
+                    return xhr.responseJSON.message;
+                }
+
+                if (xhr.responseJSON.error && typeof xhr.responseJSON.error === 'string') {
+                    return xhr.responseJSON.error;
+                }
+            }
+
+            if (xhr.responseText) {
+                const responseText = String(xhr.responseText).trim();
+
+                if (responseText.charAt(0) === '{') {
+                    try {
+                        const data = JSON.parse(responseText);
+
+                        if (data.message) {
+                            return data.message;
+                        }
+
+                        if (data.error && typeof data.error === 'string') {
+                            return data.error;
+                        }
+                    } catch (e) {}
+                }
             }
 
             if (typeof xhr.getResponseHeader === 'function') {
