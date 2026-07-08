@@ -4,6 +4,8 @@ This is the EspoCRM extension package scaffold for `Planificari perioade cursuri
 
 Package ID: `planificari-perioade-cursuri`
 
+Current package version: `1.0.44`
+
 Package source:
 
 - `manifest.json` contains extension metadata.
@@ -20,7 +22,7 @@ To build an installable ZIP from this directory:
 
 ```bash
 cd /source_folder
-zip -r ../planificari-perioade-cursuri-1.0.43.zip manifest.json files scripts
+zip -r ../planificari-perioade-cursuri-1.0.44.zip manifest.json files scripts
 ```
 
 After installing or changing module metadata, rebuild EspoCRM cache.
