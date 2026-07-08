@@ -1,0 +1,22 @@
+[
+    {
+        "route": "/Planificari/generate",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\Planificari\\Tools\\Planificari\\Api\\PostGenerate"
+    },
+    {
+        "route": "/Planificari/:id/exportXlsx",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\Planificari\\Tools\\Planificari\\Api\\PostExportXlsx"
+    },
+    {
+        "route": "/PlanificariWordMatcher/:id/previewWordConversion",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\Planificari\\Tools\\Planificari\\Api\\PostPreviewWordConversion"
+    },
+    {
+        "route": "/PlanificariWordMatcher/:id/convertWord",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\Planificari\\Tools\\Planificari\\Api\\PostConvertWord"
+    }
+]

@@ -1,0 +1,115 @@
+{
+    "scopeNames": {
+        "Planificari": "Planificari perioade cursuri"
+    },
+    "scopeNamesPlural": {
+        "Planificari": "Planificari perioade cursuri"
+    },
+    "labels": {
+        "Create Planificari": "Creare generare planificare",
+        "Generate": "Genereaza",
+        "Export XLSX": "Export XLSX",
+        "Convert Word": "Verifica Word",
+        "Generate Reviewed Word": "Genereaza Word verificat",
+        "Add holiday date": "Adauga data",
+        "Remove holiday date": "Sterge data",
+        "No holiday dates": "Nu exista zile nelucratoare",
+        "scheduleGeneratorPanel": "Generare program",
+        "wordConverterPanel": "Convertor Word",
+        "generatedSchedule": "Program generat",
+        "rowNumber": "Rand",
+        "courseName": "Nume curs",
+        "durationLabel": "Durata Curs",
+        "investment": "Investitie",
+        "wordConversionPreview": "Verificare conversie Word",
+        "wordCourse": "Curs in documentul Word",
+        "status": "Stare",
+        "selectedScheduleRow": "Rand selectat din program",
+        "suggestions": "Sugestii",
+        "filledPeriods": "Perioade completate",
+        "leaveUnchanged": "Lasa randul neschimbat",
+        "selected": "Selectat",
+        "unchanged": "Neschimbat"
+    },
+    "fields": {
+        "name": "Denumire generare",
+        "description": "Descriere",
+        "sourceFile": "Fisier sursa",
+        "year": "An",
+        "selectedMonths": "Luni selectate",
+        "randomness": "Nivel de variatie",
+        "holidays": "Zile nelucratoare",
+        "generatedAt": "Generat la",
+        "exportFile": "Export XLSX",
+        "wordTemplateFile": "Document Word",
+        "wordScheduleFile": "Fisier Excel generat",
+        "wordConvertedFile": "Document Word convertit",
+        "wordConvertedAt": "Word convertit la",
+        "assignedUsers": "Utilizatori responsabili",
+        "teams": "Echipe",
+        "createdAt": "Creat la",
+        "modifiedAt": "Modificat la",
+        "createdBy": "Creat de",
+        "modifiedBy": "Modificat de"
+    },
+    "options": {
+        "year": {
+            "2025": "2025",
+            "2026": "2026",
+            "2027": "2027",
+            "2028": "2028",
+            "2029": "2029",
+            "2030": "2030",
+            "2031": "2031"
+        },
+        "selectedMonths": {
+            "1": "Ianuarie",
+            "2": "Februarie",
+            "3": "Martie",
+            "4": "Aprilie",
+            "5": "Mai",
+            "6": "Iunie",
+            "7": "Iulie",
+            "8": "August",
+            "9": "Septembrie",
+            "10": "Octombrie",
+            "11": "Noiembrie",
+            "12": "Decembrie"
+        },
+        "randomness": {
+            "1": "1 - Minim",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5 - Echilibrat",
+            "6": "6",
+            "7": "7",
+            "8": "8",
+            "9": "9",
+            "10": "10 - Maxim"
+        }
+    },
+    "tooltips": {
+        "sourceFile": "Incarca lista sursa de cursuri in format CSV sau XLSX.",
+        "wordTemplateFile": "Incarca documentul DOCX care trebuie completat cu primele trei perioade generate.",
+        "wordScheduleFile": "Incarca fisierul XLSX generat. Dupa generarea programului, acest camp este completat automat cu exportul XLSX.",
+        "holidays": "Foloseste fiecare data o singura data, de forma 15.09.2026, 16.09.2026. Separa mai multe date cu virgula."
+    },
+    "messages": {
+        "generateRequestReceived": "Programul a fost generat.",
+        "generateFailed": "Cererea de generare nu a putut fi finalizata.",
+        "alreadyGenerated": "Aceasta planificare a fost deja generata. Creeaza o planificare noua pentru a genera din nou.",
+        "exportUnavailable": "Genereaza planificarea inainte de exportul XLSX.",
+        "wordConvertUnavailable": "Incarca documentul Word si fisierul Excel generat inainte de conversie.",
+        "wordConvertFailed": "Documentul Word nu a putut fi convertit.",
+        "wordPreviewReady": "Previzualizarea conversiei Word este pregatita.",
+        "wordPreviewSummary": "{selected} din {total} randuri sunt atribuite.",
+        "wordReviewRequiresAllRows": "Atribuie toate randurile inainte de generarea documentului Word.",
+        "noWordRows": "Nu exista randuri Word compatibile.",
+        "noSuggestions": "Nu exista sugestii",
+        "noGeneratedRows": "Nu exista randuri generate.",
+        "holidayPickerHelp": "Adauga fiecare zi nelucratoare o singura data. Foloseste formatul zz.ll.aaaa.",
+        "holidayPickerInvalidDate": "Foloseste date in formatul zz.ll.aaaa.",
+        "holidayPickerDuplicateDate": "Data {date} este repetata."
+    }
+}

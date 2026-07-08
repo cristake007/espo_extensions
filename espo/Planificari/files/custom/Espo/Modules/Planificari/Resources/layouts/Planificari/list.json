@@ -1,0 +1,21 @@
+[
+    {
+        "name": "name",
+        "link": true
+    },
+    {
+        "name": "year"
+    },
+    {
+        "name": "generatedAt"
+    },
+    {
+        "name": "assignedUsers"
+    },
+    {
+        "name": "teams"
+    },
+    {
+        "name": "createdAt"
+    }
+]

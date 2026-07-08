@@ -1,0 +1,53 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "assignedUsers"
+                }
+            ],
+            [
+                {
+                    "name": "teams"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "description"
+                }
+            ],
+            [
+                {
+                    "name": "sourceFile"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "year"
+                },
+                {
+                    "name": "randomness"
+                }
+            ],
+            [
+                {
+                    "name": "selectedMonths"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "holidays"
+                },
+                false
+            ]
+        ],
+        "style": "default",
+        "label": ""
+    }
+]

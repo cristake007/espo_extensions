@@ -1,0 +1,115 @@
+{
+    "scopeNames": {
+        "Planificari": "Course Period Planning"
+    },
+    "scopeNamesPlural": {
+        "Planificari": "Course Period Planning"
+    },
+    "labels": {
+        "Create Planificari": "Create Schedule Generation",
+        "Generate": "Generate",
+        "Export XLSX": "Export XLSX",
+        "Convert Word": "Review Word",
+        "Generate Reviewed Word": "Generate Reviewed Word",
+        "Add holiday date": "Add date",
+        "Remove holiday date": "Remove date",
+        "No holiday dates": "No holiday dates",
+        "scheduleGeneratorPanel": "Schedule Generation",
+        "wordConverterPanel": "Word Converter",
+        "generatedSchedule": "Generated Schedule",
+        "rowNumber": "Row",
+        "courseName": "Course Name",
+        "durationLabel": "Course Duration",
+        "investment": "Investment",
+        "wordConversionPreview": "Word Conversion Review",
+        "wordCourse": "Course in Word Document",
+        "status": "Status",
+        "selectedScheduleRow": "Selected Schedule Row",
+        "suggestions": "Suggestions",
+        "filledPeriods": "Filled Periods",
+        "leaveUnchanged": "Leave Row Unchanged",
+        "selected": "Selected",
+        "unchanged": "Unchanged"
+    },
+    "fields": {
+        "name": "Generation Name",
+        "description": "Description",
+        "sourceFile": "Source File",
+        "year": "Year",
+        "selectedMonths": "Selected Months",
+        "randomness": "Variation Level",
+        "holidays": "Holidays",
+        "generatedAt": "Generated At",
+        "exportFile": "XLSX Export",
+        "wordTemplateFile": "Word Document",
+        "wordScheduleFile": "Generated Excel File",
+        "wordConvertedFile": "Converted Word Document",
+        "wordConvertedAt": "Word Converted At",
+        "assignedUsers": "Responsible Users",
+        "teams": "Teams",
+        "createdAt": "Created At",
+        "modifiedAt": "Modified At",
+        "createdBy": "Created By",
+        "modifiedBy": "Modified By"
+    },
+    "options": {
+        "year": {
+            "2025": "2025",
+            "2026": "2026",
+            "2027": "2027",
+            "2028": "2028",
+            "2029": "2029",
+            "2030": "2030",
+            "2031": "2031"
+        },
+        "selectedMonths": {
+            "1": "January",
+            "2": "February",
+            "3": "March",
+            "4": "April",
+            "5": "May",
+            "6": "June",
+            "7": "July",
+            "8": "August",
+            "9": "September",
+            "10": "October",
+            "11": "November",
+            "12": "December"
+        },
+        "randomness": {
+            "1": "1 - Lowest",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5 - Balanced",
+            "6": "6",
+            "7": "7",
+            "8": "8",
+            "9": "9",
+            "10": "10 - Highest"
+        }
+    },
+    "tooltips": {
+        "sourceFile": "Upload the source course list as CSV or XLSX.",
+        "wordTemplateFile": "Upload the DOCX document that should be filled with the first three generated periods.",
+        "wordScheduleFile": "Upload the generated XLSX file. After schedule generation, this field is filled automatically with the XLSX export.",
+        "holidays": "Use each date once, like 15.09.2026, 16.09.2026. Separate multiple dates with commas."
+    },
+    "messages": {
+        "generateRequestReceived": "The schedule was generated.",
+        "generateFailed": "The generate request could not be completed.",
+        "alreadyGenerated": "This schedule has already been generated. Create a new schedule generation to generate again.",
+        "exportUnavailable": "Generate the schedule before exporting XLSX.",
+        "wordConvertUnavailable": "Upload the Word document and generated Excel file before conversion.",
+        "wordConvertFailed": "The Word document could not be converted.",
+        "wordPreviewReady": "The Word conversion preview is ready.",
+        "wordPreviewSummary": "{selected} of {total} rows are assigned.",
+        "wordReviewRequiresAllRows": "Assign every row before generating the Word document.",
+        "noWordRows": "No compatible Word rows.",
+        "noSuggestions": "No suggestions",
+        "noGeneratedRows": "No generated rows.",
+        "holidayPickerHelp": "Add each non-working date once. Use dd.mm.yyyy.",
+        "holidayPickerInvalidDate": "Use holiday dates in dd.mm.yyyy format.",
+        "holidayPickerDuplicateDate": "Holiday date {date} is repeated."
+    }
+}

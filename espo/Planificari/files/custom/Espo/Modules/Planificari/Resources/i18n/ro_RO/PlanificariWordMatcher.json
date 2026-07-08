@@ -1,0 +1,53 @@
+{
+    "scopeNames": {
+        "PlanificariWordMatcher": "Convertor Word"
+    },
+    "scopeNamesPlural": {
+        "PlanificariWordMatcher": "Convertor Word"
+    },
+    "labels": {
+        "Create PlanificariWordMatcher": "Creare conversie Word",
+        "Review Matches": "Verifica potriviri",
+        "Generate Reviewed Word": "Genereaza Word verificat",
+        "Download Word": "Descarca Word",
+        "wordConverterPanel": "Convertor Word",
+        "wordConversionPreview": "Verificare conversie Word",
+        "wordConversionPreviewWithCounts": "Verificare conversie Word - {wordCount} cursuri in Word, {excelCount} cursuri in Excel",
+        "wordCourse": "Curs in documentul Word",
+        "status": "Stare",
+        "selectedScheduleRow": "Rand selectat din program",
+        "suggestions": "Sugestii",
+        "filledPeriods": "Perioade completate",
+        "leaveUnchanged": "Selecteaza un rand",
+        "alreadyAssigned": "Deja atribuit",
+        "selected": "Selectat",
+        "unchanged": "Neatribuit"
+    },
+    "fields": {
+        "name": "Denumire conversie",
+        "description": "Descriere",
+        "wordTemplateFile": "Document Word",
+        "wordScheduleFile": "Fisier Excel generat",
+        "wordConvertedFile": "Document Word convertit",
+        "wordConvertedAt": "Word convertit la",
+        "assignedUsers": "Utilizatori responsabili",
+        "teams": "Echipe",
+        "createdAt": "Creat la",
+        "modifiedAt": "Modificat la",
+        "createdBy": "Creat de",
+        "modifiedBy": "Modificat de"
+    },
+    "tooltips": {
+        "wordTemplateFile": "Incarca documentul DOCX care trebuie completat cu primele trei perioade generate.",
+        "wordScheduleFile": "Incarca fisierul XLSX generat de planificator."
+    },
+    "messages": {
+        "wordConvertUnavailable": "Incarca documentul Word si fisierul Excel generat inainte de verificare.",
+        "wordConvertFailed": "Documentul Word nu a putut fi convertit.",
+        "wordPreviewReady": "Previzualizarea conversiei Word este pregatita.",
+        "wordPreviewSummary": "{selected} din {total} randuri sunt atribuite.",
+        "wordReviewRequiresAllRows": "Atribuie toate randurile inainte de generarea documentului Word.",
+        "noWordRows": "Nu exista randuri Word compatibile.",
+        "noSuggestions": "Nu exista sugestii"
+    }
+}

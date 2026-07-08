@@ -1,0 +1,35 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "assignedUsers"
+                }
+            ],
+            [
+                {
+                    "name": "teams"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "description"
+                }
+            ],
+            [
+                {
+                    "name": "wordTemplateFile"
+                },
+                {
+                    "name": "wordScheduleFile"
+                }
+            ]
+        ],
+        "style": "default",
+        "label": "wordConverterPanel"
+    }
+]

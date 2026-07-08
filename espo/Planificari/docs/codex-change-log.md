@@ -1,0 +1,1799 @@
+# Codex Change Log
+
+## 20260708-220629 - Exact Only Auto Assignment
+
+- Timestamp: 20260708-220629
+- Reason:
+  - User clarified that only 100% matches should be prefilled.
+  - User reported fuzzy matches were prefilled and still showed unassigned.
+  - User requested manual selections to change status to selected.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/WordConversionService.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari-word-matcher/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-220629/`
+- Implementation:
+  - Preview now auto-selects only exact/100% matches.
+  - Fuzzy matches remain available in suggestions but leave the dropdown at `Select a row`.
+  - Any selected dropdown value now shows `Selected`.
+  - `Review Matches` always opens the review panel; existing downloads are handled by the top `Download Word` button.
+  - Removed stale in-panel generate-button completion logic.
+  - Bumped package version to `1.0.41`.
+- Verification:
+  - PHP lint passed for `WordConversionService.php`.
+  - Node syntax check passed for the matcher detail view.
+  - Manifest JSON validation passed.
+
+## 20260708-215752 - Word Matcher Option Local Dates
+
+- Timestamp: 20260708-215752
+- Reason:
+  - User reported exact matches still showed unassigned and dates were not assigned.
+  - User requested the download Word button at the top like the Planificari detail view.
+- Files changed:
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari-word-matcher/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-215752/`
+- Implementation:
+  - Added a top detail-view `Download Word` button.
+  - Removed the panel-header download button.
+  - Top `Download Word` button is disabled until all review rows are assigned, or enabled when a converted Word file already exists.
+  - Each schedule option now carries its own dates and exact-match flag in the DOM.
+  - Status and filled-period cells now read from the selected option directly instead of performing a fragile schedule-row lookup.
+  - Bumped package version to `1.0.40`.
+- Verification:
+  - Node syntax check passed for the matcher detail view.
+  - Manifest JSON validation passed.
+
+## 20260708-214629 - Sync Word Matcher Selected Rows
+
+- Timestamp: 20260708-214629
+- Reason:
+  - User reported exact matches still showing as unassigned and not assigning dates.
+  - User requested a download Word button, initially disabled and enabled after all items are assigned.
+- Files changed:
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari-word-matcher/record/detail.js`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/PlanificariWordMatcher.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/PlanificariWordMatcher.json`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-214629/`
+- Implementation:
+  - Initial selected schedule row is now explicitly applied to each review select after render.
+  - Select changes and suggestion clicks now synchronize the preview row state.
+  - Exact/100% assignment status now checks the current selected value, not stale preview state.
+  - Final action label is now `Descarca Word` / `Download Word`.
+  - Download button remains disabled until all Word rows have a selected Excel row.
+  - Bumped package version to `1.0.39`.
+- Verification:
+  - Node syntax check passed for the matcher detail view.
+  - JSON validation passed for changed i18n and manifest files.
+
+## 20260708-214114 - Preserve First Excel Row Assignment
+
+- Timestamp: 20260708-214114
+- Reason:
+  - User reported that 100 percent matches visually appeared selected but were not passed as assigned.
+- Files changed:
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari-word-matcher/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-214114/`
+- Implementation:
+  - Fixed HTML escaping to preserve numeric `0` values.
+  - This keeps the first Excel row index as `0` instead of turning it into an empty select value.
+  - Exact matches to the first Excel row now count as assigned and are sent in the reviewed conversion payload.
+  - Bumped package version to `1.0.38`.
+- Verification:
+  - Node syntax check passed for the matcher detail view.
+  - Manifest JSON validation passed.
+
+## 20260708-213526 - Word Matcher Review Table Polish
+
+- Timestamp: 20260708-213526
+- Reason:
+  - User reported suggestion-column rows overlap and should grow in height to fit all items.
+  - User requested 100 percent matches to show `already assigned` in the status column.
+  - User requested review panel title counts for courses detected in Word and Excel.
+- Files changed:
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari-word-matcher/record/detail.js`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/PlanificariWordMatcher.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/PlanificariWordMatcher.json`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-213526/`
+- Implementation:
+  - Suggestion buttons now render as stacked, auto-height controls with normal line height.
+  - Review table cells use top alignment and allow row height to expand.
+  - Exact/100% automatic matches now show `Deja atribuit` / `Already assigned`.
+  - Review panel title now includes detected Word course count and Excel course count.
+  - Bumped package version to `1.0.37`.
+- Verification:
+  - Node syntax check passed for the matcher detail view.
+  - JSON validation passed for changed i18n and manifest files.
+
+## 20260708-212357 - Decoupled Word Matcher Entity
+
+- Timestamp: 20260708-212357
+- Reason:
+  - User clarified that the Word and Excel matcher must be separate from Excel generation.
+  - User provided the Django core app for UX context.
+  - Matcher should depend on generation only through the generated file, with its own two inputs.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Controllers/PlanificariWordMatcher.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/PlanificariWordMatcher.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/scopes/PlanificariWordMatcher.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/clientDefs/PlanificariWordMatcher.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/aclDefs/PlanificariWordMatcher.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityAcl/PlanificariWordMatcher.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/recordDefs/PlanificariWordMatcher.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/PlanificariWordMatcher/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/PlanificariWordMatcher/edit.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/PlanificariWordMatcher/list.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/PlanificariWordMatcher/search.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/PlanificariWordMatcher.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/PlanificariWordMatcher.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/routes.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostConvertWord.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostPreviewWordConversion.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/GenerationService.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/WordConversionService.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari-word-matcher/record/detail.js`
+  - `extensions/Planificari/scripts/AfterInstall.php`
+  - `extensions/Planificari/scripts/BeforeUninstall.php`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-212357/`
+- Implementation:
+  - Added separate `PlanificariWordMatcher` entity/scope for the Word and Excel matcher.
+  - Matcher has its own record UI with two independent inputs: `Document Word` and `Fisier Excel generat`.
+  - Matcher review/generation routes now use `/PlanificariWordMatcher/:id/...`.
+  - Removed matcher fields, panels, and buttons from the schedule generation entity.
+  - Schedule generation no longer writes matcher-specific fields.
+  - Install/uninstall hooks now manage both `Planificari` and `PlanificariWordMatcher` tabs.
+  - Bumped package version to `1.0.36`.
+- Verification:
+  - PHP lint passed for new/changed controllers, services, API actions, and install scripts.
+  - Node syntax check passed for generator and matcher detail views.
+  - JSON validation passed for metadata, layouts, i18n, routes, and manifest files.
+  - EspoCRM container capability check confirmed DOM, ZipArchive, and PhpSpreadsheet availability.
+
+## 20260708-204733 - Separate Word Converter Panel
+
+- Timestamp: 20260708-204733
+- Reason:
+  - User clarified Word conversion must be a separate panel.
+  - Inputs must be the Word document and the generated Excel file.
+  - The manual review screen should appear after those inputs.
+  - The converted Word document should be available only after all table elements have been assigned.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/GenerationService.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/WordConversionService.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-204733/`
+- Implementation:
+  - Split detail and edit layouts into `Generare program` and `Convertor Word` panels.
+  - Added editable `wordScheduleFile` file field as the generated Excel input for the Word converter.
+  - Schedule generation automatically assigns the generated XLSX export to `wordScheduleFile`.
+  - Word conversion reads `wordScheduleFile`, with fallback to `exportFile` for existing records.
+  - Review UI now disables final Word generation until every Word row is assigned to a schedule row.
+  - Backend generation now rejects incomplete reviewed match payloads.
+  - Bumped package version to `1.0.35`.
+- Verification:
+  - PHP lint passed for changed backend files.
+  - Node syntax check passed for changed client detail view.
+  - JSON validation passed for changed entity metadata, layouts, i18n, and manifest files.
+
+## 20260708-204107 - Word Converter GUI Visibility
+
+- Timestamp: 20260708-204107
+- Reason:
+  - User reported not seeing anything new in the GUI and asked where the Word converter workflow should appear.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-204107/`
+- Implementation:
+  - Added `wordTemplateFile` to the edit/create layout so the DOCX template upload is visible while editing a Planificari record.
+  - Renamed the Word conversion action label to `Verifica Word` / `Review Word` to make clear it opens the manual review step first.
+  - Bumped package version to `1.0.34`.
+- Verification:
+  - JSON validation passed for changed layout/i18n/manifest files.
+  - Node syntax check passed for the detail view.
+
+## 20260708-203320 - Word Converter Manual Review
+
+- Timestamp: 20260708-203320
+- Reason:
+  - User clarified the Django Word converter had a page for manual intervention because not all courses can be matched automatically.
+  - User confirmed extension version `1.0.32` installed without errors and asked to proceed with the next step.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/routes.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostConvertWord.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostPreviewWordConversion.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/WordConversionService.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-203320/`
+- Implementation:
+  - Added `POST /Planificari/:id/previewWordConversion` for Word conversion preview.
+  - Preview returns Word rows, automatic selected matches, candidate schedule rows, and schedule options.
+  - Detail view now renders a Word conversion review table with manual dropdown selection and candidate shortcut buttons.
+  - Final Word generation sends reviewed matches to `POST /Planificari/:id/convertWord`.
+  - Generation validates reviewed indexes and fills only selected Word rows.
+  - Automatic conversion remains available internally when reviewed matches are not supplied.
+  - Bumped package version to `1.0.33`.
+- Verification:
+  - PHP lint passed for new/changed backend files.
+  - Node syntax check passed for changed client detail view.
+  - JSON validation passed for changed routes/i18n/manifest files.
+
+## 20260708-201446 - EspoCRM Word Converter Port
+
+- Timestamp: 20260708-201446
+- Reason:
+  - User clarified the Word converter part of the Django app must be ported into the EspoCRM `Planificari` extension.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/routes.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostConvertWord.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/WordConversionService.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-201446/`
+- Implementation:
+  - Added Word template upload and converted Word output fields.
+  - Added `POST /Planificari/:id/convertWord` API route.
+  - Added EspoCRM-native Word conversion service based on the Django workflow.
+  - The converter reads the generated XLSX export, matches Word table course titles against schedule titles, and fills the first three generated periods into Word table columns 4-6.
+  - DOCX conversion uses native ZIP/XML handling because PhpWord is not available in the EspoCRM container.
+  - Added `Convert Word` detail-view button and download behavior.
+  - Bumped package version to `1.0.32`.
+- Verification:
+  - PHP lint passed for new backend files.
+  - Node syntax check passed for changed client detail view.
+  - JSON validation passed for changed metadata/routes/i18n/manifest files.
+  - EspoCRM container capability check confirmed DOM, ZipArchive, and autoloaded PhpSpreadsheet availability.
+
+## 20260708-200316 - XLSX Permalink And Holidays Sheet
+
+- Timestamp: 20260708-200316
+- Reason:
+  - User requested the generated XLSX file to include the `Permalink` column for later use.
+  - User requested a separate sheet with the holiday days entered for generation.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/GenerationService.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/XlsxExportService.php`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-200316/`
+- Implementation:
+  - Added `Permalink` to the main XLSX schedule sheet.
+  - Added a `Zile nelucratoare` worksheet containing the accepted holiday dates.
+  - Passed parsed holiday dates from generation into the XLSX export service.
+  - Bumped package version to `1.0.31`.
+- Verification:
+  - PHP lint passed for changed backend files.
+  - Manifest JSON validation passed.
+
+## 20260708-195306 - XLSX Export And Stage 90 Percent
+
+- Timestamp: 20260708-195306
+- Reason:
+  - User requested Excel export as the last part of this stage.
+  - User stated this phase can be considered 90% complete, with the remaining 10% after several weeks of heavy testing.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/routes.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostExportXlsx.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/GenerationService.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/XlsxExportService.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-195306/`
+- Implementation:
+  - Added read-only `exportFile` file field for the generated XLSX attachment.
+  - Generate now creates an XLSX attachment from the same generated rows shown in the table.
+  - Generate stores `exportFileId` on the `Planificari` record together with `generatedAt`.
+  - Added `POST /Planificari/:id/exportXlsx` route for retrieving the generated export download URL.
+  - Added an `Export XLSX` button to the detail view.
+  - Export button is disabled until the schedule has an `exportFileId`.
+  - Workbook columns are `Rand`, `Nume curs`, `Durata Curs`, `Investitie`, and the generated month columns.
+  - Workbook uses one row per course and the same month-cell values as the on-screen table, including incomplete placeholders.
+  - XLSX cell text is sanitized against formula injection.
+  - Bumped package version to `1.0.30`.
+- Stage status:
+  - This stage is considered 90% complete.
+  - Remaining 10% is reserved for fixes and polish after several weeks of heavy user testing.
+- Not implemented:
+  - No generated row entity, external CSS file, Docker/container edit, dependency install, live runtime edit, XML export, WordPress update, or DOCX workflow.
+- Verification:
+  - PHP lint passed for changed/new backend files.
+  - Node syntax check passed for the changed client detail view.
+  - JSON validation passed for changed metadata/routes/i18n/manifest files.
+
+## 20260708-150420 - Fixed Width Frozen Table Columns
+
+- Timestamp: 20260708-150420
+- Reason:
+  - User reported the course-name column expanded too wide and the rightmost month columns still could not be fully viewed.
+- Files changed:
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-150420/`
+- Implementation:
+  - Replaced measured frozen-column widths with fixed widths.
+  - Course-name column is constrained and wraps instead of expanding the frozen area.
+  - Month columns now use a consistent width.
+  - Generated table width now includes frozen columns, generated month columns, and trailing spacer width.
+  - Bumped package version to `1.0.29`.
+- Verification:
+  - Node syntax check passed for the changed client detail view.
+  - Manifest JSON validation passed.
+
+## 20260708-150053 - Generated Table Sticky Scroll Correction
+
+- Timestamp: 20260708-150053
+- Reason:
+  - User reported that only the row-number column behaved as locked and the rightmost month columns could not be fully viewed.
+  - User also clarified displayed row numbering should start from 1 and count courses, not CSV source rows.
+- Files changed:
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-150053/`
+- Implementation:
+  - Displayed row numbers now use generated course index starting at 1.
+  - Removed source CSV row number from the visible row-number column.
+  - Added a trailing invisible spacer column equal to the frozen-column width so rightmost month columns can scroll clear of the sticky area.
+  - Top scrollbar width is now calculated after sticky-column/spacer setup.
+  - Bumped package version to `1.0.28`.
+- Not implemented:
+  - No CSS file, XLSX export, generated row persistence, Docker/container edit, dependency install, or live runtime edit.
+- Verification:
+  - Node syntax check passed for the changed client detail view.
+  - Manifest JSON validation passed.
+
+## 20260708-145332 - Explicit Cross-Month Ranges And Sticky Table Columns
+
+- Timestamp: 20260708-145332
+- Reason:
+  - User requested cross-month date ranges to include the start month, e.g. `08.06-01.07.2026`.
+  - User requested a row-number column, top horizontal scrollbar, and locked first four table columns.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/CourseScheduler.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-145332/`
+- Implementation:
+  - Date ranges that cross month boundaries now render as `dd.mm-dd.mm.yyyy`.
+  - Same-month multi-day ranges keep the existing compact `dd-dd.mm.yyyy` format.
+  - Added generated table row-number column using source file row numbers.
+  - Added a top horizontal scrollbar synced with the standard bottom `table-responsive` scroll area.
+  - Locked the first four generated table columns: row number, course name, course duration, and investment.
+  - Kept the implementation scoped to the existing generated table view and did not add a CSS file.
+  - Bumped package version to `1.0.27`.
+- Not implemented:
+  - No external custom CSS file, XLSX export, generated row persistence, Docker/container edit, dependency install, or live runtime edit.
+- Verification:
+  - PHP lint passed for `CourseScheduler.php`.
+  - Node syntax check passed for the changed client detail view.
+  - JSON validation passed for changed i18n/manifest files.
+  - Date-range probe confirmed `2026-06-08` plus 18 business days renders as `08.06-01.07.2026`.
+
+## 20260708-144709 - Partial Generation With Incomplete Cells
+
+- Timestamp: 20260708-144709
+- Reason:
+  - User requested generation to continue when a course cannot fit in a generated month.
+  - The generated table should show `not enough working days in month` in the respective month cell while still showing an error toast.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/GenerationService.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-144709/`
+- Implementation:
+  - Changed unscheduled course/month handling from a hard `BadRequest` to a generated placeholder row.
+  - Placeholder month cells show `not enough working days in month`.
+  - Response includes `warningMessage` when at least one generated cell is incomplete.
+  - Client shows `warningMessage` with `Espo.Ui.error(...)` while still rendering the generated table.
+  - Successful partial generation still sets `generatedAt` and keeps the one-time-generation lock.
+  - Bumped package version to `1.0.26`.
+- Not implemented:
+  - No custom CSS, XLSX export, generated row persistence, Docker/container edit, dependency install, or live runtime edit.
+- Verification:
+  - PHP lint passed for changed backend files.
+  - Node syntax check passed for the changed client detail view.
+  - Manifest JSON validation passed.
+
+## 20260708-144401 - Allow Long Courses To Spill Into Later Months
+
+- Timestamp: 20260708-144401
+- Reason:
+  - User clarified that courses longer than 5 days should be allowed to spill into the next month, but not into the next year.
+  - User requested clearer incomplete-generation messages showing available working days and required course duration.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/CourseScheduler.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/GenerationService.php`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-144401/`
+- Implementation:
+  - Long courses, duration greater than 5 days, may now span across month boundaries.
+  - All courses are still blocked from crossing into a different year.
+  - Short courses, duration 5 days or fewer, still cannot cross work week or month.
+  - Added scheduler helper to count available working days from a selected month through the end of the year.
+  - Improved unscheduled-course error detail to report available working days, source row, and required duration.
+  - Bumped package version to `1.0.25`.
+- Not implemented:
+  - No custom CSS, UI change, XLSX export, generated row persistence, Docker/container edit, dependency install, or live runtime edit.
+- Verification:
+  - PHP lint passed for changed backend files.
+  - Manifest JSON validation passed.
+  - Scheduler probe confirmed June 2026 with holidays `01.06.2026` through `05.06.2026` allows an 18-day course.
+  - Scheduler probe confirmed a 30-day December 2026 course has zero valid starts and cannot cross into 2027.
+
+## 20260708-143728 - One-Time Generation And Long-Course Month Bounds
+
+- Timestamp: 20260708-143728
+- Reason:
+  - User clarified that courses longer than 5 days may span weeks, but a generated month must still have enough working days in that month; a long course should not spill into the next month/year to satisfy an insufficient month.
+  - User requested that a generated schedule cannot be regenerated on the same `Planificari` record; users should create a new generation record, giving natural history.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/list.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/CourseScheduler.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/GenerationService.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-143728/`
+- Implementation:
+  - Added read-only `generatedAt` datetime metadata.
+  - Added `generatedAt` to detail and list layouts.
+  - Generate now rejects records that already have `generatedAt`.
+  - Successful generation sets `generatedAt` server-side and saves the record.
+  - Detail view disables the Generate button when `generatedAt` exists and also after successful generation.
+  - Long-course scheduling now requires the generated range to stay within the selected month/year while still allowing spans across weeks.
+  - Added English and Romanian labels/messages for `generatedAt` and already-generated validation.
+  - Bumped package version to `1.0.24`.
+- Not implemented:
+  - No custom CSS, XLSX export, generated row persistence, Docker/container edit, dependency install, or live runtime edit.
+- Verification:
+  - PHP lint passed for changed backend files.
+  - Node syntax check passed for the changed client detail view.
+  - JSON validation passed for changed metadata/layout/i18n/manifest files.
+  - Scheduler probe confirmed that an 18-day January 2026 course has zero valid starts when `01.01.2026` through `10.01.2026` are holidays.
+
+## 20260708-115309 - Generated Table Scroll And Current Input Merge
+
+- Timestamp: 20260708-115309
+- Reason:
+  - User reported the all-month generated table is too wide without a horizontal scrollbar.
+  - User also reported configured January holiday dates still appeared in generated output.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostGenerate.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/GenerationService.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-115309/`
+- Investigation:
+  - Direct scheduler probe with holidays `01.01.2026` through `10.01.2026` returned first valid January start `12.01.2026`.
+  - Scheduler logic itself excludes holidays as business days.
+- Implementation:
+  - Kept the standard `table-responsive` wrapper and added Bootstrap `text-nowrap` classes to generated table/cells so all-month tables scroll horizontally instead of collapsing/wrapping.
+  - Updated Generate API to pass the current request body into `GenerationService`.
+  - Updated generation to prefer current client model values from the request for `year`, `selectedMonths`, `randomness`, `holidays`, and `sourceFileId`, falling back to the saved record only when a value is absent.
+  - Added `randomness` to the client payload.
+  - Bumped package version to `1.0.23`.
+- Not implemented:
+  - No custom CSS, persistence, XLSX export, generated row entity, Docker/container edit, dependency install, or live runtime edit.
+- Verification:
+  - PHP lint passed for changed backend files.
+  - Node syntax check passed for the changed client detail view.
+  - Manifest JSON validation passed.
+  - Scheduler probe confirmed holidays `01.01.2026` through `10.01.2026` make first one-day January start `12.01.2026`.
+
+## 20260708-113442 - Transient Generated Schedule Table
+
+- Timestamp: 20260708-113442
+- Reason:
+  - User asked for the generated result to use the same table style EspoCRM has.
+  - Table should show only course name, `Durata Curs`, `investitie`/price, and generated month columns.
+- Files changed:
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-113442/`
+- Implementation:
+  - Kept generated rows transient in the browser response.
+  - Removed the Generate success alert.
+  - Added a generated schedule table under the existing record detail content.
+  - Used standard Espo/Bootstrap table classes: `table`, `table-bordered`, `table-striped`, `table-hover`, and `table-responsive`.
+  - Table groups response rows by source course and displays one generated month column per generated month.
+  - Columns are course name, course duration, investment, and generated month date ranges.
+  - Added English and Romanian labels/messages for the generated table.
+  - Bumped package version to `1.0.22`.
+- Not implemented:
+  - No custom CSS, persistence, XLSX export, generated row entity, source metadata fields, Docker/container edit, dependency install, or live runtime edit.
+- Verification:
+  - Node syntax check passed for the changed client detail view.
+  - JSON validation passed for changed i18n/manifest files.
+
+## 20260708-113120 - Scheduler Month Boundary Fix
+
+- Timestamp: 20260708-113120
+- Reason:
+  - User reported Internal Server Error on Generate.
+  - Read-only Docker log inspection showed `Call to undefined function ... cal_days_in_month()` in `CourseScheduler.php`.
+  - Container PHP does not have the optional `calendar` extension loaded.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/CourseScheduler.php`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-113120/`
+- Implementation:
+  - Replaced `cal_days_in_month` with `DateTimeImmutable::modify('last day of this month')`.
+  - Preserved the Django scheduling rule of scanning all days in the selected month for valid starts.
+  - Bumped package version to `1.0.21`.
+- Not implemented:
+  - No custom CSS, UI changes, persistence, XLSX export, Docker/container edit, dependency install, or live runtime edit.
+- Verification:
+  - Confirmed the container PHP calendar extension is missing.
+  - PHP lint passed for `CourseScheduler.php`.
+  - JSON validation passed for `manifest.json`.
+
+## 20260708-112344 - Randomness Field And Scheduler Wiring
+
+- Timestamp: 20260708-112344
+- Reason:
+  - User confirmed the Django randomness control should be exposed in EspoCRM UI.
+  - Randomness is a single value from 1 to 10, so it should be an `enum`, not a `multiEnum`.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/GenerationService.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-112344/`
+- Implementation:
+  - Added `randomness` as an EspoCRM `enum` field with values `1` through `10` and default `5`.
+  - Added the field to edit and detail layouts next to the year/month controls.
+  - Added English and Romanian labels/options.
+  - Updated generation to read the saved `randomness` value from the `Planificari` record.
+  - Ported the Django spacing/weighting behavior into the PHP start-date selection path.
+  - Updated the Generate alert summary to show the selected variation level.
+  - Bumped package version to `1.0.20`.
+- Not implemented:
+  - No custom CSS, slider widget, generated table UI, persistence, XLSX export, source metadata fields, Docker/container edit, dependency install, or live runtime edit.
+- Verification:
+  - PHP lint passed for `GenerationService.php`.
+  - JSON validation passed for changed metadata/layout/i18n/manifest files.
+  - Node syntax check passed for the changed client detail view.
+
+## 20260708-111605 - Generate Parser And Scheduler Slice
+
+- Timestamp: 20260708-111605
+- Reason:
+  - User approved continuing incrementally and asked to stay within EspoCRM coding standards.
+  - Next product phase is to make the existing Generate button perform real CSV/XLSX parsing and schedule generation without custom CSS or broad UI work.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostGenerate.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/CourseInputParser.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/CourseScheduler.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/GenerationService.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260708-111605/`
+- Implementation:
+  - Kept the existing `POST /Planificari/generate` route and Generate button.
+  - Changed the server action to use the saved `Planificari` record by `id`, instead of trusting posted field values.
+  - Added a CSV/XLSX parser for the existing native `sourceFile` attachment field.
+  - Validates required columns `Title`, `Durata Curs`, `Permalink`, optional `investitie`, UTF-8 CSV, HTTP(S) permalinks, duration bounds, 20 MB files, 50 columns, and 5000 source courses.
+  - Added the first PHP port of the business-day scheduler, skipping weekends and holidays.
+  - Returns generated row data immediately to the client with source and generated row counts.
+  - Updated the existing alert summary to include generated counts.
+  - Bumped package version to `1.0.19`.
+- Not implemented:
+  - No custom CSS, generated table UI, persistence of generated rows, XLSX export, random-seed field, source metadata fields, Docker/container edit, dependency install, or live runtime edit.
+- Verification:
+  - PHP lint passed for new/changed PHP files.
+  - JSON validation passed for changed manifest/i18n files.
+  - Node syntax check passed for the changed client detail view.
+
+## 20260707-220704 - Custom Holidays Field View
+
+- Timestamp: 20260707-220704
+- Reason:
+  - User asked for a purpose-built EspoCRM-compatible field for `holidays` instead of raw comma-separated text.
+  - Backend storage should remain the existing `holidays` field.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/fields/holidays.js`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-220704/`
+- Implementation:
+  - Added `view: planificari:views/fields/holidays` to the existing `holidays` field metadata.
+  - Added a custom Espo field view that renders clean detail output and an edit UI with add/remove date controls.
+  - Kept storage as the existing comma-separated `holidays` varchar value.
+  - Added client-side validation for `dd.mm.yyyy` values and duplicates.
+  - Bumped package version to `1.0.18`.
+- Not implemented:
+  - No parser, scheduler, persistence, generated rows, XLSX export, source-app edit, dependency install, live runtime edit, or custom database field type.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.18.zip`
+
+## 20260707-220339 - Generate Holiday Duplicate Validation
+
+- Timestamp: 20260707-220339
+- Reason:
+  - User confirmed the Generate button works and reported that `holidays` accepts duplicate dates such as `15.09.2026,15.09.2026,16.09.2026`.
+  - A native EspoCRM date/datetime field is a single value, so it is not suitable for multiple comma-separated holiday dates.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostGenerate.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-220339/`
+- Implementation:
+  - Kept `holidays` as the multi-date text field because date/datetime fields are single-value fields.
+  - Added Generate-time parsing for comma-separated `DD.MM.YYYY` holiday dates.
+  - Added duplicate detection that rejects repeated dates with a human-readable message.
+  - Updated the Generate button error handling to display the server validation message.
+  - Bumped package version to `1.0.17`.
+- Not implemented:
+  - No custom holiday field widget, parser, scheduler, persistence, generated rows, XLSX export, source-app edit, dependency install, or live runtime edit.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.17.zip`
+
+## 20260707-215603 - Phase 4C Record-Based Generate Button
+
+- Timestamp: 20260707-215603
+- Reason:
+  - User corrected the direction: `Planificari` already has the needed inputs, so generation should use the saved record fields instead of opening a separate input shell.
+  - `PlanificariRow` is not required for the current path and should not remain as a visible/admin entity unless a later persistence phase proves it is needed.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/clientDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/routes.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostGenerate.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/planificari/record/detail.js`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/scripts/AfterInstall.php`
+  - `extensions/Planificari/docs/custom-workflow-architecture.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files removed from package source:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/*/PlanificariRow.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/PlanificariRow/*.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/*/PlanificariRow.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostGenerationSpike.php`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/handlers/generation-spike-action.js`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/generation-spike-modal.js`
+  - `extensions/Planificari/files/client/custom/modules/planificari/res/templates/generation-spike-modal.tpl`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-215603/`
+- Implementation:
+  - Removed the `Planificari.planificariRows` link and all packaged `PlanificariRow` metadata/layout/i18n files.
+  - Replaced the old spike route with `POST /Planificari/generate`.
+  - Added `PostGenerate`, which confirms the saved record values received by the server.
+  - Added a custom `Planificari` record detail view with a primary `Generate` button.
+  - The button sends `id`, `name`, `sourceFileId`, `sourceFileName`, `year`, `selectedMonths`, and `holidays` from the current record model.
+  - Added narrow `AfterInstall` stale-file cleanup for the old row entity and old spike files.
+  - Bumped package version to `1.0.16`.
+- Not implemented:
+  - No parser, scheduler, persistence, generated rows, XLSX export, source-app edit, dependency install, broad runtime cleanup, or Docker/container edit.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.16.zip`
+
+## 20260707-214912 - Phase 4B Client Loader Path Fix
+
+- Timestamp: 20260707-214912
+- Reason:
+  - Browser console showed EspoCRM requesting `client/custom/modules/planificari/lib/transpiled/src/handlers/generation-spike-action.js`.
+  - The package ships custom client source under `client/custom/modules/planificari/src/...`.
+  - `module.json` had `jsTranspiled: true`, which told EspoCRM to look for pre-transpiled custom module files that the package does not build.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/module.json`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-214912/`
+- Implementation:
+  - Set `jsTranspiled` to `false` so EspoCRM loads the packaged custom JS from `src/`.
+  - Bumped package version to `1.0.15`.
+- Not implemented:
+  - No parser, scheduler, persistence, file reading, generated rows, XLSX export, live runtime edit, Docker/container edit, dependency install, or source app edit.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.15.zip`
+
+## 20260707-214342 - Phase 4B Spike Handler Simplification
+
+- Timestamp: 20260707-214342
+- Reason:
+  - User installed, rebuilt, hard-refreshed, and cleared browser application cache, but clicking `Generation Tool Spike` still produced no visible result.
+  - Read-only Docker inspection confirmed the package metadata, route, and client files were installed and cached by EspoCRM.
+  - EspoCRM core record-action examples use simple handler classes with action methods, so the spike handler was simplified to that native pattern.
+- Files changed:
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/handlers/generation-spike-action.js`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-214342/`
+- Implementation:
+  - Removed the modal dependency from the click path.
+  - Kept the packaged API route unchanged.
+  - Added an immediate visible success/error toast and browser alert after the API call.
+  - Bumped package version to `1.0.14`.
+- Not implemented:
+  - No parser, scheduler, persistence, file reading, generated rows, XLSX export, live runtime edit, Docker/container edit, dependency install, or source app edit.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.14.zip`
+
+## 20260707-213735 - Phase 4B Spike Visibility Fix
+
+- Timestamp: 20260707-213735
+- Reason:
+  - User clicked `Generation Tool Spike`; button existed, but no visible result appeared.
+  - Runtime inspection showed the packaged client files installed, but the API route was not hit in server logs.
+- Files changed:
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/handlers/generation-spike-action.js`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/generation-spike-modal.js`
+  - `extensions/Planificari/files/client/custom/modules/planificari/res/templates/generation-spike-modal.tpl`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-213735/`
+- Implementation:
+  - Moved the API call into the action handler.
+  - Used Espo's standard `dialog` view slot for the modal.
+  - Passed the API result into the modal instead of making the modal call the route after render.
+  - Added a visible success alert inside the modal.
+  - Bumped package version to `1.0.13`.
+- Not implemented:
+  - No parser, scheduler, persistence, file reading, generated rows, XLSX export, live runtime edit, Docker/container edit, dependency install, or source app edit.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.13.zip`
+
+## 20260707-213245 - Phase 4B Custom Workflow Technical Spike
+
+- Timestamp: 20260707-213245
+- Phase number: 4B
+- Scope:
+  - Minimal packaged custom workflow proof of life.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/routes.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostGenerationSpike.php`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/clientDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/handlers/generation-spike-action.js`
+  - `extensions/Planificari/files/client/custom/modules/planificari/src/views/generation-spike-modal.js`
+  - `extensions/Planificari/files/client/custom/modules/planificari/res/templates/generation-spike-modal.tpl`
+  - `extensions/Planificari/docs/custom-workflow-architecture.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-213245/`
+- Implementation:
+  - Added `POST /Planificari/generationSpike` route.
+  - Added API action returning static JSON only.
+  - Added a `Generation Tool Spike` detail action on `Planificari`.
+  - Added custom client handler and modal view that calls the API route.
+  - Bumped package version to `1.0.12`.
+- Not implemented:
+  - No parser, scheduler, persistence, file reading, generated rows, XLSX export, live runtime edit, Docker/container edit, dependency install, or source app edit.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.12.zip`
+
+## 20260707-212958 - Pivot To Custom Workflow Architecture
+
+- Timestamp: 20260707-212958
+- Scope:
+  - Architecture/design pivot from Entity Manager-style screens to a purpose-built generation tool.
+- User feedback:
+  - The extension was starting to feel like something that could be built with the GUI.
+  - The desired product is a custom scheduling workflow.
+- Read-only Docker inspection:
+  - Used `docker ps` and read-only `docker exec` commands against `espocrm`.
+  - No container files were edited.
+- Evidence inspected:
+  - `docker-compose.yml`
+  - `application/Espo/Resources/routes.json`
+  - `application/Espo/Modules/Crm/Resources/routes.json`
+  - `application/Espo/Tools/Import/Api/PostFile.php`
+  - `application/Espo/Tools/EmailTemplate/Api/PostPrepare.php`
+  - `application/Espo/Modules/Crm/Tools/Campaign/Api/PostGenerateMailMerge.php`
+  - `application/Espo/Tools/Kanban/Api/PutOrder.php`
+  - `application/Espo/Tools/Attachment/Service.php`
+  - `application/Espo/Tools/Attachment/UploadService.php`
+  - `application/Espo/Repositories/Attachment.php`
+  - `application/Espo/Core/FileStorage/Manager.php`
+  - `application/Espo/Tools/Import/Import.php`
+  - `application/Espo/Tools/Export/Format/Xlsx/PhpSpreadsheetProcessor.php`
+  - `application/Espo/Resources/metadata/clientDefs/EmailAccount.json`
+  - `application/Espo/Resources/metadata/clientDefs/Import.json`
+  - `application/Espo/Resources/metadata/clientDefs/ApiUser.json`
+  - `client/lib/original/espo-main.js`
+- Confirmed:
+  - Custom API routes can use `actionClassName`.
+  - API action classes implement `Espo\Core\Api\Action`.
+  - Native file fields are backed by `Attachment` and readable through file storage APIs.
+  - PhpSpreadsheet is already installed in the EspoCRM image.
+  - Client metadata supports custom views and action handlers.
+- Files changed:
+  - `extensions/Planificari/docs/custom-workflow-architecture.md`
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-212958/docs/espo-field-guide.md`
+  - `extensions/Planificari/.codex-backups/20260707-212958/docs/codex-change-log.md`
+- Architecture result:
+  - `Planificari` and `PlanificariRow` stay as backend storage/history.
+  - The main product becomes a custom generation tool: upload, choose year/months/holidays, generate, show table, download XLSX.
+  - Revised phases start with a custom workflow technical spike, then parser, scheduler, persistence, XLSX export, and UX polish.
+- Not implemented:
+  - No PHP, JavaScript, metadata, layout, i18n, parser, generator, export, runtime, or container edits.
+- Build result:
+  - Not built; documentation-only architecture pivot.
+
+## 20260707-212444 - Phase 4A Local EspoCRM API Inspection
+
+- Timestamp: 20260707-212444
+- Phase number: 4A
+- Scope:
+  - Documentation-only host-side inspection of local EspoCRM conventions.
+- Files inspected:
+  - `docker-compose.yml`
+  - `custom/Espo/Modules/Planificari/Controllers/Planificari.php`
+  - `custom.container-backup/Espo/Custom/Controllers/CCursuri.php`
+  - `custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `custom.container-backup/Espo/Custom/Resources/metadata/clientDefs/CCursuri.json`
+  - host-side `application/Espo`, `client`, and `client-custom.container-backup` paths
+- Findings:
+  - Host workspace does not contain EspoCRM core PHP files under `application/Espo`.
+  - `docker-compose.yml` shows the EspoCRM core lives in a Docker named volume; only `custom`, `client/custom`, and `extensions` are host bind mounts.
+  - Local controller examples only confirm `BasePlus` standard controllers.
+  - No host-local examples confirmed record action methods, service dependency conventions, entity manager APIs, file-byte access for native `file` fields, or native Generate button metadata.
+- Files changed:
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-212444/docs/espo-field-guide.md`
+  - `extensions/Planificari/.codex-backups/20260707-212444/docs/codex-change-log.md`
+- Not implemented:
+  - No PHP, JavaScript, metadata, layout, i18n, parser, generator, export, runtime, or Docker/container changes.
+- Build result:
+  - Not built; documentation-only phase.
+- Next gate:
+  - Implementation needs either explicit read-only Docker/core inspection approval or official EspoCRM documentation lookup approval.
+
+## 20260707-212222 - Phase 3F Generation Service Design
+
+- Timestamp: 20260707-212222
+- Phase number: 3F
+- Scope:
+  - Documentation-only generation service design.
+- Files inspected:
+  - `app_to_convert/planificator/scheduler.py`
+  - `app_to_convert/planificator/services.py`
+  - `app_to_convert/planificator/file_handlers.py`
+  - `app_to_convert/planificator/validators.py`
+  - `extensions/Planificari/docs/input file.csv`
+  - `extensions/Planificari/docs/generated file.xlsx`
+  - current `Planificari` and `PlanificariRow` metadata/layout files
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Controllers/Planificari.php`
+- Files changed:
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-212222/docs/espo-field-guide.md`
+  - `extensions/Planificari/.codex-backups/20260707-212222/docs/codex-change-log.md`
+- Design result:
+  - Recommended a record-level Generate action on `Planificari`.
+  - Recommended custom PHP service classes for orchestration, parsing, scheduling, row persistence, and later export.
+  - Documented source-file parsing, holiday validation, scheduling, row persistence, and XLSX export design.
+  - Identified implementation gates: EspoCRM action conventions, file-field byte access, spreadsheet library availability, randomness behavior, and CSV-only vs CSV+XLSX scope.
+- Not implemented:
+  - No PHP, JavaScript, metadata, layout, i18n, ZIP, parser, generator, or export changes.
+- Build result:
+  - Not built; documentation-only phase.
+
+## 20260707-211556 - Phase 3E Generated Schedule Row Metadata
+
+- Timestamp: 20260707-211556
+- Phase number: 3E
+- Files inspected:
+  - `extensions/Planificari/docs/input file.csv`
+  - `extensions/Planificari/docs/generated file.xlsx`
+  - `app_to_convert/planificator/scheduler.py`
+  - `app_to_convert/planificator/services.py`
+  - `app_to_convert/planificator/file_handlers.py`
+  - current `Planificari` metadata, layout, and i18n files
+- Decision:
+  - Django stores generated schedule entries normalized as one item per course/month.
+  - The XLSX export pivots those entries into month columns later.
+  - EspoCRM metadata should therefore store rows as a child entity, one record per generated course/month entry.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/scopes/PlanificariRow.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/PlanificariRow.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/clientDefs/PlanificariRow.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/aclDefs/PlanificariRow.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityAcl/PlanificariRow.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/recordDefs/PlanificariRow.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/PlanificariRow/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/PlanificariRow/edit.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/PlanificariRow/list.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/PlanificariRow/search.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/PlanificariRow.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/PlanificariRow.json`
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/conversion-map.md`
+  - `extensions/Planificari/docs/field-behavior-map.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-211556/`
+- Implementation:
+  - Added metadata-only child entity `PlanificariRow`.
+  - Added `Planificari.planificariRows` has-many link.
+  - Added `PlanificariRow.planificari` belongs-to link.
+  - Added row fields for title, permalink, duration label, investment, month, date range, source row, and original order.
+  - Added conservative row layouts and English/Romanian labels.
+  - Bumped package version to `1.0.11`.
+- Not implemented:
+  - No parsing, generation algorithm, export/download service, custom PHP, custom JavaScript, source count, generated count, digest, or expiration fields.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.11.zip`
+
+## 20260707-211053 - Humanized Holiday Validation Message
+
+- Timestamp: 20260707-211053
+- Phase number: validation UX correction
+- Reason:
+  - `1.0.9` installs, but invalid holiday input still shows the raw regex in the validation toast.
+  - The earlier install failure was traced to missing derived DB column `source_file_name`, not to named regex metadata.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/app/regExpPatterns.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Global.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Global.json`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-211053/docs/espo-field-guide.md`
+  - `extensions/Planificari/.codex-backups/20260707-211053/docs/codex-change-log.md`
+  - `extensions/Planificari/.codex-backups/20260707-211053/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-211053/manifest.json`
+  - `extensions/Planificari/.codex-backups/20260707-211053/README.md`
+- Implementation:
+  - Added named app regex pattern `holidayDates`.
+  - Changed `holidays.pattern` to `$holidayDates`.
+  - Added English and Romanian Global validation messages for `fieldNotMatchingPattern$holidayDates`.
+  - Kept derived fields removed from runtime metadata.
+  - Bumped package version to `1.0.10`.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.10.zip`
+
+## 20260707-210621 - Install Repair For Missing Derived Columns
+
+- Timestamp: 20260707-210621
+- Phase number: install repair
+- Docker/container use:
+  - Read-only Docker use only: `docker ps`, `docker compose ps`, `docker logs`, and `docker exec` to read `data/logs/*.log`.
+  - No container files were edited.
+- Log finding:
+  - EspoCRM rebuild failed with: `There is no column with name "source_file_name" on table "planificari"`.
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/list.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/search.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-210621/docs/espo-field-guide.md`
+  - `extensions/Planificari/.codex-backups/20260707-210621/docs/codex-change-log.md`
+  - `extensions/Planificari/.codex-backups/20260707-210621/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-210621/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/.codex-backups/20260707-210621/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/.codex-backups/20260707-210621/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/list.json`
+  - `extensions/Planificari/.codex-backups/20260707-210621/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/search.json`
+  - `extensions/Planificari/.codex-backups/20260707-210621/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-210621/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-210621/manifest.json`
+  - `extensions/Planificari/.codex-backups/20260707-210621/README.md`
+- Implementation:
+  - Removed derived fields from runtime entity metadata: `sourceCourseCount`, `generatedEntryCount`, `sourceFileName`, `sourceFileDigest`, and `expiresAt`.
+  - Removed their layout, list/search, label, and text-filter references.
+  - Kept user-entered fields: `sourceFile`, `year`, `selectedMonths`, and `holidays`.
+  - Bumped package version to `1.0.9`.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.9.zip`
+
+## 20260707-210216 - Install Repair After 1.0.7
+
+- Timestamp: 20260707-210216
+- Phase number: install repair
+- Files inspected:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/app/regExpPatterns.json`
+  - module-level Global i18n files from `1.0.7`
+  - current layouts, README, manifest, and field guide
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - removed `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/app/regExpPatterns.json`
+  - removed `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Global.json`
+  - removed `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Global.json`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-210216/docs/espo-field-guide.md`
+  - `extensions/Planificari/.codex-backups/20260707-210216/docs/codex-change-log.md`
+  - `extensions/Planificari/.codex-backups/20260707-210216/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-210216/files/custom/Espo/Modules/Planificari/Resources/metadata/app/regExpPatterns.json`
+  - `extensions/Planificari/.codex-backups/20260707-210216/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Global.json`
+  - `extensions/Planificari/.codex-backups/20260707-210216/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Global.json`
+  - `extensions/Planificari/.codex-backups/20260707-210216/manifest.json`
+  - `extensions/Planificari/.codex-backups/20260707-210216/README.md`
+- Implementation:
+  - Removed module-level app `regExpPatterns` and module-level Global i18n files added in `1.0.7`, as they are the most likely rebuild failure source.
+  - Restored `holidays` to inline varchar pattern validation.
+  - Kept the human-readable holiday tooltip.
+  - Kept metadata-only `sourceFile` native file field from Phase 3E.
+  - Bumped package version to `1.0.8`.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.8.zip`
+- Notes:
+  - If `1.0.8` still fails rebuild, the next likely issue is the native `sourceFile` file field shape. Cut a fallback package without `sourceFile` and request the actual last log lines from `data/logs`.
+
+## 20260707-205454 - Humanized Holidays And Phase 3E
+
+- Timestamp: 20260707-205454
+- Phase number: holidays UX correction and Phase 3E metadata-only source upload field
+- Files inspected:
+  - current `Planificari` entity metadata, layouts, i18n files, manifest, README, and field guide
+  - official EspoCRM docs for `regExpPatterns`, field tooltips, global validation messages, and native File fields
+  - local Global i18n examples
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/app/regExpPatterns.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Global.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Global.json`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-205454/docs/espo-field-guide.md`
+  - `extensions/Planificari/.codex-backups/20260707-205454/docs/codex-change-log.md`
+  - `extensions/Planificari/.codex-backups/20260707-205454/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-205454/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/.codex-backups/20260707-205454/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/.codex-backups/20260707-205454/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-205454/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-205454/manifest.json`
+  - `extensions/Planificari/.codex-backups/20260707-205454/README.md`
+- Implementation:
+  - Added named app regex pattern `holidayDates`.
+  - Changed `holidays` field to use `$holidayDates` instead of an inline regex.
+  - Added Global i18n messages for `fieldNotMatchingPattern$holidayDates`.
+  - Added field tooltips for `holidays` and `sourceFile`.
+  - Added metadata-only native `sourceFile` field of type `file`.
+  - Added `sourceFile` to edit and detail layouts only.
+  - Bumped package version to `1.0.7`.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.7.zip`
+- Notes:
+  - Phase 3E is metadata-only. Upload parsing, generation preview, and XLSX download are not implemented yet.
+
+## 20260707-204034 - Holidays Pattern Correction
+
+- Timestamp: 20260707-204034
+- Phase number: Phase 3C-3 follow-up correction 2
+- Files inspected:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - official EspoCRM fields documentation for the `Pattern` parameter
+  - `extensions/Planificari/docs/input file.csv`
+  - `extensions/Planificari/docs/generated file.xlsx`
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-204034/docs/espo-field-guide.md`
+  - `extensions/Planificari/.codex-backups/20260707-204034/docs/codex-change-log.md`
+  - `extensions/Planificari/.codex-backups/20260707-204034/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-204034/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-204034/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-204034/manifest.json`
+  - `extensions/Planificari/.codex-backups/20260707-204034/README.md`
+- Implementation:
+  - Changed `holidays` from `text` to `varchar` because EspoCRM documents Pattern validation for varchar fields.
+  - Kept comma-separated `DD.MM.YYYY` input in one field.
+  - Added `maxLength: 4096` and pattern `^\\s*(?:\\d{2}\\.\\d{2}\\.\\d{4}(?:\\s*,\\s*\\d{2}\\.\\d{2}\\.\\d{4})*)?\\s*$`.
+  - Documented sample CSV/XLSX evidence in the field guide: input CSV uses `@` delimiter and generated XLSX contains `Schedule` and `Holidays` sheets.
+  - Bumped package version to `1.0.6`.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.6.zip`
+- Notes:
+  - This pattern blocks letters and year-first values like `2026.2026.2026`.
+  - Full calendar validation, duplicate checks, holiday-year checks, and max date count remain later custom PHP/service logic.
+
+## 20260707-202736 - Phase 3C-3 Field Corrections
+
+- Timestamp: 20260707-202736
+- Phase number: 3C-3 follow-up correction
+- Files inspected:
+  - current `Planificari` entity metadata and i18n files
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - official EspoCRM field documentation for enum/text field behavior and patterns
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-202736/docs/espo-field-guide.md`
+  - `extensions/Planificari/.codex-backups/20260707-202736/docs/codex-change-log.md`
+  - `extensions/Planificari/.codex-backups/20260707-202736/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-202736/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-202736/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-202736/manifest.json`
+  - `extensions/Planificari/.codex-backups/20260707-202736/README.md`
+- Implementation:
+  - Changed `year` from `int` to `enum` with options `2025` through `2031` so EspoCRM displays `2026`, not `2,026`.
+  - Added year option labels in English and Romanian.
+  - Kept `holidays` as `text`, because one native date field stores one date only.
+  - Added a metadata regex pattern for zero or more `DD.MM.YYYY` values separated by commas or new lines.
+  - Bumped package version to `1.0.5`.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.5.zip`
+- Manual testing instructions:
+  - Upload `extensions/planificari-perioade-cursuri-1.0.5.zip`, install/update, rebuild cache, and hard refresh.
+  - Confirm year appears as an unformatted value such as `2026`, not `2,026`.
+  - Confirm holidays accepts values such as `01.01.2026, 24.01.2026` or one date per line.
+- Rollback instructions:
+  - Restore changed files from `extensions/Planificari/.codex-backups/20260707-202736/`.
+
+## 20260707-201837 - Phase 3C-3
+
+- Timestamp: 20260707-201837
+- Phase number: 3C-3
+- Files inspected:
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - current `Planificari` entity metadata, detail/edit layouts, i18n files, manifest, and README
+  - official EspoCRM documentation for fields, custom entity type metadata, custom config parameter i18n, and Entity Manager layout placement
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-201837/docs/espo-field-guide.md`
+  - `extensions/Planificari/.codex-backups/20260707-201837/docs/codex-change-log.md`
+  - `extensions/Planificari/.codex-backups/20260707-201837/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-201837/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/.codex-backups/20260707-201837/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/.codex-backups/20260707-201837/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-201837/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-201837/manifest.json`
+  - `extensions/Planificari/.codex-backups/20260707-201837/README.md`
+- Implementation:
+  - Added `selectedMonths` as native `multiEnum` with fixed options `1` through `12` and `maxCount: 12`.
+  - Added `holidays` as native `text` with conservative textarea display parameters.
+  - Added both fields to edit and detail layouts only.
+  - Added English and Romanian field labels and month option labels.
+  - Bumped package version to `1.0.4`.
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.4.zip`
+- Manual testing instructions:
+  - Upload `extensions/planificari-perioade-cursuri-1.0.4.zip` through EspoCRM Administration > Extensions.
+  - Install/update the extension, rebuild EspoCRM cache, and hard refresh the browser.
+  - Open Planificari create/edit and confirm `Selected Months`/`Luni selectate` and `Holidays`/`Zile nelucratoare` appear.
+  - Confirm derived fields remain absent from edit layout.
+  - Confirm list/search layouts did not gain month or holiday fields.
+- Rollback instructions:
+  - Restore changed files from `extensions/Planificari/.codex-backups/20260707-201837/`.
+  - Remove `extensions/planificari-perioade-cursuri-1.0.4.zip` if rolling back the built package.
+
+## 20260707-201553 - Phase 3C-2
+
+- Timestamp: 20260707-201553
+- Phase number: 3C-2
+- Files inspected:
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - current `Planificari` metadata, layout, and i18n files under `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/`
+  - local installed/custom metadata examples under `/opt/crm.cursurituv.ro/custom/Espo/`
+  - local backup metadata examples under `/opt/crm.cursurituv.ro/custom.container-backup/Espo/`
+  - local pre-extension backup metadata under `/opt/crm.cursurituv.ro/backups/Planificari.pre-extension.20260707-173534/`
+  - local UI/CSS selectors in `/opt/crm.cursurituv.ro/client/custom/css/tuvtk.css`
+- Files changed:
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-201553/docs/espo-field-guide.md`
+  - `extensions/Planificari/.codex-backups/20260707-201553/docs/codex-change-log.md`
+- Evidence found:
+  - Entity `text` field metadata is locally confirmed.
+  - A single `enum`/`options` shape is locally confirmed only in theme metadata, not entity field metadata.
+  - CSS selectors exist for checklist, multi-enum, and array UI classes, but no entity metadata example confirms their field syntax.
+  - No local entity metadata or i18n example confirms `multiEnum`, `checklist`, `array`, or `jsonObject` shape.
+- Decision:
+  - `selectedMonths`: do not implement yet; native `multiEnum` or `checklist` remains preferred, but the entity metadata and option/i18n shape are not locally confirmed.
+  - `holidays`: document `text` as the safe native candidate; do not implement yet unless explicitly approved as a one-field metadata-only step.
+  - Phase 3C-3 is not safe for `selectedMonths` implementation from local evidence alone.
+- Commands run:
+  - `sed -n ...` on the field guide, changelog, current Planificari files, and selected local metadata examples.
+  - `find ...` and `rg ...` read-only local searches for `multiEnum`, `checklist`, `array`, `jsonObject`, `enum`, `text`, and `options`.
+  - `date +%Y%m%d-%H%M%S`
+  - `mkdir -p ...` and `cp -a ...` to create backups.
+  - `apply_patch` for the Phase 3C-2 evidence section and this change log entry.
+- Build result:
+  - Not built. Documentation-only investigation; no installable metadata changed.
+- Rollback instructions:
+  - Restore changed docs from `extensions/Planificari/.codex-backups/20260707-201553/docs/`.
+
+## 20260707-201119 - Phase 3C
+
+- Timestamp: 20260707-201119
+- Phase number: 3C
+- Files inspected:
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/conversion-map.md`
+  - `extensions/Planificari/docs/field-behavior-map.md`
+  - `app_to_convert/planificator/models.py`
+  - `app_to_convert/planificator/forms.py`
+  - `app_to_convert/planificator/services.py`
+  - `app_to_convert/planificator/scheduler.py`
+  - `app_to_convert/planificator/validators.py`
+  - current `Planificari` entity metadata, layout, and i18n files
+  - read-only local metadata examples already present on disk
+- Files changed:
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-201119/docs/espo-field-guide.md`
+  - `extensions/Planificari/.codex-backups/20260707-201119/docs/codex-change-log.md`
+- Decision:
+  - `selectedMonths`: not implemented. A native multi-value enum/checklist field remains preferred, but no safe local metadata shape was confirmed for `multiEnum`, `array`, or JSON-backed option storage.
+  - `holidays`: not implemented. A native `text` field is locally safe and could store one `DD.MM.YYYY` date per line, but it was deferred so Phase 3C does not land only half of the input pair while `selectedMonths` remains uncertain.
+- Commands run:
+  - `sed -n ...` on the field guide, current metadata, layouts, i18n files, and allowed Django source files.
+  - `find ...` and `rg ...` read-only local metadata example searches.
+  - `date +%Y%m%d-%H%M%S`
+  - `mkdir -p ...` and `cp -a ...` to create backups.
+  - `apply_patch` for the Phase 3C documentation decision and this change log entry.
+- Build result:
+  - Not built. This phase changed documentation only, and no installable metadata changed.
+- Manual testing instructions:
+  - Review `extensions/Planificari/docs/espo-field-guide.md` before Phase 3C-2.
+- Rollback instructions:
+  - Restore changed docs from `extensions/Planificari/.codex-backups/20260707-201119/docs/`.
+
+## 20260707-200731 - Phase 3B-Guide
+
+- Timestamp: 20260707-200731
+- Phase number: 3B-Guide
+- Files inspected:
+  - `app_to_convert/planificator/models.py`
+  - `app_to_convert/planificator/forms.py`
+  - `app_to_convert/planificator/file_handlers.py`
+  - `app_to_convert/planificator/services.py`
+  - `app_to_convert/planificator/scheduler.py`
+  - `app_to_convert/planificator/validators.py`
+  - `extensions/Planificari/docs/conversion-map.md`
+  - `extensions/Planificari/docs/field-behavior-map.md`
+  - current `Planificari` entity metadata and layout files
+- Files changed:
+  - `extensions/Planificari/docs/espo-field-guide.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-200731/docs/codex-change-log.md`
+- Commands run:
+  - `sed -n ...` on the attached request, existing docs, metadata, layouts, and allowed Django source files.
+  - `find ...` read-only package file inspection.
+  - `rg ...` read-only source-field inspection.
+  - `date +%Y%m%d-%H%M%S`
+  - `mkdir -p ...` and `cp -a ...` to create the changelog backup.
+  - `apply_patch` for this documentation-only guide and changelog entry.
+- Build result:
+  - Not built. This phase changed docs only, and the installable extension ZIP shape uses `manifest.json`, `files/`, and `scripts/`.
+- Manual testing instructions:
+  - Review `extensions/Planificari/docs/espo-field-guide.md` before Phase 3B-2, Phase 3C, Phase 3D, or Phase 4.
+- Rollback instructions:
+  - Restore `extensions/Planificari/docs/codex-change-log.md` from `extensions/Planificari/.codex-backups/20260707-200731/docs/`.
+  - Remove `extensions/Planificari/docs/espo-field-guide.md` if rolling back this documentation-only addition.
+
+## 20260707-195255 - Phase 3B
+
+- Timestamp: 20260707-195255
+- Phase number: 3B
+- Files inspected:
+  - `app_to_convert/planificator/models.py`
+  - `app_to_convert/planificator/forms.py`
+  - `app_to_convert/planificator/file_handlers.py`
+  - `app_to_convert/planificator/services.py`
+  - `extensions/Planificari/docs/conversion-map.md`
+  - `extensions/Planificari/docs/field-behavior-map.md`
+  - current `Planificari` metadata, layouts, and i18n files
+  - read-only local installed/custom files for file/attachment metadata examples
+- Files changed:
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/docs/field-behavior-map.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-195255/manifest.json`
+  - `extensions/Planificari/.codex-backups/20260707-195255/README.md`
+  - `extensions/Planificari/.codex-backups/20260707-195255/docs/field-behavior-map.md`
+  - `extensions/Planificari/.codex-backups/20260707-195255/docs/codex-change-log.md`
+- Commands run:
+  - `sed -n ...` on source-of-truth Django, docs, metadata, layout, i18n, manifest, and README files.
+  - `rg ...` and `find ...` read-only searches for local file/attachment metadata examples.
+  - `date +%Y%m%d-%H%M%S`
+  - `test -e extensions/planificari-perioade-cursuri-1.0.3.zip`
+  - `mkdir -p ...` and `cp -a ...` to create backups.
+  - `apply_patch` for Phase 3B documentation and version updates.
+  - `python3 -m json.tool ...` for changed and runtime JSON files.
+  - `php -l ...` for existing PHP files.
+  - `rg ...` to confirm no upload/future/settings fields were added to runtime metadata.
+  - `cd /opt/crm.cursurituv.ro/extensions/Planificari; zip -r ../planificari-perioade-cursuri-1.0.3.zip manifest.json files scripts`
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.3.zip`
+- Manual testing instructions:
+  - Upload the rebuilt ZIP through EspoCRM Administration > Extensions.
+  - Install/update the extension, rebuild EspoCRM, clear cache if needed, and hard refresh the browser.
+  - Confirm no new upload field appears yet; Phase 3B is documentation-only because the native metadata shape was unclear.
+- Rollback instructions:
+  - Restore changed files from `extensions/Planificari/.codex-backups/20260707-195255/`.
+
+## 20260707-194606 - Phase 3A Correction
+
+- Timestamp: 20260707-194606
+- Phase number: 3A correction
+- Files inspected:
+  - `app_to_convert/planificator/models.py`
+  - `app_to_convert/planificator/forms.py`
+  - `app_to_convert/planificator/file_handlers.py`
+  - `app_to_convert/planificator/services.py`
+  - `extensions/Planificari/docs/conversion-map.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/list.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/search.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+- Files changed:
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/docs/field-behavior-map.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-194606/manifest.json`
+  - `extensions/Planificari/.codex-backups/20260707-194606/README.md`
+  - `extensions/Planificari/.codex-backups/20260707-194606/docs/codex-change-log.md`
+  - `extensions/Planificari/.codex-backups/20260707-194606/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-194606/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+- Commands run:
+  - `sed -n ...` on current entityDefs, layouts, manifest, README, i18n, and change log files.
+  - `find /opt/crm.cursurituv.ro ... grep ...` to look for local file/attachment metadata examples.
+  - `date +%Y%m%d-%H%M%S`
+  - `test -e ...` for the field behavior map and target ZIP path.
+  - `find extensions/Planificari/files/custom/Espo/Modules/Planificari -type f ...`
+  - `mkdir -p ...` and `cp -a ...` to create backups.
+  - `apply_patch` for the Phase 3A correction.
+  - `python3 -m json.tool ...` for changed and relevant JSON files.
+  - `php -l ...` for existing PHP files.
+  - `grep -RInE ...` to confirm derived fields are absent from the edit layout and forbidden fields were not added to runtime metadata.
+  - `cd /opt/crm.cursurituv.ro/extensions/Planificari; zip -r ../planificari-perioade-cursuri-1.0.2.zip manifest.json README.md files scripts docs/conversion-map.md docs/field-behavior-map.md docs/codex-change-log.md`
+  - `zip -d ../planificari-perioade-cursuri-1.0.2.zip README.md docs/conversion-map.md docs/field-behavior-map.md docs/codex-change-log.md`
+  - `unzip -l ../planificari-perioade-cursuri-1.0.2.zip`
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.2.zip`
+  - ZIP contents match the scaffold package shape: `manifest.json`, `files/`, and `scripts/`.
+- Manual testing instructions:
+  - Upload the rebuilt ZIP through EspoCRM Administration > Extensions.
+  - Install/update the extension, rebuild EspoCRM, clear cache if needed, and hard refresh the browser.
+  - Open the `Planificari` edit view and confirm `sourceCourseCount`, `generatedEntryCount`, `sourceFileName`, `sourceFileDigest`, and `expiresAt` are not editable form inputs.
+  - Open detail/list/search views and confirm derived fields still appear where useful.
+- Rollback instructions:
+  - Restore changed files from `extensions/Planificari/.codex-backups/20260707-194606/`.
+  - Remove `extensions/Planificari/docs/field-behavior-map.md` if rolling back the documentation addition.
+
+## 20260707-193854 - Phase 3A
+
+- Timestamp: 20260707-193854
+- Phase number: 3A
+- Files inspected:
+  - `app_to_convert/planificator/models.py`
+  - `extensions/Planificari/docs/conversion-map.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/scopes/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/clientDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/list.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/search.json`
+- Files changed:
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/list.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/search.json`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-193854/manifest.json`
+  - `extensions/Planificari/.codex-backups/20260707-193854/README.md`
+  - `extensions/Planificari/.codex-backups/20260707-193854/docs/codex-change-log.md`
+  - `extensions/Planificari/.codex-backups/20260707-193854/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-193854/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-193854/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-193854/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/.codex-backups/20260707-193854/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/.codex-backups/20260707-193854/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/list.json`
+  - `extensions/Planificari/.codex-backups/20260707-193854/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/search.json`
+- Commands run:
+  - Folder casing, identity, permission, model, conversion-map, metadata, layout, and ZIP inspection commands.
+  - Local and official-documentation field type checks for EspoCRM `int`, `varchar`, and `datetime`.
+  - `TS="$(date +%Y%m%d-%H%M%S)"; BACKUP_ROOT="extensions/Planificari/.codex-backups/$TS"; mkdir -p "$BACKUP_ROOT"; ... cp -a ...`
+  - `apply_patch` for Phase 3A metadata, labels, layouts, manifest, README, and this change log.
+  - `python3 -m json.tool ... >/dev/null` for changed JSON and scaffold JSON files.
+  - `php -l extensions/Planificari/scripts/AfterInstall.php`
+  - `php -l extensions/Planificari/scripts/BeforeUninstall.php`
+  - `php -l extensions/Planificari/files/custom/Espo/Modules/Planificari/Controllers/Planificari.php`
+  - `grep -RInE ... extensions/Planificari/files/custom/Espo/Modules/Planificari || true`
+  - `find extensions/Planificari/.codex-backups/20260707-193854 -type f | sort`
+  - `command -v zip`
+  - `cd /opt/crm.cursurituv.ro/extensions/Planificari; zip -r ../planificari-perioade-cursuri-1.0.1.zip manifest.json files scripts`
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.1.zip`
+- Manual testing instructions:
+  - Upload the Phase 3A ZIP through EspoCRM Administration > Extensions.
+  - Install/update the extension, rebuild EspoCRM, clear cache if needed, and hard refresh.
+  - Open `Planificari`, create/edit a record, and verify the six Phase 3A fields appear and save as optional metadata.
+  - Confirm no selected months, holidays, random seed, source file data, schedule rows, settings entities, custom JS, custom CSS, or custom business PHP appear.
+- Rollback instructions:
+  - Restore changed files from `extensions/Planificari/.codex-backups/20260707-193854/`.
+  - If a `1.0.1` ZIP existed and was backed up, restore it from `extensions/Planificari/.codex-backups/20260707-193854/zip/`.
+
+## 20260707-192839 - Phase 2
+
+- Timestamp: 20260707-192839
+- Phase number: 2
+- Files inspected:
+  - `extensions/Planificari/docs/conversion-map.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+  - `extensions/Planificari/manifest.json`
+  - `extensions/Planificari/README.md`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/module.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/scopes/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/clientDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/aclDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityAcl/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/recordDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Controllers/Planificari.php`
+  - `extensions/Planificari/scripts/AfterInstall.php`
+  - `extensions/Planificari/scripts/BeforeUninstall.php`
+- Files changed:
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/scopes/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/clientDefs/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/detail.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/edit.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/list.json`
+  - `extensions/Planificari/files/custom/Espo/Modules/Planificari/Resources/layouts/Planificari/search.json`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-192839/docs/codex-change-log.md`
+  - `extensions/Planificari/.codex-backups/20260707-192839/files/custom/Espo/Modules/Planificari/Resources/metadata/scopes/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-192839/files/custom/Espo/Modules/Planificari/Resources/metadata/entityDefs/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-192839/files/custom/Espo/Modules/Planificari/Resources/metadata/clientDefs/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-192839/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-192839/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-192839/zip/planificari-perioade-cursuri-1.0.0.zip`
+- Commands run:
+  - Folder casing, identity, permission, metadata inspection, and layout-example inspection commands.
+  - `TS="$(date +%Y%m%d-%H%M%S)"; BACKUP_ROOT="extensions/Planificari/.codex-backups/$TS"; mkdir -p "$BACKUP_ROOT"; ... cp -a ...`
+  - `apply_patch` for Phase 2 metadata, labels, minimal layouts, and this change log.
+  - `python3 -m json.tool ... >/dev/null` for all changed JSON files and scaffold JSON files.
+  - `php -l extensions/Planificari/scripts/AfterInstall.php`
+  - `php -l extensions/Planificari/scripts/BeforeUninstall.php`
+  - `php -l extensions/Planificari/files/custom/Espo/Modules/Planificari/Controllers/Planificari.php`
+  - `grep -RInE ... extensions/Planificari/files/custom/Espo/Modules/Planificari || true`
+  - `find extensions/Planificari/.codex-backups/20260707-192839 -type f | sort`
+  - `command -v zip`
+  - `cd /opt/crm.cursurituv.ro/extensions/Planificari; zip -r ../planificari-perioade-cursuri-1.0.0.zip manifest.json files scripts`
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.0.zip`
+- Manual testing instructions:
+  - Upload the Phase 2 ZIP through EspoCRM Administration > Extensions.
+  - Install/update the extension, rebuild EspoCRM, clear cache if needed, hard refresh, and confirm the `Planificari` tab opens.
+  - Create a minimal record using only name, description, responsible users, and teams.
+  - Confirm no business fields or settings entities appear.
+- Rollback instructions:
+  - Restore existing changed files from `extensions/Planificari/.codex-backups/20260707-192839/`.
+  - Remove newly added layout files under `Resources/layouts/Planificari/`.
+  - Restore the previous ZIP from `extensions/Planificari/.codex-backups/20260707-192839/zip/`.
+
+## 20260707-191856 - Documentation Clarification
+
+- Timestamp: 20260707-191856
+- Phase number: clarification before Phase 2
+- Files inspected:
+  - `extensions/Planificari/docs/conversion-map.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files changed:
+  - `extensions/Planificari/docs/conversion-map.md`
+  - `extensions/Planificari/docs/codex-change-log.md`
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-191856/docs/conversion-map.md`
+  - `extensions/Planificari/.codex-backups/20260707-191856/docs/codex-change-log.md`
+- Commands run:
+  - `[ -d extensions/planificari ] && echo "exists: extensions/planificari"; [ -d extensions/Planificari ] && echo "exists: extensions/Planificari"`
+  - `whoami; id; pwd; ls -ld extensions extensions/Planificari app_to_convert app_to_convert/planificator`
+  - `find extensions/Planificari/docs -maxdepth 1 -type f -printf '%p\n' | sort`
+  - `TS="$(date +%Y%m%d-%H%M%S)"; BACKUP_ROOT="extensions/Planificari/.codex-backups/$TS"; mkdir -p "$BACKUP_ROOT/docs"; cp -a ...`
+  - `apply_patch` for `docs/conversion-map.md` and `docs/codex-change-log.md`
+- Build result:
+  - Not run; documentation clarification only.
+- Manual testing instructions:
+  - Review `docs/conversion-map.md` before starting Phase 2.
+- Rollback instructions:
+  - Restore docs from `extensions/Planificari/.codex-backups/20260707-191856/docs/`.
+
+## 20260707-191023 - Phase 0
+
+- Timestamp: 20260707-191023
+- Phase number: 0
+- Files inspected:
+  - `app_to_convert/planificator/models.py`
+  - `app_to_convert/planificator/forms.py`
+  - `app_to_convert/planificator/views.py`
+  - `app_to_convert/planificator/urls.py`
+  - `app_to_convert/planificator/constants.py`
+  - `app_to_convert/planificator/file_handlers.py`
+  - `app_to_convert/planificator/scheduler.py`
+  - `app_to_convert/planificator/services.py`
+  - `app_to_convert/planificator/validators.py`
+  - `app_to_convert/planificator/settings_store.py`
+  - `app_to_convert/planificator/selectors.py`
+  - `app_to_convert/planificator/presentation.py`
+  - `app_to_convert/planificator/admin.py`
+  - `app_to_convert/planificator/apps.py`
+  - `app_to_convert/planificator/xml_export.py`
+  - `app_to_convert/planificator/word_matching.py`
+  - `app_to_convert/planificator/wp_course_updater.py`
+  - `app_to_convert/planificator/management/commands/purge_expired_schedule_generations.py`
+  - `app_to_convert/planificator/templates/planificator/*`
+  - `app_to_convert/planificator/static/planificator/*`
+  - `app_to_convert/planificator/tests*.py`
+  - `extensions/planificari/manifest.json`
+  - `extensions/planificari/README.md`
+  - `extensions/planificari/scripts/AfterInstall.php`
+  - `extensions/planificari/scripts/BeforeUninstall.php`
+  - `extensions/planificari/files/custom/Espo/Modules/Planificari/**/*`
+- Files changed:
+  - `extensions/planificari/docs/conversion-map.md`
+  - `extensions/planificari/docs/codex-change-log.md`
+- Files backed up:
+  - Not applicable for new Phase 0 docs.
+- Commands run:
+  - `[ -d extensions/planificari ] && echo "exists: extensions/planificari"; [ -d extensions/Planificari ] && echo "exists: extensions/Planificari"`
+  - `whoami; id; pwd; ls -ld extensions extensions/planificari app_to_convert app_to_convert/planificator`
+  - `find app_to_convert/planificator -maxdepth 4 -type f | sort`
+  - `find extensions/planificari -maxdepth 8 -type f | sort`
+  - `find extensions/planificari -type f | sort`
+  - `find extensions/planificari -type d | sort`
+  - `grep -RInE ... app_to_convert/planificator extensions/planificari --exclude-dir='__pycache__'`
+  - `sed -n ...` on selected Django source and scaffold files.
+  - `find app_to_convert/planificator/templates app_to_convert/planificator/static -type f | sort ...`
+- Build result:
+  - Not run during Phase 0.
+- Manual testing instructions:
+  - Review `docs/conversion-map.md` before approving Phase 2.
+- Rollback instructions:
+  - Remove `docs/conversion-map.md` if Phase 0 documentation needs to be discarded.
+
+## 20260707-191023 - Phase 1
+
+- Timestamp: 20260707-191023
+- Phase number: 1
+- Files inspected:
+  - `extensions/planificari/manifest.json`
+  - `extensions/planificari/README.md`
+  - `extensions/planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/planificari/files/custom/Espo/Modules/Planificari/Resources/metadata/**/*.json`
+  - `extensions/planificari/scripts/*.php`
+- Files changed:
+  - `extensions/planificari/manifest.json`
+  - `extensions/planificari/README.md`
+  - `extensions/planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/planificari/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/planificari/docs/codex-change-log.md`
+  - Folder renamed: `extensions/planificari/` to `extensions/Planificari/`.
+- Files backed up:
+  - `extensions/Planificari/.codex-backups/20260707-191023/manifest.json`
+  - `extensions/Planificari/.codex-backups/20260707-191023/README.md`
+  - `extensions/Planificari/.codex-backups/20260707-191023/files/custom/Espo/Modules/Planificari/Resources/i18n/en_US/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-191023/files/custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/Planificari.json`
+  - `extensions/Planificari/.codex-backups/20260707-191023/docs/codex-change-log.md`
+- Commands run:
+  - `TS="$(date +%Y%m%d-%H%M%S)"; BACKUP_ROOT="extensions/planificari/.codex-backups/$TS"; mkdir -p "$BACKUP_ROOT"; ... cp -a ...`
+  - `mkdir -p extensions/planificari/docs`
+  - `apply_patch` for `manifest.json`, `README.md`, i18n labels, `docs/conversion-map.md`, and `docs/codex-change-log.md`.
+  - `[ -d extensions/planificari ] && echo "exists: extensions/planificari"; [ -d extensions/Planificari ] && echo "exists: extensions/Planificari"`
+  - `mv extensions/planificari extensions/Planificari`
+  - `find extensions/Planificari -type f | sort`
+  - `python3 -m json.tool ... >/dev/null` for changed JSON and scaffold JSON files.
+  - `php -l extensions/Planificari/scripts/AfterInstall.php`
+  - `php -l extensions/Planificari/scripts/BeforeUninstall.php`
+  - `php -l extensions/Planificari/files/custom/Espo/Modules/Planificari/Controllers/Planificari.php`
+  - `find extensions/Planificari/.codex-backups/20260707-191023 -type f | sort`
+  - `ls -l extensions/planificari-perioade-cursuri-1.0.0.zip 2>/dev/null || true; ls -ld extensions`
+  - `cd /opt/crm.cursurituv.ro/extensions/Planificari; zip -r ../planificari-perioade-cursuri-1.0.0.zip manifest.json files scripts`
+  - `mkdir -p extensions/Planificari/.codex-backups/20260707-191023/docs`
+  - `cp -a extensions/Planificari/docs/codex-change-log.md extensions/Planificari/.codex-backups/20260707-191023/docs/codex-change-log.md`
+- Build result:
+  - Built ZIP: `extensions/planificari-perioade-cursuri-1.0.0.zip`
+- Manual testing instructions:
+  - Upload the ZIP through EspoCRM Administration > Extensions after the build succeeds.
+  - Install the extension, rebuild EspoCRM, clear cache if needed, hard refresh the browser, and confirm the extension displays as `Planificari perioade cursuri`.
+- Rollback instructions:
+  - Restore changed files from `extensions/Planificari/.codex-backups/20260707-191023/` after folder normalization.
+  - If rolling back folder casing, move `extensions/Planificari/` back to `extensions/planificari/` only after confirming no separate lowercase folder exists.

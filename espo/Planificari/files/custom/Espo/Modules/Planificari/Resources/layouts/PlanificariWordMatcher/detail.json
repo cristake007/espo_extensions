@@ -1,0 +1,59 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "assignedUsers"
+                }
+            ],
+            [
+                {
+                    "name": "teams"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "description"
+                }
+            ],
+            [
+                {
+                    "name": "wordTemplateFile"
+                },
+                {
+                    "name": "wordScheduleFile"
+                }
+            ],
+            [
+                {
+                    "name": "wordConvertedFile"
+                },
+                {
+                    "name": "wordConvertedAt"
+                }
+            ],
+            [
+                {
+                    "name": "createdAt"
+                },
+                {
+                    "name": "createdBy"
+                }
+            ],
+            [
+                {
+                    "name": "modifiedAt"
+                },
+                {
+                    "name": "modifiedBy"
+                }
+            ]
+        ],
+        "style": "default",
+        "label": "wordConverterPanel"
+    }
+]

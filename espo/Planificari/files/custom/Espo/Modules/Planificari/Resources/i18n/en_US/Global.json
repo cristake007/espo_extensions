@@ -1,0 +1,5 @@
+{
+    "messages": {
+        "fieldNotMatchingPattern$holidayDates": "{field} must contain dates like 15.09.2026, 16.09.2026."
+    }
+}

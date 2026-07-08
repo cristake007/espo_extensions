@@ -1,0 +1,12 @@
+{
+    "controller": "controllers/record",
+    "recordViews": {
+        "detail": "planificari:views/planificari-word-matcher/record/detail"
+    },
+    "boolFilterList": [
+        "onlyMy"
+    ],
+    "iconClass": "fas fa-file-word",
+    "kanbanViewMode": false,
+    "color": "#164194"
+}

@@ -1,0 +1,77 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "assignedUsers"
+                }
+            ],
+            [
+                {
+                    "name": "teams"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "description"
+                }
+            ],
+            [
+                {
+                    "name": "sourceFile"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "year"
+                },
+                {
+                    "name": "randomness"
+                }
+            ],
+            [
+                {
+                    "name": "selectedMonths"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "holidays"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "generatedAt"
+                },
+                {
+                    "name": "exportFile"
+                }
+            ],
+            [
+                {
+                    "name": "createdAt"
+                },
+                {
+                    "name": "createdBy"
+                }
+            ],
+            [
+                {
+                    "name": "modifiedAt"
+                },
+                {
+                    "name": "modifiedBy"
+                }
+            ]
+        ],
+        "style": "default",
+        "label": ""
+    }
+]

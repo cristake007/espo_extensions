@@ -1,0 +1,12 @@
+{
+    "controller": "controllers/record",
+    "recordViews": {
+        "detail": "planificari:views/planificari/record/detail"
+    },
+    "boolFilterList": [
+        "onlyMy"
+    ],
+    "iconClass": "fas fa-calendar-alt",
+    "kanbanViewMode": false,
+    "color": "#164194"
+}

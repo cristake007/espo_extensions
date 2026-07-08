@@ -1,0 +1,14 @@
+[
+    {
+        "name": "name"
+    },
+    {
+        "name": "year"
+    },
+    {
+        "name": "assignedUsers"
+    },
+    {
+        "name": "teams"
+    }
+]
