@@ -110,6 +110,7 @@ class AfterInstall
         return [
             'text' => self::MENU_GROUP_TEXT,
             'iconClass' => 'fas fa-calendar-alt',
+            'color' => '#164194',
             'itemList' => self::MENU_GROUP_ITEMS,
         ];
     }
