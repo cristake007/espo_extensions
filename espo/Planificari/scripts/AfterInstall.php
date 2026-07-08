@@ -129,10 +129,6 @@ class AfterInstall
             'custom/Espo/Modules/Planificari/Resources/layouts/PlanificariRow/search.json',
             'custom/Espo/Modules/Planificari/Resources/i18n/en_US/PlanificariRow.json',
             'custom/Espo/Modules/Planificari/Resources/i18n/ro_RO/PlanificariRow.json',
-            'custom/Espo/Modules/Planificari/Tools/Planificari/Api/PostGenerationSpike.php',
-            'client/custom/modules/planificari/src/handlers/generation-spike-action.js',
-            'client/custom/modules/planificari/src/views/generation-spike-modal.js',
-            'client/custom/modules/planificari/res/templates/generation-spike-modal.tpl',
         ];
 
         foreach ($paths as $path) {
