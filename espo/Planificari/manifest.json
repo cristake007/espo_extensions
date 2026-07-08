@@ -1,13 +1,13 @@
 {
     "name": "Planificari perioade cursuri",
-    "version": "1.0.43",
+    "version": "1.0.44",
     "acceptableVersions": [
         ">=10.0.0"
     ],
     "php": [
         ">=8.4"
     ],
-    "releaseDate": "2026-07-08",
+    "releaseDate": "2026-07-09",
     "author": "Cristian Popa",
     "description": "EspoCRM extension package for Planificari perioade cursuri. Package ID: planificari-perioade-cursuri."
 }
