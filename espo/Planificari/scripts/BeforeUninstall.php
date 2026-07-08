@@ -16,7 +16,7 @@ class BeforeUninstall
     public function run(Container $container): void
     {
         try {
-            $this->removeMenuGroup($container);
+            $this->removeTabs($container);
         } catch (Throwable $e) {
             error_log(sprintf(
                 '[Planificari] BeforeUninstall cleanup skipped: %s',
@@ -25,7 +25,7 @@ class BeforeUninstall
         }
     }
 
-    private function removeMenuGroup(Container $container): void
+    private function removeTabs(Container $container): void
     {
         $config = $container->getByClass(Config::class);
         $configWriter = $container->getByClass(InjectableFactory::class)
@@ -37,7 +37,10 @@ class BeforeUninstall
             return;
         }
 
-        $filteredTabList = $this->removePlanificariMenuEntries($tabList);
+        $filteredTabList = array_values(array_filter(
+            $tabList,
+            static fn ($item) => !in_array($item, ['Planificari', 'PlanificariWordMatcher'], true)
+        ));
 
         if ($filteredTabList !== $tabList) {
             $configWriter->set('tabList', $filteredTabList);
