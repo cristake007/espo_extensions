@@ -39,10 +39,57 @@ EnhancedContacts/
 │   │       └── i18n/
 │   │           ├── en_US/Global.json
 │   │           └── ro_RO/Global.json
+│   ├── custom/Espo/Custom/
+│   │   └── Resources/
+│   │       ├── metadata/
+│   │       │   ├── entityDefs/.gitkeep
+│   │       │   ├── clientDefs/.gitkeep
+│   │       │   └── recordDefs/.gitkeep
+│   │       ├── layouts/Contact/.gitkeep
+│   │       └── i18n/
+│   │           ├── en_US/.gitkeep
+│   │           └── ro_RO/.gitkeep
 │   └── client/custom/modules/enhanced-contacts/
 │       └── src/.gitkeep
 └── scripts/
     └── .gitkeep
+```
+
+## Native entity overrides
+
+Use the `Custom` tree when an extension must modify an existing EspoCRM entity, such as `Contact`.
+
+Example Contact test field:
+
+```text
+files/custom/Espo/Custom/Resources/metadata/entityDefs/Contact.json
+```
+
+```json
+{
+    "fields": {
+        "tuvtkTestInput": {
+            "type": "varchar",
+            "maxLength": 100,
+            "tooltip": true
+        }
+    }
+}
+```
+
+Labels:
+
+```text
+files/custom/Espo/Custom/Resources/i18n/en_US/Contact.json
+files/custom/Espo/Custom/Resources/i18n/ro_RO/Contact.json
+```
+
+```json
+{
+    "fields": {
+        "tuvtkTestInput": "TUVTK Test Input"
+    }
+}
 ```
 
 ## Build an installable ZIP
@@ -104,6 +151,8 @@ Examples:
 files/custom/Espo/Modules/EnhancedContacts/Resources/metadata/entityDefs/ContactEmail.json
 files/custom/Espo/Modules/EnhancedContacts/Services/SomeService.php
 files/client/custom/modules/enhanced-contacts/src/views/some-view.js
+files/custom/Espo/Custom/Resources/metadata/entityDefs/Contact.json
+files/custom/Espo/Custom/Resources/layouts/Contact/detail.json
 ```
 
 Avoid placing generated ZIP files inside `files/`.
