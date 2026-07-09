@@ -35,7 +35,9 @@ EnhancedContacts/
 ├── files/
 │   ├── custom/Espo/Modules/EnhancedContacts/
 │   │   └── Resources/
-│   │       ├── metadata/app/module.json
+│   │       ├── metadata/
+│   │       │   ├── app/module.json
+│   │       │   └── aclDefs/.gitkeep
 │   │       └── i18n/
 │   │           ├── en_US/Global.json
 │   │           └── ro_RO/Global.json
@@ -44,7 +46,8 @@ EnhancedContacts/
 │   │       ├── metadata/
 │   │       │   ├── entityDefs/.gitkeep
 │   │       │   ├── clientDefs/.gitkeep
-│   │       │   └── recordDefs/.gitkeep
+│   │       │   ├── recordDefs/.gitkeep
+│   │       │   └── aclDefs/.gitkeep
 │   │       ├── layouts/Contact/.gitkeep
 │   │       └── i18n/
 │   │           ├── en_US/.gitkeep
@@ -90,6 +93,13 @@ files/custom/Espo/Custom/Resources/i18n/ro_RO/Contact.json
         "tuvtkTestInput": "TUVTK Test Input"
     }
 }
+```
+
+ACL definition folders are also generated for both custom module entities and native overrides:
+
+```text
+files/custom/Espo/Modules/<ModuleName>/Resources/metadata/aclDefs
+files/custom/Espo/Custom/Resources/metadata/aclDefs
 ```
 
 ## Build an installable ZIP
@@ -149,9 +159,11 @@ Examples:
 
 ```text
 files/custom/Espo/Modules/EnhancedContacts/Resources/metadata/entityDefs/ContactEmail.json
+files/custom/Espo/Modules/EnhancedContacts/Resources/metadata/aclDefs/ContactEmail.json
 files/custom/Espo/Modules/EnhancedContacts/Services/SomeService.php
 files/client/custom/modules/enhanced-contacts/src/views/some-view.js
 files/custom/Espo/Custom/Resources/metadata/entityDefs/Contact.json
+files/custom/Espo/Custom/Resources/metadata/aclDefs/Contact.json
 files/custom/Espo/Custom/Resources/layouts/Contact/detail.json
 ```
 
