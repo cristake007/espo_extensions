@@ -107,6 +107,12 @@ create_extension() {
         "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/app" \
         "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/i18n/en_US" \
         "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/i18n/ro_RO" \
+        "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/entityDefs" \
+        "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/clientDefs" \
+        "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/recordDefs" \
+        "${extension_dir}/files/custom/Espo/Custom/Resources/layouts/Contact" \
+        "${extension_dir}/files/custom/Espo/Custom/Resources/i18n/en_US" \
+        "${extension_dir}/files/custom/Espo/Custom/Resources/i18n/ro_RO" \
         "${extension_dir}/files/client/custom/modules/${package_name}/src" \
         "${extension_dir}/scripts"
 
@@ -139,6 +145,24 @@ Module code lives under:
 files/custom/Espo/Modules/${module_name}
 \`\`\`
 
+Native EspoCRM entity overrides can be placed under:
+
+\`\`\`text
+files/custom/Espo/Custom/Resources/metadata/entityDefs
+files/custom/Espo/Custom/Resources/metadata/clientDefs
+files/custom/Espo/Custom/Resources/metadata/recordDefs
+files/custom/Espo/Custom/Resources/layouts
+files/custom/Espo/Custom/Resources/i18n
+\`\`\`
+
+Example native Contact field override:
+
+\`\`\`text
+files/custom/Espo/Custom/Resources/metadata/entityDefs/Contact.json
+files/custom/Espo/Custom/Resources/i18n/en_US/Contact.json
+files/custom/Espo/Custom/Resources/i18n/ro_RO/Contact.json
+\`\`\`
+
 Build an installable ZIP from the repository root:
 
 \`\`\`bash
@@ -168,6 +192,12 @@ JSON
 }
 JSON
 
+    touch "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/entityDefs/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/clientDefs/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/recordDefs/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Custom/Resources/layouts/Contact/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Custom/Resources/i18n/en_US/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Custom/Resources/i18n/ro_RO/.gitkeep"
     touch "${extension_dir}/files/client/custom/modules/${package_name}/src/.gitkeep"
     touch "${extension_dir}/scripts/.gitkeep"
 
