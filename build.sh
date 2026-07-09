@@ -18,7 +18,8 @@ Modes:
 
   --extension PATH --zip VERSION [paths...]
       Builds an installable EspoCRM ZIP from a specific extension root folder.
-      The ZIP root will contain manifest.json plus the requested paths.
+      The ZIP root will contain manifest.json, README.md when present, and the
+      requested paths.
 
 Examples:
   ./build.sh
@@ -63,7 +64,7 @@ to_kebab_case() {
     local input="$1"
 
     printf '%s' "$input" \
-        | sed -E 's/([a-z0-9])([A-Z])/'"\\1-\\2"'/g' \
+        | sed -E 's/([a-z0-9])([A-Z])/\1-\2/g' \
         | sed -E 's/[^[:alnum:]]+/-/g' \
         | sed -E 's/^-+|-+$//g' \
         | tr '[:upper:]' '[:lower:]'
@@ -175,7 +176,7 @@ JSON
 }
 
 zip_extension() {
-    local extension_path="" version="" paths=() extension_abs manifest_path package_name output_file
+    local extension_path="" version="" paths=() root_paths=() extension_abs manifest_path package_name output_file
 
     while [ "$#" -gt 0 ]; do
         case "$1" in
@@ -222,7 +223,10 @@ zip_extension() {
         [ -e "${extension_abs}/${path}" ] || fail "${path} was not found in ${extension_abs}"
     done
 
-    package_name="$(basename "$extension_abs" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^[:alnum:]]+/-/g; s/^-+|-+$//g')"
+    root_paths=(manifest.json)
+    [ ! -f "${extension_abs}/README.md" ] || root_paths+=(README.md)
+
+    package_name="$(to_kebab_case "$(basename "$extension_abs")")"
     output_file="${DIST_DIR}/${package_name}-${version}.zip"
 
     mkdir -p "$DIST_DIR"
@@ -230,7 +234,7 @@ zip_extension() {
 
     (
         cd "$extension_abs"
-        zip -r "$output_file" manifest.json README.md "${paths[@]}" \
+        zip -r "$output_file" "${root_paths[@]}" "${paths[@]}" \
             -x "*.git*" \
             -x "*/.DS_Store" \
             -x "__MACOSX/*" \
