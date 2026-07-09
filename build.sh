@@ -105,11 +105,13 @@ create_extension() {
 
     mkdir -p \
         "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/app" \
+        "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/aclDefs" \
         "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/i18n/en_US" \
         "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/i18n/ro_RO" \
         "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/entityDefs" \
         "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/clientDefs" \
         "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/recordDefs" \
+        "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/aclDefs" \
         "${extension_dir}/files/custom/Espo/Custom/Resources/layouts/Contact" \
         "${extension_dir}/files/custom/Espo/Custom/Resources/i18n/en_US" \
         "${extension_dir}/files/custom/Espo/Custom/Resources/i18n/ro_RO" \
@@ -145,12 +147,19 @@ Module code lives under:
 files/custom/Espo/Modules/${module_name}
 \`\`\`
 
+Module ACL files can be placed under:
+
+\`\`\`text
+files/custom/Espo/Modules/${module_name}/Resources/metadata/aclDefs
+\`\`\`
+
 Native EspoCRM entity overrides can be placed under:
 
 \`\`\`text
 files/custom/Espo/Custom/Resources/metadata/entityDefs
 files/custom/Espo/Custom/Resources/metadata/clientDefs
 files/custom/Espo/Custom/Resources/metadata/recordDefs
+files/custom/Espo/Custom/Resources/metadata/aclDefs
 files/custom/Espo/Custom/Resources/layouts
 files/custom/Espo/Custom/Resources/i18n
 \`\`\`
@@ -192,9 +201,11 @@ JSON
 }
 JSON
 
+    touch "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/aclDefs/.gitkeep"
     touch "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/entityDefs/.gitkeep"
     touch "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/clientDefs/.gitkeep"
     touch "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/recordDefs/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/aclDefs/.gitkeep"
     touch "${extension_dir}/files/custom/Espo/Custom/Resources/layouts/Contact/.gitkeep"
     touch "${extension_dir}/files/custom/Espo/Custom/Resources/i18n/en_US/.gitkeep"
     touch "${extension_dir}/files/custom/Espo/Custom/Resources/i18n/ro_RO/.gitkeep"
