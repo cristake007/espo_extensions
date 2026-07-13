@@ -161,14 +161,24 @@ test('phase test harness covers package layout and EspoCRM 10 Docker installatio
     const compose = await readFile(path.join(import.meta.dirname, 'compose.yaml'), 'utf8');
     const dockerScript = await readFile(path.join(import.meta.dirname, 'docker.ps1'), 'utf8');
 
-    assert.match(packageScript, /Compress-Archive/);
+    assert.match(packageScript, /System\.IO\.Compression\.ZipFile/);
     assert.match(packageScript, /manifest\.json/);
     assert.match(compose, /espocrm\/espocrm:10\.0\.2/);
     assert.match(dockerScript, /bin\/command extension[^\n]*--file=/);
     assert.match(dockerScript, /bin\/command rebuild/);
     assert.match(dockerScript, /api\/v1/);
+    assert.match(dockerScript, /Path 'Metadata'/);
     assert.match(dockerScript, /Path 'Settings'/);
     assert.match(dockerScript, /ExpectedStatus 400/);
+});
+
+test('Windows packaging preserves portable forward-slash ZIP entry names', async () => {
+    const packageScript = await readFile(path.join(import.meta.dirname, 'package.ps1'), 'utf8');
+
+    assert.match(packageScript, /CreateEntry(?:FromFile)?\(/);
+    assert.equal(packageScript.includes("$entryName = $relativePath.Replace('\\', '/')"), true);
+    assert.equal(packageScript.includes("$_.FullName -match '\\\\'"), true);
+    assert.doesNotMatch(packageScript, /Compress-Archive/);
 });
 
 test('settings view declares three explicit EspoCRM tabs', async () => {

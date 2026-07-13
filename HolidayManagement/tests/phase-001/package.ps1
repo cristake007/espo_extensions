@@ -28,13 +28,38 @@ try {
         Remove-Item -LiteralPath $OutputPath
     }
 
-    Compress-Archive -Path (Join-Path $stagingRoot '*') -DestinationPath $OutputPath
-
+    Add-Type -AssemblyName System.IO.Compression
     Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $archive = [System.IO.Compression.ZipFile]::Open(
+        $OutputPath,
+        [System.IO.Compression.ZipArchiveMode]::Create
+    )
+
+    try {
+        foreach ($file in Get-ChildItem -LiteralPath $stagingRoot -Recurse -File) {
+            $relativePath = $file.FullName.Substring($stagingRoot.Length).TrimStart('\', '/')
+            $entryName = $relativePath.Replace('\', '/')
+
+            [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
+                $archive,
+                $file.FullName,
+                $entryName,
+                [System.IO.Compression.CompressionLevel]::Optimal
+            ) | Out-Null
+        }
+    }
+    finally {
+        $archive.Dispose()
+    }
+
     $archive = [System.IO.Compression.ZipFile]::OpenRead($OutputPath)
 
     try {
-        $entryNames = @($archive.Entries | ForEach-Object { $_.FullName.Replace('\', '/') })
+        if ($archive.Entries | Where-Object { $_.FullName -match '\\' }) {
+            throw 'The ZIP contains non-portable backslash entry names.'
+        }
+
+        $entryNames = @($archive.Entries | ForEach-Object { $_.FullName })
 
         if ($entryNames -notcontains 'manifest.json') {
             throw 'Package manifest.json is not at the ZIP root.'

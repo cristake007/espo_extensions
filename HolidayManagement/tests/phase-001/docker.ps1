@@ -82,6 +82,11 @@ try {
     docker compose -p $projectName -f $composeFile exec -T espocrm php -l custom/Espo/Modules/HolidayManagement/FieldValidators/Settings/ApproverRole/AtMostTwoActiveInternalUsers.php
     if ($LASTEXITCODE -ne 0) { throw 'PHP syntax validation failed.' }
 
+    $metadata = Invoke-EspoApi -Method GET -Path 'Metadata'
+    if (-not $metadata.app.adminPanel.holidayManagement) {
+        throw 'Holiday Management is missing from Administration metadata.'
+    }
+
     $settings = Invoke-EspoApi -Method GET -Path 'Settings'
     Assert-Equal $settings.holidayManagementAnnualEntitlementDays $null 'Annual entitlement must be configured explicitly.'
     Assert-Equal $settings.holidayManagementResetDate $null 'Reset date must be configured explicitly.'

@@ -16,7 +16,7 @@ workflow, notifications, or document generation.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.0.0 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.0.1 files scripts
 ```
 
 Run the phase contract tests:
