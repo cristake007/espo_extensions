@@ -1,0 +1,11 @@
+{
+    "keywords": {
+        "holidayManagement": "holiday,leave,vacation,approval"
+    },
+    "descriptions": {
+        "holidayManagementSettings": "Configure annual holiday defaults, approvers, and printed approval blocks."
+    },
+    "labels": {
+        "Holiday Management": "Holiday Management"
+    }
+}

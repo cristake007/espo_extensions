@@ -1,0 +1,11 @@
+{
+    "keywords": {
+        "holidayManagement": "concediu,odihna,aprobari"
+    },
+    "descriptions": {
+        "holidayManagementSettings": "Configureaza valorile implicite pentru concedii, aprobatorii si blocurile tiparite de aprobare."
+    },
+    "labels": {
+        "Holiday Management": "Gestionare concedii"
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "fields": {
+        "holidayManagementAnnualEntitlementDays": "Drept anual implicit (zile)",
+        "holidayManagementResetDate": "Data implicita de resetare (LL-ZZ)",
+        "holidayManagementResetCeilingDays": "Plafon de resetare (zile)",
+        "holidayManagementResetWarningDays": "Prag de avertizare (zile)",
+        "holidayManagementResetWarningRepeatDays": "Repetarea avertizarii (zile)",
+        "holidayManagementNegativeBalanceLimitDays": "Limita soldului negativ (zile)",
+        "holidayManagementApproverRole": "Rolul aprobatorilor",
+        "holidayManagementApprovalBlock1Title": "Titlu bloc aprobare 1",
+        "holidayManagementApprovalBlock1Name": "Nume bloc aprobare 1",
+        "holidayManagementApprovalBlock2Title": "Titlu bloc aprobare 2",
+        "holidayManagementApprovalBlock2Name": "Nume bloc aprobare 2"
+    },
+    "tooltips": {
+        "holidayManagementAnnualEntitlementDays": "Numarul anual de zile acordat implicit la initializarea profilului de concediu.",
+        "holidayManagementResetDate": "Data implicita a resetarii anuale, in format LL-ZZ.",
+        "holidayManagementResetCeilingDays": "Soldurile peste aceasta valoare vor necesita fluxul ulterior de resetare in asteptare sau o exceptie de administrator.",
+        "holidayManagementResetWarningDays": "Porneste avertizarea inainte de atingerea plafonului de resetare.",
+        "holidayManagementResetWarningRepeatDays": "Numarul de zile dintre avertizarile repetate.",
+        "holidayManagementNegativeBalanceLimitDays": "Cel mai mic sold permis. Folositi zero sau un numar negativ.",
+        "holidayManagementApproverRole": "Rolul selectat poate contine cel mult doi utilizatori activi obisnuiti sau administratori.",
+        "holidayManagementApprovalBlock1Title": "Titlul tiparit pentru primul bloc de aprobare.",
+        "holidayManagementApprovalBlock1Name": "Suprascriere optionala a numelui tiparit. Lasati necompletat pentru numele real al aprobatorului.",
+        "holidayManagementApprovalBlock2Title": "Titlul tiparit pentru al doilea bloc de aprobare.",
+        "holidayManagementApprovalBlock2Name": "Suprascriere optionala a numelui tiparit. Lasati necompletat pentru numele real al aprobatorului."
+    },
+    "labels": {
+        "Defaults": "Valori implicite",
+        "Approval": "Aprobare",
+        "Printed Approval Blocks": "Blocuri tiparite de aprobare"
+    }
+}

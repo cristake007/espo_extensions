@@ -1,0 +1,37 @@
+{
+    "params": {
+        "holidayManagementAnnualEntitlementDays": {
+            "level": "admin"
+        },
+        "holidayManagementResetDate": {
+            "level": "admin"
+        },
+        "holidayManagementResetCeilingDays": {
+            "level": "admin"
+        },
+        "holidayManagementResetWarningDays": {
+            "level": "admin"
+        },
+        "holidayManagementResetWarningRepeatDays": {
+            "level": "admin"
+        },
+        "holidayManagementNegativeBalanceLimitDays": {
+            "level": "admin"
+        },
+        "holidayManagementApproverRole": {
+            "level": "admin"
+        },
+        "holidayManagementApprovalBlock1Title": {
+            "level": "admin"
+        },
+        "holidayManagementApprovalBlock1Name": {
+            "level": "admin"
+        },
+        "holidayManagementApprovalBlock2Title": {
+            "level": "admin"
+        },
+        "holidayManagementApprovalBlock2Name": {
+            "level": "admin"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "holidayManagement": {
+        "label": "Holiday Management",
+        "itemList": [
+            {
+                "url": "#Admin/holidayManagementSettings",
+                "label": "Holiday Management",
+                "iconClass": "fas fa-umbrella-beach",
+                "description": "holidayManagementSettings",
+                "recordView": "modules/holiday-management/views/admin/settings"
+            }
+        ],
+        "order": 101
+    }
+}

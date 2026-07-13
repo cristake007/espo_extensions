@@ -1,0 +1,80 @@
+{
+    "fields": {
+        "holidayManagementAnnualEntitlementDays": {
+            "type": "int",
+            "default": null,
+            "required": true,
+            "min": 1,
+            "tooltip": true
+        },
+        "holidayManagementResetDate": {
+            "type": "varchar",
+            "default": null,
+            "required": true,
+            "maxLength": 5,
+            "pattern": "$holidayManagementMonthDay",
+            "tooltip": true
+        },
+        "holidayManagementResetCeilingDays": {
+            "type": "int",
+            "default": 90,
+            "required": true,
+            "min": 1,
+            "tooltip": true
+        },
+        "holidayManagementResetWarningDays": {
+            "type": "int",
+            "default": 80,
+            "required": true,
+            "min": 0,
+            "tooltip": true
+        },
+        "holidayManagementResetWarningRepeatDays": {
+            "type": "int",
+            "default": 30,
+            "required": true,
+            "min": 1,
+            "tooltip": true
+        },
+        "holidayManagementNegativeBalanceLimitDays": {
+            "type": "int",
+            "default": -21,
+            "required": true,
+            "max": 0,
+            "tooltip": true
+        },
+        "holidayManagementApproverRole": {
+            "type": "link",
+            "entity": "Role",
+            "required": true,
+            "tooltip": true,
+            "validatorClassNameList": [
+                "Espo\\Modules\\HolidayManagement\\FieldValidators\\Settings\\ApproverRole\\AtMostTwoActiveInternalUsers"
+            ]
+        },
+        "holidayManagementApprovalBlock1Title": {
+            "type": "varchar",
+            "default": "",
+            "maxLength": 150,
+            "tooltip": true
+        },
+        "holidayManagementApprovalBlock1Name": {
+            "type": "varchar",
+            "default": "",
+            "maxLength": 150,
+            "tooltip": true
+        },
+        "holidayManagementApprovalBlock2Title": {
+            "type": "varchar",
+            "default": "",
+            "maxLength": 150,
+            "tooltip": true
+        },
+        "holidayManagementApprovalBlock2Name": {
+            "type": "varchar",
+            "default": "",
+            "maxLength": 150,
+            "tooltip": true
+        }
+    }
+}

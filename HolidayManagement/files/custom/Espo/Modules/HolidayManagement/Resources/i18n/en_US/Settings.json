@@ -1,0 +1,33 @@
+{
+    "fields": {
+        "holidayManagementAnnualEntitlementDays": "Default Annual Entitlement (days)",
+        "holidayManagementResetDate": "Default Reset Date (MM-DD)",
+        "holidayManagementResetCeilingDays": "Reset Ceiling (days)",
+        "holidayManagementResetWarningDays": "Reset Warning Threshold (days)",
+        "holidayManagementResetWarningRepeatDays": "Warning Repeat Interval (days)",
+        "holidayManagementNegativeBalanceLimitDays": "Negative Balance Limit (days)",
+        "holidayManagementApproverRole": "Approver Role",
+        "holidayManagementApprovalBlock1Title": "Approval Block 1 Title",
+        "holidayManagementApprovalBlock1Name": "Approval Block 1 Name",
+        "holidayManagementApprovalBlock2Title": "Approval Block 2 Title",
+        "holidayManagementApprovalBlock2Name": "Approval Block 2 Name"
+    },
+    "tooltips": {
+        "holidayManagementAnnualEntitlementDays": "Annual days granted by default when a holiday profile is initialized.",
+        "holidayManagementResetDate": "Default annual reset date in MM-DD format.",
+        "holidayManagementResetCeilingDays": "Balances above this value require the later reset workflow to remain pending or use an administrator exception.",
+        "holidayManagementResetWarningDays": "Start warning before reaching the reset ceiling.",
+        "holidayManagementResetWarningRepeatDays": "Days between repeated reset warnings.",
+        "holidayManagementNegativeBalanceLimitDays": "The lowest permitted balance. Use zero or a negative number.",
+        "holidayManagementApproverRole": "The selected role may contain at most two active regular or administrator users.",
+        "holidayManagementApprovalBlock1Title": "Printed title for the first approval block.",
+        "holidayManagementApprovalBlock1Name": "Optional printed-name override. Leave blank to use the actual approver name.",
+        "holidayManagementApprovalBlock2Title": "Printed title for the second approval block.",
+        "holidayManagementApprovalBlock2Name": "Optional printed-name override. Leave blank to use the actual approver name."
+    },
+    "labels": {
+        "Defaults": "Defaults",
+        "Approval": "Approval",
+        "Printed Approval Blocks": "Printed Approval Blocks"
+    }
+}
