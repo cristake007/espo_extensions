@@ -1,0 +1,12 @@
+{
+    "fields": {
+        "user": "Utilizator",
+        "annualEntitlement": "Drept anual",
+        "balance": "Sold",
+        "nextResetDate": "Urmatoarea data de resetare",
+        "isInitialized": "Initializat",
+        "resetPending": "Resetare in asteptare",
+        "pendingResetDate": "Data resetarii in asteptare",
+        "pendingResetKey": "Cheia resetarii in asteptare"
+    }
+}

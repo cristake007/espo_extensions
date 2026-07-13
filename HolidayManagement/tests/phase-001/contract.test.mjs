@@ -34,7 +34,7 @@ test('manifest targets EspoCRM 10 and packages the Holiday Management module', a
     const manifest = await readJson('manifest.json');
 
     assert.equal(manifest.name, 'Holiday Management');
-    assert.match(manifest.version, /^1\.0\.\d+$/);
+    assert.match(manifest.version, /^1\.\d+\.\d+$/);
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.deepEqual(manifest.php, ['>=8.4']);
 });
@@ -137,11 +137,8 @@ test('English and Romanian settings/admin translations cover every field', async
     }
 });
 
-test('phase 1 does not add later-phase domain entities or document templates', async () => {
+test('current release does not add PHASE-003+ entities or document templates', async () => {
     const forbidden = [
-        'HolidayProfile',
-        'HolidayBalance',
-        'HolidayLedger',
         'CompanyHoliday',
         'HolidayRequest',
         'HolidayApprovalResponse',
@@ -154,6 +151,8 @@ test('phase 1 does not add later-phase domain entities or document templates', a
         assert.equal(entityFiles.includes(`${entity}.json`), false, `${entity} belongs to a later phase`);
     }
     assert.equal(entityFiles.includes('Settings.json'), true);
+    assert.equal(entityFiles.includes('HolidayProfile.json'), true);
+    assert.equal(entityFiles.includes('HolidayLedger.json'), true);
 });
 
 test('phase test harness covers package layout and EspoCRM 10 Docker installation', async () => {

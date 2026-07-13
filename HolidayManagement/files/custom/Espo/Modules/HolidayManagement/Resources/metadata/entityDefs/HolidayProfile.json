@@ -1,0 +1,81 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "readOnly": true
+        },
+        "user": {
+            "type": "link",
+            "entity": "User",
+            "required": true,
+            "readOnly": true
+        },
+        "annualEntitlement": {
+            "type": "float",
+            "required": true,
+            "readOnly": true,
+            "default": 0
+        },
+        "balance": {
+            "type": "float",
+            "required": true,
+            "readOnly": true,
+            "default": 0
+        },
+        "nextResetDate": {
+            "type": "date",
+            "required": true,
+            "readOnly": true
+        },
+        "isInitialized": {
+            "type": "bool",
+            "required": true,
+            "readOnly": true,
+            "default": false
+        },
+        "resetPending": {
+            "type": "bool",
+            "required": true,
+            "readOnly": true,
+            "default": false
+        },
+        "pendingResetDate": {
+            "type": "date",
+            "readOnly": true
+        },
+        "pendingResetKey": {
+            "type": "varchar",
+            "maxLength": 190,
+            "readOnly": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        }
+    },
+    "links": {
+        "user": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "ledgerEntries": {
+            "type": "hasMany",
+            "entity": "HolidayLedger",
+            "foreign": "profile"
+        }
+    },
+    "indexes": {
+        "userUnique": {
+            "unique": true,
+            "columns": ["userId"]
+        },
+        "nextResetDate": {
+            "columns": ["nextResetDate"]
+        }
+    }
+}

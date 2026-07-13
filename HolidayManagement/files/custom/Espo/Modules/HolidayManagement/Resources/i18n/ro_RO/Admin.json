@@ -3,9 +3,16 @@
         "holidayManagement": "concediu,odihna,aprobari"
     },
     "descriptions": {
-        "holidayManagementSettings": "Configureaza valorile implicite pentru concedii, aprobatorii si blocurile tiparite de aprobare."
+        "holidayManagementSettings": "Configureaza valorile implicite pentru concedii, aprobatorii si blocurile tiparite de aprobare.",
+        "holidayManagementProfiles": "Initializati drepturile, soldurile initiale si datele de resetare ale angajatilor."
     },
     "labels": {
-        "Holiday Management": "Gestionare concedii"
+        "Holiday Management": "Gestionare concedii",
+        "Holiday Profiles": "Profiluri de concediu",
+        "Annual Entitlement": "Drept anual",
+        "Opening Balance": "Sold initial",
+        "Next Reset Date": "Urmatoarea data de resetare",
+        "Initialized": "Initializat",
+        "Not Initialized": "Neinitializat"
     }
 }

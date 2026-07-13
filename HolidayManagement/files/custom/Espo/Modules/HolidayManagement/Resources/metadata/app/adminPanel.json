@@ -8,6 +8,13 @@
                 "iconClass": "fas fa-umbrella-beach",
                 "description": "holidayManagementSettings",
                 "recordView": "modules/holiday-management/views/admin/settings"
+            },
+            {
+                "url": "#Admin/holidayManagementProfiles",
+                "label": "Holiday Profiles",
+                "iconClass": "fas fa-users-cog",
+                "description": "holidayManagementProfiles",
+                "view": "modules/holiday-management/views/admin/profiles"
             }
         ],
         "order": 101

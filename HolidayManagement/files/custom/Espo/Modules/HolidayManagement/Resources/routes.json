@@ -1,0 +1,22 @@
+[
+    {
+        "route": "/HolidayManagement/profiles",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\GetProfiles"
+    },
+    {
+        "route": "/HolidayManagement/bulkInitialize",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostBulkInitialize"
+    },
+    {
+        "route": "/HolidayManagement/correct",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostCorrection"
+    },
+    {
+        "route": "/HolidayManagement/reset",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostReset"
+    }
+]

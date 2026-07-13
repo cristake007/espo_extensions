@@ -1,0 +1,18 @@
+{
+    "fields": {
+        "profile": "Holiday Profile",
+        "user": "User",
+        "type": "Entry Type",
+        "delta": "Delta",
+        "balanceBefore": "Balance Before",
+        "balanceAfter": "Balance After",
+        "entitlementBefore": "Entitlement Before",
+        "entitlementAfter": "Entitlement After",
+        "resetDateBefore": "Reset Date Before",
+        "resetDateAfter": "Reset Date After",
+        "actor": "Actor",
+        "reason": "Reason",
+        "effectiveDate": "Effective Date",
+        "idempotencyKey": "Idempotency Key"
+    }
+}

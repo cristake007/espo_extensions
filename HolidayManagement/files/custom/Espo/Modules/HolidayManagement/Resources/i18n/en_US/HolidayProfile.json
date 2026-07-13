@@ -1,0 +1,12 @@
+{
+    "fields": {
+        "user": "User",
+        "annualEntitlement": "Annual Entitlement",
+        "balance": "Balance",
+        "nextResetDate": "Next Reset Date",
+        "isInitialized": "Initialized",
+        "resetPending": "Reset Pending",
+        "pendingResetDate": "Pending Reset Date",
+        "pendingResetKey": "Pending Reset Key"
+    }
+}

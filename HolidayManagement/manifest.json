@@ -1,6 +1,6 @@
 {
     "name": "Holiday Management",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "acceptableVersions": [
         ">=10.0.0"
     ],
@@ -9,5 +9,5 @@
     ],
     "releaseDate": "2026-07-13",
     "author": "Cristian Popa",
-    "description": "Foundation and settings for annual holiday management. Package ID: holiday-management."
+    "description": "Holiday profiles, transactional balances, immutable ledger, and settings. Package ID: holiday-management."
 }

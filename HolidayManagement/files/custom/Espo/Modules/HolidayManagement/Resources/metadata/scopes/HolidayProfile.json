@@ -1,0 +1,15 @@
+{
+    "entity": true,
+    "layouts": false,
+    "tab": false,
+    "acl": true,
+    "customizable": false,
+    "importable": false,
+    "stream": false,
+    "disabled": false,
+    "type": "Base",
+    "module": "HolidayManagement",
+    "object": true,
+    "isCustom": false,
+    "preserveAuditLog": true
+}

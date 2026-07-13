@@ -3,9 +3,16 @@
         "holidayManagement": "holiday,leave,vacation,approval"
     },
     "descriptions": {
-        "holidayManagementSettings": "Configure annual holiday defaults, approvers, and printed approval blocks."
+        "holidayManagementSettings": "Configure annual holiday defaults, approvers, and printed approval blocks.",
+        "holidayManagementProfiles": "Initialize employee entitlements, opening balances and reset dates."
     },
     "labels": {
-        "Holiday Management": "Holiday Management"
+        "Holiday Management": "Holiday Management",
+        "Holiday Profiles": "Holiday Profiles",
+        "Annual Entitlement": "Annual Entitlement",
+        "Opening Balance": "Opening Balance",
+        "Next Reset Date": "Next Reset Date",
+        "Initialized": "Initialized",
+        "Not Initialized": "Not Initialized"
     }
 }

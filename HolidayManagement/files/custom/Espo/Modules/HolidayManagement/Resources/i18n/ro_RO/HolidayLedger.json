@@ -1,0 +1,18 @@
+{
+    "fields": {
+        "profile": "Profil de concediu",
+        "user": "Utilizator",
+        "type": "Tip inregistrare",
+        "delta": "Diferenta",
+        "balanceBefore": "Sold anterior",
+        "balanceAfter": "Sold ulterior",
+        "entitlementBefore": "Drept anterior",
+        "entitlementAfter": "Drept ulterior",
+        "resetDateBefore": "Data resetare anterioara",
+        "resetDateAfter": "Data resetare ulterioara",
+        "actor": "Autor",
+        "reason": "Motiv",
+        "effectiveDate": "Data efectiva",
+        "idempotencyKey": "Cheie de idempotenta"
+    }
+}

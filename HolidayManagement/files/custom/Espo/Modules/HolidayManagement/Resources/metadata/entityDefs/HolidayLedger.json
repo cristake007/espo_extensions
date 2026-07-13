@@ -1,0 +1,110 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "readOnly": true
+        },
+        "profile": {
+            "type": "link",
+            "entity": "HolidayProfile",
+            "required": true,
+            "readOnly": true
+        },
+        "user": {
+            "type": "link",
+            "entity": "User",
+            "required": true,
+            "readOnly": true
+        },
+        "type": {
+            "type": "enum",
+            "options": ["initialization", "bulkUpdate", "correction", "annualGrant", "resetPending", "resetOverride", "automaticReset"],
+            "required": true,
+            "readOnly": true
+        },
+        "delta": {
+            "type": "float",
+            "required": true,
+            "readOnly": true
+        },
+        "balanceBefore": {
+            "type": "float",
+            "required": true,
+            "readOnly": true
+        },
+        "balanceAfter": {
+            "type": "float",
+            "required": true,
+            "readOnly": true
+        },
+        "entitlementBefore": {
+            "type": "float",
+            "required": true,
+            "readOnly": true
+        },
+        "entitlementAfter": {
+            "type": "float",
+            "required": true,
+            "readOnly": true
+        },
+        "resetDateBefore": {
+            "type": "date",
+            "readOnly": true
+        },
+        "resetDateAfter": {
+            "type": "date",
+            "readOnly": true
+        },
+        "actor": {
+            "type": "link",
+            "entity": "User",
+            "required": true,
+            "readOnly": true
+        },
+        "reason": {
+            "type": "text",
+            "readOnly": true
+        },
+        "effectiveDate": {
+            "type": "date",
+            "required": true,
+            "readOnly": true
+        },
+        "idempotencyKey": {
+            "type": "varchar",
+            "maxLength": 190,
+            "required": true,
+            "readOnly": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        }
+    },
+    "links": {
+        "profile": {
+            "type": "belongsTo",
+            "entity": "HolidayProfile",
+            "foreign": "ledgerEntries"
+        },
+        "user": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "actor": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "indexes": {
+        "idempotencyKeyUnique": {
+            "unique": true,
+            "columns": ["idempotencyKey"]
+        },
+        "profileCreatedAt": {
+            "columns": ["profileId", "createdAt"]
+        }
+    },
+    "noDeletedAttribute": true
+}

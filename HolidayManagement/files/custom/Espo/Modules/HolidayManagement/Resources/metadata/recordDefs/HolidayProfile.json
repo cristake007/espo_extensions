@@ -1,0 +1,18 @@
+{
+    "beforeCreateHookClassNameList": [
+        "Espo\\Modules\\HolidayManagement\\Classes\\Record\\Hooks\\HolidayProfile\\BeforeCreate"
+    ],
+    "beforeUpdateHookClassNameList": [
+        "Espo\\Modules\\HolidayManagement\\Classes\\Record\\Hooks\\HolidayProfile\\BeforeUpdate"
+    ],
+    "beforeDeleteHookClassNameList": [
+        "Espo\\Modules\\HolidayManagement\\Classes\\Record\\Hooks\\HolidayProfile\\BeforeDelete"
+    ],
+    "massActions": {
+        "update": {"disabled": true},
+        "delete": {"disabled": true}
+    },
+    "actions": {
+        "merge": {"disabled": true}
+    }
+}
