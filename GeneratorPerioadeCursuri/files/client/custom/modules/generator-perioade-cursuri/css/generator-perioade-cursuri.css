@@ -66,15 +66,63 @@
 }
 
 .generator-perioade-cursuri-create .generator-source-upload-action {
+    align-items: center;
     color: #164194;
-    font-weight: 500;
-    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 12px 0 18px;
+}
+
+.generator-perioade-cursuri-create .generator-source-upload-button {
+    background: #164194;
+    border: 1px solid #164194;
+    border-radius: 7px;
+    color: #fff;
+    font-weight: 600;
+    padding: 9px 18px;
+    transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.generator-perioade-cursuri-create .generator-source-upload-label:hover .generator-source-upload-button,
+.generator-perioade-cursuri-create .generator-source-upload-label:focus .generator-source-upload-button,
+.generator-perioade-cursuri-create .generator-source-upload-label.is-dragover .generator-source-upload-button {
+    background: #0f3275;
+    border-color: #0f3275;
+    transform: translateY(-1px);
+}
+
+.generator-perioade-cursuri-create .generator-source-upload-drop-hint {
+    color: var(--text-muted-color, #6c757d);
+    font-weight: 400;
 }
 
 .generator-perioade-cursuri-create .generator-source-upload-formats {
-    color: var(--text-muted-color, #6c757d);
-    font-size: 12px;
-    text-transform: uppercase;
+    display: flex;
+    gap: 8px;
+}
+
+.generator-perioade-cursuri-create .generator-source-upload-format {
+    align-items: center;
+    background: var(--gray-200, #edf0f3);
+    border: 1px solid var(--gray-300, #d8dde3);
+    border-radius: 999px;
+    color: var(--text-muted-color, #5f6b76);
+    display: inline-flex;
+    font-size: 11px;
+    font-weight: 600;
+    gap: 6px;
+    letter-spacing: 0.04em;
+    padding: 5px 10px;
+}
+
+.generator-perioade-cursuri-create .generator-source-upload-format .fa-file-csv {
+    color: #456b9a;
+}
+
+.generator-perioade-cursuri-create .generator-source-upload-format .fa-file-excel {
+    color: #217346;
 }
 
 .generator-perioade-cursuri-create .generator-source-upload-label input.file {
@@ -104,5 +152,9 @@
     .generator-perioade-cursuri-create .generator-source-upload-label {
         min-height: 180px;
         padding: 24px 16px;
+    }
+
+    .generator-perioade-cursuri-create .generator-source-upload-action {
+        flex-direction: column;
     }
 }
