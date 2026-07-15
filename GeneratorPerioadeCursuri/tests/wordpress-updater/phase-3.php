@@ -94,6 +94,7 @@ $assertSame(
     $clientDefs['recordViews']['detail'] ?? null,
     'Client metadata must register the updater detail view.'
 );
+$assertSame('fas fa-sync-alt', $clientDefs['iconClass'] ?? null, 'The updater nav item must use an available solid icon.');
 
 $layouts = [];
 
