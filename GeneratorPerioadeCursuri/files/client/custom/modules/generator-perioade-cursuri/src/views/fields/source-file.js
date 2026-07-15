@@ -5,20 +5,18 @@ define('generator-perioade-cursuri:views/fields/source-file', ['views/fields/fil
                 <div class="attachment-button{{#if id}} hidden{{/if}}">
                     <label class="attach-file-label generator-source-upload-label" title="{{translate 'Attach File'}}" tabindex="0">
                         <span class="generator-source-upload-icon fas fa-cloud-upload-alt text-primary" aria-hidden="true"></span>
-                        <span class="generator-source-upload-title">{{translate 'uploadSourceTitle' category='labels' scope='GeneratorPerioadeCursuri'}}</span>
+                        <span class="generator-source-upload-title">{{uploadTitle}}</span>
                         <span class="generator-source-upload-action">
-                            <span class="btn btn-default generator-source-upload-button">{{translate 'uploadSourceButton' category='labels' scope='GeneratorPerioadeCursuri'}}</span>
-                            <span class="generator-source-upload-drop-hint text-muted">{{translate 'uploadSourceAction' category='labels' scope='GeneratorPerioadeCursuri'}}</span>
+                            <span class="btn btn-default generator-source-upload-button">{{uploadButton}}</span>
+                            <span class="generator-source-upload-drop-hint text-muted">{{uploadAction}}</span>
                         </span>
-                        <span class="generator-source-upload-formats" aria-label="{{translate 'uploadSourceFormats' category='labels' scope='GeneratorPerioadeCursuri'}}">
+                        <span class="generator-source-upload-formats" aria-label="{{uploadFormats}}">
+                            {{#each uploadFormatList}}
                             <span class="label label-default generator-source-upload-format">
-                                <span class="fas fa-file-csv" aria-hidden="true"></span>
-                                CSV
+                                <span class="{{iconClass}}" aria-hidden="true"></span>
+                                {{label}}
                             </span>
-                            <span class="label label-default generator-source-upload-format">
-                                <span class="fas fa-file-excel" aria-hidden="true"></span>
-                                XLSX
-                            </span>
+                            {{/each}}
                         </span>
                         <input
                             type="file"
@@ -38,6 +36,48 @@ define('generator-perioade-cursuri:views/fields/source-file', ['views/fields/fil
             }
 
             super.init();
+        }
+
+        data() {
+            const data = super.data();
+            const scope = this.entityType || 'GeneratorPerioadeCursuri';
+            const titleKey = {
+                sourceFile: 'uploadSourceTitle',
+                wordTemplateFile: 'uploadWordTitle',
+                wordScheduleFile: 'uploadScheduleTitle'
+            }[this.name] || 'uploadFileTitle';
+            const acceptList = Array.isArray(this.accept) ? this.accept : [];
+
+            data.uploadTitle = this.translate(titleKey, 'labels', scope);
+            data.uploadButton = this.translate('uploadSourceButton', 'labels', scope);
+            data.uploadAction = this.translate('uploadSourceAction', 'labels', scope);
+            data.uploadFormatList = acceptList.map(value => {
+                const label = value.replace(/^\./, '').toUpperCase();
+
+                return {
+                    label: label,
+                    iconClass: this.getFormatIconClass(label)
+                };
+            });
+            data.uploadFormats = data.uploadFormatList.map(item => item.label).join(', ');
+
+            return data;
+        }
+
+        getFormatIconClass(format) {
+            if (format === 'DOC' || format === 'DOCX') {
+                return 'fas fa-file-word';
+            }
+
+            if (format === 'XLS' || format === 'XLSX') {
+                return 'fas fa-file-excel';
+            }
+
+            if (format === 'CSV') {
+                return 'fas fa-file-csv';
+            }
+
+            return 'fas fa-file';
         }
 
         afterRender() {

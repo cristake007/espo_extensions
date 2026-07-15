@@ -22,7 +22,8 @@
 }
 
 .generator-perioade-cursuri-create .cell .loading-value::before {
-    content: "\2013";
+    content: "\2013" !important;
+    display: inline !important;
 }
 
 .generator-perioade-cursuri-create .generator-source-upload-label {

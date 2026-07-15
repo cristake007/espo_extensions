@@ -11,12 +11,20 @@
         "wordTemplateFile": {
             "type": "file",
             "required": true,
-            "tooltip": true
+            "tooltip": true,
+            "accept": [
+                ".docx"
+            ],
+            "view": "generator-perioade-cursuri:views/fields/source-file"
         },
         "wordScheduleFile": {
             "type": "file",
             "required": true,
-            "tooltip": true
+            "tooltip": true,
+            "accept": [
+                ".xlsx"
+            ],
+            "view": "generator-perioade-cursuri:views/fields/source-file"
         },
         "wordConvertedFile": {
             "type": "file",
