@@ -5,6 +5,8 @@
 - Added an install-time check for both required entity scope definitions so an
   archive that omits `files/` fails visibly instead of installing without its
   navbar entities.
+- Made the manifest version authoritative in `build.sh`; an optional explicit
+  ZIP version must match it, preventing filename/UI version mismatches.
 - Bumped the corrective package version to `2.0.1`.
 - Added the repository-root `dist/` directory to `.gitignore`.
 

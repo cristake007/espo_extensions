@@ -18,12 +18,13 @@ The module code lives under:
 files/custom/Espo/Modules/GeneratorPerioadeCursuri
 ```
 
-To build an installable ZIP from this directory:
+To build an installable ZIP from the repository root:
 
 ```bash
-cd /source_folder
-zip -r ../generator-perioade-cursuri-2.0.1.zip manifest.json files scripts
+bash build.sh --extension GeneratorPerioadeCursuri --zip files scripts
 ```
+
+The ZIP version is read from `manifest.json`.
 
 After installing or changing module metadata, rebuild EspoCRM cache.
 

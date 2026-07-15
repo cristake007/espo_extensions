@@ -9,22 +9,24 @@ usage() {
 Usage:
   ./build.sh
   ./build.sh --new
-  ./build.sh --extension /path/to/Extension --zip 1.0.1 [paths...]
+  ./build.sh --extension /path/to/Extension --zip [VERSION] [paths...]
 
 Modes:
   No args / --new
       Interactively asks for an extension name and creates a new extension scaffold
       in the repository root.
 
-  --extension PATH --zip VERSION [paths...]
+  --extension PATH --zip [VERSION] [paths...]
       Builds an installable EspoCRM ZIP from a specific extension root folder.
+      The manifest version is authoritative. VERSION is optional, but when
+      provided it must match the version declared in manifest.json.
       The ZIP root will contain manifest.json, README.md when present, and the
       requested paths.
 
 Examples:
   ./build.sh
-  ./build.sh --extension /opt/DemoExtension --zip 1.0.1 files scripts
-  ./build.sh --extension ./GeneratorPerioadeCursuri --zip 2.0.1 files scripts
+  ./build.sh --extension /opt/DemoExtension --zip files scripts
+  ./build.sh --extension ./GeneratorPerioadeCursuri --zip files scripts
 USAGE
 }
 
@@ -217,7 +219,8 @@ JSON
 }
 
 zip_extension() {
-    local extension_path="" version="" paths=() root_paths=() extension_abs manifest_path package_name output_file
+    local extension_path="" version="" requested_version="" zip_requested=false
+    local paths=() root_paths=() extension_abs manifest_path package_name output_file
 
     while [ "$#" -gt 0 ]; do
         case "$1" in
@@ -227,9 +230,7 @@ zip_extension() {
                 extension_path="$1"
                 ;;
             --zip)
-                shift
-                [ "$#" -gt 0 ] || fail "--zip requires a version"
-                version="$1"
+                zip_requested=true
                 ;;
             -h|--help)
                 usage
@@ -246,7 +247,7 @@ zip_extension() {
     done
 
     [ -n "$extension_path" ] || fail "--extension is required"
-    [ -n "$version" ] || fail "--zip is required"
+    [ "$zip_requested" = true ] || fail "--zip is required"
 
     require_zip
 
@@ -254,6 +255,19 @@ zip_extension() {
     manifest_path="${extension_abs}/manifest.json"
 
     [ -f "$manifest_path" ] || fail "manifest.json was not found in ${extension_abs}"
+
+    version="$(sed -nE 's/^[[:space:]]*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*$/\1/p' "$manifest_path" | head -n 1)"
+
+    [ -n "$version" ] || fail "version was not found in ${manifest_path}"
+
+    if [ "${#paths[@]}" -gt 0 ] && [[ "${paths[0]}" =~ ^[0-9]+\.[0-9]+\.[0-9]+([+-][0-9A-Za-z.-]+)?$ ]]; then
+        requested_version="${paths[0]}"
+        paths=("${paths[@]:1}")
+
+        if [ "$requested_version" != "$version" ]; then
+            fail "ZIP version ${requested_version} does not match manifest version ${version}"
+        fi
+    fi
 
     if [ "${#paths[@]}" -eq 0 ]; then
         paths=(files)
