@@ -1,10 +1,4 @@
 {
-    "scopeNames": {
-        "GeneratorPerioadeCursuriWordMatcher": "Potrivire Word Excel"
-    },
-    "scopeNamesPlural": {
-        "GeneratorPerioadeCursuriWordMatcher": "Potrivire Word Excel"
-    },
     "labels": {
         "Create GeneratorPerioadeCursuriWordMatcher": "Creare conversie Word",
         "Review Matches": "Verifica potriviri",

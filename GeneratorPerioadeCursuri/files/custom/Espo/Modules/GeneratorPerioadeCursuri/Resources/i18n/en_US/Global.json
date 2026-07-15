@@ -1,4 +1,12 @@
 {
+    "scopeNames": {
+        "GeneratorPerioadeCursuri": "Generator Perioade Cursuri",
+        "GeneratorPerioadeCursuriWordMatcher": "Generator Perioade Cursuri Word Matcher"
+    },
+    "scopeNamesPlural": {
+        "GeneratorPerioadeCursuri": "Generator Perioade Cursuri",
+        "GeneratorPerioadeCursuriWordMatcher": "Generator Perioade Cursuri Word Matcher"
+    },
     "messages": {
         "fieldNotMatchingPattern$holidayDates": "{field} must contain dates like 15.09.2026, 16.09.2026."
     }

@@ -1,10 +1,4 @@
 {
-    "scopeNames": {
-        "GeneratorPerioadeCursuri": "Course Period Generator"
-    },
-    "scopeNamesPlural": {
-        "GeneratorPerioadeCursuri": "Course Period Generator"
-    },
     "labels": {
         "Create GeneratorPerioadeCursuri": "Create Schedule Generation",
         "Generate": "Generate",

@@ -1,10 +1,4 @@
 {
-    "scopeNames": {
-        "GeneratorPerioadeCursuriWordMatcher": "Word Excel Matcher"
-    },
-    "scopeNamesPlural": {
-        "GeneratorPerioadeCursuriWordMatcher": "Word Excel Matcher"
-    },
     "labels": {
         "Create GeneratorPerioadeCursuriWordMatcher": "Create Word Conversion",
         "Review Matches": "Review Matches",

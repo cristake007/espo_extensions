@@ -1,10 +1,4 @@
 {
-    "scopeNames": {
-        "GeneratorPerioadeCursuri": "Generator perioade cursuri"
-    },
-    "scopeNamesPlural": {
-        "GeneratorPerioadeCursuri": "Generator perioade cursuri"
-    },
     "labels": {
         "Create GeneratorPerioadeCursuri": "Creare generare planificare",
         "Generate": "Genereaza",
