@@ -110,6 +110,16 @@ php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-4.php
 The Phase 4 runner replaces Espo persistence/ACL/file storage and the WordPress
 client with in-memory test doubles. It does not perform DNS or HTTP operations.
 
+Run the Phase 5 detail-workspace, transient-secret, request-boundary,
+accessibility, localization, and scoped-theme checks:
+
+```bash
+php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-5.php
+```
+
+This is a static client contract check. It does not open a browser or contact
+WordPress; interactive browser acceptance remains part of Phase 6 staging.
+
 When the EspoCRM vendor tree is unavailable, the Phase 1 runner loads
 `phpspreadsheet-test-double.php`. The double exists only to exercise the locked
 XLSX fixture through the production parser's PhpSpreadsheet calls; installed

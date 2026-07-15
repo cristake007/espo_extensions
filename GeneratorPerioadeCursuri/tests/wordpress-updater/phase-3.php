@@ -127,7 +127,8 @@ $editView = (string) file_get_contents($editViewPath);
 $detailView = (string) file_get_contents($detailViewPath);
 $assertTrue(str_contains($editView, 'generator-perioade-cursuri/record/edit'), 'Updater edit must extend the canonical wide create view.');
 $assertTrue(str_contains($detailView, "['views/record/detail']"), 'Updater detail shell must extend the native detail view.');
-$assertTrue(!preg_match('/wpAppPassword|localStorage|sessionStorage|postRequest/', $detailView), 'The Phase 3 detail shell must not store credentials or call workflow APIs.');
+$assertTrue(!preg_match('/localStorage|sessionStorage/', $detailView), 'Updater workflow state must not use browser storage.');
+$assertTrue(!preg_match('/model\.set\([^;]*wpAppPassword/s', $detailView), 'Updater credentials must never be placed on the Espo model.');
 
 $sourceField = (string) file_get_contents($clientRoot . '/src/views/fields/source-file.js');
 $assertTrue(str_contains($sourceField, "['views/fields/file']"), 'Canonical upload must extend Espo native file behavior.');

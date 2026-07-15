@@ -175,6 +175,200 @@
     color: var(--state-info-text-10) !important;
 }
 
+.wordpress-updater-workspace {
+    color: var(--tuvtk-text);
+    margin-top: 20px;
+}
+
+.wordpress-updater-workspace .panel,
+.wordpress-updater-workspace .form-control,
+.wordpress-updater-workspace .btn,
+.wordpress-updater-workspace details,
+.wordpress-updater-workspace pre {
+    border-radius: 3px;
+    box-shadow: none;
+}
+
+.wordpress-updater-workspace .panel {
+    background: var(--tuvtk-surface);
+    border-color: var(--tuvtk-border);
+}
+
+.wordpress-updater-workspace .panel-heading {
+    background: var(--tuvtk-surface);
+    border-color: var(--tuvtk-border-soft);
+}
+
+.wordpress-updater-workspace .panel-title,
+.wordpress-updater-workspace .control-label {
+    color: var(--tuvtk-label);
+}
+
+.wordpress-updater-workspace .text-primary,
+.wordpress-updater-workspace a.text-primary {
+    color: var(--tuvtk-primary) !important;
+}
+
+.wordpress-updater-workspace .text-muted {
+    color: var(--tuvtk-muted) !important;
+}
+
+.wordpress-updater-connection-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: minmax(220px, 2fr) minmax(180px, 1fr) minmax(220px, 1fr);
+}
+
+.wordpress-updater-input {
+    display: block;
+    margin: 0;
+}
+
+.wordpress-updater-input .control-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.wordpress-updater-workspace .form-control {
+    background: var(--tuvtk-surface) !important;
+    border-color: var(--tuvtk-border) !important;
+    color: var(--tuvtk-text) !important;
+}
+
+.wordpress-updater-workspace .form-control:focus,
+.wordpress-updater-workspace .btn:focus,
+.wordpress-updater-top-scroll:focus,
+.wordpress-updater-table-scroll:focus {
+    border-color: var(--tuvtk-primary) !important;
+    outline-color: var(--tuvtk-primary);
+}
+
+.wordpress-updater-workspace .btn.btn-default {
+    background: var(--tuvtk-surface) !important;
+    border-color: var(--tuvtk-border) !important;
+    color: var(--tuvtk-primary) !important;
+}
+
+.wordpress-updater-workspace .btn.btn-default:hover,
+.wordpress-updater-workspace .btn.btn-default:focus {
+    background: var(--tuvtk-hover) !important;
+    border-color: var(--tuvtk-primary) !important;
+    color: var(--tuvtk-secondary) !important;
+}
+
+.wordpress-updater-workspace .btn[disabled],
+.wordpress-updater-workspace .btn.disabled {
+    color: var(--tuvtk-muted) !important;
+}
+
+.wordpress-updater-warning {
+    border-bottom: 1px solid var(--tuvtk-border-soft);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+}
+
+.wordpress-updater-connection-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.wordpress-updater-connection-status {
+    margin-left: 8px;
+}
+
+.wordpress-updater-global-status {
+    margin-bottom: 12px;
+}
+
+.wordpress-updater-top-scroll {
+    border: 1px solid var(--tuvtk-border-soft);
+    height: 14px;
+    margin-bottom: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.wordpress-updater-top-scroll > div {
+    height: 1px;
+}
+
+.wordpress-updater-table-scroll {
+    border: 1px solid var(--tuvtk-border-soft);
+    overflow-x: auto;
+}
+
+.wordpress-updater-table-scroll table {
+    margin-bottom: 0;
+    min-width: 1120px;
+}
+
+.wordpress-updater-table-scroll th,
+.wordpress-updater-table-scroll td {
+    border-color: var(--tuvtk-border-soft) !important;
+    min-width: 150px;
+    vertical-align: top !important;
+    white-space: normal;
+}
+
+.wordpress-updater-table-scroll th:first-child,
+.wordpress-updater-table-scroll td:first-child {
+    min-width: 220px;
+}
+
+.wordpress-updater-table-scroll th:last-child,
+.wordpress-updater-table-scroll td:last-child {
+    min-width: 130px;
+}
+
+.wordpress-updater-date-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.wordpress-updater-date-list li + li {
+    border-top: 1px solid var(--tuvtk-border-soft);
+    margin-top: 4px;
+    padding-top: 4px;
+}
+
+.wordpress-updater-payload {
+    border: 1px solid var(--tuvtk-border-soft);
+    margin-top: 10px;
+    padding: 7px;
+}
+
+.wordpress-updater-payload summary {
+    color: var(--tuvtk-primary);
+    cursor: pointer;
+}
+
+.wordpress-updater-payload pre {
+    background: var(--tuvtk-surface);
+    border-color: var(--tuvtk-border-soft);
+    color: var(--tuvtk-text);
+    margin: 8px 0 0;
+    max-height: 260px;
+    overflow: auto;
+    white-space: pre-wrap;
+}
+
+.wordpress-updater-row-actions .btn {
+    display: block;
+    margin-bottom: 7px;
+    width: 100%;
+}
+
+.wordpress-updater-row-error {
+    border-left: 3px solid var(--tuvtk-primary);
+    color: var(--tuvtk-muted);
+    margin-top: 6px;
+    padding-left: 7px;
+}
+
 @media (max-width: 767px) {
     .generator-perioade-cursuri-create .middle > .panel > .panel-body {
         padding: 16px;
@@ -187,5 +381,22 @@
 
     .generator-perioade-cursuri-create .generator-source-upload-action {
         flex-direction: column;
+    }
+
+    .wordpress-updater-connection-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .wordpress-updater-connection-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .wordpress-updater-connection-actions .btn {
+        width: 100%;
+    }
+
+    .wordpress-updater-connection-status {
+        margin: 4px 0 0;
     }
 }
