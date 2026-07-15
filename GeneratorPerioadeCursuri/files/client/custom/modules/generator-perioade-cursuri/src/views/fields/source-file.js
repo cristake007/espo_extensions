@@ -4,18 +4,18 @@ define('generator-perioade-cursuri:views/fields/source-file', ['views/fields/fil
             <div class="attachment-upload generator-source-upload">
                 <div class="attachment-button{{#if id}} hidden{{/if}}">
                     <label class="attach-file-label generator-source-upload-label" title="{{translate 'Attach File'}}" tabindex="0">
-                        <span class="generator-source-upload-icon fas fa-cloud-upload-alt" aria-hidden="true"></span>
+                        <span class="generator-source-upload-icon fas fa-cloud-upload-alt text-primary" aria-hidden="true"></span>
                         <span class="generator-source-upload-title">{{translate 'uploadSourceTitle' category='labels' scope='GeneratorPerioadeCursuri'}}</span>
                         <span class="generator-source-upload-action">
                             <span class="btn btn-primary generator-source-upload-button">{{translate 'uploadSourceButton' category='labels' scope='GeneratorPerioadeCursuri'}}</span>
-                            <span class="generator-source-upload-drop-hint">{{translate 'uploadSourceAction' category='labels' scope='GeneratorPerioadeCursuri'}}</span>
+                            <span class="generator-source-upload-drop-hint text-muted">{{translate 'uploadSourceAction' category='labels' scope='GeneratorPerioadeCursuri'}}</span>
                         </span>
                         <span class="generator-source-upload-formats" aria-label="{{translate 'uploadSourceFormats' category='labels' scope='GeneratorPerioadeCursuri'}}">
-                            <span class="generator-source-upload-format">
+                            <span class="label label-default generator-source-upload-format">
                                 <span class="fas fa-file-csv" aria-hidden="true"></span>
                                 CSV
                             </span>
-                            <span class="generator-source-upload-format">
+                            <span class="label label-default generator-source-upload-format">
                                 <span class="fas fa-file-excel" aria-hidden="true"></span>
                                 XLSX
                             </span>
