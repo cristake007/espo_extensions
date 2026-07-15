@@ -120,6 +120,18 @@ php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-5.php
 This is a static client contract check. It does not open a browser or contact
 WordPress; interactive browser acceptance remains part of Phase 6 staging.
 
+After building version 2.3.0, verify the installable archive inventory and
+release metadata:
+
+```bash
+php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-6.php \
+    dist/generator-perioade-cursuri-2.3.0.zip
+```
+
+This check validates the release artifact but does not install it. EspoCRM
+rebuild and live WordPress behavior must be verified only on supplied staging
+systems.
+
 When the EspoCRM vendor tree is unavailable, the Phase 1 runner loads
 `phpspreadsheet-test-double.php`. The double exists only to exercise the locked
 XLSX fixture through the production parser's PhpSpreadsheet calls; installed
