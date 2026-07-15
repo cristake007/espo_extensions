@@ -100,6 +100,16 @@ This static check does not install the extension or rebuild an EspoCRM instance.
 Role ACL behavior, schema rebuild, and browser interaction remain non-production
 runtime acceptance checks.
 
+Run the Phase 4 service orchestration, ACL/attachment boundary, strict request,
+stale preview, per-row update, safe logging, and route checks:
+
+```bash
+php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-4.php
+```
+
+The Phase 4 runner replaces Espo persistence/ACL/file storage and the WordPress
+client with in-memory test doubles. It does not perform DNS or HTTP operations.
+
 When the EspoCRM vendor tree is unavailable, the Phase 1 runner loads
 `phpspreadsheet-test-double.php`. The double exists only to exercise the locked
 XLSX fixture through the production parser's PhpSpreadsheet calls; installed

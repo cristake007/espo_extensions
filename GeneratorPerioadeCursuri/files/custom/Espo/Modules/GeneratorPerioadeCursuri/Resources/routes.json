@@ -23,5 +23,25 @@
         "route": "/GeneratorPerioadeCursuriXmlConverter/:id/generateXml",
         "method": "post",
         "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostGenerateXml"
+    },
+    {
+        "route": "/GeneratorPerioadeCursuriWordPressUpdater/:id/preview",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostPreviewWordPressUpdate"
+    },
+    {
+        "route": "/GeneratorPerioadeCursuriWordPressUpdater/:id/connect",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostConnectWordPress"
+    },
+    {
+        "route": "/GeneratorPerioadeCursuriWordPressUpdater/:id/fetchDates",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostFetchWordPressDates"
+    },
+    {
+        "route": "/GeneratorPerioadeCursuriWordPressUpdater/:id/updateRow",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostUpdateWordPressCourse"
     }
 ]
