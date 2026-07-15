@@ -11,6 +11,7 @@ class BeforeUninstall
     private const MENU_GROUP_ITEMS = [
         'GeneratorPerioadeCursuri',
         'GeneratorPerioadeCursuriWordMatcher',
+        'GeneratorPerioadeCursuriXmlConverter',
     ];
     private const LEGACY_MENU_GROUP_TEXT = 'Planificări';
     private const LEGACY_MENU_GROUP_ITEMS = [

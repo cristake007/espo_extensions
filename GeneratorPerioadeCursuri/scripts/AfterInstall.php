@@ -11,6 +11,7 @@ class AfterInstall
     private const MENU_GROUP_ITEMS = [
         'GeneratorPerioadeCursuri',
         'GeneratorPerioadeCursuriWordMatcher',
+        'GeneratorPerioadeCursuriXmlConverter',
     ];
     private const LEGACY_MENU_GROUP_TEXT = 'Planificări';
     private const LEGACY_MENU_GROUP_ITEMS = [
@@ -30,6 +31,7 @@ class AfterInstall
         $requiredPaths = [
             'custom/Espo/Modules/GeneratorPerioadeCursuri/Resources/metadata/scopes/GeneratorPerioadeCursuri.json',
             'custom/Espo/Modules/GeneratorPerioadeCursuri/Resources/metadata/scopes/GeneratorPerioadeCursuriWordMatcher.json',
+            'custom/Espo/Modules/GeneratorPerioadeCursuri/Resources/metadata/scopes/GeneratorPerioadeCursuriXmlConverter.json',
         ];
 
         foreach ($requiredPaths as $path) {
