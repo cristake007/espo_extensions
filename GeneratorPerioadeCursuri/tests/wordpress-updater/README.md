@@ -73,6 +73,17 @@ Run the lightweight Phase 0 integrity check:
 php GeneratorPerioadeCursuri/tests/wordpress-updater/contract.php
 ```
 
+Run the Phase 1 parser and merge-policy checks:
+
+```bash
+php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-1.php
+```
+
+When the EspoCRM vendor tree is unavailable, the Phase 1 runner loads
+`phpspreadsheet-test-double.php`. The double exists only to exercise the locked
+XLSX fixture through the production parser's PhpSpreadsheet calls; installed
+extensions use EspoCRM's real PhpSpreadsheet classes.
+
 Regenerate the XLSX fixture only through its deterministic generator:
 
 ```bash
