@@ -13,7 +13,7 @@
 }
 
 .generator-perioade-cursuri-create .middle > .panel {
-    border-radius: 12px;
+    border-radius: 3px;
     overflow: hidden;
 }
 
@@ -27,9 +27,9 @@
 
 .generator-perioade-cursuri-create .generator-source-upload-label {
     align-items: center;
-    background: var(--input-bg);
-    border: 2px dashed var(--input-border);
-    border-radius: 12px;
+    background: var(--tuvtk-surface) !important;
+    border: 2px dashed var(--tuvtk-border) !important;
+    border-radius: 3px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -44,18 +44,20 @@
 .generator-perioade-cursuri-create .generator-source-upload-label:hover,
 .generator-perioade-cursuri-create .generator-source-upload-label:focus,
 .generator-perioade-cursuri-create .generator-source-upload-label.is-dragover {
-    background: var(--main-gray-5);
-    border-color: var(--input-border-focus);
-    box-shadow: 0 0 0 2px var(--input-border-focus-rgba);
+    background: var(--tuvtk-hover) !important;
+    border-color: var(--tuvtk-primary) !important;
+    box-shadow: none;
     outline: none;
 }
 
-.generator-perioade-cursuri-create .generator-source-upload-icon {
+.generator-perioade-cursuri-create .generator-source-upload-label .generator-source-upload-icon {
+    color: var(--tuvtk-primary) !important;
     font-size: 36px;
     margin-bottom: 14px;
 }
 
-.generator-perioade-cursuri-create .generator-source-upload-title {
+.generator-perioade-cursuri-create .generator-source-upload-label .generator-source-upload-title {
+    color: var(--tuvtk-text) !important;
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 6px;
@@ -70,8 +72,11 @@
     margin: 12px 0 18px;
 }
 
-.generator-perioade-cursuri-create .generator-source-upload-button {
-    border-radius: 7px;
+.generator-perioade-cursuri-create .generator-source-upload-label .generator-source-upload-button {
+    background: var(--tuvtk-surface) !important;
+    border-color: var(--tuvtk-border) !important;
+    border-radius: 3px;
+    color: var(--tuvtk-primary) !important;
     font-weight: 600;
     padding: 9px 18px;
     transition: transform 160ms ease;
@@ -80,10 +85,14 @@
 .generator-perioade-cursuri-create .generator-source-upload-label:hover .generator-source-upload-button,
 .generator-perioade-cursuri-create .generator-source-upload-label:focus .generator-source-upload-button,
 .generator-perioade-cursuri-create .generator-source-upload-label.is-dragover .generator-source-upload-button {
+    background: var(--tuvtk-hover) !important;
+    border-color: var(--tuvtk-primary) !important;
+    color: var(--tuvtk-secondary) !important;
     transform: translateY(-1px);
 }
 
-.generator-perioade-cursuri-create .generator-source-upload-drop-hint {
+.generator-perioade-cursuri-create .generator-source-upload-label .generator-source-upload-drop-hint {
+    color: var(--tuvtk-muted) !important;
     font-weight: 400;
 }
 
@@ -92,15 +101,22 @@
     gap: 8px;
 }
 
-.generator-perioade-cursuri-create .generator-source-upload-format {
+.generator-perioade-cursuri-create .generator-source-upload-label .generator-source-upload-format {
     align-items: center;
-    border-radius: 999px;
+    background: var(--tuvtk-hover) !important;
+    border: 1px solid var(--tuvtk-border) !important;
+    border-radius: 3px;
+    color: var(--tuvtk-muted) !important;
     display: inline-flex;
     font-size: 11px;
     font-weight: 600;
     gap: 6px;
     letter-spacing: 0.04em;
     padding: 5px 10px;
+}
+
+.generator-perioade-cursuri-create .generator-source-upload-label .generator-source-upload-format .fas {
+    color: inherit !important;
 }
 
 .generator-perioade-cursuri-create .generator-source-upload-label input.file {
@@ -112,8 +128,8 @@
 }
 
 .generator-perioade-cursuri-create .generator-source-upload .gray-box {
-    border: 1px solid var(--default-border-color);
-    border-radius: 10px;
+    border: 1px solid var(--tuvtk-border);
+    border-radius: 3px;
     margin-top: 12px;
     padding: 16px;
 }
