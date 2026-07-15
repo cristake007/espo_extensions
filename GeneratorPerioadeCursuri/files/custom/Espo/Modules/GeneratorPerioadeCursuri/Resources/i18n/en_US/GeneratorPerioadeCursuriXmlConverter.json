@@ -2,6 +2,8 @@
     "labels": {
         "Create GeneratorPerioadeCursuriXmlConverter": "Create XML Conversion",
         "xmlConverterPanel": "XML Converter",
+        "Generate XML": "Generate XML",
+        "Download XML": "Download XML",
         "uploadXmlScheduleTitle": "Upload generated schedule",
         "uploadSourceButton": "Choose file",
         "uploadSourceAction": "or drag and drop it here"
@@ -22,7 +24,9 @@
     },
     "tooltips": {
         "xmlScheduleFile": "Upload the generated schedule as CSV or XLSX. The file may contain any supported subset of month columns.",
-        "startPostId": "The first generated XML item uses this WordPress Post ID."
+        "startPostId": "The first generated XML item uses this WordPress Post ID.",
+        "xmlConvertedFile": "The latest successfully generated XML file. Use Download XML to download it.",
+        "xmlConvertedAt": "The date and time of the latest successful XML generation."
     },
     "messages": {
         "xmlConverterIdRequired": "The XML converter record ID is required.",
@@ -42,6 +46,11 @@
         "xmlNoSupportedMonths": "No supported date columns were found. Use Romanian or English month columns, or Luna 1 through Luna 12.",
         "xmlTooManyCourses": "The input file may contain at most 5000 courses.",
         "xmlNoValidCourseData": "No valid course data was found in the input file.",
-        "xmlConversionUnable": "Unable to read the uploaded schedule or create XML."
+        "xmlConversionUnable": "Unable to read the uploaded schedule or create XML.",
+        "xmlGenerating": "Generating XML...",
+        "xmlGenerateSucceeded": "XML generated successfully for {count} events.",
+        "xmlGenerateFailed": "The XML could not be generated.",
+        "xmlGenerateUnavailable": "Save a schedule file and first WordPress Post ID before generating XML.",
+        "xmlDownloadUnavailable": "Generate XML before downloading it."
     }
 }

@@ -2,6 +2,8 @@
     "labels": {
         "Create GeneratorPerioadeCursuriXmlConverter": "Creare conversie XML",
         "xmlConverterPanel": "Convertor XML",
+        "Generate XML": "Genereaza XML",
+        "Download XML": "Descarca XML",
         "uploadXmlScheduleTitle": "Incarca planificarea generata",
         "uploadSourceButton": "Alege fisierul",
         "uploadSourceAction": "sau trage-l si plaseaza-l aici"
@@ -22,7 +24,9 @@
     },
     "tooltips": {
         "xmlScheduleFile": "Incarca planificarea generata in format CSV sau XLSX. Fisierul poate contine orice subset acceptat de coloane lunare.",
-        "startPostId": "Primul element XML generat foloseste acest ID de articol WordPress."
+        "startPostId": "Primul element XML generat foloseste acest ID de articol WordPress.",
+        "xmlConvertedFile": "Cel mai recent fisier XML generat cu succes. Foloseste Descarca XML pentru a-l descarca.",
+        "xmlConvertedAt": "Data si ora celei mai recente generari XML reusite."
     },
     "messages": {
         "xmlConverterIdRequired": "ID-ul inregistrarii convertorului XML este obligatoriu.",
@@ -42,6 +46,11 @@
         "xmlNoSupportedMonths": "Nu au fost gasite coloane de data acceptate. Foloseste luni in romana sau engleza ori Luna 1 pana la Luna 12.",
         "xmlTooManyCourses": "Fisierul poate contine cel mult 5000 de cursuri.",
         "xmlNoValidCourseData": "Fisierul nu contine date de curs valide.",
-        "xmlConversionUnable": "Planificarea incarcata nu a putut fi citita sau fisierul XML nu a putut fi creat."
+        "xmlConversionUnable": "Planificarea incarcata nu a putut fi citita sau fisierul XML nu a putut fi creat.",
+        "xmlGenerating": "Se genereaza fisierul XML...",
+        "xmlGenerateSucceeded": "Fisierul XML a fost generat cu succes pentru {count} evenimente.",
+        "xmlGenerateFailed": "Fisierul XML nu a putut fi generat.",
+        "xmlGenerateUnavailable": "Salveaza un fisier de planificare si primul ID de articol WordPress inainte de generarea XML.",
+        "xmlDownloadUnavailable": "Genereaza fisierul XML inainte de descarcare."
     }
 }

@@ -28,11 +28,13 @@
         },
         "xmlConvertedFile": {
             "type": "file",
-            "readOnly": true
+            "readOnly": true,
+            "tooltip": true
         },
         "xmlConvertedAt": {
             "type": "datetime",
-            "readOnly": true
+            "readOnly": true,
+            "tooltip": true
         },
         "createdAt": {
             "type": "datetime",
