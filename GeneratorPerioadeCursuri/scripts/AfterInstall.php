@@ -20,8 +20,26 @@ class AfterInstall
 
     public function run(Container $container): void
     {
+        $this->assertRequiredPackageFiles();
         $this->removeStalePackageFiles();
         $this->addMenuGroup($container);
+    }
+
+    private function assertRequiredPackageFiles(): void
+    {
+        $requiredPaths = [
+            'custom/Espo/Modules/GeneratorPerioadeCursuri/Resources/metadata/scopes/GeneratorPerioadeCursuri.json',
+            'custom/Espo/Modules/GeneratorPerioadeCursuri/Resources/metadata/scopes/GeneratorPerioadeCursuriWordMatcher.json',
+        ];
+
+        foreach ($requiredPaths as $path) {
+            if (!is_file($path)) {
+                throw new RuntimeException(sprintf(
+                    'Generator perioade cursuri package is incomplete; required file is missing: %s',
+                    $path
+                ));
+            }
+        }
     }
 
     private function addMenuGroup(Container $container): void

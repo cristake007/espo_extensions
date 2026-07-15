@@ -4,7 +4,7 @@ This is the EspoCRM extension package for `Generator perioade cursuri`.
 
 Package ID: `generator-perioade-cursuri`
 
-Current package version: `2.0.0`
+Current package version: `2.0.1`
 
 Package source:
 
@@ -22,7 +22,7 @@ To build an installable ZIP from this directory:
 
 ```bash
 cd /source_folder
-zip -r ../generator-perioade-cursuri-2.0.0.zip manifest.json files scripts
+zip -r ../generator-perioade-cursuri-2.0.1.zip manifest.json files scripts
 ```
 
 After installing or changing module metadata, rebuild EspoCRM cache.

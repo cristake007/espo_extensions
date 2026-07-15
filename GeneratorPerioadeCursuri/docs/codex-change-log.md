@@ -1,5 +1,13 @@
 # Codex Change Log
 
+## 20260715 - Package Integrity Check
+
+- Added an install-time check for both required entity scope definitions so an
+  archive that omits `files/` fails visibly instead of installing without its
+  navbar entities.
+- Bumped the corrective package version to `2.0.1`.
+- Added the repository-root `dist/` directory to `.gitignore`.
+
 ## 20260715 - Generator Perioade Cursuri Identifier Rename
 
 - Renamed the extension, module, primary entity, matcher entity, PHP namespaces,
