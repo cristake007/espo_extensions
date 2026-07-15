@@ -325,10 +325,14 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher
             }
 
             if (status) {
-                status.textContent = optionAssigned ?
+                const statusText = optionAssigned ?
                     this.translate('selected', 'labels', 'GeneratorPerioadeCursuriWordMatcher') :
                     this.translate('unchanged', 'labels', 'GeneratorPerioadeCursuriWordMatcher');
-                status.className = optionAssigned ? 'text-success' : 'text-muted';
+                const statusClass = optionAssigned ? 'label-success' : 'label-danger';
+
+                status.innerHTML = '<span class="label label-state word-preview-status-label ' + statusClass + '">' +
+                    this.escapeHtml(statusText) +
+                    '</span>';
             }
 
             if (dates) {

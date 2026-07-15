@@ -139,6 +139,16 @@
     max-width: 420px;
 }
 
+.word-preview-status-label.label.label-state.label-success {
+    background-color: var(--state-success-bg) !important;
+    color: var(--state-success-text) !important;
+}
+
+.word-preview-status-label.label.label-state.label-danger {
+    background-color: var(--state-danger-bg) !important;
+    color: var(--state-danger-text) !important;
+}
+
 @media (max-width: 767px) {
     .generator-perioade-cursuri-create .middle > .panel > .panel-body {
         padding: 16px;
