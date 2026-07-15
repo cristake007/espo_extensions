@@ -13,7 +13,7 @@
 }
 
 .generator-perioade-cursuri-create .middle > .panel {
-    border: 1px solid var(--gray-300, #d8dde3);
+    border: 1px solid var(--default-border-color, #d8dde3);
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(28, 39, 49, 0.06);
     overflow: hidden;
@@ -29,8 +29,8 @@
 
 .generator-perioade-cursuri-create .generator-source-upload-label {
     align-items: center;
-    background: var(--gray-100, #f7f8fa);
-    border: 2px dashed var(--gray-400, #b8c0ca);
+    background: var(--input-bg, #fff);
+    border: 2px dashed var(--input-border, #b8c0ca);
     border-radius: 12px;
     cursor: pointer;
     display: flex;
@@ -46,14 +46,14 @@
 .generator-perioade-cursuri-create .generator-source-upload-label:hover,
 .generator-perioade-cursuri-create .generator-source-upload-label:focus,
 .generator-perioade-cursuri-create .generator-source-upload-label.is-dragover {
-    background: rgba(22, 65, 148, 0.06);
-    border-color: #164194;
-    box-shadow: 0 0 0 3px rgba(22, 65, 148, 0.12);
+    background: var(--main-gray-5, #f7f8fa);
+    border-color: var(--btn-primary-border, #5589ca);
+    box-shadow: 0 0 0 2px var(--input-border-focus-rgba, rgba(85, 137, 202, 0.25));
     outline: none;
 }
 
 .generator-perioade-cursuri-create .generator-source-upload-icon {
-    color: #164194;
+    color: var(--btn-primary-bg, #5589ca);
     font-size: 36px;
     margin-bottom: 14px;
 }
@@ -67,7 +67,6 @@
 
 .generator-perioade-cursuri-create .generator-source-upload-action {
     align-items: center;
-    color: #164194;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -76,20 +75,21 @@
 }
 
 .generator-perioade-cursuri-create .generator-source-upload-button {
-    background: #164194;
-    border: 1px solid #164194;
+    background-color: var(--btn-primary-bg, #5589ca);
+    border-color: var(--btn-primary-border, #5589ca);
     border-radius: 7px;
-    color: #fff;
+    color: var(--btn-primary-color, #fff);
     font-weight: 600;
     padding: 9px 18px;
-    transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+    transition: transform 160ms ease;
 }
 
 .generator-perioade-cursuri-create .generator-source-upload-label:hover .generator-source-upload-button,
 .generator-perioade-cursuri-create .generator-source-upload-label:focus .generator-source-upload-button,
 .generator-perioade-cursuri-create .generator-source-upload-label.is-dragover .generator-source-upload-button {
-    background: #0f3275;
-    border-color: #0f3275;
+    background-color: var(--btn-primary-hover-bg, #386fb4);
+    border-color: var(--btn-primary-hover-border, #386fb4);
+    color: var(--btn-primary-color, #fff);
     transform: translateY(-1px);
 }
 
@@ -105,8 +105,8 @@
 
 .generator-perioade-cursuri-create .generator-source-upload-format {
     align-items: center;
-    background: var(--gray-200, #edf0f3);
-    border: 1px solid var(--gray-300, #d8dde3);
+    background: var(--main-gray-5, #edf0f3);
+    border: 1px solid var(--default-border-color, #d8dde3);
     border-radius: 999px;
     color: var(--text-muted-color, #5f6b76);
     display: inline-flex;
@@ -117,12 +117,8 @@
     padding: 5px 10px;
 }
 
-.generator-perioade-cursuri-create .generator-source-upload-format .fa-file-csv {
-    color: #456b9a;
-}
-
-.generator-perioade-cursuri-create .generator-source-upload-format .fa-file-excel {
-    color: #217346;
+.generator-perioade-cursuri-create .generator-source-upload-format .fas {
+    color: var(--btn-primary-bg, #5589ca);
 }
 
 .generator-perioade-cursuri-create .generator-source-upload-label input.file {
@@ -134,7 +130,7 @@
 }
 
 .generator-perioade-cursuri-create .generator-source-upload .gray-box {
-    border: 1px solid var(--gray-300, #d8dde3);
+    border: 1px solid var(--default-border-color, #d8dde3);
     border-radius: 10px;
     margin-top: 12px;
     padding: 16px;
