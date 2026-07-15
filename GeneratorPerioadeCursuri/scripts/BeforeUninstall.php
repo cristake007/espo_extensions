@@ -12,6 +12,7 @@ class BeforeUninstall
         'GeneratorPerioadeCursuri',
         'GeneratorPerioadeCursuriWordMatcher',
         'GeneratorPerioadeCursuriXmlConverter',
+        'GeneratorPerioadeCursuriWordPressUpdater',
     ];
     private const LEGACY_MENU_GROUP_TEXT = 'Planificări';
     private const LEGACY_MENU_GROUP_ITEMS = [

@@ -1,0 +1,31 @@
+{
+    "labels": {
+        "Create GeneratorPerioadeCursuriWordPressUpdater": "Create WordPress Course Updater",
+        "wordpressUpdaterPanel": "WordPress Course Updater",
+        "lastVerifiedConnectionPanel": "Last Verified WordPress Connection",
+        "uploadWpScheduleTitle": "Upload course schedule",
+        "uploadSourceButton": "Choose file",
+        "uploadSourceAction": "or drag and drop it here"
+    },
+    "fields": {
+        "name": "Updater Name",
+        "description": "Description",
+        "wpScheduleFile": "Schedule File",
+        "wpBaseUrl": "Last Verified WordPress URL",
+        "wpUsername": "Last Verified WordPress Username",
+        "assignedUsers": "Responsible Users",
+        "teams": "Teams",
+        "createdAt": "Created At",
+        "modifiedAt": "Modified At",
+        "createdBy": "Created By",
+        "modifiedBy": "Modified By"
+    },
+    "tooltips": {
+        "wpScheduleFile": "Upload a CSV or XLSX schedule. WordPress is not contacted when the file is selected or the record is saved.",
+        "wpBaseUrl": "The normalized URL saved after the most recent successful connection verification.",
+        "wpUsername": "The username saved after the most recent successful connection verification. The application password is never saved."
+    },
+    "messages": {
+        "wpUpdaterWorkspacePending": "Save the updater record before building a preview or connecting to WordPress."
+    }
+}

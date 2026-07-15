@@ -1,0 +1,63 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "assignedUsers"
+                }
+            ],
+            [
+                {
+                    "name": "teams"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "description"
+                }
+            ],
+            [
+                {
+                    "name": "wpScheduleFile"
+                },
+                false
+            ]
+        ],
+        "style": "default",
+        "label": "wordpressUpdaterPanel"
+    },
+    {
+        "rows": [
+            [
+                {
+                    "name": "wpBaseUrl"
+                },
+                {
+                    "name": "wpUsername"
+                }
+            ],
+            [
+                {
+                    "name": "createdAt"
+                },
+                {
+                    "name": "createdBy"
+                }
+            ],
+            [
+                {
+                    "name": "modifiedAt"
+                },
+                {
+                    "name": "modifiedBy"
+                }
+            ]
+        ],
+        "style": "default",
+        "label": "lastVerifiedConnectionPanel"
+    }
+]

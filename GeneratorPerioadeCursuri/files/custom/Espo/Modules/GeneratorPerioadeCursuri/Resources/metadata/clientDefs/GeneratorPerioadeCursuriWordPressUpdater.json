@@ -1,0 +1,13 @@
+{
+    "controller": "controllers/record",
+    "recordViews": {
+        "detail": "generator-perioade-cursuri:views/generator-perioade-cursuri-wordpress-updater/record/detail",
+        "edit": "generator-perioade-cursuri:views/generator-perioade-cursuri-wordpress-updater/record/edit"
+    },
+    "boolFilterList": [
+        "onlyMy"
+    ],
+    "iconClass": "fab fa-wordpress",
+    "kanbanViewMode": false,
+    "color": "#164194"
+}

@@ -89,6 +89,17 @@ The Phase 2 runner injects DNS answers, transport responses, time, sleeping, and
 jitter. It executes every scenario in `fixtures/http/scenarios.json` without
 performing DNS resolution or an HTTP request.
 
+Run the Phase 3 entity, ACL metadata, layout, menu, translation, and native
+upload-shell checks:
+
+```bash
+php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-3.php
+```
+
+This static check does not install the extension or rebuild an EspoCRM instance.
+Role ACL behavior, schema rebuild, and browser interaction remain non-production
+runtime acceptance checks.
+
 When the EspoCRM vendor tree is unavailable, the Phase 1 runner loads
 `phpspreadsheet-test-double.php`. The double exists only to exercise the locked
 XLSX fixture through the production parser's PhpSpreadsheet calls; installed

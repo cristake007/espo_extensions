@@ -1,0 +1,31 @@
+{
+    "labels": {
+        "Create GeneratorPerioadeCursuriWordPressUpdater": "Creare actualizator cursuri WordPress",
+        "wordpressUpdaterPanel": "Actualizator cursuri WordPress",
+        "lastVerifiedConnectionPanel": "Ultima conexiune WordPress verificata",
+        "uploadWpScheduleTitle": "Incarca planificarea cursurilor",
+        "uploadSourceButton": "Alege fisierul",
+        "uploadSourceAction": "sau trage-l si plaseaza-l aici"
+    },
+    "fields": {
+        "name": "Denumire actualizator",
+        "description": "Descriere",
+        "wpScheduleFile": "Fisier planificare",
+        "wpBaseUrl": "Ultima adresa WordPress verificata",
+        "wpUsername": "Ultimul utilizator WordPress verificat",
+        "assignedUsers": "Utilizatori responsabili",
+        "teams": "Echipe",
+        "createdAt": "Creat la",
+        "modifiedAt": "Modificat la",
+        "createdBy": "Creat de",
+        "modifiedBy": "Modificat de"
+    },
+    "tooltips": {
+        "wpScheduleFile": "Incarca o planificare CSV sau XLSX. WordPress nu este contactat la selectarea fisierului sau la salvarea inregistrarii.",
+        "wpBaseUrl": "Adresa normalizata salvata dupa cea mai recenta verificare reusita a conexiunii.",
+        "wpUsername": "Utilizatorul salvat dupa cea mai recenta verificare reusita a conexiunii. Parola de aplicatie nu este salvata niciodata."
+    },
+    "messages": {
+        "wpUpdaterWorkspacePending": "Salveaza inregistrarea actualizatorului inainte de previzualizare sau conectarea la WordPress."
+    }
+}

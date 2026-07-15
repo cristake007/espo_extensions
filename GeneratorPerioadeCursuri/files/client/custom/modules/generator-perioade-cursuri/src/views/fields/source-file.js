@@ -45,7 +45,8 @@ define('generator-perioade-cursuri:views/fields/source-file', ['views/fields/fil
                 sourceFile: 'uploadSourceTitle',
                 wordTemplateFile: 'uploadWordTitle',
                 wordScheduleFile: 'uploadScheduleTitle',
-                xmlScheduleFile: 'uploadXmlScheduleTitle'
+                xmlScheduleFile: 'uploadXmlScheduleTitle',
+                wpScheduleFile: 'uploadWpScheduleTitle'
             }[this.name] || 'uploadFileTitle';
             const acceptList = Array.isArray(this.accept) ? this.accept : [];
 

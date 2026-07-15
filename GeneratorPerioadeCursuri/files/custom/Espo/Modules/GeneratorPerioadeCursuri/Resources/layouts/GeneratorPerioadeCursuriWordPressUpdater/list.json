@@ -1,0 +1,21 @@
+[
+    {
+        "name": "name",
+        "link": true
+    },
+    {
+        "name": "wpBaseUrl"
+    },
+    {
+        "name": "wpUsername"
+    },
+    {
+        "name": "assignedUsers"
+    },
+    {
+        "name": "teams"
+    },
+    {
+        "name": "createdAt"
+    }
+]

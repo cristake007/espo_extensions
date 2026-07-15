@@ -2,12 +2,14 @@
     "scopeNames": {
         "GeneratorPerioadeCursuri": "Generator Perioade Cursuri",
         "GeneratorPerioadeCursuriWordMatcher": "Generator Perioade Cursuri Word Matcher",
-        "GeneratorPerioadeCursuriXmlConverter": "Generator Perioade Cursuri XML Converter"
+        "GeneratorPerioadeCursuriXmlConverter": "Generator Perioade Cursuri XML Converter",
+        "GeneratorPerioadeCursuriWordPressUpdater": "WordPress Course Updater"
     },
     "scopeNamesPlural": {
         "GeneratorPerioadeCursuri": "Generator Perioade Cursuri",
         "GeneratorPerioadeCursuriWordMatcher": "Generator Perioade Cursuri Word Matcher",
-        "GeneratorPerioadeCursuriXmlConverter": "Generator Perioade Cursuri XML Converters"
+        "GeneratorPerioadeCursuriXmlConverter": "Generator Perioade Cursuri XML Converters",
+        "GeneratorPerioadeCursuriWordPressUpdater": "WordPress Course Updaters"
     },
     "messages": {
         "fieldNotMatchingPattern$holidayDates": "{field} must contain dates like 15.09.2026, 16.09.2026.",

@@ -1,0 +1,33 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "assignedUsers"
+                }
+            ],
+            [
+                {
+                    "name": "teams"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "description"
+                }
+            ],
+            [
+                {
+                    "name": "wpScheduleFile"
+                },
+                false
+            ]
+        ],
+        "style": "default",
+        "label": "wordpressUpdaterPanel"
+    }
+]
