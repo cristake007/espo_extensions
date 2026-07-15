@@ -6,6 +6,9 @@ define(
 
         return class extends DetailRecordView {
             setup() {
+                this.isWide = true;
+                this.sideDisabled = true;
+
                 super.setup();
 
                 this.wpUpdaterPreview = null;
@@ -44,6 +47,7 @@ define(
 
             afterRender() {
                 super.afterRender();
+                this.element.classList.add('generator-perioade-cursuri-wordpress-updater-page');
                 this.renderWordPressWorkspace();
                 this.updateWordPressPreviewButtonState();
             }
@@ -152,6 +156,7 @@ define(
                     this.wpUpdaterUser = result.user || null;
                     this.resetWordPressRemoteRows();
                     this.wpUpdaterGlobalSuccess = result.message || this.translateMessage('wpUpdaterConnected');
+                    await this.refreshVerifiedConnectionDisplay();
                     Espo.Ui.notify(false);
                     Espo.Ui.success(result.message || this.translateMessage('wpUpdaterConnected'));
                 } catch (error) {
@@ -611,6 +616,12 @@ define(
                 }
 
                 return JSON.parse(JSON.stringify(value));
+            }
+
+            async refreshVerifiedConnectionDisplay() {
+                try {
+                    await this.reRender();
+                } catch (error) {}
             }
 
             getWordPressUserIdentity(user) {

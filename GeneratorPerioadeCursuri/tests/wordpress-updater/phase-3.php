@@ -126,7 +126,12 @@ $detailViewPath = $clientRoot . '/src/views/generator-perioade-cursuri-wordpress
 $editView = (string) file_get_contents($editViewPath);
 $detailView = (string) file_get_contents($detailViewPath);
 $assertTrue(str_contains($editView, 'generator-perioade-cursuri/record/edit'), 'Updater edit must extend the canonical wide create view.');
+$assertTrue(str_contains($editView, 'this.isWide = true;'), 'Updater edit must remain full width for existing records.');
+$assertTrue(str_contains($editView, 'this.sideDisabled = true;'), 'Updater edit must suppress the narrow side column.');
+$assertTrue(str_contains($editView, "classList.add('generator-perioade-cursuri-create')"), 'Updater edit must reuse the canonical upload presentation.');
 $assertTrue(str_contains($detailView, "['views/record/detail']"), 'Updater detail shell must extend the native detail view.');
+$assertTrue(str_contains($detailView, 'this.isWide = true;'), 'Updater detail must use the full record width.');
+$assertTrue(str_contains($detailView, 'this.sideDisabled = true;'), 'Updater detail must suppress the narrow side column.');
 $assertTrue(!preg_match('/localStorage|sessionStorage/', $detailView), 'Updater workflow state must not use browser storage.');
 $assertTrue(!preg_match('/model\.set\([^;]*wpAppPassword/s', $detailView), 'Updater credentials must never be placed on the Espo model.');
 
@@ -136,6 +141,7 @@ $assertTrue(str_contains($sourceField, "wpScheduleFile: 'uploadWpScheduleTitle'"
 $assertTrue(str_contains($sourceField, 'tabindex="0"'), 'Upload drop zone must remain keyboard focusable.');
 $assertTrue(str_contains($sourceField, "event.key !== 'Enter' && event.key !== ' '"), 'Upload drop zone must retain keyboard activation.');
 $assertTrue(str_contains($sourceField, 'acceptAttribute'), 'Upload input must retain metadata-driven accept handling.');
+$assertTrue(!str_contains($sourceField, '!this.model.isNew()'), 'Existing record edits must retain the canonical drop zone.');
 
 $css = (string) file_get_contents($clientRoot . '/css/generator-perioade-cursuri.css');
 

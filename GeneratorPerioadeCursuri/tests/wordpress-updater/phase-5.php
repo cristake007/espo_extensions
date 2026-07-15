@@ -39,6 +39,8 @@ foreach ([
     'runWordPressRowAction(sourceRow, action)' => 'per-row interaction exists',
     "postWordPressUpdaterRequest('preview', {})" => 'preview calls the local preview endpoint',
     "postWordPressUpdaterRequest('connect'" => 'connect calls its endpoint',
+    'await this.refreshVerifiedConnectionDisplay()' => 'successful connection refreshes verified fields',
+    'await this.reRender()' => 'verified URL and username are visibly re-rendered',
     "action === 'fetchDates'" => 'Fetch Dates is an allowed row operation',
     "action === 'updateRow'" => 'Update Row is an allowed row operation',
 ] as $needle => $message) {

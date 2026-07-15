@@ -31,9 +31,7 @@ define('generator-perioade-cursuri:views/fields/source-file', ['views/fields/fil
         `;
 
         init() {
-            if (this.model.isNew()) {
-                this.editTemplateContent = this.createEditTemplateContent;
-            }
+            this.editTemplateContent = this.createEditTemplateContent;
 
             super.init();
         }
@@ -85,7 +83,7 @@ define('generator-perioade-cursuri:views/fields/source-file', ['views/fields/fil
         afterRender() {
             super.afterRender();
 
-            if (!this.model.isNew() || !this.isEditMode()) {
+            if (!this.isEditMode()) {
                 return;
             }
 
