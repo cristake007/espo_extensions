@@ -1,5 +1,15 @@
 # Codex Change Log
 
+## 20260715 - EspoCRM Holiday Date Pickers
+
+- Replaced browser-native holiday inputs with EspoCRM's standard formatted
+  date input, calendar button, and date-picker component.
+- Applied the date picker to every repeatable holiday row on both create and
+  edit pages.
+- Preserved the backend `dd.mm.yyyy` comma-separated storage contract while
+  displaying dates according to the current EspoCRM user's date settings.
+- Bumped the corrective package version to `2.1.1`.
+
 ## 20260715 - Full-Width Schedule Creation Experience
 
 - Added a create-only record view that uses EspoCRM's wide record layout and

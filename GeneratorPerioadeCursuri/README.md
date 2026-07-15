@@ -4,7 +4,7 @@ This is the EspoCRM extension package for `Generator perioade cursuri`.
 
 Package ID: `generator-perioade-cursuri`
 
-Current package version: `2.1.0`
+Current package version: `2.1.1`
 
 Package source:
 

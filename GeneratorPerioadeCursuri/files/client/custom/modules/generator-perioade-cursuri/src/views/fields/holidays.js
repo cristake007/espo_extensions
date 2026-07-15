@@ -1,4 +1,4 @@
-define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varchar'], function (VarcharFieldView) {
+define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varchar', 'ui/datepicker'], function (VarcharFieldView, Datepicker) {
     return class extends VarcharFieldView {
         detailTemplateContent = `
             {{#if hasDates}}
@@ -17,12 +17,11 @@ define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varcha
                 <div data-role="date-list">
                     {{#each dateList}}
                         <div class="input-group" data-role="date-row" style="margin-bottom: 6px;">
-                            {{#if ../useDateInput}}
-                                <input type="date" class="form-control holiday-date" value="{{this}}" autocomplete="off">
-                            {{else}}
-                                <input type="text" class="form-control holiday-date" value="{{this}}" placeholder="dd.mm.yyyy" maxlength="10" inputmode="numeric" autocomplete="off">
-                            {{/if}}
+                            <input type="text" class="form-control numeric-text holiday-date" value="{{this}}" autocomplete="off">
                             <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-icon date-picker-btn" data-action="showHolidayDatePicker" tabindex="-1">
+                                    <span class="far fa-calendar"></span>
+                                </button>
                                 <button type="button" class="btn btn-default" data-action="removeHolidayDate" title="{{removeLabel}}">
                                     <span class="fas fa-times"></span>
                                 </button>
@@ -46,18 +45,19 @@ define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varcha
 
             this.addHandler('click', '[data-action="addHolidayDate"]', () => this.addHolidayDate());
             this.addHandler('click', '[data-action="removeHolidayDate"]', (e, target) => this.removeHolidayDate(target));
+            this.addHandler('click', '[data-action="showHolidayDatePicker"]', (e, target) => this.showHolidayDatePicker(target));
             this.addHandler('input', 'input.holiday-date', () => this.handleDateInput());
             this.addHandler('change', 'input.holiday-date', () => this.handleDateInput());
+
+            this.holidayDatepickers = new WeakMap();
         }
 
         data() {
             const data = super.data();
             const dateList = this.parseValue(this.model.get(this.name));
-            const useDateInput = this.model.isNew();
 
-            data.dateList = dateList.length && useDateInput ? dateList.map(date => this.toInputDate(date)) : dateList;
+            data.dateList = dateList.map(date => this.toDisplayDate(date));
             data.dateList = data.dateList.length ? data.dateList : (this.isEditMode() ? [''] : []);
-            data.useDateInput = useDateInput;
             data.hasDates = dateList.length > 0;
             data.value = this.serializeDateList(dateList);
             data.addLabel = this.translate('Add holiday date', 'labels', 'GeneratorPerioadeCursuri');
@@ -71,6 +71,7 @@ define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varcha
         afterRender() {
             super.afterRender();
 
+            this.element.querySelectorAll('input.holiday-date').forEach(input => this.initHolidayDatePicker(input));
             this.syncHiddenInput();
         }
 
@@ -86,10 +87,11 @@ define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varcha
             row.dataset.role = 'date-row';
             row.style.marginBottom = '6px';
             row.innerHTML = [
-                this.model.isNew()
-                    ? '<input type="date" class="form-control holiday-date" autocomplete="off">'
-                    : '<input type="text" class="form-control holiday-date" placeholder="dd.mm.yyyy" maxlength="10" inputmode="numeric" autocomplete="off">',
+                '<input type="text" class="form-control numeric-text holiday-date" autocomplete="off">',
                 '<span class="input-group-btn">',
+                '<button type="button" class="btn btn-default btn-icon date-picker-btn" data-action="showHolidayDatePicker" tabindex="-1">',
+                '<span class="far fa-calendar"></span>',
+                '</button>',
                 '<button type="button" class="btn btn-default" data-action="removeHolidayDate" title="' + this.escapeHtml(this.translate('Remove holiday date', 'labels', 'GeneratorPerioadeCursuri')) + '">',
                 '<span class="fas fa-times"></span>',
                 '</button>',
@@ -101,6 +103,7 @@ define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varcha
             const input = row.querySelector('input.holiday-date');
 
             if (input) {
+                this.initHolidayDatePicker(input);
                 input.focus();
             }
 
@@ -129,6 +132,30 @@ define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varcha
         handleDateInput() {
             this.syncHiddenInput();
             this.trigger('change');
+        }
+
+        initHolidayDatePicker(input) {
+            if (!(input instanceof HTMLInputElement) || this.holidayDatepickers.has(input)) {
+                return;
+            }
+
+            const datepicker = new Datepicker(input, {
+                format: this.getDateTime().dateFormat,
+                weekStart: this.getDateTime().weekStart,
+                todayButton: this.getConfig().get('datepickerTodayButton') || false,
+                onChange: () => this.handleDateInput()
+            });
+
+            this.holidayDatepickers.set(input, datepicker);
+        }
+
+        showHolidayDatePicker(target) {
+            const input = target.closest('[data-role="date-row"]')?.querySelector('input.holiday-date');
+            const datepicker = input ? this.holidayDatepickers.get(input) : null;
+
+            if (datepicker) {
+                datepicker.show();
+            }
         }
 
         fetch() {
@@ -185,7 +212,7 @@ define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varcha
             return Array.from(this.element.querySelectorAll('input.holiday-date'))
                 .map(input => input.value.trim())
                 .filter(value => value !== '')
-                .map(value => this.model.isNew() ? this.fromInputDate(value) : value);
+                .map(value => this.fromDisplayDate(value));
         }
 
         parseValue(value) {
@@ -202,18 +229,19 @@ define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varcha
             return dateList.join(', ');
         }
 
-        toInputDate(value) {
+        toDisplayDate(value) {
             const match = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(value);
 
             if (!match) {
-                return '';
+                return value;
             }
 
-            return [match[3], match[2], match[1]].join('-');
+            return this.getDateTime().toDisplayDate([match[3], match[2], match[1]].join('-'));
         }
 
-        fromInputDate(value) {
-            const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+        fromDisplayDate(value) {
+            const internalDate = this.getDateTime().fromDisplayDate(value);
+            const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(internalDate);
 
             if (!match) {
                 return value;

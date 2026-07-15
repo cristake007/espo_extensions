@@ -1,6 +1,6 @@
 {
     "name": "Generator perioade cursuri",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "acceptableVersions": [
         ">=10.0.0"
     ],
