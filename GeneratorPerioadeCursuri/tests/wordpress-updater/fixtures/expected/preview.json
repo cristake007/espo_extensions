@@ -1,0 +1,46 @@
+{
+  "sourceCommit": "ce7caf4196c107625ba8d553523bca79c9f13f8a",
+  "cases": [
+    {
+      "fixture": "romanian-nume-curs.csv",
+      "rows": [
+        {"sourceRow": 2, "title": "Protecția datelor", "permalink": "https://wp.example.test/cursuri/protectia-datelor/", "slug": "protectia-datelor", "excelDates": ["08.01.2026", "12-13.02.2026"]},
+        {"sourceRow": 3, "title": "Audit intern", "permalink": "https://wp.example.test/cursuri/audit-intern", "slug": "audit-intern", "excelDates": ["05.03.2026"]}
+      ]
+    },
+    {
+      "fixture": "django-title-english.csv",
+      "rows": [
+        {"sourceRow": 2, "title": "Django English", "permalink": "https://wp.example.test/cursuri/django-english/", "slug": "django-english", "excelDates": ["08.01.2026", "14.02.2026", "05-06.03.2026"]}
+      ]
+    },
+    {
+      "fixture": "bilingual-precedence.csv",
+      "rows": [
+        {"sourceRow": 2, "title": "English wins", "permalink": "https://wp.example.test/cursuri/english-wins/", "slug": "english-wins", "excelDates": ["01.01.2026", "03.02.2026", "05.03.2026"]}
+      ]
+    },
+    {
+      "fixture": "semicolon-bom.csv",
+      "rows": [
+        {"sourceRow": 2, "title": "CSV cu BOM", "permalink": "https://wp.example.test/cursuri/csv-bom/", "slug": "csv-bom", "excelDates": ["10.01.2026", "11-12.02.2026"]}
+      ]
+    },
+    {
+      "fixture": "typed-date.xlsx",
+      "rows": [
+        {"sourceRow": 2, "title": "XLSX typed date", "permalink": "https://wp.example.test/cursuri/xlsx-typed-date/", "slug": "xlsx-typed-date", "excelDates": ["10.01.2026"]}
+      ]
+    },
+    {
+      "fixture": "edge-rows.csv",
+      "rows": [
+        {"sourceRow": 3, "title": "Curs fără titlu", "permalink": "https://wp.example.test/cursuri/fara-titlu/", "slug": "fara-titlu", "excelDates": ["15.01.2026"], "error": null},
+        {"sourceRow": 4, "title": "Missing permalink", "permalink": "", "slug": "", "excelDates": ["16.01.2026"], "error": "invalidPermalink"},
+        {"sourceRow": 5, "title": "No slug", "permalink": "https://wp.example.test///", "slug": "", "excelDates": ["17.01.2026"], "error": "invalidPermalink"},
+        {"sourceRow": 6, "title": "No dates", "permalink": "https://wp.example.test/cursuri/no-dates/", "slug": "no-dates", "excelDates": [], "error": null},
+        {"sourceRow": 7, "title": "Text nan", "permalink": "https://wp.example.test/cursuri/text-nan/", "slug": "text-nan", "excelDates": [], "error": null}
+      ]
+    }
+  ]
+}

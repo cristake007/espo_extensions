@@ -1,0 +1,22 @@
+{
+  "sourceCommit": "ce7caf4196c107625ba8d553523bca79c9f13f8a",
+  "liveNetworkAllowed": false,
+  "defaults": {"connectTimeoutSeconds": 5, "responseTimeoutSeconds": 30, "maxResponseBytes": 5242880, "maxRedirects": 3, "maxRetriesAfterFirstAttempt": 4, "minimumSpacingSeconds": 0.85},
+  "scenarios": [
+    {"name": "public-url", "url": "https://wp.example.test", "dns": ["93.184.216.34"], "expected": "allowed-and-pinned"},
+    {"name": "private-ipv4", "url": "http://10.0.0.8", "dns": ["10.0.0.8"], "expected": "reject-before-transport"},
+    {"name": "private-ipv6", "url": "https://[fd00::8]", "dns": ["fd00::8"], "expected": "reject-before-transport"},
+    {"name": "metadata-host", "url": "http://metadata.google.internal", "dns": [], "expected": "reject-before-dns"},
+    {"name": "mixed-public-private-dns", "url": "https://mixed.example.test", "dns": ["93.184.216.34", "192.168.10.20"], "expected": "reject-before-transport"},
+    {"name": "redirect-private-ip", "url": "https://wp.example.test/start", "dns": ["93.184.216.34"], "responses": [{"status": 302, "headers": {"Location": "http://127.0.0.1/admin"}, "body": ""}], "expected": "reject-after-one-exchange"},
+    {"name": "authenticated-cross-host-redirect", "url": "https://wp.example.test/start", "authenticated": true, "dns": ["93.184.216.34"], "responses": [{"status": 302, "headers": {"Location": "https://other.example.test/admin"}, "body": ""}], "expected": "reject-without-forwarding-auth"},
+    {"name": "authenticated-https-downgrade", "url": "https://wp.example.test/start", "authenticated": true, "dns": ["93.184.216.34"], "responses": [{"status": 302, "headers": {"Location": "http://wp.example.test/admin"}, "body": ""}], "expected": "reject-without-second-exchange"},
+    {"name": "too-many-redirects", "url": "https://wp.example.test/one", "dns": ["93.184.216.34"], "responses": [{"status": 302, "headers": {"Location": "/two"}}, {"status": 302, "headers": {"Location": "/three"}}, {"status": 302, "headers": {"Location": "/four"}}, {"status": 302, "headers": {"Location": "/five"}}], "expected": "too-many-redirects"},
+    {"name": "oversized-body", "url": "https://wp.example.test/wp-json/wp/v2/users/me", "dns": ["93.184.216.34"], "responses": [{"status": 200, "streamedBodyBytes": 5242881}], "expected": "response-too-large"},
+    {"name": "cloudflare-challenge", "url": "https://wp.example.test/wp-json/wp/v2/users/me", "dns": ["93.184.216.34"], "responses": [{"status": 403, "headers": {"cf-mitigated": "challenge"}, "body": "<title>Just a moment...</title>"}], "expected": "browser-challenge"},
+    {"name": "rate-limited-retries", "url": "https://wp.example.test/wp-json/wp/v2/users/me", "dns": ["93.184.216.34"], "responses": [{"status": 429, "headers": {"Retry-After": "2"}}, {"status": 429}, {"status": 200, "body": "{\"id\":7,\"name\":\"Fixture Editor\"}"}], "expected": "success-after-two-retries"},
+    {"name": "invalid-json", "url": "https://wp.example.test/wp-json/wp/v2/users/me", "dns": ["93.184.216.34"], "responses": [{"status": 200, "body": "not-json"}], "expected": "invalid-response"},
+    {"name": "get-timeout", "url": "https://wp.example.test/wp-json/wp/v2/cursuri?slug=fixture", "dns": ["93.184.216.34"], "responses": [{"transportError": "timeout"}], "expected": "safe-unreachable-error"},
+    {"name": "post-timeout-delivery-unknown", "url": "https://wp.example.test/wp-json/wp/v2/cursuri/42", "method": "POST", "dns": ["93.184.216.34"], "responses": [{"transportError": "timeout"}], "expected": "safe-error-no-retry"}
+  ]
+}

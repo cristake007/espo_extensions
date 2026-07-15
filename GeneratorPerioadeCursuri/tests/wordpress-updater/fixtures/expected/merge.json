@@ -1,0 +1,51 @@
+{
+  "today": "2026-01-10",
+  "timezone": "Europe/Bucharest",
+  "dateParsing": [
+    {"value": "5.1.2026", "effectiveDate": "2026-01-05", "valid": true},
+    {"value": "05.01.2026", "effectiveDate": "2026-01-05", "valid": true},
+    {"value": "5-7.1.2026", "effectiveDate": "2026-01-07", "valid": true},
+    {"value": "05-07.01.2026", "effectiveDate": "2026-01-07", "valid": true},
+    {"value": "31.02.2026", "effectiveDate": null, "valid": false},
+    {"value": "30-31.04.2026", "effectiveDate": null, "valid": false},
+    {"value": "30.01-02.02.2026", "effectiveDate": null, "valid": false},
+    {"value": "14–16.04.2026", "effectiveDate": null, "valid": false},
+    {"value": "2026-04-08 00:00:00", "effectiveDate": null, "valid": false}
+  ],
+  "mergeCases": [
+    {
+      "name": "today-expired-future-range-invalid-and-duplicates",
+      "existing": [
+        {"data": "09.01.2026"},
+        {"data": "10.01.2026"},
+        {"data": "10.01.2026"},
+        {"data": "11-12.01.2026"},
+        {"data": "31.02.2026"},
+        {"data": "30.01-02.02.2026"}
+      ],
+      "fileDates": ["10.01.2026", "13.01.2026", "13.01.2026", "14-15.02.2026"],
+      "existingValidDates": ["10.01.2026", "11-12.01.2026"],
+      "finalDates": ["10.01.2026", "11-12.01.2026", "13.01.2026", "14-15.02.2026"],
+      "payload": {"acf": {"program": [{"data": "10.01.2026"}, {"data": "11-12.01.2026"}, {"data": "13.01.2026"}, {"data": "14-15.02.2026"}]}},
+      "changed": true
+    },
+    {
+      "name": "ordered-equal-no-change",
+      "existing": [{"data": "10.01.2026"}, {"data": "11-12.01.2026"}],
+      "fileDates": ["10.01.2026", "11-12.01.2026"],
+      "existingValidDates": ["10.01.2026", "11-12.01.2026"],
+      "finalDates": ["10.01.2026", "11-12.01.2026"],
+      "payload": {"acf": {"program": [{"data": "10.01.2026"}, {"data": "11-12.01.2026"}]}},
+      "changed": false
+    },
+    {
+      "name": "empty-program-uses-false",
+      "existing": [{"data": "09.01.2026"}, {"data": "invalid"}],
+      "fileDates": [],
+      "existingValidDates": [],
+      "finalDates": [],
+      "payload": {"acf": {"program": false}},
+      "changed": true
+    }
+  ]
+}

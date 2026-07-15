@@ -1,0 +1,20 @@
+{
+  "sourceCommit": "ce7caf4196c107625ba8d553523bca79c9f13f8a",
+  "upstreamFile": "apps/planificator/tests_course_updater.py",
+  "activeTestCount": 13,
+  "assertions": [
+    {"upstream": "CourseUpdaterDomainTests.test_slug_and_supported_date_formats_are_parsed", "plannedPhp": "WordPressProgramMergerTest::testSlugAndSupportedEffectiveDateFormats", "fixtures": ["expected/preview.json", "expected/merge.json"]},
+    {"upstream": "CourseUpdaterDomainTests.test_date_token_expansion_preserves_the_old_supported_formats", "plannedPhp": "WordPressProgramMergerTest::testActiveUpdaterPreservesRangesAndRejectsInactiveExpansionFormats", "fixtures": ["expected/merge.json"], "adaptation": "The active workflow keeps a range as one ACF value; the unused expansion helper is deliberately not ported."},
+    {"upstream": "CourseUpdaterDomainTests.test_month_values_support_old_english_and_current_romanian_exports", "plannedPhp": "WordPressScheduleParserTest::testEnglishAndRomanianMonthsUseCalendarOrder", "fixtures": ["schedules/django-title-english.csv", "schedules/romanian-nume-curs.csv", "expected/preview.json"]},
+    {"upstream": "CourseUpdaterDomainTests.test_program_merge_filters_expired_rows_and_deduplicates_exact_text", "plannedPhp": "WordPressProgramMergerTest::testExpiredInvalidAndDuplicateValuesAreFilteredWithStableOrder", "fixtures": ["expected/merge.json"]},
+    {"upstream": "CourseUpdaterNetworkSafetyTests.test_public_url_is_allowed", "plannedPhp": "WordPressUrlGuardTest::testPublicUrlIsNormalizedResolvedAndPinned", "fixtures": ["http/scenarios.json"]},
+    {"upstream": "CourseUpdaterNetworkSafetyTests.test_private_destination_is_blocked", "plannedPhp": "WordPressUrlGuardTest::testPrivateIpv4AndIpv6DestinationsAreBlocked", "fixtures": ["http/scenarios.json"]},
+    {"upstream": "CourseUpdaterNetworkSafetyTests.test_redirect_to_private_destination_is_blocked", "plannedPhp": "WordPressCourseClientTest::testRedirectTargetIsRevalidatedBeforeSecondExchange", "fixtures": ["http/scenarios.json"]},
+    {"upstream": "CourseUpdaterNetworkSafetyTests.test_cloudflare_challenge_has_a_safe_specific_error", "plannedPhp": "WordPressCourseClientTest::testCloudflareChallengeMapsToSafeSpecificError", "fixtures": ["http/scenarios.json"]},
+    {"upstream": "CourseUpdaterWorkflowTests.test_page_uses_existing_route_and_exposes_updater_endpoints", "plannedPhp": "WordPressUpdaterMetadataTest::testDedicatedScopeRoutesAndWorkspaceOmitEditablePostId", "fixtures": []},
+    {"upstream": "CourseUpdaterWorkflowTests.test_preview_is_local_and_accepts_the_current_romanian_export", "plannedPhp": "WordPressUpdaterServiceTest::testPreviewAcceptsRomanianExportWithoutConstructingClient", "fixtures": ["schedules/romanian-nume-curs.csv", "expected/preview.json"]},
+    {"upstream": "CourseUpdaterWorkflowTests.test_connect_saves_non_secret_settings_only", "plannedPhp": "WordPressUpdaterServiceTest::testConnectPersistsOnlyNormalizedNonSecretSettings", "fixtures": ["http/scenarios.json"]},
+    {"upstream": "CourseUpdaterWorkflowTests.test_fetch_dates_merges_without_updating", "plannedPhp": "WordPressUpdaterServiceTest::testFetchMergesAuthoritativeRowWithoutPost", "fixtures": ["expected/merge.json", "http/scenarios.json"]},
+    {"upstream": "CourseUpdaterWorkflowTests.test_update_posts_only_the_final_acf_program", "plannedPhp": "WordPressUpdaterServiceTest::testUpdatePostsOnlyFinalAcfProgramToReresolvedCourse", "fixtures": ["expected/merge.json", "http/scenarios.json"]}
+  ]
+}
