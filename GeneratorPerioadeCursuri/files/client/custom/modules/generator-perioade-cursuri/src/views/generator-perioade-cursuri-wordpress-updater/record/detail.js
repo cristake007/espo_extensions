@@ -174,7 +174,7 @@ define(
             }
 
             disconnectWordPress() {
-                if (this.hasWordPressRowBusy()) {
+                if (!this.wpUpdaterConnected || this.hasWordPressRowBusy()) {
                     return;
                 }
 
@@ -272,7 +272,7 @@ define(
                     '<button type="button" class="btn btn-default" data-action="wp-connect"', disabled ? ' disabled' : '', '>',
                     '<i class="fas fa-plug" aria-hidden="true"></i> ', this.escapeHtml(this.translateLabel('wpUpdaterConnect')), '</button>',
                     '<button type="button" class="btn btn-default" data-action="wp-disconnect"',
-                    disabled ? ' disabled' : '', '>',
+                    (disabled || !this.wpUpdaterConnected) ? ' disabled' : '', '>',
                     this.escapeHtml(this.translateLabel('wpUpdaterDisconnect')), '</button>',
                     '<div class="wordpress-updater-connection-status" role="status" aria-live="polite">',
                     this.composeWordPressConnectionStatus(),

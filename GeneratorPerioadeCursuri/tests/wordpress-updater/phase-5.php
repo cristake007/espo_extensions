@@ -54,6 +54,8 @@ foreach ([
     "this.wpUpdaterRowBusy[sourceRow] = action" => 'a row is locked before its request',
     'delete this.wpUpdaterRowBusy[sourceRow]' => 'the row lock is released after its request',
     'this.wpUpdaterRowBusy[sourceRow]' => 'repeat row clicks are rejected while busy',
+    'if (!this.wpUpdaterConnected || this.hasWordPressRowBusy())' => 'disconnect is guarded unless a connection is active',
+    "(disabled || !this.wpUpdaterConnected) ? ' disabled' : ''" => 'disconnect is visibly disabled while disconnected',
     'row.canUpdate = false' => 'successful update disables immediate repeat update',
     "this.getErrorStatus(error) === 409" => 'stale previews are invalidated on conflict',
 ] as $needle => $message) {
