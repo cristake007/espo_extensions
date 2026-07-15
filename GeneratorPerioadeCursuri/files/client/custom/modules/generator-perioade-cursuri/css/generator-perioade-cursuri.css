@@ -149,6 +149,32 @@
     color: var(--state-danger-text) !important;
 }
 
+.word-preview-generated-button.btn.btn-warning {
+    background: var(--state-warning-bg) !important;
+    border-color: var(--state-warning-border) !important;
+    color: var(--state-warning-text) !important;
+}
+
+.word-preview-generated-button.btn.btn-warning:hover,
+.word-preview-generated-button.btn.btn-warning:focus {
+    background: var(--state-warning-bg-5) !important;
+    border-color: var(--state-warning-text) !important;
+    color: var(--state-warning-text-10) !important;
+}
+
+.word-preview-generated-button.btn.btn-info {
+    background: var(--state-info-bg) !important;
+    border-color: var(--state-info-border) !important;
+    color: var(--state-info-text) !important;
+}
+
+.word-preview-generated-button.btn.btn-info:hover,
+.word-preview-generated-button.btn.btn-info:focus {
+    background: var(--state-info-bg-5) !important;
+    border-color: var(--state-info-text) !important;
+    color: var(--state-info-text-10) !important;
+}
+
 @media (max-width: 767px) {
     .generator-perioade-cursuri-create .middle > .panel > .panel-body {
         padding: 16px;

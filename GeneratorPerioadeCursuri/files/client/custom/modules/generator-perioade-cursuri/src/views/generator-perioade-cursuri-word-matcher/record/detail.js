@@ -272,7 +272,7 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher
                 '</button>'
             ].join('')).join('');
             const generatedButton = generatedOption ? [
-                '<button type="button" class="btn ' + (generatedOption.generationMode === 'primary' ? 'btn-warning' : 'btn-info') + ' btn-xs" style="display: block; width: 100%; height: auto; min-height: 28px; margin-bottom: 6px; padding: 5px 8px; white-space: normal; text-align: left; line-height: 1.35; font-weight: 600;"',
+                '<button type="button" class="btn word-preview-generated-button ' + (generatedOption.generationMode === 'primary' ? 'btn-warning' : 'btn-info') + ' btn-xs" style="display: block; width: 100%; height: auto; min-height: 28px; margin-bottom: 6px; padding: 5px 8px; white-space: normal; text-align: left; line-height: 1.35; font-weight: 600;"',
                 ' data-word-row-index="' + this.escapeHtml(row.wordRowIndex) + '"',
                 ' data-generated-row-index="' + this.escapeHtml(generatedOption.rowIndex) + '">',
                 this.escapeHtml(generatedOption.title),
