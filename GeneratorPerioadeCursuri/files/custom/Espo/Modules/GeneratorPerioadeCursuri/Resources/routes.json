@@ -18,5 +18,10 @@
         "route": "/GeneratorPerioadeCursuriWordMatcher/:id/convertWord",
         "method": "post",
         "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostConvertWord"
+    },
+    {
+        "route": "/GeneratorPerioadeCursuriXmlConverter/:id/generateXml",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostGenerateXml"
     }
 ]

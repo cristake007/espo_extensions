@@ -23,5 +23,25 @@
     "tooltips": {
         "xmlScheduleFile": "Upload the generated schedule as CSV or XLSX. The file may contain any supported subset of month columns.",
         "startPostId": "The first generated XML item uses this WordPress Post ID."
+    },
+    "messages": {
+        "xmlConverterIdRequired": "The XML converter record ID is required.",
+        "xmlConverterNotFound": "The XML converter record was not found.",
+        "xmlSourceRequired": "Upload a schedule file before generating XML.",
+        "xmlSourceNotFound": "The uploaded schedule file was not found.",
+        "xmlStartPostIdInvalid": "The first WordPress Post ID must be between 1 and 2147483647.",
+        "xmlSourceEmpty": "The source file is empty.",
+        "xmlSourceTooLarge": "The source file may be at most 20 MiB.",
+        "xmlSourceTypeInvalid": "The source file must be CSV or XLSX.",
+        "xmlCsvUtf8Required": "The CSV file must use UTF-8.",
+        "xmlCsvUnreadable": "The CSV file could not be read.",
+        "xmlXlsxStructureInvalid": "The XLSX file does not have a valid structure.",
+        "xmlXlsxUnreadable": "The XLSX file could not be read.",
+        "xmlMissingRequiredColumns": "Missing required columns: {columns}.",
+        "xmlTooManyColumns": "The input file may contain at most 50 columns.",
+        "xmlNoSupportedMonths": "No supported date columns were found. Use Romanian or English month columns, or Luna 1 through Luna 12.",
+        "xmlTooManyCourses": "The input file may contain at most 5000 courses.",
+        "xmlNoValidCourseData": "No valid course data was found in the input file.",
+        "xmlConversionUnable": "Unable to read the uploaded schedule or create XML."
     }
 }

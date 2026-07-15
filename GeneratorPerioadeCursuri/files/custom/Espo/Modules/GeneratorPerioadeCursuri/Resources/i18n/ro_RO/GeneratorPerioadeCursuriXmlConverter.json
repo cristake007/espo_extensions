@@ -23,5 +23,25 @@
     "tooltips": {
         "xmlScheduleFile": "Incarca planificarea generata in format CSV sau XLSX. Fisierul poate contine orice subset acceptat de coloane lunare.",
         "startPostId": "Primul element XML generat foloseste acest ID de articol WordPress."
+    },
+    "messages": {
+        "xmlConverterIdRequired": "ID-ul inregistrarii convertorului XML este obligatoriu.",
+        "xmlConverterNotFound": "Inregistrarea convertorului XML nu a fost gasita.",
+        "xmlSourceRequired": "Incarca un fisier de planificare inainte de generarea XML.",
+        "xmlSourceNotFound": "Fisierul de planificare incarcat nu a fost gasit.",
+        "xmlStartPostIdInvalid": "Primul ID de articol WordPress trebuie sa fie intre 1 si 2147483647.",
+        "xmlSourceEmpty": "Fisierul sursa este gol.",
+        "xmlSourceTooLarge": "Fisierul sursa poate avea cel mult 20 MiB.",
+        "xmlSourceTypeInvalid": "Fisierul sursa trebuie sa fie CSV sau XLSX.",
+        "xmlCsvUtf8Required": "Fisierul CSV trebuie sa foloseasca UTF-8.",
+        "xmlCsvUnreadable": "Fisierul CSV nu a putut fi citit.",
+        "xmlXlsxStructureInvalid": "Fisierul XLSX nu are o structura valida.",
+        "xmlXlsxUnreadable": "Fisierul XLSX nu a putut fi citit.",
+        "xmlMissingRequiredColumns": "Lipsesc coloanele obligatorii: {columns}.",
+        "xmlTooManyColumns": "Fisierul poate contine cel mult 50 de coloane.",
+        "xmlNoSupportedMonths": "Nu au fost gasite coloane de data acceptate. Foloseste luni in romana sau engleza ori Luna 1 pana la Luna 12.",
+        "xmlTooManyCourses": "Fisierul poate contine cel mult 5000 de cursuri.",
+        "xmlNoValidCourseData": "Fisierul nu contine date de curs valide.",
+        "xmlConversionUnable": "Planificarea incarcata nu a putut fi citita sau fisierul XML nu a putut fi creat."
     }
 }

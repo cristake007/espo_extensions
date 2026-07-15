@@ -58,7 +58,7 @@ class XmlScheduleParser
         }
 
         if (strlen($contents) > self::MAX_UPLOAD_BYTES) {
-            throw new BadRequest('The source file may be at most 20 MiB.');
+            throw new BadRequest('The source file may be at most 20 MiB.', 413);
         }
 
         $extension = strtolower((string) pathinfo($fileName, PATHINFO_EXTENSION));

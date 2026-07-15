@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use DateTimeZone;
 use DOMDocument;
 use DOMElement;
+use RuntimeException;
 use ValueError;
 
 class MecXmlBuilder
@@ -112,7 +113,7 @@ class MecXmlBuilder
         $xml = $document->saveXML();
 
         if ($xml === false) {
-            throw new ValueError('Unable to serialize MEC XML.');
+            throw new RuntimeException('Unable to serialize MEC XML.');
         }
 
         $xml = preg_replace('/^<\?xml version="1\.0"\?>/', '<?xml version="1.0" ?>', $xml) ?? $xml;
