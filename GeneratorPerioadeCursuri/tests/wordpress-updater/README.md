@@ -79,6 +79,16 @@ Run the Phase 1 parser and merge-policy checks:
 php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-1.php
 ```
 
+Run the Phase 2 URL, transport, and WordPress protocol checks:
+
+```bash
+php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-2.php
+```
+
+The Phase 2 runner injects DNS answers, transport responses, time, sleeping, and
+jitter. It executes every scenario in `fixtures/http/scenarios.json` without
+performing DNS resolution or an HTTP request.
+
 When the EspoCRM vendor tree is unavailable, the Phase 1 runner loads
 `phpspreadsheet-test-double.php`. The double exists only to exercise the locked
 XLSX fixture through the production parser's PhpSpreadsheet calls; installed

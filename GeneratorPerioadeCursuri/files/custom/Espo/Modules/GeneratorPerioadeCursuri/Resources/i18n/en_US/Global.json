@@ -10,6 +10,22 @@
         "GeneratorPerioadeCursuriXmlConverter": "Generator Perioade Cursuri XML Converters"
     },
     "messages": {
-        "fieldNotMatchingPattern$holidayDates": "{field} must contain dates like 15.09.2026, 16.09.2026."
+        "fieldNotMatchingPattern$holidayDates": "{field} must contain dates like 15.09.2026, 16.09.2026.",
+        "wpUpdaterInvalidUrl": "The WordPress URL is invalid or points to a prohibited destination.",
+        "wpUpdaterHostResolutionFailed": "The WordPress host could not be resolved.",
+        "wpUpdaterUnsafeRedirect": "WordPress returned an unsafe redirect.",
+        "wpUpdaterTooManyRedirects": "WordPress returned too many redirects.",
+        "wpUpdaterAuthenticationFailed": "WordPress authentication failed.",
+        "wpUpdaterOperationDenied": "WordPress denied this operation.",
+        "wpUpdaterEndpointNotFound": "The required WordPress endpoint was not found.",
+        "wpUpdaterCourseNotFound": "Course not found by slug.",
+        "wpUpdaterRateLimited": "WordPress is temporarily rate limiting requests.",
+        "wpUpdaterUnavailable": "WordPress is temporarily unavailable.",
+        "wpUpdaterBrowserChallenge": "WordPress rejected the request with a browser challenge.",
+        "wpUpdaterResponseTooLarge": "WordPress returned a response that is too large.",
+        "wpUpdaterInvalidResponse": "WordPress returned an invalid response.",
+        "wpUpdaterTimeout": "The WordPress request timed out.",
+        "wpUpdaterConnectionFailed": "Unable to reach WordPress.",
+        "wpUpdaterOperationFailed": "The WordPress course operation could not be completed."
     }
 }

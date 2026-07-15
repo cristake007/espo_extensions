@@ -10,6 +10,22 @@
         "GeneratorPerioadeCursuriXmlConverter": "Convertoare XML Generator Perioade Cursuri"
     },
     "messages": {
-        "fieldNotMatchingPattern$holidayDates": "{field} trebuie sa contina date de forma 15.09.2026, 16.09.2026."
+        "fieldNotMatchingPattern$holidayDates": "{field} trebuie sa contina date de forma 15.09.2026, 16.09.2026.",
+        "wpUpdaterInvalidUrl": "Adresa WordPress este invalida sau indica o destinatie interzisa.",
+        "wpUpdaterHostResolutionFailed": "Gazda WordPress nu a putut fi rezolvata.",
+        "wpUpdaterUnsafeRedirect": "WordPress a returnat o redirectionare nesigura.",
+        "wpUpdaterTooManyRedirects": "WordPress a returnat prea multe redirectionari.",
+        "wpUpdaterAuthenticationFailed": "Autentificarea WordPress a esuat.",
+        "wpUpdaterOperationDenied": "WordPress a refuzat aceasta operatiune.",
+        "wpUpdaterEndpointNotFound": "Endpoint-ul WordPress necesar nu a fost gasit.",
+        "wpUpdaterCourseNotFound": "Cursul nu a fost gasit dupa slug.",
+        "wpUpdaterRateLimited": "WordPress limiteaza temporar numarul de cereri.",
+        "wpUpdaterUnavailable": "WordPress este temporar indisponibil.",
+        "wpUpdaterBrowserChallenge": "WordPress a respins cererea printr-o verificare de browser.",
+        "wpUpdaterResponseTooLarge": "WordPress a returnat un raspuns prea mare.",
+        "wpUpdaterInvalidResponse": "WordPress a returnat un raspuns invalid.",
+        "wpUpdaterTimeout": "Cererea WordPress a expirat.",
+        "wpUpdaterConnectionFailed": "Conexiunea la WordPress nu a putut fi realizata.",
+        "wpUpdaterOperationFailed": "Operatiunea asupra cursului WordPress nu a putut fi finalizata."
     }
 }
