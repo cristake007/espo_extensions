@@ -94,7 +94,7 @@ $assertSame(
     $clientDefs['recordViews']['detail'] ?? null,
     'Client metadata must register the updater detail view.'
 );
-$assertSame('fa fa-wordpress', $clientDefs['iconClass'] ?? null, 'The updater nav item must use the configured WordPress icon.');
+$assertSame('fas fa-sync-alt', $clientDefs['iconClass'] ?? null, 'The updater nav item must use the supported solid sync icon.');
 
 $layouts = [];
 

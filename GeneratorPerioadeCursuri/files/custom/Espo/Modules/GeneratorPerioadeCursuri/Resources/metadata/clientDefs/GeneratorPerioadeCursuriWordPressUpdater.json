@@ -7,7 +7,7 @@
     "boolFilterList": [
         "onlyMy"
     ],
-    "iconClass": "fa fa-wordpress",
+    "iconClass": "fas fa-sync-alt",
     "kanbanViewMode": false,
     "color": "#164194"
 }
