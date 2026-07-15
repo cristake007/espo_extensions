@@ -32,12 +32,12 @@ define('generator-perioade-cursuri:views/fields/source-file', ['views/fields/fil
             </div>
         `;
 
-        setup() {
+        init() {
             if (this.model.isNew()) {
                 this.editTemplateContent = this.createEditTemplateContent;
             }
 
-            super.setup();
+            super.init();
         }
 
         afterRender() {
