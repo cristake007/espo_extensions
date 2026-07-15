@@ -24,7 +24,7 @@ Modes:
 Examples:
   ./build.sh
   ./build.sh --extension /opt/DemoExtension --zip 1.0.1 files scripts
-  ./build.sh --extension ./Planificari --zip 1.0.44 files scripts
+  ./build.sh --extension ./GeneratorPerioadeCursuri --zip 2.0.0 files scripts
 USAGE
 }
 

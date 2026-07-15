@@ -1,0 +1,22 @@
+[
+    {
+        "route": "/GeneratorPerioadeCursuri/generate",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostGenerate"
+    },
+    {
+        "route": "/GeneratorPerioadeCursuri/:id/exportXlsx",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostExportXlsx"
+    },
+    {
+        "route": "/GeneratorPerioadeCursuriWordMatcher/:id/previewWordConversion",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostPreviewWordConversion"
+    },
+    {
+        "route": "/GeneratorPerioadeCursuriWordMatcher/:id/convertWord",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostConvertWord"
+    }
+]

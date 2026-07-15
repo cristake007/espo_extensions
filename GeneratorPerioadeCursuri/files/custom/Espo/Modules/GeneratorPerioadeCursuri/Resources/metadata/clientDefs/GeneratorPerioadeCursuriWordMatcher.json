@@ -1,0 +1,12 @@
+{
+    "controller": "controllers/record",
+    "recordViews": {
+        "detail": "generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher/record/detail"
+    },
+    "boolFilterList": [
+        "onlyMy"
+    ],
+    "iconClass": "fas fa-file-word",
+    "kanbanViewMode": false,
+    "color": "#164194"
+}
