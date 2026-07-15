@@ -1,5 +1,18 @@
 # Codex Change Log
 
+## 20260715 - Full-Width Schedule Creation Experience
+
+- Added a create-only record view that uses EspoCRM's wide record layout and
+  disables the empty side region without changing existing record pages.
+- Restyled the native source-file field as a large drag-and-drop upload area
+  while preserving EspoCRM attachment upload and validation behavior.
+- Limited source uploads to CSV and XLSX, matching the backend parser.
+- Changed the repeatable holiday controls to browser date inputs while keeping
+  the stored `dd.mm.yyyy` comma-separated value unchanged.
+- Scoped a Unicode-safe loading placeholder and responsive page styling to the
+  Generator perioade cursuri create page.
+- Bumped the extension version to `2.1.0`.
+
 ## 20260715 - Package Integrity Check
 
 - Added an install-time check for both required entity scope definitions so an

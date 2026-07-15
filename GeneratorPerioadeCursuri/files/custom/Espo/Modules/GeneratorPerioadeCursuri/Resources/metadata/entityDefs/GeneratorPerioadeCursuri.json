@@ -10,7 +10,12 @@
         },
         "sourceFile": {
             "type": "file",
-            "tooltip": true
+            "accept": [
+                ".csv",
+                ".xlsx"
+            ],
+            "tooltip": true,
+            "view": "generator-perioade-cursuri:views/fields/source-file"
         },
         "year": {
             "type": "enum",

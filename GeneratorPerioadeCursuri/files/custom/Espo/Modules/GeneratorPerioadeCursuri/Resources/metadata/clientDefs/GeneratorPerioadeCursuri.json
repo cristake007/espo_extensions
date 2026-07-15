@@ -1,7 +1,8 @@
 {
     "controller": "controllers/record",
     "recordViews": {
-        "detail": "generator-perioade-cursuri:views/generator-perioade-cursuri/record/detail"
+        "detail": "generator-perioade-cursuri:views/generator-perioade-cursuri/record/detail",
+        "edit": "generator-perioade-cursuri:views/generator-perioade-cursuri/record/edit"
     },
     "boolFilterList": [
         "onlyMy"
