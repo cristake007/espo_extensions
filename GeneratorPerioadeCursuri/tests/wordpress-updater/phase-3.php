@@ -170,6 +170,18 @@ foreach (['en_US', 'ro_RO'] as $locale) {
     $assertTrue(isset($globalI18n['scopeNamesPlural'][$entityType]), "{$locale} must translate the plural scope name.");
 }
 
+$englishGlobal = $readJson($moduleRoot . '/Resources/i18n/en_US/Global.json');
+$assertSame(
+    'Generator Perioade Cursuri WordPress Updater',
+    $englishGlobal['scopeNames'][$entityType] ?? null,
+    'Entity Manager must use the extension naming convention for the updater.'
+);
+$assertSame(
+    'Generator Perioade Cursuri WordPress Updaters',
+    $englishGlobal['scopeNamesPlural'][$entityType] ?? null,
+    'The updater plural scope name must use the extension naming convention.'
+);
+
 if ($failures !== []) {
     foreach ($failures as $failure) {
         fwrite(STDERR, "FAIL: {$failure}\n");
