@@ -1,0 +1,39 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "assignedUsers"
+                }
+            ],
+            [
+                {
+                    "name": "teams"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "description"
+                }
+            ],
+            [
+                {
+                    "name": "xmlScheduleFile"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "startPostId"
+                },
+                false
+            ]
+        ],
+        "style": "default",
+        "label": "xmlConverterPanel"
+    }
+]

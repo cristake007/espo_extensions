@@ -1,0 +1,59 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "assignedUsers"
+                }
+            ],
+            [
+                {
+                    "name": "teams"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "description"
+                }
+            ],
+            [
+                {
+                    "name": "xmlScheduleFile"
+                },
+                {
+                    "name": "startPostId"
+                }
+            ],
+            [
+                {
+                    "name": "xmlConvertedFile"
+                },
+                {
+                    "name": "xmlConvertedAt"
+                }
+            ],
+            [
+                {
+                    "name": "createdAt"
+                },
+                {
+                    "name": "createdBy"
+                }
+            ],
+            [
+                {
+                    "name": "modifiedAt"
+                },
+                {
+                    "name": "modifiedBy"
+                }
+            ]
+        ],
+        "style": "default",
+        "label": "xmlConverterPanel"
+    }
+]

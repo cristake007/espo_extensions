@@ -1,0 +1,13 @@
+{
+    "controller": "controllers/record",
+    "recordViews": {
+        "detail": "generator-perioade-cursuri:views/generator-perioade-cursuri-xml-converter/record/detail",
+        "edit": "generator-perioade-cursuri:views/generator-perioade-cursuri-xml-converter/record/edit"
+    },
+    "boolFilterList": [
+        "onlyMy"
+    ],
+    "iconClass": "fas fa-file-code",
+    "kanbanViewMode": false,
+    "color": "#164194"
+}

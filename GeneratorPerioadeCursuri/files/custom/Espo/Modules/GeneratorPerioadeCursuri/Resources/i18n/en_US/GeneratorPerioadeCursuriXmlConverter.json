@@ -1,0 +1,27 @@
+{
+    "labels": {
+        "Create GeneratorPerioadeCursuriXmlConverter": "Create XML Conversion",
+        "xmlConverterPanel": "XML Converter",
+        "uploadXmlScheduleTitle": "Upload generated schedule",
+        "uploadSourceButton": "Choose file",
+        "uploadSourceAction": "or drag and drop it here"
+    },
+    "fields": {
+        "name": "Conversion Name",
+        "description": "Description",
+        "xmlScheduleFile": "Schedule File",
+        "startPostId": "First WordPress Post ID",
+        "xmlConvertedFile": "Generated XML File",
+        "xmlConvertedAt": "XML Generated At",
+        "assignedUsers": "Responsible Users",
+        "teams": "Teams",
+        "createdAt": "Created At",
+        "modifiedAt": "Modified At",
+        "createdBy": "Created By",
+        "modifiedBy": "Modified By"
+    },
+    "tooltips": {
+        "xmlScheduleFile": "Upload the generated schedule as CSV or XLSX. The file may contain any supported subset of month columns.",
+        "startPostId": "The first generated XML item uses this WordPress Post ID."
+    }
+}

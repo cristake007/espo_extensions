@@ -1,0 +1,27 @@
+{
+    "labels": {
+        "Create GeneratorPerioadeCursuriXmlConverter": "Creare conversie XML",
+        "xmlConverterPanel": "Convertor XML",
+        "uploadXmlScheduleTitle": "Incarca planificarea generata",
+        "uploadSourceButton": "Alege fisierul",
+        "uploadSourceAction": "sau trage-l si plaseaza-l aici"
+    },
+    "fields": {
+        "name": "Denumire conversie",
+        "description": "Descriere",
+        "xmlScheduleFile": "Fisier planificare",
+        "startPostId": "Primul ID articol WordPress",
+        "xmlConvertedFile": "Fisier XML generat",
+        "xmlConvertedAt": "XML generat la",
+        "assignedUsers": "Utilizatori responsabili",
+        "teams": "Echipe",
+        "createdAt": "Creat la",
+        "modifiedAt": "Modificat la",
+        "createdBy": "Creat de",
+        "modifiedBy": "Modificat de"
+    },
+    "tooltips": {
+        "xmlScheduleFile": "Incarca planificarea generata in format CSV sau XLSX. Fisierul poate contine orice subset acceptat de coloane lunare.",
+        "startPostId": "Primul element XML generat foloseste acest ID de articol WordPress."
+    }
+}
