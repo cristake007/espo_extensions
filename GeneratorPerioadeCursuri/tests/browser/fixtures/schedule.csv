@@ -1,0 +1,4 @@
+Title,Permalink,January
+Browser valid course,https://example.test/cursuri/browser-valid/,10.01.2030
+Browser invalid permalink,,10.01.2030
+Browser invalid date,https://example.test/cursuri/browser-invalid-date/,31.02.2030

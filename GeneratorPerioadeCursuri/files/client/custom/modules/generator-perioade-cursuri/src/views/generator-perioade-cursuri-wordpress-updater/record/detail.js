@@ -94,7 +94,7 @@ define(
                     Espo.Ui.notify(false);
                     Espo.Ui.success(this.translateMessage('wpUpdaterPreviewReady'));
                 } catch (error) {
-                    this.wpUpdaterGlobalError = this.getWordPressUpdaterError(error);
+                    this.wpUpdaterGlobalError = this.getWordPressUpdaterError(error, 'preview');
                     Espo.Ui.notify(false);
                     Espo.Ui.error(this.wpUpdaterGlobalError);
                 } finally {
@@ -163,7 +163,7 @@ define(
                     this.wpUpdaterConnected = false;
                     this.wpUpdaterUser = null;
                     this.resetWordPressRemoteRows();
-                    this.wpUpdaterGlobalError = this.getWordPressUpdaterError(error);
+                    this.wpUpdaterGlobalError = this.getWordPressUpdaterError(error, 'connect');
                     Espo.Ui.notify(false);
                     Espo.Ui.error(this.wpUpdaterGlobalError);
                 } finally {
@@ -224,7 +224,7 @@ define(
                     ));
                 } catch (error) {
                     row.status = this.translateLabel('wpUpdaterStatusError');
-                    row.error = this.getWordPressUpdaterError(error);
+                    row.error = this.getWordPressUpdaterError(error, action);
 
                     if (this.getErrorStatus(error) === 409) {
                         this.wpUpdaterGlobalError = row.error;
@@ -651,19 +651,38 @@ define(
                 return error && (error.status || (error.xhr && error.xhr.status)) || null;
             }
 
-            getWordPressUpdaterError(error) {
-                const fallback = this.translateMessage('wpUpdaterOperationFailed');
+            getWordPressUpdaterError(error, operation) {
+                const operationFallbacks = {
+                    preview: 'wpUpdaterPreviewFailed',
+                    connect: 'wpUpdaterConnectFailed',
+                    fetchDates: 'wpUpdaterFetchFailed',
+                    updateRow: 'wpUpdaterUpdateFailed'
+                };
+                const statusFallbacks = {
+                    400: 'wpUpdaterBadRequest',
+                    403: 'wpUpdaterForbidden',
+                    404: 'wpUpdaterNotFound',
+                    409: 'wpUpdaterPreviewStale',
+                    422: 'wpUpdaterValidationFailed',
+                    500: 'wpUpdaterServerError'
+                };
+                const status = this.getErrorStatus(error);
+                const fallbackKey = statusFallbacks[status] || operationFallbacks[operation] ||
+                    (status === 0 ? 'wpUpdaterNetworkError' : 'wpUpdaterOperationFailed');
+                const fallback = this.translateMessage(fallbackKey);
 
                 if (!error) {
                     return fallback;
                 }
 
                 if (error.responseJSON && typeof error.responseJSON.error === 'string') {
-                    return error.responseJSON.error;
+                    return this.isUsefulWordPressUpdaterError(error.responseJSON.error) ?
+                        error.responseJSON.error.trim() : fallback;
                 }
 
                 if (error.xhr && error.xhr.responseJSON && typeof error.xhr.responseJSON.error === 'string') {
-                    return error.xhr.responseJSON.error;
+                    return this.isUsefulWordPressUpdaterError(error.xhr.responseJSON.error) ?
+                        error.xhr.responseJSON.error.trim() : fallback;
                 }
 
                 if (error.responseText && error.responseText.charAt(0) === '{') {
@@ -671,7 +690,7 @@ define(
                         const data = JSON.parse(error.responseText);
 
                         if (typeof data.error === 'string') {
-                            return data.error;
+                            return this.isUsefulWordPressUpdaterError(data.error) ? data.error.trim() : fallback;
                         }
                     } catch (parseError) {}
                 }
@@ -679,12 +698,28 @@ define(
                 if (typeof error.getResponseHeader === 'function') {
                     const reason = error.getResponseHeader('X-Status-Reason');
 
-                    if (reason) {
-                        return reason;
+                    if (this.isUsefulWordPressUpdaterError(reason)) {
+                        return reason.trim();
                     }
                 }
 
                 return fallback;
+            }
+
+            isUsefulWordPressUpdaterError(message) {
+                if (typeof message !== 'string') {
+                    return false;
+                }
+
+                const normalized = message.trim();
+                const generic = /^(?:not valid|invalid|error|failed|undefined|null|\[object Object\]|\d{3})$/i;
+                const internal = /(?:authorization|bearer\s|password|token|stack\s*trace|\.php:\d+|\/var\/www|sqlstate|\bselect\s+.+\s+from\b|\b(?:runtime|logic|pdo)?exception\b)/i;
+
+                return normalized.length >= 12 &&
+                    !generic.test(normalized) &&
+                    !internal.test(normalized) &&
+                    !/^wpUpdater[A-Z]/.test(normalized) &&
+                    !/^[\[{].*[\]}]$/.test(normalized);
             }
 
             translateLabel(key) {
