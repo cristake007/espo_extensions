@@ -14,6 +14,7 @@ php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-4.php
 php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-5.php
 php GeneratorPerioadeCursuri/tests/offline/parser-merge-boundaries.php
 node GeneratorPerioadeCursuri/tests/offline/error-message-quality.mjs
+node GeneratorPerioadeCursuri/tests/offline/word-matcher-view-state.mjs
 bash build.sh --extension GeneratorPerioadeCursuri --zip files scripts >/dev/null
 version="$(php -r '$manifest = json_decode(file_get_contents("GeneratorPerioadeCursuri/manifest.json"), true, 512, JSON_THROW_ON_ERROR); echo $manifest["version"];')"
 php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-6.php \

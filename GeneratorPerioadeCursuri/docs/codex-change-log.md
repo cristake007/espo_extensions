@@ -1,5 +1,16 @@
 # Codex Change Log
 
+## 20260716 - Persistent Word Matcher Review and Full-Width Layout
+
+- Kept `Review Matches` available for every saved matcher record, including
+  after navigating away and returning when Espo's cached model omits file
+  attributes; the preview endpoint remains authoritative for file validation.
+- Applied the wide record layout and disabled the side column on matcher detail
+  and edit pages.
+- Added an offline regression test for restored-record button state and matcher
+  page layout.
+- Bumped the corrective package version to `2.3.2`.
+
 ## 20260715 - EspoCRM Holiday Date Pickers
 
 - Replaced browser-native holiday inputs with EspoCRM's standard formatted

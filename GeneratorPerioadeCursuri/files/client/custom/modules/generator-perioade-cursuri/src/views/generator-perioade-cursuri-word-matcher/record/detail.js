@@ -1,6 +1,9 @@
 define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher/record/detail', ['views/record/detail'], function (DetailRecordView) {
     return class extends DetailRecordView {
         setup() {
+            this.isWide = true;
+            this.sideDisabled = true;
+
             super.setup();
 
             this.wordConversionPreviewResult = null;
@@ -23,6 +26,7 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher
         afterRender() {
             super.afterRender();
 
+            this.element.classList.add('generator-perioade-cursuri-word-matcher-page');
             this.updatePreviewButtonState();
             this.updateDownloadWordButtonState(false);
 
@@ -113,8 +117,10 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher
                 return;
             }
 
-            const hasConvertedFile = !!this.model.get('wordConvertedFileId');
-            const disabled = !hasConvertedFile && (!this.model.get('wordTemplateFileId') || !this.model.get('wordScheduleFileId'));
+            // File attributes are not guaranteed to be hydrated when Espo restores a
+            // cached detail view. The preview endpoint reads and validates the saved
+            // record, so a persisted matcher record is the authoritative prerequisite.
+            const disabled = !this.model.id;
 
             button.disabled = disabled;
             button.classList.toggle('disabled', disabled);
