@@ -1,0 +1,7 @@
+[
+    {
+        "route": "/ZileLibere/availableDates",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ZileSarbatoare\\Tools\\ZileLibere\\Api\\PostAvailableDates"
+    }
+]
