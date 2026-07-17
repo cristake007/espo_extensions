@@ -1,0 +1,24 @@
+{
+    "module": "ZileSarbatoare",
+    "type": "Event",
+    "entity": true,
+    "object": true,
+    "acl": true,
+    "aclPortal": false,
+    "aclActionList": ["create", "read", "edit", "delete"],
+    "aclActionLevelListMap": {
+        "create": ["no"],
+        "read": ["all", "no"],
+        "edit": ["no"],
+        "delete": ["no"]
+    },
+    "layouts": true,
+    "tab": true,
+    "importable": false,
+    "customizable": false,
+    "stream": false,
+    "calendar": true,
+    "calendarOneDay": true,
+    "activity": false,
+    "notifications": false
+}

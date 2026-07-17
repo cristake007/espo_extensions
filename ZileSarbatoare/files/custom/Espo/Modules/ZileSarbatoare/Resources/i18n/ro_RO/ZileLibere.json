@@ -1,0 +1,40 @@
+{
+    "labels": {
+        "Create ZileLibere": "Creează zi liberă"
+    },
+    "fields": {
+        "name": "Denumire",
+        "dateStart": "Data",
+        "countryCode": "Țara",
+        "source": "Sursa",
+        "managed": "Sincronizată",
+        "sourceYear": "Anul sursei",
+        "holidayTypes": "Tipuri de sărbătoare",
+        "nationalHoliday": "Sărbătoare națională",
+        "subdivisionCodes": "Coduri de subdiviziune",
+        "syncedAt": "Sincronizată la",
+        "description": "Descriere",
+        "year": "An",
+        "month": "Lună"
+    },
+    "options": {
+        "source": {
+            "manual": "Manuală",
+            "nager-date": "Nager.Date"
+        },
+        "month": {
+            "1": "Ianuarie",
+            "2": "Februarie",
+            "3": "Martie",
+            "4": "Aprilie",
+            "5": "Mai",
+            "6": "Iunie",
+            "7": "Iulie",
+            "8": "August",
+            "9": "Septembrie",
+            "10": "Octombrie",
+            "11": "Noiembrie",
+            "12": "Decembrie"
+        }
+    }
+}

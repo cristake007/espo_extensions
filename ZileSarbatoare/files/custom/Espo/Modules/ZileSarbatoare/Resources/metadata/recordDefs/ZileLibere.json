@@ -1,0 +1,15 @@
+{
+    "earlyBeforeCreateHookClassNameList": [
+        "Espo\\Modules\\ZileSarbatoare\\Classes\\Record\\Hooks\\ZileLibere\\BeforeCreate"
+    ],
+    "earlyBeforeUpdateHookClassNameList": [
+        "Espo\\Modules\\ZileSarbatoare\\Classes\\Record\\Hooks\\ZileLibere\\BeforeUpdate"
+    ],
+    "beforeDeleteHookClassNameList": [
+        "Espo\\Modules\\ZileSarbatoare\\Classes\\Record\\Hooks\\ZileLibere\\BeforeDelete"
+    ],
+    "massActions": {
+        "update": {"disabled": true},
+        "delete": {"disabled": true}
+    }
+}

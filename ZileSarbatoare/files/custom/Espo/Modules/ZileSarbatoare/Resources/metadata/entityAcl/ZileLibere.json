@@ -1,0 +1,12 @@
+{
+    "systemWriteForbidden": true,
+    "fields": {
+        "source": {"readOnly": true},
+        "managed": {"readOnly": true},
+        "sourceYear": {"readOnly": true},
+        "holidayTypes": {"readOnly": true},
+        "nationalHoliday": {"readOnly": true},
+        "subdivisionCodes": {"readOnly": true},
+        "syncedAt": {"readOnly": true}
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "labels": {
+        "Create ZileLibere": "Create a non-working day"
+    },
+    "fields": {
+        "name": "Name",
+        "dateStart": "Date",
+        "countryCode": "Country",
+        "source": "Source",
+        "managed": "Synchronized",
+        "sourceYear": "Source year",
+        "holidayTypes": "Holiday types",
+        "nationalHoliday": "National holiday",
+        "subdivisionCodes": "Subdivision codes",
+        "syncedAt": "Synchronized at",
+        "description": "Description",
+        "year": "Year",
+        "month": "Month"
+    },
+    "options": {
+        "source": {
+            "manual": "Manual",
+            "nager-date": "Nager.Date"
+        },
+        "month": {
+            "1": "January",
+            "2": "February",
+            "3": "March",
+            "4": "April",
+            "5": "May",
+            "6": "June",
+            "7": "July",
+            "8": "August",
+            "9": "September",
+            "10": "October",
+            "11": "November",
+            "12": "December"
+        }
+    }
+}

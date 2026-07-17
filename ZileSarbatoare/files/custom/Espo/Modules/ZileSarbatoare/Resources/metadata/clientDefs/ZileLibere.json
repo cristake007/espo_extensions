@@ -1,0 +1,4 @@
+{
+    "controller": "controllers/record",
+    "acl": "zile-sarbatoare:acl/zile-libere"
+}

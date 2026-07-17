@@ -1,5 +1,11 @@
 {
     "labels": {
         "ZileSarbatoare": "Zile Sărbătoare"
+    },
+    "scopeNames": {
+        "ZileLibere": "Zile libere"
+    },
+    "scopeNamesPlural": {
+        "ZileLibere": "Zile libere"
     }
 }

@@ -1,0 +1,12 @@
+[
+    {
+        "rows": [
+            [{"name": "name"}, {"name": "dateStart"}],
+            [{"name": "countryCode"}, {"name": "source"}],
+            [{"name": "managed"}, {"name": "syncedAt"}],
+            [{"name": "holidayTypes"}, {"name": "nationalHoliday"}],
+            [{"name": "subdivisionCodes"}, {"name": "sourceYear"}],
+            [{"name": "description", "fullWidth": true}]
+        ]
+    }
+]

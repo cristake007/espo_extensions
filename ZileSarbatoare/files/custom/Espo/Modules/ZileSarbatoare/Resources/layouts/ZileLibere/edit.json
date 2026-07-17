@@ -1,0 +1,9 @@
+[
+    {
+        "rows": [
+            [{"name": "name"}, {"name": "dateStart"}],
+            [{"name": "countryCode"}, false],
+            [{"name": "description", "fullWidth": true}]
+        ]
+    }
+]

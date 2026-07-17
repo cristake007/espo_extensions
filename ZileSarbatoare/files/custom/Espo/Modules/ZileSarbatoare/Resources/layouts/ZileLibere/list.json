@@ -1,0 +1,7 @@
+[
+    {"name": "dateStart", "width": 15},
+    {"name": "name", "link": true},
+    {"name": "countryCode", "width": 10},
+    {"name": "source", "width": 15},
+    {"name": "syncedAt", "width": 18}
+]

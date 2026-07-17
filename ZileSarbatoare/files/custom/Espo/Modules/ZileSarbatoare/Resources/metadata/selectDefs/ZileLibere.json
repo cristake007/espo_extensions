@@ -1,0 +1,8 @@
+{
+    "whereItemConverterClassNameMap": {
+        "year_equals": "Espo\\Modules\\ZileSarbatoare\\Classes\\Select\\ZileLibere\\Where\\ItemConverters\\Year",
+        "year_in": "Espo\\Modules\\ZileSarbatoare\\Classes\\Select\\ZileLibere\\Where\\ItemConverters\\Year",
+        "month_equals": "Espo\\Modules\\ZileSarbatoare\\Classes\\Select\\ZileLibere\\Where\\ItemConverters\\Month",
+        "month_in": "Espo\\Modules\\ZileSarbatoare\\Classes\\Select\\ZileLibere\\Where\\ItemConverters\\Month"
+    }
+}

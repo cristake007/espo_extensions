@@ -1,0 +1,129 @@
+{
+    "transactionalSave": true,
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "maxLength": 255,
+            "required": true,
+            "pattern": "$noBadCharacters"
+        },
+        "dateStart": {
+            "type": "date",
+            "required": true,
+            "audited": true
+        },
+        "countryCode": {
+            "type": "varchar",
+            "maxLength": 2,
+            "required": true,
+            "default": "RO",
+            "audited": true
+        },
+        "source": {
+            "type": "enum",
+            "options": ["manual", "nager-date"],
+            "default": "manual",
+            "required": true,
+            "readOnly": true,
+            "displayAsLabel": true,
+            "style": {
+                "manual": "info",
+                "nager-date": "success"
+            }
+        },
+        "managed": {
+            "type": "bool",
+            "default": false,
+            "required": true,
+            "readOnly": true
+        },
+        "sourceYear": {
+            "type": "int",
+            "readOnly": true
+        },
+        "holidayTypes": {
+            "type": "jsonArray",
+            "default": ["Public"],
+            "required": true,
+            "readOnly": true
+        },
+        "nationalHoliday": {
+            "type": "bool",
+            "default": true,
+            "required": true,
+            "readOnly": true
+        },
+        "subdivisionCodes": {
+            "type": "jsonArray",
+            "default": [],
+            "required": true,
+            "readOnly": true
+        },
+        "syncedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "description": {
+            "type": "text"
+        },
+        "year": {
+            "type": "int",
+            "notStorable": true,
+            "readOnly": true,
+            "layoutListDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true
+        },
+        "month": {
+            "type": "enum",
+            "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+            "notStorable": true,
+            "readOnly": true,
+            "layoutListDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true
+        }
+    },
+    "links": {
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "dateStart",
+        "order": "asc",
+        "textFilterFields": ["name", "countryCode"]
+    },
+    "indexes": {
+        "dateStart": {
+            "columns": ["dateStart", "deleted"]
+        },
+        "countryDate": {
+            "columns": ["countryCode", "dateStart", "deleted"]
+        },
+        "managedSyncScope": {
+            "columns": ["source", "managed", "countryCode", "sourceYear", "deleted"]
+        }
+    }
+}
