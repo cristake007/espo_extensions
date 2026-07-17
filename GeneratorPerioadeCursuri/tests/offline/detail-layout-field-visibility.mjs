@@ -96,14 +96,36 @@ function collectLayoutFieldNames(layout, entityType) {
     return fieldNames;
 }
 
+function collectSidePanelFieldNames(layout, entityType) {
+    assert.ok(Array.isArray(layout), `${entityType}: default side panel must contain a field list`);
+
+    return layout.map((item) => {
+        assert.ok(
+            item && typeof item.name === 'string',
+            `${entityType}: each default side-panel item must name a field`
+        );
+
+        return item.name;
+    });
+}
+
 const visibilityViolations = [];
 let checks = 0;
 
 for (const [entityType, contract] of Object.entries(entityContracts)) {
     const layoutPath = path.join(moduleResources, 'layouts', entityType, 'detail.json');
+    const sidePanelPath = path.join(
+        moduleResources,
+        'layouts',
+        entityType,
+        'defaultSidePanel.json'
+    );
     const entityDefsPath = path.join(moduleResources, 'metadata/entityDefs', `${entityType}.json`);
     const detailFieldNames = collectLayoutFieldNames(readJson(layoutPath), entityType);
     const detailFieldSet = new Set(detailFieldNames);
+    const sidePanelFieldSet = new Set(
+        collectSidePanelFieldNames(readJson(sidePanelPath), entityType)
+    );
     const entityFields = readJson(entityDefsPath).fields;
 
     assert.ok(entityFields && typeof entityFields === 'object', `${entityType}: entityDefs must define fields`);
@@ -128,6 +150,14 @@ for (const [entityType, contract] of Object.entries(entityContracts)) {
         );
         checks++;
     }
+
+    for (const field of [':assignedUser', 'assignedUser', 'assignedUsers', 'teams']) {
+        assert.ok(
+            !sidePanelFieldSet.has(field),
+            `${entityType}.${field}: assignment field must not appear in the default side panel`
+        );
+        checks++;
+    }
 }
 
 assert.ok(
@@ -149,4 +179,4 @@ assert.deepEqual(
 );
 checks++;
 
-console.log(`Detail-layout field visibility: ${checks} checks passed across four entities.`);
+console.log(`Detail-screen field visibility: ${checks} checks passed across four entities.`);

@@ -201,10 +201,13 @@ For each entity, inspect:
 Administration > Entity Manager > {Entity} > Layouts > Side Panel Fields
 ```
 
-If `assignedUsers` or `teams` is present, remove it from that layout. The
-package currently does not contain an entity-specific Side Panel Fields
-resource, so the exact EspoCRM 10 resource shape should be confirmed from an
-installed instance before packaging a new side-panel layout.
+If `assignedUsers` or `teams` is present in an administrator-owned layout,
+remove it from that layout. EspoCRM 10.0.0 source confirms that Side Panel
+Fields uses `defaultSidePanel.json` and generates `:assignedUser` and `teams`
+for entities with those relationships. The package therefore provides an
+empty `defaultSidePanel.json` for each of the four extension entities so a
+fresh installation does not expose either assignment field in the detail
+screen's side panel.
 
 Do not set `sideDisabled` on every detail view solely to hide these two fields.
 That would suppress the entire side column and could remove unrelated useful
@@ -229,8 +232,8 @@ extension update:
 
 - Fresh-install defaults are controlled by the packaged layouts.
 - Existing administrator customizations are not destructively overwritten.
-- Any required side-panel adjustment has a confirmed EspoCRM 10 layout shape
-  before source files are added.
+- The packaged side-panel adjustment uses the confirmed EspoCRM 10
+  `defaultSidePanel.json` layout shape.
 
 ## 6. Phase 4 - Extract the Shared Record UI Module
 
