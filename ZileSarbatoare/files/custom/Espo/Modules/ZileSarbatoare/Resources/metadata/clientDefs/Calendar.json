@@ -1,0 +1,4 @@
+{
+    "calendarView": "zile-sarbatoare:views/calendar/calendar",
+    "timelineView": "zile-sarbatoare:views/calendar/timeline"
+}

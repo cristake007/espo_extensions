@@ -3,6 +3,7 @@
     "acl": "zile-sarbatoare:acl/zile-libere",
     "iconClass": "fas fa-calendar-day",
     "modalViews": {
-        "detail": "zile-sarbatoare:views/modals/zile-libere-detail"
+        "detail": "zile-sarbatoare:views/modals/zile-libere-detail",
+        "edit": "zile-sarbatoare:views/modals/zile-libere-edit"
     }
 }

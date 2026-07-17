@@ -39,10 +39,17 @@ test('ZileLibere stores one canonical date and the required synchronization scop
 
 test('navigation and Quick Create use the holiday icon and compact manual layout', async () => {
     const clientDefs = await readJson('Resources', 'metadata', 'clientDefs', 'ZileLibere.json');
+    const calendarDefs = await readJson('Resources', 'metadata', 'clientDefs', 'Calendar.json');
     const detailSmall = await readJson('Resources', 'layouts', 'ZileLibere', 'detailSmall.json');
     const fieldNames = detailSmall[0].rows.flat().filter(Boolean).map(item => item.name);
 
     assert.equal(clientDefs.iconClass, 'fas fa-calendar-day');
+    assert.equal(
+        clientDefs.modalViews.edit,
+        'zile-sarbatoare:views/modals/zile-libere-edit'
+    );
+    assert.equal(calendarDefs.calendarView, 'zile-sarbatoare:views/calendar/calendar');
+    assert.equal(calendarDefs.timelineView, 'zile-sarbatoare:views/calendar/timeline');
     assert.deepEqual(fieldNames, ['name', 'dateStart', 'countryCode', 'description']);
 });
 
