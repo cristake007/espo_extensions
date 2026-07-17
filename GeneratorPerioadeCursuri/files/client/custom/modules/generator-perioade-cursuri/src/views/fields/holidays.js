@@ -196,9 +196,22 @@ define('generator-perioade-cursuri:views/fields/holidays', [
                     this.trigger('change');
                 }
             } catch (error) {
+                this.markHolidayImportErrorHandled(error);
                 this.notifyHolidayImport(this.getHolidayImportErrorKey(error));
             } finally {
                 this.setHolidayImportPending(false);
+            }
+        }
+
+        markHolidayImportErrorHandled(error) {
+            if (!error || typeof error !== 'object') {
+                return;
+            }
+
+            error.errorIsHandled = true;
+
+            if (error.xhr && typeof error.xhr === 'object') {
+                error.xhr.errorIsHandled = true;
             }
         }
 

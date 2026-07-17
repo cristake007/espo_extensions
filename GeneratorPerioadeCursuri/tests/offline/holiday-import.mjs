@@ -392,6 +392,27 @@ for (const testCase of [
     assert.doesNotMatch(String(lastNotification()), /stack|details|undefined|\[object Object\]/i);
     assert.equal(view.element.importButton.disabled, false);
     assert.deepEqual(inputValues(view), ['']);
+
+    if (testCase.error && typeof testCase.error === 'object') {
+        assert.equal(
+            testCase.error.errorIsHandled,
+            true,
+            'custom import errors must suppress EspoCRM global Ajax error notifications'
+        );
+    }
+}
+
+{
+    const xhr = {status: 405};
+    const wrappedError = {xhr};
+    const {view} = createView({
+        ajax: async () => { throw wrappedError; },
+    });
+
+    await clickImport(view);
+    assert.equal(wrappedError.errorIsHandled, true);
+    assert.equal(xhr.errorIsHandled, true);
+    assert.equal(lastNotification(), translations.ro_RO.messages.holidayImportUnavailable);
 }
 
 assert.match(
