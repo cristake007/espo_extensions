@@ -7,6 +7,7 @@ use Espo\Modules\ZileSarbatoare\Tools\NagerDate\SettingsNormalizer;
 
 $root = __DIR__ . '/../../files/custom/Espo/Modules/ZileSarbatoare/Tools/NagerDate';
 require_once "$root/Settings.php";
+require_once "$root/HolidayType.php";
 require_once "$root/SettingsNormalizer.php";
 require_once "$root/Schedule.php";
 

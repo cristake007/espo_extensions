@@ -68,7 +68,7 @@ final class SyncManager
         }
 
         try {
-            $message = 'Synchronization settings are ready; external retrieval starts in Phase 3.';
+            $message = 'Nager.Date retrieval is ready; database reconciliation starts in Phase 4.';
             $this->finish($settings, $now, 'Skipped', $message);
 
             return $this->result('Skipped', $message);

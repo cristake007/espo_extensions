@@ -10,7 +10,6 @@ use InvalidArgumentException;
 final class SettingsNormalizer
 {
     private const FREQUENCIES = ['Daily', 'Weekly', 'Monthly', 'ManualOnly'];
-    private const HOLIDAY_TYPES = ['Public', 'Bank', 'School', 'Authorities', 'Optional', 'Observance'];
 
     /** @param array<string, mixed> $input */
     public function normalize(array $input, DateTimeImmutable $now): Settings
@@ -54,7 +53,7 @@ final class SettingsNormalizer
         $holidayTypes = array_values(array_unique(array_map('strval', $holidayTypes)));
 
         foreach ($holidayTypes as $type) {
-            if (!in_array($type, self::HOLIDAY_TYPES, true)) {
+            if (!in_array($type, HolidayType::ALL, true)) {
                 throw new InvalidArgumentException('Unknown Nager.Date holiday type.');
             }
         }
