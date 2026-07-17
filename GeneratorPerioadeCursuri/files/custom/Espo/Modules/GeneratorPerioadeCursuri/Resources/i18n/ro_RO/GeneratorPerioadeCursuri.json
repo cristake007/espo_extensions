@@ -6,6 +6,7 @@
         "Convert Word": "Verifica Word",
         "Generate Reviewed Word": "Genereaza Word verificat",
         "Add holiday date": "Adauga data",
+        "Import holiday dates": "Preia zilele",
         "Remove holiday date": "Sterge data",
         "No holiday dates": "Nu exista zile nelucratoare",
         "uploadSourceTitle": "Incarca fisierul cu cursuri",
@@ -108,6 +109,14 @@
         "noGeneratedRows": "Nu exista randuri generate.",
         "holidayPickerHelp": "Adauga fiecare zi nelucratoare o singura data. Foloseste formatul zz.ll.aaaa.",
         "holidayPickerInvalidDate": "Foloseste date in formatul zz.ll.aaaa.",
-        "holidayPickerDuplicateDate": "Data {date} este repetata."
+        "holidayPickerDuplicateDate": "Data {date} este repetata.",
+        "holidayImportMissingYear": "Selectează anul înainte de a prelua zilele libere.",
+        "holidayImportMissingMonths": "Selectează cel puțin o lună înainte de a prelua zilele libere.",
+        "holidayImportNoResults": "Nu există zile libere disponibile pentru anul și lunile selectate. Verifică dacă anul a fost sincronizat în extensia Zile Sărbătoare.",
+        "holidayImportForbidden": "Nu ai permisiunea de a prelua zilele libere.",
+        "holidayImportBadRequest": "Selecția anului sau a lunilor nu este validă.",
+        "holidayImportUnavailable": "Extensia Zile Sărbătoare nu este disponibilă.",
+        "holidayImportTemporaryUnavailable": "Zilele libere nu pot fi preluate momentan. Încearcă din nou mai târziu.",
+        "holidayImportInvalidResponse": "Răspunsul primit pentru zilele libere nu este valid."
     }
 }

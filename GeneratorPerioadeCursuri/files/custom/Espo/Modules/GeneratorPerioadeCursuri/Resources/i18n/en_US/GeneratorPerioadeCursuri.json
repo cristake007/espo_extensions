@@ -6,6 +6,7 @@
         "Convert Word": "Review Word",
         "Generate Reviewed Word": "Generate Reviewed Word",
         "Add holiday date": "Add date",
+        "Import holiday dates": "Import holidays",
         "Remove holiday date": "Remove date",
         "No holiday dates": "No holiday dates",
         "uploadSourceTitle": "Upload course file",
@@ -108,6 +109,14 @@
         "noGeneratedRows": "No generated rows.",
         "holidayPickerHelp": "Add each non-working date once. Use dd.mm.yyyy.",
         "holidayPickerInvalidDate": "Use holiday dates in dd.mm.yyyy format.",
-        "holidayPickerDuplicateDate": "Holiday date {date} is repeated."
+        "holidayPickerDuplicateDate": "Holiday date {date} is repeated.",
+        "holidayImportMissingYear": "Select a year before importing holidays.",
+        "holidayImportMissingMonths": "Select at least one month before importing holidays.",
+        "holidayImportNoResults": "No holidays are available for the selected year and months. Check whether the year was synchronized in the Holiday extension.",
+        "holidayImportForbidden": "You do not have permission to import holidays.",
+        "holidayImportBadRequest": "The selected year or months are invalid.",
+        "holidayImportUnavailable": "The Holiday extension is unavailable.",
+        "holidayImportTemporaryUnavailable": "Holidays cannot be imported right now. Try again later.",
+        "holidayImportInvalidResponse": "The holiday service returned an invalid response."
     }
 }

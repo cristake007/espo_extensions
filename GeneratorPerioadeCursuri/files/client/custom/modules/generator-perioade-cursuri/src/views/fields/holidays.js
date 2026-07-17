@@ -37,6 +37,10 @@ define('generator-perioade-cursuri:views/fields/holidays', [
                     <span class="fas fa-plus"></span>
                     <span>{{addLabel}}</span>
                 </button>
+                <button type="button" class="btn btn-default btn-sm" data-action="importHolidayDates">
+                    <span class="fas fa-cloud-download-alt"></span>
+                    <span>{{importLabel}}</span>
+                </button>
                 <input type="hidden" class="main-element" data-name="{{name}}" value="{{value}}">
                 <div class="text-muted small" style="margin-top: 6px;">{{helpText}}</div>
             </div>
@@ -48,12 +52,14 @@ define('generator-perioade-cursuri:views/fields/holidays', [
             super.setup();
 
             this.addHandler('click', '[data-action="addHolidayDate"]', () => this.addHolidayDate());
+            this.addHandler('click', '[data-action="importHolidayDates"]', () => this.importHolidayDates());
             this.addHandler('click', '[data-action="removeHolidayDate"]', (e, target) => this.removeHolidayDate(target));
             this.addHandler('click', '[data-action="showHolidayDatePicker"]', (e, target) => this.showHolidayDatePicker(target));
             this.addHandler('input', 'input.holiday-date', () => this.handleDateInput());
             this.addHandler('change', 'input.holiday-date', () => this.handleDateInput());
 
             this.holidayDatepickers = new WeakMap();
+            this.holidayImportPending = false;
         }
 
         data() {
@@ -65,6 +71,7 @@ define('generator-perioade-cursuri:views/fields/holidays', [
             data.hasDates = dateList.length > 0;
             data.value = this.serializeDateList(dateList);
             data.addLabel = this.translate('Add holiday date', 'labels', 'GeneratorPerioadeCursuri');
+            data.importLabel = this.translate('Import holiday dates', 'labels', 'GeneratorPerioadeCursuri');
             data.removeLabel = this.translate('Remove holiday date', 'labels', 'GeneratorPerioadeCursuri');
             data.emptyLabel = this.translate('No holiday dates', 'labels', 'GeneratorPerioadeCursuri');
             data.helpText = this.translate('holidayPickerHelp', 'messages', 'GeneratorPerioadeCursuri');
@@ -80,10 +87,19 @@ define('generator-perioade-cursuri:views/fields/holidays', [
         }
 
         addHolidayDate() {
+            if (!this.appendHolidayDateRow()) {
+                return;
+            }
+
+            this.syncHiddenInput();
+            this.trigger('change');
+        }
+
+        appendHolidayDateRow(value = '', focus = true) {
             const container = this.element.querySelector('[data-role="date-list"]');
 
             if (!container) {
-                return;
+                return false;
             }
 
             const row = document.createElement('div');
@@ -107,12 +123,163 @@ define('generator-perioade-cursuri:views/fields/holidays', [
             const input = row.querySelector('input.holiday-date');
 
             if (input) {
+                input.value = value ? this.toDisplayDate(value) : '';
                 this.initHolidayDatePicker(input);
-                input.focus();
+
+                if (focus) {
+                    input.focus();
+                }
             }
 
-            this.syncHiddenInput();
-            this.trigger('change');
+            return true;
+        }
+
+        async importHolidayDates() {
+            if (this.holidayImportPending) {
+                return;
+            }
+
+            const year = this.normalizeHolidayImportYear(this.model.get('year'));
+
+            if (year === null) {
+                this.notifyHolidayImport('holidayImportMissingYear');
+
+                return;
+            }
+
+            const months = this.normalizeHolidayImportMonths(this.model.get('selectedMonths'));
+
+            if (months === null) {
+                this.notifyHolidayImport('holidayImportMissingMonths');
+
+                return;
+            }
+
+            this.setHolidayImportPending(true);
+
+            try {
+                const response = await Espo.Ajax.postRequest(
+                    'ZileLibere/availableDates',
+                    {year: year, months: months}
+                );
+
+                if (!this.isValidHolidayImportResponse(response)) {
+                    this.notifyHolidayImport('holidayImportInvalidResponse');
+
+                    return;
+                }
+
+                if (response.dates.length === 0) {
+                    this.notifyHolidayImport('holidayImportNoResults');
+
+                    return;
+                }
+
+                const existingDates = new Set(this.getInputDateList());
+                let added = false;
+
+                response.dates.forEach(isoDate => {
+                    const internalDate = this.fromIsoHolidayDate(isoDate);
+
+                    if (existingDates.has(internalDate)) {
+                        return;
+                    }
+
+                    existingDates.add(internalDate);
+                    added = this.appendHolidayDateRow(internalDate, false) || added;
+                });
+
+                if (added) {
+                    this.syncHiddenInput();
+                    this.trigger('change');
+                }
+            } catch (error) {
+                this.notifyHolidayImport(this.getHolidayImportErrorKey(error));
+            } finally {
+                this.setHolidayImportPending(false);
+            }
+        }
+
+        normalizeHolidayImportYear(value) {
+            if (typeof value === 'string' && /^\d+$/.test(value)) {
+                value = Number(value);
+            }
+
+            return Number.isInteger(value) && value >= 1 && value <= 9998 ? value : null;
+        }
+
+        normalizeHolidayImportMonths(value) {
+            if (!Array.isArray(value) || value.length === 0) {
+                return null;
+            }
+
+            const months = value.map(month => {
+                if (typeof month === 'string' && /^\d+$/.test(month)) {
+                    return Number(month);
+                }
+
+                return month;
+            });
+
+            return months.every(month => Number.isInteger(month) && month >= 1 && month <= 12) ?
+                months : null;
+        }
+
+        isValidHolidayImportResponse(response) {
+            return !!response && typeof response === 'object' && Array.isArray(response.dates) &&
+                response.dates.every(date => this.isValidIsoHolidayDate(date));
+        }
+
+        isValidIsoHolidayDate(value) {
+            if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+                return false;
+            }
+
+            const date = new Date(value + 'T00:00:00Z');
+
+            return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
+        }
+
+        fromIsoHolidayDate(value) {
+            const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+
+            return [match[3], match[2], match[1]].join('.');
+        }
+
+        getHolidayImportErrorKey(error) {
+            const status = Number(error && (error.status || (error.xhr && error.xhr.status))) || 0;
+
+            if (status === 400) {
+                return 'holidayImportBadRequest';
+            }
+
+            if (status === 403) {
+                return 'holidayImportForbidden';
+            }
+
+            if (status === 404) {
+                return 'holidayImportUnavailable';
+            }
+
+            return 'holidayImportTemporaryUnavailable';
+        }
+
+        notifyHolidayImport(messageKey) {
+            Espo.Ui.notify(
+                this.translate(messageKey, 'messages', 'GeneratorPerioadeCursuri'),
+                'warning'
+            );
+        }
+
+        setHolidayImportPending(pending) {
+            this.holidayImportPending = pending;
+
+            const button = this.element ?
+                this.element.querySelector('[data-action="importHolidayDates"]') : null;
+
+            if (button) {
+                button.disabled = pending;
+            }
         }
 
         removeHolidayDate(target) {
