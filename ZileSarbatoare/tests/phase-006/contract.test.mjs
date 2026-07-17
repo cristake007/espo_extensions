@@ -6,7 +6,7 @@ const root = resolve(import.meta.dirname, '../..');
 const read = path => readFileSync(resolve(root, path), 'utf8');
 
 const manifest = JSON.parse(read('manifest.json'));
-assert.equal(manifest.version, '0.7.0');
+assert.equal(manifest.version, '0.7.1');
 
 const uninstall = read('scripts/BeforeUninstall.php');
 assert.match(uninstall, /getRDBRepositoryByClass\(ScheduledJob::class\)/);
@@ -22,11 +22,22 @@ assert.deepEqual(Object.keys(jobs), ['SyncZileSarbatoare']);
 assert.equal(jobs.SyncZileSarbatoare.isDefault, true);
 
 const readme = read('README.md');
-assert.match(readme, /build\.sh --extension ZileSarbatoare --zip 0\.7\.0 files scripts/);
+assert.match(readme, /build\.sh --extension ZileSarbatoare --zip 0\.7\.1 files scripts/);
 assert.match(readme, /bin\/command rebuild/);
 assert.match(readme, /populate-scheduled-jobs/);
 assert.match(readme, /cron or daemon/i);
 assert.match(readme, /Synchronize now/);
 assert.match(readme, /does not delete `ZileLibere` records/);
+
+for (const path of [
+    'files/client/custom/modules/zile-sarbatoare/src/acl/zile-libere.js',
+    'files/client/custom/modules/zile-sarbatoare/src/views/admin/integrations/nager-date.js',
+]) {
+    const clientModule = read(path);
+
+    assert.match(clientModule, /^define\(\[/);
+    assert.doesNotMatch(clientModule, /^\s*import\s/m);
+    assert.doesNotMatch(clientModule, /^\s*export\s/m);
+}
 
 console.log('PHASE-006 release and operational contracts passed.');

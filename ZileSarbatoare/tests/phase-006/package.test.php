@@ -22,7 +22,7 @@ $assert = static function (bool $condition, string $message) use (&$checks): voi
     }
 };
 
-$assert($version === '0.7.0', 'manifest version must be 0.7.0');
+$assert($version === '0.7.1', 'manifest version must be 0.7.1');
 $assert(($manifest['releaseDate'] ?? null) === '2026-07-17', 'release date must match this release');
 $assert(extension_loaded('zip'), 'PHP ZIP support must be available');
 $assert(is_file($archivePath), 'the installable ZIP must exist');
