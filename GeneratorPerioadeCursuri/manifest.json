@@ -1,13 +1,13 @@
 {
     "name": "Generator perioade cursuri",
-    "version": "2.3.4",
+    "version": "2.4.0",
     "acceptableVersions": [
         ">=10.0.0"
     ],
     "php": [
         ">=8.4"
     ],
-    "releaseDate": "2026-07-17",
+    "releaseDate": "2026-07-18",
     "author": "Cristian Popa",
     "description": "EspoCRM extension package for Generator perioade cursuri. Package ID: generator-perioade-cursuri."
 }

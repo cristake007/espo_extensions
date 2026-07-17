@@ -22,7 +22,7 @@ $assert = static function (bool $condition, string $message) use (&$checks): voi
     }
 };
 
-$assert($version === '0.7.7', 'manifest version must be 0.7.7');
+$assert($version === '0.8.0', 'manifest version must be 0.8.0');
 $assert(($manifest['releaseDate'] ?? null) === '2026-07-18', 'release date must match this release');
 $assert(extension_loaded('zip'), 'PHP ZIP support must be available');
 $assert(is_file($archivePath), 'the installable ZIP must exist');
@@ -76,6 +76,9 @@ $requiredFiles = [
     'files/custom/Espo/Modules/ZileSarbatoare/Tools/NagerDate/NagerDateClient.php',
     'files/custom/Espo/Modules/ZileSarbatoare/Tools/NagerDate/SyncManager.php',
     'files/custom/Espo/Modules/ZileSarbatoare/Tools/ZileLibere/ZileLibereCalendar.php',
+    'files/custom/Espo/Modules/ZileSarbatoare/Tools/ZileLibere/Api/PostAvailableDates.php',
+    'files/custom/Espo/Modules/ZileSarbatoare/Resources/routes.json',
+    'files/custom/Espo/Modules/ZileSarbatoare/Resources/metadata/entityDefs/ZileLibere.json',
     'files/custom/Espo/Modules/ZileSarbatoare/Resources/metadata/app/scheduledJobs.json',
     'files/client/custom/modules/zile-sarbatoare/src/views/admin/integrations/nager-date.js',
 ];
