@@ -4,16 +4,7 @@
             [
                 {
                     "name": "name"
-                },
-                {
-                    "name": "assignedUsers"
                 }
-            ],
-            [
-                {
-                    "name": "teams"
-                },
-                false
             ],
             [
                 {
@@ -34,22 +25,6 @@
                 },
                 {
                     "name": "xmlConvertedAt"
-                }
-            ],
-            [
-                {
-                    "name": "createdAt"
-                },
-                {
-                    "name": "createdBy"
-                }
-            ],
-            [
-                {
-                    "name": "modifiedAt"
-                },
-                {
-                    "name": "modifiedBy"
                 }
             ]
         ],
