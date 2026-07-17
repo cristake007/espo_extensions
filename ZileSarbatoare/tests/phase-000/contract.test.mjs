@@ -27,9 +27,10 @@ test('captured Nager.Date fixture covers nullable arrays and duplicate dates', a
 
     assert.equal(rows.length, 17);
     assert.ok(rows.every(row => row.countryCode === 'RO'));
-    assert.ok(rows.every(row => row.nationalHoliday === true));
-    assert.ok(rows.every(row => row.subdivisionCodes === null));
-    assert.ok(rows.every(row => row.holidayTypes.includes('Public')));
+    assert.ok(rows.every(row => row.global === true));
+    assert.ok(rows.every(row => row.counties === null));
+    assert.ok(rows.every(row => row.types.includes('Public')));
+    assert.ok(rows.every(row => row.localName !== row.name));
     assert.equal(rows.filter(row => row.date === '2026-06-01').length, 2);
 });
 

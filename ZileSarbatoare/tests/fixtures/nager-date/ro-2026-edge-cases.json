@@ -1,34 +1,38 @@
 [
     {
         "date": "2026-01-01",
-        "name": "  National public holiday  ",
+        "localName": "  National public holiday  ",
+        "name": "English national public holiday",
         "countryCode": "RO",
-        "nationalHoliday": true,
-        "subdivisionCodes": null,
-        "holidayTypes": ["Public"]
+        "global": true,
+        "counties": null,
+        "types": ["Public"]
     },
     {
         "date": "2026-02-02",
-        "name": "Regional public holiday",
+        "localName": "Regional public holiday",
+        "name": "English regional public holiday",
         "countryCode": "RO",
-        "nationalHoliday": false,
-        "subdivisionCodes": ["RO-B"],
-        "holidayTypes": ["Public"]
+        "global": false,
+        "counties": ["RO-B"],
+        "types": ["Public"]
     },
     {
         "date": "2026-03-03",
-        "name": "Bank holiday",
+        "localName": "Bank holiday",
+        "name": "English bank holiday",
         "countryCode": "RO",
-        "nationalHoliday": true,
-        "subdivisionCodes": [],
-        "holidayTypes": ["Bank"]
+        "global": true,
+        "counties": [],
+        "types": ["Bank"]
     },
     {
         "date": "2026-04-04",
-        "name": "Public and bank holiday",
+        "localName": "Public and bank holiday",
+        "name": "English public and bank holiday",
         "countryCode": "RO",
-        "nationalHoliday": true,
-        "subdivisionCodes": ["RO-B", "RO-B"],
-        "holidayTypes": ["Public", "Bank", "Public"]
+        "global": true,
+        "counties": ["RO-B", "RO-B"],
+        "types": ["Public", "Bank", "Public"]
     }
 ]

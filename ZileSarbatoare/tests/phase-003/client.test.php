@@ -89,10 +89,11 @@ $transport = new FakeTransport(new HttpResponse(200, $romaniaJson));
 $holidays = clientFor($transport)->fetch('RO', 2026);
 assertSameValue(17, count($holidays), 'The Romanian fixture was not fully normalized.');
 assertSameValue(
-    'https://date.nager.at/api/v4/Holidays/RO/2026',
+    'https://date.nager.at/api/v3/PublicHolidays/2026/RO',
     $transport->urls[0],
-    'The client did not use its fixed v4 HTTPS origin.',
+    'The client did not use the fixed localized v3 HTTPS endpoint.',
 );
+assertSameValue('Anul Nou', $holidays[0]->name, 'The client must select the localized holiday name.');
 assertSameValue([], $holidays[0]->subdivisionCodes, 'Nullable subdivisions must normalize to an empty list.');
 assertSameValue(1048576, $transport->limits[0], 'The response limit is not fixed at one MiB.');
 
@@ -156,13 +157,13 @@ $invalidRows = [
     'wrong country' => ['countryCode' => 'DE'],
     'wrong year' => ['date' => '2025-01-01'],
     'invalid date' => ['date' => '2026-02-30'],
-    'empty name' => ['name' => '  '],
-    'name incompatible with entity schema' => ['name' => '<script>'],
-    'invalid boolean' => ['nationalHoliday' => 1],
-    'invalid subdivision array' => ['subdivisionCodes' => 'RO-B'],
-    'invalid subdivision code' => ['subdivisionCodes' => ['../RO-B']],
-    'invalid holiday-type array' => ['holidayTypes' => null],
-    'unknown holiday type' => ['holidayTypes' => ['Untrusted']],
+    'empty localized name' => ['localName' => '  '],
+    'localized name incompatible with entity schema' => ['localName' => '<script>'],
+    'invalid boolean' => ['global' => 1],
+    'invalid county array' => ['counties' => 'RO-B'],
+    'invalid county code' => ['counties' => ['../RO-B']],
+    'invalid holiday-type array' => ['types' => null],
+    'unknown holiday type' => ['types' => ['Untrusted']],
 ];
 
 foreach ($invalidRows as $label => $changes) {

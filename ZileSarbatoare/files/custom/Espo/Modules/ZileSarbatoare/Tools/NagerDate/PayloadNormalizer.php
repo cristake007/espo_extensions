@@ -10,11 +10,11 @@ final class PayloadNormalizer
 {
     private const REQUIRED_FIELDS = [
         'date',
-        'name',
+        'localName',
         'countryCode',
-        'nationalHoliday',
-        'subdivisionCodes',
-        'holidayTypes',
+        'global',
+        'counties',
+        'types',
     ];
 
     /**
@@ -43,21 +43,21 @@ final class PayloadNormalizer
             }
 
             $date = $this->normalizeDate($row['date'], $expectedYear, $index);
-            $name = $this->normalizeName($row['name'], $index);
+            $name = $this->normalizeName($row['localName'], $index);
             $countryCode = $this->normalizeCountry($row['countryCode'], $expectedCountry, $index);
 
-            if (!is_bool($row['nationalHoliday'])) {
-                throw $this->rowError($index, "has an invalid 'nationalHoliday'.");
+            if (!is_bool($row['global'])) {
+                throw $this->rowError($index, "has an invalid 'global'.");
             }
 
-            $subdivisionCodes = $this->normalizeSubdivisionCodes($row['subdivisionCodes'], $index);
-            $holidayTypes = $this->normalizeHolidayTypes($row['holidayTypes'], $index);
+            $subdivisionCodes = $this->normalizeSubdivisionCodes($row['counties'], $index);
+            $holidayTypes = $this->normalizeHolidayTypes($row['types'], $index);
 
             $holidays[] = new Holiday(
                 $date,
                 $name,
                 $countryCode,
-                $row['nationalHoliday'],
+                $row['global'],
                 $subdivisionCodes,
                 $holidayTypes,
             );
@@ -86,13 +86,13 @@ final class PayloadNormalizer
     private function normalizeName(mixed $value, int $index): string
     {
         if (!is_string($value)) {
-            throw $this->rowError($index, "has an invalid 'name'.");
+            throw $this->rowError($index, "has an invalid 'localName'.");
         }
 
         $value = trim($value);
 
         if ($value === '' || mb_strlen($value) > 255 || preg_match('/[<>=]/u', $value)) {
-            throw $this->rowError($index, "has an invalid 'name'.");
+            throw $this->rowError($index, "has an invalid 'localName'.");
         }
 
         return $value;
@@ -115,12 +115,12 @@ final class PayloadNormalizer
         }
 
         if (!is_array($value) || !array_is_list($value)) {
-            throw $this->rowError($index, "has invalid 'subdivisionCodes'.");
+            throw $this->rowError($index, "has invalid 'counties'.");
         }
 
         foreach ($value as $code) {
             if (!is_string($code) || !preg_match('/^[A-Z]{2}-[A-Z0-9]{1,3}$/', $code)) {
-                throw $this->rowError($index, "has an invalid subdivision code.");
+                throw $this->rowError($index, "has an invalid county code.");
             }
         }
 
@@ -134,7 +134,7 @@ final class PayloadNormalizer
     private function normalizeHolidayTypes(mixed $value, int $index): array
     {
         if (!is_array($value) || !array_is_list($value) || $value === []) {
-            throw $this->rowError($index, "has invalid 'holidayTypes'.");
+            throw $this->rowError($index, "has invalid 'types'.");
         }
 
         foreach ($value as $type) {

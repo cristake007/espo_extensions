@@ -6,7 +6,8 @@ const root = resolve(import.meta.dirname, '../..');
 const read = path => readFileSync(resolve(root, path), 'utf8');
 
 const client = read('files/custom/Espo/Modules/ZileSarbatoare/Tools/NagerDate/NagerDateClient.php');
-assert.match(client, /private const ORIGIN = 'https:\/\/date\.nager\.at\/api\/v4'/);
+assert.match(client, /private const ORIGIN = 'https:\/\/date\.nager\.at\/api\/v3'/);
+assert.match(client, /"\/PublicHolidays\/\$year\/\$countryCode"/);
 assert.match(client, /private const MAXIMUM_RESPONSE_BYTES = 1048576/);
 assert.doesNotMatch(client, /function __construct\([^)]*(origin|baseUrl)/s);
 

@@ -137,8 +137,8 @@ configuration.
 ### Offline upstream fixtures
 
 `tests/fixtures/nager-date/ro-2026.json` is a representative response captured
-from `GET https://date.nager.at/api/v4/Holidays/RO/2026` on 2026-07-17.
-It intentionally includes nullable `subdivisionCodes` and two holidays on
+from `GET https://date.nager.at/api/v3/PublicHolidays/2026/RO` on 2026-07-17.
+It intentionally includes nullable `counties` and two holidays on
 2026-06-01. Tests must consume this file locally and must not call Nager.Date.
 
 ## Runtime proof still required

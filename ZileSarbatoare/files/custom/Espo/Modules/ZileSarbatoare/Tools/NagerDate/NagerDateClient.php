@@ -8,7 +8,7 @@ use JsonException;
 
 final class NagerDateClient implements HolidayProvider
 {
-    private const ORIGIN = 'https://date.nager.at/api/v4';
+    private const ORIGIN = 'https://date.nager.at/api/v3';
     private const MAXIMUM_RESPONSE_BYTES = 1048576;
 
     public function __construct(
@@ -30,7 +30,7 @@ final class NagerDateClient implements HolidayProvider
     ): array {
         $this->validateInput($countryCode, $year, $acceptedTypes);
 
-        $url = self::ORIGIN . "/Holidays/$countryCode/$year";
+        $url = self::ORIGIN . "/PublicHolidays/$year/$countryCode";
         $response = $this->transport->get($url, self::MAXIMUM_RESPONSE_BYTES);
 
         if ($response->statusCode >= 300 && $response->statusCode < 400) {

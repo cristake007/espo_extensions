@@ -326,13 +326,13 @@ Acceptance requires verification with:
 The Nager.Date origin is a private constant:
 
 ```text
-https://date.nager.at/api/v4
+https://date.nager.at/api/v3
 ```
 
 The client requests:
 
 ```text
-GET /Holidays/{CountryCode}/{Year}
+GET /PublicHolidays/{Year}/{CountryCode}
 ```
 
 The client must:
@@ -352,14 +352,16 @@ The source response fields currently expected are:
 
 ```text
 date
+localName
 name
 countryCode
-nationalHoliday
-subdivisionCodes
-holidayTypes
+global
+counties
+types
 ```
 
-The normalizer must accept `subdivisionCodes: null` and convert it to `[]`.
+The normalizer must store `localName`, map `global`, `counties`, and `types` to
+the extension domain fields, and convert `counties: null` to `[]`.
 Other invalid shapes must be rejected.
 
 ## 11. Synchronization Semantics
