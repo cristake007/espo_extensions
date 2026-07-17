@@ -126,11 +126,15 @@ namespace {
         ConfigWriter $writer,
         IntegrationRecord $integration,
         ?object $integrations = null,
+        mixed $tabList = [],
+        mixed $quickCreateList = [],
     ): Container
     {
         return new Container([
             Config::class => new Config([
                 'calendarEntityList' => $calendarEntityList,
+                'tabList' => $tabList,
+                'quickCreateList' => $quickCreateList,
                 'timeZone' => 'Europe/Bucharest',
                 'integrations' => $integrations,
             ]),
@@ -145,6 +149,11 @@ namespace {
 
     if ($writer->changes['calendarEntityList'] !== ['Meeting', 'Call', 'ZileLibere']) {
         throw new RuntimeException('Calendar registration must preserve existing entries and append ZileLibere.');
+    }
+
+    if ($writer->changes['tabList'] !== ['ZileLibere'] ||
+        $writer->changes['quickCreateList'] !== ['ZileLibere']) {
+        throw new RuntimeException('Manual holiday creation must be exposed in navigation and Quick Create.');
     }
 
     if ($writer->saveCount !== 1) {
@@ -167,6 +176,8 @@ namespace {
         $writer,
         $savedIntegration,
         $savedConfig,
+        ['Home', 'ZileLibere'],
+        ['Meeting', 'ZileLibere'],
     ));
 
     if ($writer->saveCount !== 0 || $writer->changes !== []) {

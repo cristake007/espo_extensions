@@ -9,7 +9,7 @@ user with `ZileLibere` read access, and a regular user without that access.
 ## Install and rebuild
 
 ```bash
-bin/command extension --file="/path/to/zile-sarbatoare-0.7.4.zip"
+bin/command extension --file="/path/to/zile-sarbatoare-0.7.5.zip"
 bin/command rebuild
 bin/command populate-scheduled-jobs
 bin/command app-info --binding
@@ -62,7 +62,8 @@ Verify:
    ```
 
 4. Uninstall the extension. Confirm `ZileLibere` is removed from
-   `calendarEntityList` and no active `SyncZileSarbatoare` scheduled job remains.
+   `calendarEntityList`, `tabList`, and `quickCreateList`, and no active
+   `SyncZileSarbatoare` scheduled job remains.
 5. Confirm the `zile_libere` table and its row count remain unchanged. Do not run
    hard rebuild during this retention check.
 6. Reinstall, rebuild, and repopulate scheduled jobs. Confirm retained records

@@ -18,21 +18,27 @@ database.
 From the `projects/espo_extensions` repository root:
 
 ```bash
-bash build.sh --extension ZileSarbatoare --zip 0.7.4 files scripts
+bash build.sh --extension ZileSarbatoare --zip 0.7.5 files scripts
 ```
 
-Upload `dist/zile-sarbatoare-0.7.4.zip` in **Administration > Extensions**, or
+Upload `dist/zile-sarbatoare-0.7.5.zip` in **Administration > Extensions**, or
 install it from the EspoCRM root:
 
 ```bash
-bin/command extension --file="/path/to/zile-sarbatoare-0.7.4.zip"
+bin/command extension --file="/path/to/zile-sarbatoare-0.7.5.zip"
 bin/command rebuild
 bin/command populate-scheduled-jobs
 ```
 
 Installing the same version again or upgrading preserves saved Nager.Date
-settings. Installation appends `ZileLibere` to `calendarEntityList` without
-replacing existing Calendar configuration.
+settings. Installation appends `ZileLibere` to `calendarEntityList`, `tabList`,
+and `quickCreateList` without replacing existing configuration.
+
+## Manual holidays
+
+Administrators can add company-specific days from **Zile libere > Create** or
+from EspoCRM's **Quick Create** menu. Manual records remain editable and are not
+removed or overwritten by Nager.Date synchronization.
 
 ## First synchronization
 
@@ -83,8 +89,9 @@ Uninstall with:
 bin/command extension -u --name="Zile Sărbătoare"
 ```
 
-The uninstall hook unregisters the Calendar entity and removes the extension's
-scheduled-job record. It deliberately does not delete `ZileLibere` records or
-the `zile_libere` custom table. Reinstalling the extension makes the retained
-records available again. Do not run a separate manual database cleanup unless
-permanent data deletion is explicitly intended and backed up.
+The uninstall hook unregisters the Calendar, navigation, and Quick Create
+entries and removes the extension's scheduled-job record. It deliberately does
+not delete `ZileLibere` records or the `zile_libere` custom table. Reinstalling
+the extension makes the retained records available again. Do not run a separate
+manual database cleanup unless permanent data deletion is explicitly intended
+and backed up.

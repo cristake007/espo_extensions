@@ -6,7 +6,7 @@ const root = resolve(import.meta.dirname, '../..');
 const read = path => readFileSync(resolve(root, path), 'utf8');
 
 const manifest = JSON.parse(read('manifest.json'));
-assert.equal(manifest.version, '0.7.4');
+assert.equal(manifest.version, '0.7.5');
 
 const uninstall = read('scripts/BeforeUninstall.php');
 assert.match(uninstall, /getRDBRepositoryByClass\(ScheduledJob::class\)/);
@@ -22,7 +22,7 @@ assert.deepEqual(Object.keys(jobs), ['SyncZileSarbatoare']);
 assert.equal(jobs.SyncZileSarbatoare.isDefault, true);
 
 const readme = read('README.md');
-assert.match(readme, /build\.sh --extension ZileSarbatoare --zip 0\.7\.4 files scripts/);
+assert.match(readme, /build\.sh --extension ZileSarbatoare --zip 0\.7\.5 files scripts/);
 assert.match(readme, /bin\/command rebuild/);
 assert.match(readme, /populate-scheduled-jobs/);
 assert.match(readme, /cron or daemon/i);
@@ -32,6 +32,7 @@ assert.match(readme, /does not delete `ZileLibere` records/);
 for (const path of [
     'files/client/custom/modules/zile-sarbatoare/src/acl/zile-libere.js',
     'files/client/custom/modules/zile-sarbatoare/src/views/admin/integrations/nager-date.js',
+    'files/client/custom/modules/zile-sarbatoare/src/views/modals/zile-libere-detail.js',
 ]) {
     const clientModule = read(path);
 
@@ -39,6 +40,22 @@ for (const path of [
     assert.doesNotMatch(clientModule, /^\s*import\s/m);
     assert.doesNotMatch(clientModule, /^\s*export\s/m);
 }
+
+const clientDefs = JSON.parse(read(
+    'files/custom/Espo/Modules/ZileSarbatoare/Resources/metadata/clientDefs/ZileLibere.json',
+));
+assert.equal(
+    clientDefs.modalViews.detail,
+    'zile-sarbatoare:views/modals/zile-libere-detail',
+);
+
+const detailModal = read(
+    'files/client/custom/modules/zile-sarbatoare/src/views/modals/zile-libere-detail.js',
+);
+assert.ok(
+    detailModal.indexOf('this.fullFormDisabled = true') < detailModal.indexOf('super.setup()'),
+    'The calendar detail modal must disable Full Form before base setup creates its buttons.',
+);
 
 const integrationView = read(
     'files/client/custom/modules/zile-sarbatoare/src/views/admin/integrations/nager-date.js',

@@ -23,6 +23,8 @@ test('ZileLibere stores one canonical date and the required synchronization scop
     assert.equal(defs.fields.dateStart.type, 'date');
     assert.equal(defs.fields.dateStart.required, true);
     assert.equal(defs.fields.dateEnd, undefined);
+    assert.equal(defs.fields.holidayTypes.type, 'array');
+    assert.equal(defs.fields.subdivisionCodes.type, 'array');
     assert.equal(defs.fields.year.notStorable, true);
     assert.equal(defs.fields.month.notStorable, true);
     assert.deepEqual(defs.indexes.dateStart.columns, ['dateStart', 'deleted']);
@@ -52,6 +54,7 @@ test('scope is a global one-day calendar entity with read-only role mutation lev
 test('manual record hooks own defaults and reject managed update and deletion paths', async () => {
     const recordDefs = await readJson('Resources', 'metadata', 'recordDefs', 'ZileLibere.json');
     const policy = await readSource('Tools', 'ZileLibere', 'ManualRecordPolicy.php');
+    const accessChecker = await readSource('Classes', 'Acl', 'ZileLibere', 'AccessChecker.php');
     const update = await readSource('Classes', 'Record', 'Hooks', 'ZileLibere', 'BeforeUpdate.php');
     const remove = await readSource('Classes', 'Record', 'Hooks', 'ZileLibere', 'BeforeDelete.php');
 
@@ -76,6 +79,8 @@ test('manual record hooks own defaults and reject managed update and deletion pa
     assert.match(update, /getFetched\('managed'\)/);
     assert.match(update, /SOURCE_NAGER_DATE/);
     assert.match(remove, /Synchronized Zile libere records cannot be deleted/);
+    assert.match(accessChecker, /function checkCreate[\s\S]*?return \$user->isAdmin\(\);/);
+    assert.match(accessChecker, /function checkEntityCreate[\s\S]*?return \$user->isAdmin\(\);/);
 });
 
 test('calendar query preserves strict ACL and does not filter by assigned user', async () => {
@@ -91,8 +96,8 @@ test('calendar query preserves strict ACL and does not filter by assigned user',
 test('calendar registration is additive and idempotent', async () => {
     const source = await readFile(path.join(extensionRoot, 'scripts', 'AfterInstall.php'), 'utf8');
 
-    assert.match(source, /get\('calendarEntityList'\)/);
-    assert.match(source, /in_array\(self::ENTITY_TYPE, \$calendarEntityList, true\)/);
-    assert.match(source, /\$calendarEntityList\[\] = self::ENTITY_TYPE/);
+    assert.match(source, /\['calendarEntityList', 'tabList', 'quickCreateList'\]/);
+    assert.match(source, /in_array\(self::ENTITY_TYPE, \$entityTypeList, true\)/);
+    assert.match(source, /\$entityTypeList\[\] = self::ENTITY_TYPE/);
     assert.doesNotMatch(source, /\['ZileLibere'\]/);
 });

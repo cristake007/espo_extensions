@@ -258,7 +258,8 @@ may exist on the same date.
 ## 8. Manual Non-Working Days
 
 Administrators must be able to manage manual records from the **Zile libere**
-list and record views.
+list and record views. Installation must expose the entity in navigation and
+Quick Create without replacing existing administrator configuration.
 
 ### 8.1 Allowed actions
 
@@ -311,6 +312,9 @@ The extension installation must register `ZileLibere` for calendar display
 without requiring the administrator to manually create the entity. Any
 modification to existing Activities/Calendar configuration must be additive and
 must preserve existing settings.
+
+The Calendar quick-detail modal for this global read-only event type must not
+offer a Full Form action.
 
 Acceptance requires verification with:
 

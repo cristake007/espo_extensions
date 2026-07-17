@@ -71,11 +71,11 @@ The EspoCRM extension point is currently named `getCalenderQuery` in core
 10.0.3. Runtime tests must treat this method as a compatibility seam and fail
 clearly if a later supported EspoCRM release removes it.
 
-`calendarEntityList` remains an administrator configuration value. Installation
-must add `ZileLibere` without replacing existing entries, and upgrade must be
-idempotent. This additive config mutation requires an installation/upgrade
-script and runtime verification; metadata merging alone cannot append to saved
-configuration.
+`calendarEntityList`, `tabList`, and `quickCreateList` remain administrator
+configuration values. Installation must add `ZileLibere` without replacing
+existing entries, and upgrade must be idempotent. These additive config
+mutations require an installation/upgrade script and runtime verification;
+metadata merging alone cannot append to saved configuration.
 
 ### Integration and manual action
 
@@ -124,9 +124,9 @@ configuration.
 - Repository customization is supported by the module repository class and/or
   `entityDefs.repositoryClassName`; the final choice will follow the standard
   module repository lookup proven in the runtime.
-- `holidayTypes` and `subdivisionCodes` will use storable `jsonArray` fields.
-  They preserve ordered JSON arrays without creating the auxiliary value rows
-  used by EspoCRM `array` fields.
+- `holidayTypes` and `subdivisionCodes` use EspoCRM `array` fields, whose ORM
+  attribute type is `jsonArray`. They preserve ordered JSON arrays while using
+  EspoCRM's supported client field view.
 - The planned metadata indexes are:
   - `countryDate`: `countryCode`, `dateStart`, `deleted`;
   - `managedSyncScope`: `source`, `managed`, `countryCode`, `sourceYear`,
@@ -151,7 +151,8 @@ available. The focused runtime spike must verify:
 3. two records on one date appear twice;
 4. an administrator and a regular user with read access see the records;
 5. a regular user without read access does not see them;
-6. `calendarEntityList` installation is additive and upgrade-idempotent;
+6. Calendar, navigation, and Quick Create registration is additive and
+   upgrade-idempotent;
 7. integration defaults, custom view loading, enabled-state reads, and admin
    server-action authorization;
 8. default scheduled-job population and direct CLI execution;

@@ -196,6 +196,8 @@ namespace {
     $freshEntityManager = new EntityManager($freshIntegration);
     (new AfterInstall())->run(container([
         'calendarEntityList' => ['Meeting', 'Call'],
+        'tabList' => ['Home', 'Calendar'],
+        'quickCreateList' => ['Meeting'],
         'timeZone' => 'Europe/Bucharest',
         'integrations' => (object) ['ExistingConnector' => true],
     ], $freshWriter, $freshEntityManager));
@@ -204,6 +206,16 @@ namespace {
         ['Meeting', 'Call', 'ZileLibere'],
         $freshWriter->changes['calendarEntityList'],
         'Fresh installation did not preserve unrelated Calendar entries.',
+    );
+    assertSameValue(
+        ['Home', 'Calendar', 'ZileLibere'],
+        $freshWriter->changes['tabList'],
+        'Fresh installation did not expose the manual holiday list.',
+    );
+    assertSameValue(
+        ['Meeting', 'ZileLibere'],
+        $freshWriter->changes['quickCreateList'],
+        'Fresh installation did not expose manual holiday Quick Create.',
     );
     assertSameValue(
         true,
@@ -229,6 +241,8 @@ namespace {
     $upgradeEntityManager = new EntityManager($upgradeIntegration);
     (new AfterInstall())->run(container([
         'calendarEntityList' => ['Meeting', 'ZileLibere', 'Call'],
+        'tabList' => ['Home', 'ZileLibere'],
+        'quickCreateList' => ['Meeting', 'ZileLibere'],
         'timeZone' => 'UTC',
         'integrations' => (object) ['NagerDate' => false, 'ExistingConnector' => true],
     ], $upgradeWriter, $upgradeEntityManager));
@@ -249,12 +263,24 @@ namespace {
     $holidayRecordCount = 23;
     (new BeforeUninstall())->run(container([
         'calendarEntityList' => ['Meeting', 'ZileLibere', 'Call', 'ZileLibere'],
+        'tabList' => ['Home', 'ZileLibere', 'Calendar', 'ZileLibere'],
+        'quickCreateList' => ['Meeting', 'ZileLibere'],
     ], $uninstallWriter, $uninstallEntityManager));
 
     assertSameValue(
         ['Meeting', 'Call'],
         $uninstallWriter->changes['calendarEntityList'],
         'Uninstall did not remove only the extension Calendar entries.',
+    );
+    assertSameValue(
+        ['Home', 'Calendar'],
+        $uninstallWriter->changes['tabList'],
+        'Uninstall did not remove only the extension navigation entries.',
+    );
+    assertSameValue(
+        ['Meeting'],
+        $uninstallWriter->changes['quickCreateList'],
+        'Uninstall did not remove only the extension Quick Create entry.',
     );
     assertSameValue(1, $uninstallWriter->saveCount, 'Uninstall did not save Calendar cleanup once.');
     assertSameValue(
@@ -278,6 +304,8 @@ namespace {
     $reinstallEntityManager = new EntityManager($upgradeIntegration);
     (new AfterInstall())->run(container([
         'calendarEntityList' => ['Meeting', 'Call'],
+        'tabList' => ['Home', 'Calendar'],
+        'quickCreateList' => ['Meeting'],
         'timeZone' => 'UTC',
         'integrations' => (object) ['NagerDate' => false, 'ExistingConnector' => true],
     ], $reinstallWriter, $reinstallEntityManager));
@@ -286,6 +314,16 @@ namespace {
         ['Meeting', 'Call', 'ZileLibere'],
         $reinstallWriter->changes['calendarEntityList'],
         'Reinstall did not restore Calendar registration.',
+    );
+    assertSameValue(
+        ['Home', 'Calendar', 'ZileLibere'],
+        $reinstallWriter->changes['tabList'],
+        'Reinstall did not restore the manual holiday list.',
+    );
+    assertSameValue(
+        ['Meeting', 'ZileLibere'],
+        $reinstallWriter->changes['quickCreateList'],
+        'Reinstall did not restore manual holiday Quick Create.',
     );
     assertSameValue(1, $reinstallWriter->saveCount, 'Reinstall did not save only required config.');
     assertSameValue(0, $reinstallEntityManager->saveCount, 'Reinstall reset retained integration settings.');

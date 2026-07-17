@@ -1,4 +1,7 @@
 {
     "controller": "controllers/record",
-    "acl": "zile-sarbatoare:acl/zile-libere"
+    "acl": "zile-sarbatoare:acl/zile-libere",
+    "modalViews": {
+        "detail": "zile-sarbatoare:views/modals/zile-libere-detail"
+    }
 }

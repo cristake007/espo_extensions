@@ -42,7 +42,7 @@
             "readOnly": true
         },
         "holidayTypes": {
-            "type": "jsonArray",
+            "type": "array",
             "default": ["Public"],
             "required": true,
             "readOnly": true
@@ -54,7 +54,7 @@
             "readOnly": true
         },
         "subdivisionCodes": {
-            "type": "jsonArray",
+            "type": "array",
             "default": [],
             "required": true,
             "readOnly": true

@@ -17,16 +17,19 @@ class AfterInstall
     public function run(Container $container): void
     {
         $config = $container->getByClass(Config::class);
-        $calendarEntityList = $config->get('calendarEntityList') ?? [];
         $configChanges = [];
 
-        if (!is_array($calendarEntityList)) {
-            throw new RuntimeException('calendarEntityList must be an array.');
-        }
+        foreach (['calendarEntityList', 'tabList', 'quickCreateList'] as $listName) {
+            $entityTypeList = $config->get($listName) ?? [];
 
-        if (!in_array(self::ENTITY_TYPE, $calendarEntityList, true)) {
-            $calendarEntityList[] = self::ENTITY_TYPE;
-            $configChanges['calendarEntityList'] = array_values($calendarEntityList);
+            if (!is_array($entityTypeList)) {
+                throw new RuntimeException("$listName must be an array.");
+            }
+
+            if (!in_array(self::ENTITY_TYPE, $entityTypeList, true)) {
+                $entityTypeList[] = self::ENTITY_TYPE;
+                $configChanges[$listName] = array_values($entityTypeList);
+            }
         }
 
         $entityManager = $container->getByClass(EntityManager::class);

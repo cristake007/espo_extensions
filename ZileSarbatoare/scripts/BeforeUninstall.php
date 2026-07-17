@@ -16,31 +16,43 @@ class BeforeUninstall
 
     public function run(Container $container): void
     {
-        $this->unregisterCalendarEntity($container);
+        $this->unregisterEntity($container);
         $this->removeScheduledJob($container);
     }
 
-    private function unregisterCalendarEntity(Container $container): void
+    private function unregisterEntity(Container $container): void
     {
         $config = $container->getByClass(Config::class);
-        $calendarEntityList = $config->get('calendarEntityList') ?? [];
+        $configChanges = [];
 
-        if (!is_array($calendarEntityList)) {
-            throw new RuntimeException('calendarEntityList must be an array.');
+        foreach (['calendarEntityList', 'tabList', 'quickCreateList'] as $listName) {
+            $entityTypeList = $config->get($listName) ?? [];
+
+            if (!is_array($entityTypeList)) {
+                throw new RuntimeException("$listName must be an array.");
+            }
+
+            $filtered = array_values(array_filter(
+                $entityTypeList,
+                static fn (mixed $entityType): bool => $entityType !== self::ENTITY_TYPE,
+            ));
+
+            if ($filtered !== $entityTypeList) {
+                $configChanges[$listName] = $filtered;
+            }
         }
 
-        $filtered = array_values(array_filter(
-            $calendarEntityList,
-            static fn (mixed $entityType): bool => $entityType !== self::ENTITY_TYPE,
-        ));
-
-        if ($filtered === $calendarEntityList) {
+        if ($configChanges === []) {
             return;
         }
 
         $configWriter = $container->getByClass(InjectableFactory::class)
             ->create(ConfigWriter::class);
-        $configWriter->set('calendarEntityList', $filtered);
+
+        foreach ($configChanges as $name => $value) {
+            $configWriter->set($name, $value);
+        }
+
         $configWriter->save();
     }
 
