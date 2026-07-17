@@ -1,27 +1,17 @@
-.generator-perioade-cursuri-create .record-grid.record-grid-wide {
-    grid-template-columns: minmax(0, 1fr);
-}
-
+.generator-perioade-cursuri-create .record-grid.record-grid-wide,
 .generator-perioade-cursuri-wordpress-updater-page .record-grid.record-grid-wide,
 .generator-perioade-cursuri-word-matcher-page .record-grid.record-grid-wide {
     grid-template-columns: minmax(0, 1fr);
 }
 
-.generator-perioade-cursuri-create .record-grid > .side {
-    display: none;
-}
-
+.generator-perioade-cursuri-create .record-grid > .side,
 .generator-perioade-cursuri-wordpress-updater-page .record-grid > .side,
 .generator-perioade-cursuri-word-matcher-page .record-grid > .side {
     display: none;
 }
 
 .generator-perioade-cursuri-create .record-grid > .left,
-.generator-perioade-cursuri-create .record-grid .middle {
-    min-width: 0;
-    width: 100%;
-}
-
+.generator-perioade-cursuri-create .record-grid .middle,
 .generator-perioade-cursuri-wordpress-updater-page .record-grid > .left,
 .generator-perioade-cursuri-wordpress-updater-page .record-grid .middle,
 .generator-perioade-cursuri-word-matcher-page .record-grid > .left,
@@ -30,12 +20,8 @@
     width: 100%;
 }
 
+.generator-perioade-cursuri-create .middle > .panel,
 .generator-perioade-cursuri-wordpress-updater-page .middle > .panel {
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.generator-perioade-cursuri-create .middle > .panel {
     border-radius: 3px;
     overflow: hidden;
 }
