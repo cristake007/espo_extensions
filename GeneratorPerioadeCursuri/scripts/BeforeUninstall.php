@@ -22,14 +22,7 @@ class BeforeUninstall
 
     public function run(Container $container): void
     {
-        try {
-            $this->removeTabs($container);
-        } catch (Throwable $e) {
-            error_log(sprintf(
-                '[Generator perioade cursuri] BeforeUninstall cleanup skipped: %s',
-                $e->getMessage()
-            ));
-        }
+        $this->removeTabs($container);
     }
 
     private function removeTabs(Container $container): void
@@ -66,21 +59,21 @@ class BeforeUninstall
             }
 
             if (is_array($item)) {
-                $itemList = $item['itemList'] ?? null;
-
-                if (is_array($itemList)) {
-                    $item['itemList'] = array_values(array_filter(
-                        $itemList,
-                        fn ($childItem) => !in_array($childItem, $this->getManagedMenuItems(), true)
-                    ));
-                }
-
                 if ($this->isGeneratorPerioadeCursuriMenuGroup($item)) {
                     continue;
                 }
 
-                if (($item['itemList'] ?? null) === []) {
-                    continue;
+                $itemList = $item['itemList'] ?? null;
+
+                if (is_array($itemList) && $this->containsManagedMenuItem($itemList)) {
+                    $item['itemList'] = array_values(array_filter(
+                        $itemList,
+                        fn ($childItem) => !in_array($childItem, $this->getManagedMenuItems(), true)
+                    ));
+
+                    if ($item['itemList'] === []) {
+                        continue;
+                    }
                 }
             }
 
@@ -95,20 +88,18 @@ class BeforeUninstall
      */
     private function isGeneratorPerioadeCursuriMenuGroup(array $item): bool
     {
-        $itemList = $item['itemList'] ?? null;
-
-        if (!is_array($itemList)) {
-            return false;
-        }
-
-        if (in_array(
+        return in_array(
             $item['text'] ?? null,
             [self::MENU_GROUP_TEXT, self::LEGACY_MENU_GROUP_TEXT],
             true
-        )) {
-            return true;
-        }
+        );
+    }
 
+    /**
+     * @param array<int, mixed> $itemList
+     */
+    private function containsManagedMenuItem(array $itemList): bool
+    {
         foreach ($this->getManagedMenuItems() as $menuItem) {
             if (in_array($menuItem, $itemList, true)) {
                 return true;

@@ -155,13 +155,10 @@ foreach (['--tuvtk-primary', '--tuvtk-secondary', '--tuvtk-hover', '--tuvtk-surf
 }
 
 $afterInstall = (string) file_get_contents($extensionRoot . '/scripts/AfterInstall.php');
-$beforeUninstall = (string) file_get_contents($extensionRoot . '/scripts/BeforeUninstall.php');
-$assertSame(1, substr_count($afterInstall, "'{$entityType}'"), 'AfterInstall must manage the menu item exactly once.');
 $assertTrue(
     str_contains($afterInstall, "/Resources/metadata/scopes/{$entityType}.json'"),
     'AfterInstall must verify that the updater scope file is packaged.'
 );
-$assertSame(1, substr_count($beforeUninstall, "'{$entityType}'"), 'BeforeUninstall must remove the managed menu item.');
 
 foreach (['en_US', 'ro_RO'] as $locale) {
     $entityI18nPath = $moduleRoot . '/Resources/i18n/' . $locale . '/' . $entityType . '.json';
