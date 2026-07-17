@@ -14,6 +14,10 @@ use Espo\Modules\ZileSarbatoare\Tools\NagerDate\HttpTransport;
 use Espo\Modules\ZileSarbatoare\Tools\NagerDate\IntegrationSyncLock;
 use Espo\Modules\ZileSarbatoare\Tools\NagerDate\NagerDateClient;
 use Espo\Modules\ZileSarbatoare\Tools\NagerDate\SyncLock;
+use Espo\Modules\ZileSarbatoare\Tools\ZileLibere\EspoZileLibereRepository;
+use Espo\Modules\ZileSarbatoare\Tools\ZileLibere\ZileLibereCalendar;
+use Espo\Modules\ZileSarbatoare\Tools\ZileLibere\ZileLibereCalendarService;
+use Espo\Modules\ZileSarbatoare\Tools\ZileLibere\ZileLibereRepository;
 
 final class Binding implements BindingProcessor
 {
@@ -23,5 +27,7 @@ final class Binding implements BindingProcessor
         $binder->bindImplementation(HolidayProvider::class, NagerDateClient::class);
         $binder->bindImplementation(HolidayStore::class, EspoHolidayStore::class);
         $binder->bindImplementation(SyncLock::class, IntegrationSyncLock::class);
+        $binder->bindImplementation(ZileLibereCalendar::class, ZileLibereCalendarService::class);
+        $binder->bindImplementation(ZileLibereRepository::class, EspoZileLibereRepository::class);
     }
 }
