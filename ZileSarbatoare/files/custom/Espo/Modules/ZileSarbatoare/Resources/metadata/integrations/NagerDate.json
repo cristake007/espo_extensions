@@ -1,0 +1,77 @@
+{
+    "fields": {
+        "countryCode": {
+            "type": "varchar",
+            "maxLength": 2,
+            "required": true,
+            "default": "RO",
+            "pattern": "[A-Za-z]{2}"
+        },
+        "years": {
+            "type": "multiEnum",
+            "required": true,
+            "allowCustomOptions": true,
+            "pattern": "[0-9]{4}"
+        },
+        "holidayTypes": {
+            "type": "multiEnum",
+            "required": true,
+            "default": ["Public"],
+            "options": ["Public", "Bank", "School", "Authorities", "Optional", "Observance"]
+        },
+        "nationalOnly": {
+            "type": "bool",
+            "default": true
+        },
+        "automaticSync": {
+            "type": "bool",
+            "default": true
+        },
+        "frequency": {
+            "type": "enum",
+            "required": true,
+            "default": "Weekly",
+            "options": ["Daily", "Weekly", "Monthly", "ManualOnly"]
+        },
+        "timeOfDay": {
+            "type": "varchar",
+            "maxLength": 5,
+            "required": true,
+            "default": "03:00",
+            "pattern": "(?:[01][0-9]|2[0-3]):[0-5][0-9]"
+        },
+        "dayOfWeek": {
+            "type": "enum",
+            "required": true,
+            "default": "1",
+            "options": ["1", "2", "3", "4", "5", "6", "7"]
+        },
+        "dayOfMonth": {
+            "type": "int",
+            "required": true,
+            "default": 1,
+            "min": 1,
+            "max": 31
+        },
+        "lastAttemptedAt": {"type": "datetime", "readOnly": true},
+        "lastSuccessfulAt": {"type": "datetime", "readOnly": true},
+        "lastResult": {
+            "type": "enum",
+            "readOnly": true,
+            "options": ["Success", "Skipped", "Failed"]
+        },
+        "lastRequestedYears": {
+            "type": "multiEnum",
+            "readOnly": true,
+            "allowCustomOptions": true
+        },
+        "lastAcceptedCount": {"type": "int", "readOnly": true},
+        "lastCreatedCount": {"type": "int", "readOnly": true},
+        "lastUpdatedCount": {"type": "int", "readOnly": true},
+        "lastRemovedCount": {"type": "int", "readOnly": true},
+        "lastError": {"type": "text", "readOnly": true},
+        "nextRunAt": {"type": "datetime", "readOnly": true}
+    },
+    "allowUserAccounts": false,
+    "view": "zile-sarbatoare:views/admin/integrations/nager-date"
+}

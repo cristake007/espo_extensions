@@ -60,44 +60,127 @@ namespace Espo\Core\Utils\Config {
     }
 }
 
+namespace Espo\Entities {
+    class Integration {}
+}
+
+namespace Espo\ORM {
+    class EntityManager
+    {
+        public int $saveCount = 0;
+
+        public function __construct(private object $entity)
+        {}
+
+        public function getRDBRepositoryByClass(string $className): object
+        {
+            return new class ($this->entity) {
+                public function __construct(private object $entity)
+                {}
+
+                public function getById(string $id): object
+                {
+                    return $this->entity;
+                }
+            };
+        }
+
+        public function saveEntity(object $entity): void
+        {
+            $this->saveCount++;
+        }
+    }
+}
+
 namespace {
     use Espo\Core\Container;
     use Espo\Core\InjectableFactory;
     use Espo\Core\Utils\Config;
     use Espo\Core\Utils\Config\ConfigWriter;
+    use Espo\ORM\EntityManager;
 
     require_once __DIR__ . '/../../scripts/AfterInstall.php';
 
-    function makeContainer(mixed $calendarEntityList, ConfigWriter $writer): Container
+    final class IntegrationRecord
+    {
+        /** @var array<string, mixed> */
+        public array $values = [];
+
+        public function __construct(private bool $new)
+        {}
+
+        public function isNew(): bool
+        {
+            return $this->new;
+        }
+
+        /** @param array<string, mixed> $values */
+        public function set(array $values): void
+        {
+            $this->values = $values;
+        }
+    }
+
+    function makeContainer(
+        mixed $calendarEntityList,
+        ConfigWriter $writer,
+        IntegrationRecord $integration,
+        ?object $integrations = null,
+    ): Container
     {
         return new Container([
-            Config::class => new Config(['calendarEntityList' => $calendarEntityList]),
+            Config::class => new Config([
+                'calendarEntityList' => $calendarEntityList,
+                'timeZone' => 'Europe/Bucharest',
+                'integrations' => $integrations,
+            ]),
             InjectableFactory::class => new InjectableFactory($writer),
+            EntityManager::class => new EntityManager($integration),
         ]);
     }
 
     $writer = new ConfigWriter();
-    (new AfterInstall())->run(makeContainer(['Meeting', 'Call'], $writer));
+    $newIntegration = new IntegrationRecord(true);
+    (new AfterInstall())->run(makeContainer(['Meeting', 'Call'], $writer, $newIntegration));
 
     if ($writer->changes['calendarEntityList'] !== ['Meeting', 'Call', 'ZileLibere']) {
         throw new RuntimeException('Calendar registration must preserve existing entries and append ZileLibere.');
     }
 
     if ($writer->saveCount !== 1) {
-        throw new RuntimeException('A changed calendar list must be saved once.');
+        throw new RuntimeException('Fresh-install configuration must be saved once.');
+    }
+
+    if (($writer->changes['integrations']->NagerDate ?? null) !== true) {
+        throw new RuntimeException('NagerDate must be enabled only when its record is first created.');
+    }
+
+    if ($newIntegration->values['countryCode'] !== 'RO' || $newIntegration->values['frequency'] !== 'Weekly') {
+        throw new RuntimeException('Fresh integration defaults were not initialized.');
     }
 
     $writer = new ConfigWriter();
-    (new AfterInstall())->run(makeContainer(['Meeting', 'ZileLibere', 'Call'], $writer));
+    $savedIntegration = new IntegrationRecord(false);
+    $savedConfig = (object) ['NagerDate' => false];
+    (new AfterInstall())->run(makeContainer(
+        ['Meeting', 'ZileLibere', 'Call'],
+        $writer,
+        $savedIntegration,
+        $savedConfig,
+    ));
 
     if ($writer->saveCount !== 0 || $writer->changes !== []) {
-        throw new RuntimeException('Existing calendar registration must not be rewritten.');
+        throw new RuntimeException('Existing calendar and integration settings must not be rewritten.');
+    }
+
+    if ($savedIntegration->values !== [] || $savedConfig->NagerDate !== false) {
+        throw new RuntimeException('An upgrade must preserve saved integration settings.');
     }
 
     $writer = new ConfigWriter();
 
     try {
-        (new AfterInstall())->run(makeContainer('Meeting', $writer));
+        (new AfterInstall())->run(makeContainer('Meeting', $writer, new IntegrationRecord(false)));
         throw new RuntimeException('Invalid calendar configuration must be rejected.');
     } catch (RuntimeException $e) {
         if ($e->getMessage() !== 'calendarEntityList must be an array.') {

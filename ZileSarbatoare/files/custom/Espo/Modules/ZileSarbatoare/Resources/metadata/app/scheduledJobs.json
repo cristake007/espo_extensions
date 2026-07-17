@@ -1,0 +1,7 @@
+{
+    "SyncZileSarbatoare": {
+        "jobClassName": "Espo\\Modules\\ZileSarbatoare\\Jobs\\SyncZileSarbatoare",
+        "scheduling": "*/5 * * * *",
+        "isDefault": true
+    }
+}

@@ -1,0 +1,55 @@
+{
+    "titles": {
+        "NagerDate": "Nager.Date"
+    },
+    "fields": {
+        "countryCode": "Country",
+        "years": "Years to synchronize",
+        "holidayTypes": "Holiday types",
+        "nationalOnly": "National holidays only",
+        "automaticSync": "Automatic synchronization",
+        "frequency": "Frequency",
+        "timeOfDay": "Time of day",
+        "dayOfWeek": "Day of week",
+        "dayOfMonth": "Day of month",
+        "lastAttemptedAt": "Last attempted synchronization",
+        "lastSuccessfulAt": "Last successful synchronization",
+        "lastResult": "Last result",
+        "lastRequestedYears": "Requested years",
+        "lastAcceptedCount": "Accepted records",
+        "lastCreatedCount": "Created records",
+        "lastUpdatedCount": "Updated records",
+        "lastRemovedCount": "Removed records",
+        "lastError": "Last error",
+        "nextRunAt": "Next automatic synchronization"
+    },
+    "labels": {
+        "synchronizeNow": "Synchronize now",
+        "synchronizing": "Synchronizing..."
+    },
+    "options": {
+        "frequency": {
+            "Daily": "Daily",
+            "Weekly": "Weekly",
+            "Monthly": "Monthly",
+            "ManualOnly": "Manual only"
+        },
+        "dayOfWeek": {
+            "1": "Monday",
+            "2": "Tuesday",
+            "3": "Wednesday",
+            "4": "Thursday",
+            "5": "Friday",
+            "6": "Saturday",
+            "7": "Sunday"
+        },
+        "lastResult": {
+            "Success": "Success",
+            "Skipped": "Skipped",
+            "Failed": "Failed"
+        }
+    },
+    "help": {
+        "NagerDate": "Configure the public-holiday source and synchronization schedule. Times use the system timezone. Manual-only frequency and disabled automatic synchronization never start a scheduled request."
+    }
+}

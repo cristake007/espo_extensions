@@ -1,0 +1,55 @@
+{
+    "titles": {
+        "NagerDate": "Nager.Date"
+    },
+    "fields": {
+        "countryCode": "Țară",
+        "years": "Ani de sincronizat",
+        "holidayTypes": "Tipuri de sărbători",
+        "nationalOnly": "Doar sărbători naționale",
+        "automaticSync": "Sincronizare automată",
+        "frequency": "Frecvență",
+        "timeOfDay": "Ora rulării",
+        "dayOfWeek": "Ziua săptămânii",
+        "dayOfMonth": "Ziua lunii",
+        "lastAttemptedAt": "Ultima încercare de sincronizare",
+        "lastSuccessfulAt": "Ultima sincronizare reușită",
+        "lastResult": "Ultimul rezultat",
+        "lastRequestedYears": "Ani solicitați",
+        "lastAcceptedCount": "Înregistrări acceptate",
+        "lastCreatedCount": "Înregistrări create",
+        "lastUpdatedCount": "Înregistrări actualizate",
+        "lastRemovedCount": "Înregistrări eliminate",
+        "lastError": "Ultima eroare",
+        "nextRunAt": "Următoarea sincronizare automată"
+    },
+    "labels": {
+        "synchronizeNow": "Sincronizează acum",
+        "synchronizing": "Se sincronizează..."
+    },
+    "options": {
+        "frequency": {
+            "Daily": "Zilnic",
+            "Weekly": "Săptămânal",
+            "Monthly": "Lunar",
+            "ManualOnly": "Doar manual"
+        },
+        "dayOfWeek": {
+            "1": "Luni",
+            "2": "Marți",
+            "3": "Miercuri",
+            "4": "Joi",
+            "5": "Vineri",
+            "6": "Sâmbătă",
+            "7": "Duminică"
+        },
+        "lastResult": {
+            "Success": "Reușit",
+            "Skipped": "Omis",
+            "Failed": "Eșuat"
+        }
+    },
+    "help": {
+        "NagerDate": "Configurați sursa sărbătorilor legale și programul de sincronizare. Orele folosesc fusul orar al sistemului. Frecvența doar manuală și sincronizarea automată dezactivată nu pornesc solicitări programate."
+    }
+}
