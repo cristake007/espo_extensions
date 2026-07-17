@@ -54,6 +54,10 @@ class BeforeUninstall
         $filteredTabList = [];
 
         foreach ($tabList as $item) {
+            if (is_object($item)) {
+                $item = (array) $item;
+            }
+
             if (in_array($item, $this->getManagedMenuItems(), true)) {
                 continue;
             }

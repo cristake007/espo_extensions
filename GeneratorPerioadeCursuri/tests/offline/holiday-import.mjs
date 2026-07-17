@@ -99,8 +99,15 @@ class FakeRoot {
     }
 
     querySelectorAll(selector) {
-        return selector === 'input.holiday-date' ?
-            this.container.rows.map(row => row.input) : [];
+        if (selector === 'input.holiday-date') {
+            return this.container.rows.map(row => row.input);
+        }
+
+        if (selector === '[data-role="date-row"]') {
+            return this.container.rows.slice();
+        }
+
+        return [];
     }
 }
 
@@ -342,8 +349,8 @@ for (const testCase of [
 
     assert.deepEqual(
         inputValues(view),
-        ['05.01.2026', '', '01.01.2026'],
-        'manual and blank rows must remain while only missing imported dates are appended'
+        ['05.01.2026', '01.01.2026'],
+        'manual dates must remain and placeholder blank rows must be removed after import'
     );
     assert.equal(view.element.hidden.value, '05.01.2026, 01.01.2026');
     assert.ok(view.triggeredEvents.includes('change'));
@@ -352,7 +359,7 @@ for (const testCase of [
     await clickImport(view);
     assert.deepEqual(
         inputValues(view),
-        ['05.01.2026', '', '01.01.2026'],
+        ['05.01.2026', '01.01.2026'],
         'repeated imports must not add duplicates'
     );
 }
@@ -371,6 +378,7 @@ for (const testCase of [
     {error: {status: 400}, messageKey: 'holidayImportBadRequest'},
     {error: {status: 403}, messageKey: 'holidayImportForbidden'},
     {error: {status: 404}, messageKey: 'holidayImportUnavailable'},
+    {error: {status: 405}, messageKey: 'holidayImportUnavailable'},
     {error: {status: 0}, messageKey: 'holidayImportTemporaryUnavailable'},
     {error: {status: 503}, messageKey: 'holidayImportTemporaryUnavailable'},
     {error: new Error('internal stack details'), messageKey: 'holidayImportTemporaryUnavailable'},
@@ -385,6 +393,11 @@ for (const testCase of [
     assert.equal(view.element.importButton.disabled, false);
     assert.deepEqual(inputValues(view), ['']);
 }
+
+assert.match(
+    translations.ro_RO.messages.holidayImportUnavailable,
+    /extensia Zile Sărbătoare.*instalată.*activată/i
+);
 
 for (const response of [
     null,

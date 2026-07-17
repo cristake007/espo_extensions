@@ -189,7 +189,9 @@ define('generator-perioade-cursuri:views/fields/holidays', [
                     added = this.appendHolidayDateRow(internalDate, false) || added;
                 });
 
-                if (added) {
+                const removedBlankRows = this.removeBlankHolidayRows();
+
+                if (added || removedBlankRows) {
                     this.syncHiddenInput();
                     this.trigger('change');
                 }
@@ -246,6 +248,25 @@ define('generator-perioade-cursuri:views/fields/holidays', [
             return [match[3], match[2], match[1]].join('.');
         }
 
+        removeBlankHolidayRows() {
+            if (!this.element) {
+                return false;
+            }
+
+            let removed = false;
+
+            this.element.querySelectorAll('[data-role="date-row"]').forEach(row => {
+                const input = row.querySelector('input.holiday-date');
+
+                if (input && input.value.trim() === '') {
+                    row.remove();
+                    removed = true;
+                }
+            });
+
+            return removed;
+        }
+
         getHolidayImportErrorKey(error) {
             const status = Number(error && (error.status || (error.xhr && error.xhr.status))) || 0;
 
@@ -257,7 +278,7 @@ define('generator-perioade-cursuri:views/fields/holidays', [
                 return 'holidayImportForbidden';
             }
 
-            if (status === 404) {
+            if (status === 404 || status === 405) {
                 return 'holidayImportUnavailable';
             }
 

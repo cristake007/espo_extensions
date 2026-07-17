@@ -115,7 +115,7 @@
         "holidayImportNoResults": "Nu există zile libere disponibile pentru anul și lunile selectate. Verifică dacă anul a fost sincronizat în extensia Zile Sărbătoare.",
         "holidayImportForbidden": "Nu ai permisiunea de a prelua zilele libere.",
         "holidayImportBadRequest": "Selecția anului sau a lunilor nu este validă.",
-        "holidayImportUnavailable": "Extensia Zile Sărbătoare nu este disponibilă.",
+        "holidayImportUnavailable": "Această funcție necesită extensia Zile Sărbătoare instalată și activată.",
         "holidayImportTemporaryUnavailable": "Zilele libere nu pot fi preluate momentan. Încearcă din nou mai târziu.",
         "holidayImportInvalidResponse": "Răspunsul primit pentru zilele libere nu este valid."
     }

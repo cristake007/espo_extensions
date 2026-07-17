@@ -138,6 +138,10 @@ namespace {
             'itemList' => ['Account'],
         ],
         [
+            'text' => 'Persisted custom group',
+            'itemList' => ['Contact'],
+        ],
+        [
             'text' => 'Unrelated empty group',
             'itemList' => [],
         ],
@@ -146,6 +150,7 @@ namespace {
     $initialTabList = [
         'Home',
         $canonicalGroup,
+        (object) $canonicalGroup,
         $canonicalGroup,
         ['text' => 'Generator perioade cursuri'],
         [
@@ -160,6 +165,10 @@ namespace {
         [
             'text' => 'Renamed extension group',
             'itemList' => $managedItems,
+        ],
+        (object) [
+            'text' => 'Persisted custom group',
+            'itemList' => ['GeneratorPerioadeCursuri', 'Contact'],
         ],
         [
             'text' => 'Unrelated empty group',
@@ -185,6 +194,12 @@ namespace {
         $installedTabList,
         static fn (mixed $item): bool => is_array($item) && ($item['text'] ?? null) === 'Generator perioade cursuri'
     )), 'Install must leave exactly one canonical menu group.');
+    $assertSame(1, count(array_filter(
+        $installedTabList,
+        static fn (mixed $item): bool => is_array($item) &&
+            ($item['text'] ?? null) === 'Persisted custom group' &&
+            ($item['itemList'] ?? null) === ['Contact']
+    )), 'Install must normalize object-shaped groups and preserve their unrelated items.');
 
     $addMenuGroup->invoke(new AfterInstall(), $container);
     $assertSame($installedTabList, $config->get('tabList'), 'Repeated install must be idempotent.');

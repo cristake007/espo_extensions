@@ -115,7 +115,7 @@
         "holidayImportNoResults": "No holidays are available for the selected year and months. Check whether the year was synchronized in the Holiday extension.",
         "holidayImportForbidden": "You do not have permission to import holidays.",
         "holidayImportBadRequest": "The selected year or months are invalid.",
-        "holidayImportUnavailable": "The Holiday extension is unavailable.",
+        "holidayImportUnavailable": "This feature requires the Holiday extension to be installed and enabled.",
         "holidayImportTemporaryUnavailable": "Holidays cannot be imported right now. Try again later.",
         "holidayImportInvalidResponse": "The holiday service returned an invalid response."
     }
