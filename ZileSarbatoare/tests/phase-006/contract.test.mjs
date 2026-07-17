@@ -6,7 +6,7 @@ const root = resolve(import.meta.dirname, '../..');
 const read = path => readFileSync(resolve(root, path), 'utf8');
 
 const manifest = JSON.parse(read('manifest.json'));
-assert.equal(manifest.version, '0.7.1');
+assert.equal(manifest.version, '0.7.2');
 
 const uninstall = read('scripts/BeforeUninstall.php');
 assert.match(uninstall, /getRDBRepositoryByClass\(ScheduledJob::class\)/);
@@ -22,7 +22,7 @@ assert.deepEqual(Object.keys(jobs), ['SyncZileSarbatoare']);
 assert.equal(jobs.SyncZileSarbatoare.isDefault, true);
 
 const readme = read('README.md');
-assert.match(readme, /build\.sh --extension ZileSarbatoare --zip 0\.7\.1 files scripts/);
+assert.match(readme, /build\.sh --extension ZileSarbatoare --zip 0\.7\.2 files scripts/);
 assert.match(readme, /bin\/command rebuild/);
 assert.match(readme, /populate-scheduled-jobs/);
 assert.match(readme, /cron or daemon/i);
@@ -39,5 +39,15 @@ for (const path of [
     assert.doesNotMatch(clientModule, /^\s*import\s/m);
     assert.doesNotMatch(clientModule, /^\s*export\s/m);
 }
+
+const integrationView = read(
+    'files/client/custom/modules/zile-sarbatoare/src/views/admin/integrations/nager-date.js',
+);
+assert.match(integrationView, /Espo\.Ui\.notify\(result\.message, 'info', 8000/);
+assert.ok(
+    integrationView.indexOf('Espo.Ui.notify(false)') <
+        integrationView.indexOf("Espo.Ui.notify(result.message, 'info', 8000"),
+    'The progress notification must close before the persistent result is shown.',
+);
 
 console.log('PHASE-006 release and operational contracts passed.');

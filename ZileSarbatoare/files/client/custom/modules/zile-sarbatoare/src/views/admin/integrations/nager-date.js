@@ -132,16 +132,21 @@ define(['views/admin/integrations/edit'], (IntegrationsEditView) => {
                 return;
             }
 
+            let result = null;
+
             this.updateSynchronizeButton(true);
             Espo.Ui.notifyWait();
 
             try {
-                const result = await Espo.Ajax.postRequest('NagerDate/action/synchronize', {});
-                Espo.Ui.notify(result.message, 'info', undefined, {closeButton: true});
+                result = await Espo.Ajax.postRequest('NagerDate/action/synchronize', {});
                 await this.refreshStatus();
             } finally {
                 Espo.Ui.notify(false);
                 this.updateSynchronizeButton();
+
+                if (result) {
+                    Espo.Ui.notify(result.message, 'info', 8000, {closeButton: true});
+                }
             }
         }
     };

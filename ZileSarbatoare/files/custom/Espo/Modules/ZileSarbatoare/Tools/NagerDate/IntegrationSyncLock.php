@@ -8,23 +8,21 @@ use DateTimeImmutable;
 use DateTimeZone;
 use Espo\Entities\Integration;
 use Espo\ORM\EntityManager;
-use Throwable;
+use RuntimeException;
 
 final class IntegrationSyncLock implements SyncLock
 {
+    private const INTEGRATION = 'NagerDate';
+
     public function __construct(
         private EntityManager $entityManager,
-        private SettingsProvider $settingsProvider,
         private LockPolicy $policy,
     ) {}
 
     public function acquire(DateTimeImmutable $now): ?string
     {
-        $locker = $this->entityManager->getLocker();
-        $locker->lockExclusive(Integration::ENTITY_TYPE);
-
-        try {
-            $entity = $this->settingsProvider->getEntity();
+        return $this->entityManager->getTransactionManager()->run(function () use ($now): ?string {
+            $entity = $this->getEntityForUpdate();
             $startedAt = $this->parseStoredDate($entity->get('syncStartedAt'));
             $utcNow = $now->setTimezone(new DateTimeZone('UTC'));
 
@@ -33,8 +31,6 @@ final class IntegrationSyncLock implements SyncLock
                 $startedAt,
                 $utcNow,
             )) {
-                $locker->rollback();
-
                 return null;
             }
 
@@ -45,16 +41,9 @@ final class IntegrationSyncLock implements SyncLock
                 'syncLockTokenHash' => hash('sha256', $token),
             ]);
             $this->entityManager->saveEntity($entity);
-            $locker->commit();
 
             return $token;
-        } catch (Throwable $e) {
-            if ($locker->isLocked()) {
-                $locker->rollback();
-            }
-
-            throw $e;
-        }
+        });
     }
 
     public function release(string $token): void
@@ -93,20 +82,25 @@ final class IntegrationSyncLock implements SyncLock
     /** @param callable(Integration): void $operation */
     private function withLockedEntity(callable $operation): void
     {
-        $locker = $this->entityManager->getLocker();
-        $locker->lockExclusive(Integration::ENTITY_TYPE);
-
-        try {
-            $entity = $this->settingsProvider->getEntity();
+        $this->entityManager->getTransactionManager()->run(function () use ($operation): void {
+            $entity = $this->getEntityForUpdate();
             $operation($entity);
-            $locker->commit();
-        } catch (Throwable $e) {
-            if ($locker->isLocked()) {
-                $locker->rollback();
-            }
+        });
+    }
 
-            throw $e;
+    private function getEntityForUpdate(): Integration
+    {
+        $entity = $this->entityManager
+            ->getRDBRepositoryByClass(Integration::class)
+            ->forUpdate()
+            ->where(['id' => self::INTEGRATION])
+            ->findOne();
+
+        if (!$entity instanceof Integration) {
+            throw new RuntimeException('The Nager.Date integration record does not exist.');
         }
+
+        return $entity;
     }
 
     private function storeDate(DateTimeImmutable $date): string

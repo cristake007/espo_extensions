@@ -27,7 +27,10 @@ assert.match(manager, /ZileSarbatoare synchronization completed/);
 assert.doesNotMatch(manager, /response->body|payload/);
 
 const lock = read('files/custom/Espo/Modules/ZileSarbatoare/Tools/NagerDate/IntegrationSyncLock.php');
-assert.match(lock, /lockExclusive\(Integration::ENTITY_TYPE\)/);
+assert.match(lock, /getTransactionManager\(\)->run/);
+assert.match(lock, /->forUpdate\(\)/);
+assert.match(lock, /where\(\['id' => self::INTEGRATION\]\)/);
+assert.doesNotMatch(lock, /getLocker|lockExclusive/);
 assert.match(lock, /random_bytes\(16\)/);
 assert.match(lock, /syncLockTokenHash/);
 assert.match(lock, /hash\('sha256', \$token\)/);
