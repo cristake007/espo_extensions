@@ -35,6 +35,7 @@ test('ZileLibere stores one canonical date and the required synchronization scop
 
 test('scope is a global one-day calendar entity with read-only role mutation levels', async () => {
     const scope = await readJson('Resources', 'metadata', 'scopes', 'ZileLibere.json');
+    const entity = await readSource('Entities', 'ZileLibere.php');
 
     assert.equal(scope.type, 'Event');
     assert.equal(scope.calendar, true);
@@ -44,6 +45,8 @@ test('scope is a global one-day calendar entity with read-only role mutation lev
     assert.deepEqual(scope.aclActionLevelListMap.edit, ['no']);
     assert.deepEqual(scope.aclActionLevelListMap.delete, ['no']);
     assert.equal(scope.importable, false);
+    assert.match(entity, /function getAssignedUser\(\): \?Link/);
+    assert.match(entity, /getAssignedUser\(\): \?Link\s*\{\s*return null;/s);
 });
 
 test('manual record hooks own defaults and reject managed update and deletion paths', async () => {

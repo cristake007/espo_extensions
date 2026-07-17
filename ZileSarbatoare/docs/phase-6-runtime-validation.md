@@ -9,7 +9,7 @@ user with `ZileLibere` read access, and a regular user without that access.
 ## Install and rebuild
 
 ```bash
-bin/command extension --file="/path/to/zile-sarbatoare-0.7.2.zip"
+bin/command extension --file="/path/to/zile-sarbatoare-0.7.3.zip"
 bin/command rebuild
 bin/command populate-scheduled-jobs
 bin/command app-info --binding
