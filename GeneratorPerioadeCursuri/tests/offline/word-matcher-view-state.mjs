@@ -11,12 +11,28 @@ const viewRoot = path.join(
     'files/client/custom/modules/generator-perioade-cursuri/src/views/' +
     'generator-perioade-cursuri-word-matcher/record'
 );
+const recordUiPath = path.join(
+    extensionRoot,
+    'files/client/custom/modules/generator-perioade-cursuri/src/views/shared/record-ui.js'
+);
+
+let RecordUi;
+vm.runInNewContext(fs.readFileSync(recordUiPath, 'utf8'), {
+    define(name, dependencies, factory) {
+        RecordUi = factory();
+    },
+}, {filename: recordUiPath});
 
 function loadView(file, BaseView) {
     let ViewClass;
     const context = {
         define(name, dependencies, factory) {
-            ViewClass = factory(BaseView);
+            const implementations = dependencies.map(dependency =>
+                dependency === 'generator-perioade-cursuri:views/shared/record-ui' ?
+                    RecordUi : BaseView
+            );
+
+            ViewClass = factory(...implementations);
         },
     };
 

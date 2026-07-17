@@ -1,4 +1,7 @@
-define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detail', ['views/record/detail'], function (DetailRecordView) {
+define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detail', [
+    'views/record/detail',
+    'generator-perioade-cursuri:views/shared/record-ui'
+], function (DetailRecordView, RecordUi) {
     return class extends DetailRecordView {
         setup() {
             super.setup();
@@ -133,31 +136,25 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
         }
 
         updateGenerateButtonState() {
-            const button = this.element.querySelector('[data-action="generate"]');
-
-            if (!button) {
-                return;
-            }
-
             const disabled = !!this.model.get('generatedAt');
 
-            button.disabled = disabled;
-            button.classList.toggle('disabled', disabled);
-            button.title = disabled ? this.translate('alreadyGenerated', 'messages', 'GeneratorPerioadeCursuri') : '';
+            RecordUi.setActionButtonState(
+                this.element,
+                'generate',
+                disabled,
+                disabled ? this.translate('alreadyGenerated', 'messages', 'GeneratorPerioadeCursuri') : ''
+            );
         }
 
         updateExportButtonState() {
-            const button = this.element.querySelector('[data-action="exportXlsx"]');
-
-            if (!button) {
-                return;
-            }
-
             const disabled = !this.model.get('exportFileId');
 
-            button.disabled = disabled;
-            button.classList.toggle('disabled', disabled);
-            button.title = disabled ? this.translate('exportUnavailable', 'messages', 'GeneratorPerioadeCursuri') : '';
+            RecordUi.setActionButtonState(
+                this.element,
+                'exportXlsx',
+                disabled,
+                disabled ? this.translate('exportUnavailable', 'messages', 'GeneratorPerioadeCursuri') : ''
+            );
         }
 
         renderGeneratedScheduleTable(result) {
@@ -172,7 +169,7 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
             container.innerHTML = [
                 '<div class="panel panel-default">',
                 '<div class="panel-heading">',
-                '<h4 class="panel-title">' + this.escapeHtml(this.translate('generatedSchedule', 'labels', 'GeneratorPerioadeCursuri')) + '</h4>',
+                '<h4 class="panel-title">' + RecordUi.escapeHtml(this.translate('generatedSchedule', 'labels', 'GeneratorPerioadeCursuri')) + '</h4>',
                 '</div>',
                 '<div class="panel-body">',
                 '<div data-role="generated-schedule-top-scroll" style="overflow-x: auto; overflow-y: hidden; height: 16px; margin-bottom: 6px;">',
@@ -182,11 +179,11 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
                 '<table class="table table-bordered table-striped table-hover text-nowrap" style="table-layout: fixed;">',
                 '<thead>',
                 '<tr>',
-                '<th class="text-nowrap" data-sticky-column="0">' + this.escapeHtml(this.translate('rowNumber', 'labels', 'GeneratorPerioadeCursuri')) + '</th>',
-                '<th class="text-nowrap" data-sticky-column="1">' + this.escapeHtml(this.translate('courseName', 'labels', 'GeneratorPerioadeCursuri')) + '</th>',
-                '<th class="text-nowrap" data-sticky-column="2">' + this.escapeHtml(this.translate('durationLabel', 'labels', 'GeneratorPerioadeCursuri')) + '</th>',
-                '<th class="text-nowrap" data-sticky-column="3">' + this.escapeHtml(this.translate('investment', 'labels', 'GeneratorPerioadeCursuri')) + '</th>',
-                months.map(month => '<th class="text-nowrap" data-month-column>' + this.escapeHtml(month.name) + '</th>').join(''),
+                '<th class="text-nowrap" data-sticky-column="0">' + RecordUi.escapeHtml(this.translate('rowNumber', 'labels', 'GeneratorPerioadeCursuri')) + '</th>',
+                '<th class="text-nowrap" data-sticky-column="1">' + RecordUi.escapeHtml(this.translate('courseName', 'labels', 'GeneratorPerioadeCursuri')) + '</th>',
+                '<th class="text-nowrap" data-sticky-column="2">' + RecordUi.escapeHtml(this.translate('durationLabel', 'labels', 'GeneratorPerioadeCursuri')) + '</th>',
+                '<th class="text-nowrap" data-sticky-column="3">' + RecordUi.escapeHtml(this.translate('investment', 'labels', 'GeneratorPerioadeCursuri')) + '</th>',
+                months.map(month => '<th class="text-nowrap" data-month-column>' + RecordUi.escapeHtml(month.name) + '</th>').join(''),
                 '<th aria-hidden="true" data-role="generated-schedule-scroll-spacer"></th>',
                 '</tr>',
                 '</thead>',
@@ -194,7 +191,7 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
                 rows.length ?
                     rows.map((row, index) => this.composeGeneratedScheduleRow(row, months, index)).join('') :
                     '<tr><td colspan="' + (4 + months.length) + '" class="text-muted">' +
-                    this.escapeHtml(this.translate('noGeneratedRows', 'messages', 'GeneratorPerioadeCursuri')) +
+                    RecordUi.escapeHtml(this.translate('noGeneratedRows', 'messages', 'GeneratorPerioadeCursuri')) +
                     '</td></tr>',
                 '</tbody>',
                 '</table>',
@@ -207,20 +204,7 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
         }
 
         getGeneratedScheduleContainer() {
-            let container = this.element.querySelector('[data-name="generated-schedule"]');
-
-            if (container) {
-                return container;
-            }
-
-            const recordContainer = this.element.querySelector('.record') || this.element;
-
-            container = document.createElement('div');
-            container.dataset.name = 'generated-schedule';
-
-            recordContainer.appendChild(container);
-
-            return container;
+            return RecordUi.ensureRecordRegion(this.element, 'generated-schedule');
         }
 
         buildCourseRows(rows) {
@@ -267,23 +251,21 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
         composeGeneratedScheduleRow(row, months, index) {
             return [
                 '<tr>',
-                '<td class="text-nowrap" data-sticky-column="0">' + this.escapeHtml(index + 1) + '</td>',
-                '<td class="text-nowrap" data-sticky-column="1">' + this.escapeHtml(row.courseTitle) + '</td>',
-                '<td class="text-nowrap" data-sticky-column="2">' + this.escapeHtml(row.durationLabel) + '</td>',
-                '<td class="text-nowrap" data-sticky-column="3">' + this.escapeHtml(row.investment) + '</td>',
-                months.map(month => '<td class="text-nowrap" data-month-column>' + this.escapeHtml(row.months[month.value] || '') + '</td>').join(''),
+                '<td class="text-nowrap" data-sticky-column="0">' + RecordUi.escapeHtml(index + 1) + '</td>',
+                '<td class="text-nowrap" data-sticky-column="1">' + RecordUi.escapeHtml(row.courseTitle) + '</td>',
+                '<td class="text-nowrap" data-sticky-column="2">' + RecordUi.escapeHtml(row.durationLabel) + '</td>',
+                '<td class="text-nowrap" data-sticky-column="3">' + RecordUi.escapeHtml(row.investment) + '</td>',
+                months.map(month => '<td class="text-nowrap" data-month-column>' + RecordUi.escapeHtml(row.months[month.value] || '') + '</td>').join(''),
                 '<td aria-hidden="true" data-role="generated-schedule-scroll-spacer"></td>',
                 '</tr>'
             ].join('');
         }
 
         setupGeneratedScheduleScrolling(container) {
-            const topScroller = container.querySelector('[data-role="generated-schedule-top-scroll"]');
             const mainScroller = container.querySelector('[data-role="generated-schedule-scroll"]');
             const table = mainScroller ? mainScroller.querySelector('table') : null;
-            const topInner = topScroller ? topScroller.firstElementChild : null;
 
-            if (!topScroller || !mainScroller || !table || !topInner) {
+            if (!mainScroller || !table) {
                 return;
             }
 
@@ -307,16 +289,11 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
 
             table.style.minWidth = tableWidth + 'px';
             table.style.width = tableWidth + 'px';
-            topInner.style.width = table.scrollWidth + 'px';
-
-            topScroller.addEventListener('scroll', () => {
-                mainScroller.scrollLeft = topScroller.scrollLeft;
-            });
-
-            mainScroller.addEventListener('scroll', () => {
-                topScroller.scrollLeft = mainScroller.scrollLeft;
-            });
-
+            RecordUi.synchronizeHorizontalScroll(
+                container,
+                '[data-role="generated-schedule-top-scroll"]',
+                '[data-role="generated-schedule-scroll"]'
+            );
         }
 
         applyGeneratedScheduleStickyColumns(container) {
@@ -354,15 +331,6 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
             }
 
             return left;
-        }
-
-        escapeHtml(value) {
-            return String(value || '')
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
         }
     };
 });

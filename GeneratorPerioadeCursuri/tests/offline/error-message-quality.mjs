@@ -11,18 +11,38 @@ const detailPath = path.join(
     'files/client/custom/modules/generator-perioade-cursuri/src/views/' +
     'generator-perioade-cursuri-wordpress-updater/record/detail.js'
 );
+const recordUiPath = path.join(
+    extensionRoot,
+    'files/client/custom/modules/generator-perioade-cursuri/src/views/shared/record-ui.js'
+);
 
 let ViewClass;
+let RecordUi;
 
 class DetailRecordView {}
 
 const context = {
     URL,
     define(name, dependencies, factory) {
-        ViewClass = factory(DetailRecordView);
+        if (name === 'generator-perioade-cursuri:views/shared/record-ui') {
+            RecordUi = factory();
+
+            return;
+        }
+
+        assert.ok(
+            dependencies.includes('views/record/detail'),
+            'the updater detail view must retain its native base dependency'
+        );
+        assert.ok(
+            dependencies.includes('generator-perioade-cursuri:views/shared/record-ui'),
+            'the updater detail view must load the shared record UI module'
+        );
+        ViewClass = factory(DetailRecordView, RecordUi);
     },
 };
 
+vm.runInNewContext(fs.readFileSync(recordUiPath, 'utf8'), context, {filename: recordUiPath});
 vm.runInNewContext(fs.readFileSync(detailPath, 'utf8'), context, {filename: detailPath});
 assert.equal(typeof ViewClass, 'function', 'the production detail view must load through AMD');
 

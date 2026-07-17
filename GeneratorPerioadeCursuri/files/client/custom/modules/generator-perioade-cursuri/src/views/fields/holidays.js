@@ -1,4 +1,8 @@
-define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varchar', 'ui/datepicker'], function (VarcharFieldView, Datepicker) {
+define('generator-perioade-cursuri:views/fields/holidays', [
+    'views/fields/varchar',
+    'ui/datepicker',
+    'generator-perioade-cursuri:views/shared/record-ui'
+], function (VarcharFieldView, Datepicker, RecordUi) {
     return class extends VarcharFieldView {
         detailTemplateContent = `
             {{#if hasDates}}
@@ -92,7 +96,7 @@ define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varcha
                 '<button type="button" class="btn btn-default btn-icon date-picker-btn" data-action="showHolidayDatePicker" tabindex="-1">',
                 '<span class="far fa-calendar"></span>',
                 '</button>',
-                '<button type="button" class="btn btn-default" data-action="removeHolidayDate" title="' + this.escapeHtml(this.translate('Remove holiday date', 'labels', 'GeneratorPerioadeCursuri')) + '">',
+                '<button type="button" class="btn btn-default" data-action="removeHolidayDate" title="' + RecordUi.escapeHtml(this.translate('Remove holiday date', 'labels', 'GeneratorPerioadeCursuri')) + '">',
                 '<span class="fas fa-times"></span>',
                 '</button>',
                 '</span>'
@@ -248,14 +252,6 @@ define('generator-perioade-cursuri:views/fields/holidays', ['views/fields/varcha
             }
 
             return [match[3], match[2], match[1]].join('.');
-        }
-
-        escapeHtml(value) {
-            return String(value)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;');
         }
     };
 });

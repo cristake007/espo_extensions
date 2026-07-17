@@ -130,7 +130,11 @@ $assertTrue(str_contains($editView, 'generator-perioade-cursuri/record/edit'), '
 $assertTrue(str_contains($editView, 'this.isWide = true;'), 'Updater edit must remain full width for existing records.');
 $assertTrue(str_contains($editView, 'this.sideDisabled = true;'), 'Updater edit must suppress the narrow side column.');
 $assertTrue(str_contains($editView, "classList.add('generator-perioade-cursuri-create')"), 'Updater edit must reuse the canonical upload presentation.');
-$assertTrue(str_contains($detailView, "['views/record/detail']"), 'Updater detail shell must extend the native detail view.');
+$assertTrue(str_contains($detailView, "'views/record/detail'"), 'Updater detail shell must extend the native detail view.');
+$assertTrue(
+    str_contains($detailView, "'generator-perioade-cursuri:views/shared/record-ui'"),
+    'Updater detail shell must depend on the shared record UI module.'
+);
 $assertTrue(str_contains($detailView, 'this.isWide = true;'), 'Updater detail must use the full record width.');
 $assertTrue(str_contains($detailView, 'this.sideDisabled = true;'), 'Updater detail must suppress the narrow side column.');
 $assertTrue(!preg_match('/localStorage|sessionStorage/', $detailView), 'Updater workflow state must not use browser storage.');

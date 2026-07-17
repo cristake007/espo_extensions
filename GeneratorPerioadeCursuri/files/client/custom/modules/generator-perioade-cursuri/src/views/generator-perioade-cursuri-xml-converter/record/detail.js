@@ -1,7 +1,10 @@
 define(
     'generator-perioade-cursuri:views/generator-perioade-cursuri-xml-converter/record/detail',
-    ['views/record/detail'],
-    function (DetailRecordView) {
+    [
+        'views/record/detail',
+        'generator-perioade-cursuri:views/shared/record-ui'
+    ],
+    function (DetailRecordView, RecordUi) {
         return class extends DetailRecordView {
             setup() {
                 super.setup();
@@ -115,40 +118,34 @@ define(
             }
 
             updateGenerateXmlButtonState() {
-                const button = this.element.querySelector('[data-action="generateXml"]');
-
-                if (!button) {
-                    return;
-                }
-
                 const missingInput = !this.hasRequiredXmlInput();
                 const disabled = missingInput || this.xmlGenerationInProgress;
 
-                button.disabled = disabled;
-                button.classList.toggle('disabled', disabled);
-                button.title = disabled ? this.translate(
-                    missingInput ? 'xmlGenerateUnavailable' : 'xmlGenerating',
-                    'messages',
-                    'GeneratorPerioadeCursuriXmlConverter'
-                ) : '';
+                RecordUi.setActionButtonState(
+                    this.element,
+                    'generateXml',
+                    disabled,
+                    disabled ? this.translate(
+                        missingInput ? 'xmlGenerateUnavailable' : 'xmlGenerating',
+                        'messages',
+                        'GeneratorPerioadeCursuriXmlConverter'
+                    ) : ''
+                );
             }
 
             updateDownloadXmlButtonState() {
-                const button = this.element.querySelector('[data-action="downloadXml"]');
-
-                if (!button) {
-                    return;
-                }
-
                 const disabled = !this.model.get('xmlConvertedFileId');
 
-                button.disabled = disabled;
-                button.classList.toggle('disabled', disabled);
-                button.title = disabled ? this.translate(
-                    'xmlDownloadUnavailable',
-                    'messages',
-                    'GeneratorPerioadeCursuriXmlConverter'
-                ) : '';
+                RecordUi.setActionButtonState(
+                    this.element,
+                    'downloadXml',
+                    disabled,
+                    disabled ? this.translate(
+                        'xmlDownloadUnavailable',
+                        'messages',
+                        'GeneratorPerioadeCursuriXmlConverter'
+                    ) : ''
+                );
             }
 
             getXmlErrorMessage(xhr) {

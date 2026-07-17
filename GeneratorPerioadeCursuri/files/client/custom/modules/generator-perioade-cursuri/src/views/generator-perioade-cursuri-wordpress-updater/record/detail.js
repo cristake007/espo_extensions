@@ -1,7 +1,10 @@
 define(
     'generator-perioade-cursuri:views/generator-perioade-cursuri-wordpress-updater/record/detail',
-    ['views/record/detail'],
-    function (DetailRecordView) {
+    [
+        'views/record/detail',
+        'generator-perioade-cursuri:views/shared/record-ui'
+    ],
+    function (DetailRecordView, RecordUi) {
         const SCOPE = 'GeneratorPerioadeCursuriWordPressUpdater';
 
         return class extends DetailRecordView {
@@ -259,10 +262,10 @@ define(
                     '<section class="wordpress-updater-workspace" aria-labelledby="wp-updater-workspace-title">',
                     '<div class="panel panel-default wordpress-updater-connection">',
                     '<div class="panel-heading"><h4 class="panel-title" id="wp-updater-workspace-title">',
-                    this.escapeHtml(this.translateLabel('wpUpdaterConnection')), '</h4></div>',
+                    RecordUi.escapeHtml(this.translateLabel('wpUpdaterConnection')), '</h4></div>',
                     '<div class="panel-body">',
                     '<p class="text-muted wordpress-updater-warning"><i class="fas fa-shield-alt" aria-hidden="true"></i> ',
-                    this.escapeHtml(this.translateMessage('wpUpdaterVpnWarning')), '</p>',
+                    RecordUi.escapeHtml(this.translateMessage('wpUpdaterVpnWarning')), '</p>',
                     '<div class="wordpress-updater-connection-grid">',
                     this.composeWordPressInput('wp-base-url', 'url', 'wpUpdaterBaseUrl', baseUrl),
                     this.composeWordPressInput('wp-username', 'text', 'wpUpdaterUsername', username),
@@ -270,17 +273,17 @@ define(
                     '</div>',
                     '<div class="wordpress-updater-connection-actions">',
                     '<button type="button" class="btn btn-default" data-action="wp-connect"', disabled ? ' disabled' : '', '>',
-                    '<i class="fas fa-plug" aria-hidden="true"></i> ', this.escapeHtml(this.translateLabel('wpUpdaterConnect')), '</button>',
+                    '<i class="fas fa-plug" aria-hidden="true"></i> ', RecordUi.escapeHtml(this.translateLabel('wpUpdaterConnect')), '</button>',
                     '<button type="button" class="btn btn-default" data-action="wp-disconnect"',
                     (disabled || !this.wpUpdaterConnected) ? ' disabled' : '', '>',
-                    this.escapeHtml(this.translateLabel('wpUpdaterDisconnect')), '</button>',
+                    RecordUi.escapeHtml(this.translateLabel('wpUpdaterDisconnect')), '</button>',
                     '<div class="wordpress-updater-connection-status" role="status" aria-live="polite">',
                     this.composeWordPressConnectionStatus(),
                     '</div></div>',
                     '</div></div>',
                     '<div class="panel panel-default wordpress-updater-results">',
                     '<div class="panel-heading"><h4 class="panel-title">',
-                    this.escapeHtml(this.translateLabel('wpUpdaterResults')), '</h4></div>',
+                    RecordUi.escapeHtml(this.translateLabel('wpUpdaterResults')), '</h4></div>',
                     '<div class="panel-body">',
                     '<div class="wordpress-updater-global-status" role="status" aria-live="polite">',
                     this.composeWordPressGlobalStatus(rows), '</div>',
@@ -294,19 +297,7 @@ define(
             }
 
             getWordPressWorkspaceContainer() {
-                let container = this.element.querySelector('[data-name="wordpress-updater-workspace"]');
-
-                if (container) {
-                    return container;
-                }
-
-                const recordContainer = this.element.querySelector('.record') || this.element;
-
-                container = document.createElement('div');
-                container.dataset.name = 'wordpress-updater-workspace';
-                recordContainer.appendChild(container);
-
-                return container;
+                return RecordUi.ensureRecordRegion(this.element, 'wordpress-updater-workspace');
             }
 
             bindWordPressWorkspaceEvents(container) {
@@ -353,9 +344,9 @@ define(
             composeWordPressInput(role, type, label, value) {
                 return [
                     '<label class="wordpress-updater-input">',
-                    '<span class="control-label">', this.escapeHtml(this.translateLabel(label)), '</span>',
+                    '<span class="control-label">', RecordUi.escapeHtml(this.translateLabel(label)), '</span>',
                     '<input class="form-control" data-role="', role, '" type="', type, '" value="',
-                    this.escapeHtml(value), '" autocomplete="off"',
+                    RecordUi.escapeHtml(value), '" autocomplete="off"',
                     this.wpUpdaterBusy ? ' disabled' : '', '>',
                     '</label>'
                 ].join('');
@@ -364,42 +355,42 @@ define(
             composeWordPressConnectionStatus() {
                 if (this.wpUpdaterBusy === 'connect') {
                     return '<span class="text-muted"><i class="fas fa-spinner fa-spin" aria-hidden="true"></i> ' +
-                        this.escapeHtml(this.translateMessage('wpUpdaterConnecting')) + '</span>';
+                        RecordUi.escapeHtml(this.translateMessage('wpUpdaterConnecting')) + '</span>';
                 }
 
                 if (!this.wpUpdaterConnected) {
                     return '<span class="text-muted">' +
-                        this.escapeHtml(this.translateMessage('wpUpdaterNotConnected')) + '</span>';
+                        RecordUi.escapeHtml(this.translateMessage('wpUpdaterNotConnected')) + '</span>';
                 }
 
                 const identity = this.getWordPressUserIdentity(this.wpUpdaterUser);
 
                 return '<span class="text-primary"><i class="fas fa-check" aria-hidden="true"></i> ' +
-                    this.escapeHtml(this.translateMessage('wpUpdaterConnectedAs').replace('{user}', identity)) + '</span>';
+                    RecordUi.escapeHtml(this.translateMessage('wpUpdaterConnectedAs').replace('{user}', identity)) + '</span>';
             }
 
             composeWordPressGlobalStatus(rows) {
                 if (this.wpUpdaterBusy === 'preview') {
                     return '<span class="text-muted"><i class="fas fa-spinner fa-spin" aria-hidden="true"></i> ' +
-                        this.escapeHtml(this.translateMessage('wpUpdaterPreviewBuilding')) + '</span>';
+                        RecordUi.escapeHtml(this.translateMessage('wpUpdaterPreviewBuilding')) + '</span>';
                 }
 
                 if (this.wpUpdaterGlobalError) {
                     return '<span class="wordpress-updater-row-error" role="alert">' +
-                        this.escapeHtml(this.wpUpdaterGlobalError) + '</span>';
+                        RecordUi.escapeHtml(this.wpUpdaterGlobalError) + '</span>';
                 }
 
                 if (this.wpUpdaterGlobalSuccess) {
                     return '<span class="text-primary"><i class="fas fa-check" aria-hidden="true"></i> ' +
-                        this.escapeHtml(this.wpUpdaterGlobalSuccess) + '</span>';
+                        RecordUi.escapeHtml(this.wpUpdaterGlobalSuccess) + '</span>';
                 }
 
                 if (!this.wpUpdaterPreview) {
                     return '<span class="text-muted">' +
-                        this.escapeHtml(this.translateMessage('wpUpdaterNoPreview')) + '</span>';
+                        RecordUi.escapeHtml(this.translateMessage('wpUpdaterNoPreview')) + '</span>';
                 }
 
-                return '<span class="text-primary">' + this.escapeHtml(
+                return '<span class="text-primary">' + RecordUi.escapeHtml(
                     this.translateMessage('wpUpdaterPreviewSummary').replace('{count}', String(rows.length))
                 ) + '</span>';
             }
@@ -407,20 +398,20 @@ define(
             composeWordPressResultsTable(rows) {
                 return [
                     '<div class="wordpress-updater-top-scroll" data-role="wp-top-scroll" tabindex="0" aria-label="',
-                    this.escapeHtml(this.translateLabel('wpUpdaterHorizontalScroll')), '"><div></div></div>',
+                    RecordUi.escapeHtml(this.translateLabel('wpUpdaterHorizontalScroll')), '"><div></div></div>',
                     '<div class="table-responsive wordpress-updater-table-scroll" data-role="wp-table-scroll" tabindex="0">',
                     '<table class="table table-bordered table-striped table-hover">',
                     '<thead><tr>',
-                    '<th scope="col">', this.escapeHtml(this.translateLabel('wpUpdaterCourse')), '</th>',
-                    '<th scope="col">', this.escapeHtml(this.translateLabel('wpUpdaterFileDates')), '</th>',
-                    '<th scope="col">', this.escapeHtml(this.translateLabel('wpUpdaterExistingDates')), '</th>',
-                    '<th scope="col">', this.escapeHtml(this.translateLabel('wpUpdaterFinalProgram')), '</th>',
-                    '<th scope="col">', this.escapeHtml(this.translateLabel('wpUpdaterStatus')), '</th>',
-                    '<th scope="col">', this.escapeHtml(this.translateLabel('wpUpdaterActions')), '</th>',
+                    '<th scope="col">', RecordUi.escapeHtml(this.translateLabel('wpUpdaterCourse')), '</th>',
+                    '<th scope="col">', RecordUi.escapeHtml(this.translateLabel('wpUpdaterFileDates')), '</th>',
+                    '<th scope="col">', RecordUi.escapeHtml(this.translateLabel('wpUpdaterExistingDates')), '</th>',
+                    '<th scope="col">', RecordUi.escapeHtml(this.translateLabel('wpUpdaterFinalProgram')), '</th>',
+                    '<th scope="col">', RecordUi.escapeHtml(this.translateLabel('wpUpdaterStatus')), '</th>',
+                    '<th scope="col">', RecordUi.escapeHtml(this.translateLabel('wpUpdaterActions')), '</th>',
                     '</tr></thead><tbody>',
                     rows.length ? rows.map(row => this.composeWordPressResultRow(row)).join('') :
                         '<tr><td colspan="6" class="text-muted">' +
-                        this.escapeHtml(this.translateMessage('wpUpdaterNoRows')) + '</td></tr>',
+                        RecordUi.escapeHtml(this.translateMessage('wpUpdaterNoRows')) + '</td></tr>',
                     '</tbody></table></div>'
                 ].join('');
             }
@@ -431,20 +422,20 @@ define(
                 const updateDisabled = !this.canRunWordPressRowAction(row, 'updateRow') || !!busyAction;
 
                 return [
-                    '<tr data-source-row="', this.escapeHtml(row.sourceRow), '">',
+                    '<tr data-source-row="', RecordUi.escapeHtml(row.sourceRow), '">',
                     '<td class="wordpress-updater-course">', this.composeWordPressCourse(row), '</td>',
                     '<td>', this.composeWordPressDates(row.excelDates), '</td>',
                     '<td>', row.currentDatesLoaded ? this.composeWordPressDates(row.existingValidDates) :
-                        '<span class="text-muted">' + this.escapeHtml(this.translateLabel('wpUpdaterNotFetched')) + '</span>', '</td>',
+                        '<span class="text-muted">' + RecordUi.escapeHtml(this.translateLabel('wpUpdaterNotFetched')) + '</span>', '</td>',
                     '<td>', this.composeWordPressDates(row.finalDates), this.composeWordPressPayload(row), '</td>',
                     '<td>', this.composeWordPressRowStatus(row, busyAction), '</td>',
                     '<td class="wordpress-updater-row-actions">',
                     '<button type="button" class="btn btn-default btn-sm" data-row-action="fetchDates" data-source-row="',
-                    this.escapeHtml(row.sourceRow), '"', fetchDisabled ? ' disabled' : '', '>',
-                    this.escapeHtml(this.translateLabel('wpUpdaterFetchDates')), '</button>',
+                    RecordUi.escapeHtml(row.sourceRow), '"', fetchDisabled ? ' disabled' : '', '>',
+                    RecordUi.escapeHtml(this.translateLabel('wpUpdaterFetchDates')), '</button>',
                     '<button type="button" class="btn btn-default btn-sm" data-row-action="updateRow" data-source-row="',
-                    this.escapeHtml(row.sourceRow), '"', updateDisabled ? ' disabled' : '', '>',
-                    this.escapeHtml(this.translateLabel('wpUpdaterUpdateRow')), '</button>',
+                    RecordUi.escapeHtml(row.sourceRow), '"', updateDisabled ? ' disabled' : '', '>',
+                    RecordUi.escapeHtml(this.translateLabel('wpUpdaterUpdateRow')), '</button>',
                     '</td></tr>'
                 ].join('');
             }
@@ -452,14 +443,14 @@ define(
             composeWordPressCourse(row) {
                 const title = row.title || this.translateLabel('wpUpdaterUntitledCourse');
                 const suffix = '<div class="text-muted">' +
-                    this.escapeHtml(this.translateLabel('wpUpdaterSourceRow').replace('{row}', String(row.sourceRow))) + '</div>';
+                    RecordUi.escapeHtml(this.translateLabel('wpUpdaterSourceRow').replace('{row}', String(row.sourceRow))) + '</div>';
 
                 if (!this.isSafeWordPressPermalink(row.permalink)) {
-                    return '<strong>' + this.escapeHtml(title) + '</strong>' + suffix;
+                    return '<strong>' + RecordUi.escapeHtml(title) + '</strong>' + suffix;
                 }
 
-                return '<a class="text-primary" href="' + this.escapeHtml(row.permalink) +
-                    '" target="_blank" rel="noopener noreferrer"><strong>' + this.escapeHtml(title) +
+                return '<a class="text-primary" href="' + RecordUi.escapeHtml(row.permalink) +
+                    '" target="_blank" rel="noopener noreferrer"><strong>' + RecordUi.escapeHtml(title) +
                     '</strong></a>' + suffix;
             }
 
@@ -467,11 +458,11 @@ define(
                 const dates = Array.isArray(values) ? values.filter(value => typeof value === 'string' && value !== '') : [];
 
                 if (!dates.length) {
-                    return '<span class="text-muted">' + this.escapeHtml(this.translateLabel('wpUpdaterNone')) + '</span>';
+                    return '<span class="text-muted">' + RecordUi.escapeHtml(this.translateLabel('wpUpdaterNone')) + '</span>';
                 }
 
                 return '<ul class="wordpress-updater-date-list">' + dates.map(value =>
-                    '<li>' + this.escapeHtml(value) + '</li>'
+                    '<li>' + RecordUi.escapeHtml(value) + '</li>'
                 ).join('') + '</ul>';
             }
 
@@ -482,8 +473,8 @@ define(
 
                 return [
                     '<details class="wordpress-updater-payload">',
-                    '<summary>', this.escapeHtml(this.translateLabel('wpUpdaterReviewPayload')), '</summary>',
-                    '<pre>', this.escapeHtml(JSON.stringify(row.payload, null, 2)), '</pre>',
+                    '<summary>', RecordUi.escapeHtml(this.translateLabel('wpUpdaterReviewPayload')), '</summary>',
+                    '<pre>', RecordUi.escapeHtml(JSON.stringify(row.payload, null, 2)), '</pre>',
                     '</details>'
                 ].join('');
             }
@@ -491,34 +482,23 @@ define(
             composeWordPressRowStatus(row, busyAction) {
                 if (busyAction) {
                     return '<span class="text-muted"><i class="fas fa-spinner fa-spin" aria-hidden="true"></i> ' +
-                        this.escapeHtml(row.status || '') + '</span>';
+                        RecordUi.escapeHtml(row.status || '') + '</span>';
                 }
 
                 const status = row.status || this.translateLabel('wpUpdaterStatusReady');
                 const error = row.error ? '<div class="wordpress-updater-row-error" role="alert">' +
-                    this.escapeHtml(row.error) + '</div>' : '';
+                    RecordUi.escapeHtml(row.error) + '</div>' : '';
 
                 return '<span class="' + (row.error ? 'text-muted' : 'text-primary') + '">' +
-                    this.escapeHtml(status) + '</span>' + error;
+                    RecordUi.escapeHtml(status) + '</span>' + error;
             }
 
             setupWordPressTableScrolling(container) {
-                const topScroller = container.querySelector('[data-role="wp-top-scroll"]');
-                const tableScroller = container.querySelector('[data-role="wp-table-scroll"]');
-                const table = tableScroller ? tableScroller.querySelector('table') : null;
-                const topInner = topScroller ? topScroller.firstElementChild : null;
-
-                if (!topScroller || !tableScroller || !table || !topInner) {
-                    return;
-                }
-
-                topInner.style.width = table.scrollWidth + 'px';
-                topScroller.addEventListener('scroll', () => {
-                    tableScroller.scrollLeft = topScroller.scrollLeft;
-                });
-                tableScroller.addEventListener('scroll', () => {
-                    topScroller.scrollLeft = tableScroller.scrollLeft;
-                });
+                RecordUi.synchronizeHorizontalScroll(
+                    container,
+                    '[data-role="wp-top-scroll"]',
+                    '[data-role="wp-table-scroll"]'
+                );
             }
 
             canRunWordPressRowAction(row, action) {
@@ -587,20 +567,17 @@ define(
             }
 
             updateWordPressPreviewButtonState() {
-                const button = this.element.querySelector('[data-action="buildWordPressPreview"]');
-
-                if (!button) {
-                    return;
-                }
-
                 const unavailable = !this.hasWordPressPreviewInput();
                 const disabled = unavailable || !!this.wpUpdaterBusy || this.hasWordPressRowBusy();
 
-                button.disabled = disabled;
-                button.classList.toggle('disabled', disabled);
-                button.title = disabled ? this.translateMessage(
-                    unavailable ? 'wpUpdaterPreviewUnavailable' : 'wpUpdaterBusy'
-                ) : '';
+                RecordUi.setActionButtonState(
+                    this.element,
+                    'buildWordPressPreview',
+                    disabled,
+                    disabled ? this.translateMessage(
+                        unavailable ? 'wpUpdaterPreviewUnavailable' : 'wpUpdaterBusy'
+                    ) : ''
+                );
             }
 
             postWordPressUpdaterRequest(action, payload) {
@@ -728,15 +705,6 @@ define(
 
             translateMessage(key) {
                 return this.translate(key, 'messages', SCOPE);
-            }
-
-            escapeHtml(value) {
-                return String(value === null || value === undefined ? '' : value)
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&#039;');
             }
         };
     }

@@ -1,4 +1,7 @@
-define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher/record/detail', ['views/record/detail'], function (DetailRecordView) {
+define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher/record/detail', [
+    'views/record/detail',
+    'generator-perioade-cursuri:views/shared/record-ui'
+], function (DetailRecordView, RecordUi) {
     return class extends DetailRecordView {
         setup() {
             this.isWide = true;
@@ -111,34 +114,28 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher
         }
 
         updatePreviewButtonState() {
-            const button = this.element.querySelector('[data-action="previewWordConversion"]');
-
-            if (!button) {
-                return;
-            }
-
             // File attributes are not guaranteed to be hydrated when Espo restores a
             // cached detail view. The preview endpoint reads and validates the saved
             // record, so a persisted matcher record is the authoritative prerequisite.
             const disabled = !this.model.id;
 
-            button.disabled = disabled;
-            button.classList.toggle('disabled', disabled);
-            button.title = disabled ? this.translate('wordConvertUnavailable', 'messages', 'GeneratorPerioadeCursuriWordMatcher') : '';
+            RecordUi.setActionButtonState(
+                this.element,
+                'previewWordConversion',
+                disabled,
+                disabled ? this.translate('wordConvertUnavailable', 'messages', 'GeneratorPerioadeCursuriWordMatcher') : ''
+            );
         }
 
         updateDownloadWordButtonState(canGenerate) {
-            const button = this.element.querySelector('[data-action="downloadWord"]');
+            const disabled = !canGenerate;
 
-            if (!button) {
-                return;
-            }
-
-            const enabled = canGenerate;
-
-            button.disabled = !enabled;
-            button.classList.toggle('disabled', !enabled);
-            button.title = enabled ? '' : this.translate('wordReviewRequiresAllRows', 'messages', 'GeneratorPerioadeCursuriWordMatcher');
+            RecordUi.setActionButtonState(
+                this.element,
+                'downloadWord',
+                disabled,
+                disabled ? this.translate('wordReviewRequiresAllRows', 'messages', 'GeneratorPerioadeCursuriWordMatcher') : ''
+            );
         }
 
         renderWordConversionPreview(result) {
@@ -154,26 +151,26 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher
             container.innerHTML = [
                 '<div class="panel panel-default">',
                 '<div class="panel-heading">',
-                '<h4 class="panel-title">' + this.escapeHtml(this.composePreviewTitle(rows, scheduleOptions)) + '</h4>',
+                '<h4 class="panel-title">' + RecordUi.escapeHtml(this.composePreviewTitle(rows, scheduleOptions)) + '</h4>',
                 '</div>',
                 '<div class="panel-body">',
-                '<p class="text-muted" data-role="word-preview-summary">' + this.escapeHtml(this.composeWordPreviewSummary(rows)) + '</p>',
+                '<p class="text-muted" data-role="word-preview-summary">' + RecordUi.escapeHtml(this.composeWordPreviewSummary(rows)) + '</p>',
                 '<div class="table-responsive">',
                 '<table class="table table-bordered table-striped table-hover" style="table-layout: auto;">',
                 '<thead>',
                 '<tr>',
-                '<th>' + this.escapeHtml(this.translate('wordCourse', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</th>',
-                '<th>' + this.escapeHtml(this.translate('status', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</th>',
-                '<th>' + this.escapeHtml(this.translate('selectedScheduleRow', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</th>',
-                '<th>' + this.escapeHtml(this.translate('suggestions', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</th>',
-                '<th>' + this.escapeHtml(this.translate('filledPeriods', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</th>',
+                '<th>' + RecordUi.escapeHtml(this.translate('wordCourse', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</th>',
+                '<th>' + RecordUi.escapeHtml(this.translate('status', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</th>',
+                '<th>' + RecordUi.escapeHtml(this.translate('selectedScheduleRow', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</th>',
+                '<th>' + RecordUi.escapeHtml(this.translate('suggestions', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</th>',
+                '<th>' + RecordUi.escapeHtml(this.translate('filledPeriods', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</th>',
                 '</tr>',
                 '</thead>',
                 '<tbody>',
                 rows.length ?
                     rows.map(row => this.composeWordPreviewRow(row, scheduleOptions)).join('') :
                     '<tr><td colspan="5" class="text-muted">' +
-                    this.escapeHtml(this.translate('noWordRows', 'messages', 'GeneratorPerioadeCursuriWordMatcher')) +
+                    RecordUi.escapeHtml(this.translate('noWordRows', 'messages', 'GeneratorPerioadeCursuriWordMatcher')) +
                     '</td></tr>',
                 '</tbody>',
                 '</table>',
@@ -237,20 +234,7 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher
         }
 
         getWordConversionPreviewContainer() {
-            let container = this.element.querySelector('[data-name="word-conversion-preview"]');
-
-            if (container) {
-                return container;
-            }
-
-            const recordContainer = this.element.querySelector('.record') || this.element;
-
-            container = document.createElement('div');
-            container.dataset.name = 'word-conversion-preview';
-
-            recordContainer.appendChild(container);
-
-            return container;
+            return RecordUi.ensureRecordRegion(this.element, 'word-conversion-preview');
         }
 
         composeWordPreviewSummary(rows) {
@@ -272,41 +256,41 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher
             const rowScheduleOptions = generatedOption ? scheduleOptions.concat([generatedOption]) : scheduleOptions;
             const candidateButtons = (row.candidates || []).map(candidate => [
                 '<button type="button" class="btn btn-default btn-xs" style="display: block; width: 100%; height: auto; min-height: 24px; margin-bottom: 6px; padding: 4px 8px; white-space: normal; text-align: left; line-height: 1.35;"',
-                ' data-word-row-index="' + this.escapeHtml(row.wordRowIndex) + '"',
-                ' data-candidate-row-index="' + this.escapeHtml(candidate.rowIndex) + '">',
-                this.escapeHtml(candidate.title) + ' (' + this.escapeHtml(candidate.score) + ')',
+                ' data-word-row-index="' + RecordUi.escapeHtml(row.wordRowIndex) + '"',
+                ' data-candidate-row-index="' + RecordUi.escapeHtml(candidate.rowIndex) + '">',
+                RecordUi.escapeHtml(candidate.title) + ' (' + RecordUi.escapeHtml(candidate.score) + ')',
                 '</button>'
             ].join('')).join('');
             const generatedButton = generatedOption ? [
                 '<button type="button" class="btn word-preview-generated-button ' + (generatedOption.generationMode === 'primary' ? 'btn-warning' : 'btn-info') + ' btn-xs" style="display: block; width: 100%; height: auto; min-height: 28px; margin-bottom: 6px; padding: 5px 8px; white-space: normal; text-align: left; line-height: 1.35; font-weight: 600;"',
-                ' data-word-row-index="' + this.escapeHtml(row.wordRowIndex) + '"',
-                ' data-generated-row-index="' + this.escapeHtml(generatedOption.rowIndex) + '">',
-                this.escapeHtml(generatedOption.title),
+                ' data-word-row-index="' + RecordUi.escapeHtml(row.wordRowIndex) + '"',
+                ' data-generated-row-index="' + RecordUi.escapeHtml(generatedOption.rowIndex) + '">',
+                RecordUi.escapeHtml(generatedOption.title),
                 '</button>'
             ].join('') : '';
             const suggestionContent = [generatedButton, candidateButtons]
                 .filter(value => value !== '')
-                .join('') || this.escapeHtml(this.translate('noSuggestions', 'messages', 'GeneratorPerioadeCursuriWordMatcher'));
+                .join('') || RecordUi.escapeHtml(this.translate('noSuggestions', 'messages', 'GeneratorPerioadeCursuriWordMatcher'));
 
             return [
                 '<tr style="height: auto;">',
-                '<td style="min-width: 260px; white-space: normal; vertical-align: top;">' + this.escapeHtml(row.wordTitle) + '</td>',
+                '<td style="min-width: 260px; white-space: normal; vertical-align: top;">' + RecordUi.escapeHtml(row.wordTitle) + '</td>',
                 '<td data-role="word-preview-status" style="vertical-align: top;"></td>',
                 '<td style="min-width: 320px; vertical-align: top;">',
-                '<select class="form-control input-sm" data-word-row-index="' + this.escapeHtml(row.wordRowIndex) + '" data-selected-row-index="' + this.escapeHtml(row.selectedRowIndex ?? '') + '">',
-                '<option value="">' + this.escapeHtml(this.translate('leaveUnchanged', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</option>',
+                '<select class="form-control input-sm" data-word-row-index="' + RecordUi.escapeHtml(row.wordRowIndex) + '" data-selected-row-index="' + RecordUi.escapeHtml(row.selectedRowIndex ?? '') + '">',
+                '<option value="">' + RecordUi.escapeHtml(this.translate('leaveUnchanged', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</option>',
                 rowScheduleOptions.map(option => {
                     const generated = option.generated === true;
                     const exact = !generated && this.isExactCandidate(row, option.rowIndex);
                     const selected = exact && String(option.rowIndex) === String(row.selectedRowIndex);
 
                     return [
-                    '<option value="' + this.escapeHtml(option.rowIndex) + '"' +
-                    ' data-dates="' + this.escapeHtml(JSON.stringify(option.dates || [])) + '"' +
+                    '<option value="' + RecordUi.escapeHtml(option.rowIndex) + '"' +
+                    ' data-dates="' + RecordUi.escapeHtml(JSON.stringify(option.dates || [])) + '"' +
                     ' data-exact="' + (exact ? '1' : '0') + '"' +
                     ' data-generated="' + (generated ? '1' : '0') + '"' +
                     (selected ? ' selected' : '') + '>',
-                    this.escapeHtml(option.title),
+                    RecordUi.escapeHtml(option.title),
                     '</option>'
                 ].join('');
                 }).join(''),
@@ -337,7 +321,7 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher
                 const statusClass = optionAssigned ? 'label-success' : 'label-danger';
 
                 status.innerHTML = '<span class="label label-state word-preview-status-label ' + statusClass + '">' +
-                    this.escapeHtml(statusText) +
+                    RecordUi.escapeHtml(statusText) +
                     '</span>';
             }
 
@@ -345,8 +329,8 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher
                 const selectedDates = this.getSelectedOptionDates(selectedOption);
 
                 dates.innerHTML = optionAssigned && selectedDates.length ?
-                    selectedDates.map(value => '<div class="text-nowrap">' + this.escapeHtml(value) + '</div>').join('') :
-                    '<span class="text-muted">' + this.escapeHtml(this.translate('unchanged', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</span>';
+                    selectedDates.map(value => '<div class="text-nowrap">' + RecordUi.escapeHtml(value) + '</div>').join('') :
+                    '<span class="text-muted">' + RecordUi.escapeHtml(this.translate('unchanged', 'labels', 'GeneratorPerioadeCursuriWordMatcher')) + '</span>';
             }
         }
 
@@ -455,15 +439,6 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-matcher
             }
 
             return fallback;
-        }
-
-        escapeHtml(value) {
-            return String(value ?? '')
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
         }
     };
 });
