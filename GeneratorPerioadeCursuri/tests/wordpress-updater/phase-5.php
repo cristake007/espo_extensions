@@ -5,13 +5,15 @@ declare(strict_types=1);
 $root = dirname(__DIR__, 2);
 $detailPath = $root . '/files/client/custom/modules/generator-perioade-cursuri/src/views/' .
     'generator-perioade-cursuri-wordpress-updater/record/detail.js';
+$recordUiPath = $root . '/files/client/custom/modules/generator-perioade-cursuri/src/views/shared/record-ui.js';
 $cssPath = $root . '/files/client/custom/modules/generator-perioade-cursuri/css/generator-perioade-cursuri.css';
 $localeRoot = $root . '/files/custom/Espo/Modules/GeneratorPerioadeCursuri/Resources/i18n';
 $detail = file_get_contents($detailPath);
+$recordUi = file_get_contents($recordUiPath);
 $css = file_get_contents($cssPath);
 $checks = 0;
 
-if ($detail === false || $css === false) {
+if ($detail === false || $recordUi === false || $css === false) {
     throw new RuntimeException('Phase 5 client assets could not be read.');
 }
 
@@ -108,13 +110,15 @@ foreach ([
     'scope="col"' => 'table headers expose column scope',
     'data-role="wp-top-scroll" tabindex="0"' => 'top horizontal scroller is keyboard focusable',
     'data-role="wp-table-scroll" tabindex="0"' => 'native table scroller is keyboard focusable',
-    'tableScroller.scrollLeft = topScroller.scrollLeft' => 'top scroll synchronizes to the table',
-    'topScroller.scrollLeft = tableScroller.scrollLeft' => 'table scroll synchronizes to the top control',
     'role="status" aria-live="polite"' => 'global state is announced accessibly',
     'role="alert"' => 'row errors are announced accessibly',
 ] as $needle => $message) {
     $assertContains($needle, $detail, $message);
 }
+
+$assertContains('RecordUi.synchronizeHorizontalScroll(', $detail, 'the updater delegates horizontal scroll synchronization');
+$assertContains('mainScroller.scrollLeft = topScroller.scrollLeft', $recordUi, 'top scroll synchronizes to the table');
+$assertContains('topScroller.scrollLeft = mainScroller.scrollLeft', $recordUi, 'table scroll synchronizes to the top control');
 
 $updaterCssPosition = strpos($css, '.wordpress-updater-workspace');
 $assert($updaterCssPosition !== false, 'the updater workspace has scoped CSS');

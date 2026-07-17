@@ -18,11 +18,11 @@ $assert = static function (bool $condition, string $message) use (&$checks): voi
     }
 };
 
-$assert($version === '2.3.2', 'manifest version must be 2.3.2');
-$assert(($manifest['releaseDate'] ?? null) === '2026-07-16', 'manifest release date must match this release');
+$assert($version === '2.3.3', 'manifest version must be 2.3.3');
+$assert(($manifest['releaseDate'] ?? null) === '2026-07-17', 'manifest release date must match this release');
 $assert(extension_loaded('zip'), 'PHP ZIP support must be available');
 $assert(extension_loaded('curl'), 'PHP cURL support must be available in the build environment');
-$assert(is_file($archivePath), 'the 2.3.2 installable ZIP must exist');
+$assert(is_file($archivePath), 'the 2.3.3 installable ZIP must exist');
 $assert(filesize($archivePath) > 0, 'the installable ZIP must not be empty');
 
 $zip = new ZipArchive();
@@ -64,6 +64,7 @@ $requiredFiles = [
     'files/custom/Espo/Modules/GeneratorPerioadeCursuri/Resources/metadata/entityDefs/GeneratorPerioadeCursuriWordPressUpdater.json',
     'files/client/custom/modules/generator-perioade-cursuri/src/views/generator-perioade-cursuri-wordpress-updater/record/detail.js',
     'files/client/custom/modules/generator-perioade-cursuri/src/views/generator-perioade-cursuri-wordpress-updater/record/edit.js',
+    'files/client/custom/modules/generator-perioade-cursuri/src/views/shared/record-ui.js',
     'files/client/custom/modules/generator-perioade-cursuri/css/generator-perioade-cursuri.css',
 ];
 
