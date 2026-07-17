@@ -56,7 +56,6 @@
         "subdivisionCodes": {
             "type": "array",
             "default": [],
-            "required": true,
             "readOnly": true
         },
         "syncedAt": {

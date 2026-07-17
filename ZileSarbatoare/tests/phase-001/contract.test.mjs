@@ -25,6 +25,8 @@ test('ZileLibere stores one canonical date and the required synchronization scop
     assert.equal(defs.fields.dateEnd, undefined);
     assert.equal(defs.fields.holidayTypes.type, 'array');
     assert.equal(defs.fields.subdivisionCodes.type, 'array');
+    assert.deepEqual(defs.fields.subdivisionCodes.default, []);
+    assert.equal(defs.fields.subdivisionCodes.required, undefined);
     assert.equal(defs.fields.year.notStorable, true);
     assert.equal(defs.fields.month.notStorable, true);
     assert.deepEqual(defs.indexes.dateStart.columns, ['dateStart', 'deleted']);
@@ -33,6 +35,15 @@ test('ZileLibere stores one canonical date and the required synchronization scop
         defs.indexes.managedSyncScope.columns,
         ['source', 'managed', 'countryCode', 'sourceYear', 'deleted']
     );
+});
+
+test('navigation and Quick Create use the holiday icon and compact manual layout', async () => {
+    const clientDefs = await readJson('Resources', 'metadata', 'clientDefs', 'ZileLibere.json');
+    const detailSmall = await readJson('Resources', 'layouts', 'ZileLibere', 'detailSmall.json');
+    const fieldNames = detailSmall[0].rows.flat().filter(Boolean).map(item => item.name);
+
+    assert.equal(clientDefs.iconClass, 'fas fa-calendar-day');
+    assert.deepEqual(fieldNames, ['name', 'dateStart', 'countryCode', 'description']);
 });
 
 test('scope is a global one-day calendar entity with read-only role mutation levels', async () => {
