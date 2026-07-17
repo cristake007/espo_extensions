@@ -17,6 +17,7 @@ foreach ([
     'HttpTransport.php',
     'Holiday.php',
     'HolidayType.php',
+    'HolidayProvider.php',
     'PayloadNormalizer.php',
     'HolidayFilter.php',
     'NagerDateClient.php',
@@ -100,7 +101,7 @@ $nationalPublic = $edgeClient->fetch('RO', 2026, ['Public'], true);
 assertSameValue(2, count($nationalPublic), 'National-only public filtering is invalid.');
 assertSameValue('National public holiday', $nationalPublic[0]->name, 'Holiday names must be trimmed.');
 assertSameValue(['RO-B'], $nationalPublic[1]->subdivisionCodes, 'Subdivision codes must be deduplicated.');
-assertSameValue(['Public', 'Bank'], $nationalPublic[1]->holidayTypes, 'Holiday types must be deduplicated.');
+assertSameValue(['Bank', 'Public'], $nationalPublic[1]->holidayTypes, 'Holiday types must be canonicalized.');
 
 $allPublic = $edgeClient->fetch('RO', 2026, ['Public'], false);
 assertSameValue(3, count($allPublic), 'Regional public filtering is invalid.');

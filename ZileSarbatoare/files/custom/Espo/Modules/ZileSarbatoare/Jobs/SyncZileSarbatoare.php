@@ -6,6 +6,7 @@ namespace Espo\Modules\ZileSarbatoare\Jobs;
 
 use Espo\Core\Job\JobDataLess;
 use Espo\Modules\ZileSarbatoare\Tools\NagerDate\SyncManager;
+use RuntimeException;
 
 final class SyncZileSarbatoare implements JobDataLess
 {
@@ -14,6 +15,10 @@ final class SyncZileSarbatoare implements JobDataLess
 
     public function run(): void
     {
-        $this->syncManager->runAutomatic();
+        $result = $this->syncManager->runAutomatic();
+
+        if ($result->status === 'Failed') {
+            throw new RuntimeException($result->message);
+        }
     }
 }

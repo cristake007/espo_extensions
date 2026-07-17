@@ -6,7 +6,7 @@ namespace Espo\Modules\ZileSarbatoare\Tools\NagerDate;
 
 use JsonException;
 
-final class NagerDateClient
+final class NagerDateClient implements HolidayProvider
 {
     private const ORIGIN = 'https://date.nager.at/api/v4';
     private const MAXIMUM_RESPONSE_BYTES = 1048576;

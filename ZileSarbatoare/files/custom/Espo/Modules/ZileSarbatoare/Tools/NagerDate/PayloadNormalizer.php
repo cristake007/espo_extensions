@@ -124,7 +124,10 @@ final class PayloadNormalizer
             }
         }
 
-        return array_values(array_unique($value));
+        $value = array_values(array_unique($value));
+        sort($value);
+
+        return $value;
     }
 
     /** @return list<string> */
@@ -140,7 +143,10 @@ final class PayloadNormalizer
             }
         }
 
-        return array_values(array_unique($value));
+        $value = array_values(array_unique($value));
+        sort($value);
+
+        return $value;
     }
 
     private function rowError(int $index, string $detail): ClientException

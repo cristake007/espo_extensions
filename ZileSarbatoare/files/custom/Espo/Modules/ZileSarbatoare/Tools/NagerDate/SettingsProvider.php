@@ -40,4 +40,9 @@ final class SettingsProvider
 
         return $entity;
     }
+
+    public function saveEntity(Integration $entity): void
+    {
+        $this->entityManager->saveEntity($entity);
+    }
 }
