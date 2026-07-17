@@ -10,7 +10,8 @@
         "dateStart": {
             "type": "date",
             "required": true,
-            "audited": true
+            "audited": true,
+            "useNumericFormat": true
         },
         "countryCode": {
             "type": "varchar",
@@ -39,7 +40,8 @@
         },
         "sourceYear": {
             "type": "int",
-            "readOnly": true
+            "readOnly": true,
+            "disableFormatting": true
         },
         "holidayTypes": {
             "type": "array",
