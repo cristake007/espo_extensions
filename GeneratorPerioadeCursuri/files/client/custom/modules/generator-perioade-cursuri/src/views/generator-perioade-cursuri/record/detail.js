@@ -147,7 +147,7 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
         }
 
         updateExportButtonState() {
-            const disabled = !this.model.get('exportFileId');
+            const disabled = !this.model.get('exportFileId') && !this.model.get('generatedAt');
 
             RecordUi.setActionButtonState(
                 this.element,
