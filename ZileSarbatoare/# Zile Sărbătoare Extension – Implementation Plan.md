@@ -1,8 +1,15 @@
 # Zile Sărbătoare Extension – Implementation Plan
 
-Status: Proposed
+Status: Delivered — pending non-administrator runtime validation
 
 Date: 2026-07-17
+
+Delivery date: 2026-07-18
+
+Delivery note: Administrator installation, synchronization, manual holiday, and
+calendar workflows are delivered. Runtime verification with non-administrator
+users remains deferred until further testing; the related ACL cases are not yet
+marked as verified.
 
 Extension label: **Zile Sărbătoare**
 
