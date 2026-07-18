@@ -1,0 +1,13 @@
+{
+    "name": "DocumentBuilder",
+    "version": "1.0.0",
+    "acceptableVersions": [
+        ">=10.0.0"
+    ],
+    "php": [
+        ">=8.4"
+    ],
+    "releaseDate": "2026-07-19",
+    "author": "Cristian Popa",
+    "description": "EspoCRM extension package for DocumentBuilder. Package ID: document-builder."
+}
