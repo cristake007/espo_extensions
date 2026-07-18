@@ -22,9 +22,9 @@
             ],
             [
                 {
-                    "name": "sourceFile"
-                },
-                false
+                    "name": "sourceFile",
+                    "fullWidth": true
+                }
             ],
             [
                 {

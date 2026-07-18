@@ -9,6 +9,10 @@ const moduleResources = path.join(
     extensionRoot,
     'files/custom/Espo/Modules/GeneratorPerioadeCursuri/Resources'
 );
+const mainPageCss = fs.readFileSync(path.join(
+    extensionRoot,
+    'files/client/custom/modules/generator-perioade-cursuri/css/generator-perioade-cursuri.css'
+), 'utf8');
 
 const entityContracts = {
     GeneratorPerioadeCursuri: {
@@ -176,6 +180,68 @@ assert.deepEqual(
     visibilityViolations,
     [],
     `Detail layouts still expose fields that must be hidden: ${visibilityViolations.join(', ')}`
+);
+checks++;
+
+for (const layoutName of ['edit', 'detail']) {
+    const layout = readJson(path.join(
+        moduleResources,
+        'layouts/GeneratorPerioadeCursuri',
+        `${layoutName}.json`
+    ));
+    const sourceRows = layout.flatMap(panel => panel.rows)
+        .filter(row => row.some(cell => cell && cell.name === 'sourceFile'));
+
+    assert.equal(
+        sourceRows.length,
+        1,
+        `GeneratorPerioadeCursuri ${layoutName}: Source File must appear in exactly one row`
+    );
+    checks++;
+    assert.equal(
+        sourceRows[0].length,
+        1,
+        `GeneratorPerioadeCursuri ${layoutName}: Source File must not retain a false partner cell`
+    );
+    checks++;
+    assert.deepEqual(
+        sourceRows[0][0],
+        {name: 'sourceFile', fullWidth: true},
+        `GeneratorPerioadeCursuri ${layoutName}: Source File must be explicitly full-width`
+    );
+    checks++;
+}
+
+assert.deepEqual(
+    readJson(path.join(
+        moduleResources,
+        'layouts/GeneratorPerioadeCursuri/defaultSidePanel.json'
+    )),
+    [],
+    'GeneratorPerioadeCursuri must retain its intentionally empty packaged side panel'
+);
+checks++;
+
+for (const selector of [
+    '.generator-perioade-cursuri-page .record-grid.record-grid-wide',
+    '.generator-perioade-cursuri-page .record-grid > .side',
+    '.generator-perioade-cursuri-page .generator-source-upload-label',
+    '.generator-perioade-cursuri-page .generator-source-upload-action',
+]) {
+    assert.ok(mainPageCss.includes(selector), `Main-page CSS must include scoped selector: ${selector}`);
+    checks++;
+}
+
+assert.match(
+    mainPageCss,
+    /\.generator-perioade-cursuri-page \.generator-source-upload-formats,[\s\S]*?flex-wrap:\s*wrap;/,
+    'accepted-format badges must wrap within the main-page upload field'
+);
+checks++;
+assert.match(
+    mainPageCss,
+    /@media \(max-width: 767px\)[\s\S]*?\.generator-perioade-cursuri-page \.generator-source-upload-action/,
+    'the main-page uploader must retain a narrow-screen layout rule'
 );
 checks++;
 

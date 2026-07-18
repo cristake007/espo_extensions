@@ -1,15 +1,19 @@
+.generator-perioade-cursuri-page .record-grid.record-grid-wide,
 .generator-perioade-cursuri-create .record-grid.record-grid-wide,
 .generator-perioade-cursuri-wordpress-updater-page .record-grid.record-grid-wide,
 .generator-perioade-cursuri-word-matcher-page .record-grid.record-grid-wide {
     grid-template-columns: minmax(0, 1fr);
 }
 
+.generator-perioade-cursuri-page .record-grid > .side,
 .generator-perioade-cursuri-create .record-grid > .side,
 .generator-perioade-cursuri-wordpress-updater-page .record-grid > .side,
 .generator-perioade-cursuri-word-matcher-page .record-grid > .side {
     display: none;
 }
 
+.generator-perioade-cursuri-page .record-grid > .left,
+.generator-perioade-cursuri-page .record-grid .middle,
 .generator-perioade-cursuri-create .record-grid > .left,
 .generator-perioade-cursuri-create .record-grid .middle,
 .generator-perioade-cursuri-wordpress-updater-page .record-grid > .left,
@@ -20,21 +24,25 @@
     width: 100%;
 }
 
+.generator-perioade-cursuri-page .middle > .panel,
 .generator-perioade-cursuri-create .middle > .panel,
 .generator-perioade-cursuri-wordpress-updater-page .middle > .panel {
     border-radius: 3px;
     overflow: hidden;
 }
 
+.generator-perioade-cursuri-page .middle > .panel > .panel-body,
 .generator-perioade-cursuri-create .middle > .panel > .panel-body {
     padding: 24px;
 }
 
+.generator-perioade-cursuri-page .cell .loading-value::before,
 .generator-perioade-cursuri-create .cell .loading-value::before {
     content: "\2013" !important;
     display: inline !important;
 }
 
+.generator-perioade-cursuri-page .generator-source-upload-label,
 .generator-perioade-cursuri-create .generator-source-upload-label {
     align-items: center;
     background: var(--tuvtk-surface) !important;
@@ -51,6 +59,9 @@
     width: 100%;
 }
 
+.generator-perioade-cursuri-page .generator-source-upload-label:hover,
+.generator-perioade-cursuri-page .generator-source-upload-label:focus,
+.generator-perioade-cursuri-page .generator-source-upload-label.is-dragover,
 .generator-perioade-cursuri-create .generator-source-upload-label:hover,
 .generator-perioade-cursuri-create .generator-source-upload-label:focus,
 .generator-perioade-cursuri-create .generator-source-upload-label.is-dragover {
@@ -60,12 +71,14 @@
     outline: none;
 }
 
+.generator-perioade-cursuri-page .generator-source-upload-label .generator-source-upload-icon,
 .generator-perioade-cursuri-create .generator-source-upload-label .generator-source-upload-icon {
     color: var(--tuvtk-primary) !important;
     font-size: 36px;
     margin-bottom: 14px;
 }
 
+.generator-perioade-cursuri-page .generator-source-upload-label .generator-source-upload-title,
 .generator-perioade-cursuri-create .generator-source-upload-label .generator-source-upload-title {
     color: var(--tuvtk-text) !important;
     font-size: 18px;
@@ -73,6 +86,7 @@
     margin-bottom: 6px;
 }
 
+.generator-perioade-cursuri-page .generator-source-upload-action,
 .generator-perioade-cursuri-create .generator-source-upload-action {
     align-items: center;
     display: flex;
@@ -82,6 +96,7 @@
     margin: 12px 0 18px;
 }
 
+.generator-perioade-cursuri-page .generator-source-upload-label .generator-source-upload-button,
 .generator-perioade-cursuri-create .generator-source-upload-label .generator-source-upload-button {
     background: var(--tuvtk-surface) !important;
     border-color: var(--tuvtk-border) !important;
@@ -92,6 +107,9 @@
     transition: transform 160ms ease;
 }
 
+.generator-perioade-cursuri-page .generator-source-upload-label:hover .generator-source-upload-button,
+.generator-perioade-cursuri-page .generator-source-upload-label:focus .generator-source-upload-button,
+.generator-perioade-cursuri-page .generator-source-upload-label.is-dragover .generator-source-upload-button,
 .generator-perioade-cursuri-create .generator-source-upload-label:hover .generator-source-upload-button,
 .generator-perioade-cursuri-create .generator-source-upload-label:focus .generator-source-upload-button,
 .generator-perioade-cursuri-create .generator-source-upload-label.is-dragover .generator-source-upload-button {
@@ -101,16 +119,21 @@
     transform: translateY(-1px);
 }
 
+.generator-perioade-cursuri-page .generator-source-upload-label .generator-source-upload-drop-hint,
 .generator-perioade-cursuri-create .generator-source-upload-label .generator-source-upload-drop-hint {
     color: var(--tuvtk-muted) !important;
     font-weight: 400;
 }
 
+.generator-perioade-cursuri-page .generator-source-upload-formats,
 .generator-perioade-cursuri-create .generator-source-upload-formats {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
+    justify-content: center;
 }
 
+.generator-perioade-cursuri-page .generator-source-upload-label .generator-source-upload-format,
 .generator-perioade-cursuri-create .generator-source-upload-label .generator-source-upload-format {
     align-items: center;
     background: var(--tuvtk-hover) !important;
@@ -125,10 +148,12 @@
     padding: 5px 10px;
 }
 
+.generator-perioade-cursuri-page .generator-source-upload-label .generator-source-upload-format .fas,
 .generator-perioade-cursuri-create .generator-source-upload-label .generator-source-upload-format .fas {
     color: inherit !important;
 }
 
+.generator-perioade-cursuri-page .generator-source-upload-label input.file,
 .generator-perioade-cursuri-create .generator-source-upload-label input.file {
     height: 1px;
     opacity: 0;
@@ -137,13 +162,17 @@
     width: 1px;
 }
 
+.generator-perioade-cursuri-page .generator-source-upload .gray-box,
 .generator-perioade-cursuri-create .generator-source-upload .gray-box {
     border: 1px solid var(--tuvtk-border);
     border-radius: 3px;
     margin-top: 12px;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     padding: 16px;
 }
 
+.generator-perioade-cursuri-page .generator-perioade-cursuri-holidays-field [data-role="date-row"],
 .generator-perioade-cursuri-create .generator-perioade-cursuri-holidays-field [data-role="date-row"] {
     max-width: 420px;
 }
@@ -379,15 +408,18 @@
 }
 
 @media (max-width: 767px) {
+    .generator-perioade-cursuri-page .middle > .panel > .panel-body,
     .generator-perioade-cursuri-create .middle > .panel > .panel-body {
         padding: 16px;
     }
 
+    .generator-perioade-cursuri-page .generator-source-upload-label,
     .generator-perioade-cursuri-create .generator-source-upload-label {
         min-height: 180px;
         padding: 24px 16px;
     }
 
+    .generator-perioade-cursuri-page .generator-source-upload-action,
     .generator-perioade-cursuri-create .generator-source-upload-action {
         flex-direction: column;
     }

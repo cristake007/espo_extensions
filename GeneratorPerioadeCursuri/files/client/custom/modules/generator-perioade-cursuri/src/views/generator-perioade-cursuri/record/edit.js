@@ -1,12 +1,19 @@
 define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/edit', ['views/record/edit'], function (EditRecordView) {
     return class extends EditRecordView {
         setup() {
-            if (this.model.isNew()) {
+            if (this.isGeneratorMainPage() || this.model.isNew()) {
                 this.isWide = true;
                 this.sideDisabled = true;
             }
 
             super.setup();
+        }
+
+        isGeneratorMainPage() {
+            const entityType = this.entityType || this.scope ||
+                this.model.entityType || this.model.name;
+
+            return entityType === 'GeneratorPerioadeCursuri';
         }
 
         onInvalid(invalidFieldList) {
@@ -45,6 +52,12 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/edit'
 
         afterRender() {
             super.afterRender();
+
+            if (this.isGeneratorMainPage()) {
+                this.element.classList.add('generator-perioade-cursuri-page');
+
+                return;
+            }
 
             if (!this.model.isNew()) {
                 return;

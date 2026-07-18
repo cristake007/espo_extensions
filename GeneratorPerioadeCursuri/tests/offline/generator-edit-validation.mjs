@@ -33,13 +33,14 @@ const Espo = {
 };
 
 class FakeModel {
-    constructor(attributes = {}) {
+    constructor(attributes = {}, isNew = true) {
         this.attributes = {...attributes};
+        this.newRecord = isNew;
         this.saveCount = 0;
     }
 
     isNew() {
-        return true;
+        return this.newRecord;
     }
 
     get(name) {
@@ -53,6 +54,20 @@ class FakeModel {
     async save(attributes) {
         this.saveCount++;
         Object.assign(this.attributes, attributes);
+    }
+}
+
+class FakeClassList {
+    constructor() {
+        this.values = new Set();
+    }
+
+    add(value) {
+        this.values.add(value);
+    }
+
+    contains(value) {
+        return this.values.has(value);
     }
 }
 
@@ -102,12 +117,17 @@ class EditRecordView {
         nameInput = '',
         namePatternInvalid = false,
         unrelatedFieldInvalid = false,
+        entityType = 'GeneratorPerioadeCursuri',
+        isNew = true,
     } = {}) {
         this.locale = locale;
         this.nameInput = nameInput;
         this.namePatternInvalid = namePatternInvalid;
         this.unrelatedFieldInvalid = unrelatedFieldInvalid;
-        this.model = new FakeModel({name: null});
+        this.entityType = entityType;
+        this.scope = entityType;
+        this.model = new FakeModel({name: null}, isNew);
+        this.element = {classList: new FakeClassList()};
         this.validationCalls = {name: 0, holidays: 0};
         this.inlineErrors = [];
         this.focusedFields = [];
@@ -207,6 +227,49 @@ vm.runInNewContext(fs.readFileSync(viewPath, 'utf8'), {
 }, {filename: viewPath});
 
 assert.equal(typeof GeneratorEditView, 'function', 'the production edit view must load through AMD');
+
+for (const isNew of [true, false]) {
+    const view = new GeneratorEditView({isNew});
+
+    view.setup();
+    assert.equal(view.isWide, true, 'main-entity create and saved edit must use wide-record mode');
+    assert.equal(view.sideDisabled, true, 'main-entity create and saved edit must disable the empty side view');
+    view.afterRender();
+    assert.equal(
+        view.element.classList.contains('generator-perioade-cursuri-page'),
+        true,
+        'main-entity create and saved edit must share the semantic page class'
+    );
+    assert.equal(
+        view.element.classList.contains('generator-perioade-cursuri-create'),
+        false,
+        'the main entity must not use a create-only class for shared page styling'
+    );
+}
+
+{
+    const createView = new GeneratorEditView({
+        entityType: 'GeneratorPerioadeCursuriXmlConverter',
+        isNew: true,
+    });
+    const savedView = new GeneratorEditView({
+        entityType: 'GeneratorPerioadeCursuriXmlConverter',
+        isNew: false,
+    });
+
+    createView.setup();
+    createView.afterRender();
+    savedView.setup();
+    savedView.afterRender();
+
+    assert.equal(createView.isWide, true, 'inherited create views must retain their existing wide behavior');
+    assert.equal(createView.sideDisabled, true);
+    assert.equal(createView.element.classList.contains('generator-perioade-cursuri-create'), true);
+    assert.equal(createView.element.classList.contains('generator-perioade-cursuri-page'), false);
+    assert.notEqual(savedView.isWide, true, 'saved inherited views must not gain the main-entity layout contract');
+    assert.notEqual(savedView.sideDisabled, true);
+    assert.equal(savedView.element.classList.contains('generator-perioade-cursuri-page'), false);
+}
 
 function plain(value) {
     return JSON.parse(JSON.stringify(value));

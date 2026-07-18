@@ -13,9 +13,29 @@ const viewPath = path.join(
 );
 
 class DetailRecordView {
-    setup() {}
+    setup() {
+        this.baseSetupCount = (this.baseSetupCount ?? 0) + 1;
+    }
+
+    afterRender() {
+        this.baseAfterRenderCount = (this.baseAfterRenderCount ?? 0) + 1;
+    }
 
     addButton() {}
+}
+
+class FakeClassList {
+    constructor() {
+        this.values = new Set();
+    }
+
+    add(value) {
+        this.values.add(value);
+    }
+
+    contains(value) {
+        return this.values.has(value);
+    }
 }
 
 const buttonStates = [];
@@ -64,7 +84,7 @@ vm.runInNewContext(fs.readFileSync(viewPath, 'utf8'), {
 
 function createView(values) {
     const view = new DetailView();
-    view.element = {};
+    view.element = {classList: new FakeClassList()};
     view.model = {
         id: 'preserved-record',
         get(name) {
@@ -83,6 +103,17 @@ function plain(value) {
 {
     const view = createView({generatedAt: null, exportFileId: null});
 
+    view.setup();
+    assert.equal(view.isWide, true, 'saved detail must use EspoCRM wide-record mode');
+    assert.equal(view.sideDisabled, true, 'saved detail must not create an empty side view');
+    assert.equal(view.baseSetupCount, 1);
+    view.afterRender();
+    assert.equal(view.baseAfterRenderCount, 1);
+    assert.equal(
+        view.element.classList.contains('generator-perioade-cursuri-page'),
+        true,
+        'saved detail must apply the main-entity page class'
+    );
     view.updateExportButtonState();
     assert.equal(buttonStates.at(-1).disabled, true, 'ungenerated records must keep export disabled');
 }

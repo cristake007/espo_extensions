@@ -4,6 +4,9 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
 ], function (DetailRecordView, RecordUi) {
     return class extends DetailRecordView {
         setup() {
+            this.isWide = true;
+            this.sideDisabled = true;
+
             super.setup();
 
             this.generatedScheduleResult = null;
@@ -26,6 +29,7 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
         afterRender() {
             super.afterRender();
 
+            this.element.classList.add('generator-perioade-cursuri-page');
             this.updateGenerateButtonState();
             this.updateExportButtonState();
 
