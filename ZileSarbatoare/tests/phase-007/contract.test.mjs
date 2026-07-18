@@ -38,9 +38,10 @@ test('holiday lookup action uses only the stored calendar service boundary', asy
     assert.match(source, /->isAdmin\(\)/);
     assert.match(source, /throw new Forbidden\(/);
     assert.match(source, /ZileLibereCalendar/);
-    assert.match(source, /->getDateLiberePentruLuni\(/);
+    assert.match(source, /->getZileLiberePentruLuni\(/);
     assert.match(source, /['"]RO['"]/);
     assert.match(source, /['"]dates['"]/);
+    assert.match(source, /['"]holidays['"]/);
 
     assert.doesNotMatch(source, /countryCode/);
     assert.doesNotMatch(source, /NagerDate|Synchroniz|Settings/i);

@@ -32,12 +32,17 @@ class FakeInput {
     focus() {
         this.focusCount++;
     }
+
+    closest(selector) {
+        return selector === '[data-role="date-row"]' ? this.row ?? null : null;
+    }
 }
 
 class FakeRow {
     constructor(container, value = '') {
         this.container = container;
         this.input = new FakeInput(value);
+        this.input.row = this;
         this.dataset = {};
         this.style = {};
         this.className = '';
@@ -219,6 +224,7 @@ function createView({
     months = ['1'],
     values = [''],
     storedValue = null,
+    storedDetails = [],
     ajax = async () => ({dates: []}),
 } = {}) {
     notifications.length = 0;
@@ -226,6 +232,7 @@ function createView({
 
     const modelValues = {
         holidays: storedValue,
+        holidayDetails: storedDetails,
         year,
         selectedMonths: months,
     };
@@ -278,6 +285,12 @@ function plain(value) {
     let requests = 0;
     const {view, modelValues} = createView({
         storedValue: '05.01.2026',
+        storedDetails: [{
+            date: '2026-01-05',
+            name: 'Ajunul Bobotezei',
+            type: 'legal',
+            source: 'zile-sarbatoare',
+        }],
         values: ['05.01.2026'],
         ajax: async () => {
             requests++;
@@ -289,6 +302,15 @@ function plain(value) {
     assert.match(view.editTemplateContent, /data-action="importHolidayDates"/);
     assert.equal(typeof data.importLabel, 'string');
     assert.notEqual(data.importLabel, 'Import holiday dates');
+    assert.deepEqual(plain(data.holidayRows), [{
+        displayDate: '05.01.2026',
+        isoDate: '2026-01-05',
+        name: 'Ajunul Bobotezei',
+        type: 'legal',
+        source: 'zile-sarbatoare',
+        typeLabel: 'Sărbătoare legală',
+        badgeClass: 'label-success',
+    }]);
     assert.equal(requests, 0, 'setup and render must not import holidays');
 
     modelValues.year = 2027;
@@ -344,6 +366,20 @@ for (const testCase of [
 
     releaseRequest({
         dates: ['2026-01-01', '2026-01-05', '2026-01-01'],
+        holidays: [
+            {
+                date: '2026-01-01',
+                name: 'Anul Nou',
+                type: 'legal',
+                source: 'zile-sarbatoare',
+            },
+            {
+                date: '2026-01-05',
+                name: 'Sărbătoare existentă',
+                type: 'legal',
+                source: 'zile-sarbatoare',
+            },
+        ],
     });
     await Promise.all([firstClick, secondClick]);
 
@@ -353,6 +389,20 @@ for (const testCase of [
         'manual dates must remain and placeholder blank rows must be removed after import'
     );
     assert.equal(view.element.hidden.value, '05.01.2026, 01.01.2026');
+    assert.deepEqual(plain(view.fetch().holidayDetails), [
+        {
+            date: '2026-01-05',
+            name: 'Sărbătoare existentă',
+            type: 'legal',
+            source: 'zile-sarbatoare',
+        },
+        {
+            date: '2026-01-01',
+            name: 'Anul Nou',
+            type: 'legal',
+            source: 'zile-sarbatoare',
+        },
+    ]);
     assert.ok(view.triggeredEvents.includes('change'));
     assert.equal(view.element.importButton.disabled, false);
 
@@ -372,6 +422,47 @@ for (const testCase of [
         'Nu există zile libere disponibile pentru anul și lunile selectate. ' +
             'Verifică dacă anul a fost sincronizat în extensia Zile Sărbătoare.'
     );
+}
+
+{
+    const {view} = createView({
+        ajax: async () => ({
+            dates: ['2026-01-03'],
+            holidays: [{
+                date: '2026-01-03',
+                name: 'Închidere companie',
+                type: 'internal',
+                source: 'zile-sarbatoare',
+            }],
+        }),
+    });
+
+    await clickImport(view);
+    assert.deepEqual(plain(view.fetch().holidayDetails), [{
+        date: '2026-01-03',
+        name: 'Închidere companie',
+        type: 'internal',
+        source: 'zile-sarbatoare',
+    }]);
+    assert.deepEqual(plain(view.buildHolidayRow('03.01.2026', view.fetch().holidayDetails[0])), {
+        displayDate: '03.01.2026',
+        isoDate: '2026-01-03',
+        name: 'Închidere companie',
+        type: 'internal',
+        source: 'zile-sarbatoare',
+        typeLabel: 'Zi liberă internă',
+        badgeClass: 'label-info',
+    });
+
+    const importedInput = view.element.querySelectorAll('input.holiday-date')[0];
+    importedInput.value = '04.01.2026';
+    view.handleDateInput(importedInput);
+    assert.deepEqual(plain(view.fetch().holidayDetails), [{
+        date: '2026-01-04',
+        name: '',
+        type: 'internal',
+        source: 'manual',
+    }], 'editing an imported date must convert it into a manual internal day');
 }
 
 for (const testCase of [
@@ -448,7 +539,13 @@ for (const response of [
     view.element.querySelectorAll('input.holiday-date')[1].value = values[1];
     view.handleDateInput();
 
-    assert.deepEqual(plain(view.fetch()), {holidays: '03.01.2026, 04.01.2026'});
+    assert.deepEqual(plain(view.fetch()), {
+        holidays: '03.01.2026, 04.01.2026',
+        holidayDetails: [
+            {date: '2026-01-03', name: '', type: 'internal', source: 'manual'},
+            {date: '2026-01-04', name: '', type: 'internal', source: 'manual'},
+        ],
+    });
     assert.equal(view.validateHolidayDates(), false);
 
     const firstRow = view.element.container.rows[0];

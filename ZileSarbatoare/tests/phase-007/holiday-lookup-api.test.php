@@ -55,10 +55,12 @@ namespace {
     use Espo\Entities\User;
     use Espo\Modules\ZileSarbatoare\Tools\ZileLibere\Api\PostAvailableDates;
     use Espo\Modules\ZileSarbatoare\Tools\ZileLibere\ZileLibereCalendar;
+    use Espo\Modules\ZileSarbatoare\Tools\ZileLibere\ZileLibereData;
     $sourceRoot = __DIR__ . '/../../files/custom/Espo/Modules/ZileSarbatoare/Tools/ZileLibere';
     $actionFile = $sourceRoot . '/Api/PostAvailableDates.php';
 
     require_once $sourceRoot . '/ZileLibereCalendar.php';
+    require_once $sourceRoot . '/ZileLibereData.php';
 
     if (!is_file($actionFile)) {
         fwrite(STDERR, "Expected pre-implementation failure: PostAvailableDates.php is missing.\n");
@@ -84,18 +86,10 @@ namespace {
         /** @var array{int, list<int>, string}|null */
         public ?array $lastCall = null;
 
-        /** @param list<string> $dates */
-        public function __construct(private array $dates = []) {}
+        /** @param list<ZileLibereData> $records */
+        public function __construct(private array $records = []) {}
 
         public function getZileLiberePentruLuni(
-            int $year,
-            array $months,
-            string $countryCode = 'RO',
-        ): array {
-            throw new RuntimeException('The record lookup method must not be called.');
-        }
-
-        public function getDateLiberePentruLuni(
             int $year,
             array $months,
             string $countryCode = 'RO',
@@ -103,7 +97,15 @@ namespace {
             $this->callCount++;
             $this->lastCall = [$year, $months, $countryCode];
 
-            return $this->dates;
+            return $this->records;
+        }
+
+        public function getDateLiberePentruLuni(
+            int $year,
+            array $months,
+            string $countryCode = 'RO',
+        ): array {
+            throw new RuntimeException('The date-only lookup method must not be called.');
         }
 
         public function esteZiLibera(
@@ -150,7 +152,12 @@ namespace {
         throw new RuntimeException("$message No exception was thrown.");
     }
 
-    $calendar = new FakeCalendar(['2026-01-01', '2026-01-02']);
+    $calendar = new FakeCalendar([
+        new ZileLibereData('1', '2026-01-01', 'Anul Nou', 'RO', 'nager-date'),
+        new ZileLibereData('2', '2026-01-02', 'A doua zi de Anul Nou', 'RO', 'nager-date'),
+        new ZileLibereData('3', '2026-01-02', 'Sărbătoare locală', 'RO', 'manual'),
+        new ZileLibereData('4', '2026-01-03', 'Închidere companie', 'RO', 'manual'),
+    ]);
     $action = new PostAvailableDates($calendar, new User(true));
     $response = $action->process(request([
         'year' => 2026,
@@ -165,7 +172,29 @@ namespace {
     );
     assertSameValue(true, $response instanceof TestResponse, 'The action returned an invalid response.');
     assertSameValue(
-        ['dates' => ['2026-01-01', '2026-01-02']],
+        [
+            'dates' => ['2026-01-01', '2026-01-02', '2026-01-03'],
+            'holidays' => [
+                [
+                    'date' => '2026-01-01',
+                    'name' => 'Anul Nou',
+                    'type' => 'legal',
+                    'source' => 'zile-sarbatoare',
+                ],
+                [
+                    'date' => '2026-01-02',
+                    'name' => 'A doua zi de Anul Nou / Sărbătoare locală',
+                    'type' => 'legal',
+                    'source' => 'zile-sarbatoare',
+                ],
+                [
+                    'date' => '2026-01-03',
+                    'name' => 'Închidere companie',
+                    'type' => 'internal',
+                    'source' => 'zile-sarbatoare',
+                ],
+            ],
+        ],
         $response->data,
         'The successful response contract is invalid.',
     );
@@ -173,7 +202,11 @@ namespace {
     $emptyCalendar = new FakeCalendar();
     $emptyResponse = (new PostAvailableDates($emptyCalendar, new User(true)))
         ->process(request(['year' => 2026, 'months' => [1]]));
-    assertSameValue(['dates' => []], $emptyResponse->data, 'An empty lookup response is invalid.');
+    assertSameValue(
+        ['dates' => [], 'holidays' => []],
+        $emptyResponse->data,
+        'An empty lookup response is invalid.',
+    );
     assertSameValue(1, $emptyCalendar->callCount, 'An empty result caused an extra lookup.');
 
     $forbiddenCalendar = new FakeCalendar();

@@ -9,6 +9,8 @@
         "Import holiday dates": "Import holidays",
         "Remove holiday date": "Remove date",
         "No holiday dates": "No holiday dates",
+        "Legal holiday": "Legal holiday",
+        "Internal day off": "Internal day off",
         "uploadSourceTitle": "Upload course file",
         "uploadSourceButton": "Choose file",
         "uploadSourceAction": "or drag and drop it here",

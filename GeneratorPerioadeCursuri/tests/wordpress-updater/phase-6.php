@@ -18,11 +18,11 @@ $assert = static function (bool $condition, string $message) use (&$checks): voi
     }
 };
 
-$assert($version === '2.4.2', 'manifest version must be 2.4.2');
+$assert($version === '2.5.0', 'manifest version must be 2.5.0');
 $assert(($manifest['releaseDate'] ?? null) === '2026-07-18', 'manifest release date must match this release');
 $assert(extension_loaded('zip'), 'PHP ZIP support must be available');
 $assert(extension_loaded('curl'), 'PHP cURL support must be available in the build environment');
-$assert(is_file($archivePath), 'the 2.4.2 installable ZIP must exist');
+$assert(is_file($archivePath), 'the 2.5.0 installable ZIP must exist');
 $assert(filesize($archivePath) > 0, 'the installable ZIP must not be empty');
 
 $zip = new ZipArchive();

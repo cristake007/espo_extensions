@@ -47,8 +47,38 @@ final class PostAvailableDates implements Action
             }
         }
 
+        $records = $this->calendar->getZileLiberePentruLuni($year, $months, 'RO');
+        $holidaysByDate = [];
+
+        foreach ($records as $record) {
+            $holidaysByDate[$record->date] ??= [
+                'names' => [],
+                'type' => 'internal',
+            ];
+
+            if (!in_array($record->name, $holidaysByDate[$record->date]['names'], true)) {
+                $holidaysByDate[$record->date]['names'][] = $record->name;
+            }
+
+            if ($record->source !== 'manual') {
+                $holidaysByDate[$record->date]['type'] = 'legal';
+            }
+        }
+
+        $holidays = [];
+
+        foreach ($holidaysByDate as $date => $holiday) {
+            $holidays[] = [
+                'date' => $date,
+                'name' => implode(' / ', $holiday['names']),
+                'type' => $holiday['type'],
+                'source' => 'zile-sarbatoare',
+            ];
+        }
+
         return ResponseComposer::json([
-            'dates' => $this->calendar->getDateLiberePentruLuni($year, $months, 'RO'),
+            'dates' => array_keys($holidaysByDate),
+            'holidays' => $holidays,
         ]);
     }
 }

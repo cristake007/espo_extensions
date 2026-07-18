@@ -70,6 +70,13 @@
             "tooltip": true,
             "view": "generator-perioade-cursuri:views/fields/holidays"
         },
+        "holidayDetails": {
+            "type": "jsonArray",
+            "default": [],
+            "layoutListDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true
+        },
         "generatedAt": {
             "type": "datetime",
             "readOnly": true
