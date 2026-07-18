@@ -373,27 +373,6 @@
     padding-top: 4px;
 }
 
-.wordpress-updater-payload {
-    border: 1px solid var(--tuvtk-border-soft);
-    margin-top: 10px;
-    padding: 7px;
-}
-
-.wordpress-updater-payload summary {
-    color: var(--tuvtk-primary);
-    cursor: pointer;
-}
-
-.wordpress-updater-payload pre {
-    background: var(--tuvtk-surface);
-    border-color: var(--tuvtk-border-soft);
-    color: var(--tuvtk-text);
-    margin: 8px 0 0;
-    max-height: 260px;
-    overflow: auto;
-    white-space: pre-wrap;
-}
-
 .wordpress-updater-row-actions .btn {
     display: block;
     margin-bottom: 7px;

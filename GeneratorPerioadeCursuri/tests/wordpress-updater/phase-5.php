@@ -103,8 +103,6 @@ foreach ([
 }
 
 foreach ([
-    '<details class="wordpress-updater-payload">' => 'payload review uses a disclosure element',
-    'JSON.stringify(row.payload, null, 2)' => 'payload review shows the exact response payload',
     'target="_blank" rel="noopener noreferrer"' => 'safe permalinks isolate the new page',
     "url.protocol === 'http:' || url.protocol === 'https:'" => 'only HTTP(S) permalinks are clickable',
     'scope="col"' => 'table headers expose column scope',
@@ -115,6 +113,19 @@ foreach ([
 ] as $needle => $message) {
     $assertContains($needle, $detail, $message);
 }
+
+foreach ([
+    'composeWordPressPayload' => 'payload review rendering is removed',
+    'wordpress-updater-payload' => 'payload review markup is removed',
+    'wpUpdaterReviewPayload' => 'payload review label is unused',
+    'JSON.stringify(row.payload' => 'payload review serialization is removed',
+    '_localPayload' => 'payload-only client state is removed',
+    'cloneWordPressValue' => 'payload-only cloning is removed',
+] as $needle => $message) {
+    $assertNotContains($needle, $detail, $message);
+}
+
+$assertNotContains('.wordpress-updater-payload', $css, 'payload review styling is removed');
 
 $assertContains('RecordUi.synchronizeHorizontalScroll(', $detail, 'the updater delegates horizontal scroll synchronization');
 $assertContains('mainScroller.scrollLeft = topScroller.scrollLeft', $recordUi, 'top scroll synchronizes to the table');
@@ -161,10 +172,11 @@ foreach (['en_US', 'ro_RO'] as $locale) {
         'wpUpdaterConnection',
         'wpUpdaterFetchDates',
         'wpUpdaterUpdateRow',
-        'wpUpdaterReviewPayload',
     ] as $key) {
         $assert(isset($data['labels'][$key]) && $data['labels'][$key] !== '', "{$locale} defines label {$key}");
     }
+
+    $assert(!isset($data['labels']['wpUpdaterReviewPayload']), "{$locale} removes the unused payload review label");
 
     foreach ([
         'wpUpdaterVpnWarning',

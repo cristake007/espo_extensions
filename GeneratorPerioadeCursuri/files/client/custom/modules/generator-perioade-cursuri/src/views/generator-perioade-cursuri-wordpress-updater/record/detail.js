@@ -89,8 +89,7 @@ define(
                         rows: (Array.isArray(result.rows) ? result.rows : []).map(row => Object.assign({}, row, {
                             status: row.error ? this.translateLabel('wpUpdaterStatusError') :
                                 this.translateLabel('wpUpdaterStatusReady'),
-                            _localFinalDates: Array.isArray(row.finalDates) ? row.finalDates.slice() : [],
-                            _localPayload: this.cloneWordPressValue(row.payload)
+                            _localFinalDates: Array.isArray(row.finalDates) ? row.finalDates.slice() : []
                         }))
                     };
                     this.wpUpdaterGlobalSuccess = this.translateMessage('wpUpdaterPreviewReady');
@@ -427,7 +426,7 @@ define(
                     '<td>', this.composeWordPressDates(row.excelDates), '</td>',
                     '<td>', row.currentDatesLoaded ? this.composeWordPressDates(row.existingValidDates) :
                         '<span class="text-muted">' + RecordUi.escapeHtml(this.translateLabel('wpUpdaterNotFetched')) + '</span>', '</td>',
-                    '<td>', this.composeWordPressDates(row.finalDates), this.composeWordPressPayload(row), '</td>',
+                    '<td>', this.composeWordPressDates(row.finalDates), '</td>',
                     '<td>', this.composeWordPressRowStatus(row, busyAction), '</td>',
                     '<td class="wordpress-updater-row-actions">',
                     '<button type="button" class="btn btn-default btn-sm" data-row-action="fetchDates" data-source-row="',
@@ -464,19 +463,6 @@ define(
                 return '<ul class="wordpress-updater-date-list">' + dates.map(value =>
                     '<li>' + RecordUi.escapeHtml(value) + '</li>'
                 ).join('') + '</ul>';
-            }
-
-            composeWordPressPayload(row) {
-                if (!row.payload) {
-                    return '';
-                }
-
-                return [
-                    '<details class="wordpress-updater-payload">',
-                    '<summary>', RecordUi.escapeHtml(this.translateLabel('wpUpdaterReviewPayload')), '</summary>',
-                    '<pre>', RecordUi.escapeHtml(JSON.stringify(row.payload, null, 2)), '</pre>',
-                    '</details>'
-                ].join('');
             }
 
             composeWordPressRowStatus(row, busyAction) {
@@ -550,7 +536,6 @@ define(
                     row.existingValidDates = [];
                     row.currentDatesLoaded = false;
                     row.finalDates = Array.isArray(row._localFinalDates) ? row._localFinalDates.slice() : [];
-                    row.payload = this.cloneWordPressValue(row._localPayload);
                     row.canUpdate = !row.error && row.canFetch && Array.isArray(row.finalDates) && row.finalDates.length > 0;
                     row.status = row.error ? this.translateLabel('wpUpdaterStatusError') :
                         this.translateLabel('wpUpdaterStatusReady');
@@ -585,14 +570,6 @@ define(
                     'GeneratorPerioadeCursuriWordPressUpdater/' + encodeURIComponent(this.model.id) + '/' + action,
                     payload
                 );
-            }
-
-            cloneWordPressValue(value) {
-                if (value === null || value === undefined) {
-                    return value;
-                }
-
-                return JSON.parse(JSON.stringify(value));
             }
 
             async refreshVerifiedConnectionDisplay() {
