@@ -22,6 +22,18 @@ test('package scaffold follows the mandatory naming and runtime contract', async
     assert.equal(module.jsTranspiled, false);
 });
 
+test('entity scope labels use the approved navigation text in every packaged locale', async () => {
+    for (const locale of ['en_US', 'ro_RO']) {
+        const global = await readJson(
+            'files', 'custom', 'Espo', 'Modules', 'ZileSarbatoare',
+            'Resources', 'i18n', locale, 'Global.json'
+        );
+
+        assert.equal(global.scopeNames.ZileLibere, 'Zile sărbătoare');
+        assert.equal(global.scopeNamesPlural.ZileLibere, 'Zile sărbătoare');
+    }
+});
+
 test('captured Nager.Date fixture covers nullable arrays and duplicate dates', async () => {
     const rows = await readJson('tests', 'fixtures', 'nager-date', 'ro-2026.json');
 

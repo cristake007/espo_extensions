@@ -36,7 +36,7 @@ and `quickCreateList` without replacing existing configuration.
 
 ## Manual holidays
 
-Administrators can add company-specific days from **Zile libere > Create** or
+Administrators can add company-specific days from **Zile sărbătoare > Create** or
 from EspoCRM's **Quick Create** menu. Manual records remain editable and are not
 removed or overwritten by Nager.Date synchronization.
 
@@ -79,7 +79,7 @@ $isFree = $calendar->esteZiLibera('2026-07-15', 'RO');
   validation, or transactional write failures.
 - If records do not appear in Calendar, run `bin/command rebuild`, verify
   `ZileLibere` is present in `calendarEntityList`, and verify role-level read
-  access to **Zile libere**.
+  access to **Zile sărbătoare**.
 
 ## Uninstall and data retention
 
