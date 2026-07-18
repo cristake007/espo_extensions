@@ -222,6 +222,20 @@ $assertSame(false, $preview['rows'][2]['canFetch'], 'Missing permalink rows must
 $assertSame([], $environment['factoryCalls'], 'Preview must not construct a WordPress client.');
 $assertSame(['attachment-1'], $environment['fileStorage']->reads, 'Preview must read only the record-linked attachment.');
 
+$crossMonthEnvironment = $makeEnvironment(
+    "Title,Permalink,Ianuarie,Februarie,Martie\n" .
+    "Cross Month Course,https://wp.example.test/cursuri/cross-month/," .
+    "26.01-18.02.2026,02-25.02.2026,02-25.03.2026\n"
+);
+$crossMonthPreview = $crossMonthEnvironment['service']->preview('record-1', (object) []);
+$assertSame(null, $crossMonthPreview['rows'][0]['error'], 'A valid cross-month range must not cause a preview error.');
+$assertSame(
+    ['26.01-18.02.2026', '02-25.02.2026', '02-25.03.2026'],
+    $crossMonthPreview['rows'][0]['finalDates'],
+    'Preview must preserve cross-month and same-month ranges exactly as supplied.'
+);
+$assertSame(true, $crossMonthPreview['rows'][0]['canUpdate'], 'A row with a valid cross-month range must be updateable.');
+
 $canonicalEnvironment = $makeEnvironment((string) file_get_contents($root . '/fixtures/schedules/generated-title.csv'));
 $legacyEnvironment = $makeEnvironment((string) file_get_contents($root . '/fixtures/schedules/romanian-nume-curs.csv'));
 $assertSame(

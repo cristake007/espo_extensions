@@ -104,11 +104,13 @@ $assert(($edgeCase['rows'][4]['excelDates'] ?? null) === [], 'Textual nan must c
 
 $dateValues = array_column($merge['dateParsing'] ?? [], null, 'value');
 $assert(($dateValues['31.02.2026']['valid'] ?? null) === false, 'Invalid calendar dates must be rejected.');
-$assert(($dateValues['30.01-02.02.2026']['valid'] ?? null) === false, 'Cross-month ranges must be rejected.');
+$assert(($dateValues['26.01-18.02.2026']['effectiveDate'] ?? null) === '2026-02-18', 'Cross-month ranges must use their end date.');
+$assert(($dateValues['31.04-02.05.2026']['valid'] ?? null) === false, 'Cross-month ranges must validate both calendar dates.');
+$assert(($dateValues['18.02-26.01.2026']['valid'] ?? null) === false, 'Reversed cross-month ranges must be rejected.');
 $assert(($dateValues['05-07.01.2026']['effectiveDate'] ?? null) === '2026-01-07', 'A range must use its end date.');
 
 $mergeCases = array_column($merge['mergeCases'] ?? [], null, 'name');
-$assert(($mergeCases['today-expired-future-range-invalid-and-duplicates']['existingValidDates'] ?? null) === ['10.01.2026', '11-12.01.2026'], 'Merge fixture must retain today/range values in stable exact-text order.');
+$assert(($mergeCases['today-expired-future-range-invalid-and-duplicates']['existingValidDates'] ?? null) === ['10.01.2026', '11-12.01.2026', '30.01-02.02.2026'], 'Merge fixture must retain today/range values in stable exact-text order.');
 $assert(($mergeCases['ordered-equal-no-change']['changed'] ?? null) === false, 'Ordered-equal values must lock the no-change result.');
 $assert(($mergeCases['empty-program-uses-false']['payload']['acf']['program'] ?? null) === false, 'An empty payload must retain the upstream false representation.');
 

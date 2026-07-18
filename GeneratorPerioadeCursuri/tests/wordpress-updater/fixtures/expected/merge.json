@@ -8,7 +8,10 @@
     {"value": "05-07.01.2026", "effectiveDate": "2026-01-07", "valid": true},
     {"value": "31.02.2026", "effectiveDate": null, "valid": false},
     {"value": "30-31.04.2026", "effectiveDate": null, "valid": false},
-    {"value": "30.01-02.02.2026", "effectiveDate": null, "valid": false},
+    {"value": "26.01-18.02.2026", "effectiveDate": "2026-02-18", "valid": true},
+    {"value": "30.01-02.02.2026", "effectiveDate": "2026-02-02", "valid": true},
+    {"value": "31.04-02.05.2026", "effectiveDate": null, "valid": false},
+    {"value": "18.02-26.01.2026", "effectiveDate": null, "valid": false},
     {"value": "14–16.04.2026", "effectiveDate": null, "valid": false},
     {"value": "2026-04-08 00:00:00", "effectiveDate": null, "valid": false}
   ],
@@ -24,9 +27,9 @@
         {"data": "30.01-02.02.2026"}
       ],
       "fileDates": ["10.01.2026", "13.01.2026", "13.01.2026", "14-15.02.2026"],
-      "existingValidDates": ["10.01.2026", "11-12.01.2026"],
-      "finalDates": ["10.01.2026", "11-12.01.2026", "13.01.2026", "14-15.02.2026"],
-      "payload": {"acf": {"program": [{"data": "10.01.2026"}, {"data": "11-12.01.2026"}, {"data": "13.01.2026"}, {"data": "14-15.02.2026"}]}},
+      "existingValidDates": ["10.01.2026", "11-12.01.2026", "30.01-02.02.2026"],
+      "finalDates": ["10.01.2026", "11-12.01.2026", "30.01-02.02.2026", "13.01.2026", "14-15.02.2026"],
+      "payload": {"acf": {"program": [{"data": "10.01.2026"}, {"data": "11-12.01.2026"}, {"data": "30.01-02.02.2026"}, {"data": "13.01.2026"}, {"data": "14-15.02.2026"}]}},
       "changed": true
     },
     {

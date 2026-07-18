@@ -57,6 +57,17 @@ class WordPressProgramMerger
             return $this->createDate((int) $matches[3], (int) $matches[2], (int) $matches[1]);
         }
 
+        if (preg_match('/^(\d{1,2})\.(\d{1,2})-(\d{1,2})\.(\d{1,2})\.(\d{4})$/', $value, $matches) === 1) {
+            $startDate = $this->createDate((int) $matches[5], (int) $matches[2], (int) $matches[1]);
+            $endDate = $this->createDate((int) $matches[5], (int) $matches[4], (int) $matches[3]);
+
+            if ($startDate === null || $endDate === null || $startDate > $endDate) {
+                return null;
+            }
+
+            return $endDate;
+        }
+
         if (preg_match('/^(\d{1,2})-(\d{1,2})\.(\d{1,2})\.(\d{4})$/', $value, $matches) !== 1) {
             return null;
         }
