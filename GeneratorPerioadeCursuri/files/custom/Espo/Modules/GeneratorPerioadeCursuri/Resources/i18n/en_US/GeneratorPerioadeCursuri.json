@@ -101,6 +101,7 @@
     "messages": {
         "generateRequestReceived": "The schedule was generated.",
         "generateFailed": "The generate request could not be completed.",
+        "generationNameRequired": "Generation Name is required.",
         "alreadyGenerated": "This schedule has already been generated. Create a new schedule generation to generate again.",
         "exportUnavailable": "Generate the schedule before exporting XLSX.",
         "wordConvertUnavailable": "Upload the Word document and generated Excel file before conversion.",

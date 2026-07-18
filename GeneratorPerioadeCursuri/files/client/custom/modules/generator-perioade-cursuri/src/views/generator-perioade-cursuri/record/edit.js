@@ -9,6 +9,40 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/edit'
             super.setup();
         }
 
+        onInvalid(invalidFieldList) {
+            this.generatorInvalidFieldList = invalidFieldList.slice();
+
+            super.onInvalid(invalidFieldList);
+        }
+
+        afterNotValid() {
+            const invalidFieldList = this.generatorInvalidFieldList || [];
+
+            this.generatorInvalidFieldList = [];
+
+            if (invalidFieldList.includes('name') && this.isGenerationNameMissing()) {
+                Espo.Ui.error(
+                    this.translate(
+                        'generationNameRequired',
+                        'messages',
+                        'GeneratorPerioadeCursuri'
+                    )
+                );
+                this.enableActionItems();
+
+                return;
+            }
+
+            super.afterNotValid();
+        }
+
+        isGenerationNameMissing() {
+            const value = this.model.get('name');
+
+            return value === null || value === '' ||
+                (typeof value === 'string' && value.trim() === '');
+        }
+
         afterRender() {
             super.afterRender();
 

@@ -101,6 +101,7 @@
     "messages": {
         "generateRequestReceived": "Programul a fost generat.",
         "generateFailed": "Cererea de generare nu a putut fi finalizata.",
+        "generationNameRequired": "Denumirea generării este obligatorie.",
         "alreadyGenerated": "Aceasta planificare a fost deja generata. Creeaza o planificare noua pentru a genera din nou.",
         "exportUnavailable": "Genereaza planificarea inainte de exportul XLSX.",
         "wordConvertUnavailable": "Incarca documentul Word si fisierul Excel generat inainte de conversie.",
