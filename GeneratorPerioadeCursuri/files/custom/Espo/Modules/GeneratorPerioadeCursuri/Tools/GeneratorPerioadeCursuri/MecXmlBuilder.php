@@ -26,7 +26,7 @@ class MecXmlBuilder
      */
     public function build(array $events, int $startPostId = 20000): string
     {
-        $document = new DOMDocument('1.0');
+        $document = new DOMDocument('1.0', 'UTF-8');
         $document->formatOutput = true;
         $root = $document->appendChild($document->createElement('events'));
         $courses = [];
@@ -116,7 +116,11 @@ class MecXmlBuilder
             throw new RuntimeException('Unable to serialize MEC XML.');
         }
 
-        $xml = preg_replace('/^<\?xml version="1\.0"\?>/', '<?xml version="1.0" ?>', $xml) ?? $xml;
+        $xml = preg_replace(
+            '/^<\?xml version="1\.0" encoding="UTF-8"\?>/',
+            '<?xml version="1.0" encoding="UTF-8" ?>',
+            $xml
+        ) ?? $xml;
 
         return preg_replace_callback(
             '/^( +)/m',
