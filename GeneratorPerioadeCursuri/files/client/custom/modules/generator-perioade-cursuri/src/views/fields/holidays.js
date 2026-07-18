@@ -70,6 +70,14 @@ define('generator-perioade-cursuri:views/fields/holidays', [
 
             this.holidayDatepickers = new WeakMap();
             this.holidayImportPending = false;
+            this.holidayImportRequestId = 0;
+            this.holidayYearRestoreInProgress = false;
+
+            if (this.isEditMode()) {
+                this.listenTo(this.model, 'change:year', (model, year, options) => {
+                    this.handleHolidayYearChange(model, year, options);
+                });
+            }
         }
 
         data() {
@@ -95,6 +103,112 @@ define('generator-perioade-cursuri:views/fields/holidays', [
 
             this.element.querySelectorAll('input.holiday-date').forEach(input => this.initHolidayDatePicker(input));
             this.syncHiddenInput();
+        }
+
+        handleHolidayYearChange(model, year, options = {}) {
+            if (this.holidayYearRestoreInProgress || options.holidayYearRestore) {
+                return;
+            }
+
+            const previousYearValue = model.previous('year');
+            const previousYear = this.normalizeHolidayImportYear(previousYearValue);
+            const currentYear = this.normalizeHolidayImportYear(year);
+
+            if (previousYear === null || currentYear === null || previousYear === currentYear) {
+                return;
+            }
+
+            if (!this.hasHolidayData()) {
+                this.resetHolidayState();
+
+                return;
+            }
+
+            const message = this.translate(
+                'holidayYearChangeConfirmation',
+                'messages',
+                'GeneratorPerioadeCursuri'
+            )
+                .replace('{oldYear}', String(previousYear))
+                .replace('{newYear}', String(currentYear));
+
+            this.confirm({
+                message: message,
+                confirmText: this.translate(
+                    'Clear holiday dates',
+                    'labels',
+                    'GeneratorPerioadeCursuri'
+                ),
+                cancelText: this.translate(
+                    'Keep current year',
+                    'labels',
+                    'GeneratorPerioadeCursuri'
+                ),
+                confirmStyle: 'warning',
+                backdrop: 'static',
+                cancelCallback: () => this.restoreHolidayYear(previousYearValue, currentYear)
+            }).then(() => {
+                if (this.normalizeHolidayImportYear(this.model.get('year')) !== currentYear) {
+                    return;
+                }
+
+                this.resetHolidayState();
+            });
+        }
+
+        hasHolidayData() {
+            return this.getInputDateList().length > 0 ||
+                this.parseValue(this.model.get(this.name)).length > 0 ||
+                this.parseHolidayDetails(this.model.get('holidayDetails')).length > 0;
+        }
+
+        restoreHolidayYear(previousYear, changedYear) {
+            Promise.resolve().then(() => {
+                if (this.normalizeHolidayImportYear(this.model.get('year')) !== changedYear) {
+                    return;
+                }
+
+                this.holidayYearRestoreInProgress = true;
+
+                try {
+                    this.model.set('year', previousYear, {holidayYearRestore: true});
+                } finally {
+                    this.holidayYearRestoreInProgress = false;
+                }
+            });
+        }
+
+        resetHolidayState() {
+            this.holidayImportRequestId++;
+            this.setHolidayImportPending(false);
+
+            const container = this.element ? this.element.querySelector('[data-role="date-list"]') : null;
+
+            if (container) {
+                container.querySelectorAll('[data-role="date-row"]').forEach(row => row.remove());
+
+                if (this.isEditMode()) {
+                    this.appendHolidayDateRow('', false, null);
+                }
+            }
+
+            this.syncHiddenInput();
+            this.lastValidationMessage = null;
+
+            if (this.$el && typeof this.$el.closest === 'function') {
+                this.$el.closest('.field').removeClass('has-error');
+            }
+
+            this.model.setMultiple({
+                [this.name]: null,
+                holidayDetails: []
+            }, {
+                ui: true,
+                action: 'ui',
+                fromView: this,
+                fromField: this.name,
+                skipReRenderInEditMode: true
+            });
         }
 
         addHolidayDate() {
@@ -171,12 +285,17 @@ define('generator-perioade-cursuri:views/fields/holidays', [
             }
 
             this.setHolidayImportPending(true);
+            const requestId = ++this.holidayImportRequestId;
 
             try {
                 const response = await Espo.Ajax.postRequest(
                     'ZileLibere/availableDates',
                     {year: year, months: months}
                 );
+
+                if (requestId !== this.holidayImportRequestId) {
+                    return;
+                }
 
                 if (!this.isValidHolidayImportResponse(response)) {
                     this.notifyHolidayImport('holidayImportInvalidResponse');
@@ -226,10 +345,16 @@ define('generator-perioade-cursuri:views/fields/holidays', [
                     this.trigger('change');
                 }
             } catch (error) {
+                if (requestId !== this.holidayImportRequestId) {
+                    return;
+                }
+
                 this.markHolidayImportErrorHandled(error);
                 this.notifyHolidayImport(this.getHolidayImportErrorKey(error));
             } finally {
-                this.setHolidayImportPending(false);
+                if (requestId === this.holidayImportRequestId) {
+                    this.setHolidayImportPending(false);
+                }
             }
         }
 

@@ -43,6 +43,7 @@ class FakeRow {
         this.container = container;
         this.input = new FakeInput(value);
         this.input.row = this;
+        this.metadata = {innerHTML: ''};
         this.dataset = {};
         this.style = {};
         this.className = '';
@@ -53,7 +54,15 @@ class FakeRow {
     }
 
     querySelector(selector) {
-        return selector === 'input.holiday-date' ? this.input : null;
+        if (selector === 'input.holiday-date') {
+            return this.input;
+        }
+
+        if (selector === '[data-role="holiday-metadata"]') {
+            return this.metadata;
+        }
+
+        return null;
     }
 
     closest(selector) {
@@ -77,6 +86,10 @@ class FakeContainer {
 
     querySelector(selector) {
         return selector === '[data-role="date-row"]' ? (this.rows[0] ?? null) : null;
+    }
+
+    querySelectorAll(selector) {
+        return selector === '[data-role="date-row"]' ? this.rows.slice() : [];
     }
 }
 
@@ -132,6 +145,10 @@ class VarcharFieldView {
     setup() {}
     afterRender() {}
 
+    listenTo(target, event, callback) {
+        target.on(event, callback);
+    }
+
     addHandler(event, selector, callback) {
         this.handlers ??= new Map();
         this.handlers.set(`${event}:${selector}`, callback);
@@ -172,6 +189,70 @@ class VarcharFieldView {
     showValidationMessage(message, selector) {
         this.validationMessages ??= [];
         this.validationMessages.push([message, selector]);
+    }
+
+    confirm(options) {
+        this.confirmations ??= [];
+        this.confirmations.push(options);
+
+        if (typeof this.confirmAction === 'function') {
+            return this.confirmAction(options);
+        }
+
+        if (this.confirmAction === 'cancel') {
+            options.cancelCallback?.();
+
+            return new Promise(() => {});
+        }
+
+        return Promise.resolve();
+    }
+}
+
+class FakeModel {
+    constructor(values) {
+        this.values = values;
+        this.listeners = new Map();
+        this.previousValues = {...values};
+    }
+
+    get(name) {
+        return this.values[name];
+    }
+
+    previous(name) {
+        return this.previousValues[name];
+    }
+
+    on(event, callback) {
+        const callbacks = this.listeners.get(event) ?? [];
+        callbacks.push(callback);
+        this.listeners.set(event, callbacks);
+    }
+
+    set(name, value, options = {}) {
+        return this.setMultiple({[name]: value}, options);
+    }
+
+    setMultiple(attributes, options = {}) {
+        const changedNames = Object.keys(attributes)
+            .filter(name => this.values[name] !== attributes[name]);
+
+        if (changedNames.length === 0) {
+            return this;
+        }
+
+        this.previousValues = {...this.values};
+        Object.assign(this.values, attributes);
+
+        changedNames.forEach(name => {
+            (this.listeners.get(`change:${name}`) ?? [])
+                .forEach(callback => callback(this, this.values[name], options));
+        });
+        (this.listeners.get('change') ?? [])
+            .forEach(callback => callback(this, options));
+
+        return this;
     }
 }
 
@@ -225,6 +306,8 @@ function createView({
     values = [''],
     storedValue = null,
     storedDetails = [],
+    rowDetails = [],
+    confirmation = 'accept',
     ajax = async () => ({dates: []}),
 } = {}) {
     notifications.length = 0;
@@ -238,18 +321,23 @@ function createView({
     };
     const view = new HolidaysView();
     view.name = 'holidays';
-    view.model = {
-        get(name) {
-            return modelValues[name];
-        },
-    };
+    const model = new FakeModel(modelValues);
+    view.model = model;
+    view.confirmAction = confirmation;
     view.element = new FakeRoot(values);
     view.translate = (key, category) =>
         translations[locale][category]?.[key] ?? key;
     view.setup();
     view.afterRender();
+    rowDetails.forEach((detail, index) => {
+        const row = view.element.container.rows[index];
 
-    return {view, modelValues};
+        if (row) {
+            view.setHolidayRowMetadata(row, detail);
+        }
+    });
+
+    return {view, model, modelValues};
 }
 
 function getImportHandler(view) {
@@ -281,17 +369,24 @@ function plain(value) {
     return JSON.parse(JSON.stringify(value));
 }
 
+function flushMicrotasks() {
+    return new Promise(resolve => setImmediate(resolve));
+}
+
 {
     let requests = 0;
-    const {view, modelValues} = createView({
+    const importedDetail = {
+        date: '2026-01-05',
+        name: 'Ajunul Bobotezei',
+        type: 'legal',
+        source: 'zile-sarbatoare',
+    };
+    const {view, model} = createView({
+        year: undefined,
         storedValue: '05.01.2026',
-        storedDetails: [{
-            date: '2026-01-05',
-            name: 'Ajunul Bobotezei',
-            type: 'legal',
-            source: 'zile-sarbatoare',
-        }],
+        storedDetails: [importedDetail],
         values: ['05.01.2026'],
+        rowDetails: [importedDetail],
         ajax: async () => {
             requests++;
             return {dates: []};
@@ -313,10 +408,151 @@ function plain(value) {
     }]);
     assert.equal(requests, 0, 'setup and render must not import holidays');
 
-    modelValues.year = 2027;
-    modelValues.selectedMonths = ['2', '3'];
-    assert.equal(requests, 0, 'year and month changes must not import holidays');
+    model.set('year', 2026, {sync: true});
+    model.set('selectedMonths', ['2', '3'], {ui: true});
+    model.set('randomness', 8, {ui: true});
+    model.set('sourceFileId', 'attachment-id', {ui: true});
+    model.set('name', 'Generation', {ui: true});
+    model.set('year', 2026, {ui: true});
+    assert.equal(requests, 0, 'initial hydration and unrelated changes must not import holidays');
     assert.deepEqual(inputValues(view), ['05.01.2026']);
+    assert.equal(view.confirmations, undefined, 'initial hydration and same-year values must not prompt');
+}
+
+{
+    const importedDetail = {
+        date: '2026-01-05',
+        name: 'Ajunul Bobotezei',
+        type: 'legal',
+        source: 'zile-sarbatoare',
+    };
+    const {view, model, modelValues} = createView({
+        locale: 'en_US',
+        storedValue: '03.01.2026, 05.01.2026',
+        storedDetails: [
+            {date: '2026-01-03', name: '', type: 'internal', source: 'manual'},
+            importedDetail,
+        ],
+        values: ['03.01.2026', '05.01.2026'],
+        rowDetails: [null, importedDetail],
+    });
+    view.lastValidationMessage = 'Previous validation error';
+    view.holidayImportPending = true;
+    view.element.importButton.disabled = true;
+
+    model.set('year', 2027, {ui: true});
+    await flushMicrotasks();
+
+    assert.equal(modelValues.year, 2027, 'confirmation must keep the committed new year');
+    assert.equal(view.confirmations.length, 1);
+    assert.deepEqual(
+        {
+            message: view.confirmations[0].message,
+            confirmText: view.confirmations[0].confirmText,
+            cancelText: view.confirmations[0].cancelText,
+            confirmStyle: view.confirmations[0].confirmStyle,
+            backdrop: view.confirmations[0].backdrop,
+        },
+        {
+            message: 'Changing the year from 2026 to 2027 will remove all holiday dates and imported details. Continue?',
+            confirmText: 'Clear holiday dates',
+            cancelText: 'Keep current year',
+            confirmStyle: 'warning',
+            backdrop: 'static',
+        },
+        'the English confirmation must describe the destructive reset explicitly'
+    );
+    assert.deepEqual(inputValues(view), [''], 'the reset must leave one clean blank edit row');
+    assert.equal(view.element.hidden.value, '', 'the hidden serialized value must be cleared');
+    assert.deepEqual(plain(view.fetch()), {holidays: null, holidayDetails: []});
+    assert.equal(modelValues.holidays, null);
+    assert.deepEqual(plain(modelValues.holidayDetails), []);
+    assert.equal(view.element.container.rows[0].dataset.holidaySource, 'manual');
+    assert.equal(view.element.container.rows[0].dataset.holidayName, '');
+    assert.doesNotMatch(view.element.container.rows[0].metadata.innerHTML, /Ajunul Bobotezei/);
+    assert.equal(view.holidayImportPending, false, 'reset must clear the pending-import marker');
+    assert.equal(view.element.importButton.disabled, false, 'reset must restore the import action');
+    assert.equal(view.lastValidationMessage, null, 'reset must clear holiday validation residue');
+}
+
+{
+    const importedDetail = {
+        date: '2026-01-05',
+        name: 'Ajunul Bobotezei',
+        type: 'legal',
+        source: 'zile-sarbatoare',
+    };
+    const {view, model, modelValues} = createView({
+        confirmation: 'cancel',
+        storedValue: '05.01.2026',
+        storedDetails: [importedDetail],
+        values: ['05.01.2026'],
+        rowDetails: [importedDetail],
+    });
+
+    model.set('year', 2027, {ui: true});
+    await flushMicrotasks();
+
+    assert.equal(modelValues.year, 2026, 'cancelling must restore the previous year');
+    assert.deepEqual(inputValues(view), ['05.01.2026']);
+    assert.equal(view.element.hidden.value, '05.01.2026');
+    assert.equal(modelValues.holidays, '05.01.2026');
+    assert.deepEqual(modelValues.holidayDetails, [importedDetail]);
+    assert.deepEqual(plain(view.fetch()), {
+        holidays: '05.01.2026',
+        holidayDetails: [importedDetail],
+    });
+    assert.equal(view.element.container.rows[0].dataset.holidaySource, 'zile-sarbatoare');
+    assert.match(view.element.container.rows[0].metadata.innerHTML, /Ajunul Bobotezei/);
+    assert.equal(
+        view.confirmations[0].message,
+        'Schimbarea anului din 2026 în 2027 va șterge toate zilele libere și detaliile preluate. Continui?'
+    );
+    assert.equal(view.confirmations[0].confirmText, 'Șterge zilele libere');
+    assert.equal(view.confirmations[0].cancelText, 'Păstrează anul curent');
+}
+
+{
+    const {view, model, modelValues} = createView();
+
+    model.set('year', 2027, {ui: true});
+
+    assert.equal(modelValues.year, 2027);
+    assert.equal(view.confirmations, undefined, 'an empty holiday list must change year without prompting');
+    assert.deepEqual(inputValues(view), ['']);
+    assert.deepEqual(plain(view.fetch()), {holidays: null, holidayDetails: []});
+}
+
+{
+    let releaseImport;
+    const importResponse = new Promise(resolve => { releaseImport = resolve; });
+    const {view, model} = createView({
+        storedValue: '03.01.2026',
+        storedDetails: [{date: '2026-01-03', name: '', type: 'internal', source: 'manual'}],
+        values: ['03.01.2026'],
+        ajax: () => importResponse,
+    });
+    const pendingImport = clickImport(view);
+
+    model.set('year', 2027, {ui: true});
+    await flushMicrotasks();
+    releaseImport({
+        dates: ['2026-01-01'],
+        holidays: [{
+            date: '2026-01-01',
+            name: 'Anul Nou',
+            type: 'legal',
+            source: 'zile-sarbatoare',
+        }],
+    });
+    await pendingImport;
+
+    assert.deepEqual(
+        inputValues(view),
+        [''],
+        'an old-year import response must not repopulate holidays after reset'
+    );
+    assert.deepEqual(plain(view.fetch()), {holidays: null, holidayDetails: []});
 }
 
 for (const testCase of [
