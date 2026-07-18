@@ -200,7 +200,7 @@ class GenerationService
     private function buildRow(array $course, int $month, string $dateRange, bool $isIncomplete): array
     {
         return [
-            'courseTitle' => (string) $course['title'],
+            'title' => (string) $course['title'],
             'permalink' => (string) $course['permalink'],
             'durationLabel' => (string) $course['durationLabel'],
             'investment' => (string) $course['investment'],

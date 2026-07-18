@@ -13,6 +13,7 @@ php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-3.php
 php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-4.php
 php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-5.php
 php GeneratorPerioadeCursuri/tests/offline/parser-merge-boundaries.php
+php GeneratorPerioadeCursuri/tests/offline/main-title-pipeline.php
 php GeneratorPerioadeCursuri/tests/offline/mec-xml-builder.php
 php GeneratorPerioadeCursuri/tests/offline/menu-lifecycle.php
 node GeneratorPerioadeCursuri/tests/offline/error-message-quality.mjs

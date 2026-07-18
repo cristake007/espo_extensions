@@ -18,7 +18,7 @@ class CourseInputParser
     ];
 
     /**
-     * @return array<int, array<string, int|string>>
+     * @return array<int, array{sourceRow: int, originalOrder: int, title: string, durationLabel: string, duration: int, permalink: string, investment: string}>
      */
     public function parse(string $contents, string $fileName): array
     {
@@ -109,7 +109,7 @@ class CourseInputParser
 
     /**
      * @param array<int, array<int, mixed>> $rows
-     * @return array<int, array<string, int|string>>
+     * @return array<int, array{sourceRow: int, originalOrder: int, title: string, durationLabel: string, duration: int, permalink: string, investment: string}>
      */
     private function parseRows(array $rows): array
     {

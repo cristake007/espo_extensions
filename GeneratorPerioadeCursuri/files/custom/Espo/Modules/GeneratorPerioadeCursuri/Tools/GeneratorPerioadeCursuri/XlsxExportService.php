@@ -86,7 +86,7 @@ class XlsxExportService
             12 => 'Decembrie',
         ];
 
-        $headers = ['Rand', 'Nume curs', 'Permalink', 'Durata Curs', 'Investitie'];
+        $headers = ['Rand', 'title', 'Permalink', 'Durata Curs', 'Investitie'];
 
         foreach ($months as $month) {
             $headers[] = $monthNames[$month] ?? (string) $month;
@@ -101,7 +101,7 @@ class XlsxExportService
         foreach ($courseRows as $course) {
             $values = [
                 $index,
-                $this->safeExcelText($course['courseTitle']),
+                $this->safeExcelText($course['title']),
                 $this->safeExcelText($course['permalink']),
                 $this->safeExcelText($course['durationLabel']),
                 $this->safeExcelText($course['investment']),
@@ -138,19 +138,19 @@ class XlsxExportService
 
     /**
      * @param array<int, array<string, int|string|bool>> $rows
-     * @return array<int, array{originalOrder: int, courseTitle: string, permalink: string, durationLabel: string, investment: string, months: array<string, string>}>
+     * @return array<int, array{originalOrder: int, title: string, permalink: string, durationLabel: string, investment: string, months: array<string, string>}>
      */
     private function groupRowsByCourse(array $rows): array
     {
         $map = [];
 
         foreach ($rows as $row) {
-            $key = (string) ($row['sourceRow'] ?? $row['originalOrder'] ?? $row['courseTitle'] ?? '');
+            $key = (string) ($row['sourceRow'] ?? $row['originalOrder'] ?? $row['title'] ?? '');
 
             if (!isset($map[$key])) {
                 $map[$key] = [
                     'originalOrder' => (int) ($row['originalOrder'] ?? 0),
-                    'courseTitle' => (string) ($row['courseTitle'] ?? ''),
+                    'title' => (string) ($row['title'] ?? ''),
                     'permalink' => (string) ($row['permalink'] ?? ''),
                     'durationLabel' => (string) ($row['durationLabel'] ?? ''),
                     'investment' => (string) ($row['investment'] ?? ''),

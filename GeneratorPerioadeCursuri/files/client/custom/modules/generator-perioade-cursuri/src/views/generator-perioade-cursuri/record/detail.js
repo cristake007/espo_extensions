@@ -215,12 +215,12 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
             const map = {};
 
             rows.forEach(item => {
-                const key = String(item.sourceRow || item.originalOrder || item.courseTitle || '');
+                const key = String(item.sourceRow || item.originalOrder || item.title || '');
 
                 if (!map[key]) {
                     map[key] = {
                         originalOrder: item.originalOrder || 0,
-                        courseTitle: item.courseTitle || '',
+                        title: item.title || '',
                         durationLabel: item.durationLabel || '',
                         investment: item.investment || '',
                         months: {}
@@ -256,7 +256,7 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri/record/detai
             return [
                 '<tr>',
                 '<td class="text-nowrap" data-sticky-column="0">' + RecordUi.escapeHtml(index + 1) + '</td>',
-                '<td class="text-nowrap" data-sticky-column="1">' + RecordUi.escapeHtml(row.courseTitle) + '</td>',
+                '<td class="text-nowrap" data-sticky-column="1">' + RecordUi.escapeHtml(row.title) + '</td>',
                 '<td class="text-nowrap" data-sticky-column="2">' + RecordUi.escapeHtml(row.durationLabel) + '</td>',
                 '<td class="text-nowrap" data-sticky-column="3">' + RecordUi.escapeHtml(row.investment) + '</td>',
                 months.map(month => '<td class="text-nowrap" data-month-column>' + RecordUi.escapeHtml(row.months[month.value] || '') + '</td>').join(''),

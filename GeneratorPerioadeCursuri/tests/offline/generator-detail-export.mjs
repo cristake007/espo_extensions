@@ -42,6 +42,9 @@ const buttonStates = [];
 const requests = [];
 const openedUrls = [];
 const RecordUi = {
+    escapeHtml(value) {
+        return String(value);
+    },
     setActionButtonState(element, action, disabled, title) {
         buttonStates.push({element, action, disabled, title});
     },
@@ -150,6 +153,47 @@ function plain(value) {
         '?entryPoint=download&id=client-attachment',
         '_blank',
     ]);
+}
+
+{
+    const view = createView({});
+    const courseRows = view.buildCourseRows([
+        {
+            sourceRow: 2,
+            originalOrder: 0,
+            title: 'Măsurarea eficacității unui sistem',
+            durationLabel: '2 zile',
+            investment: '100',
+            month: 1,
+            dateRange: '05-06.01.2026',
+        },
+        {
+            sourceRow: 2,
+            originalOrder: 0,
+            title: 'Măsurarea eficacității unui sistem',
+            durationLabel: '2 zile',
+            investment: '100',
+            month: 2,
+            dateRange: '02-03.02.2026',
+        },
+    ]);
+
+    assert.deepEqual(plain(courseRows), [{
+        originalOrder: 0,
+        title: 'Măsurarea eficacității unui sistem',
+        durationLabel: '2 zile',
+        investment: '100',
+        months: {
+            1: '05-06.01.2026',
+            2: '02-03.02.2026',
+        },
+    }]);
+    assert.equal('courseTitle' in courseRows[0], false, 'preview rows must keep the canonical title key');
+    assert.match(
+        view.composeGeneratedScheduleRow(courseRows[0], [{value: '1'}], 0),
+        /Măsurarea eficacității unui sistem/,
+        'preview rendering must consume the canonical title value'
+    );
 }
 
 console.log('Generator detail XLSX export contracts passed; production AMD view executed.');
