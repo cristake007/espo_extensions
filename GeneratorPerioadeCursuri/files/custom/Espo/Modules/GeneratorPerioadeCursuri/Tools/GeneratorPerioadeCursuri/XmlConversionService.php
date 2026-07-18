@@ -251,6 +251,14 @@ class XmlConversionService
 
     private function translateParserError(string $message): string
     {
+        if (preg_match('/^Duplicate normalized header: (.+)\.$/', $message, $matches)) {
+            return str_replace('{header}', $matches[1], $this->translate('xmlDuplicateHeader'));
+        }
+
+        if (preg_match('/^Source row (\d+) has conflicting values for title and nume curs\.$/', $message, $matches)) {
+            return str_replace('{row}', $matches[1], $this->translate('xmlTitleConflict'));
+        }
+
         if (str_starts_with($message, 'Missing required columns: ')) {
             $columns = substr($message, strlen('Missing required columns: '));
 

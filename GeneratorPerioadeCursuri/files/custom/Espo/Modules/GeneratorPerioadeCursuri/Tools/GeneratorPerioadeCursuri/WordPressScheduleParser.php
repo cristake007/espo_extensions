@@ -18,12 +18,6 @@ class WordPressScheduleParser
     private const MAX_COURSE_ROWS = 5000;
     private const MAX_COLUMNS = 50;
 
-    private const TITLE_HEADERS = [
-        'title',
-        'nume curs',
-        'course name',
-    ];
-
     private const ENGLISH_MONTHS = [
         'january',
         'february',
@@ -211,15 +205,20 @@ class WordPressScheduleParser
 
         foreach ($header as $index => $name) {
             if ($name !== '') {
-                $columns[mb_strtolower($name)] = $index;
+                $columns[CourseTitleHeaderResolver::normalizeHeader($name)] = $index;
             }
         }
 
-        $titleIndex = $this->findTitleIndex($columns);
+        try {
+            $titleResolver = new CourseTitleHeaderResolver($header);
+        } catch (CourseTitleHeaderException $exception) {
+            throw $this->titleHeaderException($exception);
+        }
+
         $permalinkIndex = $columns['permalink'] ?? null;
         $missing = [];
 
-        if ($titleIndex === null) {
+        if (!$titleResolver->hasTitleHeader()) {
             $missing[] = 'Title';
         }
 
@@ -248,7 +247,12 @@ class WordPressScheduleParser
                 throw new LengthException('The input file may contain at most 5000 non-empty course rows.');
             }
 
-            $title = $this->cell($row, $titleIndex);
+            try {
+                $title = $titleResolver->resolveTitle($row, $sourceRow);
+            } catch (CourseTitleHeaderException $exception) {
+                throw $this->titleHeaderException($exception);
+            }
+
             $permalink = $this->cell($row, $permalinkIndex);
             $dates = [];
             $seenDates = [];
@@ -280,18 +284,16 @@ class WordPressScheduleParser
         return $result;
     }
 
-    /**
-     * @param array<string, int> $columns
-     */
-    private function findTitleIndex(array $columns): ?int
+    private function titleHeaderException(CourseTitleHeaderException $exception): InvalidArgumentException
     {
-        foreach (self::TITLE_HEADERS as $header) {
-            if (array_key_exists($header, $columns)) {
-                return $columns[$header];
-            }
+        if ($exception->getReason() === CourseTitleHeaderException::DUPLICATE_HEADER) {
+            return new InvalidArgumentException('Duplicate normalized header: ' . $exception->getHeader() . '.');
         }
 
-        return null;
+        return new InvalidArgumentException(sprintf(
+            'Source row %d has conflicting values for title and nume curs.',
+            (int) $exception->getSourceRow()
+        ));
     }
 
     private function detectCsvDelimiter(string $contents): string

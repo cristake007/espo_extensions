@@ -12,6 +12,7 @@ if (!class_exists(PhpOffice\PhpSpreadsheet\IOFactory::class)) {
     require $root . '/phpspreadsheet-test-double.php';
 }
 
+require $sourceRoot . '/CourseTitleHeaderResolver.php';
 require $sourceRoot . '/WordPressScheduleParser.php';
 require $sourceRoot . '/WordPressProgramMerger.php';
 
@@ -61,6 +62,16 @@ foreach ($preview['cases'] as $case) {
     );
     $assertSame($expected, $actual, 'Schedule fixture must match preview expectations: ' . $case['fixture']);
 }
+
+$canonicalRows = $parser->parse(
+    (string) file_get_contents($root . '/fixtures/schedules/generated-title.csv'),
+    'generated-title.csv'
+);
+$legacyRows = $parser->parse(
+    (string) file_get_contents($root . '/fixtures/schedules/romanian-nume-curs.csv'),
+    'romanian-nume-curs.csv'
+);
+$assertSame($canonicalRows, $legacyRows, 'Generated title and legacy nume curs fixtures must parse identically.');
 
 foreach ([',', ';', '|', "\t", '@'] as $delimiter) {
     $csv = implode($delimiter, [' Title ', ' Permalink ', ' January ']) . "\n" .

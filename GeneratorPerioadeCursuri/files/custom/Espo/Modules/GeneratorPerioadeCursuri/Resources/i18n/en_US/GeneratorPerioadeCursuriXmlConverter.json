@@ -42,6 +42,8 @@
         "xmlXlsxStructureInvalid": "The XLSX file does not have a valid structure.",
         "xmlXlsxUnreadable": "The XLSX file could not be read.",
         "xmlMissingRequiredColumns": "Missing required columns: {columns}.",
+        "xmlDuplicateHeader": "The uploaded schedule contains the duplicate header \"{header}\".",
+        "xmlTitleConflict": "Row {row} contains different values for \"title\" and \"nume curs\".",
         "xmlTooManyColumns": "The input file may contain at most 50 columns.",
         "xmlNoSupportedMonths": "No supported date columns were found. Use Romanian or English month columns, or Luna 1 through Luna 12.",
         "xmlTooManyCourses": "The input file may contain at most 5000 courses.",

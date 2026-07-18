@@ -74,6 +74,8 @@
         "wpUpdaterXlsxStructureInvalid": "Fisierul XLSX nu are o structura valida.",
         "wpUpdaterXlsxUnreadable": "Fisierul XLSX nu a putut fi citit.",
         "wpUpdaterMissingRequiredColumns": "Lipsesc coloanele obligatorii: {columns}.",
+        "wpUpdaterDuplicateHeader": "Planificarea incarcata contine antetul duplicat \"{header}\".",
+        "wpUpdaterTitleConflict": "Randul {row} contine valori diferite pentru \"title\" si \"nume curs\".",
         "wpUpdaterTooManyColumns": "Fisierul poate contine cel mult 50 de coloane.",
         "wpUpdaterTooManyCourses": "Fisierul poate contine cel mult 5000 de randuri de curs care nu sunt complet goale.",
         "wpUpdaterSourceInvalid": "Planificarea incarcata nu a putut fi citita.",

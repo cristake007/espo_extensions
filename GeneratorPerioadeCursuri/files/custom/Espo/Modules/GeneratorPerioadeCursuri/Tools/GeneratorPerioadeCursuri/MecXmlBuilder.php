@@ -22,7 +22,7 @@ class MecXmlBuilder
     }
 
     /**
-     * @param array<int, array{courseTitle: string, dateRange: string, permalink: string, sourceRow?: int, sourceColumn?: int}> $events
+     * @param array<int, array{title: string, dateRange: string, permalink: string, sourceRow?: int, sourceColumn?: int}> $events
      */
     public function build(array $events, int $startPostId = 20000): string
     {
@@ -32,12 +32,12 @@ class MecXmlBuilder
         $courses = [];
 
         foreach ($events as $event) {
-            $courses[$event['courseTitle']][] = $event;
+            $courses[$event['title']][] = $event;
         }
 
         $eventId = ($startPostId ?: 20000) - 1;
 
-        foreach ($courses as $courseTitle => $courseEvents) {
+        foreach ($courses as $title => $courseEvents) {
             foreach ($courseEvents as $periodOffset => $event) {
                 $eventId++;
                 [$startDate, $endDate] = $this->parseDateRange($event['dateRange']);
@@ -46,7 +46,7 @@ class MecXmlBuilder
                 $item = $this->element($document, $root, 'item');
 
                 $this->textElement($document, $item, 'ID', (string) $eventId);
-                $this->textElement($document, $item, 'title', $courseTitle);
+                $this->textElement($document, $item, 'title', $title);
                 $this->element($document, $item, 'content');
 
                 $post = $this->element($document, $item, 'post');
@@ -54,7 +54,7 @@ class MecXmlBuilder
                 $this->textElement($document, $post, 'post_author', '5');
                 $this->textElement($document, $post, 'post_date', $startDate . ' 00:00:00');
                 $this->textElement($document, $post, 'post_date_gmt', $startDate . ' 00:00:00');
-                $this->textElement($document, $post, 'post_title', $courseTitle);
+                $this->textElement($document, $post, 'post_title', $title);
                 $this->textElement($document, $post, 'post_status', 'draft');
 
                 $meta = $this->element($document, $item, 'meta');

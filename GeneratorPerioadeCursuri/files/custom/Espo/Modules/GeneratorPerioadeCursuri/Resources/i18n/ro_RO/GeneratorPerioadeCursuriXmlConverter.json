@@ -42,6 +42,8 @@
         "xmlXlsxStructureInvalid": "Fisierul XLSX nu are o structura valida.",
         "xmlXlsxUnreadable": "Fisierul XLSX nu a putut fi citit.",
         "xmlMissingRequiredColumns": "Lipsesc coloanele obligatorii: {columns}.",
+        "xmlDuplicateHeader": "Planificarea incarcata contine antetul duplicat \"{header}\".",
+        "xmlTitleConflict": "Randul {row} contine valori diferite pentru \"title\" si \"nume curs\".",
         "xmlTooManyColumns": "Fisierul poate contine cel mult 50 de coloane.",
         "xmlNoSupportedMonths": "Nu au fost gasite coloane de data acceptate. Foloseste luni in romana sau engleza ori Luna 1 pana la Luna 12.",
         "xmlTooManyCourses": "Fisierul poate contine cel mult 5000 de cursuri.",

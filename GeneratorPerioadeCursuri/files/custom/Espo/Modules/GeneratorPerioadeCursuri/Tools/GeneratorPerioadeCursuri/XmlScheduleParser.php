@@ -12,12 +12,6 @@ class XmlScheduleParser
     private const MAX_COURSE_ROWS = 5000;
     private const MAX_COLUMNS = 50;
 
-    private const TITLE_HEADERS = [
-        'title',
-        'nume curs',
-        'course name',
-    ];
-
     private const ROMANIAN_MONTHS = [
         'ianuarie',
         'februarie',
@@ -49,7 +43,7 @@ class XmlScheduleParser
     ];
 
     /**
-     * @return array<int, array{courseTitle: string, dateRange: string, permalink: string, sourceRow: int, sourceColumn: int}>
+     * @return array<int, array{title: string, dateRange: string, permalink: string, sourceRow: int, sourceColumn: int}>
      */
     public function parse(string $contents, string $fileName): array
     {
@@ -142,7 +136,7 @@ class XmlScheduleParser
 
     /**
      * @param array<int, array<int, mixed>> $rows
-     * @return array<int, array{courseTitle: string, dateRange: string, permalink: string, sourceRow: int, sourceColumn: int}>
+     * @return array<int, array{title: string, dateRange: string, permalink: string, sourceRow: int, sourceColumn: int}>
      */
     private function parseRows(array $rows): array
     {
@@ -160,14 +154,19 @@ class XmlScheduleParser
 
         foreach ($header as $index => $name) {
             if ($name !== '') {
-                $normalized[mb_strtolower($name)] = $index;
+                $normalized[CourseTitleHeaderResolver::normalizeHeader($name)] = $index;
             }
         }
 
-        $titleIndex = $this->findTitleIndex($normalized);
+        try {
+            $titleResolver = new CourseTitleHeaderResolver($header);
+        } catch (CourseTitleHeaderException $exception) {
+            throw $this->titleHeaderBadRequest($exception);
+        }
+
         $missing = [];
 
-        if ($titleIndex === null) {
+        if (!$titleResolver->hasTitleHeader()) {
             $missing[] = 'Title';
         }
 
@@ -199,7 +198,12 @@ class XmlScheduleParser
 
         foreach (array_slice($rows, 1) as $offset => $row) {
             $sourceRow = $offset + 2;
-            $title = $this->cell($row, $titleIndex);
+
+            try {
+                $title = $titleResolver->resolveTitle($row, $sourceRow);
+            } catch (CourseTitleHeaderException $exception) {
+                throw $this->titleHeaderBadRequest($exception);
+            }
 
             if ($title === '') {
                 continue;
@@ -221,7 +225,7 @@ class XmlScheduleParser
                 }
 
                 $events[] = [
-                    'courseTitle' => $title,
+                    'title' => $title,
                     'dateRange' => $dateRange,
                     'permalink' => $permalink,
                     'sourceRow' => $sourceRow,
@@ -237,18 +241,16 @@ class XmlScheduleParser
         return $events;
     }
 
-    /**
-     * @param array<string, int> $normalized
-     */
-    private function findTitleIndex(array $normalized): ?int
+    private function titleHeaderBadRequest(CourseTitleHeaderException $exception): BadRequest
     {
-        foreach (self::TITLE_HEADERS as $header) {
-            if (array_key_exists($header, $normalized)) {
-                return $normalized[$header];
-            }
+        if ($exception->getReason() === CourseTitleHeaderException::DUPLICATE_HEADER) {
+            return new BadRequest('Duplicate normalized header: ' . $exception->getHeader() . '.');
         }
 
-        return null;
+        return new BadRequest(sprintf(
+            'Source row %d has conflicting values for title and nume curs.',
+            (int) $exception->getSourceRow()
+        ));
     }
 
     private function isMonthHeader(string $header): bool

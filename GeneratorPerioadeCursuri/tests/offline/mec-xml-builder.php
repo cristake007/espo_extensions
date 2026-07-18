@@ -29,10 +29,10 @@ $assertTrue = static function (bool $condition, string $message) use (&$checks, 
     }
 };
 
-$courseTitle = 'Măsurarea eficacității unui sistem Ș Ț ă â î & A < B';
+$title = 'Măsurarea eficacității unui sistem Ș Ț ă â î & A < B';
 $xml = (new MecXmlBuilder())->build([
     [
-        'courseTitle' => $courseTitle,
+        'title' => $title,
         'dateRange' => '5.01.2026',
         'permalink' => 'https://example.test/cursuri/masurare/?a=1&b=2',
     ],
@@ -102,9 +102,9 @@ if ($loaded) {
         $childNames('/events/item[1]/*'),
         'Top-level MEC node order must remain unchanged.'
     );
-    $assertSame($courseTitle, $nodeText('/events/item[1]/title'), 'The title text must round-trip exactly.');
+    $assertSame($title, $nodeText('/events/item[1]/title'), 'The title text must round-trip exactly.');
     $assertSame(
-        $courseTitle,
+        $title,
         $nodeText('/events/item[1]/post/post_title'),
         'The post title text must round-trip exactly.'
     );

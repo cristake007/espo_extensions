@@ -31,6 +31,7 @@ if (!class_exists(PhpOffice\PhpSpreadsheet\IOFactory::class)) {
     require $root . '/phpspreadsheet-test-double.php';
 }
 
+require $sourceRoot . '/CourseTitleHeaderResolver.php';
 require $sourceRoot . '/WordPressScheduleParser.php';
 require $sourceRoot . '/WordPressProgramMerger.php';
 require $sourceRoot . '/WordPressUrlGuard.php';
@@ -220,6 +221,34 @@ $assertSame('wpUpdaterInvalidPermalink', $preview['rows'][2]['error'], 'Missing 
 $assertSame(false, $preview['rows'][2]['canFetch'], 'Missing permalink rows must disable WordPress actions.');
 $assertSame([], $environment['factoryCalls'], 'Preview must not construct a WordPress client.');
 $assertSame(['attachment-1'], $environment['fileStorage']->reads, 'Preview must read only the record-linked attachment.');
+
+$canonicalEnvironment = $makeEnvironment((string) file_get_contents($root . '/fixtures/schedules/generated-title.csv'));
+$legacyEnvironment = $makeEnvironment((string) file_get_contents($root . '/fixtures/schedules/romanian-nume-curs.csv'));
+$assertSame(
+    $canonicalEnvironment['service']->preview('record-1', (object) []),
+    $legacyEnvironment['service']->preview('record-1', (object) []),
+    'Generated title and legacy nume curs files must produce identical WordPress preview payloads.'
+);
+
+$environment = $makeEnvironment(
+    "title,nume curs,Permalink,Ianuarie\nCanonical,Legacy,https://wp.example.test/cursuri/conflict/,13.01.2026\n"
+);
+$exception = $captureException(
+    BadRequest::class,
+    fn () => $environment['service']->preview('record-1', (object) []),
+    'A WordPress preview title conflict must use the localized BadRequest channel.'
+);
+$assertSame('wpUpdaterTitleConflict', $exception?->getMessage(), 'The updater must preserve the title-conflict translation key.');
+
+$environment = $makeEnvironment(
+    "Title, TITLE ,Permalink,Ianuarie\nCourse,Course,https://wp.example.test/cursuri/duplicate/,13.01.2026\n"
+);
+$exception = $captureException(
+    BadRequest::class,
+    fn () => $environment['service']->preview('record-1', (object) []),
+    'A WordPress preview duplicate header must use the localized BadRequest channel.'
+);
+$assertSame('wpUpdaterDuplicateHeader', $exception?->getMessage(), 'The updater must preserve the duplicate-header translation key.');
 
 $environment = $makeEnvironment();
 $environment['clientConfigurations'][] = [

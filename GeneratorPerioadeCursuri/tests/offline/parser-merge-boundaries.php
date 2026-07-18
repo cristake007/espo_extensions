@@ -12,6 +12,7 @@ if (!class_exists(PhpOffice\PhpSpreadsheet\IOFactory::class)) {
     require $testRoot . '/phpspreadsheet-test-double.php';
 }
 
+require_once $sourceRoot . '/CourseTitleHeaderResolver.php';
 require_once $sourceRoot . '/WordPressScheduleParser.php';
 require_once $sourceRoot . '/WordPressProgramMerger.php';
 
@@ -39,6 +40,16 @@ $assertThrows = static function (string $class, callable $callback, string $mess
     }
 };
 
+$captureException = static function (callable $callback): ?Throwable {
+    try {
+        $callback();
+    } catch (Throwable $exception) {
+        return $exception;
+    }
+
+    return null;
+};
+
 $parser = new WordPressScheduleParser();
 $assertThrows(InvalidArgumentException::class, fn () => $parser->parse('', 'empty.csv'), 'An empty file must be rejected.');
 $assertThrows(InvalidArgumentException::class, fn () => $parser->parse("\xFF\xFE", 'bad.csv'), 'Invalid UTF-8 must be rejected.');
@@ -63,6 +74,57 @@ $romanian = $parser->parse(
     'romanian.csv'
 );
 $assertSame(['10.01.2030'], $romanian[0]['excelDates'], 'Duplicate dates across Romanian month columns must be stable-deduplicated.');
+$canonical = $parser->parse(
+    "title|Permalink|Ianuarie|Februarie\nCurs|https://example.test/cursuri/curs/|10.01.2030|10.01.2030\n",
+    'canonical.csv'
+);
+$assertSame($canonical, $romanian, 'Canonical title and legacy nume curs inputs must parse identically.');
+$assertSame(
+    $canonical,
+    $parser->parse(
+        "  \xEF\xBB\xBF TiTlE  | PERMALINK | IANUARIE | FEBRUARIE \nCurs|https://example.test/cursuri/curs/|10.01.2030|10.01.2030\n",
+        'normalized-headers.csv'
+    ),
+    'Header case, surrounding whitespace, and a leading BOM must be ignored.'
+);
+
+$bothColumns = $parser->parse(
+    "title|nume curs|course name|Permalink|Ianuarie\n" .
+    " Curs egal |Curs egal|ignored|https://example.test/cursuri/equal/|10.01.2030\n" .
+    "|Titlu vechi|ignored|https://example.test/cursuri/legacy/|11.01.2030\n" .
+    "Titlu nou||ignored|https://example.test/cursuri/canonical/|12.01.2030\n" .
+    "||Course Name must not override both-empty|https://example.test/cursuri/empty/|13.01.2030\n",
+    'both-columns.csv'
+);
+$assertSame(
+    ['Curs egal', 'Titlu vechi', 'Titlu nou', 'Curs fără titlu'],
+    array_column($bothColumns, 'title'),
+    'WordPress rows must apply equal, legacy fallback, canonical fallback, and consumer-specific both-empty behavior.'
+);
+
+$privateTitle = 'PRIVATE-WP-TITLE';
+$privateLegacyTitle = 'PRIVATE-WP-LEGACY';
+$conflictException = $captureException(fn () => $parser->parse(
+    "title|nume curs|Permalink|Ianuarie\n{$privateTitle}|{$privateLegacyTitle}|https://example.test/cursuri/conflict/|10.01.2030\n",
+    'conflict.csv'
+));
+$assertSame(true, $conflictException instanceof InvalidArgumentException, 'WordPress title conflicts must use the parser validation channel.');
+$assertSame(
+    'Source row 2 has conflicting values for title and nume curs.',
+    $conflictException?->getMessage(),
+    'WordPress title conflicts must identify the row and logical columns without cell values.'
+);
+
+$duplicateException = $captureException(fn () => $parser->parse(
+    "Title| TITLE |Permalink|Ianuarie\nCurs|Curs|https://example.test/cursuri/duplicate/|10.01.2030\n",
+    'duplicate.csv'
+));
+$assertSame(true, $duplicateException instanceof InvalidArgumentException, 'WordPress duplicate headers must use the parser validation channel.');
+$assertSame(
+    'Duplicate normalized header: title.',
+    $duplicateException?->getMessage(),
+    'WordPress duplicate errors must name the logical header.'
+);
 
 foreach ([',', ';', '|', "\t", '@'] as $delimiter) {
     $csv = implode($delimiter, ['Title', 'Permalink', 'January']) . "\n" .

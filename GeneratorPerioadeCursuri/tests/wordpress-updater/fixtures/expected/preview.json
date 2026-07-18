@@ -2,6 +2,13 @@
   "sourceCommit": "ce7caf4196c107625ba8d553523bca79c9f13f8a",
   "cases": [
     {
+      "fixture": "generated-title.csv",
+      "rows": [
+        {"sourceRow": 2, "title": "Protecția datelor", "permalink": "https://wp.example.test/cursuri/protectia-datelor/", "slug": "protectia-datelor", "excelDates": ["08.01.2026", "12-13.02.2026"]},
+        {"sourceRow": 3, "title": "Audit intern", "permalink": "https://wp.example.test/cursuri/audit-intern", "slug": "audit-intern", "excelDates": ["05.03.2026"]}
+      ]
+    },
+    {
       "fixture": "romanian-nume-curs.csv",
       "rows": [
         {"sourceRow": 2, "title": "Protecția datelor", "permalink": "https://wp.example.test/cursuri/protectia-datelor/", "slug": "protectia-datelor", "excelDates": ["08.01.2026", "12-13.02.2026"]},

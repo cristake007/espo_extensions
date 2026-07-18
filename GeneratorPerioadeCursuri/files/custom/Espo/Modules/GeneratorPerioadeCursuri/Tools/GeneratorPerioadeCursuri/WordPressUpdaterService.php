@@ -548,6 +548,14 @@ class WordPressUpdaterService
 
     private function translateParserError(string $message): string
     {
+        if (preg_match('/^Duplicate normalized header: (.+)\.$/', $message, $matches)) {
+            return str_replace('{header}', $matches[1], $this->translate('wpUpdaterDuplicateHeader'));
+        }
+
+        if (preg_match('/^Source row (\d+) has conflicting values for title and nume curs\.$/', $message, $matches)) {
+            return str_replace('{row}', $matches[1], $this->translate('wpUpdaterTitleConflict'));
+        }
+
         if (str_starts_with($message, 'Missing required columns: ')) {
             $columns = rtrim(substr($message, strlen('Missing required columns: ')), '.');
 

@@ -57,6 +57,7 @@ foreach ($assertionRows as $row) {
 $scheduleDirectory = $root . '/fixtures/schedules';
 $previewFixtures = array_column($preview['cases'] ?? [], 'fixture');
 $requiredSchedules = [
+    'generated-title.csv',
     'romanian-nume-curs.csv',
     'django-title-english.csv',
     'bilingual-precedence.csv',

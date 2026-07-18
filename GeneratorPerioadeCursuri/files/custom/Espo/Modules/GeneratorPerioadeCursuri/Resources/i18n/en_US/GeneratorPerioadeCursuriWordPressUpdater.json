@@ -74,6 +74,8 @@
         "wpUpdaterXlsxStructureInvalid": "The XLSX file does not have a valid structure.",
         "wpUpdaterXlsxUnreadable": "The XLSX file could not be read.",
         "wpUpdaterMissingRequiredColumns": "Missing required columns: {columns}.",
+        "wpUpdaterDuplicateHeader": "The uploaded schedule contains the duplicate header \"{header}\".",
+        "wpUpdaterTitleConflict": "Row {row} contains different values for \"title\" and \"nume curs\".",
         "wpUpdaterTooManyColumns": "The input file may contain at most 50 columns.",
         "wpUpdaterTooManyCourses": "The input file may contain at most 5000 non-empty course rows.",
         "wpUpdaterSourceInvalid": "The uploaded schedule could not be read.",
