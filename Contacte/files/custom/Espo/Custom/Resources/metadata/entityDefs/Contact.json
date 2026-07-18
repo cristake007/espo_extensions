@@ -1,9 +1,0 @@
-{
-    "fields": {
-        "tuvtkTestInput": {
-            "type": "varchar",
-            "maxLength": 100,
-            "tooltip": true
-        }
-    }
-}
