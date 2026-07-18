@@ -18,14 +18,14 @@ database.
 From the `projects/espo_extensions` repository root:
 
 ```bash
-bash build.sh --extension ZileSarbatoare --zip 0.9.0 files scripts
+bash build.sh --extension ZileSarbatoare --zip 0.9.1 files scripts
 ```
 
-Upload `dist/zile-sarbatoare-0.9.0.zip` in **Administration > Extensions**, or
+Upload `dist/zile-sarbatoare-0.9.1.zip` in **Administration > Extensions**, or
 install it from the EspoCRM root:
 
 ```bash
-bin/command extension --file="/path/to/zile-sarbatoare-0.9.0.zip"
+bin/command extension --file="/path/to/zile-sarbatoare-0.9.1.zip"
 bin/command rebuild
 bin/command populate-scheduled-jobs
 ```

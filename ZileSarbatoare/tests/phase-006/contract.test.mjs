@@ -6,7 +6,7 @@ const root = resolve(import.meta.dirname, '../..');
 const read = path => readFileSync(resolve(root, path), 'utf8');
 
 const manifest = JSON.parse(read('manifest.json'));
-assert.equal(manifest.version, '0.9.0');
+assert.equal(manifest.version, '0.9.1');
 
 const uninstall = read('scripts/BeforeUninstall.php');
 assert.match(uninstall, /getRDBRepositoryByClass\(ScheduledJob::class\)/);
@@ -22,7 +22,7 @@ assert.deepEqual(Object.keys(jobs), ['SyncZileSarbatoare']);
 assert.equal(jobs.SyncZileSarbatoare.isDefault, true);
 
 const readme = read('README.md');
-assert.match(readme, /build\.sh --extension ZileSarbatoare --zip 0\.9\.0 files scripts/);
+assert.match(readme, /build\.sh --extension ZileSarbatoare --zip 0\.9\.1 files scripts/);
 assert.match(readme, /bin\/command rebuild/);
 assert.match(readme, /populate-scheduled-jobs/);
 assert.match(readme, /cron or daemon/i);
