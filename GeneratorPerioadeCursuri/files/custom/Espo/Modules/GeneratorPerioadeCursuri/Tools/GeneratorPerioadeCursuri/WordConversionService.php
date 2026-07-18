@@ -226,13 +226,17 @@ class WordConversionService
 
         foreach ($header as $index => $name) {
             if ($name !== '') {
-                $normalized[$this->normalizeHeader($name)] = $index;
+                $normalized[CourseTitleHeaderResolver::normalizeHeader($name)] = $index;
             }
         }
 
-        $titleIndex = $normalized['nume curs'] ?? $normalized['course name'] ?? $normalized['title'] ?? null;
+        try {
+            $titleResolver = new CourseTitleHeaderResolver($header);
+        } catch (CourseTitleHeaderException $e) {
+            throw $this->titleHeaderBadRequest($e);
+        }
 
-        if ($titleIndex === null) {
+        if (!$titleResolver->hasTitleHeader()) {
             throw new BadRequest('Exportul XLSX trebuie sa contina coloana cu numele cursului.');
         }
 
@@ -249,7 +253,11 @@ class WordConversionService
                 throw new BadRequest('Exportul XLSX poate contine cel mult 5000 cursuri.');
             }
 
-            $title = $this->cellText($row[$titleIndex] ?? '');
+            try {
+                $title = $titleResolver->resolveTitle($row, $offset + 2);
+            } catch (CourseTitleHeaderException $e) {
+                throw $this->titleHeaderBadRequest($e);
+            }
 
             if ($title === '') {
                 continue;
@@ -1056,9 +1064,19 @@ class WordConversionService
         return true;
     }
 
-    private function normalizeHeader(string $value): string
+    private function titleHeaderBadRequest(CourseTitleHeaderException $exception): BadRequest
     {
-        return mb_strtolower(trim($value));
+        if ($exception->getReason() === CourseTitleHeaderException::DUPLICATE_HEADER) {
+            return new BadRequest(sprintf(
+                'Exportul XLSX contine antetul duplicat "%s".',
+                (string) $exception->getHeader()
+            ));
+        }
+
+        return new BadRequest(sprintf(
+            'Randul %d din exportul XLSX contine valori diferite pentru coloanele "title" si "nume curs".',
+            (int) $exception->getSourceRow()
+        ));
     }
 
     private function normalizeTitle(string $value): string

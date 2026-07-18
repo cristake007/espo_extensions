@@ -94,6 +94,17 @@ class Spreadsheet
         return $this->worksheets[0];
     }
 
+    public function getSheetByName(string $title): ?Worksheet
+    {
+        foreach ($this->worksheets as $worksheet) {
+            if ($worksheet->getTitle() === $title) {
+                return $worksheet;
+            }
+        }
+
+        return null;
+    }
+
     public function createSheet(): Worksheet
     {
         $worksheet = new Worksheet();
