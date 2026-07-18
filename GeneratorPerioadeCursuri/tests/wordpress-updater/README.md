@@ -120,12 +120,12 @@ php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-5.php
 This is a static client contract check. It does not open a browser or contact
 WordPress; interactive browser acceptance remains part of Phase 6 staging.
 
-After building version 2.3.2, verify the installable archive inventory and
+After building version 2.6.0, verify the installable archive inventory and
 release metadata:
 
 ```bash
 php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-6.php \
-    dist/generator-perioade-cursuri-2.3.2.zip
+    dist/generator-perioade-cursuri-2.6.0.zip
 ```
 
 This check validates the release artifact but does not install it. EspoCRM
