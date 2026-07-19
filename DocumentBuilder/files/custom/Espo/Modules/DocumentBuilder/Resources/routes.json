@@ -23,5 +23,10 @@
         "route": "/DocumentBuilder/template/:id/draft-from-version",
         "method": "post",
         "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PostTemplateDraftFromVersion"
+    },
+    {
+        "route": "/DocumentBuilder/entity-catalogue",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\GetEntityCatalogue"
     }
 ]

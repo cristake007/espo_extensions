@@ -20,9 +20,13 @@ define([], () => {
             this.ajax = ajax;
         }
 
-        save(templateId, layout, expectedRevision) {
+        save(templateId, layout, expectedRevision, confirmSourceChange = false) {
             if (!templateId || !Number.isInteger(expectedRevision) || expectedRevision < 0) {
                 throw new TypeError('Draft save identifiers are invalid.');
+            }
+
+            if (typeof confirmSourceChange !== 'boolean') {
+                throw new TypeError('Source-change confirmation must be boolean.');
             }
 
             return this.ajax.putRequest(
@@ -30,7 +34,7 @@ define([], () => {
                 {
                     layout: JSON.stringify(layout),
                     expectedRevision,
-                    confirmSourceChange: false,
+                    confirmSourceChange,
                     changeNote: null,
                 },
             );

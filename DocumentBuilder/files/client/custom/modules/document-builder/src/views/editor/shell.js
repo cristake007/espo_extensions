@@ -19,6 +19,8 @@ define([
     'document-builder:editor/commands/move-flow-node',
     'document-builder:editor/commands/remove-flow-node',
     'document-builder:editor/commands/update-node',
+    'document-builder:editor/commands/update-data-source',
+    'document-builder:services/entity-catalogue-api',
 ], (
     View,
     EditorState,
@@ -40,6 +42,8 @@ define([
     MoveFlowNodeCommand,
     RemoveFlowNodeCommand,
     UpdateNodeCommand,
+    UpdateDataSourceCommand,
+    EntityCatalogueApi,
 ) => {
     return class extends View {
         template = 'document-builder:editor/shell'
@@ -55,6 +59,8 @@ define([
             'click [data-action="fitWidth"]': 'actionFitWidth',
             'click [data-action="fitPage"]': 'actionFitPage',
             'change [data-page-setting]': 'changePageSetting',
+            'change [data-source-setting]': 'changeSourceSetting',
+            'click [data-action="retryEntityCatalogue"]': 'actionRetryEntityCatalogue',
             'click [data-action="addFlowSection"]': 'actionAddFlowSection',
             'click [data-action="addFlowContainer"]': 'actionAddFlowContainer',
             'click [data-action="addHeading"]': 'actionAddContent',
@@ -119,6 +125,11 @@ define([
                 pageGeometry: this.pageGeometry,
             });
             this.editorValidator = new EditorValidator(this.customPageSizes, this.flowLimits);
+            this.entityCatalogueApi = new EntityCatalogueApi();
+            this.entityCatalogue = [];
+            this.entityCatalogueStatus = 'loading';
+            this.maxRelationshipDepth = config.maxRelationshipDepth ||
+                metadataDefaults.maxRelationshipDepth || 2;
             this.pendingFocusNodeId = null;
             this.zoom = 100;
 
@@ -129,6 +140,7 @@ define([
             const pageSettings = this.getPageSettingsData();
             const flow = this.getFlowData();
             const validation = this.getValidationData();
+            const source = this.getSourceData();
 
             return {
                 isLoading: this.state === 'loading',
@@ -154,6 +166,7 @@ define([
                 ...pageSettings,
                 ...flow,
                 ...validation,
+                ...source,
             };
         }
 
@@ -257,6 +270,50 @@ define([
                 validationWarningCount: result.warningCount,
                 validationBlocking: result.blocking,
                 hasValidationIssues: result.issues.length > 0,
+            };
+        }
+
+        getSourceData() {
+            if (!this.editorState) {
+                return {
+                    sourceOptions: [],
+                    sourceCatalogueLoading: true,
+                    sourceCatalogueError: false,
+                };
+            }
+
+            const source = this.editorState.getLayout().dataSource;
+            const selectedType = source.type === 'entity' ? source.entityType : '';
+            const options = this.entityCatalogue.map(item => ({
+                ...item,
+                selected: item.entityType === selectedType,
+            }));
+
+            if (selectedType && !options.some(item => item.entityType === selectedType)) {
+                options.unshift({
+                    entityType: selectedType,
+                    label: this.translate(
+                        'editorUnavailableEntitySource',
+                        'messages',
+                        'DocumentBuilderTemplate',
+                    ),
+                    custom: false,
+                    selected: true,
+                });
+            }
+
+            options.unshift({
+                entityType: '',
+                label: this.translate('No Source', 'labels', 'DocumentBuilderTemplate'),
+                custom: false,
+                selected: selectedType === '',
+            });
+
+            return {
+                sourceOptions: options,
+                sourceCatalogueLoading: this.entityCatalogueStatus === 'loading',
+                sourceCatalogueError: this.entityCatalogueStatus === 'error',
+                sourceCatalogueReady: this.entityCatalogueStatus === 'ready',
             };
         }
 
@@ -368,6 +425,7 @@ define([
                     templateId: this.model.id,
                     revision: this.model.get('revision'),
                 });
+                await this.loadEntityCatalogue();
                 this.state = 'ready';
                 this.shouldFocusEntry = true;
                 this.syncDirtyGuard();
@@ -408,6 +466,24 @@ define([
             this.state = 'loading';
             this.errorMessage = null;
             this.reRender().then(() => this.loadModel());
+        }
+
+        async loadEntityCatalogue() {
+            this.entityCatalogueStatus = 'loading';
+
+            try {
+                this.entityCatalogue = await this.entityCatalogueApi.get();
+                this.entityCatalogueStatus = 'ready';
+            } catch (xhr) {
+                if (xhr) xhr.errorIsHandled = true;
+                this.entityCatalogue = [];
+                this.entityCatalogueStatus = 'error';
+            }
+        }
+
+        async actionRetryEntityCatalogue() {
+            await this.loadEntityCatalogue();
+            await this.reRender();
         }
 
         actionBackToTemplate() {
@@ -841,6 +917,40 @@ define([
 
             targets[path]();
             this.executeCommand(new UpdateDocumentCommand(document));
+        }
+
+        async changeSourceSetting(event) {
+            if (!this.editorState || this.isSaveBusy()) return;
+            const entityType = event.currentTarget.value;
+            const current = this.editorState.getLayout().dataSource;
+            const next = entityType ? {
+                type: 'entity',
+                entityType,
+                relationshipDepth: this.maxRelationshipDepth,
+            } : {type: 'none'};
+
+            if (JSON.stringify(current) === JSON.stringify(next)) return;
+            const allowed = entityType === '' ||
+                this.entityCatalogue.some(item => item.entityType === entityType);
+
+            if (!allowed) {
+                await this.reRender();
+
+                return;
+            }
+
+            await this.confirm({
+                message: this.translate(
+                    'confirmEntitySourceChange',
+                    'messages',
+                    'DocumentBuilderTemplate',
+                ),
+                confirmText: this.translate('Change Source', 'actions', 'DocumentBuilderTemplate'),
+            });
+
+            if (this.executeCommand(new UpdateDataSourceCommand(next))) {
+                this.saveCoordinator.confirmSourceChange();
+            }
         }
 
         actionZoomIn() {

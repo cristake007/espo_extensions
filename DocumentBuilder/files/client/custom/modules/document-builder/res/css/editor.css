@@ -104,6 +104,16 @@
     margin-top: 24px;
 }
 
+.document-builder-editor__source-selector .alert {
+    margin-bottom: 0;
+    padding: 8px;
+}
+
+.document-builder-editor__source-selector .help-block {
+    margin-bottom: 0;
+    font-size: 11px;
+}
+
 .document-builder-editor__library-item {
     display: flex;
     width: 100%;

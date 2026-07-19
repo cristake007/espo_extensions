@@ -15,6 +15,7 @@ namespace {
     use DocumentBuilder\Tests\Support\Assert;
     use DocumentBuilder\Tests\Support\FixtureLoader;
     use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\Settings;
+    use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EntitySourceEligibility;
     use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\DraftRecordAccess;
     use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\DraftSaveRequest;
     use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\DraftSaveService;
@@ -44,6 +45,7 @@ namespace {
     $layoutRoot = "$moduleRoot/Tools/DocumentBuilder/Layout";
 
     require "$moduleRoot/Tools/DocumentBuilder/Config/Settings.php";
+    require "$moduleRoot/Tools/DocumentBuilder/DataSource/EntityCatalogue/EntitySourceEligibility.php";
 
     foreach ([
         'SchemaVersion.php', 'StableId.php', 'Unit.php', 'Measurement.php', 'NestingDepth.php',
@@ -146,6 +148,11 @@ namespace {
         public function analyze(array $currentLayout, array $nextLayout): array { return $this->references; }
     }
 
+    final class Phase12EntitySourceEligibility implements EntitySourceEligibility
+    {
+        public function requireEligible(string $entityType): void {}
+    }
+
     $default = (new FixtureLoader($extensionRoot . '/tests/fixtures'))->json('layout/phase-08-default.json');
     $entity = new Phase12Entity([
         'status' => 'Draft',
@@ -156,7 +163,14 @@ namespace {
     $store = new Phase12Store($entity);
     $access = new Phase12Access();
     $impactAnalyzer = new Phase12ImpactAnalyzer();
-    $service = new DraftSaveService($store, $access, $provider, $impactAnalyzer, new CanonicalSerializer());
+    $service = new DraftSaveService(
+        $store,
+        $access,
+        $provider,
+        $impactAnalyzer,
+        new Phase12EntitySourceEligibility(),
+        new CanonicalSerializer(),
+    );
 
     $first = $service->save('template-1', new DraftSaveRequest('{"schemaVersion":1,"document":{}}', 0, changeNote: ' First save '));
     Assert::same(1, $first->revision, 'First draft save must increment revision to one.');

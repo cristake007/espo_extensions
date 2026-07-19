@@ -14,6 +14,16 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\LayoutProcessorProv
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\NoopSourceReferenceImpactAnalyzer;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\OrmDraftTemplateStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\SourceReferenceImpactAnalyzer;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\AclEntityCatalogueAccess;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\ConfiguredEntitySourcePolicy;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EntityCatalogueAccess;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EntityCatalogueMetadata;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EntityLabelProvider;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EntitySourcePolicy;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EntitySourceEligibility;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EntityCatalogueService;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EspoEntityCatalogueMetadata;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\LanguageEntityLabelProvider;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\AclTemplateLifecycleAccess;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\OrmTemplateLifecycleStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\TemplateLifecycleAccess;
@@ -62,6 +72,11 @@ final class Binding implements BindingProcessor
             ->bindImplementation(
                 TemplateLifecycleAccess::class,
                 AclTemplateLifecycleAccess::class,
-            );
+            )
+            ->bindImplementation(EntityCatalogueMetadata::class, EspoEntityCatalogueMetadata::class)
+            ->bindImplementation(EntityCatalogueAccess::class, AclEntityCatalogueAccess::class)
+            ->bindImplementation(EntitySourcePolicy::class, ConfiguredEntitySourcePolicy::class)
+            ->bindImplementation(EntitySourceEligibility::class, EntityCatalogueService::class)
+            ->bindImplementation(EntityLabelProvider::class, LanguageEntityLabelProvider::class);
     }
 }

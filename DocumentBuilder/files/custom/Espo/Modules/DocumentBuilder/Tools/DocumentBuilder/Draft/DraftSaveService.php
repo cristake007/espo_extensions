@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft;
 
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EntitySourceEligibility;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\CanonicalSerializer;
 use Espo\ORM\Entity;
 use InvalidArgumentException;
@@ -16,6 +17,7 @@ final readonly class DraftSaveService
         private DraftRecordAccess $access,
         private LayoutProcessorProvider $processorProvider,
         private SourceReferenceImpactAnalyzer $impactAnalyzer,
+        private EntitySourceEligibility $entitySourceEligibility,
         private CanonicalSerializer $serializer,
     ) {}
 
@@ -50,6 +52,10 @@ final readonly class DraftSaveService
 
             if ($nextSource['type'] === 'spreadsheet') {
                 $this->access->requireSpreadsheetSource();
+            }
+
+            if ($nextSource['type'] === 'entity') {
+                $this->entitySourceEligibility->requireEligible($nextSource['entityType']);
             }
 
             $sourceChanged = $this->serializer->serialize($previousSource) !==

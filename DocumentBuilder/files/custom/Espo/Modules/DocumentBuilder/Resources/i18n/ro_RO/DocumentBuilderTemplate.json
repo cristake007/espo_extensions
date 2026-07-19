@@ -85,7 +85,11 @@
         "Element": "Element",
         "Approximate Page": "Pagină aproximativă",
         "Approximate Pages": "Pagini aproximative",
-        "editorEmptyContentLabel": "Exemplu pentru conținut gol"
+        "editorEmptyContentLabel": "Exemplu pentru conținut gol",
+        "Data Source": "Sursă de date",
+        "Entity Source": "Entitate sursă",
+        "No Source": "Fără sursă",
+        "Custom": "Personalizată"
     },
     "actions": {
         "Open Editor": "Deschide editorul",
@@ -103,7 +107,8 @@
         "Fit Width": "Potrivește la lățime",
         "Fit Page": "Potrivește pagina",
         "Move Up": "Mută în sus",
-        "Move Down": "Mută în jos"
+        "Move Down": "Mută în jos",
+        "Change Source": "Schimbă sursa"
     },
     "messages": {
         "Page Break Help": "Conținutul de după acest marcaj începe pe o pagină nouă.",
@@ -144,6 +149,11 @@
         "editorValidationEmptyContent": "Acest element nu are conținut; textul exemplu apare numai în editor.",
         "editorValidationBlocksSave": "Rezolvați toate erorile înainte de salvare.",
         "confirmRemoveComplexNode": "Eliminați această structură și toate elementele din interior? Acțiunea poate fi anulată din bara editorului.",
+        "editorEntityCatalogueLoading": "Se încarcă entitățile disponibile…",
+        "editorEntityCatalogueFailed": "Entitățile disponibile nu au putut fi încărcate.",
+        "editorEntitySourceHelp": "Sunt afișate numai entitățile permise de configurare și de accesul curent la citire.",
+        "editorUnavailableEntitySource": "Entitate sursă indisponibilă",
+        "confirmEntitySourceChange": "Schimbați sursa de date a șablonului? Referințele dependente de sursa existentă pot deveni indisponibile.",
         "confirmDuplicate": "Creați o copie nouă în starea Schiță? Versiunile publicate și istoricul generării nu vor fi copiate.",
         "confirmArchive": "Arhivați acest șablon? Generarea nouă va fi dezactivată, iar istoricul existent va fi păstrat.",
         "confirmDraftFromVersion": "Înlocuiți conținutul schiței cu versiunea publicată imuabilă selectată?",

@@ -10,6 +10,7 @@ define([], () => {
             this.errorMessage = null;
             this.conflict = null;
             this.inFlight = false;
+            this.sourceChangeConfirmed = false;
         }
 
         async save() {
@@ -49,6 +50,7 @@ define([], () => {
                     this.templateId,
                     layout,
                     expectedRevision,
+                    this.sourceChangeConfirmed,
                 );
 
                 if (
@@ -75,6 +77,7 @@ define([], () => {
 
                 this.revision = result.revision;
                 this.status = 'saved';
+                this.sourceChangeConfirmed = false;
 
                 return {status: 'saved', result};
             } catch (error) {
@@ -107,6 +110,7 @@ define([], () => {
             this.status = 'idle';
             this.errorMessage = null;
             this.conflict = null;
+            this.sourceChangeConfirmed = false;
         }
 
         beginReload() {
@@ -130,6 +134,10 @@ define([], () => {
                 this.status = 'idle';
                 this.errorMessage = null;
             }
+        }
+
+        confirmSourceChange() {
+            this.sourceChangeConfirmed = true;
         }
 
         isSaving() {

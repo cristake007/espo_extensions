@@ -85,7 +85,11 @@
         "Element": "Element",
         "Approximate Page": "Approximate page",
         "Approximate Pages": "Approximate pages",
-        "editorEmptyContentLabel": "Empty content sample"
+        "editorEmptyContentLabel": "Empty content sample",
+        "Data Source": "Data Source",
+        "Entity Source": "Entity Source",
+        "No Source": "No Source",
+        "Custom": "Custom"
     },
     "actions": {
         "Open Editor": "Open Editor",
@@ -103,7 +107,8 @@
         "Fit Width": "Fit Width",
         "Fit Page": "Fit Page",
         "Move Up": "Move Up",
-        "Move Down": "Move Down"
+        "Move Down": "Move Down",
+        "Change Source": "Change Source"
     },
     "messages": {
         "Page Break Help": "Content after this marker starts on a new page.",
@@ -144,6 +149,11 @@
         "editorValidationEmptyContent": "This content element is empty; sample text is shown only in the editor.",
         "editorValidationBlocksSave": "Resolve all errors before saving.",
         "confirmRemoveComplexNode": "Remove this structure and every element inside it? This action can be undone from the editor toolbar.",
+        "editorEntityCatalogueLoading": "Loading available entities…",
+        "editorEntityCatalogueFailed": "Available entities could not be loaded.",
+        "editorEntitySourceHelp": "Only entities allowed by configuration and your current read access are listed.",
+        "editorUnavailableEntitySource": "Unavailable entity source",
+        "confirmEntitySourceChange": "Change the template data source? Existing source-dependent references may become unavailable.",
         "confirmDuplicate": "Create a new draft copy of this template? Published versions and generation history will not be copied.",
         "confirmArchive": "Archive this template? New generation will be disabled and existing history will be preserved.",
         "confirmDraftFromVersion": "Replace the current draft content with the selected immutable published version?",

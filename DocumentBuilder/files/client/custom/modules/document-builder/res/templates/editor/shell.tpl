@@ -85,6 +85,27 @@
 
         <main class="document-builder-editor__workspace">
             <aside class="document-builder-editor__left" aria-label="{{translate 'editorLibrary' category='labels' scope='DocumentBuilderTemplate'}}">
+                <section class="document-builder-editor__panel document-builder-editor__source-selector">
+                    <h3>{{translate 'Data Source' category='labels' scope='DocumentBuilderTemplate'}}</h3>
+                    {{#if sourceCatalogueLoading}}
+                    <p role="status"><span class="fas fa-spinner fa-spin" aria-hidden="true"></span> {{translate 'editorEntityCatalogueLoading' category='messages' scope='DocumentBuilderTemplate'}}</p>
+                    {{/if}}
+                    {{#if sourceCatalogueError}}
+                    <div class="alert alert-warning" role="alert">
+                        <p>{{translate 'editorEntityCatalogueFailed' category='messages' scope='DocumentBuilderTemplate'}}</p>
+                        <button type="button" class="btn btn-default btn-xs" data-action="retryEntityCatalogue">{{translate 'Retry'}}</button>
+                    </div>
+                    {{/if}}
+                    {{#if sourceCatalogueReady}}
+                    <label class="sr-only" for="document-builder-entity-source">{{translate 'Entity Source' category='labels' scope='DocumentBuilderTemplate'}}</label>
+                    <select id="document-builder-entity-source" class="form-control input-sm" data-source-setting="entityType" aria-describedby="document-builder-source-help">
+                        {{#each sourceOptions}}
+                        <option value="{{entityType}}" {{#if selected}}selected{{/if}}>{{label}}{{#if custom}} · {{translate 'Custom' category='labels' scope='DocumentBuilderTemplate'}}{{/if}}</option>
+                        {{/each}}
+                    </select>
+                    <p id="document-builder-source-help" class="help-block">{{translate 'editorEntitySourceHelp' category='messages' scope='DocumentBuilderTemplate'}}</p>
+                    {{/if}}
+                </section>
                 <section class="document-builder-editor__panel">
                     <h3>{{translate 'Elements' category='labels' scope='DocumentBuilderTemplate'}}</h3>
                     <button type="button" class="document-builder-editor__library-item" data-action="addFlowSection" data-library-type="flow-section" draggable="true">
