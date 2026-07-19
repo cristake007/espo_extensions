@@ -105,6 +105,7 @@ define([
             'click [data-action="addPageBreak"]': 'actionAddContent',
             'click [data-action="addVariable"]': 'actionAddVariable',
             'click [data-action="selectFlowNode"]': 'actionSelectFlowNode',
+            'click [data-action="selectCanvas"]': 'actionSelectCanvas',
             'keydown [data-action="selectFlowNode"]': 'handleNodeKeydown',
             'click [data-action="selectBreadcrumb"]': 'actionSelectFlowNode',
             'click [data-action="focusValidationIssue"]': 'actionFocusValidationIssue',
@@ -263,6 +264,12 @@ define([
                 standaloneVariableLabel: this.standaloneVariableDraft?.label || '',
                 rightTabElements: this.rightSidebarTab === 'elements',
                 rightTabProperties: this.rightSidebarTab === 'properties',
+                canvasSelected: Boolean(
+                    this.editorState &&
+                    !this.canvasPreviewOpen &&
+                    !this.editorState.getSelectedId() &&
+                    this.rightSidebarTab === 'properties'
+                ),
                 ...pageSettings,
                 ...flow,
                 ...validation,
@@ -1379,7 +1386,27 @@ define([
             event.stopPropagation();
             if (event.target.closest?.('[data-wysiwyg-mount]') &&
                 this.editorState?.getSelectedId() === event.currentTarget.dataset.nodeId) return;
-            if (this.selectNode(event.currentTarget.dataset.nodeId)) this.reRender();
+            const selectionChanged = this.selectNode(event.currentTarget.dataset.nodeId);
+            const tabChanged = this.rightSidebarTab !== 'properties';
+
+            this.rightSidebarTab = 'properties';
+            if (selectionChanged || tabChanged) {
+                this.rememberCanvasScroll();
+                this.reRender();
+            }
+        }
+
+        actionSelectCanvas(event) {
+            if (this.canvasPreviewOpen || !this.editorState ||
+                event.target.closest?.('.document-builder-editor__flow-node')) return;
+            const selectionChanged = this.selectNode(null);
+            const tabChanged = this.rightSidebarTab !== 'properties';
+
+            this.rightSidebarTab = 'properties';
+            if (selectionChanged || tabChanged) {
+                this.rememberCanvasScroll();
+                this.reRender();
+            }
         }
 
         actionEditFlowNode(event) {

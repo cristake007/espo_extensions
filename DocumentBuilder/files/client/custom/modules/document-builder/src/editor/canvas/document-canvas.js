@@ -43,6 +43,7 @@ define(['document-builder:editor/content/rich-text'], RichText => {
             element.style.cssText = node.flowStyle || '';
             element.dataset.nodeId = node.id;
             element.dataset.page = String(node.pageNumber || 1);
+            element.dataset.flowDepth = String(node.depth || 0);
             element.draggable = !preview && !node.isHeading && !node.isStaticText && !node.isParagraph;
             element.tabIndex = preview ? -1 : 0;
             if (!preview) {

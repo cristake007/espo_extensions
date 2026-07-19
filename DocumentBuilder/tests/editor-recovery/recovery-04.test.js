@@ -41,10 +41,15 @@ assert.match(right, /selectedFlowNode\.variablePresentation/);
 
 assert.match(shell, /rightTabElements:\s*this\.rightSidebarTab === 'elements'/);
 assert.match(shell, /rightTabProperties:\s*this\.rightSidebarTab === 'properties'/);
+assert.match(shell, /'click \[data-action="selectCanvas"\]':\s*'actionSelectCanvas'/);
+assert.match(shell, /actionSelectCanvas[\s\S]*selectNode\(null\)[\s\S]*rightSidebarTab = 'properties'/);
 assert.match(shell, /actionEditFlowNode[\s\S]*rightSidebarTab = 'properties'/);
 assert.match(shell, /kind:\s*'variable'[\s\S]*presentation:\s*this\.variablePresentationDraft/);
 assert.match(shell, /new AddFlowNodeCommand\(this\.flowStructure, type, target, options\)/);
 assert.match(css, /variable-copy[\s\S]*text-overflow:\s*ellipsis/);
 assert.match(css, /sidebar-tabs[\s\S]*grid-template-columns:\s*1fr 1fr/);
+assert.match(css, /flow-node\.is-container-node\[data-flow-depth="2"\]/);
+assert.match(template, /canvas-scroll" data-action="selectCanvas"/);
+assert.match(template, /document-builder-editor__page \{\{#if canvasSelected\}\}is-selected/);
 
 console.log('Editor recovery 04 sidebar contract tests passed.');

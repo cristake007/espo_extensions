@@ -136,6 +136,7 @@ define([
                     region,
                     parentId,
                     index,
+                    depth,
                     selected: node.id === selectedId,
                     label: LABELS[node.type],
                     pageNumber,

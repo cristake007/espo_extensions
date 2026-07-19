@@ -52,15 +52,15 @@ const documentRef = {
 const DocumentCanvas = load('document-builder:editor/canvas/document-canvas');
 const host = new Element('div', documentRef);
 const base = {
-    region: 'sections', pageNumber: 1, flowStyle: '', selected: false,
+    region: 'sections', pageNumber: 1, flowStyle: '', selected: false, depth: 0,
     label: 'Container', children: [],
 };
 const tree = [{
     ...base, id: 'section', type: 'flow-section', isSection: true, isContainer: false,
     children: [{
-        ...base, id: 'container', type: 'flow-container', isSection: false, isContainer: true,
+        ...base, id: 'container', type: 'flow-container', isSection: false, isContainer: true, depth: 1,
         children: [{
-            ...base, id: 'heading', type: 'heading', label: 'Heading', isHeading: true,
+            ...base, id: 'heading', type: 'heading', label: 'Heading', isHeading: true, depth: 2,
             content: [{type: 'text', text: 'Nested title', marks: []}],
         }],
     }],
@@ -72,7 +72,10 @@ const heading = container.children.find(item => item.dataset?.nodeId === 'headin
 assert.equal(section.tag, 'section');
 assert.equal(container.tag, 'div');
 assert.equal(heading.tag, 'h2');
-assert.equal(heading.children[0].dataset.richEditor, '');
+assert.equal(section.dataset.flowDepth, '0');
+assert.equal(container.dataset.flowDepth, '1');
+assert.equal(heading.dataset.flowDepth, '2');
+assert.equal(heading.children[0].className, 'document-builder-editor__rich-editor');
 assert.equal(heading.children[0].children[0].text, 'Nested title');
 assert.equal(section.attributes['aria-keyshortcuts'], 'ArrowUp ArrowDown Home End');
 assert.equal(host.children.filter(item => item.dataset?.flowDrop).length, 2);

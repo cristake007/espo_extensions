@@ -208,8 +208,8 @@
                     <button type="button" class="btn btn-default btn-sm" data-action="fitPage">{{translate 'Fit Page' category='actions' scope='DocumentBuilderTemplate'}}</button>
                 </div>
                 {{/unless}}
-                <div class="document-builder-editor__canvas-scroll">
-                    <div class="document-builder-editor__page" style="{{pageFrameStyle}}">
+                <div class="document-builder-editor__canvas-scroll" data-action="selectCanvas">
+                    <div class="document-builder-editor__page {{#if canvasSelected}}is-selected{{/if}}" style="{{pageFrameStyle}}">
                         {{#with pageChromeHeader}}
                         {{#if renderOnCanvas}}<div class="document-builder-editor__page-chrome document-builder-editor__page-chrome--header {{#unless visibleOnCanvas}}is-first-page-hidden{{/unless}}" style="{{style}}">
                             {{#if visibleOnCanvas}}<span>{{text}}</span>{{#if includePageNumber}}<span> · 1</span>{{/if}}{{else}}<span>{{translate 'Hidden on First Page' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
