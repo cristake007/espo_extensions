@@ -1,14 +1,42 @@
 {
     "labels": {
-        "Create DocumentBuilderTemplate": "Create Document Builder Template"
+        "Create DocumentBuilderTemplate": "Create Document Builder Template",
+        "Open Editor": "Open Editor",
+        "editorUnavailable": "Editor unavailable",
+        "editorToolbar": "Document editor toolbar",
+        "editorActions": "Document editor actions",
+        "editorLibrary": "Element and variable library",
+        "Elements": "Elements",
+        "Variables": "Variables",
+        "Canvas": "Document canvas",
+        "Inspector": "Inspector",
+        "Revision": "Revision"
     },
     "actions": {
+        "Open Editor": "Open Editor",
+        "Back": "Back to template",
+        "Undo": "Undo",
+        "Redo": "Redo",
+        "Preview": "Preview",
+        "Publish": "Publish",
         "Duplicate": "Duplicate",
         "Archive": "Archive",
         "Create Draft from Version": "Create Draft from Published Version",
         "View Versions": "View Versions"
     },
     "messages": {
+        "editorLoading": "Loading the draft editor…",
+        "editorAccessDenied": "You do not have permission to edit this template.",
+        "editorDraftOnly": "Only draft templates can be opened in the editor.",
+        "editorNotFound": "The template was not found or is no longer available.",
+        "editorLoadFailed": "The editor could not load the template. Try again.",
+        "editorElementsPlaceholder": "Element controls will be added in the next editor phase.",
+        "editorVariablesPlaceholder": "Variable browsing is not available yet.",
+        "editorEmptyCanvas": "This draft is ready for visual editing",
+        "editorMechanicsPending": "Canvas editing mechanics are introduced in the following phases.",
+        "editorInspectorPlaceholder": "Select an element to inspect its properties.",
+        "editorUnsavedChanges": "Unsaved changes",
+        "editorReady": "Editor ready",
         "confirmDuplicate": "Create a new draft copy of this template? Published versions and generation history will not be copied.",
         "confirmArchive": "Archive this template? New generation will be disabled and existing history will be preserved.",
         "confirmDraftFromVersion": "Replace the current draft content with the selected immutable published version?",

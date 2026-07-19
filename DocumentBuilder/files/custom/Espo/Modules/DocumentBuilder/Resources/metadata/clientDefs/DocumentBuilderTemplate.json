@@ -1,11 +1,21 @@
 {
-    "controller": "controllers/record",
+    "controller": "document-builder:controllers/document-builder-template",
     "boolFilterList": ["onlyMy"],
     "iconClass": "fas fa-file-alt",
     "kanbanViewMode": false,
     "color": "#3c6e91",
     "detailActionList": [
         "__APPEND__",
+        {
+            "name": "openEditor",
+            "label": "Open Editor",
+            "handler": "document-builder:handlers/template-lifecycle",
+            "actionFunction": "openEditor",
+            "checkVisibilityFunction": "isEditorVisible",
+            "acl": "edit",
+            "iconClass": "fas fa-pencil-ruler",
+            "groupIndex": 0
+        },
         {
             "name": "duplicateTemplate",
             "label": "Duplicate",

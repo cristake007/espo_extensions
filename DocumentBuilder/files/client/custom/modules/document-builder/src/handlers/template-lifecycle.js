@@ -1,5 +1,12 @@
 define(['action-handler'], (ActionHandler) => {
     return class extends ActionHandler {
+        openEditor() {
+            this.view.getRouter().navigate(
+                `#DocumentBuilderTemplate/editor/${this.view.model.id}`,
+                {trigger: true},
+            );
+        }
+
         async duplicate() {
             await this.view.confirm({
                 message: this.view.translate('confirmDuplicate', 'messages', 'DocumentBuilderTemplate'),
@@ -94,6 +101,10 @@ define(['action-handler'], (ActionHandler) => {
 
         isArchiveVisible() {
             return this.view.model.get('status') !== 'Archived';
+        }
+
+        isEditorVisible() {
+            return this.view.model.get('status') === 'Draft';
         }
 
         isDraftFromPublishedVersionVisible() {

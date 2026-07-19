@@ -1,14 +1,42 @@
 {
     "labels": {
-        "Create DocumentBuilderTemplate": "Creează șablon Document Builder"
+        "Create DocumentBuilderTemplate": "Creează șablon Document Builder",
+        "Open Editor": "Deschide editorul",
+        "editorUnavailable": "Editor indisponibil",
+        "editorToolbar": "Bara de instrumente a editorului de documente",
+        "editorActions": "Acțiunile editorului de documente",
+        "editorLibrary": "Biblioteca de elemente și variabile",
+        "Elements": "Elemente",
+        "Variables": "Variabile",
+        "Canvas": "Planșa documentului",
+        "Inspector": "Inspector",
+        "Revision": "Revizie"
     },
     "actions": {
+        "Open Editor": "Deschide editorul",
+        "Back": "Înapoi la șablon",
+        "Undo": "Anulează",
+        "Redo": "Refă",
+        "Preview": "Previzualizează",
+        "Publish": "Publică",
         "Duplicate": "Duplică",
         "Archive": "Arhivează",
         "Create Draft from Version": "Creează schiță din versiunea publicată",
         "View Versions": "Vezi versiunile"
     },
     "messages": {
+        "editorLoading": "Se încarcă editorul ciornei…",
+        "editorAccessDenied": "Nu aveți permisiunea de a edita acest șablon.",
+        "editorDraftOnly": "Numai șabloanele ciornă pot fi deschise în editor.",
+        "editorNotFound": "Șablonul nu a fost găsit sau nu mai este disponibil.",
+        "editorLoadFailed": "Editorul nu a putut încărca șablonul. Încercați din nou.",
+        "editorElementsPlaceholder": "Controalele pentru elemente vor fi adăugate în următoarea fază a editorului.",
+        "editorVariablesPlaceholder": "Navigarea variabilelor nu este disponibilă încă.",
+        "editorEmptyCanvas": "Această ciornă este pregătită pentru editare vizuală",
+        "editorMechanicsPending": "Mecanismele de editare pe planșă sunt introduse în fazele următoare.",
+        "editorInspectorPlaceholder": "Selectați un element pentru a-i inspecta proprietățile.",
+        "editorUnsavedChanges": "Modificări nesalvate",
+        "editorReady": "Editor pregătit",
         "confirmDuplicate": "Creați o copie nouă în starea Schiță? Versiunile publicate și istoricul generării nu vor fi copiate.",
         "confirmArchive": "Arhivați acest șablon? Generarea nouă va fi dezactivată, iar istoricul existent va fi păstrat.",
         "confirmDraftFromVersion": "Înlocuiți conținutul schiței cu versiunea publicată imuabilă selectată?",
