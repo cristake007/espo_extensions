@@ -3,10 +3,11 @@ define([
     'document-builder:editor/state/node-tree',
 ], (Command, NodeTree) => {
     return class DuplicateNodeCommand extends Command {
-        constructor(nodeId, target = null) {
+        constructor(nodeId, target = null, flowStructure = null) {
             super();
             this.nodeId = nodeId;
             this.target = target;
+            this.flowStructure = flowStructure;
             this.duplicateId = null;
         }
 
@@ -23,10 +24,15 @@ define([
                 index: source.index + 1,
             };
             const duplicate = NodeTree.prepareNewSubtree(source.node, context.idFactory, true);
+
+            if (this.flowStructure) {
+                this.flowStructure.assertTarget(layout, duplicate, target);
+            }
             const container = NodeTree.getContainer(layout, target);
             const index = NodeTree.normalizeIndex(container, target.index);
 
             container.splice(index, 0, duplicate);
+            if (this.flowStructure) this.flowStructure.ensureCapability(layout);
             this.duplicateId = duplicate.id;
 
             return true;

@@ -15,6 +15,8 @@ define(['document-builder:editor/content/rich-text'], RichText => {
                 empty.textContent = translate('editorFlowEmpty', 'messages');
                 host.insertBefore(empty, host.firstChild);
             }
+
+            host.append(this.hoverToolbar(documentRef, translate));
         }
 
         renderChildren(host, children, parentId, region, documentRef, translate, variableResolver) {
@@ -22,7 +24,13 @@ define(['document-builder:editor/content/rich-text'], RichText => {
                 host.append(this.dropTarget(documentRef, region, parentId, index, 'before'));
                 host.append(this.node(documentRef, child, translate, variableResolver));
             });
-            host.append(this.dropTarget(documentRef, region, parentId, children.length, 'after'));
+            host.append(this.dropTarget(
+                documentRef,
+                region,
+                parentId,
+                children.length,
+                parentId && children.length === 0 ? 'inside' : 'after',
+            ));
         }
 
         node(documentRef, node, translate, variableResolver) {
@@ -88,7 +96,7 @@ define(['document-builder:editor/content/rich-text'], RichText => {
 
         dropTarget(documentRef, region, parentId, index, position) {
             const target = documentRef.createElement('div');
-            target.className = 'document-builder-editor__drop';
+            target.className = `document-builder-editor__drop is-${position}`;
             target.dataset.flowDrop = position;
             target.dataset.dropRegion = region;
             target.dataset.dropParent = parentId || '';
@@ -96,6 +104,30 @@ define(['document-builder:editor/content/rich-text'], RichText => {
             target.setAttribute('aria-hidden', 'true');
 
             return target;
+        }
+
+        hoverToolbar(documentRef, translate) {
+            const toolbar = documentRef.createElement('div');
+            toolbar.className = 'document-builder-editor__hover-toolbar';
+            toolbar.dataset.hoverToolbar = '';
+            toolbar.hidden = true;
+            toolbar.setAttribute('role', 'toolbar');
+            toolbar.setAttribute('aria-label', translate('Element Actions', 'labels'));
+            [
+                ['editFlowNode', 'Edit'],
+                ['duplicateFlowNode', 'Duplicate'],
+                ['removeFlowNode', 'Remove'],
+            ].forEach(([action, label]) => {
+                const button = documentRef.createElement('button');
+                button.type = 'button';
+                button.className = 'btn btn-default btn-xs';
+                button.dataset.action = action;
+                button.dataset.hoverAction = '';
+                button.textContent = translate(label, 'actions');
+                toolbar.append(button);
+            });
+
+            return toolbar;
         }
 
         tag(node) {

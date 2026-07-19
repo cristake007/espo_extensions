@@ -19,6 +19,7 @@ define([
     'document-builder:editor/commands/add-flow-node',
     'document-builder:editor/commands/move-flow-node',
     'document-builder:editor/commands/remove-flow-node',
+    'document-builder:editor/commands/duplicate-node',
     'document-builder:editor/commands/update-node',
     'document-builder:editor/commands/update-data-source',
     'document-builder:services/entity-catalogue-api',
@@ -50,6 +51,7 @@ define([
     AddFlowNodeCommand,
     MoveFlowNodeCommand,
     RemoveFlowNodeCommand,
+    DuplicateNodeCommand,
     UpdateNodeCommand,
     UpdateDataSourceCommand,
     EntityCatalogueApi,
@@ -98,6 +100,8 @@ define([
             'click [data-action="selectBreadcrumb"]': 'actionSelectFlowNode',
             'click [data-action="focusValidationIssue"]': 'actionFocusValidationIssue',
             'click [data-action="removeFlowNode"]': 'actionRemoveFlowNode',
+            'click [data-action="editFlowNode"]': 'actionEditFlowNode',
+            'click [data-action="duplicateFlowNode"]': 'actionDuplicateFlowNode',
             'click [data-action="moveFlowUp"]': 'actionMoveFlowUp',
             'click [data-action="moveFlowDown"]': 'actionMoveFlowDown',
             'change [data-flow-setting]': 'changeFlowSetting',
@@ -118,6 +122,9 @@ define([
             'dragleave [data-flow-drop]': 'handleFlowDragLeave',
             'drop [data-flow-drop]': 'handleFlowDrop',
             'dragend [draggable="true"]': 'handleFlowDragEnd',
+            'mouseover [data-document-canvas]': 'handleCanvasHover',
+            'focusin [data-document-canvas]': 'handleCanvasHover',
+            'mouseleave [data-document-canvas]': 'hideCanvasHover',
         }
 
         setup() {
@@ -175,6 +182,7 @@ define([
             this.maxRelationshipDepth = config.maxRelationshipDepth ||
                 metadataDefaults.maxRelationshipDepth || 2;
             this.pendingFocusNodeId = null;
+            this.rightSidebarTab = 'elements';
             this.zoom = 100;
 
             document.addEventListener('keydown', this.keydownHandler);
@@ -1010,6 +1018,34 @@ define([
             if (this.selectNode(event.currentTarget.dataset.nodeId)) this.reRender();
         }
 
+        actionEditFlowNode(event) {
+            event.stopPropagation();
+            const nodeId = event.currentTarget.dataset.nodeId;
+
+            if (!nodeId || !this.editorState ||
+                !NodeTree.getLocation(this.editorState.getLayout(), nodeId)) return;
+            this.selectNode(nodeId);
+            this.rightSidebarTab = 'properties';
+            this.reRender();
+        }
+
+        actionDuplicateFlowNode(event) {
+            event.stopPropagation();
+            if (!this.editorState || this.isSaveBusy()) return;
+            const nodeId = event.currentTarget.dataset.nodeId;
+            if (!nodeId) return;
+            const command = new DuplicateNodeCommand(nodeId, null, this.flowStructure);
+
+            try {
+                if (this.executeCommand(command)) {
+                    this.editorState.select(command.duplicateId);
+                    this.reRender();
+                }
+            } catch (error) {
+                this.showInvalidFlowDrop();
+            }
+        }
+
         actionFocusValidationIssue(event) {
             const nodeId = event.currentTarget.dataset.nodeId;
 
@@ -1036,21 +1072,27 @@ define([
             controls[target].focus();
         }
 
-        async actionRemoveFlowNode() {
-            const nodeId = this.editorState && this.editorState.getSelectedId();
+        async actionRemoveFlowNode(event = null) {
+            if (event) event.stopPropagation();
+            const nodeId = event?.currentTarget?.dataset.nodeId ||
+                (this.editorState && this.editorState.getSelectedId());
 
             if (!nodeId) return;
             const location = NodeTree.getLocation(this.editorState.getLayout(), nodeId);
 
             if (location?.node.children?.length) {
-                await this.confirm({
-                    message: this.translate(
-                        'confirmRemoveComplexNode',
-                        'messages',
-                        'DocumentBuilderTemplate',
-                    ),
-                    confirmText: this.translate('Remove'),
-                });
+                try {
+                    await this.confirm({
+                        message: this.translate(
+                            'confirmRemoveComplexNode',
+                            'messages',
+                            'DocumentBuilderTemplate',
+                        ),
+                        confirmText: this.translate('Remove'),
+                    });
+                } catch (error) {
+                    return;
+                }
             }
 
             this.executeCommand(new RemoveFlowNodeCommand(this.flowStructure, nodeId));
@@ -1217,6 +1259,7 @@ define([
             this.element.classList.add('is-dragging');
             dataTransfer.effectAllowed = this.flowDrag.kind === 'library' ? 'copy' : 'move';
             dataTransfer.setData('text/plain', JSON.stringify(this.flowDrag));
+            this.updateDropTargetCompatibility();
         }
 
         handleFlowDragOver(event) {
@@ -1225,26 +1268,7 @@ define([
 
             if (!dataTransfer) return;
 
-            const layout = this.editorState.getLayout();
-            const target = this.flowDropTarget(event.currentTarget);
-            const node = this.flowDrag.kind === 'library' ?
-                this.flowStructure.createNode(this.flowDrag.type) :
-                NodeTree.getLocation(layout, this.flowDrag.nodeId)?.node;
-
-            if (!node) return;
-
-            try {
-                this.flowStructure.assertTarget(
-                    layout,
-                    node,
-                    target,
-                    this.flowDrag.kind === 'node' ? this.flowDrag.nodeId : null,
-                );
-            } catch (error) {
-                event.currentTarget.classList.remove('is-drag-over');
-
-                return;
-            }
+            if (!event.currentTarget.classList.contains('is-compatible')) return;
 
             event.preventDefault();
             dataTransfer.dropEffect = this.flowDrag.kind === 'library' ? 'copy' : 'move';
@@ -1276,8 +1300,7 @@ define([
             } catch (error) {
                 this.showInvalidFlowDrop();
             } finally {
-                this.flowDrag = null;
-                this.element.classList.remove('is-dragging');
+                this.cancelFlowDrag();
             }
         }
 
@@ -1302,11 +1325,70 @@ define([
 
         handleFlowDragEnd(event) {
             event.stopPropagation();
+            this.cancelFlowDrag();
+        }
+
+        updateDropTargetCompatibility() {
+            if (!this.flowDrag || !this.editorState) return;
+            const layout = this.editorState.getLayout();
+            const node = this.flowDrag.kind === 'library' ?
+                this.flowStructure.createNode(this.flowDrag.type) :
+                NodeTree.getLocation(layout, this.flowDrag.nodeId)?.node;
+            if (!node) return;
+
+            this.element.querySelectorAll('[data-flow-drop]').forEach(element => {
+                element.classList.remove('is-compatible', 'is-drag-over');
+                try {
+                    this.flowStructure.assertTarget(
+                        layout,
+                        node,
+                        this.flowDropTarget(element),
+                        this.flowDrag.kind === 'node' ? this.flowDrag.nodeId : null,
+                    );
+                    element.classList.add('is-compatible');
+                } catch (error) {}
+            });
+        }
+
+        cancelFlowDrag() {
             this.flowDrag = null;
             this.element.classList.remove('is-dragging');
-            this.element.querySelectorAll('.is-drag-over').forEach(element => {
-                element.classList.remove('is-drag-over');
+            this.element.querySelectorAll('.is-drag-over, .is-compatible').forEach(element => {
+                element.classList.remove('is-drag-over', 'is-compatible');
             });
+        }
+
+        handleCanvasHover(event) {
+            const canvas = event.currentTarget;
+            const target = event.target;
+            if (!target || typeof target.closest !== 'function') return;
+            const node = target.closest('.document-builder-editor__flow-node');
+            const toolbar = canvas.querySelector('[data-hover-toolbar]');
+            if (!toolbar) return;
+            if (!node) {
+                if (!target.closest('[data-hover-toolbar]')) toolbar.hidden = true;
+                return;
+            }
+
+            toolbar.hidden = false;
+            toolbar.dataset.nodeId = node.dataset.nodeId;
+            toolbar.querySelectorAll('[data-hover-action]').forEach(button => {
+                button.dataset.nodeId = node.dataset.nodeId;
+            });
+            const canvasRect = canvas.getBoundingClientRect();
+            const nodeRect = node.getBoundingClientRect();
+            const top = Math.max(0, nodeRect.top - canvasRect.top - toolbar.offsetHeight - 4);
+            const left = Math.max(0, Math.min(
+                canvas.clientWidth - toolbar.offsetWidth,
+                nodeRect.right - canvasRect.left - toolbar.offsetWidth,
+            ));
+            toolbar.style.top = `${top}px`;
+            toolbar.style.left = `${left}px`;
+        }
+
+        hideCanvasHover() {
+            const toolbar = this.element.querySelector('[data-hover-toolbar]');
+            if (toolbar) toolbar.hidden = true;
         }
 
         changePageSetting(event) {
@@ -1728,6 +1810,12 @@ define([
         }
 
         handleKeydown(event) {
+            if (this.flowDrag && event.key === 'Escape') {
+                event.preventDefault();
+                this.cancelFlowDrag();
+
+                return;
+            }
             if (this.previewPdfUrl && event.key === 'Escape') {
                 event.preventDefault();
                 this.actionClosePdfPreview();

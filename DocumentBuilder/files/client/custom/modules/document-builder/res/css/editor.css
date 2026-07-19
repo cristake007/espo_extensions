@@ -372,13 +372,29 @@
     border: 1px dashed transparent;
 }
 
-.document-builder-editor.is-dragging .document-builder-editor__drop {
+.document-builder-editor.is-dragging .document-builder-editor__drop.is-compatible {
     display: block;
 }
 
 .document-builder-editor__drop.is-drag-over {
     border-color: var(--brand-primary, #337ab7);
     background: rgb(51 122 183 / 10%);
+}
+
+.document-builder-editor__hover-toolbar {
+    position: absolute;
+    z-index: 4;
+    display: flex;
+    gap: 3px;
+    padding: 3px;
+    border: 1px solid var(--panel-default-border, #ddd);
+    border-radius: 4px;
+    background: var(--panel-bg, #fff);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 16%);
+}
+
+.document-builder-editor__hover-toolbar[hidden] {
+    display: none;
 }
 
 .document-builder-editor__breadcrumbs {
