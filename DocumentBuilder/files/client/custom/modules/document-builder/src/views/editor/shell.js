@@ -122,6 +122,9 @@ define([
             'input [data-rich-editor]': 'inputRichText',
             'paste [data-rich-editor]': 'pasteRichText',
             'keydown [data-rich-editor]': 'handleRichTextKeydown',
+            'dragover [data-rich-editor]': 'handleRichTextFlowDragOver',
+            'dragleave [data-rich-editor]': 'handleRichTextFlowDragLeave',
+            'drop [data-rich-editor]': 'handleRichTextFlowDrop',
             'mousedown [data-rich-mark], [data-rich-command]': 'preserveRichTextSelection',
             'click [data-rich-mark]': 'actionToggleRichMark',
             'click [data-rich-command]': 'actionRichTextCommand',
@@ -1068,7 +1071,72 @@ define([
         }
 
         handleRichTextKeydown(event) {
-            event.stopPropagation();
+            if (Keyboard.isManualSave(event)) {
+                event.preventDefault();
+                event.stopImmediatePropagation?.();
+                this.actionSave();
+
+                return;
+            }
+            event.stopImmediatePropagation?.();
+        }
+
+        handleRichTextFlowDragOver(event) {
+            if (!this.flowDrag) return;
+            event.preventDefault();
+            event.stopImmediatePropagation?.();
+            const surface = event.currentTarget;
+            const rectangle = surface.getBoundingClientRect();
+            const clientY = event.originalEvent?.clientY ?? event.clientY;
+            const position = clientY < rectangle.top + rectangle.height / 2 ? 'before' : 'after';
+            const node = surface.closest('.document-builder-editor__flow-node');
+            if (!node) return;
+            node.classList.toggle('is-rich-drop-before', position === 'before');
+            node.classList.toggle('is-rich-drop-after', position === 'after');
+            surface.dataset.richDropPosition = position;
+            const dataTransfer = event.originalEvent?.dataTransfer;
+            if (dataTransfer) dataTransfer.dropEffect = this.flowDrag.kind === 'node' ? 'move' : 'copy';
+        }
+
+        handleRichTextFlowDragLeave(event) {
+            if (event.relatedTarget && event.currentTarget.contains(event.relatedTarget)) return;
+            this.clearRichTextDropIndicator(event.currentTarget);
+        }
+
+        handleRichTextFlowDrop(event) {
+            if (!this.flowDrag || !this.editorState) return;
+            event.preventDefault();
+            event.stopImmediatePropagation?.();
+            const surface = event.currentTarget;
+            const location = NodeTree.getLocation(
+                this.editorState.getLayout(),
+                surface.dataset.nodeId,
+            );
+            const position = surface.dataset.richDropPosition || 'after';
+            this.clearRichTextDropIndicator(surface);
+            if (!location?.parentId) {
+                this.cancelFlowDrag();
+
+                return;
+            }
+            const target = {
+                parentId: location.parentId,
+                index: location.index + (position === 'after' ? 1 : 0),
+            };
+
+            try {
+                this.applyFlowDrop(target);
+            } catch (error) {
+                this.showInvalidFlowDrop();
+            } finally {
+                this.cancelFlowDrag();
+            }
+        }
+
+        clearRichTextDropIndicator(surface) {
+            const node = surface.closest('.document-builder-editor__flow-node');
+            node?.classList.remove('is-rich-drop-before', 'is-rich-drop-after');
+            delete surface.dataset.richDropPosition;
         }
 
         preserveRichTextSelection(event) {
@@ -1539,20 +1607,25 @@ define([
             const target = this.flowDropTarget(event.currentTarget);
 
             try {
-                if (this.flowDrag.kind !== 'node') {
-                    this.addFlowNode(this.flowDrag.type, target, this.flowDrag.options || {});
-                } else {
-                    this.executeCommand(new MoveFlowNodeCommand(
-                        this.flowStructure,
-                        this.flowDrag.nodeId,
-                        target,
-                    ));
-                }
+                this.applyFlowDrop(target);
             } catch (error) {
                 this.showInvalidFlowDrop();
             } finally {
                 this.cancelFlowDrag();
             }
+        }
+
+        applyFlowDrop(target) {
+            if (this.flowDrag.kind !== 'node') {
+                this.addFlowNode(this.flowDrag.type, target, this.flowDrag.options || {});
+
+                return;
+            }
+            this.executeCommand(new MoveFlowNodeCommand(
+                this.flowStructure,
+                this.flowDrag.nodeId,
+                target,
+            ));
         }
 
         showInvalidFlowDrop() {
@@ -1607,6 +1680,10 @@ define([
             this.element.querySelectorAll('.is-drag-over, .is-compatible').forEach(element => {
                 element.classList.remove('is-drag-over', 'is-compatible');
             });
+            this.element.querySelectorAll('.is-rich-drop-before, .is-rich-drop-after')
+                .forEach(element => element.classList.remove(
+                    'is-rich-drop-before', 'is-rich-drop-after',
+                ));
         }
 
         handleCanvasHover(event) {

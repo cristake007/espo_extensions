@@ -344,6 +344,14 @@
     outline-offset: 2px;
 }
 
+.document-builder-editor__flow-node.is-rich-drop-before {
+    box-shadow: inset 0 2px 0 var(--brand-primary, #337ab7);
+}
+
+.document-builder-editor__flow-node.is-rich-drop-after {
+    box-shadow: inset 0 -2px 0 var(--brand-primary, #337ab7);
+}
+
 .document-builder-editor__flow-node:focus-visible {
     outline: 2px solid var(--brand-primary, #337ab7);
     outline-offset: 2px;

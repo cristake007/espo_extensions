@@ -44,7 +44,7 @@ define(['document-builder:editor/content/rich-text'], RichText => {
             element.style.cssText = node.flowStyle || '';
             element.dataset.nodeId = node.id;
             element.dataset.page = String(node.pageNumber || 1);
-            element.draggable = !preview;
+            element.draggable = !preview && !node.isHeading && !node.isParagraph;
             element.tabIndex = preview ? -1 : 0;
             if (!preview) {
                 element.dataset.action = 'selectFlowNode';
