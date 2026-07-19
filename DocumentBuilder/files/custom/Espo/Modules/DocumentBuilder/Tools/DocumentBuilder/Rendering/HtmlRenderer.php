@@ -20,13 +20,34 @@ final readonly class HtmlRenderer
     public function render(ResolvedDocument $document): string
     {
         $body = implode('', array_map(fn (ResolvedNode $node): string => $this->node($node), $document->sections));
+        $header = $this->chromeRegion('header', $document->header, $document->chrome['header'] ?? null);
+        $footer = $this->chromeRegion('footer', $document->footer, $document->chrome['footer'] ?? null);
         $language = $this->language($document->defaults['locale'] ?? 'en_US');
         $pageCss = $this->pageCss($document->page);
         $baseCss = 'html,body{margin:0;padding:0;}body{font-family:DejaVu Sans,sans-serif;}' .
-            '.db-page-break{height:0;}.db-divider{display:block;}.db-spacer{display:block;}';
+            '.db-page-break{height:0;}.db-divider{display:block;}.db-spacer{display:block;}' .
+            '.db-page-number::after{content:counter(page);}';
 
         return '<!doctype html><html lang="' . $language . '"><head><meta charset="UTF-8">' .
-            '<style>' . $pageCss . $baseCss . '</style></head><body>' . $body . '</body></html>';
+            '<style>' . $pageCss . $baseCss . '</style></head><body>' . $header . $footer . $body .
+            '</body></html>';
+    }
+
+    /** @param list<ResolvedNode> $nodes */
+    private function chromeRegion(string $region, array $nodes, mixed $settings): string
+    {
+        if ($nodes === [] || !is_array($settings)) return '';
+        $height = $settings['height']['value'] ?? 0;
+        if (!is_int($height) && !is_float($height) || $height <= 0 || $height > 100) return '';
+        $position = $region === 'header' ? 'top:-' . $this->decimal((float) $height) . 'mm;' :
+            'bottom:-' . $this->decimal((float) $height) . 'mm;';
+        $attributes = ' class="db-page-' . $region . '" style="position:fixed;' . $position .
+            'left:0;right:0;height:' . $this->decimal((float) $height) . 'mm;overflow:hidden;"' .
+            ' data-show-first-page="' . (($settings['showOnFirstPage'] ?? true) ? '1' : '0') . '"' .
+            ' data-disable-on-full-page="' . (($settings['disableOnFullPage'] ?? true) ? '1' : '0') . '"';
+        $content = implode('', array_map(fn (ResolvedNode $node): string => $this->node($node), $nodes));
+
+        return "<$region$attributes>$content</$region>";
     }
 
     private function node(ResolvedNode $node): string
@@ -47,6 +68,7 @@ final readonly class HtmlRenderer
     private function inline(ResolvedInline $item): string
     {
         if ($item->type === 'break') return '<br>';
+        if ($item->type === 'page-number') return '<span class="db-page-number" aria-label="Page number"></span>';
         $text = $this->escape($item->text);
         foreach (['bold'=>'strong', 'italic'=>'em', 'underline'=>'u'] as $mark => $tag) {
             if (in_array($mark, $item->marks, true)) $text = "<$tag>$text</$tag>";
@@ -94,5 +116,10 @@ final readonly class HtmlRenderer
     private function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8');
+    }
+
+    private function decimal(float $value): string
+    {
+        return rtrim(rtrim(number_format($value, 4, '.', ''), '0'), '.');
     }
 }

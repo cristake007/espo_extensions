@@ -238,10 +238,38 @@
 }
 
 .document-builder-editor__page {
+    position: relative;
     box-sizing: border-box;
     margin: 0 auto;
     background: #fff;
     box-shadow: 0 2px 12px rgb(0 0 0 / 18%);
+}
+
+.document-builder-editor__page-chrome {
+    position: absolute;
+    z-index: 1;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 4px 8px;
+    border-color: #9fb2c2;
+    color: #526573;
+    font-size: 11px;
+    line-height: 1.25;
+}
+
+.document-builder-editor__page-chrome--header {
+    border-bottom: 1px solid #9fb2c2;
+}
+
+.document-builder-editor__page-chrome--footer {
+    border-top: 1px solid #9fb2c2;
+}
+
+.document-builder-editor__page-chrome.is-first-page-hidden {
+    border-style: dashed;
+    background: #f7f9fa;
+    color: var(--text-muted, #777);
+    text-align: center;
 }
 
 .document-builder-editor__flow-tree {
@@ -495,6 +523,28 @@
 
 .document-builder-editor__settings-grid label {
     min-width: 0;
+    font-size: 12px;
+}
+
+.document-builder-editor__chrome-settings {
+    margin: 0 0 14px;
+    padding: 10px;
+    border: 1px solid var(--panel-default-border, #ddd);
+    border-radius: 4px;
+}
+
+.document-builder-editor__chrome-settings legend {
+    width: auto;
+    margin: 0 0 6px;
+    padding: 0 4px;
+    border: 0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.document-builder-editor__chrome-settings > label {
+    display: block;
+    margin-bottom: 10px;
     font-size: 12px;
 }
 

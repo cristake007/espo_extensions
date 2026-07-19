@@ -130,6 +130,42 @@ define([
         }
     };
 
+    const validateChrome = (chrome, page, layout, errors) => {
+        if (!hasOnlyKeys(chrome, ['header', 'footer'])) {
+            errors.push('document.chrome.structure');
+
+            return;
+        }
+
+        [['header', 'top'], ['footer', 'bottom']].forEach(([region, edge]) => {
+            const settings = chrome[region];
+
+            if (!hasOnlyKeys(settings, ['height', 'showOnFirstPage', 'disableOnFullPage']) ||
+                !isMeasurement(settings.height, 'mm', 0, 100) ||
+                typeof settings.showOnFirstPage !== 'boolean' ||
+                typeof settings.disableOnFullPage !== 'boolean') {
+                errors.push(`document.chrome.${region}`);
+
+                return;
+            }
+
+            const nodes = layout[region];
+            if ((nodes.length === 0) !== (settings.height.value === 0)) {
+                errors.push(`document.chrome.${region}.enabledHeight`);
+            }
+            const reservedMargin = page?.margins?.[edge]?.value;
+            if (typeof reservedMargin === 'number' && settings.height.value > reservedMargin) {
+                errors.push(`document.chrome.${region}.marginReserved`);
+            }
+
+            nodes.forEach((node, index) => {
+                if (!Json.isPlainObject(node) || !['paragraph', 'static-text', 'divider'].includes(node.type)) {
+                    errors.push(`document.chrome.${region}.nodes.${index}`);
+                }
+            });
+        });
+    };
+
     const validateDataSource = (dataSource, errors) => {
         if (!Json.isPlainObject(dataSource) ||
             !['none', 'entity', 'spreadsheet'].includes(dataSource.type)) {
@@ -242,6 +278,7 @@ define([
             if (!hasOnlyKeys(normalized.document, [
                 'page',
                 'defaults',
+                'chrome',
                 'titlePattern',
                 'filenamePattern',
             ], ['style'])) {
@@ -249,6 +286,7 @@ define([
             } else {
                 validatePage(normalized.document.page, errors, this.pageDimensions);
                 validateDefaults(normalized.document.defaults, errors);
+                validateChrome(normalized.document.chrome, normalized.document.page, normalized, errors);
 
                 if (typeof normalized.document.titlePattern !== 'string' ||
                     normalized.document.titlePattern.length > 255) {
@@ -267,10 +305,6 @@ define([
 
             try {
                 NodeTree.index(normalized);
-
-                if (normalized.header.length || normalized.footer.length) {
-                    errors.push('nodes.region.unsupported');
-                }
 
                 errors.push(...this.flowStructure.validateLayout(normalized));
             } catch (error) {

@@ -20,6 +20,18 @@
             "locale": "en_US",
             "timezone": "UTC"
         },
+        "chrome": {
+            "header": {
+                "height": {"value": 0, "unit": "mm"},
+                "showOnFirstPage": true,
+                "disableOnFullPage": true
+            },
+            "footer": {
+                "height": {"value": 0, "unit": "mm"},
+                "showOnFirstPage": true,
+                "disableOnFullPage": true
+            }
+        },
         "titlePattern": "Document",
         "filenamePattern": "document.pdf"
     },

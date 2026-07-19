@@ -19,6 +19,22 @@ define(['document-builder:editor/state/json'], (Json) => {
             result.document.filenamePattern = 'document.pdf';
         }
 
+        if (!Json.isPlainObject(result.document.chrome)) {
+            result.document.chrome = {};
+        }
+
+        ['header', 'footer'].forEach(region => {
+            if (!Json.isPlainObject(result.document.chrome[region])) {
+                result.document.chrome[region] = {};
+            }
+
+            result.document.chrome[region] = {
+                height: result.document.chrome[region].height || {value: 0, unit: 'mm'},
+                showOnFirstPage: result.document.chrome[region].showOnFirstPage ?? true,
+                disableOnFullPage: result.document.chrome[region].disableOnFullPage ?? true,
+            };
+        });
+
         return Json.canonicalize(result);
     };
 

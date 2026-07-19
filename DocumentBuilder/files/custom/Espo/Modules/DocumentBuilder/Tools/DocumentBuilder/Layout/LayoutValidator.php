@@ -115,9 +115,12 @@ final readonly class LayoutValidator
         }
 
         if (isset($declaredCapabilities[Capability::FlowLayout->value]) &&
-            ($layout['sections'] ?? []) === []) {
+            ($layout['sections'] ?? []) === [] && ($layout['header'] ?? []) === [] &&
+            ($layout['footer'] ?? []) === []) {
             $this->add($errors, 'capability.unused', '/capabilities');
         }
+
+        $this->validatePageChromeGeometry($layout, $errors);
 
         return new ValidationResult($errors);
     }
@@ -133,7 +136,7 @@ final readonly class LayoutValidator
 
         $this->rejectUnknownKeys(
             $document,
-            ['page', 'defaults', 'titlePattern', 'filenamePattern', 'style'],
+            ['page', 'defaults', 'chrome', 'titlePattern', 'filenamePattern', 'style'],
             '/document',
             $errors,
         );
@@ -204,6 +207,8 @@ final readonly class LayoutValidator
             $this->add($errors, 'defaults.timezone', '/document/defaults/timezone');
         }
 
+        $this->validatePageChrome($document['chrome'] ?? null, $errors);
+
         $titlePattern = $document['titlePattern'] ?? null;
 
         if (!is_string($titlePattern) || mb_strlen($titlePattern) > 255) {
@@ -223,6 +228,81 @@ final readonly class LayoutValidator
 
         if (array_key_exists('style', $document)) {
             $this->validateStyle($document['style'], '/document/style', null, $errors);
+        }
+    }
+
+    /** @param list<ValidationError> $errors */
+    private function validatePageChrome(mixed $chrome, array &$errors): void
+    {
+        if (!$this->isObject($chrome)) {
+            $this->add($errors, 'pageChrome.type', '/document/chrome');
+
+            return;
+        }
+
+        $this->rejectUnknownKeys($chrome, ['header', 'footer'], '/document/chrome', $errors);
+
+        foreach (['header', 'footer'] as $region) {
+            $settings = $chrome[$region] ?? null;
+            $path = "/document/chrome/$region";
+
+            if (!$this->isObject($settings)) {
+                $this->add($errors, 'pageChrome.region', $path);
+
+                continue;
+            }
+
+            $this->rejectUnknownKeys(
+                $settings,
+                ['height', 'showOnFirstPage', 'disableOnFullPage'],
+                $path,
+                $errors,
+            );
+            $this->validateBoundedMillimetres(
+                $settings['height'] ?? null,
+                0.0,
+                100.0,
+                "$path/height",
+                'pageChrome.height',
+                null,
+                $errors,
+            );
+
+            foreach (['showOnFirstPage', 'disableOnFullPage'] as $flag) {
+                if (!is_bool($settings[$flag] ?? null)) {
+                    $this->add($errors, "pageChrome.$flag", "$path/$flag");
+                }
+            }
+        }
+    }
+
+    /** @param array<string, mixed> $layout @param list<ValidationError> $errors */
+    private function validatePageChromeGeometry(array $layout, array &$errors): void
+    {
+        $margins = $layout['document']['page']['margins'] ?? null;
+        $chrome = $layout['document']['chrome'] ?? null;
+
+        if (!$this->isObject($margins) || !$this->isObject($chrome)) {
+            return;
+        }
+
+        foreach (['header' => 'top', 'footer' => 'bottom'] as $region => $edge) {
+            $nodes = $layout[$region] ?? null;
+            $height = $chrome[$region]['height']['value'] ?? null;
+            $margin = $margins[$edge]['value'] ?? null;
+
+            if (!is_array($nodes) || !is_int($height) && !is_float($height) ||
+                !is_int($margin) && !is_float($margin)) {
+                continue;
+            }
+
+            if (($nodes === [] && (float) $height !== 0.0) || ($nodes !== [] && (float) $height <= 0.0)) {
+                $this->add($errors, 'pageChrome.enabledHeight', "/document/chrome/$region/height");
+            }
+
+            if ((float) $height > (float) $margin) {
+                $this->add($errors, 'pageChrome.marginReserved', "/document/chrome/$region/height");
+            }
         }
     }
 
@@ -551,10 +631,14 @@ final readonly class LayoutValidator
             return;
         }
 
-        if ($kind !== NodeKind::Element || !$this->isFlowChildPath($path)) {
+        if ($kind !== NodeKind::Element ||
+            (!$this->isFlowChildPath($path) && !$this->isPageChromePath($path))) {
             $this->add($errors, 'content.parent', "$path/type", $elementId);
         }
 
+        if ($this->isPageChromePath($path) && $type === 'heading') {
+            $this->add($errors, 'pageChrome.element', "$path/type", $elementId);
+        }
         if ($type === 'static-text') {
             $this->rejectUnknownKeys($node, ['id', 'type', 'text', 'style', 'condition'], $path, $errors);
             $this->validatePlainText($node['text'] ?? null, "$path/text", 'content.text', $elementId, $errors);
@@ -599,8 +683,13 @@ final readonly class LayoutValidator
             return;
         }
 
-        if ($kind !== NodeKind::Element || !$this->isFlowChildPath($path)) {
+        if ($kind !== NodeKind::Element ||
+            (!$this->isFlowChildPath($path) && !$this->isPageChromePath($path))) {
             $this->add($errors, 'flowElement.parent', "$path/type", $elementId);
+        }
+
+        if ($this->isPageChromePath($path) && $type !== 'divider') {
+            $this->add($errors, 'pageChrome.element', "$path/type", $elementId);
         }
 
         if ($type === 'page-break') {
@@ -672,6 +761,12 @@ final readonly class LayoutValidator
     {
         return (str_starts_with($path, '/sections/') || str_starts_with($path, '/sections[')) &&
             (str_contains($path, '/children/') || str_contains($path, '/children['));
+    }
+
+    private function isPageChromePath(string $path): bool
+    {
+        return str_starts_with($path, '/header/') || str_starts_with($path, '/header[') ||
+            str_starts_with($path, '/footer/') || str_starts_with($path, '/footer[');
     }
 
     /** @param list<ValidationError> $errors */

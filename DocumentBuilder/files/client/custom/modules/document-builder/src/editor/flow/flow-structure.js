@@ -325,7 +325,7 @@ define([
                 validateNode(section, SECTION_TYPE, 1, `flow.sections.${index}`);
             });
 
-            const hasFlow = layout.sections.length > 0;
+            const hasFlow = layout.sections.length > 0 || layout.header.length > 0 || layout.footer.length > 0;
             const declaresFlow = layout.capabilities.includes(FLOW_CAPABILITY);
 
             if (hasFlow !== declaresFlow) errors.push('flow.capability');

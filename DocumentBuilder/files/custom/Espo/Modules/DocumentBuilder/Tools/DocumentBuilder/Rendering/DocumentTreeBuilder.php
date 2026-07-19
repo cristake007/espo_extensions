@@ -55,7 +55,43 @@ final readonly class DocumentTreeBuilder
             }
         }
 
-        return new ResolvedDocument($layout['document']['page'] ?? [], $defaults, $sections, $warnings);
+        $header = $this->region($layout['header'] ?? [], '/header', $valueMap, $formatContext, $defaults, $warnings);
+        $footer = $this->region($layout['footer'] ?? [], '/footer', $valueMap, $formatContext, $defaults, $warnings);
+
+        return new ResolvedDocument(
+            $layout['document']['page'] ?? [],
+            $defaults,
+            $sections,
+            $warnings,
+            $header,
+            $footer,
+            $layout['document']['chrome'] ?? [],
+        );
+    }
+
+    /**
+     * @param mixed $nodes
+     * @param array<string, DocumentValue> $values
+     * @param list<DocumentWarning> $warnings
+     * @return list<ResolvedNode>
+     */
+    private function region(
+        mixed $nodes,
+        string $path,
+        array $values,
+        VariableFormatContext $context,
+        array $defaults,
+        array &$warnings,
+    ): array {
+        if (!is_array($nodes) || !array_is_list($nodes)) return [];
+        $resolved = [];
+        foreach ($nodes as $index => $node) {
+            if (!is_array($node)) continue;
+            $item = $this->node($node, "$path/$index", [], $values, $context, $defaults, $warnings);
+            if ($item !== null) $resolved[] = $item;
+        }
+
+        return $resolved;
     }
 
     /** @param list<DocumentValue> $values @return array<string, DocumentValue> */
@@ -167,6 +203,12 @@ final readonly class DocumentTreeBuilder
             } elseif ($item['type'] === 'break') {
                 $inline[] = new ResolvedInline('break', "\n");
             } elseif ($item['type'] === 'variable') {
+                $placeholder = $this->rendererPlaceholder($item['identity'] ?? null);
+                if ($placeholder === 'pageCount') throw new PageCountUnavailable();
+                if ($placeholder === 'pageNumber') {
+                    $inline[] = new ResolvedInline('page-number', '');
+                    continue;
+                }
                 $formatted = $this->formatVariable($item, $values, $context);
                 if ($formatted->disposition === MissingValueDisposition::Failure) {
                     throw new RequiredVariableFailure([json_encode($item['identity'], JSON_THROW_ON_ERROR)]);
@@ -197,6 +239,19 @@ final readonly class DocumentTreeBuilder
             $children,
             true,
         );
+    }
+
+    private function rendererPlaceholder(mixed $identity): ?string
+    {
+        if (!is_array($identity) || array_is_list($identity) ||
+            ($identity['source'] ?? null) !== 'system' || ($identity['type'] ?? null) !== 'system' ||
+            !is_array($identity['path'] ?? null) || count($identity['path']) !== 1) {
+            return null;
+        }
+
+        $name = $identity['path'][0] ?? null;
+
+        return is_string($name) && in_array($name, ['pageNumber', 'pageCount'], true) ? $name : null;
     }
 
     /** @param array<string, mixed> $item @param array<string, DocumentValue> $values */

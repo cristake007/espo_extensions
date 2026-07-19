@@ -22,13 +22,13 @@
         },
         "document": {"$ref": "#/$defs/document"},
         "dataSource": {"$ref": "#/$defs/noSourceDescriptor"},
-        "header": {"$ref": "#/$defs/emptyNodeSequence"},
+        "header": {"$ref": "#/$defs/pageChromeNodeSequence"},
         "sections": {
             "type": "array",
             "maxItems": 250,
             "items": {"$ref": "#/$defs/flowSection"}
         },
-        "footer": {"$ref": "#/$defs/emptyNodeSequence"}
+        "footer": {"$ref": "#/$defs/pageChromeNodeSequence"}
     },
     "$defs": {
         "stableId": {
@@ -51,6 +51,15 @@
         "emptyNodeSequence": {
             "type": "array",
             "maxItems": 0
+        },
+        "pageChromeNodeSequence": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {"oneOf": [
+                {"$ref": "#/$defs/paragraph"},
+                {"$ref": "#/$defs/staticText"},
+                {"$ref": "#/$defs/divider"}
+            ]}
         },
         "millimetres": {
             "type": "object",
@@ -447,10 +456,11 @@
         "document": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["page", "defaults", "titlePattern", "filenamePattern"],
+            "required": ["page", "defaults", "chrome", "titlePattern", "filenamePattern"],
             "properties": {
                 "page": {"$ref": "#/$defs/page"},
                 "defaults": {"$ref": "#/$defs/documentDefaults"},
+                "chrome": {"$ref": "#/$defs/pageChrome"},
                 "titlePattern": {"type": "string", "maxLength": 255},
                 "filenamePattern": {
                     "type": "string",
@@ -459,6 +469,25 @@
                     "pattern": "^[^/\\\\\\u0000-\\u001F]+$"
                 },
                 "style": {"$ref": "#/$defs/commonStyle"}
+            }
+        },
+        "pageChromeRegion": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["height", "showOnFirstPage", "disableOnFullPage"],
+            "properties": {
+                "height": {"$ref": "#/$defs/millimetres"},
+                "showOnFirstPage": {"type": "boolean"},
+                "disableOnFullPage": {"type": "boolean"}
+            }
+        },
+        "pageChrome": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["header", "footer"],
+            "properties": {
+                "header": {"$ref": "#/$defs/pageChromeRegion"},
+                "footer": {"$ref": "#/$defs/pageChromeRegion"}
             }
         },
         "noSourceDescriptor": {

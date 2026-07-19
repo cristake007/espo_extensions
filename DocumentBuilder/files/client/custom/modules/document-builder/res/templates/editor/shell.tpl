@@ -241,6 +241,16 @@
                 </div>
                 <div class="document-builder-editor__canvas-scroll">
                     <div class="document-builder-editor__page" style="{{pageFrameStyle}}">
+                        {{#with pageChromeHeader}}
+                        {{#if enabled}}<div class="document-builder-editor__page-chrome document-builder-editor__page-chrome--header {{#unless visibleOnCanvas}}is-first-page-hidden{{/unless}}" style="{{style}}">
+                            {{#if visibleOnCanvas}}<span>{{text}}</span>{{#if includePageNumber}}<span> · 1</span>{{/if}}{{else}}<span>{{translate 'Hidden on First Page' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
+                        </div>{{/if}}
+                        {{/with}}
+                        {{#with pageChromeFooter}}
+                        {{#if enabled}}<div class="document-builder-editor__page-chrome document-builder-editor__page-chrome--footer {{#unless visibleOnCanvas}}is-first-page-hidden{{/unless}}" style="{{style}}">
+                            {{#if visibleOnCanvas}}<span>{{text}}</span>{{#if includePageNumber}}<span> · 1</span>{{/if}}{{else}}<span>{{translate 'Hidden on First Page' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
+                        </div>{{/if}}
+                        {{/with}}
                         {{#if hasFlowRows}}
                         <div class="document-builder-editor__flow-tree">
                             {{#each flowRows}}
@@ -422,6 +432,38 @@
                     <label>{{translate 'Bottom' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="2000" step="0.1" value="{{pageSettings.page.margins.bottom.value}}" data-page-setting="marginBottom" data-value-type="number"></label>
                     <label>{{translate 'Left' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="2000" step="0.1" value="{{pageSettings.page.margins.left.value}}" data-page-setting="marginLeft" data-value-type="number"></label>
                 </fieldset>
+                {{#with pageChromeHeader}}
+                <fieldset class="document-builder-editor__chrome-settings">
+                    <legend>{{translate 'Header' category='labels' scope='DocumentBuilderTemplate'}}</legend>
+                    <div class="checkbox"><label><input type="checkbox" data-chrome-region="header" data-chrome-setting="enabled" {{#if enabled}}checked{{/if}}> {{translate 'Enabled' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
+                    {{#if enabled}}
+                    <label>{{translate 'Text' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="10000" value="{{text}}" data-chrome-region="header" data-chrome-setting="text"></label>
+                    <div class="document-builder-editor__settings-grid">
+                        <label>{{translate 'Height (mm)' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0.1" max="100" step="0.1" value="{{height}}" data-chrome-region="header" data-chrome-setting="height"></label>
+                        <label>{{translate 'Alignment' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-chrome-region="header" data-chrome-setting="alignment"><option value="start" {{#if alignStart}}selected{{/if}}>{{translate 'Start' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="center" {{#if alignCenter}}selected{{/if}}>{{translate 'Center' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="end" {{#if alignEnd}}selected{{/if}}>{{translate 'End' category='labels' scope='DocumentBuilderTemplate'}}</option></select></label>
+                    </div>
+                    <div class="checkbox"><label><input type="checkbox" data-chrome-region="header" data-chrome-setting="pageNumber" {{#if includePageNumber}}checked{{/if}}> {{translate 'Include Page Number' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
+                    <div class="checkbox"><label><input type="checkbox" data-chrome-region="header" data-chrome-setting="showOnFirstPage" {{#if showOnFirstPage}}checked{{/if}}> {{translate 'Show on First Page' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
+                    <div class="checkbox"><label><input type="checkbox" data-chrome-region="header" data-chrome-setting="disableOnFullPage" {{#if disableOnFullPage}}checked{{/if}}> {{translate 'Disable on Full-page Sections' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
+                    {{/if}}
+                </fieldset>
+                {{/with}}
+                {{#with pageChromeFooter}}
+                <fieldset class="document-builder-editor__chrome-settings">
+                    <legend>{{translate 'Footer' category='labels' scope='DocumentBuilderTemplate'}}</legend>
+                    <div class="checkbox"><label><input type="checkbox" data-chrome-region="footer" data-chrome-setting="enabled" {{#if enabled}}checked{{/if}}> {{translate 'Enabled' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
+                    {{#if enabled}}
+                    <label>{{translate 'Text' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="10000" value="{{text}}" data-chrome-region="footer" data-chrome-setting="text"></label>
+                    <div class="document-builder-editor__settings-grid">
+                        <label>{{translate 'Height (mm)' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0.1" max="100" step="0.1" value="{{height}}" data-chrome-region="footer" data-chrome-setting="height"></label>
+                        <label>{{translate 'Alignment' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-chrome-region="footer" data-chrome-setting="alignment"><option value="start" {{#if alignStart}}selected{{/if}}>{{translate 'Start' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="center" {{#if alignCenter}}selected{{/if}}>{{translate 'Center' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="end" {{#if alignEnd}}selected{{/if}}>{{translate 'End' category='labels' scope='DocumentBuilderTemplate'}}</option></select></label>
+                    </div>
+                    <div class="checkbox"><label><input type="checkbox" data-chrome-region="footer" data-chrome-setting="pageNumber" {{#if includePageNumber}}checked{{/if}}> {{translate 'Include Page Number' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
+                    <div class="checkbox"><label><input type="checkbox" data-chrome-region="footer" data-chrome-setting="showOnFirstPage" {{#if showOnFirstPage}}checked{{/if}}> {{translate 'Show on First Page' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
+                    <div class="checkbox"><label><input type="checkbox" data-chrome-region="footer" data-chrome-setting="disableOnFullPage" {{#if disableOnFullPage}}checked{{/if}}> {{translate 'Disable on Full-page Sections' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
+                    {{/if}}
+                </fieldset>
+                {{/with}}
                 <div class="form-group"><label>{{translate 'Default Font' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-page-setting="fontFamily">{{#each pageSettings.fontList}}<option value="{{name}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label></div>
                 <div class="document-builder-editor__settings-grid">
                     <label>{{translate 'Font Size' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="512" step="0.1" value="{{pageSettings.defaults.fontSize.value}}" data-page-setting="fontSize" data-value-type="number"></label>

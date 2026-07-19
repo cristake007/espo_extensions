@@ -28,6 +28,6 @@ $cases=[
  [1,'height',['value'=>501,'unit'=>'mm'],'spacer.height'],[2,'label','stored label','property.unknown'],
 ];
 foreach($cases as [$index,$key,$value,$code]){$bad=$layout;$bad['sections'][0]['children'][0]['children'][$index][$key]=$value;Assert::isTrue(in_array($code,$codes($bad),true),"Invalid $key was accepted.");}
-$bad=$layout;$bad['header']=[$elements[0]];
-Assert::isTrue(in_array('flowElement.parent',$codes($bad),true),'A divider was accepted outside the flow hierarchy.');
+$bad=$layout;$bad['header']=[$elements[2]];
+Assert::isTrue(in_array('pageChrome.element',$codes($bad),true),'A page break was accepted in page chrome.');
 echo "Phase 21 server element structure, enum, dimension, and unsafe-style validation tests passed.\n";

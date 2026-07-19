@@ -69,5 +69,5 @@ Assert::same(['bold','underline'], $normalized['sections'][0]['children'][0]['ch
 Assert::same("a\nb", $normalized['sections'][0]['children'][0]['children'][0]['content'][1]['presentation']['format']['fallback'], 'Variable presentation text normalization failed.');
 Assert::isTrue($validator->validate($normalized)->isValid(), 'Server-authoritative normalized content was rejected.');
 $bad=$layout;$bad['footer']=[$layout['sections'][0]['children'][0]['children'][0]];
-Assert::isTrue(in_array('content.parent',$codes($bad),true),'Content was accepted outside the flow hierarchy.');
+Assert::isTrue(in_array('pageChrome.element',$codes($bad),true),'A heading was accepted in page chrome.');
 echo "Phase 20 server content validation, rejection, and normalization tests passed.\n";

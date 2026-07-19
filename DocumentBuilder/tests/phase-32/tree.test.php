@@ -17,6 +17,7 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Condition\Conditio
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Condition\RequiredVariableFailure;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\StyleResolver;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\DocumentTreeBuilder;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\PageCountUnavailable;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Tree\DocumentValue;
 
 require dirname(__DIR__) . '/bootstrap.php';
@@ -40,6 +41,7 @@ foreach (['DocumentValue.php', 'DocumentWarning.php', 'ResolvedInline.php', 'Res
     require "$module/Rendering/Tree/$file";
 }
 require "$module/Rendering/DocumentTreeBuilder.php";
+require "$module/Rendering/PageCountUnavailable.php";
 
 $builder = new DocumentTreeBuilder(
     new VariableFormatter(new MissingValueResolver()),
@@ -106,5 +108,29 @@ $requiredLayout = $layout;
 $requiredLayout['sections'][0]['children'][1]['content'][1]['presentation'] =
     (new VariablePresentation(missing: MissingValuePolicy::Required))->toArray();
 Assert::throws(fn () => $builder->build($requiredLayout, [], $context), RequiredVariableFailure::class, 'Missing required data did not stop tree construction.');
+
+$chromeLayout = $layout;
+$chromeLayout['document']['chrome'] = [
+    'header' => ['height'=>['value'=>10,'unit'=>'mm'], 'showOnFirstPage'=>true, 'disableOnFullPage'=>true],
+    'footer' => ['height'=>['value'=>8,'unit'=>'mm'], 'showOnFirstPage'=>true, 'disableOnFullPage'=>true],
+];
+$chromeLayout['header'] = [[
+    'id'=>'header1', 'type'=>'paragraph', 'alignment'=>'end', 'content'=>[[
+        'type'=>'variable', 'tokenId'=>'pageNumber1', 'label'=>'Page Number',
+        'identity'=>['source'=>'system', 'type'=>'system', 'path'=>['pageNumber']],
+        'presentation'=>$presentation,
+    ]],
+]];
+$chromeLayout['footer'] = [['id'=>'footer1', 'type'=>'static-text', 'text'=>'Confidential']];
+$chromeTree = $builder->build($chromeLayout, $values, $context);
+Assert::same('page-number', $chromeTree->header[0]->inline[0]->type, 'Current-page placeholder was resolved as ordinary data.');
+Assert::same('footer1', $chromeTree->footer[0]->id, 'Footer did not enter the resolved tree.');
+Assert::same($chromeLayout['document']['chrome'], $chromeTree->chrome, 'Page chrome render settings changed in the tree.');
+$chromeLayout['header'][0]['content'][0]['identity']['path'] = ['pageCount'];
+Assert::throws(
+    fn () => $builder->build($chromeLayout, $values, $context),
+    PageCountUnavailable::class,
+    'Unproven total-page count produced misleading output.',
+);
 
 echo "Phase 32 immutable resolved-tree tests passed.\n";

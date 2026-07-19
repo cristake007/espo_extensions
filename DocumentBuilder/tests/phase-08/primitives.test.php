@@ -186,9 +186,9 @@ Assert::same(
 
 foreach (['header', 'footer'] as $region) {
     Assert::same(
-        '#/$defs/emptyNodeSequence',
+        '#/$defs/pageChromeNodeSequence',
         $schema['properties'][$region]['$ref'] ?? null,
-        "Phase 08 must reject unimplemented nodes in $region.",
+        "The canonical schema must use the bounded page chrome sequence for $region.",
     );
 }
 Assert::same(

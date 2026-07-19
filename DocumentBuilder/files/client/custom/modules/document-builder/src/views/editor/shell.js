@@ -27,6 +27,7 @@ define([
     'document-builder:editor/variables/variable-presentation',
     'document-builder:editor/conditions/condition-builder',
     'document-builder:editor/commands/update-condition',
+    'document-builder:editor/commands/update-page-chrome',
 ], (
     View,
     EditorState,
@@ -56,6 +57,7 @@ define([
     VariablePresentation,
     ConditionBuilder,
     UpdateConditionCommand,
+    UpdatePageChromeCommand,
 ) => {
     return class extends View {
         template = 'document-builder:editor/shell'
@@ -75,6 +77,7 @@ define([
             'click [data-action="fitWidth"]': 'actionFitWidth',
             'click [data-action="fitPage"]': 'actionFitPage',
             'change [data-page-setting]': 'changePageSetting',
+            'change [data-chrome-setting]': 'changeChromeSetting',
             'change [data-source-setting]': 'changeSourceSetting',
             'click [data-action="retryEntityCatalogue"]': 'actionRetryEntityCatalogue',
             'input [data-variable-search]': 'inputVariableSearch',
@@ -484,7 +487,10 @@ define([
                 this.zoom,
             );
             const margins = document.page.margins;
+            const layout = this.editorState.getLayout();
             const px = value => this.pageGeometry.millimetresToPixels(value, this.zoom);
+            const header = this.pageChromeData(layout, 'header', px);
+            const footer = this.pageChromeData(layout, 'footer', px);
 
             return {
                 pageSettings: {
@@ -507,7 +513,43 @@ define([
                     `padding: ${px(margins.top.value)}px ${px(margins.right.value)}px ` +
                         `${px(margins.bottom.value)}px ${px(margins.left.value)}px`,
                 ].join('; '),
+                pageChromeHeader: header,
+                pageChromeFooter: footer,
                 zoom: frame.zoom,
+            };
+        }
+
+        pageChromeData(layout, region, px) {
+            const settings = layout.document.chrome[region];
+            const node = layout[region].find(item => item.type === 'paragraph');
+            const pageNumber = node?.content?.some(item =>
+                item.type === 'variable' && item.identity?.source === 'system' &&
+                item.identity?.path?.[0] === 'pageNumber') || false;
+            const text = node?.content?.find(item => item.type === 'text')?.text || '';
+            const enabled = layout[region].length > 0;
+            const margins = layout.document.page.margins;
+            const sideStyle = `left:${px(margins.left.value)}px;right:${px(margins.right.value)}px`;
+            const alignment = node?.alignment || 'start';
+            const textAlign = {start: 'left', center: 'center', end: 'right'}[alignment];
+            const offset = px(Math.max(0, margins[region === 'header' ? 'top' : 'bottom'].value -
+                settings.height.value));
+
+            return {
+                region,
+                enabled,
+                text,
+                includePageNumber: pageNumber,
+                alignment,
+                alignStart: alignment === 'start',
+                alignCenter: alignment === 'center',
+                alignEnd: alignment === 'end',
+                height: settings.height.value,
+                showOnFirstPage: settings.showOnFirstPage,
+                disableOnFullPage: settings.disableOnFullPage,
+                visibleOnCanvas: enabled && settings.showOnFirstPage,
+                style: `${region === 'header' ? 'top' : 'bottom'}:${offset}px;` +
+                    `height:${px(settings.height.value)}px;` +
+                    `${sideStyle};text-align:${textAlign}`,
             };
         }
 
@@ -1302,6 +1344,52 @@ define([
 
             targets[path]();
             this.executeCommand(new UpdateDocumentCommand(document));
+        }
+
+        changeChromeSetting(event) {
+            if (!this.editorState || this.isSaveBusy()) return;
+            const input = event.currentTarget;
+            const region = input.dataset.chromeRegion;
+            const setting = input.dataset.chromeSetting;
+
+            if (!['header', 'footer'].includes(region)) return;
+            const layout = this.editorState.getLayout();
+            const configuration = layout.document.chrome[region];
+            const node = layout[region].find(item => item.type === 'paragraph');
+            const values = {
+                enabled: layout[region].length > 0,
+                text: node?.content?.find(item => item.type === 'text')?.text || '',
+                includePageNumber: node?.content?.some(item =>
+                    item.type === 'variable' && item.identity?.source === 'system' &&
+                    item.identity?.path?.[0] === 'pageNumber') || false,
+                alignment: node?.alignment || 'start',
+                height: configuration.height.value,
+                showOnFirstPage: configuration.showOnFirstPage,
+                disableOnFullPage: configuration.disableOnFullPage,
+                updateContent: ['enabled', 'text', 'pageNumber'].includes(setting),
+            };
+
+            if (setting === 'enabled') {
+                values.enabled = input.checked;
+                if (values.enabled && values.height === 0) {
+                    const edge = region === 'header' ? 'top' : 'bottom';
+                    values.height = Math.min(10, layout.document.page.margins[edge].value);
+                }
+            } else if (setting === 'text') values.text = input.value.slice(0, 10000);
+            else if (setting === 'pageNumber') values.includePageNumber = input.checked;
+            else if (setting === 'alignment') values.alignment = input.value;
+            else if (setting === 'height') values.height = Number(input.value);
+            else if (setting === 'showOnFirstPage') values.showOnFirstPage = input.checked;
+            else if (setting === 'disableOnFullPage') values.disableOnFullPage = input.checked;
+            else return;
+
+            if (!Number.isFinite(values.height) || values.height < 0 || values.height > 100 ||
+                !['start', 'center', 'end'].includes(values.alignment)) return;
+            this.executeCommand(new UpdatePageChromeCommand(
+                region,
+                values,
+                VariablePresentation.defaults(),
+            ));
         }
 
         async changeSourceSetting(event) {

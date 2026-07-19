@@ -35,6 +35,6 @@ final readonly class DompdfEngineFactory implements PdfEngineFactory
         $options->setChroot(array_values(array_unique($approvedChroot)));
         $dompdf->setOptions($options);
 
-        return new DompdfEngine($dompdf);
+        return new DompdfEngine($dompdf, $document);
     }
 }

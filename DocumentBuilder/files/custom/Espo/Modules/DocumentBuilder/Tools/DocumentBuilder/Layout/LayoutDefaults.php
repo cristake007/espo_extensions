@@ -51,6 +51,18 @@ final class LayoutDefaults
                     'locale' => $locale,
                     'timezone' => 'UTC',
                 ],
+                'chrome' => [
+                    'header' => [
+                        'height' => (new Measurement(0, Unit::Millimetre))->toArray(),
+                        'showOnFirstPage' => true,
+                        'disableOnFullPage' => true,
+                    ],
+                    'footer' => [
+                        'height' => (new Measurement(0, Unit::Millimetre))->toArray(),
+                        'showOnFirstPage' => true,
+                        'disableOnFullPage' => true,
+                    ],
+                ],
                 'titlePattern' => 'Document',
                 'filenamePattern' => 'document.pdf',
             ],
