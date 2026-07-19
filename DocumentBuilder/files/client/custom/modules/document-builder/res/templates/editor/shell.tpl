@@ -126,8 +126,6 @@
                 </section>
                 <section class="document-builder-editor__panel">
                     <h3>{{translate 'Variables' category='labels' scope='DocumentBuilderTemplate'}}</h3>
-                    <label class="sr-only" for="document-builder-variable-search">{{translate 'Search Variables' category='labels' scope='DocumentBuilderTemplate'}}</label>
-                    <input id="document-builder-variable-search" type="search" class="form-control input-sm" maxlength="100" value="{{variableSearch}}" data-variable-search placeholder="{{translate 'Search Variables' category='labels' scope='DocumentBuilderTemplate'}}">
                     <h4>{{translate 'System Variables' category='labels' scope='DocumentBuilderTemplate'}}</h4>
                     <div class="document-builder-editor__variable-tree" role="tree" aria-label="{{translate 'System Variables' category='labels' scope='DocumentBuilderTemplate'}}">
                         {{#each systemVariableRows}}

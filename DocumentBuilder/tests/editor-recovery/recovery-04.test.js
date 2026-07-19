@@ -20,11 +20,11 @@ assert.ok(leftStart >= 0 && leftEnd > leftStart);
 assert.doesNotMatch(left, /data-library-type=/, 'The left sidebar must be variables-only.');
 for (const contract of [
     'data-source-setting="entityType"',
-    'data-variable-search',
     'System Variables',
     'Entity Fields',
     'toggleMetadataRelationship',
 ]) assert.match(left, new RegExp(contract));
+assert.doesNotMatch(left, /data-variable-search/);
 assert.match(left, /is-field is-insertable[^>]*draggable="true"/);
 assert.match(left, /title="\{\{variablePathKey\}\}"/);
 assert.match(left, /document-builder-editor__variable-copy/);

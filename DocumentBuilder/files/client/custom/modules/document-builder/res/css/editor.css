@@ -454,6 +454,10 @@
     display: block;
 }
 
+.document-builder-editor.is-dragging .document-builder-editor__drop.is-compatible.is-inside {
+    min-height: 36px;
+}
+
 .document-builder-editor__drop.is-drag-over {
     border-color: var(--brand-primary, #337ab7);
     background: rgb(51 122 183 / 10%);

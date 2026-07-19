@@ -88,7 +88,6 @@ define([
             'change [data-chrome-setting]': 'changeChromeSetting',
             'change [data-source-setting]': 'changeSourceSetting',
             'click [data-action="retryEntityCatalogue"]': 'actionRetryEntityCatalogue',
-            'input [data-variable-search]': 'inputVariableSearch',
             'click [data-action="toggleMetadataRelationship"]': 'actionToggleMetadataRelationship',
             'click [data-action="retryMetadataNode"]': 'actionRetryMetadataNode',
             'click [data-action="focusVariables"]': 'actionFocusVariables',
@@ -198,7 +197,6 @@ define([
             this.metadataNodes = new Map();
             this.expandedMetadataPaths = new Set();
             this.metadataGeneration = 0;
-            this.variableSearch = '';
             this.variablePresentationDraft = VariablePresentation.defaults();
             this.standaloneVariableDraft = null;
             this.maxRelationshipDepth = config.maxRelationshipDepth ||
@@ -387,8 +385,7 @@ define([
                     styleFontList: this.allowedFonts.map(name => ({name, selected: effectiveStyle.fontFamily === name})),
                 } : null,
                 flowBreadcrumbs: selectedId ? this.flowStructure.breadcrumbs(layout, selectedId) : [],
-                canAddFlowContainer: Boolean(selected &&
-                    ['flow-section', 'flow-container'].includes(selected.node.type)),
+                canAddFlowContainer: layout.sections.length > 0,
             };
         }
 
@@ -483,7 +480,6 @@ define([
                     variableRows: [],
                     systemVariableRows: MetadataBrowser.systemRows(),
                     variableBrowserHasSource: false,
-                    variableSearch: this.variableSearch,
                     variablePresentation: this.variablePresentationData(),
                 };
             }
@@ -491,7 +487,7 @@ define([
             const rows = MetadataBrowser.flatten(
                 this.metadataNodes,
                 this.expandedMetadataPaths,
-                this.variableSearch,
+                '',
             );
             const root = this.metadataNodes.get('');
 
@@ -502,7 +498,6 @@ define([
                 variableBrowserHasSource: true,
                 variableBrowserLoading: root?.status === 'loading',
                 variableBrowserError: root?.status === 'error',
-                variableSearch: this.variableSearch,
                 variablePresentation: this.variablePresentationData(),
             };
         }
@@ -787,15 +782,6 @@ define([
             }
         }
 
-        inputVariableSearch(event) {
-            this.variableSearch = event.currentTarget.value.slice(0, 100);
-            const query = this.variableSearch.trim().toLocaleLowerCase();
-
-            this.element.querySelectorAll('[data-variable-row]').forEach(row => {
-                row.hidden = Boolean(query) && !row.textContent.toLocaleLowerCase().includes(query);
-            });
-        }
-
         async actionToggleMetadataRelationship(event) {
             const pathKey = event.currentTarget.dataset.path;
             const path = pathKey ? pathKey.split('.') : [];
@@ -845,7 +831,7 @@ define([
         }
 
         actionAddFlowSection() {
-            this.addFlowNode('flow-section', {region: 'sections', parentId: null, index: null});
+            this.addFlowNodeAtSelection('flow-section');
         }
 
         actionShowElementsTab() {
@@ -861,31 +847,40 @@ define([
         }
 
         actionFocusVariables() {
-            const search = this.element.querySelector('[data-variable-search]');
-            if (search) search.focus();
+            const variable = this.element.querySelector('.document-builder-editor__left .is-insertable');
+            if (variable) {
+                variable.scrollIntoView({block: 'nearest'});
+                variable.focus({preventScroll: true});
+            }
         }
 
         actionAddFlowContainer() {
-            const parentId = this.editorState && this.editorState.getSelectedId();
-
-            if (parentId) this.addFlowNode('flow-container', {parentId, index: null});
+            this.addFlowNodeAtSelection('flow-container');
         }
 
         actionAddContent(event) {
-            const parentId = this.editorState && this.editorState.getSelectedId();
             const type = event.currentTarget.dataset.libraryType;
 
-            if (parentId && type) this.addFlowNode(type, {parentId, index: null});
+            if (type) this.addFlowNodeAtSelection(type);
         }
 
         actionAddVariable() {
-            const parentId = this.editorState && this.editorState.getSelectedId();
-            if (!parentId || !this.standaloneVariableDraft) {
+            if (!this.standaloneVariableDraft) {
                 this.actionFocusVariables();
 
                 return;
             }
-            this.addFlowNode('variable', {parentId, index: null}, this.standaloneVariableDraft);
+            this.addFlowNodeAtSelection('variable', this.standaloneVariableDraft);
+        }
+
+        addFlowNodeAtSelection(type, options = {}) {
+            if (!this.editorState) return;
+            const target = this.flowStructure.insertionTarget(
+                this.editorState.getLayout(),
+                this.editorState.getSelectedId(),
+                type,
+            );
+            if (target) this.addFlowNode(type, target, options);
         }
 
         renderContentNodes() {
@@ -1514,7 +1509,7 @@ define([
             }
             this.element.classList.add('is-dragging');
             dataTransfer.effectAllowed = this.flowDrag.kind === 'node' ? 'move' : 'copy';
-            dataTransfer.setData('text/plain', JSON.stringify(this.flowDrag));
+            dataTransfer.setData('application/x-document-builder-flow', JSON.stringify(this.flowDrag));
             this.updateDropTargetCompatibility();
         }
 

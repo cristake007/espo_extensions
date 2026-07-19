@@ -95,6 +95,32 @@ define([
             }
         }
 
+        insertionTarget(layout, selectedId, type) {
+            const locations = NodeTree.index(layout);
+            const selected = selectedId ? locations.get(selectedId) : null;
+
+            if (type === SECTION_TYPE) {
+                return {
+                    region: 'sections',
+                    parentId: null,
+                    index: selected?.parentId === null && selected.region === 'sections' ?
+                        selected.index + 1 : layout.sections.length,
+                };
+            }
+            if (![CONTAINER_TYPE, ...CONTENT_TYPES, VARIABLE_TYPE, ...BASIC_TYPES].includes(type)) {
+                throw new TypeError(`Unsupported flow node type: ${type}.`);
+            }
+            if (selected && [SECTION_TYPE, CONTAINER_TYPE].includes(selected.node.type)) {
+                return {parentId: selected.node.id, index: selected.node.children.length};
+            }
+            if (selected?.parentId) {
+                return {parentId: selected.parentId, index: selected.index + 1};
+            }
+            const fallback = layout.sections[layout.sections.length - 1];
+
+            return fallback ? {parentId: fallback.id, index: fallback.children.length} : null;
+        }
+
         assertTarget(layout, node, target, movingNodeId = null) {
             const index = NodeTree.index(layout);
 
