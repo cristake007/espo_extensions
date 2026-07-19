@@ -1,0 +1,24 @@
+{
+    "fields": {
+        "name": {"readOnly": true},
+        "template": {"readOnly": true},
+        "versionNumber": {"readOnly": true},
+        "schemaVersion": {"readOnly": true},
+        "layoutSnapshot": {"readOnly": true},
+        "sourceSnapshot": {"readOnly": true},
+        "publishedBy": {"readOnly": true},
+        "publishedAt": {"readOnly": true},
+        "changeNote": {"readOnly": true},
+        "checksum": {"readOnly": true},
+        "isCurrent": {"readOnly": true},
+        "assignedUser": {"readOnly": true},
+        "teams": {"readOnly": true}
+    },
+    "links": {
+        "template": {"readOnly": true},
+        "publishedBy": {"readOnly": true},
+        "assignedUser": {"readOnly": true},
+        "teams": {"readOnly": true}
+    },
+    "systemWriteForbidden": true
+}

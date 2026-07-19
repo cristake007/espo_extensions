@@ -1,0 +1,11 @@
+[
+    {"name": "name"},
+    {"name": "template"},
+    {"name": "versionNumber"},
+    {"name": "schemaVersion"},
+    {"name": "isCurrent"},
+    {"name": "publishedBy"},
+    {"name": "publishedAt"},
+    {"name": "assignedUser"},
+    {"name": "teams"}
+]

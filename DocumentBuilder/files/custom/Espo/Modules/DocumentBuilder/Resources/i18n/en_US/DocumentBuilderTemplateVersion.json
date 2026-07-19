@@ -1,0 +1,30 @@
+{
+    "fields": {
+        "name": "Name",
+        "template": "Template",
+        "versionNumber": "Version Number",
+        "schemaVersion": "Schema Version",
+        "layoutSnapshot": "Layout Snapshot",
+        "sourceSnapshot": "Data Source Snapshot",
+        "publishedBy": "Published By",
+        "publishedAt": "Published At",
+        "changeNote": "Change Note",
+        "checksum": "Checksum",
+        "isCurrent": "Current",
+        "assignedUser": "Assigned User",
+        "teams": "Teams",
+        "createdAt": "Created At",
+        "createdBy": "Created By"
+    },
+    "links": {
+        "template": "Template",
+        "publishedBy": "Published By",
+        "assignedUser": "Assigned User",
+        "teams": "Teams",
+        "createdBy": "Created By"
+    },
+    "tooltips": {
+        "checksum": "SHA-256 of the canonical published layout and data-source snapshots.",
+        "isCurrent": "Publication lifecycle state; snapshot content remains immutable."
+    }
+}

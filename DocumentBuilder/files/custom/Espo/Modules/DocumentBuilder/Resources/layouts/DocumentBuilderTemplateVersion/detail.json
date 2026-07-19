@@ -1,0 +1,14 @@
+[
+    {
+        "rows": [
+            [{"name": "name"}, {"name": "template"}],
+            [{"name": "versionNumber"}, {"name": "schemaVersion"}],
+            [{"name": "isCurrent"}, {"name": "checksum"}],
+            [{"name": "publishedBy"}, {"name": "publishedAt"}],
+            [{"name": "changeNote", "fullWidth": true}],
+            [{"name": "assignedUser"}, {"name": "teams"}]
+        ],
+        "style": "default",
+        "label": ""
+    }
+]

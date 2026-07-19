@@ -177,6 +177,14 @@
         "modifiedBy": {
             "type": "belongsTo",
             "entity": "User"
+        },
+        "versions": {
+            "type": "hasMany",
+            "entity": "DocumentBuilderTemplateVersion",
+            "foreign": "template",
+            "readOnly": true,
+            "orderBy": "versionNumber",
+            "order": "desc"
         }
     },
     "collection": {

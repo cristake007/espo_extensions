@@ -3,10 +3,12 @@
         "DocumentBuilder": "Document Builder"
     },
     "scopeNames": {
-        "DocumentBuilderTemplate": "Document Builder Template"
+        "DocumentBuilderTemplate": "Document Builder Template",
+        "DocumentBuilderTemplateVersion": "Document Builder Template Version"
     },
     "scopeNamesPlural": {
-        "DocumentBuilderTemplate": "Document Builder Templates"
+        "DocumentBuilderTemplate": "Document Builder Templates",
+        "DocumentBuilderTemplateVersion": "Document Builder Template Versions"
     },
     "navbarTabs": {
         "DocumentBuilder": "Document Builder",

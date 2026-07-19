@@ -36,6 +36,10 @@ php tests/phase-09/processing.test.php
 php tests/phase-10/metadata.test.php
 php tests/phase-10/hooks.test.php
 php tests/phase-10/acl.test.php
+php tests/phase-11/metadata.test.php
+php tests/phase-11/snapshot.test.php
+php tests/phase-11/hooks.test.php
+php tests/phase-11/acl.test.php
 ```
 
 Package inventory is checked separately after building the extension ZIP:
@@ -47,7 +51,10 @@ php tests/phase-07/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-08/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-09/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-10/package-inventory.test.php dist/document-builder-1.0.0.zip
+php tests/phase-11/package-inventory.test.php dist/document-builder-1.0.0.zip
 ```
+
+Phase 11 runtime validation requires an approved non-production EspoCRM 10.0.0 instance. After install and Administration > Rebuild, verify the version table and unique template/version index exist. Create a marked version only through a temporary publication-service harness, then verify it remains readable after changing the draft, normal REST create/update/delete requests are forbidden, and own/team readers follow the publication-time ACL projection. Remove only records carrying the exact test marker.
 
 Phase 10 runtime validation requires an approved non-production EspoCRM 10.0.0 instance. Install the package, run Administration > Rebuild, then verify that an administrator can create a source-neutral draft, that its layout/default summary/revision match the Phase 10 metadata test, and that an ungranted role cannot read or write the record. Also verify own/team scope behavior with two marked test users. Do not create records on the production path.
 

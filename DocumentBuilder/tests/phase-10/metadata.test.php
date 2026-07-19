@@ -195,9 +195,9 @@ foreach ($lifecycleManagedFields as $field) {
     Assert::isFalse(isset($layoutNames['edit'][$field]), "Native edit must not expose lifecycle field: $field.");
 }
 
-Assert::isFalse(
+Assert::isTrue(
     isset($layoutNames['detail']['currentPublishedVersion']),
-    'The forward version link must stay hidden until Phase 11 defines its target entity.',
+    'The current published version must be visible after Phase 11 defines its target entity.',
 );
 
 foreach (['en_US', 'ro_RO'] as $locale) {

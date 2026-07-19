@@ -1,0 +1,30 @@
+{
+    "fields": {
+        "name": "Nume",
+        "template": "Șablon",
+        "versionNumber": "Număr versiune",
+        "schemaVersion": "Versiune schemă",
+        "layoutSnapshot": "Instantaneu structură",
+        "sourceSnapshot": "Instantaneu sursă de date",
+        "publishedBy": "Publicat de",
+        "publishedAt": "Publicat la",
+        "changeNote": "Notă de modificare",
+        "checksum": "Sumă de control",
+        "isCurrent": "Curentă",
+        "assignedUser": "Utilizator alocat",
+        "teams": "Echipe",
+        "createdAt": "Creat la",
+        "createdBy": "Creat de"
+    },
+    "links": {
+        "template": "Șablon",
+        "publishedBy": "Publicat de",
+        "assignedUser": "Utilizator alocat",
+        "teams": "Echipe",
+        "createdBy": "Creat de"
+    },
+    "tooltips": {
+        "checksum": "SHA-256 pentru structura canonică publicată și instantaneul sursei de date.",
+        "isCurrent": "Stare gestionată de publicare; conținutul instantaneului rămâne imuabil."
+    }
+}

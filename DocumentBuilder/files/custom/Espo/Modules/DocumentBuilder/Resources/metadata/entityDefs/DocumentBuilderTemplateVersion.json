@@ -1,0 +1,151 @@
+{
+    "transactionalSave": true,
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "maxLength": 190,
+            "required": true,
+            "readOnly": true
+        },
+        "template": {
+            "type": "link",
+            "entity": "DocumentBuilderTemplate",
+            "required": true,
+            "readOnly": true
+        },
+        "versionNumber": {
+            "type": "int",
+            "min": 1,
+            "required": true,
+            "readOnly": true,
+            "disableFormatting": true
+        },
+        "schemaVersion": {
+            "type": "int",
+            "min": 1,
+            "required": true,
+            "readOnly": true,
+            "disableFormatting": true
+        },
+        "layoutSnapshot": {
+            "type": "jsonObject",
+            "required": true,
+            "readOnly": true,
+            "exportDisabled": true,
+            "layoutListDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true
+        },
+        "sourceSnapshot": {
+            "type": "jsonObject",
+            "required": true,
+            "readOnly": true,
+            "exportDisabled": true,
+            "layoutListDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true
+        },
+        "publishedBy": {
+            "type": "link",
+            "entity": "User",
+            "required": true,
+            "readOnly": true,
+            "view": "views/fields/user"
+        },
+        "publishedAt": {
+            "type": "datetime",
+            "required": true,
+            "readOnly": true
+        },
+        "changeNote": {
+            "type": "text",
+            "readOnly": true
+        },
+        "checksum": {
+            "type": "varchar",
+            "maxLength": 64,
+            "required": true,
+            "readOnly": true,
+            "pattern": "^[a-f0-9]{64}$"
+        },
+        "isCurrent": {
+            "type": "bool",
+            "default": true,
+            "required": true,
+            "readOnly": true
+        },
+        "assignedUser": {
+            "type": "link",
+            "required": true,
+            "readOnly": true,
+            "view": "views/fields/assigned-user"
+        },
+        "teams": {
+            "type": "linkMultiple",
+            "readOnly": true,
+            "view": "views/fields/teams"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        }
+    },
+    "links": {
+        "template": {
+            "type": "belongsTo",
+            "entity": "DocumentBuilderTemplate",
+            "foreign": "versions"
+        },
+        "publishedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "assignedUser": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "teams": {
+            "type": "hasMany",
+            "entity": "Team",
+            "relationName": "entityTeam",
+            "layoutRelationshipsDisabled": true
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "publishedAt",
+        "order": "desc",
+        "textFilterFields": ["name", "changeNote"],
+        "fullTextSearch": true,
+        "countDisabled": false
+    },
+    "indexes": {
+        "templateVersion": {
+            "type": "unique",
+            "columns": ["templateId", "versionNumber"]
+        },
+        "templateCurrent": {
+            "columns": ["templateId", "isCurrent", "deleted"]
+        },
+        "publishedAt": {
+            "columns": ["publishedAt", "deleted"]
+        },
+        "publishedBy": {
+            "columns": ["publishedById", "deleted"]
+        },
+        "assignedUser": {
+            "columns": ["assignedUserId", "deleted"]
+        },
+        "checksum": {
+            "columns": ["checksum"]
+        }
+    }
+}

@@ -1,0 +1,8 @@
+[
+    {"name": "name", "link": true},
+    {"name": "template", "width": 22},
+    {"name": "versionNumber", "width": 10},
+    {"name": "isCurrent", "width": 10},
+    {"name": "publishedBy", "width": 18},
+    {"name": "publishedAt", "width": 18}
+]

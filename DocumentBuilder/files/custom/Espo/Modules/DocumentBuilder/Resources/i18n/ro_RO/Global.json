@@ -3,10 +3,12 @@
         "DocumentBuilder": "Document Builder"
     },
     "scopeNames": {
-        "DocumentBuilderTemplate": "Șablon Document Builder"
+        "DocumentBuilderTemplate": "Șablon Document Builder",
+        "DocumentBuilderTemplateVersion": "Versiune șablon Document Builder"
     },
     "scopeNamesPlural": {
-        "DocumentBuilderTemplate": "Șabloane Document Builder"
+        "DocumentBuilderTemplate": "Șabloane Document Builder",
+        "DocumentBuilderTemplateVersion": "Versiuni șabloane Document Builder"
     },
     "navbarTabs": {
         "DocumentBuilder": "Document Builder",
