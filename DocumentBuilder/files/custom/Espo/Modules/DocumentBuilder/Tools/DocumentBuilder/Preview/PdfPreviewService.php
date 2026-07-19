@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview;
 
-use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\Settings;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\SettingsProvider;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityResolver\EntityResolver;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\Variable\VariableFormatContext;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\DraftRecordAccess;
@@ -27,7 +27,7 @@ final readonly class PdfPreviewService
         private DocumentTreeBuilder $trees,
         private HtmlRenderer $html,
         private PdfRenderer $pdf,
-        private Settings $settings,
+        private SettingsProvider $settingsProvider,
     ) {}
 
     public function preview(string $templateId, PreviewRequest $request): PdfPreviewResult
@@ -58,7 +58,8 @@ final readonly class PdfPreviewService
             }
             $defaults = $layout['document']['defaults'] ?? [];
             $context = new VariableFormatContext(
-                is_string($defaults['locale'] ?? null) ? $defaults['locale'] : $this->settings->defaultLocale(),
+                is_string($defaults['locale'] ?? null) ? $defaults['locale'] :
+                    $this->settingsProvider->get()->defaultLocale(),
                 is_string($defaults['timezone'] ?? null) ? $defaults['timezone'] : 'UTC',
             );
             $tree = $this->trees->build($layout, $values, $context);

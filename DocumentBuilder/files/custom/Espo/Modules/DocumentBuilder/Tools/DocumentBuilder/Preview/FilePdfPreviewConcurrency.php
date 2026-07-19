@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview;
 
-use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\Settings;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\SettingsProvider;
 
 final readonly class FilePdfPreviewConcurrency implements PdfPreviewConcurrency
 {
-    public function __construct(private Settings $settings)
+    public function __construct(private SettingsProvider $settingsProvider)
     {}
 
     public function enter(): string
     {
         $leaseId = bin2hex(random_bytes(16));
-        $this->update(function (array $leases) use ($leaseId): array {
-            if (count($leases) >= $this->settings->maxConcurrentPreviews()) throw new PreviewRateLimitExceeded();
-            $leases[$leaseId] = time() + $this->settings->renderTimeoutSeconds() + 5;
+        $settings = $this->settingsProvider->get();
+        $this->update(function (array $leases) use ($leaseId, $settings): array {
+            if (count($leases) >= $settings->maxConcurrentPreviews()) throw new PreviewRateLimitExceeded();
+            $leases[$leaseId] = time() + $settings->renderTimeoutSeconds() + 5;
             return $leases;
         });
 

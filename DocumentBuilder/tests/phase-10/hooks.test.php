@@ -99,6 +99,7 @@ namespace {
     foreach ([
         'Config/InvalidConfiguration.php',
         'Config/Settings.php',
+        'Config/SettingsProvider.php',
         'Config/ConfigProvider.php',
         'Layout/SchemaVersion.php',
         'Layout/Unit.php',

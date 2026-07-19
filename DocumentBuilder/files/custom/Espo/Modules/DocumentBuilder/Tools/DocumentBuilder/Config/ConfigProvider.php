@@ -8,7 +8,7 @@ use Espo\Core\Utils\Config;
 use Espo\Core\Utils\Metadata;
 use stdClass;
 
-final class ConfigProvider
+final class ConfigProvider implements SettingsProvider
 {
     private const METADATA_PATH = ['app', 'documentBuilder'];
 

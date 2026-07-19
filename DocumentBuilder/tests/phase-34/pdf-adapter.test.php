@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use DocumentBuilder\Tests\Support\Assert;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\Settings;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\SettingsProvider;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Pdf\PdfEngine;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Pdf\PdfEngineFactory;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Pdf\PdfRenderFailure;
@@ -17,6 +18,7 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Tree\ResolvedDo
 require dirname(__DIR__) . '/bootstrap.php';
 $module = dirname(__DIR__, 2) . '/files/custom/Espo/Modules/DocumentBuilder/Tools/DocumentBuilder';
 require "$module/Config/Settings.php";
+require "$module/Config/SettingsProvider.php";
 foreach (['DocumentWarning.php','ResolvedNode.php','ResolvedDocument.php'] as $file) require "$module/Rendering/Tree/$file";
 foreach (['PdfRenderFailure.php','PdfRenderResult.php','RenderWorkspace.php','RenderWorkspaceFactory.php',
     'SystemRenderWorkspace.php','SystemRenderWorkspaceFactory.php','PdfEngine.php','PdfEngineFactory.php'] as $file) {
@@ -54,10 +56,15 @@ final class Phase34Engines implements PdfEngineFactory
         return new Phase34Engine($this->fail, $this->pages);
     }
 }
+final readonly class Phase34PdfSettings implements SettingsProvider
+{
+    public function __construct(private Settings $settings) {}
+    public function get(): Settings { return $this->settings; }
+}
 
-$settings = new Settings([
+$settings = new Phase34PdfSettings(new Settings([
     'maxLayoutBytes'=>1048576,'renderMemoryMegabytes'=>64,'renderTimeoutSeconds'=>10,'maxRenderedPages'=>20,
-]);
+]));
 $document = new ResolvedDocument(['size'=>'A4','orientation'=>'portrait','margins'=>[]],[],[]);
 $engines = new Phase34Engines();$workspaces = new Phase34Workspaces();
 $renderer = new PdfRenderer($engines,$workspaces,$settings);

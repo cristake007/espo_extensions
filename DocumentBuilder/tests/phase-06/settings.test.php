@@ -62,6 +62,7 @@ namespace {
 
     require $moduleRoot . '/Tools/DocumentBuilder/Config/InvalidConfiguration.php';
     require $moduleRoot . '/Tools/DocumentBuilder/Config/Settings.php';
+    require $moduleRoot . '/Tools/DocumentBuilder/Config/SettingsProvider.php';
     require $moduleRoot . '/Tools/DocumentBuilder/Config/ConfigProvider.php';
 
     /**

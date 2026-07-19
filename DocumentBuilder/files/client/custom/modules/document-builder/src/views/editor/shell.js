@@ -1152,16 +1152,22 @@ define([
 
         handleFlowDragStart(event) {
             const source = event.currentTarget;
+            const dataTransfer = event.originalEvent?.dataTransfer;
+
+            if (!dataTransfer) return;
 
             this.flowDrag = source.dataset.libraryType ?
                 {kind: 'library', type: source.dataset.libraryType} :
                 {kind: 'node', nodeId: source.dataset.nodeId};
-            event.dataTransfer.effectAllowed = this.flowDrag.kind === 'library' ? 'copy' : 'move';
-            event.dataTransfer.setData('text/plain', JSON.stringify(this.flowDrag));
+            dataTransfer.effectAllowed = this.flowDrag.kind === 'library' ? 'copy' : 'move';
+            dataTransfer.setData('text/plain', JSON.stringify(this.flowDrag));
         }
 
         handleFlowDragOver(event) {
             if (!this.flowDrag || !this.editorState) return;
+            const dataTransfer = event.originalEvent?.dataTransfer;
+
+            if (!dataTransfer) return;
 
             const layout = this.editorState.getLayout();
             const target = this.flowDropTarget(event.currentTarget);
@@ -1185,7 +1191,7 @@ define([
             }
 
             event.preventDefault();
-            event.dataTransfer.dropEffect = this.flowDrag.kind === 'library' ? 'copy' : 'move';
+            dataTransfer.dropEffect = this.flowDrag.kind === 'library' ? 'copy' : 'move';
             event.currentTarget.classList.add('is-drag-over');
         }
 

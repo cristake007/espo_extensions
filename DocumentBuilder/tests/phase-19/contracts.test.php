@@ -24,6 +24,7 @@ Assert::contains('new AddFlowNodeCommand', $shell, 'Flow insertion must use comm
 Assert::contains('new MoveFlowNodeCommand', $shell, 'Flow reordering must use command history.');
 Assert::contains('new UpdateNodeCommand', $shell, 'Flow styling must use command history.');
 Assert::contains('handleFlowDragEnd', $shell, 'Canceled drags must clear transient state.');
+Assert::contains('event.originalEvent?.dataTransfer', $shell, 'jQuery drag events must use the native data-transfer object.');
 Assert::contains('data-flow-drop="inside"', $template, 'Nested container drop targets are missing.');
 Assert::contains('flowBreadcrumbs', $template, 'Hierarchy breadcrumbs are missing.');
 Assert::contains('data-flow-setting="marginLeft"', $template, 'Per-edge margin controls are missing.');

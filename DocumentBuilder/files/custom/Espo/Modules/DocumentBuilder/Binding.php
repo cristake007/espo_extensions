@@ -14,6 +14,8 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\LayoutProcessorProv
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\CompiledSourceReferenceImpactAnalyzer;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\OrmDraftTemplateStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\SourceReferenceImpactAnalyzer;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\ConfigProvider;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\SettingsProvider;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\AclEntityCatalogueAccess;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\ConfiguredEntitySourcePolicy;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EntityCatalogueAccess;
@@ -70,6 +72,7 @@ final class Binding implements BindingProcessor
     public function process(Binder $binder): void
     {
         $binder
+            ->bindImplementation(SettingsProvider::class, ConfigProvider::class)
             ->bindImplementation(DraftTemplateStore::class, OrmDraftTemplateStore::class)
             ->bindImplementation(DraftRecordAccess::class, AclDraftRecordAccess::class)
             ->bindImplementation(LayoutProcessorProvider::class, ConfiguredLayoutProcessorProvider::class)

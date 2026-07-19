@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview;
 
-use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\Settings;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\SettingsProvider;
 
 final readonly class FilePreviewRateLimit implements PreviewRateLimit
 {
-    public function __construct(private Settings $settings)
+    public function __construct(private SettingsProvider $settingsProvider)
     {}
 
     public function consume(string $templateId, PreviewMode $mode): void
@@ -27,7 +27,9 @@ final readonly class FilePreviewRateLimit implements PreviewRateLimit
             if (!is_array($values)) $values = [];
             $cutoff = time() - 60;
             $values = array_values(array_filter($values, static fn (mixed $time): bool => is_int($time) && $time > $cutoff));
-            if (count($values) >= $this->settings->previewRequestsPerMinute()) throw new PreviewRateLimitExceeded();
+            if (count($values) >= $this->settingsProvider->get()->previewRequestsPerMinute()) {
+                throw new PreviewRateLimitExceeded();
+            }
             $values[] = time();
             rewind($handle);
             ftruncate($handle, 0);

@@ -20,6 +20,7 @@ $requiredEntries = [
     'files/custom/Espo/Modules/DocumentBuilder/Resources/metadata/app/config.json',
     'files/custom/Espo/Modules/DocumentBuilder/Resources/metadata/app/documentBuilder.json',
     'files/custom/Espo/Modules/DocumentBuilder/Tools/DocumentBuilder/Config/ConfigProvider.php',
+    'files/custom/Espo/Modules/DocumentBuilder/Tools/DocumentBuilder/Config/SettingsProvider.php',
     'files/custom/Espo/Modules/DocumentBuilder/Tools/DocumentBuilder/Config/InvalidConfiguration.php',
     'files/custom/Espo/Modules/DocumentBuilder/Tools/DocumentBuilder/Config/Settings.php',
 ];
