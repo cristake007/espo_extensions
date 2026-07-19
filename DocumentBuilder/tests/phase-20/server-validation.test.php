@@ -33,6 +33,17 @@ $layout['sections'] = [[
 $initialResult = $validator->validate($layout);
 Assert::isTrue($initialResult->isValid(), 'Literal markup represented as text must remain valid and escaped at rendering: ' . implode(',', array_map(fn ($error) => $error->code(), $initialResult->errors())));
 $codes = fn ($value) => array_map(fn ($error) => $error->code(), $validator->validate($value)->errors());
+$richStatic = $layout;
+$richStatic['sections'][0]['children'][0]['children'][1] = [
+    'id'=>'static','type'=>'static-text','content'=>[
+        ['type'=>'text','text'=>'Formatted','marks'=>['bold']],
+        ['type'=>'list','style'=>'bulleted','items'=>[[['type'=>'text','text'=>'Item','marks'=>[]]]]],
+    ],
+];
+Assert::isTrue($validator->validate($richStatic)->isValid(), 'Structured static text was rejected.');
+$badRepresentation = $richStatic;
+$badRepresentation['sections'][0]['children'][0]['children'][1]['text'] = 'Duplicate';
+Assert::isTrue(in_array('content.representation', $codes($badRepresentation), true), 'Ambiguous static-text representation was accepted.');
 foreach ([
     ['key'=>'html','value'=>'<b>raw</b>','code'=>'property.unknown'],
     ['key'=>'style','value'=>'background:url(javascript:alert(1))','code'=>'style.type'],
@@ -68,6 +79,12 @@ Assert::same("a\nb", $normalized['sections'][0]['children'][0]['children'][0]['c
 Assert::same(['bold','underline'], $normalized['sections'][0]['children'][0]['children'][0]['content'][0]['marks'], 'Server mark canonicalization failed.');
 Assert::same("a\nb", $normalized['sections'][0]['children'][0]['children'][0]['content'][1]['presentation']['format']['fallback'], 'Variable presentation text normalization failed.');
 Assert::isTrue($validator->validate($normalized)->isValid(), 'Server-authoritative normalized content was rejected.');
+$dirtyStatic = $richStatic;
+$dirtyStatic['sections'][0]['children'][0]['children'][1]['content'][0]['text'] = "a\r\nb";
+$dirtyStatic['sections'][0]['children'][0]['children'][1]['content'][0]['marks'] = ['underline','bold','underline'];
+$normalizedStatic = $normalizer->normalizeLayout($dirtyStatic);
+Assert::same("a\nb", $normalizedStatic['sections'][0]['children'][0]['children'][1]['content'][0]['text'], 'Structured static-text newline normalization failed.');
+Assert::same(['bold','underline'], $normalizedStatic['sections'][0]['children'][0]['children'][1]['content'][0]['marks'], 'Structured static-text marks were not canonicalized.');
 $bad=$layout;$bad['footer']=[$layout['sections'][0]['children'][0]['children'][0]];
 Assert::isTrue(in_array('pageChrome.element',$codes($bad),true),'A heading was accepted in page chrome.');
 echo "Phase 20 server content validation, rejection, and normalization tests passed.\n";

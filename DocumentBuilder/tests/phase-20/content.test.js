@@ -34,6 +34,9 @@ state.execute(section);
 const container = new AddFlowNodeCommand(flow, 'flow-container', {parentId: section.addedId}); state.execute(container);
 for (const type of ['heading', 'static-text', 'paragraph']) state.execute(new AddFlowNodeCommand(flow, type, {parentId: container.addedId}));
 assert.equal(new LayoutPrecheck([], {}).check(state.getLayout()).valid, true);
+assert.deepEqual(state.getLayout().sections[0].children[0].children[1].content, [
+    {type: 'text', text: 'Text', marks: []},
+]);
 const heading = state.getLayout().sections[0].children[0].children[0];
 assert.equal(state.execute(new UpdateNodeCommand(heading.id, {content: RichText.toggleMark(heading.content, 'bold')})), true);
 assert.deepEqual(heading.content[0].marks, []); // command works on a cloned layout

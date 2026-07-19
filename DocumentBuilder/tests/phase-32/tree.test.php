@@ -61,7 +61,9 @@ $layout = [
         'id'=>'section1','type'=>'flow-section','margin'=>$box,'padding'=>$box,
         'minHeight'=>['value'=>20,'unit'=>'mm'],'keepTogether'=>false,'startNewPage'=>false,
         'children'=>[
-            ['id'=>'static1','type'=>'static-text','text'=>'Certificat'],
+            ['id'=>'static1','type'=>'static-text','content'=>[
+                ['type'=>'text','text'=>'Certificat','marks'=>['bold']],
+            ]],
             ['id'=>'paragraph1','type'=>'paragraph','alignment'=>'start','content'=>[
                 ['type'=>'text','text'=>'Nume: ','marks'=>[]],
                 ['type'=>'variable','tokenId'=>'token1','label'=>'Name','identity'=>$identityData,'presentation'=>$presentation],
@@ -89,6 +91,7 @@ Assert::same(['static1', 'paragraph1', 'variable1'], array_map(
 ), 'Stable node order or IDs changed.');
 Assert::same([], $tree->sections[0]->collectionSlots, 'Future collection slots are not initialized safely.');
 Assert::same('list', $tree->sections[0]->children[1]->inline[2]->type, 'Structured list did not enter the resolved tree.');
+Assert::same(['bold'], $tree->sections[0]->children[0]->inline[0]->marks, 'Structured static text did not enter the resolved tree.');
 Assert::same('variable', $tree->sections[0]->children[1]->inline[2]->items[1][0]->type, 'A list variable was not resolved.');
 Assert::same('<script>raw name</script>', $tree->sections[0]->children[2]->inline[0]->text, 'Standalone variable was not resolved.');
 

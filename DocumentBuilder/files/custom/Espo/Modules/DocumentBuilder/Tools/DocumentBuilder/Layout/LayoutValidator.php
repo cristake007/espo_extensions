@@ -641,8 +641,23 @@ final readonly class LayoutValidator
             $this->add($errors, 'pageChrome.element', "$path/type", $elementId);
         }
         if ($type === 'static-text') {
-            $this->rejectUnknownKeys($node, ['id', 'type', 'text', 'style', 'condition'], $path, $errors);
-            $this->validatePlainText($node['text'] ?? null, "$path/text", 'content.text', $elementId, $errors);
+            $this->rejectUnknownKeys($node, ['id', 'type', 'text', 'content', 'style', 'condition'], $path, $errors);
+            $hasText = array_key_exists('text', $node);
+            $hasContent = array_key_exists('content', $node);
+
+            if ($hasText === $hasContent) {
+                $this->add($errors, 'content.representation', $path, $elementId);
+            } elseif ($hasText) {
+                $this->validatePlainText($node['text'], "$path/text", 'content.text', $elementId, $errors);
+            } else {
+                $this->validateInlineContent(
+                    $node['content'],
+                    "$path/content",
+                    $elementId,
+                    $errors,
+                    true,
+                );
+            }
 
             return;
         }

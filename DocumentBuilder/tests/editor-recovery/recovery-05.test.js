@@ -55,8 +55,8 @@ const shell = fs.readFileSync(path.join(sourceRoot, 'views/editor/shell.js'), 'u
 const canvas = fs.readFileSync(path.join(sourceRoot, 'editor/canvas/document-canvas.js'), 'utf8');
 const template = fs.readFileSync(path.join(root,
     'files/client/custom/modules/document-builder/res/templates/editor/shell.tpl'), 'utf8');
-assert.match(canvas, /contentEditable = preview \? 'false' : 'true'/);
-assert.match(canvas, /dataset\.richEditor/);
+assert.match(canvas, /dataset\.wysiwygMount/);
+assert.match(shell, /'views\/fields\/wysiwyg'/);
 assert.match(shell, /selectionchange/);
 assert.match(shell, /Wysiwyg\.captureRange/);
 assert.match(shell, /Wysiwyg\.insertVariable/);
@@ -64,6 +64,6 @@ assert.match(shell, /pasteRichText[\s\S]*getData\('text\/plain'\)/);
 assert.match(shell, /new UpdateNodeCommand\(location\.node\.id, \{content\}\)[\s\S]*render: false/);
 assert.match(template, /data-rich-command="insertUnorderedList"/);
 assert.match(template, /data-rich-command="insertOrderedList"/);
-assert.doesNotMatch(shell, /innerHTML\s*=/);
+assert.match(shell, /Wysiwyg\.toHtml/);
 
 console.log('Editor recovery 05 structured WYSIWYG tests passed.');

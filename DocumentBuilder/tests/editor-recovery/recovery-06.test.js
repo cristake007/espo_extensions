@@ -48,7 +48,7 @@ assert.equal(host.children.length, 1, 'Preview rendered editing drop targets or 
 const paragraph = host.children[0];
 assert.equal(paragraph.draggable, false);
 assert.equal(paragraph.dataset.action, undefined);
-assert.equal(paragraph.children[0].contentEditable, 'false');
+assert.equal(paragraph.children[0].contentEditable, undefined);
 assert.equal(paragraph.children[0].dataset.richEditor, undefined);
 
 const shell = fs.readFileSync(path.join(sourceRoot, 'views/editor/shell.js'), 'utf8');

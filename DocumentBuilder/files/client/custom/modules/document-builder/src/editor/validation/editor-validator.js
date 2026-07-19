@@ -40,8 +40,9 @@ define([
                             node.id,
                         ));
                     }
-                    const text = node.type === 'static-text' ? node.text :
-                        ['heading', 'paragraph'].includes(node.type) ? textFromContent(node.content) : null;
+                    const text = node.type === 'static-text' && typeof node.text === 'string' ? node.text :
+                        ['heading', 'static-text', 'paragraph'].includes(node.type) ?
+                            textFromContent(node.content) : null;
 
                     if (text !== null && text.trim() === '') {
                         issues.push(this.warning(

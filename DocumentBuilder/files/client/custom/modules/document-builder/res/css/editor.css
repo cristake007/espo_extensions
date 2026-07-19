@@ -384,6 +384,30 @@
     outline: 0;
 }
 
+.document-builder-editor__native-wysiwyg {
+    color: var(--text-color, #333);
+    font-family: var(--font-family-base, sans-serif);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.4;
+    text-align: left;
+    text-decoration: none;
+    text-transform: none;
+    white-space: normal;
+}
+
+.document-builder-editor__native-wysiwyg .note-editor {
+    margin: 0;
+}
+
+.document-builder-editor__native-wysiwyg .note-editable {
+    min-height: 32px;
+    color: inherit;
+    font: inherit;
+    white-space: pre-wrap;
+}
+
 .document-builder-editor__flow-node.is-sample {
     color: var(--text-muted, #777) !important;
     font-style: italic;

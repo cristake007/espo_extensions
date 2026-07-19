@@ -1,5 +1,6 @@
 define([
     'view',
+    'model',
     'document-builder:editor/state/editor-state',
     'document-builder:editor/state/node-tree',
     'document-builder:editor/validation/layout-precheck',
@@ -33,6 +34,7 @@ define([
     'document-builder:editor/commands/update-page-chrome',
 ], (
     View,
+    Model,
     EditorState,
     NodeTree,
     LayoutPrecheck,
@@ -208,6 +210,7 @@ define([
             this.pendingFocusNodeId = null;
             this.rightSidebarTab = 'elements';
             this.richTextSelection = null;
+            this.wysiwygGeneration = 0;
             this.zoom = 100;
 
             document.addEventListener('keydown', this.keydownHandler);
@@ -337,8 +340,7 @@ define([
                         (selected.node.identity.path || [selected.node.identity.name]).join('.') : '',
                     variablePresentation: selected.node.type === 'variable' ?
                         this.variablePresentationData(selected.node.presentation) : null,
-                    plainText: selected.node.type === 'static-text' ? selected.node.text :
-                        RichText.toPlainText(selected.node.content),
+                    plainText: RichText.toPlainText(selected.node.content),
                     alignmentChoices: {
                         start: selected.node.alignment === 'start',
                         center: selected.node.alignment === 'center',
@@ -898,6 +900,8 @@ define([
 
         renderContentNodes() {
             if (!this.editorState || !this.element) return;
+            this.wysiwygGeneration++;
+            if (this.getView('canvasWysiwyg')) this.clearView('canvasWysiwyg');
             const layout = this.editorState.getLayout();
             const rendered = this.browserRenderer.render(layout, {
                 selectedId: this.canvasPreviewOpen ? null : this.editorState.getSelectedId(),
@@ -918,6 +922,64 @@ define([
                     preview: this.canvasPreviewOpen,
                 },
             );
+            this.mountSelectedWysiwyg(this.wysiwygGeneration);
+        }
+
+        mountSelectedWysiwyg(generation) {
+            if (this.canvasPreviewOpen || !this.editorState) return;
+            const location = this.selectedContentNode();
+            if (!location || !['heading', 'static-text', 'paragraph'].includes(location.node.type)) return;
+            const mount = this.element.querySelector('[data-wysiwyg-mount]');
+            if (!mount || mount.dataset.nodeId !== location.node.id) return;
+            const fieldName = 'documentBuilderCanvasContent';
+            const model = new Model({
+                [fieldName]: Wysiwyg.toHtml(location.node.content, mount.ownerDocument || document),
+            });
+            const toolbar = [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['color', ['color']],
+            ];
+            if (location.node.type === 'paragraph' || location.node.type === 'static-text') {
+                toolbar.push(['para', ['ul', 'ol', 'paragraph']]);
+            }
+
+            this.createView('canvasWysiwyg', 'views/fields/wysiwyg', {
+                selector: '[data-wysiwyg-mount]',
+                mode: 'edit',
+                model,
+                name: fieldName,
+                params: {height: 0, minHeight: 32, maxLength: 10000, toolbar},
+            }).then(view => {
+                if (generation !== this.wysiwygGeneration || this.isRemoved) return;
+                this.listenTo(view, 'change', () => {
+                    const surface = mount.querySelector('.note-editable');
+                    if (surface) this.syncRichTextSurface(surface);
+                });
+
+                return view.render();
+            }).then(() => {
+                if (generation !== this.wysiwygGeneration || this.isRemoved) return;
+                const surface = mount.querySelector('.note-editable');
+                if (!surface) return;
+                surface.dataset.richEditor = '';
+                surface.dataset.nodeId = location.node.id;
+                surface.draggable = false;
+                surface.setAttribute('aria-label', this.translate(
+                    'Edit Content',
+                    'labels',
+                    'DocumentBuilderTemplate',
+                ));
+                surface.focus({preventScroll: true});
+                this.captureRichTextSelection({currentTarget: surface});
+            }).catch(() => {
+                if (generation === this.wysiwygGeneration && !this.isRemoved) {
+                    mount.textContent = this.translate(
+                        'editorLoadFailed',
+                        'messages',
+                        'DocumentBuilderTemplate',
+                    );
+                }
+            });
         }
 
         resolveCanvasVariable(identity) {
@@ -948,8 +1010,7 @@ define([
             const input = event.currentTarget;
             const patch = {};
             if (input.dataset.contentSetting === 'text') {
-                patch[location.node.type === 'static-text' ? 'text' : 'content'] =
-                    location.node.type === 'static-text' ? input.value : RichText.fromPlainText(input.value);
+                patch.content = RichText.fromPlainText(input.value);
             } else if (input.dataset.contentSetting === 'level') patch.level = Number(input.value);
             else if (input.dataset.contentSetting === 'alignment' &&
                 ['start', 'center', 'end', 'justify'].includes(input.value)) patch.alignment = input.value;
@@ -1156,7 +1217,7 @@ define([
         syncRichTextSurface(surface) {
             if (!this.editorState || this.isSaveBusy()) return false;
             const location = NodeTree.getLocation(this.editorState.getLayout(), surface.dataset.nodeId);
-            if (!location || !['heading', 'paragraph'].includes(location.node.type)) return false;
+            if (!location || !['heading', 'static-text', 'paragraph'].includes(location.node.type)) return false;
             const content = Wysiwyg.read(surface, location.node.content);
 
             return this.executeCommand(
@@ -1320,6 +1381,8 @@ define([
 
         actionSelectFlowNode(event) {
             event.stopPropagation();
+            if (event.target.closest?.('[data-wysiwyg-mount]') &&
+                this.editorState?.getSelectedId() === event.currentTarget.dataset.nodeId) return;
             if (this.selectNode(event.currentTarget.dataset.nodeId)) this.reRender();
         }
 

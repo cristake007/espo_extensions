@@ -334,10 +334,16 @@
         },
         "staticText": {
             "type": "object", "additionalProperties": false,
-            "required": ["id", "type", "text"],
+            "required": ["id", "type"],
+            "oneOf": [
+                {"required": ["text"], "not": {"required": ["content"]}},
+                {"required": ["content"], "not": {"required": ["text"]}}
+            ],
             "properties": {
                 "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "static-text"},
-                "text": {"type": "string", "maxLength": 10000}, "style": {"$ref": "#/$defs/commonStyle"}, "condition": {"$ref": "#/$defs/visibilityCondition"}
+                "text": {"type": "string", "maxLength": 10000},
+                "content": {"$ref": "#/$defs/paragraphContent"},
+                "style": {"$ref": "#/$defs/commonStyle"}, "condition": {"$ref": "#/$defs/visibilityCondition"}
             }
         },
         "paragraph": {

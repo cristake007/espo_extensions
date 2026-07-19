@@ -100,6 +100,13 @@ define(['document-builder:editor/content/rich-text'], RichText => {
     return Object.freeze({
         read,
 
+        toHtml(content, documentRef = document) {
+            const host = documentRef.createElement('div');
+            RichText.render(host, content, documentRef);
+
+            return host.innerHTML;
+        },
+
         captureRange(host, selection) {
             if (!host || !selection || selection.rangeCount < 1) return null;
             const range = selection.getRangeAt(0);

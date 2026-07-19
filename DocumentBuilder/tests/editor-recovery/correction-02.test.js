@@ -10,8 +10,8 @@ const shell = fs.readFileSync(path.join(sourceRoot, 'views/editor/shell.js'), 'u
 const css = fs.readFileSync(path.join(root,
     'files/client/custom/modules/document-builder/res/css/editor.css'), 'utf8');
 
-assert.match(canvas, /element\.draggable = !preview && !node\.isHeading && !node\.isParagraph/);
-assert.match(canvas, /editor\.contentEditable = preview \? 'false' : 'true'/);
+assert.match(canvas, /element\.draggable = !preview && !node\.isHeading && !node\.isStaticText && !node\.isParagraph/);
+assert.match(canvas, /data\.wysiwygMount|dataset\.wysiwygMount/);
 assert.match(shell, /drop \[data-rich-editor\]/);
 assert.match(shell, /handleRichTextFlowDrop[\s\S]*applyFlowDrop\(target\)/);
 assert.match(shell, /handleRichTextFlowDragOver[\s\S]*is-rich-drop-before/);

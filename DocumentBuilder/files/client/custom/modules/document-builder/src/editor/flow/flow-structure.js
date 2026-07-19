@@ -42,7 +42,9 @@ define([
                 type, content: [{type: 'text', text: 'Heading', marks: []}],
                 level: 2, keepWithNext: true,
             };
-            if (type === 'static-text') return {type, text: 'Text'};
+            if (type === 'static-text') return {
+                type, content: [{type: 'text', text: 'Text', marks: []}],
+            };
             if (type === 'paragraph') return {
                 type, content: [{type: 'text', text: 'Paragraph', marks: []}], alignment: 'start',
             };
@@ -335,8 +337,14 @@ define([
                         errors.push(`${path}.structure`); return;
                     }
                     if (expectedType === 'static-text') {
-                        if (!Json.isPlainObject(node) || Object.keys(node).some(key => !['id', 'type', 'text', 'style', 'condition'].includes(key)) ||
-                            typeof node.text !== 'string' || node.text.length > 10000) errors.push(`${path}.values`);
+                        const hasText = typeof node.text === 'string';
+                        const hasContent = Array.isArray(node.content);
+                        if (!Json.isPlainObject(node) || hasText === hasContent ||
+                            Object.keys(node).some(key => !['id', 'type', 'text', 'content', 'style', 'condition'].includes(key))) {
+                            errors.push(`${path}.structure`);
+                        } else if (hasText) {
+                            if (node.text.length > 10000) errors.push(`${path}.values`);
+                        } else validateInline(node.content, `${path}.content`, true);
                     } else {
                         const extra = expectedType === 'heading' ? ['level', 'keepWithNext', 'style', 'condition'] : ['alignment', 'style', 'condition'];
                         if (!Json.isPlainObject(node) || Object.keys(node).some(key => !['id', 'type', 'content', ...extra].includes(key))) errors.push(`${path}.structure`);

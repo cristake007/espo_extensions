@@ -44,7 +44,7 @@ define(['document-builder:editor/content/rich-text'], RichText => {
             element.style.cssText = node.flowStyle || '';
             element.dataset.nodeId = node.id;
             element.dataset.page = String(node.pageNumber || 1);
-            element.draggable = !preview && !node.isHeading && !node.isParagraph;
+            element.draggable = !preview && !node.isHeading && !node.isStaticText && !node.isParagraph;
             element.tabIndex = preview ? -1 : 0;
             if (!preview) {
                 element.dataset.action = 'selectFlowNode';
@@ -75,17 +75,18 @@ define(['document-builder:editor/content/rich-text'], RichText => {
                 return element;
             }
 
-            if (node.isHeading || node.isParagraph) {
+            if (node.isContent || node.isHeading || node.isStaticText || node.isParagraph) {
+                if (!preview && node.selected) {
+                    const mount = documentRef.createElement('div');
+                    mount.className = 'document-builder-editor__native-wysiwyg';
+                    mount.dataset.wysiwygMount = '';
+                    mount.dataset.nodeId = node.id;
+                    element.append(mount);
+
+                    return element;
+                }
                 const editor = documentRef.createElement(node.isHeading ? 'span' : 'div');
                 editor.className = 'document-builder-editor__rich-editor';
-                if (!preview) {
-                    editor.dataset.richEditor = '';
-                    editor.dataset.nodeId = node.id;
-                }
-                editor.contentEditable = preview ? 'false' : 'true';
-                editor.draggable = false;
-                editor.spellcheck = true;
-                if (!preview) editor.setAttribute('aria-label', translate('Edit Content', 'labels'));
                 if (node.isEmpty && !preview) {
                     element.classList.add('is-sample');
                     editor.dataset.placeholder = translate(node.sampleKey, 'messages');
@@ -93,8 +94,6 @@ define(['document-builder:editor/content/rich-text'], RichText => {
                     RichText.render(editor, node.content, documentRef, variableResolver);
                 }
                 element.append(editor);
-            } else if (node.isStaticText) {
-                element.textContent = node.text;
             } else if (node.isVariable) {
                 element.textContent = node.variableText;
             } else if (node.isDivider) {

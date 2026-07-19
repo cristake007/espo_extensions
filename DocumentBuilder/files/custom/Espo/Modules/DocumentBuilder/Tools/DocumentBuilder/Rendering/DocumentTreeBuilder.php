@@ -203,7 +203,7 @@ final readonly class DocumentTreeBuilder
             $context,
             $warnings,
         );
-        if ($node['type'] === 'static-text') {
+        if ($node['type'] === 'static-text' && is_string($node['text'] ?? null)) {
             $inline[] = new ResolvedInline('text', $node['text']);
         }
         if ($node['type'] === 'variable') {

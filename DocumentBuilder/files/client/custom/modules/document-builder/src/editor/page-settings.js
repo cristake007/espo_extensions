@@ -1,6 +1,22 @@
-define(['document-builder:editor/state/json'], (Json) => {
+define([
+    'document-builder:editor/state/json',
+    'document-builder:editor/content/rich-text',
+], (Json, RichText) => {
+    const normalizeStaticText = node => {
+        if (!Json.isPlainObject(node)) return;
+        if (node.type === 'static-text' && typeof node.text === 'string' && !Array.isArray(node.content)) {
+            node.content = RichText.fromPlainText(node.text);
+            delete node.text;
+        }
+        (node.children || []).forEach(normalizeStaticText);
+    };
+
     const normalize = layout => {
         const result = Json.clone(layout);
+
+        ['header', 'sections', 'footer'].forEach(region => {
+            (result[region] || []).forEach(normalizeStaticText);
+        });
 
         if (!Json.isPlainObject(result.document) ||
             !Json.isPlainObject(result.document.defaults)) {

@@ -84,6 +84,7 @@ node tests/editor-recovery/correction-02.test.js
 node tests/editor-recovery/correction-03.test.js
 node tests/editor-recovery/correction-04.test.js
 node tests/editor-recovery/correction-05.test.js
+node tests/editor-recovery/correction-06.test.js
 ```
 
 Package inventory is checked separately after building the extension ZIP:

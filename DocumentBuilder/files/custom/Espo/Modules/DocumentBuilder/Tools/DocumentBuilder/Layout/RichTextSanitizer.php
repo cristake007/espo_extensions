@@ -34,7 +34,7 @@ final readonly class RichTextSanitizer
             $node['text'] = $this->normalizeText($node['text']);
         }
 
-        if (in_array($node['type'] ?? null, ['heading', 'paragraph'], true) &&
+        if (in_array($node['type'] ?? null, ['heading', 'static-text', 'paragraph'], true) &&
             is_array($node['content'] ?? null) && array_is_list($node['content'])) {
             foreach ($node['content'] as $index => $item) {
                 $node['content'][$index] = $this->normalizeInline($item);

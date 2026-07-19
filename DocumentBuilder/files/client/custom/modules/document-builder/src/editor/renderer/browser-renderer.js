@@ -43,6 +43,9 @@ define([
         }
         return item.type === 'text' ? item.text : '';
     }).join('');
+    const contentOf = node => Array.isArray(node.content) ? node.content :
+        node.type === 'static-text' && typeof node.text === 'string' ?
+            [{type: 'text', text: node.text, marks: []}] : [];
     const bounded = (value, minimum, maximum, fallback) =>
         Number.isFinite(value) && value >= minimum && value <= maximum ? value : fallback;
 
@@ -100,7 +103,8 @@ define([
                 const lineStyle = ['solid', 'dashed', 'dotted', 'double'].includes(node.lineStyle) ?
                     node.lineStyle : 'solid';
                 const lineColor = /^#[0-9A-Fa-f]{6}$/.test(node.color || '') ? node.color : '#666666';
-                const plainText = node.type === 'static-text' ? node.text : textFromContent(node.content, previewValues);
+                const content = contentOf(node);
+                const plainText = textFromContent(content, previewValues);
                 const variableText = node.type === 'variable' ?
                     previewText(previewValues.get(previewKey(node.identity))) ?? `{{${node.label}}}` : null;
                 const isContent = CONTENT_TYPES.includes(node.type);
@@ -127,6 +131,7 @@ define([
 
                 const projection = {
                     ...Json.clone(node),
+                    content: Json.clone(content),
                     children: [],
                     region,
                     parentId,
@@ -207,8 +212,7 @@ define([
                 return bounded(node.minHeight?.value, 0, 2000, 10) +
                     (node.margin?.top?.value || 0) + (node.margin?.bottom?.value || 0);
             }
-            const text = node.type === 'static-text' ? node.text :
-                node.type === 'variable' ? node.label : textFromContent(node.content);
+            const text = node.type === 'variable' ? node.label : textFromContent(contentOf(node));
 
             return Math.max(8, Math.ceil(Math.max(1, text.length) / 70) * 6);
         }
