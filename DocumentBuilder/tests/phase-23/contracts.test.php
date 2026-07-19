@@ -9,6 +9,11 @@ $validator = file_get_contents("$client/src/editor/validation/editor-validator.j
 $shell = file_get_contents("$client/src/views/editor/shell.js");
 $template = file_get_contents("$client/res/templates/editor/shell.tpl");
 $css = file_get_contents("$client/res/css/editor.css");
+$detailLayout = json_decode(
+    file_get_contents("$root/files/custom/Espo/Modules/DocumentBuilder/Resources/layouts/DocumentBuilderTemplate/detail.json"),
+    true,
+    flags: JSON_THROW_ON_ERROR,
+);
 Assert::contains('Json.clone(layout)', $renderer, 'The browser renderer must read a detached layout.');
 Assert::isFalse(str_contains($renderer, 'EditorState'), 'The browser renderer must not own editor state.');
 Assert::contains("severity: 'error'", $validator, 'Blocking validation severity is missing.');
@@ -19,4 +24,14 @@ Assert::contains('document-builder-editor__node-badge', $template, 'Type badges 
 Assert::contains('fa-times-circle', $template, 'Errors need a non-color indication.');
 Assert::contains('confirmRemoveComplexNode', $shell, 'Complex deletion must be confirmed.');
 Assert::contains(':focus-visible', $css, 'Keyboard focus styling is missing.');
+foreach ($detailLayout as $panelIndex => $panel) {
+    foreach (($panel['rows'] ?? []) as $rowIndex => $row) {
+        foreach ($row as $cellIndex => $cell) {
+            Assert::isTrue(
+                $cell === false || is_array($cell),
+                "Detail layout panel $panelIndex row $rowIndex cell $cellIndex must be a field definition or false.",
+            );
+        }
+    }
+}
 echo "Phase 23 renderer, validation, navigation, deletion, and accessibility contracts passed.\n";

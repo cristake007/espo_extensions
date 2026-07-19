@@ -2,7 +2,7 @@
     {
         "rows": [
             [{"name": "name"}, {"name": "status"}],
-            [{"name": "currentPublishedVersion"}, null],
+            [{"name": "currentPublishedVersion"}, false],
             [{"name": "category"}, {"name": "isActive"}],
             [{"name": "description", "fullWidth": true}],
             [{"name": "sourceType"}, {"name": "entityType"}],
