@@ -9,6 +9,7 @@ $validator = file_get_contents("$client/src/editor/validation/editor-validator.j
 $shell = file_get_contents("$client/src/views/editor/shell.js");
 $template = file_get_contents("$client/res/templates/editor/shell.tpl");
 $css = file_get_contents("$client/res/css/editor.css");
+$canvas = file_get_contents("$client/src/editor/canvas/document-canvas.js");
 $detailLayout = json_decode(
     file_get_contents("$root/files/custom/Espo/Modules/DocumentBuilder/Resources/layouts/DocumentBuilderTemplate/detail.json"),
     true,
@@ -19,8 +20,8 @@ Assert::isFalse(str_contains($renderer, 'EditorState'), 'The browser renderer mu
 Assert::contains("severity: 'error'", $validator, 'Blocking validation severity is missing.');
 Assert::contains("severity: 'warning'", $validator, 'Warning validation severity is missing.');
 Assert::contains('data-action="focusValidationIssue"', $template, 'Validation issues must support focus navigation.');
-Assert::contains('aria-keyshortcuts="ArrowUp ArrowDown Home End"', $template, 'Canvas keyboard traversal is not exposed.');
-Assert::contains('document-builder-editor__node-badge', $template, 'Type badges are missing.');
+Assert::contains("'aria-keyshortcuts', 'ArrowUp ArrowDown Home End'", $canvas, 'Canvas keyboard traversal is not exposed.');
+Assert::isFalse(str_contains($template, 'document-builder-editor__node-badge'), 'Technical type badges remain visible.');
 Assert::contains('fa-times-circle', $template, 'Errors need a non-color indication.');
 Assert::contains('confirmRemoveComplexNode', $shell, 'Complex deletion must be confirmed.');
 Assert::contains(':focus-visible', $css, 'Keyboard focus styling is missing.');

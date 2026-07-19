@@ -41,13 +41,14 @@ assert.equal(result.rows.find(row => row.id === 'emptyParagraph').isEmpty, true)
 assert.equal(result.rows.find(row => row.id === 'emptyParagraph').sampleKey, 'editorParagraphSample');
 assert.equal(result.rows.find(row => row.id === 'pageBreak').startsPage, true);
 assert.equal(result.rows.find(row => row.id === 'text').pageNumber, 2);
-assert.equal(result.rows.find(row => row.id === 'section').badgeLabel, 'Structure');
-assert.equal(result.rows.find(row => row.id === 'heading').badgeLabel, 'Element');
-assert.equal(result.rows.find(row => row.id === 'heading').iconClass, 'fa-heading');
-assert.equal(result.rows.find(row => row.id === 'heading').depthLabel, 2);
-assert.equal(result.rows.find(row => row.id === 'heading').hasParent, true);
-assert.equal(result.rows.find(row => row.id === 'section').childCount, 4);
-assert.match(result.rows.find(row => row.id === 'heading').flowStyle, /--document-builder-margin-left: 0px/);
+assert.equal(result.tree[0].id, 'section');
+assert.deepEqual(result.tree[0].children.map(node => node.id), [
+    'heading', 'emptyParagraph', 'pageBreak', 'text',
+]);
+assert.equal('badgeLabel' in result.rows.find(row => row.id === 'section'), false);
+assert.equal('depthLabel' in result.rows.find(row => row.id === 'heading'), false);
+assert.equal('childCount' in result.rows.find(row => row.id === 'section'), false);
+assert.doesNotMatch(result.rows.find(row => row.id === 'heading').flowStyle, /document-builder-depth/);
 const validation = new EditorValidator().validate(layout);
 assert.equal(validation.blocking, false);
 assert.equal(validation.warningCount, 1);
@@ -58,4 +59,4 @@ const invalidValidation = new EditorValidator().validate(invalid);
 assert.equal(invalidValidation.blocking, true);
 assert.equal(invalidValidation.errorCount > 0, true);
 assert.equal(invalidValidation.issues.find(issue => issue.severity === 'error').nodeId, 'heading');
-console.log('Phase 23 renderer purity, samples, page flow, badges, and actionable severity tests passed.');
+console.log('Phase 23 renderer purity, nested projection, samples, page flow, and actionable severity tests passed.');

@@ -20,17 +20,6 @@ define([
         'static-text': 'editorStaticTextSample',
         paragraph: 'editorParagraphSample',
     });
-    const ICONS = Object.freeze({
-        'flow-section': 'fa-layer-group',
-        'flow-container': 'fa-object-group',
-        heading: 'fa-heading',
-        'static-text': 'fa-font',
-        paragraph: 'fa-align-left',
-        variable: 'fa-database',
-        divider: 'fa-minus',
-        spacer: 'fa-arrows-alt-v',
-        'page-break': 'fa-cut',
-    });
     const previewKey = identity => JSON.stringify(identity || {});
     const previewText = value => {
         if (!value) return null;
@@ -72,6 +61,7 @@ define([
             const source = Json.clone(layout);
             const locations = NodeTree.index(source);
             const rows = [];
+            const tree = [];
             const hidden = new Set();
             const pageHeight = this.printableHeight(source.document);
             let pageNumber = 1;
@@ -89,7 +79,7 @@ define([
             }
 
             const visit = (node, depth, region, parentId, index) => {
-                if (hidden.has(node.id)) return;
+                if (hidden.has(node.id)) return null;
                 const location = locations.get(node.id);
                 const estimate = this.estimateHeight(node);
                 const explicitBreak = node.type === 'page-break' ||
@@ -104,10 +94,7 @@ define([
 
                 const px = value => this.pageGeometry.millimetresToPixels(value, zoom);
                 const effectiveStyle = this.styleResolver.resolve(source, node.id);
-                const flowStyle = [
-                    `--document-builder-depth: ${depth}`,
-                    '--document-builder-margin-left: 0px',
-                ];
+                const flowStyle = [];
                 const canContain = ['flow-section', 'flow-container'].includes(node.type);
                 const orientation = node.orientation === 'vertical' ? 'vertical' : 'horizontal';
                 const lineStyle = ['solid', 'dashed', 'dotted', 'double'].includes(node.lineStyle) ?
@@ -134,19 +121,14 @@ define([
                 }
                 flowStyle.push(this.styleResolver.toCss(effectiveStyle, px));
 
-                rows.push({
+                const projection = {
                     ...Json.clone(node),
-                    depth,
+                    children: [],
                     region,
                     parentId,
                     index,
                     selected: node.id === selectedId,
                     label: LABELS[node.type],
-                    badgeLabel: canContain ? 'Structure' : 'Element',
-                    iconClass: ICONS[node.type],
-                    depthLabel: depth + 1,
-                    hasParent: parentId !== null,
-                    childCount: Array.isArray(node.children) ? node.children.length : 0,
                     pageNumber,
                     startsPage: explicitBreak || automaticBreak,
                     automaticPageBreak: automaticBreak,
@@ -178,18 +160,25 @@ define([
                     ]).join('; ') : '',
                     canMoveUp: location.index > 0,
                     canMoveDown: location.index < location.container.length - 1,
-                });
+                };
+                rows.push(projection);
 
                 if (node.type !== 'page-break') occupiedHeight += estimate;
-                (node.children || []).forEach((child, childIndex) => {
-                    visit(child, depth + 1, region, node.id, childIndex);
-                });
+                projection.children = (node.children || []).map((child, childIndex) =>
+                    visit(child, depth + 1, region, node.id, childIndex)
+                ).filter(Boolean);
+
+                return projection;
             };
 
-            source.sections.forEach((section, index) => visit(section, 0, 'sections', null, index));
+            source.sections.forEach((section, index) => {
+                const projection = visit(section, 0, 'sections', null, index);
+                if (projection) tree.push(projection);
+            });
 
             return Object.freeze({
                 rows,
+                tree,
                 pageCount: pageNumber,
                 nodeCount: rows.length,
             });

@@ -14,6 +14,7 @@ define([
     'document-builder:editor/content/rich-text',
     'document-builder:editor/style/style-resolver',
     'document-builder:editor/renderer/browser-renderer',
+    'document-builder:editor/canvas/document-canvas',
     'document-builder:editor/validation/editor-validator',
     'document-builder:editor/commands/add-flow-node',
     'document-builder:editor/commands/move-flow-node',
@@ -44,6 +45,7 @@ define([
     RichText,
     StyleResolver,
     BrowserRenderer,
+    DocumentCanvas,
     EditorValidator,
     AddFlowNodeCommand,
     MoveFlowNodeCommand,
@@ -151,6 +153,7 @@ define([
                 styleResolver: this.styleResolver,
                 pageGeometry: this.pageGeometry,
             });
+            this.documentCanvas = new DocumentCanvas();
             this.editorValidator = new EditorValidator(this.customPageSizes, this.flowLimits);
             this.entityCatalogueApi = new EntityCatalogueApi();
             this.entityMetadataApi = new EntityMetadataApi();
@@ -228,7 +231,11 @@ define([
 
         getFlowData() {
             if (!this.editorState) {
-                return {flowRows: [], selectedFlowNode: null, flowBreadcrumbs: []};
+                return {
+                    selectedFlowNode: null,
+                    flowBreadcrumbs: [],
+                    approximatedPageCount: 0,
+                };
             }
 
             const layout = this.editorState.getLayout();
@@ -240,7 +247,6 @@ define([
                 previewValues: this.editorState.isDirty() ? new Map() : this.previewValues,
                 evaluateConditions: this.previewStatus === 'ready' && !this.editorState.isDirty(),
             });
-            const rows = rendered.rows;
             const selected = selectedId ? locations.get(selectedId) : null;
             const effectiveStyle = selected ? this.styleResolver.resolve(layout, selectedId) : null;
             const condition = selected?.node.condition || null;
@@ -249,8 +255,6 @@ define([
             }];
 
             return {
-                flowRows: rows,
-                hasFlowRows: rows.length > 0,
                 approximatedPageCount: rendered.pageCount,
                 selectedFlowNode: selected ? {
                     ...selected.node,
@@ -800,50 +804,40 @@ define([
         renderContentNodes() {
             if (!this.editorState || !this.element) return;
             const layout = this.editorState.getLayout();
-            const locations = NodeTree.index(layout);
             const rendered = this.browserRenderer.render(layout, {
                 selectedId: this.editorState.getSelectedId(),
                 zoom: this.zoom,
                 previewValues: this.editorState.isDirty() ? new Map() : this.previewValues,
                 evaluateConditions: this.previewStatus === 'ready' && !this.editorState.isDirty(),
             });
-            const rows = new Map(rendered.rows.map(row => [row.id, row]));
-            this.element.querySelectorAll('[data-rich-content-id]').forEach(host => {
-                const node = locations.get(host.dataset.richContentId)?.node;
-                const row = rows.get(host.dataset.richContentId);
-                if (!node) return;
-                host.classList.toggle('is-sample', Boolean(row?.isEmpty));
-                if (row?.isEmpty) {
-                    host.textContent = this.translate(
-                        row.sampleKey,
-                        'messages',
+            this.documentCanvas.render(
+                this.element.querySelector('[data-document-canvas]'),
+                rendered.tree,
+                {
+                    translate: (key, category) => this.translate(
+                        key,
+                        category,
                         'DocumentBuilderTemplate',
-                    );
-                    host.setAttribute('aria-label', this.translate(
-                        'editorEmptyContentLabel',
-                        'labels',
-                        'DocumentBuilderTemplate',
-                    ));
+                    ),
+                    variableResolver: identity => this.resolveCanvasVariable(identity),
+                },
+            );
+        }
 
-                    return;
-                }
-                host.removeAttribute('aria-label');
-                if (node.type === 'static-text') host.textContent = node.text;
-                else RichText.render(host, node.content, document, identity => {
-                    const preview = this.editorState.isDirty() ? null :
-                        this.previewValues.get(JSON.stringify(identity || {}));
-                    if (!preview) return null;
-                    let text = preview.value;
-                    if (preview.state === 'forbidden') text = '[restricted]';
-                    else if (preview.state === 'missing') text = '[missing]';
-                    else if (preview.state === 'invalid') text = '[invalid]';
-                    else if (Array.isArray(text)) text = text.join(', ');
-                    else if (text && typeof text === 'object') {
-                        text = preview.type === 'currency' ? `${text.amount} ${text.currency}` : '[invalid]';
-                    }
-                    return {text: String(text ?? '[missing]'), state: preview.state, origin: preview.origin};
-                });
-            });
+        resolveCanvasVariable(identity) {
+            const preview = this.editorState?.isDirty() ? null :
+                this.previewValues.get(JSON.stringify(identity || {}));
+            if (!preview) return null;
+            let text = preview.value;
+            if (preview.state === 'forbidden') text = '[restricted]';
+            else if (preview.state === 'missing') text = '[missing]';
+            else if (preview.state === 'invalid') text = '[invalid]';
+            else if (Array.isArray(text)) text = text.join(', ');
+            else if (text && typeof text === 'object') {
+                text = preview.type === 'currency' ? `${text.amount} ${text.currency}` : '[invalid]';
+            }
+
+            return {text: String(text ?? '[missing]'), state: preview.state, origin: preview.origin};
         }
 
         selectedContentNode() {
@@ -1012,6 +1006,7 @@ define([
         }
 
         actionSelectFlowNode(event) {
+            event.stopPropagation();
             if (this.selectNode(event.currentTarget.dataset.nodeId)) this.reRender();
         }
 
@@ -1026,6 +1021,7 @@ define([
         }
 
         handleNodeKeydown(event) {
+            event.stopPropagation();
             if (!['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
             const controls = [...this.element.querySelectorAll(
                 '[data-action="selectFlowNode"]',
@@ -1209,6 +1205,7 @@ define([
         }
 
         handleFlowDragStart(event) {
+            event.stopPropagation();
             const source = event.currentTarget;
             const dataTransfer = event.originalEvent?.dataTransfer;
 
@@ -1217,6 +1214,7 @@ define([
             this.flowDrag = source.dataset.libraryType ?
                 {kind: 'library', type: source.dataset.libraryType} :
                 {kind: 'node', nodeId: source.dataset.nodeId};
+            this.element.classList.add('is-dragging');
             dataTransfer.effectAllowed = this.flowDrag.kind === 'library' ? 'copy' : 'move';
             dataTransfer.setData('text/plain', JSON.stringify(this.flowDrag));
         }
@@ -1279,6 +1277,7 @@ define([
                 this.showInvalidFlowDrop();
             } finally {
                 this.flowDrag = null;
+                this.element.classList.remove('is-dragging');
             }
         }
 
@@ -1301,8 +1300,10 @@ define([
             };
         }
 
-        handleFlowDragEnd() {
+        handleFlowDragEnd(event) {
+            event.stopPropagation();
             this.flowDrag = null;
+            this.element.classList.remove('is-dragging');
             this.element.querySelectorAll('.is-drag-over').forEach(element => {
                 element.classList.remove('is-drag-over');
             });

@@ -251,40 +251,7 @@
                             {{#if visibleOnCanvas}}<span>{{text}}</span>{{#if includePageNumber}}<span> · 1</span>{{/if}}{{else}}<span>{{translate 'Hidden on First Page' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
                         </div>{{/if}}
                         {{/with}}
-                        {{#if hasFlowRows}}
-                        <div class="document-builder-editor__flow-tree">
-                            {{#each flowRows}}
-                            <div class="document-builder-editor__drop" data-flow-drop="before" data-drop-region="{{region}}" data-drop-parent="{{parentId}}" data-drop-index="{{index}}" aria-hidden="true"></div>
-                            {{#if startsPage}}<div class="document-builder-editor__page-flow-marker" role="separator"><span>{{translate 'Approximate Page' category='labels' scope='DocumentBuilderTemplate'}} {{pageNumber}}</span></div>{{/if}}
-                            <article class="document-builder-editor__flow-node {{#if selected}}is-selected{{/if}} {{#if canContain}}is-structure{{else}}is-element{{/if}} {{#if isSection}}is-section{{/if}} {{#if isContainer}}is-container{{/if}} {{#if hasParent}}is-nested{{/if}}" style="{{flowStyle}}" data-node-id="{{id}}" draggable="true" data-page="{{pageNumber}}" data-depth="{{depth}}">
-                                <button type="button" class="document-builder-editor__flow-select" data-action="selectFlowNode" data-node-id="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}" aria-label="{{translate label category='labels' scope='DocumentBuilderTemplate'}}" aria-keyshortcuts="ArrowUp ArrowDown Home End">
-                                    <span class="document-builder-editor__node-icon fas {{iconClass}}" aria-hidden="true"></span>
-                                    <span>{{translate label category='labels' scope='DocumentBuilderTemplate'}}</span>
-                                    <span class="document-builder-editor__level-badge">L{{depthLabel}}</span>
-                                    {{#if canContain}}<span class="document-builder-editor__child-count" title="{{translate 'Children' category='labels' scope='DocumentBuilderTemplate'}}"><span class="fas fa-sitemap" aria-hidden="true"></span> {{childCount}}</span>{{/if}}
-                                    <span class="document-builder-editor__node-badge">{{translate badgeLabel category='labels' scope='DocumentBuilderTemplate'}}</span>
-                                </button>
-                                {{#if isHeading}}<div class="document-builder-editor__content document-builder-editor__content--heading" data-rich-content-id="{{id}}"></div>{{/if}}
-                                {{#if isStaticText}}<div class="document-builder-editor__content" data-rich-content-id="{{id}}"></div>{{/if}}
-                                {{#if isParagraph}}<div class="document-builder-editor__content document-builder-editor__content--paragraph" data-rich-content-id="{{id}}"></div>{{/if}}
-                                {{#if isVariable}}<div class="document-builder-editor__content document-builder-editor__content--variable">{{variableText}}</div>{{/if}}
-                                {{#if isDivider}}<div class="document-builder-editor__divider document-builder-editor__divider--{{dividerOrientation}}" style="{{dividerStyle}}" aria-hidden="true"></div>{{/if}}
-                                {{#if isSpacer}}<div class="document-builder-editor__spacer-marker" aria-label="{{translate 'Spacer' category='labels' scope='DocumentBuilderTemplate'}}"></div>{{/if}}
-                                {{#if isPageBreak}}<div class="document-builder-editor__page-break" role="separator"><span>{{translate 'Manual Page Break' category='labels' scope='DocumentBuilderTemplate'}}</span></div>{{/if}}
-                                {{#if canContain}}
-                                <div class="document-builder-editor__drop document-builder-editor__drop--inside" data-flow-drop="inside" data-drop-parent="{{id}}" data-drop-index="" aria-label="{{translate 'Drop Inside' category='labels' scope='DocumentBuilderTemplate'}}"></div>
-                                {{/if}}
-                            </article>
-                            {{/each}}
-                        </div>
-                        {{else}}
-                        <div class="document-builder-editor__empty" data-flow-drop="root" data-drop-region="sections" data-drop-parent="" data-drop-index="">
-                            <span class="far fa-file-alt" aria-hidden="true"></span>
-                            <h3>{{translate 'editorEmptyCanvas' category='messages' scope='DocumentBuilderTemplate'}}</h3>
-                            <p class="text-muted">{{translate 'editorFlowEmpty' category='messages' scope='DocumentBuilderTemplate'}}</p>
-                        </div>
-                        {{/if}}
-                        <div class="document-builder-editor__drop document-builder-editor__drop--root" data-flow-drop="root" data-drop-region="sections" data-drop-parent="" data-drop-index="" aria-label="{{translate 'Drop Section' category='labels' scope='DocumentBuilderTemplate'}}"></div>
+                        <div class="document-builder-editor__flow-tree" data-document-canvas></div>
                     </div>
                 </div>
             </section>

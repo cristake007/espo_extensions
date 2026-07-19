@@ -12,9 +12,10 @@ $module = "$root/files/custom/Espo/Modules/DocumentBuilder";
 $shell = file_get_contents("$client/src/views/editor/shell.js");
 $template = file_get_contents("$client/res/templates/editor/shell.tpl");
 $flow = file_get_contents("$client/src/editor/flow/flow-structure.js");
+$canvas = file_get_contents("$client/src/editor/canvas/document-canvas.js");
 $provider = file_get_contents("$module/Tools/DocumentBuilder/Draft/ConfiguredLayoutProcessorProvider.php");
 
-foreach (compact('shell', 'template', 'flow', 'provider') as $label => $source) {
+foreach (compact('shell', 'template', 'flow', 'canvas', 'provider') as $label => $source) {
     Assert::isTrue(is_string($source), "Could not read Phase 19 $label source.");
 }
 
@@ -25,10 +26,11 @@ Assert::contains('new MoveFlowNodeCommand', $shell, 'Flow reordering must use co
 Assert::contains('new UpdateNodeCommand', $shell, 'Flow styling must use command history.');
 Assert::contains('handleFlowDragEnd', $shell, 'Canceled drags must clear transient state.');
 Assert::contains('event.originalEvent?.dataTransfer', $shell, 'jQuery drag events must use the native data-transfer object.');
-Assert::contains('data-flow-drop="inside"', $template, 'Nested container drop targets are missing.');
+Assert::contains('renderChildren', $canvas, 'Nested container rendering is missing.');
+Assert::contains('data-document-canvas', $template, 'The recursive document canvas host is missing.');
 Assert::contains('flowBreadcrumbs', $template, 'Hierarchy breadcrumbs are missing.');
-Assert::contains('document-builder-editor__level-badge', $template, 'Visible nesting-level indicators are missing.');
-Assert::contains('document-builder-editor__child-count', $template, 'Container child counts are missing.');
+Assert::isFalse(str_contains($template, 'document-builder-editor__level-badge'), 'Technical nesting levels remain visible.');
+Assert::isFalse(str_contains($template, 'document-builder-editor__child-count'), 'Technical child counts remain visible.');
 Assert::contains('data-flow-setting="marginLeft"', $template, 'Per-edge margin controls are missing.');
 Assert::contains('data-flow-setting="paddingRight"', $template, 'Per-edge padding controls are missing.');
 Assert::contains('data-flow-setting="keepTogether"', $template, 'Keep-together control is missing.');
