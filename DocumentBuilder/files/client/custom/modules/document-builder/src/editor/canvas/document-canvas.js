@@ -54,6 +54,7 @@ define(['document-builder:editor/content/rich-text'], RichText => {
             element.setAttribute('aria-label', translate(node.label, 'labels'));
 
             if (CONTAINER_TYPES.includes(node.type)) {
+                if (!preview) element.dataset.flowContainerDrop = '';
                 this.renderChildren(
                     element,
                     node.children || [],

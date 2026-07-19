@@ -136,9 +136,9 @@ define([
             'click [data-action="removeConditionRule"]': 'actionRemoveConditionRule',
             'click [data-action="removeCondition"]': 'actionRemoveCondition',
             'dragstart [draggable="true"]': 'handleFlowDragStart',
-            'dragover [data-flow-drop]': 'handleFlowDragOver',
-            'dragleave [data-flow-drop]': 'handleFlowDragLeave',
-            'drop [data-flow-drop]': 'handleFlowDrop',
+            'dragover [data-flow-drop], [data-flow-container-drop]': 'handleFlowDragOver',
+            'dragleave [data-flow-drop], [data-flow-container-drop]': 'handleFlowDragLeave',
+            'drop [data-flow-drop], [data-flow-container-drop]': 'handleFlowDrop',
             'dragend [draggable="true"]': 'handleFlowDragEnd',
             'mouseover [data-document-canvas]': 'handleCanvasHover',
             'focusin [data-document-canvas]': 'handleCanvasHover',
@@ -1600,16 +1600,19 @@ define([
             if (!event.currentTarget.classList.contains('is-compatible')) return;
 
             event.preventDefault();
+            event.stopPropagation();
             dataTransfer.dropEffect = this.flowDrag.kind === 'node' ? 'move' : 'copy';
             event.currentTarget.classList.add('is-drag-over');
         }
 
         handleFlowDragLeave(event) {
+            if (event.relatedTarget && event.currentTarget.contains(event.relatedTarget)) return;
             event.currentTarget.classList.remove('is-drag-over');
         }
 
         handleFlowDrop(event) {
             event.preventDefault();
+            event.stopPropagation();
             event.currentTarget.classList.remove('is-drag-over');
 
             if (!this.flowDrag || !this.editorState) return;
@@ -1647,6 +1650,17 @@ define([
         }
 
         flowDropTarget(element) {
+            if (element.dataset.flowContainerDrop !== undefined) {
+                const location = NodeTree.getLocation(
+                    this.editorState.getLayout(),
+                    element.dataset.nodeId,
+                );
+
+                return {
+                    parentId: element.dataset.nodeId,
+                    index: location?.node.children?.length || 0,
+                };
+            }
             const parentId = element.dataset.dropParent || null;
             const index = element.dataset.dropIndex === '' ? null : Number(element.dataset.dropIndex);
 
@@ -1670,7 +1684,8 @@ define([
                 NodeTree.getLocation(layout, this.flowDrag.nodeId)?.node;
             if (!node) return;
 
-            this.element.querySelectorAll('[data-flow-drop]').forEach(element => {
+            this.element.querySelectorAll('[data-flow-drop], [data-flow-container-drop]')
+                .forEach(element => {
                 element.classList.remove('is-compatible', 'is-drag-over');
                 try {
                     this.flowStructure.assertTarget(
@@ -1681,7 +1696,7 @@ define([
                     );
                     element.classList.add('is-compatible');
                 } catch (error) {}
-            });
+                });
         }
 
         cancelFlowDrag() {

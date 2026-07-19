@@ -471,6 +471,11 @@
     background: rgb(51 122 183 / 10%);
 }
 
+.document-builder-editor.is-dragging [data-flow-container-drop].is-compatible.is-drag-over {
+    box-shadow: inset 0 0 0 2px var(--brand-primary, #337ab7);
+    background: rgb(51 122 183 / 6%);
+}
+
 .document-builder-editor__hover-toolbar {
     position: absolute;
     z-index: 4;
