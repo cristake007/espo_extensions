@@ -173,20 +173,29 @@ Assert::same($defaultFixture, LayoutDefaults::create(), 'Repeated canonical defa
 
 $schema = $resourceLoader->json('jsonSchema/document-builder-layout-v1.json');
 Assert::same(1, $schema['properties']['schemaVersion']['const'] ?? null, 'Schema v1 must reject future versions.');
-Assert::same(0, $schema['properties']['capabilities']['maxItems'] ?? null, 'Phase 08 capabilities must be closed.');
+Assert::same(
+    ['layout.flow'],
+    $schema['properties']['capabilities']['items']['enum'] ?? null,
+    'Only the implemented flow capability may be stored.',
+);
 Assert::same(
     '#/$defs/noSourceDescriptor',
     $schema['properties']['dataSource']['$ref'] ?? null,
     'Unsupported source descriptors must not be accepted by the root schema.',
 );
 
-foreach (['header', 'sections', 'footer'] as $region) {
+foreach (['header', 'footer'] as $region) {
     Assert::same(
         '#/$defs/emptyNodeSequence',
         $schema['properties'][$region]['$ref'] ?? null,
         "Phase 08 must reject unimplemented nodes in $region.",
     );
 }
+Assert::same(
+    '#/$defs/flowSection',
+    $schema['properties']['sections']['items']['$ref'] ?? null,
+    'The sections sequence must accept only implemented flow sections.',
+);
 
 foreach ([
     'stableId',
@@ -196,6 +205,8 @@ foreach ([
     'entitySourceDescriptor',
     'spreadsheetSourceDescriptor',
     'sourceDescriptor',
+    'flowSection',
+    'flowContainer',
 ] as $definition) {
     Assert::isTrue(isset($schema['$defs'][$definition]), "Schema extension point is missing: $definition.");
 }

@@ -17,12 +17,17 @@
         "schemaVersion": {"const": 1},
         "capabilities": {
             "type": "array",
-            "maxItems": 0
+            "uniqueItems": true,
+            "items": {"enum": ["layout.flow"]}
         },
         "document": {"$ref": "#/$defs/document"},
         "dataSource": {"$ref": "#/$defs/noSourceDescriptor"},
         "header": {"$ref": "#/$defs/emptyNodeSequence"},
-        "sections": {"$ref": "#/$defs/emptyNodeSequence"},
+        "sections": {
+            "type": "array",
+            "maxItems": 250,
+            "items": {"$ref": "#/$defs/flowSection"}
+        },
         "footer": {"$ref": "#/$defs/emptyNodeSequence"}
     },
     "$defs": {
@@ -127,6 +132,46 @@
                 "opacity": {"type": "number", "minimum": 0, "maximum": 1},
                 "horizontalAlignment": {"enum": ["start", "center", "end", "stretch"]},
                 "verticalAlignment": {"enum": ["start", "center", "end"]}
+            }
+        },
+        "flowContainer": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "id", "type", "children", "margin", "padding", "minHeight", "keepTogether"
+            ],
+            "properties": {
+                "id": {"$ref": "#/$defs/stableId"},
+                "type": {"const": "flow-container"},
+                "children": {
+                    "type": "array",
+                    "items": {"$ref": "#/$defs/flowContainer"}
+                },
+                "margin": {"$ref": "#/$defs/boxEdges"},
+                "padding": {"$ref": "#/$defs/boxEdges"},
+                "minHeight": {"$ref": "#/$defs/millimetres"},
+                "keepTogether": {"type": "boolean"}
+            }
+        },
+        "flowSection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "id", "type", "children", "margin", "padding", "minHeight",
+                "keepTogether", "startNewPage"
+            ],
+            "properties": {
+                "id": {"$ref": "#/$defs/stableId"},
+                "type": {"const": "flow-section"},
+                "children": {
+                    "type": "array",
+                    "items": {"$ref": "#/$defs/flowContainer"}
+                },
+                "margin": {"$ref": "#/$defs/boxEdges"},
+                "padding": {"$ref": "#/$defs/boxEdges"},
+                "minHeight": {"$ref": "#/$defs/millimetres"},
+                "keepTogether": {"type": "boolean"},
+                "startNewPage": {"type": "boolean"}
             }
         },
         "page": {

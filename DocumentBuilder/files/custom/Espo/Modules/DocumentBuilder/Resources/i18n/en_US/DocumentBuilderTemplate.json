@@ -33,7 +33,17 @@
         "Locale": "Locale",
         "Timezone": "Timezone",
         "PDF Title Pattern": "PDF Title Pattern",
-        "Filename Pattern": "Filename Pattern"
+        "Filename Pattern": "Filename Pattern",
+        "Flow Section": "Flow Section",
+        "Flow Container": "Flow Container",
+        "Drop Inside": "Drop Inside",
+        "Drop Section": "Drop Section",
+        "Hierarchy": "Hierarchy",
+        "Margin (mm)": "Margin (mm)",
+        "Padding (mm)": "Padding (mm)",
+        "Minimum Height (mm)": "Minimum Height (mm)",
+        "Keep Together": "Keep Together",
+        "Start New Page": "Start New Page"
     },
     "actions": {
         "Open Editor": "Open Editor",
@@ -49,7 +59,9 @@
         "Zoom In": "Zoom In",
         "Zoom Out": "Zoom Out",
         "Fit Width": "Fit Width",
-        "Fit Page": "Fit Page"
+        "Fit Page": "Fit Page",
+        "Move Up": "Move Up",
+        "Move Down": "Move Down"
     },
     "messages": {
         "editorLoading": "Loading the draft editor…",
@@ -78,6 +90,8 @@
         "editorRetryWarning": "Retry Save will overwrite the newer server draft with your local layout.",
         "editorReloadFailed": "The current server draft could not be reloaded. Your local changes are still available.",
         "editorReady": "Editor ready",
+        "editorFlowEmpty": "Add or drag a flow section here to begin.",
+        "editorInvalidFlowDrop": "That item cannot be placed at this location.",
         "confirmDuplicate": "Create a new draft copy of this template? Published versions and generation history will not be copied.",
         "confirmArchive": "Archive this template? New generation will be disabled and existing history will be preserved.",
         "confirmDraftFromVersion": "Replace the current draft content with the selected immutable published version?",

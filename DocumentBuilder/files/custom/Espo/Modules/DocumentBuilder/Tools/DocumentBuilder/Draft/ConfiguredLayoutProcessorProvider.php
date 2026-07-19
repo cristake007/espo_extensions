@@ -27,7 +27,7 @@ final readonly class ConfiguredLayoutProcessorProvider implements LayoutProcesso
             new LayoutParser($settings),
             new LayoutMigrator(),
             new LayoutNormalizer($settings),
-            new LayoutValidator($settings, new NodeRegistry(), CapabilityRegistry::phase08()),
+            new LayoutValidator($settings, NodeRegistry::phase19(), CapabilityRegistry::phase19()),
             new CanonicalSerializer(),
         );
     }

@@ -1,7 +1,8 @@
 define([
     'document-builder:editor/state/json',
     'document-builder:editor/state/node-tree',
-], (Json, NodeTree) => {
+    'document-builder:editor/flow/flow-structure',
+], (Json, NodeTree, FlowStructure) => {
     const ROOT_KEYS = Object.freeze([
         'schemaVersion',
         'capabilities',
@@ -186,8 +187,9 @@ define([
     };
 
     return class LayoutPrecheck {
-        constructor(customPageSizes = []) {
+        constructor(customPageSizes = [], flowLimits = {}) {
             this.pageDimensions = {...PAGE_DIMENSIONS_MM};
+            this.flowStructure = new FlowStructure(flowLimits);
 
             customPageSizes.forEach(definition => {
                 if (definition && typeof definition.id === 'string' &&
@@ -231,7 +233,9 @@ define([
                 errors.push('schemaVersion.unsupported');
             }
 
-            if (!Array.isArray(normalized.capabilities) || normalized.capabilities.length) {
+            if (!Array.isArray(normalized.capabilities) ||
+                normalized.capabilities.some(marker => marker !== 'layout.flow') ||
+                new Set(normalized.capabilities).size !== normalized.capabilities.length) {
                 errors.push('capabilities.unsupported');
             }
 
@@ -262,11 +266,13 @@ define([
             validateDataSource(normalized.dataSource, errors);
 
             try {
-                const nodes = NodeTree.index(normalized);
+                NodeTree.index(normalized);
 
-                if (nodes.size) {
-                    errors.push('nodes.unsupported');
+                if (normalized.header.length || normalized.footer.length) {
+                    errors.push('nodes.region.unsupported');
                 }
+
+                errors.push(...this.flowStructure.validateLayout(normalized));
             } catch (error) {
                 errors.push('nodes.structure');
             }

@@ -47,10 +47,26 @@ final readonly class LayoutValidator
 
         $capabilities = $layout['capabilities'] ?? null;
 
+        $declaredCapabilities = [];
+
         if (!is_array($capabilities) || !array_is_list($capabilities)) {
             $this->add($errors, 'capabilities.type', '/capabilities');
-        } elseif ($capabilities !== []) {
-            $this->add($errors, 'capability.unsupported', '/capabilities');
+        } else {
+            foreach ($capabilities as $index => $marker) {
+                $capability = is_string($marker) ? Capability::tryFrom($marker) : null;
+
+                if ($capability === null || isset($declaredCapabilities[$marker])) {
+                    $this->add($errors, 'capability.unsupported', "/capabilities/$index");
+
+                    continue;
+                }
+
+                if ($this->capabilityRegistry->status($capability) === CapabilityStatus::SchemaOnly) {
+                    $this->add($errors, 'capability.unavailable', "/capabilities/$index");
+                }
+
+                $declaredCapabilities[$marker] = true;
+            }
         }
 
         $this->validateDocument($layout['document'] ?? null, $errors);
@@ -87,6 +103,7 @@ final readonly class LayoutValidator
                     1,
                     $ids,
                     $elementCount,
+                    $declaredCapabilities,
                     $errors,
                 );
             }
@@ -94,6 +111,11 @@ final readonly class LayoutValidator
 
         if ($elementCount > $this->settings->maxElements()) {
             $this->add($errors, 'elements.limit', '/');
+        }
+
+        if (isset($declaredCapabilities[Capability::FlowLayout->value]) &&
+            ($layout['sections'] ?? []) === []) {
+            $this->add($errors, 'capability.unused', '/capabilities');
         }
 
         return new ValidationResult($errors);
@@ -340,6 +362,7 @@ final readonly class LayoutValidator
 
     /**
      * @param array<string, true> $ids
+     * @param array<string, true> $declaredCapabilities
      * @param list<ValidationError> $errors
      */
     private function validateNode(
@@ -349,6 +372,7 @@ final readonly class LayoutValidator
         int $depth,
         array &$ids,
         int &$elementCount,
+        array $declaredCapabilities,
         array &$errors,
     ): void {
         if ($kind === NodeKind::Element) {
@@ -398,12 +422,20 @@ final readonly class LayoutValidator
             try {
                 $definition = $this->nodeRegistry->require($kind, $type);
                 $this->capabilityRegistry->requireUsable($definition->requiredCapabilities());
+
+                foreach ($definition->requiredCapabilities() as $requiredCapability) {
+                    if (!isset($declaredCapabilities[$requiredCapability->value])) {
+                        $this->add($errors, 'capability.missing', '/capabilities', $elementId);
+                    }
+                }
             } catch (UnknownNodeType) {
                 $this->add($errors, 'node.unknownType', "$path/type", $elementId);
             } catch (CapabilityUnavailable) {
                 $this->add($errors, 'node.capabilityUnavailable', "$path/type", $elementId);
             }
         }
+
+        $this->validateFlowNode($node, $kind, $path, $elementId, $errors);
 
         if (!array_key_exists('children', $node)) {
             return;
@@ -429,8 +461,59 @@ final readonly class LayoutValidator
                 $depth + 1,
                 $ids,
                 $elementCount,
+                $declaredCapabilities,
                 $errors,
             );
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $node
+     * @param list<ValidationError> $errors
+     */
+    private function validateFlowNode(
+        array $node,
+        NodeKind $kind,
+        string $path,
+        ?string $elementId,
+        array &$errors,
+    ): void {
+        $type = $node['type'] ?? null;
+
+        if ($type !== 'flow-section' && $type !== 'flow-container') {
+            return;
+        }
+
+        $allowedKeys = ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether'];
+
+        if ($type === 'flow-section') {
+            $allowedKeys[] = 'startNewPage';
+        }
+
+        $this->rejectUnknownKeys($node, $allowedKeys, $path, $errors);
+
+        if (
+            ($type === 'flow-section' && $kind !== NodeKind::Section) ||
+            ($type === 'flow-container' && $kind !== NodeKind::Element)
+        ) {
+            $this->add($errors, 'flow.parent', "$path/type", $elementId);
+        }
+
+        $this->validateBox($node['margin'] ?? null, "$path/margin", $errors);
+        $this->validateBox($node['padding'] ?? null, "$path/padding", $errors);
+        $this->validateMeasurement(
+            $node['minHeight'] ?? null,
+            Unit::Millimetre,
+            "$path/minHeight",
+            $errors,
+        );
+
+        if (!is_bool($node['keepTogether'] ?? null)) {
+            $this->add($errors, 'flow.keepTogether', "$path/keepTogether", $elementId);
+        }
+
+        if ($type === 'flow-section' && !is_bool($node['startNewPage'] ?? null)) {
+            $this->add($errors, 'flow.startNewPage', "$path/startNewPage", $elementId);
         }
     }
 

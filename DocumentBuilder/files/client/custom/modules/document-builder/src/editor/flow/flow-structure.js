@@ -1,0 +1,209 @@
+define([
+    'document-builder:editor/state/json',
+    'document-builder:editor/state/node-tree',
+], (Json, NodeTree) => {
+    const FLOW_CAPABILITY = 'layout.flow';
+    const SECTION_TYPE = 'flow-section';
+    const CONTAINER_TYPE = 'flow-container';
+    const EDGE_LIST = Object.freeze(['top', 'right', 'bottom', 'left']);
+    const measurement = value => ({value, unit: 'mm'});
+    const box = value => ({
+        top: measurement(value),
+        right: measurement(value),
+        bottom: measurement(value),
+        left: measurement(value),
+    });
+    const isMeasurement = value => Json.isPlainObject(value) &&
+        Object.keys(value).length === 2 &&
+        typeof value.value === 'number' && value.value >= 0 && value.value <= 2000 &&
+        value.unit === 'mm';
+    const isBox = value => Json.isPlainObject(value) &&
+        Object.keys(value).length === EDGE_LIST.length &&
+        EDGE_LIST.every(edge => edge in value && isMeasurement(value[edge]));
+    const subtreeDepth = node => 1 + Math.max(0, ...(node.children || []).map(subtreeDepth));
+    const subtreeCount = node => 1 +
+        (node.children || []).reduce((count, child) => count + subtreeCount(child), 0);
+
+    return class FlowStructure {
+        constructor({maxNestingDepth = 8, maxElements = 500, maxSections = 100} = {}) {
+            this.maxNestingDepth = maxNestingDepth;
+            this.maxElements = maxElements;
+            this.maxSections = maxSections;
+        }
+
+        createNode(type) {
+            const common = {
+                type,
+                children: [],
+                margin: box(0),
+                padding: box(0),
+                minHeight: measurement(type === SECTION_TYPE ? 20 : 10),
+                keepTogether: false,
+            };
+
+            if (type === SECTION_TYPE) {
+                common.startNewPage = false;
+            } else if (type !== CONTAINER_TYPE) {
+                throw new TypeError(`Unsupported flow node type: ${type}.`);
+            }
+
+            return common;
+        }
+
+        ensureCapability(layout) {
+            if (!layout.capabilities.includes(FLOW_CAPABILITY)) {
+                layout.capabilities.push(FLOW_CAPABILITY);
+                layout.capabilities.sort();
+            }
+        }
+
+        assertTarget(layout, node, target, movingNodeId = null) {
+            const index = NodeTree.index(layout);
+
+            if (node.type === SECTION_TYPE) {
+                if (target.parentId !== null || target.region !== 'sections') {
+                    throw new TypeError('Flow sections can only be placed in the sections region.');
+                }
+
+                const existingSections = layout.sections.length -
+                    (movingNodeId && index.get(movingNodeId)?.parentId === null ? 1 : 0);
+
+                if (existingSections >= this.maxSections) {
+                    throw new RangeError('The configured section limit has been reached.');
+                }
+
+                return;
+            }
+
+            if (node.type !== CONTAINER_TYPE || !target.parentId) {
+                throw new TypeError('Flow containers require a flow section or container parent.');
+            }
+
+            const parent = index.get(target.parentId);
+
+            if (!parent || ![SECTION_TYPE, CONTAINER_TYPE].includes(parent.node.type)) {
+                throw new TypeError('The target cannot contain a flow container.');
+            }
+
+            if (movingNodeId && NodeTree.contains(node, target.parentId)) {
+                throw new TypeError('A flow node cannot be moved into its own subtree.');
+            }
+
+            let parentDepth = 1;
+            let ancestor = parent;
+
+            while (ancestor.parentId) {
+                parentDepth++;
+                ancestor = index.get(ancestor.parentId);
+            }
+
+            if (parentDepth + subtreeDepth(node) > this.maxNestingDepth) {
+                throw new RangeError('The configured nesting limit would be exceeded.');
+            }
+
+            if (!movingNodeId) {
+                const elementCount = [...index.values()]
+                    .filter(location => location.node.type === CONTAINER_TYPE).length;
+
+                if (elementCount + subtreeCount(node) > this.maxElements) {
+                    throw new RangeError('The configured element limit has been reached.');
+                }
+            }
+        }
+
+        removeUnusedCapability(layout) {
+            if (layout.sections.length === 0) {
+                layout.capabilities = layout.capabilities.filter(marker => marker !== FLOW_CAPABILITY);
+            }
+        }
+
+        flatten(layout, selectedId = null) {
+            const rows = [];
+
+            const visit = (node, depth, region, parentId, index) => {
+                rows.push({
+                    ...Json.clone(node),
+                    depth,
+                    depthStyle: `--document-builder-depth: ${depth}`,
+                    region,
+                    parentId,
+                    index,
+                    selected: node.id === selectedId,
+                    isSection: node.type === SECTION_TYPE,
+                    isContainer: node.type === CONTAINER_TYPE,
+                    label: node.type === SECTION_TYPE ? 'Flow Section' : 'Flow Container',
+                });
+                (node.children || []).forEach((child, childIndex) => {
+                    visit(child, depth + 1, region, node.id, childIndex);
+                });
+            };
+
+            layout.sections.forEach((section, index) => visit(section, 0, 'sections', null, index));
+
+            return rows;
+        }
+
+        breadcrumbs(layout, nodeId) {
+            const index = NodeTree.index(layout);
+            const result = [];
+            let location = index.get(nodeId);
+
+            while (location) {
+                result.unshift({
+                    id: location.node.id,
+                    label: location.node.type === SECTION_TYPE ? 'Flow Section' : 'Flow Container',
+                    current: location.node.id === nodeId,
+                });
+                location = location.parentId ? index.get(location.parentId) : null;
+            }
+
+            return result;
+        }
+
+        validateLayout(layout) {
+            const errors = [];
+            let elements = 0;
+            const validateNode = (node, expectedType, depth, path) => {
+                const required = expectedType === SECTION_TYPE ?
+                    ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether', 'startNewPage'] :
+                    ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether'];
+
+                if (!Json.isPlainObject(node) || node.type !== expectedType ||
+                    !required.every(key => key in node) ||
+                    Object.keys(node).some(key => !required.includes(key))) {
+                    errors.push(`${path}.structure`);
+
+                    return;
+                }
+
+                if (!Array.isArray(node.children) || !isBox(node.margin) || !isBox(node.padding) ||
+                    !isMeasurement(node.minHeight) || typeof node.keepTogether !== 'boolean' ||
+                    (expectedType === SECTION_TYPE && typeof node.startNewPage !== 'boolean')) {
+                    errors.push(`${path}.values`);
+
+                    return;
+                }
+
+                if (depth > this.maxNestingDepth) errors.push(`${path}.depth`);
+                if (expectedType === CONTAINER_TYPE && ++elements > this.maxElements) {
+                    errors.push('flow.elements.limit');
+                }
+                node.children.forEach((child, index) => {
+                    validateNode(child, CONTAINER_TYPE, depth + 1, `${path}.children.${index}`);
+                });
+            };
+
+            if (layout.sections.length > this.maxSections) errors.push('flow.sections.limit');
+            layout.sections.forEach((section, index) => {
+                validateNode(section, SECTION_TYPE, 1, `flow.sections.${index}`);
+            });
+
+            const hasFlow = layout.sections.length > 0;
+            const declaresFlow = layout.capabilities.includes(FLOW_CAPABILITY);
+
+            if (hasFlow !== declaresFlow) errors.push('flow.capability');
+
+            return errors;
+        }
+    };
+});

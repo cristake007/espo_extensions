@@ -43,6 +43,17 @@ final readonly class CapabilityRegistry
         ));
     }
 
+    public static function phase19(): self
+    {
+        $statuses = array_fill_keys(
+            array_map(static fn (Capability $capability): string => $capability->value, Capability::cases()),
+            CapabilityStatus::SchemaOnly,
+        );
+        $statuses[Capability::FlowLayout->value] = CapabilityStatus::Draft;
+
+        return new self($statuses);
+    }
+
     public function status(Capability $capability): CapabilityStatus
     {
         return $this->statuses[$capability->value];

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Node;
 
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Capability;
 use InvalidArgumentException;
 
 final readonly class NodeRegistry
@@ -32,5 +33,13 @@ final readonly class NodeRegistry
     {
         return $this->definitions[$kind->value . ':' . $type]
             ?? throw new UnknownNodeType($kind, $type);
+    }
+
+    public static function phase19(): self
+    {
+        return new self(
+            new NodeDefinition(NodeKind::Section, 'flow-section', [Capability::FlowLayout]),
+            new NodeDefinition(NodeKind::Element, 'flow-container', [Capability::FlowLayout]),
+        );
     }
 }

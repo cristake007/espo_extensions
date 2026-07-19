@@ -33,7 +33,17 @@
         "Locale": "Localizare",
         "Timezone": "Fus orar",
         "PDF Title Pattern": "Șablon titlu PDF",
-        "Filename Pattern": "Șablon nume fișier"
+        "Filename Pattern": "Șablon nume fișier",
+        "Flow Section": "Secțiune flux",
+        "Flow Container": "Container flux",
+        "Drop Inside": "Plasează în interior",
+        "Drop Section": "Plasează secțiunea",
+        "Hierarchy": "Ierarhie",
+        "Margin (mm)": "Margine (mm)",
+        "Padding (mm)": "Spațiere interioară (mm)",
+        "Minimum Height (mm)": "Înălțime minimă (mm)",
+        "Keep Together": "Păstrează împreună",
+        "Start New Page": "Începe pagină nouă"
     },
     "actions": {
         "Open Editor": "Deschide editorul",
@@ -49,7 +59,9 @@
         "Zoom In": "Mărește",
         "Zoom Out": "Micșorează",
         "Fit Width": "Potrivește la lățime",
-        "Fit Page": "Potrivește pagina"
+        "Fit Page": "Potrivește pagina",
+        "Move Up": "Mută în sus",
+        "Move Down": "Mută în jos"
     },
     "messages": {
         "editorLoading": "Se încarcă editorul ciornei…",
@@ -78,6 +90,8 @@
         "editorRetryWarning": "Reîncercarea salvării va suprascrie ciorna mai nouă de pe server cu aspectul local.",
         "editorReloadFailed": "Ciorna curentă de pe server nu a putut fi reîncărcată. Modificările locale sunt încă disponibile.",
         "editorReady": "Editor pregătit",
+        "editorFlowEmpty": "Adăugați sau trageți aici o secțiune flux pentru a începe.",
+        "editorInvalidFlowDrop": "Elementul nu poate fi plasat în această locație.",
         "confirmDuplicate": "Creați o copie nouă în starea Schiță? Versiunile publicate și istoricul generării nu vor fi copiate.",
         "confirmArchive": "Arhivați acest șablon? Generarea nouă va fi dezactivată, iar istoricul existent va fi păstrat.",
         "confirmDraftFromVersion": "Înlocuiți conținutul schiței cu versiunea publicată imuabilă selectată?",

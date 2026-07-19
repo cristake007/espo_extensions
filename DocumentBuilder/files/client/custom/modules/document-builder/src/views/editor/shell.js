@@ -1,6 +1,7 @@
 define([
     'view',
     'document-builder:editor/state/editor-state',
+    'document-builder:editor/state/node-tree',
     'document-builder:editor/validation/layout-precheck',
     'document-builder:services/draft-api',
     'document-builder:editor/save/draft-save-coordinator',
@@ -9,9 +10,15 @@ define([
     'document-builder:editor/commands/update-document',
     'document-builder:editor/geometry/page-geometry',
     'document-builder:editor/page-settings',
+    'document-builder:editor/flow/flow-structure',
+    'document-builder:editor/commands/add-flow-node',
+    'document-builder:editor/commands/move-flow-node',
+    'document-builder:editor/commands/remove-flow-node',
+    'document-builder:editor/commands/update-node',
 ], (
     View,
     EditorState,
+    NodeTree,
     LayoutPrecheck,
     DraftApi,
     DraftSaveCoordinator,
@@ -20,6 +27,11 @@ define([
     UpdateDocumentCommand,
     PageGeometry,
     PageSettings,
+    FlowStructure,
+    AddFlowNodeCommand,
+    MoveFlowNodeCommand,
+    RemoveFlowNodeCommand,
+    UpdateNodeCommand,
 ) => {
     return class extends View {
         template = 'document-builder:editor/shell'
@@ -35,6 +47,19 @@ define([
             'click [data-action="fitWidth"]': 'actionFitWidth',
             'click [data-action="fitPage"]': 'actionFitPage',
             'change [data-page-setting]': 'changePageSetting',
+            'click [data-action="addFlowSection"]': 'actionAddFlowSection',
+            'click [data-action="addFlowContainer"]': 'actionAddFlowContainer',
+            'click [data-action="selectFlowNode"]': 'actionSelectFlowNode',
+            'click [data-action="selectBreadcrumb"]': 'actionSelectFlowNode',
+            'click [data-action="removeFlowNode"]': 'actionRemoveFlowNode',
+            'click [data-action="moveFlowUp"]': 'actionMoveFlowUp',
+            'click [data-action="moveFlowDown"]': 'actionMoveFlowDown',
+            'change [data-flow-setting]': 'changeFlowSetting',
+            'dragstart [draggable="true"]': 'handleFlowDragStart',
+            'dragover [data-flow-drop]': 'handleFlowDragOver',
+            'dragleave [data-flow-drop]': 'handleFlowDragLeave',
+            'drop [data-flow-drop]': 'handleFlowDrop',
+            'dragend [draggable="true"]': 'handleFlowDragEnd',
         }
 
         setup() {
@@ -57,6 +82,13 @@ define([
                 metadataDefaults.customPageSizeList || [];
             this.allowedFonts = config.allowedFontList ||
                 metadataDefaults.allowedFontList || ['DejaVu Sans'];
+            this.flowLimits = {
+                maxNestingDepth: config.maxNestingDepth || metadataDefaults.maxNestingDepth || 8,
+                maxElements: config.maxElements || metadataDefaults.maxElements || 500,
+                maxSections: config.maxSections || metadataDefaults.maxSections || 100,
+            };
+            this.flowStructure = new FlowStructure(this.flowLimits);
+            this.flowDrag = null;
             this.pageGeometry = new PageGeometry(this.customPageSizes);
             this.zoom = 100;
 
@@ -65,6 +97,7 @@ define([
 
         data() {
             const pageSettings = this.getPageSettingsData();
+            const flow = this.getFlowData();
 
             return {
                 isLoading: this.state === 'loading',
@@ -87,6 +120,51 @@ define([
                 isSaved: this.saveCoordinator ? this.saveCoordinator.status === 'saved' : false,
                 saveError: this.saveCoordinator ? this.saveCoordinator.errorMessage : null,
                 ...pageSettings,
+                ...flow,
+            };
+        }
+
+        getFlowData() {
+            if (!this.editorState) {
+                return {flowRows: [], selectedFlowNode: null, flowBreadcrumbs: []};
+            }
+
+            const layout = this.editorState.getLayout();
+            const selectedId = this.editorState.getSelectedId();
+            const locations = NodeTree.index(layout);
+            const rows = this.flowStructure.flatten(layout, selectedId).map(row => {
+                const location = locations.get(row.id);
+                const px = value => this.pageGeometry.millimetresToPixels(value, this.zoom);
+                const containerLength = location.container.length;
+
+                return {
+                    ...row,
+                    canMoveUp: location.index > 0,
+                    canMoveDown: location.index < containerLength - 1,
+                    flowStyle: [
+                        row.depthStyle,
+                        `--document-builder-margin-left: ${px(row.margin.left.value)}px`,
+                        `min-height: ${px(row.minHeight.value)}px`,
+                        `margin: ${px(row.margin.top.value)}px ${px(row.margin.right.value)}px ` +
+                            `${px(row.margin.bottom.value)}px ${px(row.margin.left.value)}px`,
+                        `padding: ${px(row.padding.top.value)}px ${px(row.padding.right.value)}px ` +
+                            `${px(row.padding.bottom.value)}px ${px(row.padding.left.value)}px`,
+                    ].join('; '),
+                };
+            });
+            const selected = selectedId ? locations.get(selectedId) : null;
+
+            return {
+                flowRows: rows,
+                hasFlowRows: rows.length > 0,
+                selectedFlowNode: selected ? {
+                    ...selected.node,
+                    isSection: selected.node.type === 'flow-section',
+                    isContainer: selected.node.type === 'flow-container',
+                } : null,
+                flowBreadcrumbs: selectedId ? this.flowStructure.breadcrumbs(layout, selectedId) : [],
+                canAddFlowContainer: Boolean(selected &&
+                    ['flow-section', 'flow-container'].includes(selected.node.type)),
             };
         }
 
@@ -178,7 +256,7 @@ define([
                 this.saveCoordinator = new DraftSaveCoordinator({
                     editorState: this.editorState,
                     draftApi: new DraftApi(),
-                    precheck: new LayoutPrecheck(this.customPageSizes),
+                    precheck: new LayoutPrecheck(this.customPageSizes, this.flowLimits),
                     templateId: this.model.id,
                     revision: this.model.get('revision'),
                 });
@@ -245,6 +323,188 @@ define([
                 this.syncDirtyGuard();
                 this.reRender();
             }
+        }
+
+        actionAddFlowSection() {
+            this.addFlowNode('flow-section', {region: 'sections', parentId: null, index: null});
+        }
+
+        actionAddFlowContainer() {
+            const parentId = this.editorState && this.editorState.getSelectedId();
+
+            if (parentId) this.addFlowNode('flow-container', {parentId, index: null});
+        }
+
+        addFlowNode(type, target) {
+            const command = new AddFlowNodeCommand(this.flowStructure, type, target);
+
+            try {
+                if (this.executeCommand(command)) {
+                    this.editorState.select(command.addedId);
+                    this.reRender();
+                }
+            } catch (error) {
+                this.showInvalidFlowDrop();
+            }
+        }
+
+        actionSelectFlowNode(event) {
+            if (this.selectNode(event.currentTarget.dataset.nodeId)) this.reRender();
+        }
+
+        actionRemoveFlowNode() {
+            const nodeId = this.editorState && this.editorState.getSelectedId();
+
+            if (nodeId) this.executeCommand(new RemoveFlowNodeCommand(this.flowStructure, nodeId));
+        }
+
+        actionMoveFlowUp() {
+            this.moveSelectedFlow(-1);
+        }
+
+        actionMoveFlowDown() {
+            this.moveSelectedFlow(1);
+        }
+
+        moveSelectedFlow(direction) {
+            if (!this.editorState) return;
+
+            const layout = this.editorState.getLayout();
+            const nodeId = this.editorState.getSelectedId();
+            const location = nodeId ? NodeTree.getLocation(layout, nodeId) : null;
+
+            if (!location) return;
+
+            const targetIndex = direction > 0 ? location.index + 2 : location.index - 1;
+            const target = location.parentId ?
+                {parentId: location.parentId, index: targetIndex} :
+                {region: location.region, parentId: null, index: targetIndex};
+
+            this.executeCommand(new MoveFlowNodeCommand(this.flowStructure, nodeId, target));
+        }
+
+        changeFlowSetting(event) {
+            if (!this.editorState || this.isSaveBusy()) return;
+
+            const nodeId = this.editorState.getSelectedId();
+            const location = nodeId ? NodeTree.getLocation(this.editorState.getLayout(), nodeId) : null;
+
+            if (!location) return;
+
+            const input = event.currentTarget;
+            const setting = input.dataset.flowSetting;
+            const patch = {};
+
+            if (setting === 'keepTogether' || setting === 'startNewPage') {
+                patch[setting] = input.checked;
+            } else if (setting === 'minHeight') {
+                patch.minHeight = {value: Number(input.value), unit: 'mm'};
+            } else if (/^(margin|padding)(Top|Right|Bottom|Left)$/.test(setting)) {
+                const value = Number(input.value);
+                const [, property, edgeName] = setting.match(/^(margin|padding)(Top|Right|Bottom|Left)$/);
+                const edge = edgeName.toLowerCase();
+
+                patch[property] = {...location.node[property]};
+                patch[property][edge] = {value, unit: 'mm'};
+            } else {
+                return;
+            }
+
+            this.executeCommand(new UpdateNodeCommand(nodeId, patch));
+        }
+
+        handleFlowDragStart(event) {
+            const source = event.currentTarget;
+
+            this.flowDrag = source.dataset.libraryType ?
+                {kind: 'library', type: source.dataset.libraryType} :
+                {kind: 'node', nodeId: source.dataset.nodeId};
+            event.dataTransfer.effectAllowed = this.flowDrag.kind === 'library' ? 'copy' : 'move';
+            event.dataTransfer.setData('text/plain', JSON.stringify(this.flowDrag));
+        }
+
+        handleFlowDragOver(event) {
+            if (!this.flowDrag || !this.editorState) return;
+
+            const layout = this.editorState.getLayout();
+            const target = this.flowDropTarget(event.currentTarget);
+            const node = this.flowDrag.kind === 'library' ?
+                this.flowStructure.createNode(this.flowDrag.type) :
+                NodeTree.getLocation(layout, this.flowDrag.nodeId)?.node;
+
+            if (!node) return;
+
+            try {
+                this.flowStructure.assertTarget(
+                    layout,
+                    node,
+                    target,
+                    this.flowDrag.kind === 'node' ? this.flowDrag.nodeId : null,
+                );
+            } catch (error) {
+                event.currentTarget.classList.remove('is-drag-over');
+
+                return;
+            }
+
+            event.preventDefault();
+            event.dataTransfer.dropEffect = this.flowDrag.kind === 'library' ? 'copy' : 'move';
+            event.currentTarget.classList.add('is-drag-over');
+        }
+
+        handleFlowDragLeave(event) {
+            event.currentTarget.classList.remove('is-drag-over');
+        }
+
+        handleFlowDrop(event) {
+            event.preventDefault();
+            event.currentTarget.classList.remove('is-drag-over');
+
+            if (!this.flowDrag || !this.editorState) return;
+
+            const target = this.flowDropTarget(event.currentTarget);
+
+            try {
+                if (this.flowDrag.kind === 'library') {
+                    this.addFlowNode(this.flowDrag.type, target);
+                } else {
+                    this.executeCommand(new MoveFlowNodeCommand(
+                        this.flowStructure,
+                        this.flowDrag.nodeId,
+                        target,
+                    ));
+                }
+            } catch (error) {
+                this.showInvalidFlowDrop();
+            } finally {
+                this.flowDrag = null;
+            }
+        }
+
+        showInvalidFlowDrop() {
+            Espo.Ui.error(this.translate(
+                'editorInvalidFlowDrop',
+                'messages',
+                'DocumentBuilderTemplate',
+            ));
+        }
+
+        flowDropTarget(element) {
+            const parentId = element.dataset.dropParent || null;
+            const index = element.dataset.dropIndex === '' ? null : Number(element.dataset.dropIndex);
+
+            return parentId ? {parentId, index} : {
+                region: element.dataset.dropRegion || 'sections',
+                parentId: null,
+                index,
+            };
+        }
+
+        handleFlowDragEnd() {
+            this.flowDrag = null;
+            this.element.querySelectorAll('.is-drag-over').forEach(element => {
+                element.classList.remove('is-drag-over');
+            });
         }
 
         changePageSetting(event) {
