@@ -27,6 +27,18 @@ final readonly class ActionAccessPolicy
         $this->requireReadableRecord($record);
     }
 
+    public function requireRecordEdit(ActionPermission $permission, Entity $record): void
+    {
+        $this->requireAction($permission);
+
+        if (
+            !$this->acl->checkScope($record->getEntityType(), Table::ACTION_EDIT) ||
+            !$this->acl->checkEntity($record, Table::ACTION_EDIT)
+        ) {
+            throw new PermissionDenied();
+        }
+    }
+
     /**
      * @param list<FieldReadRequirement> $fieldRequirements
      * @param list<LinkReadRequirement> $linkRequirements

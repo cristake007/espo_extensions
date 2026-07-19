@@ -16,6 +16,7 @@ enum ErrorCategory: string
     case FileStorage = 'fileStorage';
     case BatchJob = 'batchJob';
     case RevisionConflict = 'revisionConflict';
+    case SourceChangeConfirmation = 'sourceChangeConfirmation';
 
     public function httpStatus(): int
     {
@@ -29,7 +30,8 @@ enum ErrorCategory: string
             self::Renderer,
             self::FileStorage,
             self::BatchJob => 500,
-            self::RevisionConflict => 409,
+            self::RevisionConflict,
+            self::SourceChangeConfirmation => 409,
         };
     }
 

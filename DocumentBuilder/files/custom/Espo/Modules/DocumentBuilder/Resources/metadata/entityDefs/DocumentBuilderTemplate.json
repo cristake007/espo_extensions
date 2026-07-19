@@ -98,6 +98,10 @@
             "readOnly": true,
             "disableFormatting": true
         },
+        "draftChangeNote": {
+            "type": "text",
+            "readOnly": true
+        },
         "pageSize": {
             "type": "enum",
             "options": ["A4", "Letter", "Legal"],

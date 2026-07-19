@@ -146,6 +146,7 @@ namespace {
         'sourceType' => 'entity',
         'entityType' => 'User',
         'revision' => 999,
+        'draftChangeNote' => 'untrusted note',
         'isActive' => false,
         'currentPublishedVersionId' => 'untrusted-version-id',
     ]);
@@ -156,6 +157,7 @@ namespace {
     Assert::same('none', $entity->values['sourceType'] ?? null, 'Create hook must force a source-neutral draft.');
     Assert::same(null, $entity->values['entityType'] ?? null, 'Create hook must clear an untrusted entity type.');
     Assert::same(0, $entity->values['revision'] ?? null, 'Create hook must reset the draft revision.');
+    Assert::same(null, $entity->values['draftChangeNote'] ?? null, 'Create hook must clear an untrusted change note.');
     Assert::same(true, $entity->values['isActive'] ?? null, 'Create hook must activate a new draft.');
     Assert::same(null, $entity->values['currentPublishedVersionId'] ?? null, 'Create hook must clear a version link.');
     Assert::isTrue($entity->values['spreadsheetSchema'] instanceof \stdClass, 'Empty JSON-object storage must remain an object.');

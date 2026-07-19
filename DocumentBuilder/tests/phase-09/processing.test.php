@@ -77,6 +77,9 @@ function phase09Settings(array $overrides = []): Settings
 {
     return new Settings(array_replace([
         'maxLayoutBytes' => 1048576,
+        'maxRelationshipDepth' => 2,
+        'enabledSourceEntityTypeList' => [],
+        'disabledSourceEntityTypeList' => [],
         'maxElements' => 500,
         'maxNestingDepth' => 8,
         'maxSections' => 100,
@@ -273,12 +276,27 @@ Assert::same(
     'Typed measurement bounds must identify the invalid value.',
 );
 
-$unsupportedSource = $partial;
-$unsupportedSource['dataSource'] = ['type' => 'entity', 'entityType' => 'Contact', 'relationshipDepth' => 2];
-$sourceErrors = phase09InvalidErrors(
-    fn () => phase09Processor()->process(json_encode($unsupportedSource, JSON_THROW_ON_ERROR)),
+$entitySource = $partial;
+$entitySource['dataSource'] = ['type' => 'entity', 'entityType' => 'Contact', 'relationshipDepth' => 2];
+Assert::same(
+    $entitySource['dataSource'],
+    phase09Processor()->process(json_encode($entitySource, JSON_THROW_ON_ERROR))->layout()['dataSource'],
+    'Phase 12 entity-source drafts must retain their validated descriptor.',
 );
-Assert::same('/dataSource/type', phase09FindError($sourceErrors, 'source.unsupported')->path(), 'Source gating changed.');
+$invalidSource = $partial;
+$invalidSource['dataSource'] = ['type' => 'entity', 'entityType' => '../Contact', 'relationshipDepth' => 99];
+$sourceErrors = phase09InvalidErrors(fn () => phase09Processor()->process(json_encode($invalidSource, JSON_THROW_ON_ERROR)));
+Assert::same('/dataSource/entityType', phase09FindError($sourceErrors, 'source.entityType')->path(), 'Entity-source errors changed.');
+Assert::same('/dataSource/relationshipDepth', phase09FindError($sourceErrors, 'source.relationshipDepth')->path(), 'Source-depth errors changed.');
+$disabledSourceErrors = phase09InvalidErrors(
+    fn () => phase09Processor(phase09Settings(['disabledSourceEntityTypeList' => ['Contact']]))
+        ->process(json_encode($entitySource, JSON_THROW_ON_ERROR)),
+);
+Assert::same(
+    '/dataSource/entityType',
+    phase09FindError($disabledSourceErrors, 'source.entityTypeDisabled')->path(),
+    'Configured entity-source restrictions must be authoritative.',
+);
 
 $duplicateIds = $partial;
 $duplicateIds['sections'] = [

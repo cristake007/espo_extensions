@@ -40,6 +40,8 @@ php tests/phase-11/metadata.test.php
 php tests/phase-11/snapshot.test.php
 php tests/phase-11/hooks.test.php
 php tests/phase-11/acl.test.php
+php tests/phase-12/contracts.test.php
+php tests/phase-12/service.test.php
 ```
 
 Package inventory is checked separately after building the extension ZIP:
@@ -52,7 +54,10 @@ php tests/phase-08/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-09/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-10/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-11/package-inventory.test.php dist/document-builder-1.0.0.zip
+php tests/phase-12/package-inventory.test.php dist/document-builder-1.0.0.zip
 ```
+
+Phase 12 runtime validation requires an approved non-production EspoCRM 10.0.0 instance. After install, Clear Cache and run Administration > Rebuild. With a marked draft and an authorized designer, call `PUT api/v1/DocumentBuilder/template/{id}/draft` using the current revision; verify the normalized layout and incremented revision. Repeat with the stale revision and expect HTTP 409. Change `dataSource`, verify the first request returns the impact report without changing the record, then retry with `confirmSourceChange: true`. Verify an unauthorized user receives HTTP 403 and a Published or Archived template rejects the save. Never use the production path.
 
 Phase 11 runtime validation requires an approved non-production EspoCRM 10.0.0 instance. After install and Administration > Rebuild, verify the version table and unique template/version index exist. Create a marked version only through a temporary publication-service harness, then verify it remains readable after changing the draft, normal REST create/update/delete requests are forbidden, and own/team readers follow the publication-time ACL projection. Remove only records carrying the exact test marker.
 

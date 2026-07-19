@@ -63,7 +63,8 @@
         "renderer": "Documentul nu a putut fi randat.",
         "fileStorage": "Fișierul generat nu a putut fi stocat.",
         "batchJob": "Lotul de documente nu a putut fi finalizat.",
-        "revisionConflict": "Șablonul s-a modificat în timpul editării. Reîncărcați-l și încercați din nou."
+        "revisionConflict": "Șablonul s-a modificat în timpul editării. Reîncărcați-l și încercați din nou.",
+        "sourceChangeConfirmation": "Schimbarea sursei șablonului necesită confirmare după verificarea referințelor nerezolvate."
     },
     "warnings": {
         "valueUnavailable": "O valoare nu a putut fi afișată.",

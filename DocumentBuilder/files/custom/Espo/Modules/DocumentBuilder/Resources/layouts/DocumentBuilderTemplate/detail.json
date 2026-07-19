@@ -8,6 +8,7 @@
             [{"name": "sourceType"}, {"name": "entityType"}],
             [{"name": "pageSize"}, {"name": "orientation"}],
             [{"name": "revision"}, {"name": "modifiedAt"}],
+            [{"name": "draftChangeNote", "fullWidth": true}],
             [{"name": "assignedUser"}, {"name": "teams"}]
         ],
         "style": "default",

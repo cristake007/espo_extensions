@@ -12,6 +12,7 @@
         "spreadsheetSchema": "Spreadsheet Schema",
         "currentDraftLayout": "Current Draft Layout",
         "revision": "Revision",
+        "draftChangeNote": "Draft Change Note",
         "pageSize": "Page Size",
         "orientation": "Orientation",
         "isActive": "Active",

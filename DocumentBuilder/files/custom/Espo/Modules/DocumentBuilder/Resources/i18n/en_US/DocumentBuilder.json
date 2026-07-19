@@ -63,7 +63,8 @@
         "renderer": "The document could not be rendered.",
         "fileStorage": "The generated file could not be stored.",
         "batchJob": "The document batch could not be completed.",
-        "revisionConflict": "The template changed while you were editing it. Reload it and try again."
+        "revisionConflict": "The template changed while you were editing it. Reload it and try again.",
+        "sourceChangeConfirmation": "Changing the template source requires confirmation after reviewing unresolved references."
     },
     "warnings": {
         "valueUnavailable": "A value could not be displayed.",

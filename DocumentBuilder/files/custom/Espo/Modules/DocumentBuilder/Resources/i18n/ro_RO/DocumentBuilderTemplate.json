@@ -12,6 +12,7 @@
         "spreadsheetSchema": "Schema foii de calcul",
         "currentDraftLayout": "Aspectul curent al ciornei",
         "revision": "Revizie",
+        "draftChangeNote": "Notă modificare schiță",
         "pageSize": "Dimensiune pagină",
         "orientation": "Orientare",
         "isActive": "Activ",

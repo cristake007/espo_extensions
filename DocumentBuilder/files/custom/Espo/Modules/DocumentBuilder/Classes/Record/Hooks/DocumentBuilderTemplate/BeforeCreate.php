@@ -32,6 +32,7 @@ final readonly class BeforeCreate implements CreateHook
             'spreadsheetSchema' => new stdClass(),
             'currentDraftLayout' => $layout,
             'revision' => 0,
+            'draftChangeNote' => null,
             'pageSize' => $layout['document']['page']['size'],
             'orientation' => $layout['document']['page']['orientation'],
             'isActive' => true,

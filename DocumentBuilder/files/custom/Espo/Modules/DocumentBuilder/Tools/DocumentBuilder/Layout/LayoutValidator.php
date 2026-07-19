@@ -172,13 +172,69 @@ final readonly class LayoutValidator
             return;
         }
 
-        if (($source['type'] ?? null) !== 'none') {
-            $this->add($errors, 'source.unsupported', '/dataSource/type');
+        $type = $source['type'] ?? null;
+
+        if ($type === 'none') {
+            $this->rejectUnknownKeys($source, ['type'], '/dataSource', $errors);
 
             return;
         }
 
-        $this->rejectUnknownKeys($source, ['type'], '/dataSource', $errors);
+        if ($type === 'entity') {
+            $this->rejectUnknownKeys(
+                $source,
+                ['type', 'entityType', 'relationshipDepth'],
+                '/dataSource',
+                $errors,
+            );
+
+            if (
+                !is_string($source['entityType'] ?? null) ||
+                preg_match('/^[A-Za-z][A-Za-z0-9]{0,99}$/D', $source['entityType']) !== 1
+            ) {
+                $this->add($errors, 'source.entityType', '/dataSource/entityType');
+            } else {
+                $enabled = $this->settings->enabledSourceEntityTypeList();
+                $disabled = $this->settings->disabledSourceEntityTypeList();
+
+                if (
+                    ($enabled !== [] && !in_array($source['entityType'], $enabled, true)) ||
+                    in_array($source['entityType'], $disabled, true)
+                ) {
+                    $this->add($errors, 'source.entityTypeDisabled', '/dataSource/entityType');
+                }
+            }
+
+            $depth = $source['relationshipDepth'] ?? null;
+
+            if (!is_int($depth) || $depth < 1 || $depth > $this->settings->maxRelationshipDepth()) {
+                $this->add($errors, 'source.relationshipDepth', '/dataSource/relationshipDepth');
+            }
+
+            return;
+        }
+
+        if ($type === 'spreadsheet') {
+            $this->rejectUnknownKeys($source, ['type', 'format', 'worksheet'], '/dataSource', $errors);
+            $format = $source['format'] ?? null;
+
+            if (!in_array($format, ['csv', 'xlsx'], true)) {
+                $this->add($errors, 'source.spreadsheetFormat', '/dataSource/format');
+            }
+
+            $worksheet = $source['worksheet'] ?? null;
+
+            if (
+                ($format === 'csv' && array_key_exists('worksheet', $source)) ||
+                ($worksheet !== null && (!is_string($worksheet) || trim($worksheet) === '' || mb_strlen($worksheet) > 100))
+            ) {
+                $this->add($errors, 'source.worksheet', '/dataSource/worksheet');
+            }
+
+            return;
+        }
+
+        $this->add($errors, 'source.typeValue', '/dataSource/type');
     }
 
     /**

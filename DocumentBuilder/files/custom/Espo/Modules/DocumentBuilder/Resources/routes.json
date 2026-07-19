@@ -1,0 +1,7 @@
+[
+    {
+        "route": "/DocumentBuilder/template/:id/draft",
+        "method": "put",
+        "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PutTemplateDraft"
+    }
+]

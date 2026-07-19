@@ -14,6 +14,7 @@ namespace Espo\Core\Acl {
     {
         public const LEVEL_YES = 'yes';
         public const ACTION_READ = 'read';
+        public const ACTION_EDIT = 'edit';
     }
 }
 
@@ -294,6 +295,23 @@ namespace {
         'The policy must reject untyped field requirements.',
     );
 
+    $editAcl = new Acl();
+    $editAcl->permissionLevels[ActionPermission::DesignTemplates->value] = 'yes';
+    $editableTemplate = new TestEntity('DocumentBuilderTemplate');
+    (new ActionAccessPolicy($editAcl))->requireRecordEdit(
+        ActionPermission::DesignTemplates,
+        $editableTemplate,
+    );
+    Assert::same(
+        [
+            'permission:documentBuilderDesignTemplates',
+            'scope:DocumentBuilderTemplate:edit',
+            'entity:DocumentBuilderTemplate:edit',
+        ],
+        $editAcl->calls,
+        'Draft editing must compose action, scope, and record edit checks.',
+    );
+
     Assert::same(
         [
             'templateLifecycle',
@@ -345,6 +363,7 @@ namespace {
         'fileStorage' => 500,
         'batchJob' => 500,
         'revisionConflict' => 409,
+        'sourceChangeConfirmation' => 409,
     ];
 
     foreach (ErrorCategory::cases() as $category) {

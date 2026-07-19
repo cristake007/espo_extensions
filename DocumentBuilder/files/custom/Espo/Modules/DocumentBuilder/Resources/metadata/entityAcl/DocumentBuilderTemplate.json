@@ -6,6 +6,7 @@
         "spreadsheetSchema": {"readOnly": true},
         "currentDraftLayout": {"readOnly": true},
         "revision": {"readOnly": true},
+        "draftChangeNote": {"readOnly": true},
         "pageSize": {"readOnly": true},
         "orientation": {"readOnly": true},
         "isActive": {"readOnly": true},
