@@ -1,0 +1,11 @@
+{
+    "schemaVersion": 1,
+    "cases": [
+        {"id": "safe-reference-free-svg", "kind": "svg-file", "path": "media/safe-reference-free.svg", "expected": "accept-after-sanitization", "license": "original-project-test-data"},
+        {"id": "png-signature", "kind": "signature-only", "mime": "image/png", "base64": "iVBORw0KGgo=", "expected": "requires-full-decode"},
+        {"id": "jpeg-signature", "kind": "signature-only", "mime": "image/jpeg", "base64": "/9j/", "expected": "requires-full-decode"},
+        {"id": "webp-signature", "kind": "signature-only", "mime": "image/webp", "base64": "UklGRgAAAABXRUJQ", "expected": "requires-full-decode"},
+        {"id": "spoofed-png-extension", "kind": "signature-only", "filename": "fixture.png", "mime": "image/png", "base64": "PGh0bWw+", "expected": "reject"},
+        {"id": "remote-image-reference", "kind": "url", "value": "https://example.invalid/fixture.png", "expected": "reject"}
+    ]
+}

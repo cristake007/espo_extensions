@@ -1,0 +1,20 @@
+{
+    "schemaVersion": 1,
+    "entityType": "Account",
+    "custom": false,
+    "origin": "Synthetic EspoCRM 10.0.0-compatible metadata subset",
+    "fields": {
+        "name": {"type": "varchar", "maxLength": 249, "required": true},
+        "billingAddress": {"type": "address"},
+        "billingAddressStreet": {"type": "text", "maxLength": 255, "dbType": "varchar"},
+        "billingAddressCity": {"type": "varchar"},
+        "billingAddressCountry": {"type": "varchar"},
+        "taxId": {"type": "varchar", "maxLength": 40, "custom": true},
+        "assignedUser": {"type": "link"},
+        "contacts": {"type": "linkMultiple"}
+    },
+    "links": {
+        "assignedUser": {"type": "belongsTo", "entity": "User"},
+        "contacts": {"type": "hasMany", "entity": "Contact", "foreign": "accounts"}
+    }
+}

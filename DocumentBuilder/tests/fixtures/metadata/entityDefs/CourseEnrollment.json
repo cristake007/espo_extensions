@@ -1,0 +1,23 @@
+{
+    "schemaVersion": 1,
+    "entityType": "CourseEnrollment",
+    "custom": true,
+    "entityManagerCreated": true,
+    "origin": "Synthetic custom-entity metadata",
+    "fields": {
+        "name": {"type": "varchar", "maxLength": 249, "required": true},
+        "status": {"type": "enum", "options": ["Planned", "Completed", "Failed"]},
+        "startDate": {"type": "date"},
+        "endDate": {"type": "date"},
+        "result": {"type": "varchar", "maxLength": 100},
+        "certificateNumber": {"type": "varchar", "maxLength": 64},
+        "trainerName": {"type": "varchar", "maxLength": 150},
+        "verificationUrl": {"type": "url"},
+        "contact": {"type": "link", "required": true},
+        "account": {"type": "link"}
+    },
+    "links": {
+        "contact": {"type": "belongsTo", "entity": "Contact", "foreign": "attendedCourses"},
+        "account": {"type": "belongsTo", "entity": "Account"}
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "schemaVersion": 1,
+    "fixtureKind": "acceptance-scenario",
+    "canonicalLayoutSchema": false,
+    "id": "diploma",
+    "name": "Diploma for a Contact",
+    "laterAcceptancePhase": 60,
+    "source": {"type": "entity", "entityType": "Contact", "recordFixture": "contact-diploma"},
+    "document": {"pageFormat": "A4", "orientation": "landscape", "layoutModes": ["freeform"]},
+    "requiredCapabilities": ["background", "image", "romanian-text", "direct-variable", "related-variable", "qr", "signature", "millimetre-positioning"],
+    "representativeValues": {
+        "Contact.name": "Ana Șerban",
+        "Contact.certificateNumber": "DBT-2026-001",
+        "Contact.attendedCourses.name": "Formare profesională",
+        "Contact.verificationUrl": "https://example.invalid/verify/DBT-2026-001"
+    },
+    "acceptance": ["one-page", "romanian-diacritics", "no-freeform-split", "coordinates-within-renderer-tolerance", "acl-rechecked"]
+}

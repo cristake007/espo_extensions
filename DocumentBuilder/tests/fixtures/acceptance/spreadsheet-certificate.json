@@ -1,0 +1,24 @@
+{
+    "schemaVersion": 1,
+    "fixtureKind": "acceptance-scenario",
+    "canonicalLayoutSchema": false,
+    "id": "spreadsheet-certificate",
+    "name": "Spreadsheet Certificate Batch",
+    "laterAcceptancePhase": 75,
+    "source": {
+        "type": "spreadsheet",
+        "formatCandidates": ["csv", "xlsx"],
+        "worksheet": "Participants",
+        "columns": ["full_name", "date_of_birth", "course_name", "certificate_number", "verification_url"]
+    },
+    "document": {"pageFormat": "A4", "orientation": "landscape", "layoutModes": ["freeform"]},
+    "requiredCapabilities": ["column-mapping", "row-preview", "row-variable", "background", "qr", "batch-generation"],
+    "representativeRow": {
+        "full_name": "Ioana Dumitru",
+        "date_of_birth": "1990-04-12",
+        "course_name": "Competențe digitale",
+        "certificate_number": "DBT-SHEET-001",
+        "verification_url": "https://example.invalid/verify/DBT-SHEET-001"
+    },
+    "acceptance": ["one-pdf-per-valid-row", "invalid-row-isolated", "formula-treated-as-data", "batch-output-authorized", "source-expires-safely"]
+}

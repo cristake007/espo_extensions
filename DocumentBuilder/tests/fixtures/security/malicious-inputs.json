@@ -1,0 +1,23 @@
+{
+    "schemaVersion": 1,
+    "executionPolicy": "inert-data-only",
+    "cases": [
+        {"id": "xss-source-field", "category": "xss-source", "payload": "<img src=x onerror=alert('fixture')>", "expected": "escape"},
+        {"id": "xss-static-text", "category": "xss-static", "payload": "<script>alert('fixture')</script>", "expected": "reject-or-escape"},
+        {"id": "css-remote-url", "category": "css-injection", "payload": "color:red;background-image:url(http://127.0.0.1/internal)", "expected": "reject"},
+        {"id": "unsafe-svg-script", "category": "unsafe-svg", "payload": "<svg xmlns='http://www.w3.org/2000/svg'><script>alert('fixture')</script></svg>", "expected": "reject"},
+        {"id": "unsafe-svg-external-reference", "category": "unsafe-svg", "payload": "<svg xmlns='http://www.w3.org/2000/svg'><image href='https://example.invalid/a.png'/></svg>", "expected": "reject"},
+        {"id": "path-traversal-filename", "category": "path-traversal", "payload": "../../outside/report.pdf", "expected": "reject"},
+        {"id": "remote-resource-loopback", "category": "remote-resource", "payload": "http://127.0.0.1/internal", "expected": "reject"},
+        {"id": "spreadsheet-formula", "category": "spreadsheet-formula", "payload": "=WEBSERVICE(\"https://example.invalid/fixture\")", "expected": "treat-as-data"},
+        {"id": "malformed-layout-json", "category": "malformed-json", "payload": "{\"schemaVersion\":1,\"sections\":[}", "expected": "reject"},
+        {"id": "circular-relationship", "category": "circular-relationship", "payload": "Contact.account.contacts.account.contacts", "expected": "reject"},
+        {"id": "forbidden-field-request", "category": "authorization-boundary", "payload": "Contact.internalToken", "expected": "deny-without-disclosure"},
+        {"id": "forbidden-related-record", "category": "authorization-boundary", "payload": "CourseEnrollment.fixture-other-owner", "expected": "omit-without-disclosure"},
+        {"id": "oversized-image-declaration", "category": "resource-limit", "payload": "image/png;width=100000;height=100000;bytes=500000000", "expected": "reject-before-decode"},
+        {"id": "huge-layout-declaration", "category": "resource-limit", "payload": "sections=10000;elements=100000;depth=1000", "expected": "reject-before-render"},
+        {"id": "huge-spreadsheet-declaration", "category": "resource-limit", "payload": "rows=10000000;columns=10000;uncompressedBytes=5000000000", "expected": "reject-before-full-parse"},
+        {"id": "stale-revision", "category": "stale-revision", "payload": "expectedRevision=42;submittedRevision=41", "expected": "conflict"},
+        {"id": "unauthorized-batch-download", "category": "unauthorized-download", "payload": "batchId=fixture-other-user", "expected": "deny-without-disclosure"}
+    ]
+}

@@ -1,0 +1,17 @@
+{
+    "schemaVersion": 1,
+    "fixtureKind": "acceptance-scenario",
+    "canonicalLayoutSchema": false,
+    "id": "history",
+    "name": "Course History for a Contact",
+    "laterAcceptancePhase": 67,
+    "source": {"type": "entity", "entityType": "Contact", "recordFixture": "contact-history"},
+    "document": {"pageFormat": "A4", "orientation": "portrait", "layoutModes": ["flow", "grid"]},
+    "requiredCapabilities": ["direct-variable", "collection-variable", "repeater", "optional-summary", "automatic-page-break"],
+    "representativeValues": {
+        "Contact.name": "Mihai Ionescu",
+        "Contact.account.name": "Exemplu Training SRL"
+    },
+    "collectionFixture": {"path": "Contact.attendedCourses", "rowCount": 24, "includesNullResult": true, "includesForbiddenRecord": true},
+    "acceptance": ["multi-page", "stable-collection-order", "null-value-policy", "summary-count", "forbidden-related-record-omitted"]
+}

@@ -1,0 +1,54 @@
+{
+    "schemaVersion": 1,
+    "decisionRule": "Allow only when the action permission and every applicable Espo scope, record, field, link, and related-record check pass.",
+    "cases": [
+        {
+            "id": "allow-contact-generation",
+            "operation": "generate",
+            "checks": {"action": true, "scope": true, "record": true, "fields": true, "links": true, "relatedRecords": true},
+            "expected": {"decision": "allow", "reason": null, "discloseForbiddenValue": false}
+        },
+        {
+            "id": "deny-action-permission",
+            "operation": "generate",
+            "checks": {"action": false, "scope": true, "record": true, "fields": true, "links": true, "relatedRecords": true},
+            "expected": {"decision": "deny", "reason": "action", "discloseForbiddenValue": false}
+        },
+        {
+            "id": "deny-contact-scope",
+            "operation": "generate",
+            "checks": {"action": true, "scope": false, "record": true, "fields": true, "links": true, "relatedRecords": true},
+            "expected": {"decision": "deny", "reason": "scope", "discloseForbiddenValue": false}
+        },
+        {
+            "id": "deny-contact-record",
+            "operation": "preview",
+            "checks": {"action": true, "scope": true, "record": false, "fields": true, "links": true, "relatedRecords": true},
+            "expected": {"decision": "deny", "reason": "record", "discloseForbiddenValue": false}
+        },
+        {
+            "id": "deny-private-field",
+            "operation": "resolve-variable",
+            "checks": {"action": true, "scope": true, "record": true, "fields": false, "links": true, "relatedRecords": true},
+            "expected": {"decision": "deny", "reason": "field", "discloseForbiddenValue": false}
+        },
+        {
+            "id": "deny-account-link",
+            "operation": "resolve-related-variable",
+            "checks": {"action": true, "scope": true, "record": true, "fields": true, "links": false, "relatedRecords": true},
+            "expected": {"decision": "deny", "reason": "link", "discloseForbiddenValue": false}
+        },
+        {
+            "id": "filter-forbidden-related-record",
+            "operation": "resolve-collection",
+            "checks": {"action": true, "scope": true, "record": true, "fields": true, "links": true, "relatedRecords": false},
+            "expected": {"decision": "filter", "reason": "relatedRecord", "discloseForbiddenValue": false}
+        },
+        {
+            "id": "deny-snapshot-permission",
+            "operation": "view-snapshot",
+            "checks": {"action": false, "scope": true, "record": true, "fields": true, "links": true, "relatedRecords": true},
+            "expected": {"decision": "deny", "reason": "action", "discloseForbiddenValue": false}
+        }
+    ]
+}

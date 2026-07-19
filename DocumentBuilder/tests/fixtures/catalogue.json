@@ -1,0 +1,17 @@
+{
+    "schemaVersion": 1,
+    "licensePolicy": "Every listed fixture is original project test data with no third-party media.",
+    "fixtures": [
+        {"path": "acceptance/diploma.json", "kind": "acceptance-scenario", "license": "original-project-test-data"},
+        {"path": "acceptance/history.json", "kind": "acceptance-scenario", "license": "original-project-test-data"},
+        {"path": "acceptance/offer.json", "kind": "acceptance-scenario", "license": "original-project-test-data"},
+        {"path": "acceptance/spreadsheet-certificate.json", "kind": "acceptance-scenario", "license": "original-project-test-data"},
+        {"path": "acl/cases.json", "kind": "acl-cases", "license": "original-project-test-data"},
+        {"path": "media/media-cases.json", "kind": "media-cases", "license": "original-project-test-data"},
+        {"path": "media/safe-reference-free.svg", "kind": "media", "license": "original-project-test-data"},
+        {"path": "metadata/entityDefs/Account.json", "kind": "entity-metadata", "license": "original-project-test-data"},
+        {"path": "metadata/entityDefs/Contact.json", "kind": "entity-metadata", "license": "original-project-test-data"},
+        {"path": "metadata/entityDefs/CourseEnrollment.json", "kind": "entity-metadata", "license": "original-project-test-data"},
+        {"path": "security/malicious-inputs.json", "kind": "inert-security-corpus", "license": "original-project-test-data"}
+    ]
+}

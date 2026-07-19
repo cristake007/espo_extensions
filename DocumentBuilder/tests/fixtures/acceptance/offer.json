@@ -1,0 +1,19 @@
+{
+    "schemaVersion": 1,
+    "fixtureKind": "acceptance-scenario",
+    "canonicalLayoutSchema": false,
+    "id": "offer",
+    "name": "Offer for an Account",
+    "laterAcceptancePhase": 67,
+    "source": {"type": "entity", "entityType": "Account", "recordFixture": "account-offer"},
+    "document": {"pageFormat": "A4", "orientation": "portrait", "layoutModes": ["flow", "grid"]},
+    "requiredCapabilities": ["header", "footer", "page-number", "direct-variable", "related-variable", "dynamic-table", "currency-total", "automatic-page-break"],
+    "representativeValues": {
+        "Account.name": "Exemplu Training SRL",
+        "Account.billingAddress": "Str. Exemplu 10, București",
+        "offer.number": "DBT-OFFER-001",
+        "offer.currency": "RON"
+    },
+    "collectionFixture": {"path": "offer.items", "rowCount": 45, "includesLongDescription": true},
+    "acceptance": ["multi-page", "table-header-repeats", "totals-stable", "page-count-visible", "related-records-acl-filtered"]
+}

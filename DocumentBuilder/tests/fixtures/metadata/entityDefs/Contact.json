@@ -1,0 +1,21 @@
+{
+    "schemaVersion": 1,
+    "entityType": "Contact",
+    "custom": false,
+    "origin": "Synthetic EspoCRM 10.0.0-compatible metadata subset",
+    "fields": {
+        "name": {"type": "personName", "isPersonalData": true},
+        "firstName": {"type": "varchar", "maxLength": 100, "isPersonalData": true},
+        "lastName": {"type": "varchar", "maxLength": 100, "required": true, "isPersonalData": true},
+        "birthDate": {"type": "date", "custom": true, "isPersonalData": true},
+        "certificateNumber": {"type": "varchar", "maxLength": 64, "custom": true},
+        "verificationUrl": {"type": "url", "custom": true},
+        "account": {"type": "link"},
+        "attendedCourses": {"type": "linkMultiple", "custom": true},
+        "internalToken": {"type": "varchar", "custom": true, "documentBuilderDisabled": true}
+    },
+    "links": {
+        "account": {"type": "belongsTo", "entity": "Account"},
+        "attendedCourses": {"type": "hasMany", "entity": "CourseEnrollment", "foreign": "contact"}
+    }
+}
