@@ -87,6 +87,9 @@ define([
             'input [data-variable-search]': 'inputVariableSearch',
             'click [data-action="toggleMetadataRelationship"]': 'actionToggleMetadataRelationship',
             'click [data-action="retryMetadataNode"]': 'actionRetryMetadataNode',
+            'click [data-action="focusVariables"]': 'actionFocusVariables',
+            'click [data-action="showElementsTab"]': 'actionShowElementsTab',
+            'click [data-action="showPropertiesTab"]': 'actionShowPropertiesTab',
             'click [data-action="addFlowSection"]': 'actionAddFlowSection',
             'click [data-action="addFlowContainer"]': 'actionAddFlowContainer',
             'click [data-action="addHeading"]': 'actionAddContent',
@@ -229,6 +232,8 @@ define([
                 canPreview: Boolean(this.editorState && !this.editorState.isDirty() && this.previewStatus !== 'loading'),
                 canPreviewRecord: Boolean(this.editorState && !this.editorState.isDirty() &&
                     this.previewStatus !== 'loading' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(this.previewRecordId)),
+                rightTabElements: this.rightSidebarTab === 'elements',
+                rightTabProperties: this.rightSidebarTab === 'properties',
                 ...pageSettings,
                 ...flow,
                 ...validation,
@@ -289,6 +294,10 @@ define([
                     dotted: selected.node.lineStyle === 'dotted',
                     double: selected.node.lineStyle === 'double',
                     isContent: ['heading', 'static-text', 'paragraph'].includes(selected.node.type),
+                    variablePath: selected.node.type === 'variable' ?
+                        (selected.node.identity.path || [selected.node.identity.name]).join('.') : '',
+                    variablePresentation: selected.node.type === 'variable' ?
+                        this.variablePresentationData(selected.node.presentation) : null,
                     plainText: selected.node.type === 'static-text' ? selected.node.text :
                         RichText.toPlainText(selected.node.content),
                     hasCondition: Boolean(condition),
@@ -464,8 +473,8 @@ define([
             };
         }
 
-        variablePresentationData() {
-            const presentation = this.variablePresentationDraft;
+        variablePresentationData(value = this.variablePresentationDraft) {
+            const presentation = VariablePresentation.create(value);
             const format = presentation.format;
             const selected = (value, expected) => value === expected;
 
@@ -796,6 +805,23 @@ define([
             this.addFlowNode('flow-section', {region: 'sections', parentId: null, index: null});
         }
 
+        actionShowElementsTab() {
+            if (this.rightSidebarTab === 'elements') return;
+            this.rightSidebarTab = 'elements';
+            this.reRender();
+        }
+
+        actionShowPropertiesTab() {
+            if (this.rightSidebarTab === 'properties') return;
+            this.rightSidebarTab = 'properties';
+            this.reRender();
+        }
+
+        actionFocusVariables() {
+            const search = this.element.querySelector('[data-variable-search]');
+            if (search) search.focus();
+        }
+
         actionAddFlowContainer() {
             const parentId = this.editorState && this.editorState.getSelectedId();
 
@@ -973,9 +999,15 @@ define([
         changeVariablePresentation(event) {
             const input = event.currentTarget;
             const setting = input.dataset.variablePresentation;
+            const selectedId = this.editorState && this.editorState.getSelectedId();
+            const selected = selectedId ?
+                NodeTree.getLocation(this.editorState.getLayout(), selectedId) : null;
+            const current = selected?.node.type === 'variable' ?
+                VariablePresentation.create(selected.node.presentation) :
+                this.variablePresentationDraft;
             const next = {
-                format: {...this.variablePresentationDraft.format},
-                missing: this.variablePresentationDraft.missing,
+                format: {...current.format},
+                missing: current.missing,
             };
 
             if (setting === 'missing') {
@@ -994,14 +1026,19 @@ define([
             } else return;
 
             try {
-                this.variablePresentationDraft = VariablePresentation.create(next);
+                const presentation = VariablePresentation.create(next);
+                if (selected?.node.type === 'variable') {
+                    this.executeCommand(new UpdateNodeCommand(selected.node.id, {presentation}));
+                } else {
+                    this.variablePresentationDraft = presentation;
+                }
             } catch (error) {
                 this.reRender();
             }
         }
 
-        addFlowNode(type, target) {
-            const command = new AddFlowNodeCommand(this.flowStructure, type, target);
+        addFlowNode(type, target, options = {}) {
+            const command = new AddFlowNodeCommand(this.flowStructure, type, target, options);
 
             try {
                 if (this.executeCommand(command)) {
@@ -1253,11 +1290,26 @@ define([
 
             if (!dataTransfer) return;
 
-            this.flowDrag = source.dataset.libraryType ?
-                {kind: 'library', type: source.dataset.libraryType} :
-                {kind: 'node', nodeId: source.dataset.nodeId};
+            if (source.dataset.systemVariable || source.dataset.variablePath) {
+                const identity = source.dataset.systemVariable ?
+                    MetadataBrowser.systemIdentityAt(source.dataset.systemVariable) :
+                    MetadataBrowser.identityAt(this.metadataNodes, source.dataset.variablePath);
+                this.flowDrag = {
+                    kind: 'variable',
+                    type: 'variable',
+                    options: {
+                        identity,
+                        label: source.dataset.variableLabel,
+                        presentation: this.variablePresentationDraft,
+                    },
+                };
+            } else {
+                this.flowDrag = source.dataset.libraryType ?
+                    {kind: 'library', type: source.dataset.libraryType} :
+                    {kind: 'node', nodeId: source.dataset.nodeId};
+            }
             this.element.classList.add('is-dragging');
-            dataTransfer.effectAllowed = this.flowDrag.kind === 'library' ? 'copy' : 'move';
+            dataTransfer.effectAllowed = this.flowDrag.kind === 'node' ? 'move' : 'copy';
             dataTransfer.setData('text/plain', JSON.stringify(this.flowDrag));
             this.updateDropTargetCompatibility();
         }
@@ -1271,7 +1323,7 @@ define([
             if (!event.currentTarget.classList.contains('is-compatible')) return;
 
             event.preventDefault();
-            dataTransfer.dropEffect = this.flowDrag.kind === 'library' ? 'copy' : 'move';
+            dataTransfer.dropEffect = this.flowDrag.kind === 'node' ? 'move' : 'copy';
             event.currentTarget.classList.add('is-drag-over');
         }
 
@@ -1288,8 +1340,8 @@ define([
             const target = this.flowDropTarget(event.currentTarget);
 
             try {
-                if (this.flowDrag.kind === 'library') {
-                    this.addFlowNode(this.flowDrag.type, target);
+                if (this.flowDrag.kind !== 'node') {
+                    this.addFlowNode(this.flowDrag.type, target, this.flowDrag.options || {});
                 } else {
                     this.executeCommand(new MoveFlowNodeCommand(
                         this.flowStructure,
@@ -1331,8 +1383,8 @@ define([
         updateDropTargetCompatibility() {
             if (!this.flowDrag || !this.editorState) return;
             const layout = this.editorState.getLayout();
-            const node = this.flowDrag.kind === 'library' ?
-                this.flowStructure.createNode(this.flowDrag.type) :
+            const node = this.flowDrag.kind !== 'node' ?
+                this.flowStructure.createNode(this.flowDrag.type, this.flowDrag.options || {}) :
                 NodeTree.getLocation(layout, this.flowDrag.nodeId)?.node;
             if (!node) return;
 

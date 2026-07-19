@@ -113,56 +113,16 @@
                     {{/if}}
                 </section>
                 <section class="document-builder-editor__panel">
-                    <h3>{{translate 'Elements' category='labels' scope='DocumentBuilderTemplate'}}</h3>
-                    <button type="button" class="document-builder-editor__library-item" data-action="addFlowSection" data-library-type="flow-section" draggable="true">
-                        <span class="fas fa-layer-group" aria-hidden="true"></span>
-                        {{translate 'Flow Section' category='labels' scope='DocumentBuilderTemplate'}}
-                    </button>
-                    <button type="button" class="document-builder-editor__library-item" data-action="addFlowContainer" data-library-type="flow-container" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">
-                        <span class="far fa-square" aria-hidden="true"></span>
-                        {{translate 'Flow Container' category='labels' scope='DocumentBuilderTemplate'}}
-                    </button>
-                    <button type="button" class="document-builder-editor__library-item" data-action="addHeading" data-library-type="heading" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Heading' category='labels' scope='DocumentBuilderTemplate'}}</button>
-                    <button type="button" class="document-builder-editor__library-item" data-action="addStaticText" data-library-type="static-text" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Static Text' category='labels' scope='DocumentBuilderTemplate'}}</button>
-                    <button type="button" class="document-builder-editor__library-item" data-action="addParagraph" data-library-type="paragraph" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Paragraph' category='labels' scope='DocumentBuilderTemplate'}}</button>
-                    <button type="button" class="document-builder-editor__library-item" data-action="addDivider" data-library-type="divider" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Divider' category='labels' scope='DocumentBuilderTemplate'}}</button>
-                    <button type="button" class="document-builder-editor__library-item" data-action="addSpacer" data-library-type="spacer" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Spacer' category='labels' scope='DocumentBuilderTemplate'}}</button>
-                    <button type="button" class="document-builder-editor__library-item" data-action="addPageBreak" data-library-type="page-break" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Page Break' category='labels' scope='DocumentBuilderTemplate'}}</button>
-                </section>
-                <section class="document-builder-editor__panel">
                     <h3>{{translate 'Variables' category='labels' scope='DocumentBuilderTemplate'}}</h3>
-                    {{#with variablePresentation}}
-                    <details class="document-builder-editor__variable-presentation">
-                        <summary>{{translate 'Variable Presentation' category='labels' scope='DocumentBuilderTemplate'}}</summary>
-                        <div class="form-group"><label>{{translate 'Value Format' category='labels' scope='DocumentBuilderTemplate'}}
-                            <select class="form-control input-sm" data-variable-presentation="type">
-                                {{#each formatOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{translate value category='labels' scope='DocumentBuilderTemplate'}}</option>{{/each}}
-                            </select>
-                        </label></div>
-                        <div class="document-builder-editor__settings-grid">
-                            <label>{{translate 'Decimals' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="6" value="{{decimals}}" data-variable-presentation="decimals"></label>
-                            <label>{{translate 'Currency Code' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="3" pattern="[A-Z]{3}" value="{{currency}}" data-variable-presentation="currency"></label>
-                            <label>{{translate 'Date Style' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="dateStyle"><option value="short" {{#if dateStyleShort}}selected{{/if}}>{{translate 'short' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="medium" {{#if dateStyleMedium}}selected{{/if}}>{{translate 'medium' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="long" {{#if dateStyleLong}}selected{{/if}}>{{translate 'long' category='labels' scope='DocumentBuilderTemplate'}}</option></select></label>
-                            <label>{{translate 'Time Style' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="timeStyle"><option value="short" {{#if timeStyleShort}}selected{{/if}}>{{translate 'short' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="medium" {{#if timeStyleMedium}}selected{{/if}}>{{translate 'medium' category='labels' scope='DocumentBuilderTemplate'}}</option></select></label>
-                            <label>{{translate 'Text Case' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="case">{{#each caseOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{translate value category='labels' scope='DocumentBuilderTemplate'}}</option>{{/each}}</select></label>
-                            <label>{{translate 'Multi-value Separator' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="10" value="{{separator}}" data-variable-presentation="separator"></label>
-                            <label>{{translate 'True Label' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="100" value="{{trueLabel}}" data-variable-presentation="trueLabel"></label>
-                            <label>{{translate 'False Label' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="100" value="{{falseLabel}}" data-variable-presentation="falseLabel"></label>
-                            <label>{{translate 'Prefix' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="100" value="{{prefix}}" data-variable-presentation="prefix"></label>
-                            <label>{{translate 'Suffix' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="100" value="{{suffix}}" data-variable-presentation="suffix"></label>
-                        </div>
-                        <div class="checkbox"><label><input type="checkbox" data-variable-presentation="trim" {{#if trim}}checked{{/if}}> {{translate 'Trim Text' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
-                        <div class="form-group"><label>{{translate 'Fallback Text' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="200" value="{{fallback}}" data-variable-presentation="fallback"></label></div>
-                        <div class="form-group"><label>{{translate 'Missing Value Policy' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="missing">{{#each missingOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{translate value category='labels' scope='DocumentBuilderTemplate'}}</option>{{/each}}</select></label></div>
-                    </details>
-                    {{/with}}
+                    <label class="sr-only" for="document-builder-variable-search">{{translate 'Search Variables' category='labels' scope='DocumentBuilderTemplate'}}</label>
+                    <input id="document-builder-variable-search" type="search" class="form-control input-sm" maxlength="100" value="{{variableSearch}}" data-variable-search placeholder="{{translate 'Search Variables' category='labels' scope='DocumentBuilderTemplate'}}">
                     <h4>{{translate 'System Variables' category='labels' scope='DocumentBuilderTemplate'}}</h4>
                     <div class="document-builder-editor__variable-tree" role="tree" aria-label="{{translate 'System Variables' category='labels' scope='DocumentBuilderTemplate'}}">
                         {{#each systemVariableRows}}
-                        <button type="button" class="document-builder-editor__variable-row is-field is-insertable" role="treeitem" data-action="insertMetadataVariable" data-system-variable="{{name}}" data-variable-label="{{translate label category='labels' scope='DocumentBuilderTemplate'}}">
+                        <button type="button" class="document-builder-editor__variable-row is-field is-insertable" role="treeitem" draggable="true" title="{{name}}" data-action="insertMetadataVariable" data-system-variable="{{name}}" data-variable-label="{{translate label category='labels' scope='DocumentBuilderTemplate'}}">
                             <span class="fas fa-cog" aria-hidden="true"></span>
-                            <span class="document-builder-editor__variable-label">{{translate label category='labels' scope='DocumentBuilderTemplate'}}</span>
-                            <code>{{name}}</code>
+                            <span class="document-builder-editor__variable-copy"><span class="document-builder-editor__variable-label">{{translate label category='labels' scope='DocumentBuilderTemplate'}}</span><code>{{name}}</code></span>
+                            <span class="document-builder-editor__variable-type">{{valueType}}</span>
                             {{#if rendererPlaceholder}}<span class="document-builder-editor__variable-badge">{{translate 'Renderer' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
                         </button>
                         {{/each}}
@@ -170,8 +130,6 @@
                     {{#unless variableBrowserHasSource}}
                     <p class="text-muted">{{translate 'editorVariableSourceRequired' category='messages' scope='DocumentBuilderTemplate'}}</p>
                     {{else}}
-                    <label class="sr-only" for="document-builder-variable-search">{{translate 'Search Variables' category='labels' scope='DocumentBuilderTemplate'}}</label>
-                    <input id="document-builder-variable-search" type="search" class="form-control input-sm" maxlength="100" value="{{variableSearch}}" data-variable-search placeholder="{{translate 'Search Variables' category='labels' scope='DocumentBuilderTemplate'}}">
                     {{#if variableBrowserLoading}}
                     <p role="status"><span class="fas fa-spinner fa-spin" aria-hidden="true"></span> {{translate 'editorMetadataLoading' category='messages' scope='DocumentBuilderTemplate'}}</p>
                     {{/if}}
@@ -181,13 +139,13 @@
                         <button type="button" class="btn btn-default btn-xs" data-action="retryMetadataNode" data-path="">{{translate 'Retry'}}</button>
                     </div>
                     {{/if}}
+                    <h4>{{translate 'Entity Fields' category='labels' scope='DocumentBuilderTemplate'}}</h4>
                     <div class="document-builder-editor__variable-tree" role="tree" aria-label="{{translate 'Readable Metadata' category='labels' scope='DocumentBuilderTemplate'}}">
                         {{#each variableRows}}
                         {{#if isField}}
-                        <button type="button" class="document-builder-editor__variable-row is-field is-insertable" style="{{depthStyle}}" role="treeitem" data-action="insertMetadataVariable" data-variable-path="{{variablePathKey}}" data-variable-label="{{label}}" data-variable-row>
+                        <button type="button" class="document-builder-editor__variable-row is-field is-insertable" style="{{depthStyle}}" role="treeitem" draggable="true" title="{{variablePathKey}}" data-action="insertMetadataVariable" data-variable-path="{{variablePathKey}}" data-variable-label="{{label}}" data-variable-row>
                             <span class="fas fa-font" aria-hidden="true"></span>
-                            <span class="document-builder-editor__variable-label">{{label}}</span>
-                            <code>{{name}}</code>
+                            <span class="document-builder-editor__variable-copy"><span class="document-builder-editor__variable-label">{{label}}</span><code>{{name}}</code></span>
                             <span class="document-builder-editor__variable-badge">{{translate fieldKind category='labels' scope='DocumentBuilderTemplate'}}</span>
                             {{#if custom}}<span class="document-builder-editor__variable-badge">{{translate 'Custom' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
                             <span class="document-builder-editor__variable-type">{{type}}</span>
@@ -197,18 +155,16 @@
                         {{/if}}
                         {{#if isRelationship}}
                             {{#if expandable}}
-                            <button type="button" class="document-builder-editor__variable-row is-relationship" style="{{depthStyle}}" role="treeitem" aria-expanded="{{#if expanded}}true{{else}}false{{/if}}" data-action="toggleMetadataRelationship" data-path="{{pathKey}}" data-variable-row>
+                            <button type="button" class="document-builder-editor__variable-row is-relationship" style="{{depthStyle}}" role="treeitem" title="{{pathKey}}" aria-expanded="{{#if expanded}}true{{else}}false{{/if}}" data-action="toggleMetadataRelationship" data-path="{{pathKey}}" data-variable-row>
                                 <span class="fas {{#if expanded}}fa-chevron-down{{else}}fa-chevron-right{{/if}}" aria-hidden="true"></span>
-                                <span class="document-builder-editor__variable-label">{{label}}</span>
-                                <code>{{name}}</code>
+                                <span class="document-builder-editor__variable-copy"><span class="document-builder-editor__variable-label">{{label}}</span><code>{{name}}</code></span>
                                 <span class="document-builder-editor__variable-badge">{{translate relationshipKind category='labels' scope='DocumentBuilderTemplate'}}</span>
                                 {{#if custom}}<span class="document-builder-editor__variable-badge">{{translate 'Custom' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
                             </button>
                             {{else}}
                             <div class="document-builder-editor__variable-row is-relationship is-limited" style="{{depthStyle}}" role="treeitem" aria-disabled="true" data-variable-row>
                                 <span class="fas fa-ban" aria-hidden="true"></span>
-                                <span class="document-builder-editor__variable-label">{{label}}</span>
-                                <code>{{name}}</code>
+                                <span class="document-builder-editor__variable-copy"><span class="document-builder-editor__variable-label">{{label}}</span><code>{{name}}</code></span>
                                 <span class="document-builder-editor__variable-badge">{{translate relationshipKind category='labels' scope='DocumentBuilderTemplate'}}</span>
                                 {{#if custom}}<span class="document-builder-editor__variable-badge">{{translate 'Custom' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
                                 {{#if circular}}<span class="sr-only">{{translate 'Circular' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
@@ -257,6 +213,23 @@
             </section>
 
             <aside class="document-builder-editor__inspector" aria-label="{{translate 'Inspector' category='labels' scope='DocumentBuilderTemplate'}}">
+                <div class="document-builder-editor__sidebar-tabs" role="tablist" aria-label="{{translate 'Editor Sidebar' category='labels' scope='DocumentBuilderTemplate'}}">
+                    <button type="button" class="btn btn-link {{#if rightTabElements}}is-active{{/if}}" role="tab" aria-selected="{{#if rightTabElements}}true{{else}}false{{/if}}" data-action="showElementsTab">{{translate 'Elements' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="btn btn-link {{#if rightTabProperties}}is-active{{/if}}" role="tab" aria-selected="{{#if rightTabProperties}}true{{else}}false{{/if}}" data-action="showPropertiesTab">{{translate 'Properties' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                </div>
+                {{#if rightTabElements}}
+                <section class="document-builder-editor__elements" role="tabpanel">
+                    <button type="button" class="document-builder-editor__library-item" data-action="addFlowSection" data-library-type="flow-section" draggable="true">{{translate 'Section' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addFlowContainer" data-library-type="flow-container" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Container' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addHeading" data-library-type="heading" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Heading' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addParagraph" data-library-type="paragraph" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Paragraph' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addStaticText" data-library-type="static-text" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Static Text' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="focusVariables">{{translate 'Variable' category='labels' scope='DocumentBuilderTemplate'}} <small>{{translate 'Choose from Variables' category='messages' scope='DocumentBuilderTemplate'}}</small></button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addDivider" data-library-type="divider" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Divider' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addSpacer" data-library-type="spacer" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Spacer' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addPageBreak" data-library-type="page-break" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Page Break' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                </section>
+                {{else}}
                 {{#if selectedFlowNode}}
                 <nav class="document-builder-editor__breadcrumbs" aria-label="{{translate 'Hierarchy' category='labels' scope='DocumentBuilderTemplate'}}">
                     {{#each flowBreadcrumbs}}
@@ -269,6 +242,30 @@
                     <button type="button" class="btn btn-default" data-action="moveFlowDown">{{translate 'Move Down' category='actions' scope='DocumentBuilderTemplate'}}</button>
                     <button type="button" class="btn btn-danger" data-action="removeFlowNode">{{translate 'Remove'}}</button>
                 </div>
+                {{#if selectedFlowNode.isVariable}}
+                <p class="document-builder-editor__variable-identity" title="{{selectedFlowNode.variablePath}}"><code>{{selectedFlowNode.variablePath}}</code></p>
+                {{#with selectedFlowNode.variablePresentation}}
+                <fieldset class="document-builder-editor__variable-presentation">
+                    <legend>{{translate 'Variable Presentation' category='labels' scope='DocumentBuilderTemplate'}}</legend>
+                    <div class="form-group"><label>{{translate 'Value Format' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="type">{{#each formatOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{translate value category='labels' scope='DocumentBuilderTemplate'}}</option>{{/each}}</select></label></div>
+                    <div class="document-builder-editor__settings-grid">
+                        <label>{{translate 'Decimals' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="6" value="{{decimals}}" data-variable-presentation="decimals"></label>
+                        <label>{{translate 'Currency Code' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="3" pattern="[A-Z]{3}" value="{{currency}}" data-variable-presentation="currency"></label>
+                        <label>{{translate 'Date Style' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="dateStyle"><option value="short" {{#if dateStyleShort}}selected{{/if}}>{{translate 'short' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="medium" {{#if dateStyleMedium}}selected{{/if}}>{{translate 'medium' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="long" {{#if dateStyleLong}}selected{{/if}}>{{translate 'long' category='labels' scope='DocumentBuilderTemplate'}}</option></select></label>
+                        <label>{{translate 'Time Style' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="timeStyle"><option value="short" {{#if timeStyleShort}}selected{{/if}}>{{translate 'short' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="medium" {{#if timeStyleMedium}}selected{{/if}}>{{translate 'medium' category='labels' scope='DocumentBuilderTemplate'}}</option></select></label>
+                        <label>{{translate 'Text Case' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="case">{{#each caseOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{translate value category='labels' scope='DocumentBuilderTemplate'}}</option>{{/each}}</select></label>
+                        <label>{{translate 'Multi-value Separator' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="10" value="{{separator}}" data-variable-presentation="separator"></label>
+                        <label>{{translate 'True Label' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="100" value="{{trueLabel}}" data-variable-presentation="trueLabel"></label>
+                        <label>{{translate 'False Label' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="100" value="{{falseLabel}}" data-variable-presentation="falseLabel"></label>
+                        <label>{{translate 'Prefix' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="100" value="{{prefix}}" data-variable-presentation="prefix"></label>
+                        <label>{{translate 'Suffix' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="100" value="{{suffix}}" data-variable-presentation="suffix"></label>
+                    </div>
+                    <div class="checkbox"><label><input type="checkbox" data-variable-presentation="trim" {{#if trim}}checked{{/if}}> {{translate 'Trim Text' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
+                    <div class="form-group"><label>{{translate 'Fallback Text' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="200" value="{{fallback}}" data-variable-presentation="fallback"></label></div>
+                    <div class="form-group"><label>{{translate 'Missing Value Policy' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="missing">{{#each missingOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{translate value category='labels' scope='DocumentBuilderTemplate'}}</option>{{/each}}</select></label></div>
+                </fieldset>
+                {{/with}}
+                {{/if}}
                 <fieldset class="document-builder-editor__condition-controls">
                     <legend>Visibility Condition</legend>
                     <div class="document-builder-editor__settings-grid">
@@ -444,6 +441,7 @@
                 </div>
                 <div class="form-group"><label>{{translate 'PDF Title Pattern' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="255" value="{{pageSettings.titlePattern}}" data-page-setting="titlePattern"></label></div>
                 <div class="form-group"><label>{{translate 'Filename Pattern' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="255" value="{{pageSettings.filenamePattern}}" data-page-setting="filenamePattern"></label></div>
+                {{/if}}
                 {{/if}}
             </aside>
         </main>
