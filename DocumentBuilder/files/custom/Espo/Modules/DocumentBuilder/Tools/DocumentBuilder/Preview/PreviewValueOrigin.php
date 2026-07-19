@@ -8,4 +8,5 @@ enum PreviewValueOrigin: string
 {
     case Sample = 'sample';
     case Real = 'real';
+    case System = 'system';
 }

@@ -17,6 +17,7 @@ final readonly class PreviewService
         private PreviewRateLimit $rateLimit,
         private SamplePreviewResolver $samples,
         private EntityResolver $entities,
+        private SystemPreviewResolver $system,
     ) {}
 
     public function preview(string $templateId, PreviewRequest $request): PreviewResult
@@ -64,6 +65,8 @@ final readonly class PreviewService
                 $resolved->values,
             );
         }
+
+        $values = [...$values, ...$this->system->resolve($layout)];
 
         return new PreviewResult($templateId, $revision, $request->mode, $values);
     }

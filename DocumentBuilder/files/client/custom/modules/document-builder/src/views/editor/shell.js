@@ -292,6 +292,10 @@ define([
             });
             const selected = selectedId ? locations.get(selectedId) : null;
             const effectiveStyle = selected ? this.styleResolver.resolve(layout, selectedId) : null;
+            const selectedType = selected?.node.type;
+            const supportsTypography = ['heading', 'static-text', 'paragraph', 'variable'].includes(selectedType);
+            const supportsAppearance = ['flow-section', 'flow-container', 'heading', 'static-text', 'paragraph', 'variable'].includes(selectedType);
+            const supportsContainerAlignment = ['flow-section', 'flow-container'].includes(selectedType);
             const condition = selected?.node.condition || null;
             const conditionRules = condition?.rules || [{
                 identity: null, valueType: 'text', operator: 'exists', operand: null,
@@ -317,6 +321,11 @@ define([
                     isSpacer: selected.node.type === 'spacer',
                     isPageBreak: selected.node.type === 'page-break',
                     isBasicFlow: ['divider', 'spacer', 'page-break'].includes(selected.node.type),
+                    isStructural: ['flow-section', 'flow-container'].includes(selected.node.type),
+                    supportsStyle: supportsTypography || supportsAppearance,
+                    supportsTypography,
+                    supportsAppearance,
+                    supportsContainerAlignment,
                     horizontal: selected.node.orientation === 'horizontal',
                     vertical: selected.node.orientation === 'vertical',
                     solid: selected.node.lineStyle === 'solid',

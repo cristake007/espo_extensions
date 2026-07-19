@@ -24,6 +24,7 @@ final readonly class PdfPreviewService
         private PdfPreviewConcurrency $concurrency,
         private SamplePreviewResolver $samples,
         private EntityResolver $entities,
+        private SystemPreviewResolver $system,
         private DocumentTreeBuilder $trees,
         private HtmlRenderer $html,
         private PdfRenderer $pdf,
@@ -48,7 +49,7 @@ final readonly class PdfPreviewService
             $layout = $this->layout($template->get('currentDraftLayout'));
             $sourceType = $layout['dataSource']['type'] ?? null;
             if ($request->mode === PreviewMode::Sample && $sourceType === 'none') {
-                $values = [];
+                $values = $this->systemValues($layout);
             } elseif ($request->mode === PreviewMode::Sample) {
                 $values = $this->sampleValues($layout);
             } elseif ($sourceType === 'entity') {
@@ -74,17 +75,25 @@ final readonly class PdfPreviewService
     /** @param array<string, mixed> $layout @return list<DocumentValue> */
     private function sampleValues(array $layout): array
     {
-        return array_map(static fn (PreviewValue $value): DocumentValue =>
-            new DocumentValue($value->identity, $value->value, $value->provenance?->toArray()), $this->samples->resolve($layout));
+        return [...array_map(static fn (PreviewValue $value): DocumentValue =>
+            new DocumentValue($value->identity, $value->value, $value->provenance?->toArray()), $this->samples->resolve($layout)),
+            ...$this->systemValues($layout)];
     }
 
     /** @param array<string, mixed> $layout @return list<DocumentValue> */
     private function recordValues(array $layout, string $recordId): array
     {
-        return array_map(static fn ($value): DocumentValue =>
+        return [...array_map(static fn ($value): DocumentValue =>
             new DocumentValue($value->identity, $value->value, $value->provenance->toArray()),
             $this->entities->resolve($layout, $recordId)->values,
-        );
+        ), ...$this->systemValues($layout)];
+    }
+
+    /** @param array<string, mixed> $layout @return list<DocumentValue> */
+    private function systemValues(array $layout): array
+    {
+        return array_map(static fn (PreviewValue $value): DocumentValue =>
+            new DocumentValue($value->identity, $value->value), $this->system->resolve($layout));
     }
 
     /** @return array<string, mixed> */
