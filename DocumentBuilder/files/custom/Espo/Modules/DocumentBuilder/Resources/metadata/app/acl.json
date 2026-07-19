@@ -1,0 +1,36 @@
+{
+    "valuePermissionList": [
+        "__APPEND__",
+        "documentBuilderDesignTemplatesPermission",
+        "documentBuilderPublishTemplatesPermission",
+        "documentBuilderGenerateDocumentsPermission",
+        "documentBuilderGenerateBatchesPermission",
+        "documentBuilderUseSpreadsheetImportsPermission",
+        "documentBuilderManageSharedMediaPermission",
+        "documentBuilderViewDataSnapshotsPermission",
+        "documentBuilderDeleteGeneratedDocumentsPermission",
+        "documentBuilderConfigurePermission"
+    ],
+    "valuePermissionHighestLevels": {
+        "documentBuilderDesignTemplatesPermission": "yes",
+        "documentBuilderPublishTemplatesPermission": "yes",
+        "documentBuilderGenerateDocumentsPermission": "yes",
+        "documentBuilderGenerateBatchesPermission": "yes",
+        "documentBuilderUseSpreadsheetImportsPermission": "yes",
+        "documentBuilderManageSharedMediaPermission": "yes",
+        "documentBuilderViewDataSnapshotsPermission": "yes",
+        "documentBuilderDeleteGeneratedDocumentsPermission": "yes",
+        "documentBuilderConfigurePermission": "yes"
+    },
+    "permissionsStrictDefaults": {
+        "documentBuilderDesignTemplatesPermission": "no",
+        "documentBuilderPublishTemplatesPermission": "no",
+        "documentBuilderGenerateDocumentsPermission": "no",
+        "documentBuilderGenerateBatchesPermission": "no",
+        "documentBuilderUseSpreadsheetImportsPermission": "no",
+        "documentBuilderManageSharedMediaPermission": "no",
+        "documentBuilderViewDataSnapshotsPermission": "no",
+        "documentBuilderDeleteGeneratedDocumentsPermission": "no",
+        "documentBuilderConfigurePermission": "no"
+    }
+}

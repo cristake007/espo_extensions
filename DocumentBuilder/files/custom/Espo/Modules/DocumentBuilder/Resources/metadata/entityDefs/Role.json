@@ -1,0 +1,85 @@
+{
+    "fields": {
+        "documentBuilderDesignTemplatesPermission": {
+            "type": "enum",
+            "options": ["not-set", "yes", "no"],
+            "default": "not-set",
+            "tooltip": true,
+            "translation": "Role.options.levelList",
+            "view": "views/role/fields/permission",
+            "audited": true
+        },
+        "documentBuilderPublishTemplatesPermission": {
+            "type": "enum",
+            "options": ["not-set", "yes", "no"],
+            "default": "not-set",
+            "tooltip": true,
+            "translation": "Role.options.levelList",
+            "view": "views/role/fields/permission",
+            "audited": true
+        },
+        "documentBuilderGenerateDocumentsPermission": {
+            "type": "enum",
+            "options": ["not-set", "yes", "no"],
+            "default": "not-set",
+            "tooltip": true,
+            "translation": "Role.options.levelList",
+            "view": "views/role/fields/permission",
+            "audited": true
+        },
+        "documentBuilderGenerateBatchesPermission": {
+            "type": "enum",
+            "options": ["not-set", "yes", "no"],
+            "default": "not-set",
+            "tooltip": true,
+            "translation": "Role.options.levelList",
+            "view": "views/role/fields/permission",
+            "audited": true
+        },
+        "documentBuilderUseSpreadsheetImportsPermission": {
+            "type": "enum",
+            "options": ["not-set", "yes", "no"],
+            "default": "not-set",
+            "tooltip": true,
+            "translation": "Role.options.levelList",
+            "view": "views/role/fields/permission",
+            "audited": true
+        },
+        "documentBuilderManageSharedMediaPermission": {
+            "type": "enum",
+            "options": ["not-set", "yes", "no"],
+            "default": "not-set",
+            "tooltip": true,
+            "translation": "Role.options.levelList",
+            "view": "views/role/fields/permission",
+            "audited": true
+        },
+        "documentBuilderViewDataSnapshotsPermission": {
+            "type": "enum",
+            "options": ["not-set", "yes", "no"],
+            "default": "not-set",
+            "tooltip": true,
+            "translation": "Role.options.levelList",
+            "view": "views/role/fields/permission",
+            "audited": true
+        },
+        "documentBuilderDeleteGeneratedDocumentsPermission": {
+            "type": "enum",
+            "options": ["not-set", "yes", "no"],
+            "default": "not-set",
+            "tooltip": true,
+            "translation": "Role.options.levelList",
+            "view": "views/role/fields/permission",
+            "audited": true
+        },
+        "documentBuilderConfigurePermission": {
+            "type": "enum",
+            "options": ["not-set", "yes", "no"],
+            "default": "not-set",
+            "tooltip": true,
+            "translation": "Role.options.levelList",
+            "view": "views/role/fields/permission",
+            "audited": true
+        }
+    }
+}

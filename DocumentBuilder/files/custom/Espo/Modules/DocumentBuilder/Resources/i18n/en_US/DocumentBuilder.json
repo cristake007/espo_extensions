@@ -52,5 +52,23 @@
         "allowSvg": "SVG remains unavailable until the sanitizer and capability checks are implemented.",
         "allowWebp": "WebP also requires a verified runtime capability.",
         "allowRemoteResources": "Remote resources are locked off and cannot be enabled by configuration."
+    },
+    "errors": {
+        "validation": "The request contains invalid Document Builder data.",
+        "permission": "You do not have permission to perform this Document Builder operation.",
+        "sourceRecordMissing": "The source record is unavailable.",
+        "variableMissing": "A required value is unavailable.",
+        "relatedRecordMissing": "A required related value is unavailable.",
+        "mediaMissing": "A required media item is unavailable.",
+        "renderer": "The document could not be rendered.",
+        "fileStorage": "The generated file could not be stored.",
+        "batchJob": "The document batch could not be completed.",
+        "revisionConflict": "The template changed while you were editing it. Reload it and try again."
+    },
+    "warnings": {
+        "valueUnavailable": "A value could not be displayed.",
+        "mediaUnavailable": "A media item could not be displayed.",
+        "collectionTruncated": "A collection was shortened to its configured limit.",
+        "rendererCompatibility": "Part of the layout was adjusted for PDF compatibility."
     }
 }

@@ -1,0 +1,24 @@
+{
+    "fields": {
+        "documentBuilderDesignTemplatesPermission": "Design Document Builder Templates",
+        "documentBuilderPublishTemplatesPermission": "Publish Document Builder Templates",
+        "documentBuilderGenerateDocumentsPermission": "Generate Documents",
+        "documentBuilderGenerateBatchesPermission": "Generate Document Batches",
+        "documentBuilderUseSpreadsheetImportsPermission": "Use Document Builder Spreadsheet Imports",
+        "documentBuilderManageSharedMediaPermission": "Manage Document Builder Shared Media",
+        "documentBuilderViewDataSnapshotsPermission": "View Document Builder Data Snapshots",
+        "documentBuilderDeleteGeneratedDocumentsPermission": "Delete Generated Documents",
+        "documentBuilderConfigurePermission": "Configure Document Builder"
+    },
+    "tooltips": {
+        "documentBuilderDesignTemplatesPermission": "Allows creating and editing Document Builder template drafts.",
+        "documentBuilderPublishTemplatesPermission": "Allows publishing immutable Document Builder template versions.",
+        "documentBuilderGenerateDocumentsPermission": "Allows previewing and generating individual documents, subject to normal record and field access.",
+        "documentBuilderGenerateBatchesPermission": "Allows starting batch document generation, subject to normal access for every source record.",
+        "documentBuilderUseSpreadsheetImportsPermission": "Allows creating and using temporary spreadsheet imports.",
+        "documentBuilderManageSharedMediaPermission": "Allows creating, updating, and deleting shared Document Builder media.",
+        "documentBuilderViewDataSnapshotsPermission": "Allows viewing stored resolved-data snapshots when the generated document is also readable.",
+        "documentBuilderDeleteGeneratedDocumentsPermission": "Allows deleting generated documents that are otherwise accessible.",
+        "documentBuilderConfigurePermission": "Allows changing Document Builder settings and operational limits."
+    }
+}

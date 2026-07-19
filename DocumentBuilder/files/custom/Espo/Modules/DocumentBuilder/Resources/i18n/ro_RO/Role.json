@@ -1,0 +1,24 @@
+{
+    "fields": {
+        "documentBuilderDesignTemplatesPermission": "Proiectare șabloane Document Builder",
+        "documentBuilderPublishTemplatesPermission": "Publicare șabloane Document Builder",
+        "documentBuilderGenerateDocumentsPermission": "Generare documente",
+        "documentBuilderGenerateBatchesPermission": "Generare loturi de documente",
+        "documentBuilderUseSpreadsheetImportsPermission": "Utilizare importuri din foi de calcul",
+        "documentBuilderManageSharedMediaPermission": "Administrare resurse media partajate",
+        "documentBuilderViewDataSnapshotsPermission": "Vizualizare instantanee de date",
+        "documentBuilderDeleteGeneratedDocumentsPermission": "Ștergere documente generate",
+        "documentBuilderConfigurePermission": "Configurare Document Builder"
+    },
+    "tooltips": {
+        "documentBuilderDesignTemplatesPermission": "Permite crearea și editarea schițelor de șabloane Document Builder.",
+        "documentBuilderPublishTemplatesPermission": "Permite publicarea versiunilor imuabile ale șabloanelor Document Builder.",
+        "documentBuilderGenerateDocumentsPermission": "Permite previzualizarea și generarea documentelor individuale, cu respectarea accesului normal la înregistrări și câmpuri.",
+        "documentBuilderGenerateBatchesPermission": "Permite pornirea generării documentelor în lot, cu respectarea accesului normal pentru fiecare înregistrare sursă.",
+        "documentBuilderUseSpreadsheetImportsPermission": "Permite crearea și utilizarea importurilor temporare din foi de calcul.",
+        "documentBuilderManageSharedMediaPermission": "Permite crearea, actualizarea și ștergerea resurselor media partajate Document Builder.",
+        "documentBuilderViewDataSnapshotsPermission": "Permite vizualizarea instantaneelor datelor rezolvate dacă documentul generat poate fi citit.",
+        "documentBuilderDeleteGeneratedDocumentsPermission": "Permite ștergerea documentelor generate care sunt altfel accesibile.",
+        "documentBuilderConfigurePermission": "Permite modificarea setărilor și limitelor operaționale Document Builder."
+    }
+}

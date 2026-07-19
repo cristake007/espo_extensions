@@ -52,5 +52,23 @@
         "allowSvg": "SVG rămâne indisponibil până la implementarea igienizării și verificării capabilității.",
         "allowWebp": "WebP necesită și o capabilitate runtime verificată.",
         "allowRemoteResources": "Resursele la distanță sunt blocate și nu pot fi activate prin configurare."
+    },
+    "errors": {
+        "validation": "Cererea conține date Document Builder nevalide.",
+        "permission": "Nu aveți permisiunea de a efectua această operațiune Document Builder.",
+        "sourceRecordMissing": "Înregistrarea sursă nu este disponibilă.",
+        "variableMissing": "O valoare obligatorie nu este disponibilă.",
+        "relatedRecordMissing": "O valoare asociată obligatorie nu este disponibilă.",
+        "mediaMissing": "O resursă media obligatorie nu este disponibilă.",
+        "renderer": "Documentul nu a putut fi randat.",
+        "fileStorage": "Fișierul generat nu a putut fi stocat.",
+        "batchJob": "Lotul de documente nu a putut fi finalizat.",
+        "revisionConflict": "Șablonul s-a modificat în timpul editării. Reîncărcați-l și încercați din nou."
+    },
+    "warnings": {
+        "valueUnavailable": "O valoare nu a putut fi afișată.",
+        "mediaUnavailable": "O resursă media nu a putut fi afișată.",
+        "collectionTruncated": "O colecție a fost redusă la limita configurată.",
+        "rendererCompatibility": "O parte a machetei a fost ajustată pentru compatibilitate PDF."
     }
 }
