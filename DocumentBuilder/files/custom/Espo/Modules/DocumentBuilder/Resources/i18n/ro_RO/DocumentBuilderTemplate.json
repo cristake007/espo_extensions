@@ -1,0 +1,54 @@
+{
+    "labels": {
+        "Create DocumentBuilderTemplate": "Creează șablon Document Builder"
+    },
+    "fields": {
+        "name": "Nume",
+        "category": "Categorie",
+        "description": "Descriere",
+        "status": "Stare",
+        "sourceType": "Tip sursă",
+        "entityType": "Tip entitate",
+        "spreadsheetSchema": "Schema foii de calcul",
+        "currentDraftLayout": "Aspectul curent al ciornei",
+        "revision": "Revizie",
+        "pageSize": "Dimensiune pagină",
+        "orientation": "Orientare",
+        "isActive": "Activ",
+        "currentPublishedVersion": "Versiunea publicată curentă",
+        "assignedUser": "Utilizator responsabil",
+        "teams": "Echipe",
+        "createdAt": "Creat la",
+        "modifiedAt": "Modificat la",
+        "createdBy": "Creat de",
+        "modifiedBy": "Modificat de"
+    },
+    "links": {
+        "currentPublishedVersion": "Versiunea publicată curentă",
+        "assignedUser": "Utilizator responsabil",
+        "teams": "Echipe",
+        "createdBy": "Creat de",
+        "modifiedBy": "Modificat de"
+    },
+    "options": {
+        "status": {
+            "Draft": "Ciornă",
+            "Published": "Publicat",
+            "Archived": "Arhivat"
+        },
+        "sourceType": {
+            "none": "Fără sursă",
+            "entity": "Entitate EspoCRM",
+            "spreadsheet": "Foaie de calcul"
+        },
+        "orientation": {
+            "portrait": "Portret",
+            "landscape": "Peisaj"
+        }
+    },
+    "tooltips": {
+        "sourceType": "Selectarea sursei este gestionată de fluxul de lucru al ciornei.",
+        "currentDraftLayout": "Aspectul canonic normalizat utilizat de fluxul de lucru al ciornei.",
+        "revision": "Este incrementată de salvarea ciornei cu verificarea reviziei."
+    }
+}

@@ -1,0 +1,11 @@
+[
+    {
+        "rows": [
+            [{"name": "name"}, {"name": "category"}],
+            [{"name": "description", "fullWidth": true}],
+            [{"name": "assignedUser"}, {"name": "teams"}]
+        ],
+        "style": "default",
+        "label": ""
+    }
+]

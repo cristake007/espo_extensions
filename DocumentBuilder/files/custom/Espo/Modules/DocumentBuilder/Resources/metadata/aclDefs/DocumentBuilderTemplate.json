@@ -1,0 +1,4 @@
+{
+    "accessCheckerClassName": "Espo\\Modules\\DocumentBuilder\\Classes\\Acl\\DocumentBuilderTemplateAccessChecker",
+    "ownershipCheckerClassName": "Espo\\Core\\Acl\\DefaultOwnershipChecker"
+}

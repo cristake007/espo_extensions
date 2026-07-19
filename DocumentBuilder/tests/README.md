@@ -33,6 +33,9 @@ php tests/phase-06/settings.test.php
 php tests/phase-07/contracts.test.php
 php tests/phase-08/primitives.test.php
 php tests/phase-09/processing.test.php
+php tests/phase-10/metadata.test.php
+php tests/phase-10/hooks.test.php
+php tests/phase-10/acl.test.php
 ```
 
 Package inventory is checked separately after building the extension ZIP:
@@ -43,7 +46,10 @@ php tests/phase-06/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-07/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-08/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-09/package-inventory.test.php dist/document-builder-1.0.0.zip
+php tests/phase-10/package-inventory.test.php dist/document-builder-1.0.0.zip
 ```
+
+Phase 10 runtime validation requires an approved non-production EspoCRM 10.0.0 instance. Install the package, run Administration > Rebuild, then verify that an administrator can create a source-neutral draft, that its layout/default summary/revision match the Phase 10 metadata test, and that an ungranted role cannot read or write the record. Also verify own/team scope behavior with two marked test users. Do not create records on the production path.
 
 Phase 04 PDF rendering is a manual runtime check. It may be run only with an approved non-production EspoCRM 10.0.0 instance and a new output directory, following `docs/phase-04-renderer-feasibility.md`.
 

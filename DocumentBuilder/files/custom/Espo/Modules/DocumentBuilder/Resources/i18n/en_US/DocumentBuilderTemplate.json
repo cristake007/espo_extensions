@@ -1,0 +1,54 @@
+{
+    "labels": {
+        "Create DocumentBuilderTemplate": "Create Document Builder Template"
+    },
+    "fields": {
+        "name": "Name",
+        "category": "Category",
+        "description": "Description",
+        "status": "Status",
+        "sourceType": "Source Type",
+        "entityType": "Entity Type",
+        "spreadsheetSchema": "Spreadsheet Schema",
+        "currentDraftLayout": "Current Draft Layout",
+        "revision": "Revision",
+        "pageSize": "Page Size",
+        "orientation": "Orientation",
+        "isActive": "Active",
+        "currentPublishedVersion": "Current Published Version",
+        "assignedUser": "Assigned User",
+        "teams": "Teams",
+        "createdAt": "Created At",
+        "modifiedAt": "Modified At",
+        "createdBy": "Created By",
+        "modifiedBy": "Modified By"
+    },
+    "links": {
+        "currentPublishedVersion": "Current Published Version",
+        "assignedUser": "Assigned User",
+        "teams": "Teams",
+        "createdBy": "Created By",
+        "modifiedBy": "Modified By"
+    },
+    "options": {
+        "status": {
+            "Draft": "Draft",
+            "Published": "Published",
+            "Archived": "Archived"
+        },
+        "sourceType": {
+            "none": "No Source",
+            "entity": "EspoCRM Entity",
+            "spreadsheet": "Spreadsheet"
+        },
+        "orientation": {
+            "portrait": "Portrait",
+            "landscape": "Landscape"
+        }
+    },
+    "tooltips": {
+        "sourceType": "Source selection is managed by the draft workflow.",
+        "currentDraftLayout": "The normalized canonical layout used by the draft workflow.",
+        "revision": "Incremented by the revision-aware draft save workflow."
+    }
+}

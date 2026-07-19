@@ -1,0 +1,7 @@
+{
+    "controller": "controllers/record",
+    "boolFilterList": ["onlyMy"],
+    "iconClass": "fas fa-file-alt",
+    "kanbanViewMode": false,
+    "color": "#3c6e91"
+}

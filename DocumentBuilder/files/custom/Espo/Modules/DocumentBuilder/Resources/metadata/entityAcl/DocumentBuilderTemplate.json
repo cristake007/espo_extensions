@@ -1,0 +1,18 @@
+{
+    "fields": {
+        "status": {"readOnly": true},
+        "sourceType": {"readOnly": true},
+        "entityType": {"readOnly": true},
+        "spreadsheetSchema": {"readOnly": true},
+        "currentDraftLayout": {"readOnly": true},
+        "revision": {"readOnly": true},
+        "pageSize": {"readOnly": true},
+        "orientation": {"readOnly": true},
+        "isActive": {"readOnly": true},
+        "currentPublishedVersion": {"readOnly": true}
+    },
+    "links": {
+        "currentPublishedVersion": {"readOnly": true}
+    },
+    "systemWriteForbidden": true
+}

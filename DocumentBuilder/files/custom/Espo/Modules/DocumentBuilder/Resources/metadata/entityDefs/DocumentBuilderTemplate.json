@@ -1,0 +1,207 @@
+{
+    "transactionalSave": true,
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "maxLength": 150,
+            "required": true,
+            "pattern": "$noBadCharacters",
+            "audited": true
+        },
+        "category": {
+            "type": "varchar",
+            "maxLength": 100,
+            "audited": true
+        },
+        "description": {
+            "type": "text"
+        },
+        "status": {
+            "type": "enum",
+            "options": ["Draft", "Published", "Archived"],
+            "default": "Draft",
+            "required": true,
+            "readOnly": true,
+            "audited": true,
+            "displayAsLabel": true,
+            "style": {
+                "Draft": "info",
+                "Published": "success",
+                "Archived": "default"
+            }
+        },
+        "sourceType": {
+            "type": "enum",
+            "options": ["none", "entity", "spreadsheet"],
+            "default": "none",
+            "required": true,
+            "readOnly": true,
+            "audited": true,
+            "displayAsLabel": true
+        },
+        "entityType": {
+            "type": "varchar",
+            "maxLength": 100,
+            "readOnly": true,
+            "audited": true
+        },
+        "spreadsheetSchema": {
+            "type": "jsonObject",
+            "default": {},
+            "readOnly": true,
+            "exportDisabled": true,
+            "layoutListDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true
+        },
+        "currentDraftLayout": {
+            "type": "jsonObject",
+            "required": true,
+            "readOnly": true,
+            "exportDisabled": true,
+            "layoutListDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true,
+            "default": {
+                "schemaVersion": 1,
+                "capabilities": [],
+                "document": {
+                    "page": {
+                        "size": "A4",
+                        "orientation": "portrait",
+                        "margins": {
+                            "top": {"value": 15, "unit": "mm"},
+                            "right": {"value": 15, "unit": "mm"},
+                            "bottom": {"value": 15, "unit": "mm"},
+                            "left": {"value": 15, "unit": "mm"}
+                        }
+                    },
+                    "defaults": {
+                        "fontFamily": "DejaVu Sans",
+                        "fontSize": {"value": 10, "unit": "pt"},
+                        "color": "#222222",
+                        "lineHeight": 1.2,
+                        "locale": "en_US"
+                    }
+                },
+                "dataSource": {"type": "none"},
+                "header": [],
+                "sections": [],
+                "footer": []
+            }
+        },
+        "revision": {
+            "type": "int",
+            "default": 0,
+            "min": 0,
+            "required": true,
+            "readOnly": true,
+            "disableFormatting": true
+        },
+        "pageSize": {
+            "type": "enum",
+            "options": ["A4", "Letter", "Legal"],
+            "default": "A4",
+            "required": true,
+            "readOnly": true
+        },
+        "orientation": {
+            "type": "enum",
+            "options": ["portrait", "landscape"],
+            "default": "portrait",
+            "required": true,
+            "readOnly": true
+        },
+        "isActive": {
+            "type": "bool",
+            "default": true,
+            "required": true,
+            "readOnly": true,
+            "audited": true
+        },
+        "currentPublishedVersion": {
+            "type": "link",
+            "entity": "DocumentBuilderTemplateVersion",
+            "readOnly": true,
+            "layoutListDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true
+        },
+        "assignedUser": {
+            "type": "link",
+            "required": true,
+            "view": "views/fields/assigned-user"
+        },
+        "teams": {
+            "type": "linkMultiple",
+            "view": "views/fields/teams"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        }
+    },
+    "links": {
+        "currentPublishedVersion": {
+            "type": "belongsTo",
+            "entity": "DocumentBuilderTemplateVersion"
+        },
+        "assignedUser": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "teams": {
+            "type": "hasMany",
+            "entity": "Team",
+            "relationName": "entityTeam",
+            "layoutRelationshipsDisabled": true
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "modifiedAt",
+        "order": "desc",
+        "textFilterFields": ["name", "category", "description"],
+        "fullTextSearch": true,
+        "countDisabled": false
+    },
+    "indexes": {
+        "name": {
+            "columns": ["name", "deleted"]
+        },
+        "status": {
+            "columns": ["status", "deleted"]
+        },
+        "source": {
+            "columns": ["sourceType", "entityType", "deleted"]
+        },
+        "assignedUser": {
+            "columns": ["assignedUserId", "deleted"]
+        },
+        "currentPublishedVersion": {
+            "columns": ["currentPublishedVersionId"]
+        }
+    },
+    "optimisticConcurrencyControl": true
+}

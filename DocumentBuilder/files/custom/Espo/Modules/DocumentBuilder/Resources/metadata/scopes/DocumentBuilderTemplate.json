@@ -1,0 +1,20 @@
+{
+    "entity": true,
+    "layouts": true,
+    "tab": true,
+    "acl": true,
+    "aclPortal": false,
+    "aclActionList": ["create", "read", "edit", "stream"],
+    "tabAclPermission": "documentBuilderDesignTemplates",
+    "customizable": false,
+    "importable": false,
+    "stream": true,
+    "disabled": false,
+    "type": "BasePlus",
+    "module": "DocumentBuilder",
+    "object": true,
+    "isCustom": false,
+    "statusField": "status",
+    "preserveAuditLog": true,
+    "hasPersonalData": true
+}

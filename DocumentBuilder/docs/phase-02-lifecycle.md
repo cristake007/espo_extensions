@@ -2,7 +2,7 @@
 
 ## Installed configuration
 
-`AfterInstall.php` registers one `tabList` group with stable ID `document-builder`, translated label `Document Builder`, and an empty `itemList`. The empty group is structural: EspoCRM 10.0.0 filters it from the rendered navbar until later phases add ACL-visible entity scopes.
+`AfterInstall.php` registers one `tabList` group with stable ID `document-builder`, translated label `Document Builder`, and the ACL-visible `DocumentBuilderTemplate` scope added in Phase 10. EspoCRM filters the item for users who lack the dedicated design permission or normal scope access.
 
 Installation preserves the order and value of every unrelated `tabList` entry. A stale or duplicate group owned by the same stable ID is replaced by one canonical group. Repeated installation does not write the config again when the canonical group is already present.
 

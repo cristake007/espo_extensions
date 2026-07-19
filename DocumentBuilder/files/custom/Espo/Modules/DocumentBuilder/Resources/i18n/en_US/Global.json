@@ -2,7 +2,14 @@
     "labels": {
         "DocumentBuilder": "Document Builder"
     },
+    "scopeNames": {
+        "DocumentBuilderTemplate": "Document Builder Template"
+    },
+    "scopeNamesPlural": {
+        "DocumentBuilderTemplate": "Document Builder Templates"
+    },
     "navbarTabs": {
-        "DocumentBuilder": "Document Builder"
+        "DocumentBuilder": "Document Builder",
+        "DocumentBuilderTemplate": "Templates"
     }
 }

@@ -2,7 +2,14 @@
     "labels": {
         "DocumentBuilder": "Document Builder"
     },
+    "scopeNames": {
+        "DocumentBuilderTemplate": "Șablon Document Builder"
+    },
+    "scopeNamesPlural": {
+        "DocumentBuilderTemplate": "Șabloane Document Builder"
+    },
     "navbarTabs": {
-        "DocumentBuilder": "Document Builder"
+        "DocumentBuilder": "Document Builder",
+        "DocumentBuilderTemplate": "Șabloane"
     }
 }

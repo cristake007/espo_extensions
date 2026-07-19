@@ -1,0 +1,14 @@
+{
+    "beforeCreateHookClassNameList": [
+        "Espo\\Modules\\DocumentBuilder\\Classes\\Record\\Hooks\\DocumentBuilderTemplate\\BeforeCreate"
+    ],
+    "beforeDeleteHookClassNameList": [
+        "Espo\\Modules\\DocumentBuilder\\Classes\\Record\\Hooks\\DocumentBuilderTemplate\\BeforeDelete"
+    ],
+    "massActions": {
+        "delete": {"disabled": true}
+    },
+    "actions": {
+        "merge": {"disabled": true}
+    }
+}

@@ -1,0 +1,11 @@
+[
+    {"name": "name"},
+    {"name": "category"},
+    {"name": "status"},
+    {"name": "sourceType"},
+    {"name": "entityType"},
+    {"name": "pageSize"},
+    {"name": "orientation"},
+    {"name": "assignedUser"},
+    {"name": "teams"}
+]

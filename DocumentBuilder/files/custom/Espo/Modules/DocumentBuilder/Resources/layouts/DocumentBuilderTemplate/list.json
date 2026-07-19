@@ -1,0 +1,9 @@
+[
+    {"name": "name", "link": true},
+    {"name": "status", "width": 14},
+    {"name": "sourceType", "width": 16},
+    {"name": "pageSize", "width": 10},
+    {"name": "orientation", "width": 12},
+    {"name": "assignedUser", "width": 16},
+    {"name": "modifiedAt", "width": 18}
+]
