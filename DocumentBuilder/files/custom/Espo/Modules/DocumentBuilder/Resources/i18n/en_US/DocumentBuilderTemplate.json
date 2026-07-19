@@ -214,6 +214,8 @@
         "editorEntitySourceHelp": "Only entities allowed by configuration and your current read access are listed.",
         "editorUnavailableEntitySource": "Unavailable entity source",
         "confirmEntitySourceChange": "Change the template data source? Existing source-dependent references may become unavailable.",
+        "sourceChangeImpactReview": "Review every reference that is incompatible with the new source. Confirming will retry the save; unresolved references must still be removed or corrected.",
+        "sourceChangeNoBrokenReferences": "No incompatible references were found.",
         "editorVariableSourceRequired": "Select an entity data source to browse readable fields and relationships.",
         "editorMetadataLoading": "Loading readable metadata…",
         "editorMetadataFailed": "Readable metadata could not be loaded.",

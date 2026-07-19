@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\Variable;
 
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Condition\VisibilityCondition;
 use InvalidArgumentException;
 use stdClass;
 
@@ -41,6 +42,18 @@ final readonly class CompiledVariableReferenceValidator implements VariableRefer
             $this->compiler->compile($identity, $source, VariableUsage::Scalar, $columns);
 
             return;
+        }
+
+        if (array_key_exists('condition', $value)) {
+            if (!is_array($value['condition']) || array_is_list($value['condition'])) {
+                throw new InvalidArgumentException('A stored visibility condition is invalid.');
+            }
+
+            $condition = VisibilityCondition::fromArray($value['condition']);
+
+            foreach ($condition->rules as $rule) {
+                $this->compiler->compile($rule->identity->toArray(), $source, VariableUsage::Scalar, $columns);
+            }
         }
 
         foreach ($value as $item) {

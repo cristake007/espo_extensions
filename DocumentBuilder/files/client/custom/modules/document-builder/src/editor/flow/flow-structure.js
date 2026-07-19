@@ -3,7 +3,8 @@ define([
     'document-builder:editor/state/node-tree',
     'document-builder:editor/variables/variable-identity',
     'document-builder:editor/variables/variable-presentation',
-], (Json, NodeTree, VariableIdentity, VariablePresentation) => {
+    'document-builder:editor/conditions/condition-builder',
+], (Json, NodeTree, VariableIdentity, VariablePresentation, ConditionBuilder) => {
     const FLOW_CAPABILITY = 'layout.flow';
     const SECTION_TYPE = 'flow-section';
     const CONTAINER_TYPE = 'flow-container';
@@ -247,6 +248,9 @@ define([
                 });
             };
             const validateNode = (node, expectedType, depth, path) => {
+                if (Json.isPlainObject(node) && node.condition !== undefined) {
+                    try { ConditionBuilder.create(node.condition); } catch (error) { errors.push(`${path}.condition`); }
+                }
                 if (BASIC_TYPES.includes(expectedType)) {
                     elements++;
                     if (!Json.isPlainObject(node) || node.type !== expectedType ||
@@ -254,11 +258,11 @@ define([
                         errors.push(`${path}.structure`); return;
                     }
                     if (expectedType === 'page-break') {
-                        if (Object.keys(node).some(key => !['id', 'type', 'style'].includes(key))) errors.push(`${path}.structure`);
+                        if (Object.keys(node).some(key => !['id', 'type', 'style', 'condition'].includes(key))) errors.push(`${path}.structure`);
                     } else if (expectedType === 'spacer') {
-                        if (Object.keys(node).some(key => !['id', 'type', 'height', 'style'].includes(key)) ||
+                        if (Object.keys(node).some(key => !['id', 'type', 'height', 'style', 'condition'].includes(key)) ||
                             !isMeasurement(node.height) || node.height.value < 0.1 || node.height.value > 500) errors.push(`${path}.values`);
-                    } else if (Object.keys(node).some(key => !['id', 'type', 'orientation', 'lineStyle', 'color', 'thickness', 'length', 'style'].includes(key)) ||
+                    } else if (Object.keys(node).some(key => !['id', 'type', 'orientation', 'lineStyle', 'color', 'thickness', 'length', 'style', 'condition'].includes(key)) ||
                         !['horizontal', 'vertical'].includes(node.orientation) ||
                         !['solid', 'dashed', 'dotted', 'double'].includes(node.lineStyle) ||
                         !/^#[0-9A-Fa-f]{6}$/.test(node.color || '') ||
@@ -273,10 +277,10 @@ define([
                         errors.push(`${path}.structure`); return;
                     }
                     if (expectedType === 'static-text') {
-                        if (!Json.isPlainObject(node) || Object.keys(node).some(key => !['id', 'type', 'text', 'style'].includes(key)) ||
+                        if (!Json.isPlainObject(node) || Object.keys(node).some(key => !['id', 'type', 'text', 'style', 'condition'].includes(key)) ||
                             typeof node.text !== 'string' || node.text.length > 10000) errors.push(`${path}.values`);
                     } else {
-                        const extra = expectedType === 'heading' ? ['level', 'keepWithNext', 'style'] : ['alignment', 'style'];
+                        const extra = expectedType === 'heading' ? ['level', 'keepWithNext', 'style', 'condition'] : ['alignment', 'style', 'condition'];
                         if (!Json.isPlainObject(node) || Object.keys(node).some(key => !['id', 'type', 'content', ...extra].includes(key))) errors.push(`${path}.structure`);
                         validateInline(node.content, `${path}.content`);
                         if (expectedType === 'heading' && (!Number.isInteger(node.level) || node.level < 1 || node.level > 6 || typeof node.keepWithNext !== 'boolean')) errors.push(`${path}.values`);
@@ -287,7 +291,7 @@ define([
                 const required = expectedType === SECTION_TYPE ?
                     ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether', 'startNewPage'] :
                     ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether'];
-                const allowed = [...required, 'style'];
+                const allowed = [...required, 'style', 'condition'];
 
                 if (!Json.isPlainObject(node) || node.type !== expectedType ||
                     !required.every(key => key in node) ||

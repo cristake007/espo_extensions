@@ -265,6 +265,25 @@
                 {"$ref": "#/$defs/collectionVariableIdentity"}
             ]
         },
+        "conditionRule": {
+            "type": "object", "additionalProperties": false,
+            "required": ["identity", "valueType", "operator", "operand"],
+            "properties": {
+                "identity": {"$ref": "#/$defs/scalarVariableIdentity"},
+                "valueType": {"enum": ["text", "date", "datetime", "number", "currency", "boolean", "enum", "multiValue"]},
+                "operator": {"enum": ["exists", "missing", "equals", "notEquals", "contains", "startsWith", "greaterThan", "greaterOrEqual", "lessThan", "lessOrEqual", "isTrue", "isFalse"]},
+                "operand": {"type": ["string", "number", "boolean", "null"], "maxLength": 1000}
+            }
+        },
+        "visibilityCondition": {
+            "type": "object", "additionalProperties": false,
+            "required": ["target", "mode", "rules"],
+            "properties": {
+                "target": {"enum": ["element", "parent"]},
+                "mode": {"enum": ["all", "any"]},
+                "rules": {"type": "array", "minItems": 1, "maxItems": 25, "items": {"$ref": "#/$defs/conditionRule"}}
+            }
+        },
         "inlineContent": {
             "type": "array", "maxItems": 1000,
             "items": {"oneOf": [
@@ -280,7 +299,7 @@
                 "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "heading"},
                 "content": {"$ref": "#/$defs/inlineContent"},
                 "level": {"type": "integer", "minimum": 1, "maximum": 6},
-                "keepWithNext": {"type": "boolean"}, "style": {"$ref": "#/$defs/commonStyle"}
+                "keepWithNext": {"type": "boolean"}, "style": {"$ref": "#/$defs/commonStyle"}, "condition": {"$ref": "#/$defs/visibilityCondition"}
             }
         },
         "staticText": {
@@ -288,7 +307,7 @@
             "required": ["id", "type", "text"],
             "properties": {
                 "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "static-text"},
-                "text": {"type": "string", "maxLength": 10000}, "style": {"$ref": "#/$defs/commonStyle"}
+                "text": {"type": "string", "maxLength": 10000}, "style": {"$ref": "#/$defs/commonStyle"}, "condition": {"$ref": "#/$defs/visibilityCondition"}
             }
         },
         "paragraph": {
@@ -297,7 +316,7 @@
             "properties": {
                 "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "paragraph"},
                 "content": {"$ref": "#/$defs/inlineContent"},
-                "alignment": {"enum": ["start", "center", "end", "justify"]}, "style": {"$ref": "#/$defs/commonStyle"}
+                "alignment": {"enum": ["start", "center", "end", "justify"]}, "style": {"$ref": "#/$defs/commonStyle"}, "condition": {"$ref": "#/$defs/visibilityCondition"}
             }
         },
         "divider": {
@@ -323,7 +342,7 @@
                         "value": {"type": "number", "minimum": 1, "maximum": 2000},
                         "unit": {"const": "mm"}
                     }
-                }, "style": {"$ref": "#/$defs/commonStyle"}
+                }, "style": {"$ref": "#/$defs/commonStyle"}, "condition": {"$ref": "#/$defs/visibilityCondition"}
             }
         },
         "spacer": {
@@ -338,14 +357,14 @@
                         "value": {"type": "number", "minimum": 0.1, "maximum": 500},
                         "unit": {"const": "mm"}
                     }
-                }, "style": {"$ref": "#/$defs/commonStyle"}
+                }, "style": {"$ref": "#/$defs/commonStyle"}, "condition": {"$ref": "#/$defs/visibilityCondition"}
             }
         },
         "pageBreak": {
             "type": "object", "additionalProperties": false,
             "required": ["id", "type"],
             "properties": {
-                "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "page-break"}, "style": {"$ref": "#/$defs/commonStyle"}
+                "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "page-break"}, "style": {"$ref": "#/$defs/commonStyle"}, "condition": {"$ref": "#/$defs/visibilityCondition"}
             }
         },
         "flowElement": {"oneOf": [
@@ -370,7 +389,7 @@
                 "margin": {"$ref": "#/$defs/boxEdges"},
                 "padding": {"$ref": "#/$defs/boxEdges"},
                 "minHeight": {"$ref": "#/$defs/millimetres"},
-                "keepTogether": {"type": "boolean"}, "style": {"$ref": "#/$defs/commonStyle"}
+                "keepTogether": {"type": "boolean"}, "style": {"$ref": "#/$defs/commonStyle"}, "condition": {"$ref": "#/$defs/visibilityCondition"}
             }
         },
         "flowSection": {
@@ -391,7 +410,7 @@
                 "padding": {"$ref": "#/$defs/boxEdges"},
                 "minHeight": {"$ref": "#/$defs/millimetres"},
                 "keepTogether": {"type": "boolean"},
-                "startNewPage": {"type": "boolean"}, "style": {"$ref": "#/$defs/commonStyle"}
+                "startNewPage": {"type": "boolean"}, "style": {"$ref": "#/$defs/commonStyle"}, "condition": {"$ref": "#/$defs/visibilityCondition"}
             }
         },
         "page": {

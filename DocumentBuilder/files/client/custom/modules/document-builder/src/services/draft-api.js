@@ -57,6 +57,30 @@ define([], () => {
             };
         }
 
+        getSourceChangeImpact(xhr) {
+            if (!xhr || xhr.status !== 409) return null;
+
+            const body = parseBody(xhr);
+            const impact = body.impact;
+
+            if (body.requiresConfirmation !== true || !impact ||
+                !Array.isArray(impact.unresolvedReferences) ||
+                impact.unresolvedReferences.some(reference =>
+                    !reference || typeof reference.id !== 'string' ||
+                    typeof reference.path !== 'string')) {
+                return null;
+            }
+
+            return {
+                previousSource: impact.previousSource,
+                nextSource: impact.nextSource,
+                unresolvedReferences: impact.unresolvedReferences.map(reference => ({
+                    id: reference.id,
+                    path: reference.path,
+                })),
+            };
+        }
+
         getErrorMessage(xhr) {
             if (xhr && xhr.status === 403) {
                 return 'editorSaveAccessDenied';

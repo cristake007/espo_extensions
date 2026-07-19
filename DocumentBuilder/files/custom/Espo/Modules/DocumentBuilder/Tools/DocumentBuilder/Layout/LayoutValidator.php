@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout;
 
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\Settings;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Condition\VisibilityCondition;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Node\NodeKind;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Node\NodeRegistry;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Node\UnknownNodeType;
@@ -442,6 +443,13 @@ final readonly class LayoutValidator
         $this->validateFlowNode($node, $kind, $path, $elementId, $errors);
         $this->validateContentNode($node, $kind, $path, $elementId, $errors);
         $this->validateBasicFlowElement($node, $kind, $path, $elementId, $errors);
+        if (array_key_exists('condition', $node)) {
+            try {
+                VisibilityCondition::fromArray($node['condition']);
+            } catch (\InvalidArgumentException|\TypeError) {
+                $this->add($errors, 'condition.invalid', "$path/condition", $elementId);
+            }
+        }
         if (array_key_exists('style', $node)) {
             $this->validateStyle($node['style'], "$path/style", $elementId, $errors);
         }
@@ -493,7 +501,7 @@ final readonly class LayoutValidator
             return;
         }
 
-        $allowedKeys = ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether', 'style'];
+        $allowedKeys = ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether', 'style', 'condition'];
 
         if ($type === 'flow-section') {
             $allowedKeys[] = 'startNewPage';
@@ -548,15 +556,15 @@ final readonly class LayoutValidator
         }
 
         if ($type === 'static-text') {
-            $this->rejectUnknownKeys($node, ['id', 'type', 'text', 'style'], $path, $errors);
+            $this->rejectUnknownKeys($node, ['id', 'type', 'text', 'style', 'condition'], $path, $errors);
             $this->validatePlainText($node['text'] ?? null, "$path/text", 'content.text', $elementId, $errors);
 
             return;
         }
 
         $allowedKeys = $type === 'heading' ?
-            ['id', 'type', 'content', 'level', 'keepWithNext', 'style'] :
-            ['id', 'type', 'content', 'alignment', 'style'];
+            ['id', 'type', 'content', 'level', 'keepWithNext', 'style', 'condition'] :
+            ['id', 'type', 'content', 'alignment', 'style', 'condition'];
         $this->rejectUnknownKeys($node, $allowedKeys, $path, $errors);
         $this->validateInlineContent($node['content'] ?? null, "$path/content", $elementId, $errors);
 
@@ -596,13 +604,13 @@ final readonly class LayoutValidator
         }
 
         if ($type === 'page-break') {
-            $this->rejectUnknownKeys($node, ['id', 'type', 'style'], $path, $errors);
+            $this->rejectUnknownKeys($node, ['id', 'type', 'style', 'condition'], $path, $errors);
 
             return;
         }
 
         if ($type === 'spacer') {
-            $this->rejectUnknownKeys($node, ['id', 'type', 'height', 'style'], $path, $errors);
+            $this->rejectUnknownKeys($node, ['id', 'type', 'height', 'style', 'condition'], $path, $errors);
             $this->validateBoundedMillimetres(
                 $node['height'] ?? null, 0.1, 500.0, "$path/height", 'spacer.height', $elementId, $errors,
             );
@@ -612,7 +620,7 @@ final readonly class LayoutValidator
 
         $this->rejectUnknownKeys(
             $node,
-            ['id', 'type', 'orientation', 'lineStyle', 'color', 'thickness', 'length', 'style'],
+            ['id', 'type', 'orientation', 'lineStyle', 'color', 'thickness', 'length', 'style', 'condition'],
             $path,
             $errors,
         );

@@ -11,6 +11,7 @@ define([], () => {
             this.conflict = null;
             this.inFlight = false;
             this.sourceChangeConfirmed = false;
+            this.sourceChangeImpact = null;
         }
 
         async save() {
@@ -78,9 +79,19 @@ define([], () => {
                 this.revision = result.revision;
                 this.status = 'saved';
                 this.sourceChangeConfirmed = false;
+                this.sourceChangeImpact = null;
 
                 return {status: 'saved', result};
             } catch (error) {
+                const sourceChangeImpact = this.draftApi.getSourceChangeImpact?.(error) || null;
+
+                if (sourceChangeImpact) {
+                    this.status = 'source-change';
+                    this.sourceChangeImpact = sourceChangeImpact;
+
+                    return {status: 'source-change', impact: sourceChangeImpact};
+                }
+
                 const conflict = this.draftApi.getRevisionConflict(error);
 
                 if (conflict) {
@@ -111,6 +122,7 @@ define([], () => {
             this.errorMessage = null;
             this.conflict = null;
             this.sourceChangeConfirmed = false;
+            this.sourceChangeImpact = null;
         }
 
         beginReload() {
@@ -138,6 +150,12 @@ define([], () => {
 
         confirmSourceChange() {
             this.sourceChangeConfirmed = true;
+            this.sourceChangeImpact = null;
+        }
+
+        resetSourceChangeConfirmation() {
+            this.sourceChangeConfirmed = false;
+            this.sourceChangeImpact = null;
         }
 
         isSaving() {

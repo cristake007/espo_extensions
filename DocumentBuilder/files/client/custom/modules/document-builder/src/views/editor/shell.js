@@ -25,6 +25,8 @@ define([
     'document-builder:services/preview-api',
     'document-builder:editor/variables/metadata-browser',
     'document-builder:editor/variables/variable-presentation',
+    'document-builder:editor/conditions/condition-builder',
+    'document-builder:editor/commands/update-condition',
 ], (
     View,
     EditorState,
@@ -52,6 +54,8 @@ define([
     PreviewApi,
     MetadataBrowser,
     VariablePresentation,
+    ConditionBuilder,
+    UpdateConditionCommand,
 ) => {
     return class extends View {
         template = 'document-builder:editor/shell'
@@ -99,6 +103,10 @@ define([
             'change [data-rich-color]': 'changeRichColor',
             'click [data-action="insertMetadataVariable"]': 'actionInsertMetadataVariable',
             'change [data-variable-presentation]': 'changeVariablePresentation',
+            'click [data-action="applyCondition"]': 'actionApplyCondition',
+            'click [data-action="addConditionRule"]': 'actionAddConditionRule',
+            'click [data-action="removeConditionRule"]': 'actionRemoveConditionRule',
+            'click [data-action="removeCondition"]': 'actionRemoveCondition',
             'dragstart [draggable="true"]': 'handleFlowDragStart',
             'dragover [data-flow-drop]': 'handleFlowDragOver',
             'dragleave [data-flow-drop]': 'handleFlowDragLeave',
@@ -219,10 +227,15 @@ define([
                 selectedId,
                 zoom: this.zoom,
                 previewValues: this.editorState.isDirty() ? new Map() : this.previewValues,
+                evaluateConditions: this.previewStatus === 'ready' && !this.editorState.isDirty(),
             });
             const rows = rendered.rows;
             const selected = selectedId ? locations.get(selectedId) : null;
             const effectiveStyle = selected ? this.styleResolver.resolve(layout, selectedId) : null;
+            const condition = selected?.node.condition || null;
+            const conditionRules = condition?.rules || [{
+                identity: null, valueType: 'text', operator: 'exists', operand: null,
+            }];
 
             return {
                 flowRows: rows,
@@ -253,6 +266,38 @@ define([
                     isContent: ['heading', 'static-text', 'paragraph'].includes(selected.node.type),
                     plainText: selected.node.type === 'static-text' ? selected.node.text :
                         RichText.toPlainText(selected.node.content),
+                    hasCondition: Boolean(condition),
+                    conditionEditor: {
+                        targets: [['element', 'Element'], ['parent', 'Parent']].map(([value, label]) => ({
+                            value, label, selected: value === (condition?.target || 'element'),
+                        })),
+                        modes: [['all', 'All rules'], ['any', 'Any rule']].map(([value, label]) => ({
+                            value, label, selected: value === (condition?.mode || 'all'),
+                        })),
+                        rules: conditionRules.map((rule, index) => ({
+                            index,
+                            path: rule.identity?.path?.join('.') || '',
+                            operand: rule.operand ?? '',
+                            canRemove: conditionRules.length > 1,
+                            valueTypes: [
+                                ['text', 'Text'], ['date', 'Date'], ['datetime', 'Date/time'],
+                                ['number', 'Number'], ['currency', 'Currency'], ['boolean', 'Boolean'],
+                                ['enum', 'Enum'], ['multiValue', 'Multiple values'],
+                            ].map(([value, label]) => ({
+                                value, label, selected: value === rule.valueType,
+                            })),
+                            operators: [
+                                ['exists', 'Exists'], ['missing', 'Missing'], ['equals', 'Equals'],
+                                ['notEquals', 'Does not equal'], ['contains', 'Contains'],
+                                ['startsWith', 'Starts with'], ['greaterThan', 'Greater than'],
+                                ['greaterOrEqual', 'Greater or equal'], ['lessThan', 'Less than'],
+                                ['lessOrEqual', 'Less or equal'], ['isTrue', 'Is true'],
+                                ['isFalse', 'Is false'],
+                            ].map(([value, label]) => ({
+                                value, label, selected: value === rule.operator,
+                            })),
+                        })),
+                    },
                     effectiveStyle,
                     inspectorStyle: {...effectiveStyle,
                         backgroundColor: effectiveStyle.backgroundColor || '#FFFFFF',
@@ -662,6 +707,7 @@ define([
         actionUndo() {
             if (!this.isSaveBusy() && this.editorState && this.editorState.undo()) {
                 this.saveCoordinator.noteEdit();
+                this.invalidatePreview();
                 this.syncDirtyGuard();
                 this.reRender();
             }
@@ -670,6 +716,7 @@ define([
         actionRedo() {
             if (!this.isSaveBusy() && this.editorState && this.editorState.redo()) {
                 this.saveCoordinator.noteEdit();
+                this.invalidatePreview();
                 this.syncDirtyGuard();
                 this.reRender();
             }
@@ -700,6 +747,7 @@ define([
                 selectedId: this.editorState.getSelectedId(),
                 zoom: this.zoom,
                 previewValues: this.editorState.isDirty() ? new Map() : this.previewValues,
+                evaluateConditions: this.previewStatus === 'ready' && !this.editorState.isDirty(),
             });
             const rows = new Map(rendered.rows.map(row => [row.id, row]));
             this.element.querySelectorAll('[data-rich-content-id]').forEach(host => {
@@ -962,6 +1010,99 @@ define([
             this.moveSelectedFlow(1);
         }
 
+        actionApplyCondition() {
+            if (!this.editorState || this.isSaveBusy()) return;
+
+            const nodeId = this.editorState.getSelectedId();
+
+            try {
+                if (nodeId) this.executeCommand(new UpdateConditionCommand(
+                    nodeId,
+                    this.buildConditionFromInspector(),
+                ));
+            } catch (error) {
+                this.notify('The visibility condition is invalid.', 'warning');
+            }
+        }
+
+        actionAddConditionRule() {
+            const nodeId = this.editorState && this.editorState.getSelectedId();
+
+            try {
+                const current = this.buildConditionFromInspector();
+                const last = current.rules[current.rules.length - 1];
+                const condition = ConditionBuilder.create({
+                    target: current.target,
+                    mode: current.mode,
+                    rules: [...current.rules, last],
+                });
+                if (nodeId) this.executeCommand(new UpdateConditionCommand(nodeId, condition));
+            } catch (error) {
+                this.notify('Apply a valid rule before adding another.', 'warning');
+            }
+        }
+
+        actionRemoveConditionRule(event) {
+            const nodeId = this.editorState && this.editorState.getSelectedId();
+            const index = Number(event.currentTarget.dataset.ruleIndex);
+
+            try {
+                const current = this.buildConditionFromInspector();
+                const rules = current.rules.filter((rule, ruleIndex) => ruleIndex !== index);
+                if (!nodeId || rules.length === 0) return;
+                this.executeCommand(new UpdateConditionCommand(nodeId, ConditionBuilder.create({
+                    target: current.target,
+                    mode: current.mode,
+                    rules,
+                })));
+            } catch (error) {
+                this.notify('The visibility condition is invalid.', 'warning');
+            }
+        }
+
+        buildConditionFromInspector() {
+            if (!this.editorState || !this.element) throw new TypeError('The editor is unavailable.');
+            const source = this.editorState.getLayout().dataSource;
+            if (source.type !== 'entity') throw new TypeError('An entity source is required.');
+            const value = setting => this.element.querySelector(
+                `[data-condition-setting="${setting}"]`,
+            )?.value;
+            const rules = [...this.element.querySelectorAll('[data-condition-rule]')].map(row => {
+                const field = setting => row.querySelector(`[data-condition-rule-setting="${setting}"]`)?.value;
+                const rawPath = field('path') || '';
+                const path = rawPath.split('.');
+                const valueType = field('valueType');
+                const operator = field('operator');
+                let operand = field('operand');
+
+                if (path.some(segment => segment === '')) throw new TypeError('A path segment is empty.');
+                if (['exists', 'missing', 'isTrue', 'isFalse'].includes(operator)) operand = null;
+                else if (['number', 'currency'].includes(valueType)) operand = Number(operand);
+                else if (valueType === 'boolean' && ['true', 'false'].includes(operand)) {
+                    operand = operand === 'true';
+                }
+
+                return {
+                    identity: {
+                        source: 'entity',
+                        type: path.length === 1 ? 'direct' : 'related',
+                        entityType: source.entityType,
+                        path,
+                    },
+                    valueType,
+                    operator,
+                    operand,
+                };
+            });
+
+            return ConditionBuilder.create({target: value('target'), mode: value('mode'), rules});
+        }
+
+        actionRemoveCondition() {
+            const nodeId = this.editorState && this.editorState.getSelectedId();
+            if (nodeId) this.executeCommand(new UpdateConditionCommand(nodeId, null));
+        }
+
         moveSelectedFlow(direction) {
             if (!this.editorState) return;
 
@@ -1163,23 +1304,8 @@ define([
                 return;
             }
 
-            try {
-                await this.confirm({
-                    message: this.translate(
-                        'confirmEntitySourceChange',
-                        'messages',
-                        'DocumentBuilderTemplate',
-                    ),
-                    confirmText: this.translate('Change Source', 'actions', 'DocumentBuilderTemplate'),
-                });
-            } catch (error) {
-                await this.reRender();
-
-                return;
-            }
-
             if (this.executeCommand(new UpdateDataSourceCommand(next))) {
-                this.saveCoordinator.confirmSourceChange();
+                this.saveCoordinator.resetSourceChangeConfirmation();
                 await this.resetMetadataBrowser();
                 await this.reRender();
             }
@@ -1340,6 +1466,33 @@ define([
             if (outcome.status === 'conflict') {
                 await this.showRevisionConflict(outcome.conflict);
             }
+
+            if (outcome.status === 'source-change') {
+                await this.showSourceChangeImpact(outcome.impact);
+            }
+        }
+
+        async showSourceChangeImpact(impact) {
+            const references = impact.unresolvedReferences;
+            const details = references.length === 0 ?
+                this.translate('sourceChangeNoBrokenReferences', 'messages', 'DocumentBuilderTemplate') :
+                references.map(reference => `${reference.id}: ${reference.path}`).join('\n');
+
+            try {
+                await this.confirm({
+                    message: `${this.translate(
+                        'sourceChangeImpactReview',
+                        'messages',
+                        'DocumentBuilderTemplate',
+                    )}\n\n${details}`,
+                    confirmText: this.translate('Change Source', 'actions', 'DocumentBuilderTemplate'),
+                });
+            } catch (error) {
+                return;
+            }
+
+            this.saveCoordinator.confirmSourceChange();
+            await this.actionSave();
         }
 
         async showRevisionConflict(conflict) {
@@ -1411,11 +1564,18 @@ define([
 
             if (changed) {
                 this.saveCoordinator.noteEdit();
+                this.invalidatePreview();
                 this.syncDirtyGuard();
                 this.reRender();
             }
 
             return changed;
+        }
+
+        invalidatePreview() {
+            this.previewStatus = 'idle';
+            this.previewMode = null;
+            this.previewValues = new Map();
         }
 
         selectNode(nodeId) {

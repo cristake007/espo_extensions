@@ -1,7 +1,8 @@
 define([
     'document-builder:editor/state/json',
     'document-builder:editor/state/node-tree',
-], (Json, NodeTree) => {
+    'document-builder:editor/conditions/condition-evaluator',
+], (Json, NodeTree, ConditionEvaluator) => {
     const LABELS = Object.freeze({
         'flow-section': 'Flow Section',
         'flow-container': 'Flow Container',
@@ -47,15 +48,33 @@ define([
             this.pageGeometry = pageGeometry;
         }
 
-        render(layout, {selectedId = null, zoom = 100, previewValues = new Map()} = {}) {
+        render(layout, {
+            selectedId = null,
+            zoom = 100,
+            previewValues = new Map(),
+            evaluateConditions = false,
+        } = {}) {
             const source = Json.clone(layout);
             const locations = NodeTree.index(source);
             const rows = [];
+            const hidden = new Set();
             const pageHeight = this.printableHeight(source.document);
             let pageNumber = 1;
             let occupiedHeight = 0;
 
+            if (evaluateConditions) {
+                locations.forEach(location => {
+                    if (!location.node.condition) return;
+                    const result = ConditionEvaluator.evaluate(location.node.condition, previewValues);
+                    if (!result.visible) {
+                        hidden.add(result.target === 'parent' ?
+                            (location.parentId || location.node.id) : location.node.id);
+                    }
+                });
+            }
+
             const visit = (node, depth, region, parentId, index) => {
+                if (hidden.has(node.id)) return;
                 const location = locations.get(node.id);
                 const estimate = this.estimateHeight(node);
                 const explicitBreak = node.type === 'page-break' ||

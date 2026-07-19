@@ -1,0 +1,24 @@
+'use strict';
+const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path');let active;
+function load(relative,deps={}){active=null;new Function('define',fs.readFileSync(path.resolve(__dirname,'../../files/client/custom/modules/document-builder/src',relative),'utf8'))((names,factory)=>{active=factory(...names.map(name=>deps[name]));});return active;}
+const Json={isPlainObject:v=>v!==null&&typeof v==='object'&&!Array.isArray(v),clone:v=>structuredClone(v)};
+const VariableIdentity={create:value=>Object.freeze(structuredClone(value))};
+const builder=load('editor/conditions/condition-builder.js',{'document-builder:editor/state/json':Json,'document-builder:editor/variables/variable-identity':VariableIdentity});
+const identity={source:'entity',type:'direct',entityType:'Contact',path:['name']};
+assert.equal(builder.single(identity).rules[0].operator,'exists');
+assert.equal(builder.create({target:'parent',mode:'any',rules:Array.from({length:25},()=>({identity,valueType:'text',operator:'equals',operand:'Ana'}))}).rules.length,25);
+assert.throws(()=>builder.create({target:'element',mode:'all',rules:[]}),/Invalid/);
+assert.throws(()=>builder.create({target:'element',mode:'all',rules:Array.from({length:26},()=>({identity,valueType:'text',operator:'exists',operand:null}))}),/Invalid/);
+assert.throws(()=>builder.create({target:'element',mode:'all',rules:[{identity,valueType:'text',operator:'eval',operand:'x'}]}),/Invalid/);
+assert.throws(()=>builder.create({target:'element',mode:'all',rules:[{identity,valueType:'number',operator:'greaterThan',operand:'4'}]}),/Invalid/);
+assert.throws(()=>builder.create({target:'element',mode:'all',rules:[{identity,valueType:'text',operator:'exists',operand:null}],expression:'x'}),/Invalid/);
+const evaluator=load('editor/conditions/condition-evaluator.js',{'document-builder:editor/conditions/condition-builder':builder});
+const values=new Map([[JSON.stringify(identity),{state:'present',type:'text',value:'Ana'}]]);
+assert.deepEqual(evaluator.evaluate(builder.single(identity,'text','startsWith','An','parent'),values),{visible:true,target:'parent'});
+assert.equal(evaluator.evaluate(builder.single(identity,'text','missing'),new Map([[JSON.stringify(identity),{state:'forbidden',type:'text'}]])).visible,false);
+global.Espo={Ajax:{}};
+const DraftApi=load('services/draft-api.js');const api=new DraftApi();
+const impact=api.getSourceChangeImpact({status:409,responseJSON:{requiresConfirmation:true,impact:{previousSource:{type:'entity'},nextSource:{type:'none'},unresolvedReferences:[{id:'token1',path:'/sections/0/content/0'}]}}});
+assert.equal(impact.unresolvedReferences[0].id,'token1');
+assert.equal(api.getSourceChangeImpact({status:409,responseJSON:{requiresConfirmation:true,impact:{unresolvedReferences:[{id:'token1',path:7}]}}}),null);
+console.log('Phase 31 bounded client condition-builder tests passed.');

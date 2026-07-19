@@ -214,6 +214,8 @@
         "editorEntitySourceHelp": "Sunt afișate numai entitățile permise de configurare și de accesul curent la citire.",
         "editorUnavailableEntitySource": "Entitate sursă indisponibilă",
         "confirmEntitySourceChange": "Schimbați sursa de date a șablonului? Referințele dependente de sursa existentă pot deveni indisponibile.",
+        "sourceChangeImpactReview": "Verificați fiecare referință incompatibilă cu sursa nouă. Confirmarea va reîncerca salvarea; referințele nerezolvate trebuie totuși eliminate sau corectate.",
+        "sourceChangeNoBrokenReferences": "Nu au fost găsite referințe incompatibile.",
         "editorVariableSourceRequired": "Selectați o entitate sursă pentru a naviga câmpurile și relațiile disponibile pentru citire.",
         "editorMetadataLoading": "Se încarcă metadatele disponibile pentru citire…",
         "editorMetadataFailed": "Metadatele disponibile pentru citire nu au putut fi încărcate.",

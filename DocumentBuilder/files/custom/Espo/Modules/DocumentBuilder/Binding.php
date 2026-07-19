@@ -11,7 +11,7 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\ConfiguredLayoutPro
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\DraftRecordAccess;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\DraftTemplateStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\LayoutProcessorProvider;
-use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\NoopSourceReferenceImpactAnalyzer;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\CompiledSourceReferenceImpactAnalyzer;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\OrmDraftTemplateStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\SourceReferenceImpactAnalyzer;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\AclEntityCatalogueAccess;
@@ -45,7 +45,7 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\CurrentUserPu
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\DataSourcePublicationValidator;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\MediaPublicationValidator;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\NoopMediaPublicationValidator;
-use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\NoopVariablePublicationValidator;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\CompiledVariablePublicationValidator;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\OrmPublicationStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\Phase13DataSourcePublicationValidator;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\PublicationActor;
@@ -67,7 +67,7 @@ final class Binding implements BindingProcessor
             ->bindImplementation(LayoutProcessorProvider::class, ConfiguredLayoutProcessorProvider::class)
             ->bindImplementation(
                 SourceReferenceImpactAnalyzer::class,
-                NoopSourceReferenceImpactAnalyzer::class,
+                CompiledSourceReferenceImpactAnalyzer::class,
             )
             ->bindImplementation(PublicationStore::class, OrmPublicationStore::class)
             ->bindImplementation(PublicationRecordAccess::class, AclPublicationRecordAccess::class)
@@ -79,7 +79,7 @@ final class Binding implements BindingProcessor
             ->bindImplementation(MediaPublicationValidator::class, NoopMediaPublicationValidator::class)
             ->bindImplementation(
                 VariablePublicationValidator::class,
-                NoopVariablePublicationValidator::class,
+                CompiledVariablePublicationValidator::class,
             )
             ->bindImplementation(
                 TemplateLifecycleStore::class,

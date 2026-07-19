@@ -289,6 +289,32 @@
                     <button type="button" class="btn btn-default" data-action="moveFlowDown">{{translate 'Move Down' category='actions' scope='DocumentBuilderTemplate'}}</button>
                     <button type="button" class="btn btn-danger" data-action="removeFlowNode">{{translate 'Remove'}}</button>
                 </div>
+                <fieldset class="document-builder-editor__condition-controls">
+                    <legend>Visibility Condition</legend>
+                    <div class="document-builder-editor__settings-grid">
+                        <label>Target<select class="form-control input-sm" data-condition-setting="target">{{#each selectedFlowNode.conditionEditor.targets}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+                        <label>Match<select class="form-control input-sm" data-condition-setting="mode">{{#each selectedFlowNode.conditionEditor.modes}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+                    </div>
+                    {{#each selectedFlowNode.conditionEditor.rules}}
+                    <div class="panel panel-default" data-condition-rule="{{index}}">
+                        <div class="panel-body">
+                            <div class="form-group"><label>Variable path<input class="form-control input-sm" type="text" maxlength="403" placeholder="account.name" value="{{path}}" data-condition-rule-setting="path"></label></div>
+                            <div class="document-builder-editor__settings-grid">
+                                <label>Value type<select class="form-control input-sm" data-condition-rule-setting="valueType">{{#each valueTypes}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+                                <label>Operator<select class="form-control input-sm" data-condition-rule-setting="operator">{{#each operators}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+                            </div>
+                            <div class="form-group"><label>Comparison value<input class="form-control input-sm" type="text" maxlength="1000" value="{{operand}}" data-condition-rule-setting="operand"></label></div>
+                            {{#if canRemove}}<button type="button" class="btn btn-default btn-xs" data-action="removeConditionRule" data-rule-index="{{index}}">Remove Rule</button>{{/if}}
+                        </div>
+                    </div>
+                    {{/each}}
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-primary" data-action="applyCondition">Apply Condition</button>
+                        <button type="button" class="btn btn-default" data-action="addConditionRule">Add Rule</button>
+                        {{#if selectedFlowNode.hasCondition}}<button type="button" class="btn btn-default" data-action="removeCondition">Remove Condition</button>{{/if}}
+                    </div>
+                    <p class="text-muted">Conditions are shallow, bounded rule groups. Saving validates the variable against the selected source.</p>
+                </fieldset>
                 <fieldset class="document-builder-editor__style-controls">
                     <legend>{{translate 'Style' category='labels' scope='DocumentBuilderTemplate'}}</legend>
                     <div class="form-group"><label>{{translate 'Font' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-style-setting="fontFamily">{{#each selectedFlowNode.styleFontList}}<option value="{{name}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label></div>
