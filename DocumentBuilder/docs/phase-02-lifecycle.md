@@ -2,7 +2,7 @@
 
 ## Installed configuration
 
-`AfterInstall.php` registers one `tabList` group with stable ID `document-builder`, translated label `Document Builder`, and an empty `itemList`. The empty group is structural: EspoCRM 10.0.2 filters it from the rendered navbar until later phases add ACL-visible entity scopes.
+`AfterInstall.php` registers one `tabList` group with stable ID `document-builder`, translated label `Document Builder`, and an empty `itemList`. The empty group is structural: EspoCRM 10.0.0 filters it from the rendered navbar until later phases add ACL-visible entity scopes.
 
 Installation preserves the order and value of every unrelated `tabList` entry. A stale or duplicate group owned by the same stable ID is replaced by one canonical group. Repeated installation does not write the config again when the canonical group is already present.
 
@@ -28,7 +28,7 @@ Template versions, snapshots, generation history, generated PDFs, and media atta
 
 Do not run this checklist on `/opt/crm.cursurituv.ro`. It remains pending until the product owner supplies a separate non-production instance.
 
-1. Confirm `bin/command app-info --core-version` reports `10.0.2` and record the test instance path.
+1. Confirm `bin/command app-info --core-version` reports `10.0.0` and record the test instance path.
 2. Back up or confirm disposability of the test instance, including its database and configured file storage.
 3. Install `dist/document-builder-1.0.0.zip` through Administration > Extensions or the documented extension CLI command.
 4. Confirm installation and rebuild complete without errors and the module appears as `Document Builder`.

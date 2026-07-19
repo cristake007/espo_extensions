@@ -38,7 +38,7 @@ php -r '
     $expected = [
         "name" => "Document Builder",
         "version" => "1.0.0",
-        "acceptableVersions" => ["10.0.2"],
+        "acceptableVersions" => [">=10.0.0"],
         "php" => [">=8.3.0 <8.6.0"],
     ];
 

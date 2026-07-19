@@ -10,10 +10,10 @@ The source-of-truth order is:
 2. The PRD.
 3. Applicable repository `AGENTS.md` instructions.
 4. The current phase brief.
-5. Verified EspoCRM 10.0.2 source and official documentation.
+5. Verified EspoCRM 10.0.0 source and official documentation.
 6. Existing extension conventions.
 
-Target platform: **EspoCRM 10.0.2**.
+Verified baseline: **EspoCRM 10.0.0**. The product-owner-approved manifest constraint is `>=10.0.0`; later admitted releases are not certified without separate validation.
 
 The plan does not turn temporary phase boundaries into permanent product exclusions. Every version 1.0 capability required by the PRD remains represented in a later phase. PRD non-goals and explicitly future enhancements remain outside version 1.0 unless the product owner promotes them.
 
@@ -23,7 +23,7 @@ The plan does not turn temporary phase boundaries into permanent product exclusi
 - Canonical backend module name and namespace segment: `DocumentBuilder`.
 - Canonical frontend module name: `document-builder`.
 - The existing `Documentbuilder` scaffold must be normalized before feature implementation.
-- The extension targets EspoCRM 10.0.2 first. Compatibility with other EspoCRM releases must be claimed only after explicit validation.
+- The extension is source-verified against EspoCRM 10.0.0. Its manifest accepts `>=10.0.0` by explicit product-owner decision; compatibility claims for later releases still require explicit validation.
 - EspoCRM core files must not be edited. Native behavior is extended only through packaged module/custom metadata and supported extension points.
 - Generated PDFs, immutable template versions, snapshots, and generation history are preserved when the extension is uninstalled.
 - Reusable design assets use a dedicated `DocumentBuilderMedia` entity backed by EspoCRM `Attachment` records.
@@ -38,9 +38,9 @@ The plan does not turn temporary phase boundaries into permanent product exclusi
 - `/opt/crm.cursurituv.ro` is production and is prohibited for development installation, test-record creation, experimental validation, or cleanup.
 - Runtime validation may run only on a separate non-production EspoCRM instance explicitly supplied by the product owner.
 
-## 3. Verified EspoCRM 10.0.2 capabilities
+## 3. Verified EspoCRM 10.0.0 capabilities
 
-EspoCRM 10.0.2 already supplies the backend libraries needed for the planned core features:
+EspoCRM 10.0.0 already supplies the backend libraries needed for the planned core features:
 
 - Dompdf 3.1.x.
 - PhpSpreadsheet 5.7.x.
@@ -49,7 +49,7 @@ EspoCRM 10.0.2 already supplies the backend libraries needed for the planned cor
 - EspoCRM Attachment and File Storage Manager abstractions.
 - EspoCRM queued jobs and job scheduling.
 
-It also supplies relevant client libraries, including DOMPurify, Summernote, Shopify Draggable, jQuery UI, GridStack, QR and barcode utilities. A phase may reuse an EspoCRM-bundled library only after confirming its supported loading contract in 10.0.2. No new dependency is planned. Any future dependency proposal requires a separate product-owner decision and the repository-required dependency announcement.
+It also supplies relevant client libraries, including DOMPurify, Summernote, Shopify Draggable, jQuery UI, GridStack, QR and barcode utilities. A phase may reuse an EspoCRM-bundled library only after confirming its supported loading contract in 10.0.0. No new dependency is planned. Any future dependency proposal requires a separate product-owner decision and the repository-required dependency announcement.
 
 ## 4. Architectural ownership
 
@@ -88,7 +88,7 @@ Only one phase is implemented at a time. Before changing code in that phase, the
 - focused checks and any manual runtime validation;
 - unresolved choice that would materially change the phase.
 
-The session must inspect the named EspoCRM 10.0.2 APIs before using them. It must not redesign a later phase, add speculative abstractions, or silently begin later work.
+The session must inspect the named EspoCRM 10.0.0 APIs before using them. It must not redesign a later phase, add speculative abstractions, or silently begin later work.
 
 Every phase must leave the repository coherent, add or update focused tests for its contracts, and finish with a commit. No implementation branch is pushed automatically. Runtime checks that need EspoCRM must wait for the explicitly supplied non-production instance.
 
@@ -102,7 +102,7 @@ Likely path aliases used below:
 <tests>/   = <extension-root>/tests/
 ```
 
-Exact filenames are confirmed at the start of each phase against EspoCRM 10.0.2 and the implementation produced by prior phases.
+Exact filenames are confirmed at the start of each phase against EspoCRM 10.0.0 and the implementation produced by prior phases.
 
 ## 6. Layer dependency map
 
@@ -127,13 +127,13 @@ The layers are sequential. Focused tasks inside a layer may be executed only in 
 
 # Layer 1 — Foundation and extension architecture
 
-## Phase 00 — Pin the EspoCRM 10.0.2 runtime contract
+## Phase 00 — Pin the EspoCRM 10.0.0 baseline runtime contract
 
-- **Objective:** Record the exact EspoCRM 10.0.2 source contracts the extension will use and establish the non-production runtime gate.
+- **Objective:** Record the exact EspoCRM 10.0.0 source contracts the extension will use and establish the non-production runtime gate.
 - **Depends on:** Approved target version and production prohibition.
-- **Expected changes:** Add a concise runtime-contract reference covering module loading, routes/API actions, DI, metadata, ACL, attachments/file storage, jobs, PDF services, client library loading, rebuild, install, upgrade, and uninstall behavior. Record exact 10.0.2 commit/tag references. Do not create application functionality.
+- **Expected changes:** Add a concise runtime-contract reference covering module loading, routes/API actions, DI, metadata, ACL, attachments/file storage, jobs, PDF services, client library loading, rebuild, install, upgrade, and uninstall behavior. Record exact 10.0.0 commit/tag references. Do not create application functionality.
 - **Likely files:** `<extension-root>/docs/phase-00-runtime-contract.md`, `<tests>/phase-00/` contract checks if useful.
-- **Validation:** Source links resolve; every planned Espo integration point has a 10.0.2 source or official-documentation reference; the document clearly prohibits `/opt/crm.cursurituv.ro`.
+- **Validation:** Source links resolve; every planned Espo integration point has a 10.0.0 source or official-documentation reference; the document clearly prohibits `/opt/crm.cursurituv.ro`.
 - **Complete when:** Later phases can verify an API choice without relying on memory or examples from another Espo version.
 
 ## Phase 01 — Normalize the extension identity and scaffold
@@ -141,7 +141,7 @@ The layers are sequential. Focused tasks inside a layer may be executed only in 
 - **Objective:** Establish one consistent extension identity before code and database metadata depend on it.
 - **Depends on:** Phase 00.
 - **Expected changes:** Rename the extension root and backend module directory from `Documentbuilder` to `DocumentBuilder`; retain frontend `document-builder`; update manifest, README, module metadata, translations, and build command. Pin the manifest to the approved EspoCRM/PHP compatibility contract rather than the scaffold's broad defaults.
-- **Likely files:** `<extension-root>/manifest.json`, `README.md`, `<backend>/Resources/module.json`, `<backend>/Resources/metadata/app/module.json` if required by 10.0.2, i18n files, frontend root.
+- **Likely files:** `<extension-root>/manifest.json`, `README.md`, `<backend>/Resources/module.json`, `<backend>/Resources/metadata/app/module.json` if required by 10.0.0, i18n files, frontend root.
 - **Validation:** Path/case inventory contains no unintended `Documentbuilder`; JSON and manifest range validation pass; build script recognizes the renamed extension.
 - **Complete when:** Folder, namespace, scope prefixes, frontend module, display name, and package identity are unambiguous.
 
@@ -160,7 +160,7 @@ The layers are sequential. Focused tasks inside a layer may be executed only in 
 - **Depends on:** Phase 00.
 - **Expected changes:** Add focused capability checks for Dompdf, PhpSpreadsheet, QR/barcode libraries, DOMPurify, rich-text support, drag/reorder, and freeform interaction candidates. Document supported import/loading mechanisms and licenses. Do not choose a UI library merely because it exists; compare only candidates needed by the PRD.
 - **Likely files:** `<tests>/phase-03/`, phase runtime-contract reference; no product feature files.
-- **Validation:** Checks match the EspoCRM 10.0.2 composer/package metadata and loader definitions; no extension dependency manifest is added.
+- **Validation:** Checks match the EspoCRM 10.0.0 composer/package metadata and loader definitions; no extension dependency manifest is added.
 - **Complete when:** Each planned library use has a verified loading path, or is explicitly deferred to a feasibility phase.
 
 ## Phase 04 — Prove renderer feasibility against the required layout modes
@@ -170,7 +170,7 @@ The layers are sequential. Focused tasks inside a layer may be executed only in 
 - **Expected changes:** Create isolated renderer fixtures for Romanian text/fonts, flow pagination, conservative table-based grid, freeform millimetre positioning, fixed headers/footers, page numbering/count feasibility, local raster images, WebP, sanitized SVG candidates, QR codes, long table rows, and page breaks. Record measurable support, tolerances, and known Dompdf limitations. These are feasibility fixtures, not the production renderer.
 - **Likely files:** `<tests>/phase-04/fixtures/`, `<tests>/phase-04/`, a short compatibility matrix.
 - **Validation:** Source-only checks run locally; runtime/PDF checks remain explicitly pending until the test instance exists; no result is inferred from browser rendering alone.
-- **Complete when:** The canonical schema and renderer plan can be based on observed 10.0.2 behavior, with unresolved runtime items visibly gated rather than guessed.
+- **Complete when:** The canonical schema and renderer plan can be based on observed 10.0.0 behavior, with unresolved runtime items visibly gated rather than guessed.
 
 ## Phase 05 — Create the focused test and fixture foundation
 
@@ -451,7 +451,7 @@ The layers are sequential. Focused tasks inside a layer may be executed only in 
 
 ## Phase 34 — Implement the isolated Dompdf adapter and PDF preview
 
-- **Objective:** Render one fresh PDF instance from safe generated HTML using EspoCRM 10.0.2 capabilities.
+- **Objective:** Render one fresh PDF instance from safe generated HTML using EspoCRM 10.0.0 capabilities.
 - **Depends on:** Phases 04 and 33.
 - **Expected changes:** Add PDF adapter, engine/config selection constrained to the verified Dompdf contract, fresh-instance lifecycle, local resource/chroot rules, JavaScript/remote access disabled, memory/time/error handling, ephemeral preview endpoint/response, cleanup, and preview rate enforcement. Do not create generation history for previews.
 - **Likely files:** `<backend>/Rendering/PdfRenderer`, preview service/API/routes, temp-file helper, `<tests>/phase-34/`.
@@ -605,7 +605,7 @@ The layers are sequential. Focused tasks inside a layer may be executed only in 
 
 - **Objective:** Generate codes locally from bounded safe values without external services or URL fetching.
 - **Depends on:** Phases 03, 27, 32, and 34.
-- **Expected changes:** Add QR element with static/variable/composed/record URL value, length/scheme checks, error correction, quiet zone/colors/label, local server renderer, browser preview adapter, and PDF readability fixtures. Add the PRD-approved barcode types that the bundled 10.0.2 library proves reliable; unsupported candidate types require a product decision rather than substitution.
+- **Expected changes:** Add QR element with static/variable/composed/record URL value, length/scheme checks, error correction, quiet zone/colors/label, local server renderer, browser preview adapter, and PDF readability fixtures. Add the PRD-approved barcode types that the bundled 10.0.0 library proves reliable; unsupported candidate types require a product decision rather than substitution.
 - **Likely files:** QR/barcode schemas, renderers, validators, inspectors, `<tests>/phase-50/`.
 - **Validation:** Length, URLs, no fetch, injection, supported/unsupported types, contrast/quiet zone, scanner-readable output, and browser/PDF comparison.
 - **Complete when:** QR is mandatory and reliable; any additional barcode support has explicit tested type coverage.
@@ -623,7 +623,7 @@ The layers are sequential. Focused tasks inside a layer may be executed only in 
 
 - **Objective:** Make sanitized SVG a supported browser/PDF media source with deterministic fallback behavior.
 - **Depends on:** Phases 04, 45, and 51; supplied non-production runtime.
-- **Expected changes:** Compare safe direct/data-URI/rasterization strategies, choose the observed 10.0.2-compatible path, add bounded rasterization only if required and available without an unapproved dependency, enable upload/picker after capability proof, and expose compatibility errors. Keep remote references disabled.
+- **Expected changes:** Compare safe direct/data-URI/rasterization strategies, choose the observed 10.0.0-compatible path, add bounded rasterization only if required and available without an unapproved dependency, enable upload/picker after capability proof, and expose compatibility errors. Keep remote references disabled.
 - **Likely files:** SVG render-source adapter, media capability provider, browser/HTML renderers, fixtures/tests.
 - **Validation:** Logos/icons with paths/text/gradients/transparency, PDF presence/geometry, sanitizer invariance, memory limits, malformed output, and cross-format regression.
 - **Complete when:** SVG is enabled with security and renderer evidence, or implementation stops at an explicit capability blocker requiring product direction rather than dropping SVG.
@@ -824,7 +824,7 @@ The layers are sequential. Focused tasks inside a layer may be executed only in 
 
 - **Objective:** Generate non-trivial batches outside HTTP requests with resumable bounded work.
 - **Depends on:** Phases 03, 37–38, and 72.
-- **Expected changes:** Add job classes/scheduling, bounded chunks, queue/group choice verified against 10.0.2, per-item generation through the existing generation service, progress persistence, heartbeat/stale recovery, retry failed only, safe cancellation points, terminal reconciliation, and error redaction.
+- **Expected changes:** Add job classes/scheduling, bounded chunks, queue/group choice verified against 10.0.0, per-item generation through the existing generation service, progress persistence, heartbeat/stale recovery, retry failed only, safe cancellation points, terminal reconciliation, and error redaction.
 - **Likely files:** `<backend>/Jobs/`, batch coordinator/repository, job metadata if required, `<tests>/phase-73/`.
 - **Validation:** Chunking, crash/retry, duplicate delivery, partial failure, cancellation, success/warning/error counts, no duplicate PDFs, and cron/daemon manual checklist.
 - **Complete when:** Batch work never blocks the initiating request and job retries cannot regenerate completed items.
@@ -855,7 +855,7 @@ The layers are sequential. Focused tasks inside a layer may be executed only in 
 
 - **Objective:** Offer Generate Document on eligible entity record views without per-entity core modifications.
 - **Depends on:** Phases 07, 24, 31, and 38.
-- **Expected changes:** Add verified 10.0.2 global view setup handler/action integration, compatible-template query, category/description/published date/thumbnail hook, required-value warning, filename option, preview/generate dialog, and ACL checks. The action remains absent where no compatible template exists.
+- **Expected changes:** Add verified 10.0.0 global view setup handler/action integration, compatible-template query, category/description/published date/thumbnail hook, required-value warning, filename option, preview/generate dialog, and ACL checks. The action remains absent where no compatible template exists.
 - **Likely files:** `<custom>/Resources/metadata/clientDefs/Global.json` or verified module equivalent, client setup handler/dialog/service, compatibility API, `<tests>/phase-76/`.
 - **Validation:** Contact/Account/custom entity, no-template/no-access states, wrong source, condition compatibility, action duplication after rebuild, keyboard/dialog behavior, and generation success.
 - **Complete when:** Compatible published templates appear globally without editing each entity definition.
@@ -936,7 +936,7 @@ The layers are sequential. Focused tasks inside a layer may be executed only in 
 
 - **Objective:** Prove deterministic upgrades from earlier development packages and schema versions without mutating published history.
 - **Depends on:** Phases 09, 11–14, and all later schema migrations.
-- **Expected changes:** Consolidate migrators, add old-layout/version fixtures, extension upgrade scripts only where 10.0.2 requires them, metadata/database rebuild checklist, attachment/link preservation, unsupported-future-version failure, and rollback/backup guidance. No destructive migration is allowed without separate approval.
+- **Expected changes:** Consolidate migrators, add old-layout/version fixtures, extension upgrade scripts only where 10.0.0 requires them, metadata/database rebuild checklist, attachment/link preservation, unsupported-future-version failure, and rollback/backup guidance. No destructive migration is allowed without separate approval.
 - **Likely files:** Layout migrators/tests, package upgrade scripts, `<tests>/phase-85/`, release documentation.
 - **Validation:** Each schema step, direct multi-step migration, normalized hash stability, immutable old published snapshot, extension package upgrade on supplied test instance, and failure recovery.
 - **Complete when:** Supported old drafts open/save/publish correctly and historical generated documents remain tied to their original version/snapshot.
@@ -954,7 +954,7 @@ The layers are sequential. Focused tasks inside a layer may be executed only in 
 
 - **Objective:** Produce the production-candidate Document Builder 1.0 package only after all functional and quality gates pass.
 - **Depends on:** Phases 00–86.
-- **Expected changes:** Run the complete PRD acceptance matrix on the supplied non-production EspoCRM 10.0.2 instance; finalize operator/user documentation, example templates, known measured renderer tolerances, installation/upgrade/uninstall procedures, checksums/version/release date, package inventory, and release ZIP. Make only release-blocking bounded fixes.
+- **Expected changes:** Run the complete PRD acceptance matrix on the supplied non-production EspoCRM 10.0.0 instance; finalize operator/user documentation, example templates, known measured renderer tolerances, installation/upgrade/uninstall procedures, checksums/version/release date, package inventory, and release ZIP. Make only release-blocking bounded fixes.
 - **Likely files:** `<tests>/phase-87/`, README/user/admin/release documentation required by PRD, manifest, build output under the repository's ignored `dist/` path.
 - **Validation:** Clean install/rebuild, all four representative workflows, entity/custom entity/spreadsheet sources, flow/grid/freeform, all required elements/media, direct/related/repeating data, single/batch output, history/snapshots, ACL/security/performance/accessibility/i18n, upgrade, uninstall/reinstall, and clean package root.
 - **Complete when:** Every version 1.0 definition-of-done item in the PRD has evidence, no critical/high security finding remains, all runtime checks target the approved test instance, and the installable ZIP is reproducible.
@@ -1019,7 +1019,7 @@ Permanent version 1.0 exclusions are only those explicitly stated as PRD non-goa
 ## 9. Required technical references
 
 - PRD: `document-builder-espocrm-prd.md`.
-- EspoCRM 10.0.2 source: <https://github.com/espocrm/espocrm/tree/10.0.2>
+- EspoCRM 10.0.0 source: <https://github.com/espocrm/espocrm/tree/10.0.0>
 - Extension packages: <https://docs.espocrm.com/development/extension-packages/>
 - Modules: <https://docs.espocrm.com/development/modules/>
 - Metadata: <https://docs.espocrm.com/development/metadata/>
@@ -1030,4 +1030,4 @@ Permanent version 1.0 exclusions are only those explicitly stated as PRD non-goa
 - View setup handlers: <https://docs.espocrm.com/development/frontend/view-setup-handlers/>
 - Dompdf limitations: <https://github.com/dompdf/dompdf>
 
-The installed 10.0.2 source on the supplied test instance takes precedence over general documentation when exact signatures or runtime behavior differ.
+The installed 10.0.0 source on the supplied test instance takes precedence over general documentation when exact signatures or runtime behavior differ.

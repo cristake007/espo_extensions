@@ -1,6 +1,6 @@
 # Document Builder
 
-Document Builder is an EspoCRM 10.0.2 extension package.
+Document Builder is an EspoCRM extension with a verified 10.0.0 baseline.
 
 ## Canonical identity
 
@@ -34,9 +34,10 @@ files/custom/Espo/Custom/Resources/
 
 ## Compatibility
 
-- EspoCRM: `10.0.2` only.
-- PHP: `>=8.3.0 <8.6.0`, matching EspoCRM 10.0.2.
-- Other EspoCRM releases are unsupported until explicitly validated.
+- Verified EspoCRM baseline: `10.0.0`.
+- Manifest acceptance constraint: `>=10.0.0`, as approved by the product owner.
+- PHP: `>=8.3.0 <8.6.0`, matching the verified EspoCRM 10.0.0 baseline.
+- Later EspoCRM releases admitted by the manifest are not certified until explicitly validated.
 
 ## Build
 

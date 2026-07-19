@@ -20,9 +20,10 @@ require_text() {
     fi
 }
 
-require_text 'Target release: **EspoCRM 10.0.2 only**'
-require_text '8913b2c0212f315105c7cfa008ef9adebb66d5ff'
-require_text 'f6f561e3dacb6329891a83899fe07a75cbe0b9c8'
+require_text 'Verified baseline: **EspoCRM 10.0.0**'
+require_text 'manifest constraint `>=10.0.0`'
+require_text 'debc6b75bd9177259fb14b99cef93d8cd5d88c5b'
+require_text '2cde9d980f84cfc3caa1adf3275a0817e1e49bfa'
 require_text '>=8.3.0 <8.6.0'
 require_text '/opt/crm.cursurituv.ro'
 require_text '**PROHIBITED**'
