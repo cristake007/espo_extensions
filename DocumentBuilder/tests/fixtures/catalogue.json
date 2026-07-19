@@ -7,6 +7,8 @@
         {"path": "acceptance/offer.json", "kind": "acceptance-scenario", "license": "original-project-test-data"},
         {"path": "acceptance/spreadsheet-certificate.json", "kind": "acceptance-scenario", "license": "original-project-test-data"},
         {"path": "acl/cases.json", "kind": "acl-cases", "license": "original-project-test-data"},
+        {"path": "layout/phase-08-cases.json", "kind": "layout-contract-cases", "license": "original-project-test-data"},
+        {"path": "layout/phase-08-default.json", "kind": "canonical-layout", "license": "original-project-test-data"},
         {"path": "media/media-cases.json", "kind": "media-cases", "license": "original-project-test-data"},
         {"path": "media/safe-reference-free.svg", "kind": "media", "license": "original-project-test-data"},
         {"path": "metadata/entityDefs/Account.json", "kind": "entity-metadata", "license": "original-project-test-data"},

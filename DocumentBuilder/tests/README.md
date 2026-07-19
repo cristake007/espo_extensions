@@ -31,6 +31,7 @@ php tests/phase-03/check-capabilities.php /path/to/espocrm-10.0.0-source
 php tests/phase-04/check-feasibility.php /path/to/espocrm-10.0.0-source /path/to/dompdf-3.1.5-source
 php tests/phase-06/settings.test.php
 php tests/phase-07/contracts.test.php
+php tests/phase-08/primitives.test.php
 ```
 
 Package inventory is checked separately after building the extension ZIP:
@@ -39,6 +40,7 @@ Package inventory is checked separately after building the extension ZIP:
 php tests/phase-02/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-06/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-07/package-inventory.test.php dist/document-builder-1.0.0.zip
+php tests/phase-08/package-inventory.test.php dist/document-builder-1.0.0.zip
 ```
 
 Phase 04 PDF rendering is a manual runtime check. It may be run only with an approved non-production EspoCRM 10.0.0 instance and a new output directory, following `docs/phase-04-renderer-feasibility.md`.

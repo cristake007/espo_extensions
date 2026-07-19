@@ -1,0 +1,27 @@
+{
+    "schemaVersion": 1,
+    "capabilities": [],
+    "document": {
+        "page": {
+            "size": "A4",
+            "orientation": "portrait",
+            "margins": {
+                "top": {"value": 15, "unit": "mm"},
+                "right": {"value": 15, "unit": "mm"},
+                "bottom": {"value": 15, "unit": "mm"},
+                "left": {"value": 15, "unit": "mm"}
+            }
+        },
+        "defaults": {
+            "fontFamily": "DejaVu Sans",
+            "fontSize": {"value": 10, "unit": "pt"},
+            "color": "#222222",
+            "lineHeight": 1.2,
+            "locale": "en_US"
+        }
+    },
+    "dataSource": {"type": "none"},
+    "header": [],
+    "sections": [],
+    "footer": []
+}

@@ -1,0 +1,213 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "urn:document-builder:layout:1",
+    "title": "Document Builder canonical layout schema v1",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "schemaVersion",
+        "capabilities",
+        "document",
+        "dataSource",
+        "header",
+        "sections",
+        "footer"
+    ],
+    "properties": {
+        "schemaVersion": {"const": 1},
+        "capabilities": {
+            "type": "array",
+            "maxItems": 0
+        },
+        "document": {"$ref": "#/$defs/document"},
+        "dataSource": {"$ref": "#/$defs/noSourceDescriptor"},
+        "header": {"$ref": "#/$defs/emptyNodeSequence"},
+        "sections": {"$ref": "#/$defs/emptyNodeSequence"},
+        "footer": {"$ref": "#/$defs/emptyNodeSequence"}
+    },
+    "$defs": {
+        "stableId": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+        },
+        "nodeType": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,63}$"
+        },
+        "node": {
+            "type": "object",
+            "description": "Base properties for a registered node. Concrete node schemas must set unevaluatedProperties to false.",
+            "required": ["id", "type"],
+            "properties": {
+                "id": {"$ref": "#/$defs/stableId"},
+                "type": {"$ref": "#/$defs/nodeType"}
+            }
+        },
+        "emptyNodeSequence": {
+            "type": "array",
+            "maxItems": 0
+        },
+        "millimetres": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["value", "unit"],
+            "properties": {
+                "value": {"type": "number", "minimum": 0, "maximum": 2000},
+                "unit": {"const": "mm"}
+            }
+        },
+        "points": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["value", "unit"],
+            "properties": {
+                "value": {"type": "number", "minimum": 0, "maximum": 512},
+                "unit": {"const": "pt"}
+            }
+        },
+        "percent": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["value", "unit"],
+            "properties": {
+                "value": {"type": "number", "minimum": 0, "maximum": 100},
+                "unit": {"const": "percent"}
+            }
+        },
+        "gridSpan": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["value", "unit"],
+            "properties": {
+                "value": {"type": "integer", "minimum": 1, "maximum": 24},
+                "unit": {"const": "gridSpan"}
+            }
+        },
+        "measurement": {
+            "oneOf": [
+                {"$ref": "#/$defs/millimetres"},
+                {"$ref": "#/$defs/points"},
+                {"$ref": "#/$defs/percent"},
+                {"$ref": "#/$defs/gridSpan"}
+            ]
+        },
+        "boxEdges": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["top", "right", "bottom", "left"],
+            "properties": {
+                "top": {"$ref": "#/$defs/millimetres"},
+                "right": {"$ref": "#/$defs/millimetres"},
+                "bottom": {"$ref": "#/$defs/millimetres"},
+                "left": {"$ref": "#/$defs/millimetres"}
+            }
+        },
+        "color": {
+            "type": "string",
+            "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "border": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["width", "style", "color"],
+            "properties": {
+                "width": {"$ref": "#/$defs/points"},
+                "style": {"enum": ["none", "solid", "dashed", "dotted", "double"]},
+                "color": {"$ref": "#/$defs/color"}
+            }
+        },
+        "commonStyle": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "margin": {"$ref": "#/$defs/boxEdges"},
+                "padding": {"$ref": "#/$defs/boxEdges"},
+                "backgroundColor": {"$ref": "#/$defs/color"},
+                "border": {"$ref": "#/$defs/border"},
+                "opacity": {"type": "number", "minimum": 0, "maximum": 1},
+                "horizontalAlignment": {"enum": ["start", "center", "end", "stretch"]},
+                "verticalAlignment": {"enum": ["start", "center", "end"]}
+            }
+        },
+        "page": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["size", "orientation", "margins"],
+            "properties": {
+                "size": {"enum": ["A4", "Letter", "Legal"]},
+                "orientation": {"enum": ["portrait", "landscape"]},
+                "margins": {"$ref": "#/$defs/boxEdges"}
+            }
+        },
+        "documentDefaults": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["fontFamily", "fontSize", "color", "lineHeight", "locale"],
+            "properties": {
+                "fontFamily": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100,
+                    "pattern": "^[A-Za-z][A-Za-z0-9 ._-]*$"
+                },
+                "fontSize": {"$ref": "#/$defs/points"},
+                "color": {"$ref": "#/$defs/color"},
+                "lineHeight": {"type": "number", "minimum": 0.5, "maximum": 5},
+                "locale": {"type": "string", "pattern": "^[a-z]{2}_[A-Z]{2}$"}
+            }
+        },
+        "document": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["page", "defaults"],
+            "properties": {
+                "page": {"$ref": "#/$defs/page"},
+                "defaults": {"$ref": "#/$defs/documentDefaults"}
+            }
+        },
+        "noSourceDescriptor": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type"],
+            "properties": {
+                "type": {"const": "none"}
+            }
+        },
+        "entitySourceDescriptor": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "entityType", "relationshipDepth"],
+            "properties": {
+                "type": {"const": "entity"},
+                "entityType": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][A-Za-z0-9]{0,99}$"
+                },
+                "relationshipDepth": {"type": "integer", "minimum": 1, "maximum": 3}
+            }
+        },
+        "spreadsheetSourceDescriptor": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "format"],
+            "properties": {
+                "type": {"const": "spreadsheet"},
+                "format": {"enum": ["csv", "xlsx"]},
+                "worksheet": {"type": "string", "minLength": 1, "maxLength": 100}
+            },
+            "allOf": [
+                {
+                    "if": {"properties": {"format": {"const": "csv"}}},
+                    "then": {"not": {"required": ["worksheet"]}}
+                }
+            ]
+        },
+        "sourceDescriptor": {
+            "oneOf": [
+                {"$ref": "#/$defs/noSourceDescriptor"},
+                {"$ref": "#/$defs/entitySourceDescriptor"},
+                {"$ref": "#/$defs/spreadsheetSourceDescriptor"}
+            ]
+        }
+    }
+}

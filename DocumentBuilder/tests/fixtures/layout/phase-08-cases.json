@@ -1,0 +1,36 @@
+{
+    "schemaVersion": 1,
+    "stableIds": {
+        "valid": ["sectionA", "element_01", "node-with-dashes"],
+        "invalid": ["", "1startsWithDigit", "contains space", "../escape", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+    },
+    "measurements": {
+        "valid": [
+            {"value": 0, "unit": "mm"},
+            {"value": 2000, "unit": "mm"},
+            {"value": 512, "unit": "pt"},
+            {"value": 100, "unit": "percent"},
+            {"value": 24, "unit": "gridSpan"}
+        ],
+        "invalid": [
+            {"value": -1, "unit": "mm"},
+            {"value": 2001, "unit": "mm"},
+            {"value": 513, "unit": "pt"},
+            {"value": 101, "unit": "percent"},
+            {"value": 1.5, "unit": "gridSpan"},
+            {"value": 1, "unit": "px"}
+        ]
+    },
+    "depths": {
+        "valid": [0, 8, 16],
+        "invalid": [-1, 17]
+    },
+    "versions": {
+        "valid": [1],
+        "invalid": [0, 2, 999]
+    },
+    "nodeTypes": {
+        "registered": ["fixture-flow"],
+        "unknown": ["grid", "freeform", "raw-html"]
+    }
+}
