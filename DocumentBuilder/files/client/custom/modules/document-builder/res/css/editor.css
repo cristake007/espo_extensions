@@ -337,6 +337,17 @@
     position: relative;
     box-sizing: border-box;
     min-width: 0;
+    outline: 1px solid #d4dce2;
+    outline-offset: -1px;
+}
+
+.document-builder-editor__flow-node.is-flow-section {
+    outline-color: #91a7b7;
+}
+
+.document-builder-editor__flow-node.is-flow-container {
+    outline-color: #9aafbd;
+    outline-style: dashed;
 }
 
 .document-builder-editor__flow-node.is-selected {
