@@ -33,10 +33,10 @@ assert.equal((right.match(/role="tab"/g) || []).length, 2);
 assert.match(right, /data-action="showElementsTab"/);
 assert.match(right, /data-action="showPropertiesTab"/);
 for (const type of [
-    'flow-section', 'flow-container', 'heading', 'paragraph', 'static-text',
+    'flow-section', 'flow-container', 'heading', 'paragraph', 'static-text', 'variable',
     'divider', 'spacer', 'page-break',
 ]) assert.match(right, new RegExp(`data-library-type="${type}"`));
-assert.match(right, /data-action="focusVariables"/);
+assert.match(right, /data-action="addVariable"[^>]*draggable="true"/);
 assert.match(right, /selectedFlowNode\.variablePresentation/);
 
 assert.match(shell, /rightTabElements:\s*this\.rightSidebarTab === 'elements'/);

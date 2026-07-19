@@ -24,6 +24,13 @@
         </section>
         {{else}}
         <header class="document-builder-editor__toolbar" aria-label="{{translate 'editorToolbar' category='labels' scope='DocumentBuilderTemplate'}}" {{#if previewPdfOpen}}inert aria-hidden="true"{{/if}}>
+            {{#if cleanPreviewActive}}
+            <div class="document-builder-editor__identity"><h2>{{templateName}}</h2></div>
+            <div class="btn-group" role="group" aria-label="{{translate 'Preview Actions' category='labels' scope='DocumentBuilderTemplate'}}">
+                <button type="button" class="btn btn-default btn-sm" data-action="pdfProof" {{#unless canPdfProof}}disabled{{/unless}}>{{#if pdfProofLoading}}<span class="fas fa-spinner fa-spin" aria-hidden="true"></span>{{/if}} {{translate 'PDF Proof' category='actions' scope='DocumentBuilderTemplate'}}</button>
+                <button type="button" class="btn btn-primary btn-sm" data-action="backToEdit">{{translate 'Back to Edit' category='actions' scope='DocumentBuilderTemplate'}}</button>
+            </div>
+            {{else}}
             <div class="document-builder-editor__identity">
                 <button type="button" class="btn btn-default btn-sm" data-action="backToTemplate">
                     <span class="fas fa-arrow-left" aria-hidden="true"></span>
@@ -37,6 +44,7 @@
                 <button type="button" class="btn btn-default btn-sm" data-action="previewSample" {{#unless canPreview}}disabled{{/unless}}>{{translate 'Sample Preview' category='actions' scope='DocumentBuilderTemplate'}}</button>
                 <input class="form-control input-sm" type="text" maxlength="64" value="{{previewRecordId}}" data-preview-record-id placeholder="{{translate 'Record ID' category='labels' scope='DocumentBuilderTemplate'}}" aria-label="{{translate 'Record ID' category='labels' scope='DocumentBuilderTemplate'}}">
                 <button type="button" class="btn btn-default btn-sm" data-action="previewRecord" {{#unless canPreviewRecord}}disabled{{/unless}}>{{translate 'Record Preview' category='actions' scope='DocumentBuilderTemplate'}}</button>
+                <button type="button" class="btn btn-default btn-sm" data-action="pdfProof" {{#unless canPdfProof}}disabled{{/unless}}>{{#if pdfProofLoading}}<span class="fas fa-spinner fa-spin" aria-hidden="true"></span>{{/if}} {{translate 'PDF Proof' category='actions' scope='DocumentBuilderTemplate'}}</button>
                 <button type="button" class="btn btn-primary btn-sm" data-action="save" aria-keyshortcuts="Control+S Meta+S" {{#unless canSave}}disabled{{/unless}}>
                     {{#if isSaving}}
                         <span class="fas fa-spinner fa-spin" aria-hidden="true"></span>
@@ -47,11 +55,13 @@
                 </button>
                 <button type="button" class="btn btn-success btn-sm" disabled>{{translate 'Publish' category='actions' scope='DocumentBuilderTemplate'}}</button>
             </div>
+            {{/if}}
         </header>
 
+        {{#unless cleanPreviewActive}}
         {{#if previewLoading}}<div class="alert alert-info" role="status">{{translate 'editorPreviewLoading' category='messages' scope='DocumentBuilderTemplate'}}</div>{{/if}}
-        {{#if previewActive}}<div class="alert alert-success" role="status">{{translate 'editorPreviewActive' category='messages' scope='DocumentBuilderTemplate'}} · {{previewMode}}</div>{{/if}}
         {{#if previewError}}<div class="alert alert-danger" role="alert">{{translate 'editorPreviewFailed' category='messages' scope='DocumentBuilderTemplate'}}</div>{{/if}}
+        {{#if pdfProofError}}<div class="alert alert-danger" role="alert">{{translate 'editorPdfProofFailed' category='messages' scope='DocumentBuilderTemplate'}}</div>{{/if}}
 
         {{#if saveError}}
         <div class="alert alert-danger document-builder-editor__save-error" role="alert">
@@ -88,8 +98,10 @@
             </ul>
             {{/if}}
         </section>
+        {{/unless}}
 
-        <main class="document-builder-editor__workspace" {{#if previewPdfOpen}}inert aria-hidden="true"{{/if}}>
+        <main class="document-builder-editor__workspace {{#if cleanPreviewActive}}is-preview{{/if}}" {{#if previewPdfOpen}}inert aria-hidden="true"{{/if}}>
+            {{#unless cleanPreviewActive}}
             <aside class="document-builder-editor__left" aria-label="{{translate 'editorLibrary' category='labels' scope='DocumentBuilderTemplate'}}">
                 <section class="document-builder-editor__panel document-builder-editor__source-selector">
                     <h3>{{translate 'Data Source' category='labels' scope='DocumentBuilderTemplate'}}</h3>
@@ -186,8 +198,10 @@
                     {{/unless}}
                 </section>
             </aside>
+            {{/unless}}
 
             <section class="document-builder-editor__canvas-host" aria-label="{{translate 'Canvas' category='labels' scope='DocumentBuilderTemplate'}}" aria-describedby="document-builder-validation-summary">
+                {{#unless cleanPreviewActive}}
                 <div class="document-builder-editor__canvas-toolbar" role="group" aria-label="{{translate 'Zoom' category='labels' scope='DocumentBuilderTemplate'}}">
                     <button type="button" class="btn btn-default btn-sm" data-action="zoomOut" aria-label="{{translate 'Zoom Out' category='actions' scope='DocumentBuilderTemplate'}}">−</button>
                     <output>{{zoom}}%</output>
@@ -195,15 +209,16 @@
                     <button type="button" class="btn btn-default btn-sm" data-action="fitWidth">{{translate 'Fit Width' category='actions' scope='DocumentBuilderTemplate'}}</button>
                     <button type="button" class="btn btn-default btn-sm" data-action="fitPage">{{translate 'Fit Page' category='actions' scope='DocumentBuilderTemplate'}}</button>
                 </div>
+                {{/unless}}
                 <div class="document-builder-editor__canvas-scroll">
                     <div class="document-builder-editor__page" style="{{pageFrameStyle}}">
                         {{#with pageChromeHeader}}
-                        {{#if enabled}}<div class="document-builder-editor__page-chrome document-builder-editor__page-chrome--header {{#unless visibleOnCanvas}}is-first-page-hidden{{/unless}}" style="{{style}}">
+                        {{#if renderOnCanvas}}<div class="document-builder-editor__page-chrome document-builder-editor__page-chrome--header {{#unless visibleOnCanvas}}is-first-page-hidden{{/unless}}" style="{{style}}">
                             {{#if visibleOnCanvas}}<span>{{text}}</span>{{#if includePageNumber}}<span> · 1</span>{{/if}}{{else}}<span>{{translate 'Hidden on First Page' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
                         </div>{{/if}}
                         {{/with}}
                         {{#with pageChromeFooter}}
-                        {{#if enabled}}<div class="document-builder-editor__page-chrome document-builder-editor__page-chrome--footer {{#unless visibleOnCanvas}}is-first-page-hidden{{/unless}}" style="{{style}}">
+                        {{#if renderOnCanvas}}<div class="document-builder-editor__page-chrome document-builder-editor__page-chrome--footer {{#unless visibleOnCanvas}}is-first-page-hidden{{/unless}}" style="{{style}}">
                             {{#if visibleOnCanvas}}<span>{{text}}</span>{{#if includePageNumber}}<span> · 1</span>{{/if}}{{else}}<span>{{translate 'Hidden on First Page' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
                         </div>{{/if}}
                         {{/with}}
@@ -212,6 +227,7 @@
                 </div>
             </section>
 
+            {{#unless cleanPreviewActive}}
             <aside class="document-builder-editor__inspector" aria-label="{{translate 'Inspector' category='labels' scope='DocumentBuilderTemplate'}}">
                 <div class="document-builder-editor__sidebar-tabs" role="tablist" aria-label="{{translate 'Editor Sidebar' category='labels' scope='DocumentBuilderTemplate'}}">
                     <button type="button" class="btn btn-link {{#if rightTabElements}}is-active{{/if}}" role="tab" aria-selected="{{#if rightTabElements}}true{{else}}false{{/if}}" data-action="showElementsTab">{{translate 'Elements' category='labels' scope='DocumentBuilderTemplate'}}</button>
@@ -224,7 +240,7 @@
                     <button type="button" class="document-builder-editor__library-item" data-action="addHeading" data-library-type="heading" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Heading' category='labels' scope='DocumentBuilderTemplate'}}</button>
                     <button type="button" class="document-builder-editor__library-item" data-action="addParagraph" data-library-type="paragraph" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Paragraph' category='labels' scope='DocumentBuilderTemplate'}}</button>
                     <button type="button" class="document-builder-editor__library-item" data-action="addStaticText" data-library-type="static-text" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Static Text' category='labels' scope='DocumentBuilderTemplate'}}</button>
-                    <button type="button" class="document-builder-editor__library-item" data-action="focusVariables">{{translate 'Variable' category='labels' scope='DocumentBuilderTemplate'}} <small>{{translate 'Choose from Variables' category='messages' scope='DocumentBuilderTemplate'}}</small></button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addVariable" data-library-type="variable" draggable="true" aria-disabled="{{#if canAddStandaloneVariable}}false{{else}}true{{/if}}">{{translate 'Variable' category='labels' scope='DocumentBuilderTemplate'}} <small>{{#if standaloneVariableLabel}}{{standaloneVariableLabel}}{{else}}{{translate 'Choose from Variables' category='messages' scope='DocumentBuilderTemplate'}}{{/if}}</small></button>
                     <button type="button" class="document-builder-editor__library-item" data-action="addDivider" data-library-type="divider" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Divider' category='labels' scope='DocumentBuilderTemplate'}}</button>
                     <button type="button" class="document-builder-editor__library-item" data-action="addSpacer" data-library-type="spacer" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Spacer' category='labels' scope='DocumentBuilderTemplate'}}</button>
                     <button type="button" class="document-builder-editor__library-item" data-action="addPageBreak" data-library-type="page-break" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Page Break' category='labels' scope='DocumentBuilderTemplate'}}</button>
@@ -448,6 +464,7 @@
                 {{/if}}
                 {{/if}}
             </aside>
+            {{/unless}}
         </main>
 
         {{#if previewPdfOpen}}
@@ -455,7 +472,7 @@
             <div class="document-builder-editor__pdf-dialog">
                 <header class="document-builder-editor__pdf-header">
                     <div>
-                        <h3 id="document-builder-pdf-title">{{translate 'PDF Preview' category='labels' scope='DocumentBuilderTemplate'}}</h3>
+                        <h3 id="document-builder-pdf-title">{{translate 'PDF Proof' category='labels' scope='DocumentBuilderTemplate'}}</h3>
                         <p>{{previewPageCount}} {{translate 'Pages' category='labels' scope='DocumentBuilderTemplate'}} · {{previewWarningCount}} {{translate 'Warnings' category='labels' scope='DocumentBuilderTemplate'}}</p>
                     </div>
                     <div class="btn-group">
@@ -463,11 +480,12 @@
                         <button type="button" class="btn btn-primary btn-sm" data-action="closePdfPreview">{{translate 'Close'}}</button>
                     </div>
                 </header>
-                <iframe class="document-builder-editor__pdf-frame" src="{{previewPdfUrl}}" title="{{translate 'PDF Preview' category='labels' scope='DocumentBuilderTemplate'}}"></iframe>
+                <iframe class="document-builder-editor__pdf-frame" src="{{previewPdfUrl}}" title="{{translate 'PDF Proof' category='labels' scope='DocumentBuilderTemplate'}}"></iframe>
             </div>
         </section>
         {{/if}}
 
+        {{#unless cleanPreviewActive}}
         <footer class="document-builder-editor__status" role="status" aria-live="polite">
             <span>{{translateOption 'Draft' field='status' scope='DocumentBuilderTemplate'}}</span>
             <span>{{translate 'Revision' category='labels' scope='DocumentBuilderTemplate'}}: {{revision}}</span>
@@ -492,6 +510,7 @@
                 {{/if}}
             </span>
         </footer>
+        {{/unless}}
         {{/if}}
     {{/if}}
 </div>

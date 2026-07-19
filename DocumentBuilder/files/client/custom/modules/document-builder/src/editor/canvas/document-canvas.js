@@ -2,29 +2,29 @@ define(['document-builder:editor/content/rich-text'], RichText => {
     const CONTAINER_TYPES = Object.freeze(['flow-section', 'flow-container']);
 
     return class DocumentCanvas {
-        render(host, tree, {translate = value => value, variableResolver = null} = {}) {
+        render(host, tree, {translate = value => value, variableResolver = null, preview = false} = {}) {
             if (!host) return;
             const documentRef = host.ownerDocument || document;
 
             host.replaceChildren();
-            this.renderChildren(host, tree, null, 'sections', documentRef, translate, variableResolver);
+            this.renderChildren(host, tree, null, 'sections', documentRef, translate, variableResolver, preview);
 
-            if (tree.length === 0) {
+            if (tree.length === 0 && !preview) {
                 const empty = documentRef.createElement('div');
                 empty.className = 'document-builder-editor__canvas-empty';
                 empty.textContent = translate('editorFlowEmpty', 'messages');
                 host.insertBefore(empty, host.firstChild);
             }
 
-            host.append(this.hoverToolbar(documentRef, translate));
+            if (!preview) host.append(this.hoverToolbar(documentRef, translate));
         }
 
-        renderChildren(host, children, parentId, region, documentRef, translate, variableResolver) {
+        renderChildren(host, children, parentId, region, documentRef, translate, variableResolver, preview) {
             children.forEach((child, index) => {
-                host.append(this.dropTarget(documentRef, region, parentId, index, 'before'));
-                host.append(this.node(documentRef, child, translate, variableResolver));
+                if (!preview) host.append(this.dropTarget(documentRef, region, parentId, index, 'before'));
+                host.append(this.node(documentRef, child, translate, variableResolver, preview));
             });
-            host.append(this.dropTarget(
+            if (!preview) host.append(this.dropTarget(
                 documentRef,
                 region,
                 parentId,
@@ -33,7 +33,7 @@ define(['document-builder:editor/content/rich-text'], RichText => {
             ));
         }
 
-        node(documentRef, node, translate, variableResolver) {
+        node(documentRef, node, translate, variableResolver, preview) {
             const element = documentRef.createElement(this.tag(node));
             element.className = [
                 'document-builder-editor__flow-node',
@@ -43,13 +43,15 @@ define(['document-builder:editor/content/rich-text'], RichText => {
             ].filter(Boolean).join(' ');
             element.style.cssText = node.flowStyle || '';
             element.dataset.nodeId = node.id;
-            element.dataset.action = 'selectFlowNode';
             element.dataset.page = String(node.pageNumber || 1);
-            element.draggable = true;
-            element.tabIndex = 0;
-            element.setAttribute('aria-pressed', node.selected ? 'true' : 'false');
+            element.draggable = !preview;
+            element.tabIndex = preview ? -1 : 0;
+            if (!preview) {
+                element.dataset.action = 'selectFlowNode';
+                element.setAttribute('aria-pressed', node.selected ? 'true' : 'false');
+                element.setAttribute('aria-keyshortcuts', 'ArrowUp ArrowDown Home End');
+            }
             element.setAttribute('aria-label', translate(node.label, 'labels'));
-            element.setAttribute('aria-keyshortcuts', 'ArrowUp ArrowDown Home End');
 
             if (CONTAINER_TYPES.includes(node.type)) {
                 this.renderChildren(
@@ -60,8 +62,9 @@ define(['document-builder:editor/content/rich-text'], RichText => {
                     documentRef,
                     translate,
                     variableResolver,
+                    preview,
                 );
-                if ((node.children || []).length === 0) {
+                if ((node.children || []).length === 0 && !preview) {
                     const placeholder = documentRef.createElement('span');
                     placeholder.className = 'document-builder-editor__container-placeholder';
                     placeholder.textContent = translate('Drop Inside', 'labels');
@@ -74,13 +77,15 @@ define(['document-builder:editor/content/rich-text'], RichText => {
             if (node.isHeading || node.isParagraph) {
                 const editor = documentRef.createElement(node.isHeading ? 'span' : 'div');
                 editor.className = 'document-builder-editor__rich-editor';
-                editor.dataset.richEditor = '';
-                editor.dataset.nodeId = node.id;
-                editor.contentEditable = 'true';
+                if (!preview) {
+                    editor.dataset.richEditor = '';
+                    editor.dataset.nodeId = node.id;
+                }
+                editor.contentEditable = preview ? 'false' : 'true';
                 editor.draggable = false;
                 editor.spellcheck = true;
-                editor.setAttribute('aria-label', translate('Edit Content', 'labels'));
-                if (node.isEmpty) {
+                if (!preview) editor.setAttribute('aria-label', translate('Edit Content', 'labels'));
+                if (node.isEmpty && !preview) {
                     element.classList.add('is-sample');
                     editor.dataset.placeholder = translate(node.sampleKey, 'messages');
                 } else {
@@ -96,8 +101,11 @@ define(['document-builder:editor/content/rich-text'], RichText => {
             } else if (node.isSpacer) {
                 element.setAttribute('aria-label', translate('Spacer', 'labels'));
             } else if (node.isPageBreak) {
-                element.setAttribute('role', 'separator');
-                element.textContent = translate('Manual Page Break', 'labels');
+                if (preview) element.hidden = true;
+                else {
+                    element.setAttribute('role', 'separator');
+                    element.textContent = translate('Manual Page Break', 'labels');
+                }
             }
 
             return element;

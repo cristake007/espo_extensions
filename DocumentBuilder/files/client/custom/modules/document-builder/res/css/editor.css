@@ -86,6 +86,22 @@
     grid-template-columns: minmax(190px, 240px) minmax(320px, 1fr) minmax(210px, 280px);
 }
 
+.document-builder-editor__workspace.is-preview {
+    grid-template-columns: minmax(320px, 1fr);
+}
+
+.document-builder-editor__workspace.is-preview .document-builder-editor__canvas-host {
+    padding-top: 0;
+}
+
+.document-builder-editor__workspace.is-preview .document-builder-editor__flow-node {
+    outline: 0;
+}
+
+.document-builder-editor__workspace.is-preview .document-builder-editor__canvas-scroll {
+    padding-top: 28px;
+}
+
 .document-builder-editor__left,
 .document-builder-editor__inspector {
     min-width: 0;

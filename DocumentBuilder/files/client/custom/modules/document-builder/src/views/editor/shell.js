@@ -76,6 +76,8 @@ define([
             'click [data-action="save"]': 'actionSave',
             'click [data-action="previewSample"]': 'actionPreviewSample',
             'click [data-action="previewRecord"]': 'actionPreviewRecord',
+            'click [data-action="pdfProof"]': 'actionPdfProof',
+            'click [data-action="backToEdit"]': 'actionBackToEdit',
             'click [data-action="closePdfPreview"]': 'actionClosePdfPreview',
             'input [data-preview-record-id]': 'inputPreviewRecordId',
             'click [data-action="zoomIn"]': 'actionZoomIn',
@@ -100,6 +102,7 @@ define([
             'click [data-action="addDivider"]': 'actionAddContent',
             'click [data-action="addSpacer"]': 'actionAddContent',
             'click [data-action="addPageBreak"]': 'actionAddContent',
+            'click [data-action="addVariable"]': 'actionAddVariable',
             'click [data-action="selectFlowNode"]': 'actionSelectFlowNode',
             'keydown [data-action="selectFlowNode"]': 'handleNodeKeydown',
             'click [data-action="selectBreadcrumb"]': 'actionSelectFlowNode',
@@ -186,6 +189,10 @@ define([
             this.previewPdfUrl = null;
             this.previewPageCount = 0;
             this.previewWarningCount = 0;
+            this.canvasPreviewOpen = false;
+            this.pdfProofLoading = false;
+            this.pdfProofError = false;
+            this.pendingCanvasScroll = null;
             this.entityCatalogue = [];
             this.entityCatalogueStatus = 'loading';
             this.metadataNodes = new Map();
@@ -193,6 +200,7 @@ define([
             this.metadataGeneration = 0;
             this.variableSearch = '';
             this.variablePresentationDraft = VariablePresentation.defaults();
+            this.standaloneVariableDraft = null;
             this.maxRelationshipDepth = config.maxRelationshipDepth ||
                 metadataDefaults.maxRelationshipDepth || 2;
             this.pendingFocusNodeId = null;
@@ -245,6 +253,13 @@ define([
                 canPreview: Boolean(this.editorState && !this.editorState.isDirty() && this.previewStatus !== 'loading'),
                 canPreviewRecord: Boolean(this.editorState && !this.editorState.isDirty() &&
                     this.previewStatus !== 'loading' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(this.previewRecordId)),
+                cleanPreviewActive: Boolean(this.canvasPreviewOpen && this.previewStatus === 'ready' &&
+                    this.editorState && !this.editorState.isDirty()),
+                pdfProofLoading: this.pdfProofLoading,
+                pdfProofError: this.pdfProofError,
+                canPdfProof: Boolean(this.editorState && !this.editorState.isDirty() && !this.pdfProofLoading),
+                canAddStandaloneVariable: Boolean(this.standaloneVariableDraft && flow.canAddFlowContainer),
+                standaloneVariableLabel: this.standaloneVariableDraft?.label || '',
                 rightTabElements: this.rightSidebarTab === 'elements',
                 rightTabProperties: this.rightSidebarTab === 'properties',
                 ...pageSettings,
@@ -268,7 +283,7 @@ define([
             const selectedId = this.editorState.getSelectedId();
             const locations = NodeTree.index(layout);
             const rendered = this.browserRenderer.render(layout, {
-                selectedId,
+                selectedId: this.canvasPreviewOpen ? null : selectedId,
                 zoom: this.zoom,
                 previewValues: this.editorState.isDirty() ? new Map() : this.previewValues,
                 evaluateConditions: this.previewStatus === 'ready' && !this.editorState.isDirty(),
@@ -589,6 +604,7 @@ define([
                 showOnFirstPage: settings.showOnFirstPage,
                 disableOnFullPage: settings.disableOnFullPage,
                 visibleOnCanvas: enabled && settings.showOnFirstPage,
+                renderOnCanvas: enabled && (settings.showOnFirstPage || !this.canvasPreviewOpen),
                 style: `${region === 'header' ? 'top' : 'bottom'}:${offset}px;` +
                     `height:${px(settings.height.value)}px;` +
                     `${sideStyle};text-align:${textAlign}`,
@@ -597,6 +613,14 @@ define([
 
         afterRender() {
             this.renderContentNodes();
+            if (this.pendingCanvasScroll) {
+                const scroll = this.element.querySelector('.document-builder-editor__canvas-scroll');
+                if (scroll) {
+                    scroll.scrollLeft = this.pendingCanvasScroll.left;
+                    scroll.scrollTop = this.pendingCanvasScroll.top;
+                }
+                this.pendingCanvasScroll = null;
+            }
             if (!this.loadStarted) {
                 this.loadStarted = true;
                 this.loadModel();
@@ -854,11 +878,21 @@ define([
             if (parentId && type) this.addFlowNode(type, {parentId, index: null});
         }
 
+        actionAddVariable() {
+            const parentId = this.editorState && this.editorState.getSelectedId();
+            if (!parentId || !this.standaloneVariableDraft) {
+                this.actionFocusVariables();
+
+                return;
+            }
+            this.addFlowNode('variable', {parentId, index: null}, this.standaloneVariableDraft);
+        }
+
         renderContentNodes() {
             if (!this.editorState || !this.element) return;
             const layout = this.editorState.getLayout();
             const rendered = this.browserRenderer.render(layout, {
-                selectedId: this.editorState.getSelectedId(),
+                selectedId: this.canvasPreviewOpen ? null : this.editorState.getSelectedId(),
                 zoom: this.zoom,
                 previewValues: this.editorState.isDirty() ? new Map() : this.previewValues,
                 evaluateConditions: this.previewStatus === 'ready' && !this.editorState.isDirty(),
@@ -873,6 +907,7 @@ define([
                         'DocumentBuilderTemplate',
                     ),
                     variableResolver: identity => this.resolveCanvasVariable(identity),
+                    preview: this.canvasPreviewOpen,
                 },
             );
         }
@@ -1102,8 +1137,6 @@ define([
         }
 
         actionInsertMetadataVariable(event) {
-            const location = this.selectedContentNode();
-            if (!location || !location.node.content || location.node.type === 'static-text') return;
             const systemVariable = event.currentTarget.dataset.systemVariable;
             const identity = systemVariable ? MetadataBrowser.systemIdentityAt(systemVariable) :
                 MetadataBrowser.identityAt(
@@ -1111,6 +1144,17 @@ define([
                     event.currentTarget.dataset.variablePath,
                 );
             const label = event.currentTarget.dataset.variableLabel;
+            this.standaloneVariableDraft = {
+                identity,
+                label,
+                presentation: this.variablePresentationDraft,
+            };
+            const location = this.selectedContentNode();
+            if (!location || !location.node.content || location.node.type === 'static-text') {
+                this.reRender();
+
+                return;
+            }
             const tokenId = this.editorState.idFactory.create('variable');
             const variable = {
                 type: 'variable', tokenId, label, identity,
@@ -1454,6 +1498,15 @@ define([
                         presentation: this.variablePresentationDraft,
                     },
                 };
+            } else if (source.dataset.libraryType === 'variable') {
+                if (!this.standaloneVariableDraft) {
+                    this.actionFocusVariables();
+
+                    return;
+                }
+                this.flowDrag = {
+                    kind: 'library', type: 'variable', options: this.standaloneVariableDraft,
+                };
             } else {
                 this.flowDrag = source.dataset.libraryType ?
                     {kind: 'library', type: source.dataset.libraryType} :
@@ -1702,6 +1755,7 @@ define([
 
             if (this.executeCommand(new UpdateDataSourceCommand(next))) {
                 this.saveCoordinator.resetSourceChangeConfirmation();
+                this.standaloneVariableDraft = null;
                 await this.resetMetadataBrowser();
                 await this.reRender();
             }
@@ -1767,13 +1821,63 @@ define([
             this.loadPreview('record', this.previewRecordId);
         }
 
+        rememberCanvasScroll() {
+            const scroll = this.element?.querySelector('.document-builder-editor__canvas-scroll');
+            if (scroll) this.pendingCanvasScroll = {left: scroll.scrollLeft, top: scroll.scrollTop};
+        }
+
+        actionBackToEdit() {
+            if (!this.canvasPreviewOpen) return;
+            this.rememberCanvasScroll();
+            this.canvasPreviewOpen = false;
+            this.reRender();
+        }
+
         async loadPreview(mode, recordId) {
             if (!this.editorState || this.editorState.isDirty() || this.previewStatus === 'loading') {
                 return;
             }
 
             this.previewStatus = 'loading';
-            this.releasePdfPreview();
+            this.canvasPreviewOpen = false;
+            this.rememberCanvasScroll();
+            await this.reRender();
+
+            try {
+                const result = await this.previewApi.load(
+                    this.model.id,
+                    this.model.get('revision'),
+                    mode,
+                    recordId,
+                );
+                const values = Array.isArray(result.values) ? result.values : [];
+                this.previewValues = new Map(values.map(value => [
+                    JSON.stringify(value.identity || {}),
+                    value,
+                ]));
+                this.previewMode = mode;
+                this.previewStatus = 'ready';
+                this.canvasPreviewOpen = true;
+            } catch (xhr) {
+                if (xhr) xhr.errorIsHandled = true;
+                this.previewValues = new Map();
+                this.previewMode = null;
+                this.previewStatus = 'error';
+                this.canvasPreviewOpen = false;
+            }
+
+            this.rememberCanvasScroll();
+            await this.reRender();
+        }
+
+        async actionPdfProof() {
+            if (!this.editorState || this.editorState.isDirty() || this.pdfProofLoading) return;
+            const record = /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(this.previewRecordId);
+            const mode = this.previewMode || (record ? 'record' : 'sample');
+            const recordId = mode === 'record' ? this.previewRecordId : null;
+            this.pdfProofLoading = true;
+            this.pdfProofError = false;
+            this.rememberCanvasScroll();
             await this.reRender();
 
             try {
@@ -1786,16 +1890,14 @@ define([
                 this.previewPdfUrl = this.createPdfUrl(result);
                 this.previewPageCount = Number.isInteger(result.pageCount) ? result.pageCount : 0;
                 this.previewWarningCount = Number.isInteger(result.warningCount) ? result.warningCount : 0;
-                this.previewValues = new Map();
-                this.previewMode = mode;
-                this.previewStatus = 'ready';
             } catch (xhr) {
                 if (xhr) xhr.errorIsHandled = true;
-                this.previewValues = new Map();
-                this.previewMode = null;
-                this.previewStatus = 'error';
+                this.pdfProofError = true;
+            } finally {
+                this.pdfProofLoading = false;
             }
 
+            this.rememberCanvasScroll();
             await this.reRender();
         }
 
@@ -1815,9 +1917,8 @@ define([
         }
 
         actionClosePdfPreview() {
+            this.rememberCanvasScroll();
             this.releasePdfPreview();
-            this.previewStatus = 'idle';
-            this.previewMode = null;
             this.reRender();
         }
 
@@ -2002,6 +2103,8 @@ define([
             this.previewStatus = 'idle';
             this.previewMode = null;
             this.previewValues = new Map();
+            this.canvasPreviewOpen = false;
+            this.pdfProofError = false;
         }
 
         selectNode(nodeId) {
@@ -2022,6 +2125,12 @@ define([
             if (this.previewPdfUrl && event.key === 'Escape') {
                 event.preventDefault();
                 this.actionClosePdfPreview();
+
+                return;
+            }
+            if (this.canvasPreviewOpen && event.key === 'Escape') {
+                event.preventDefault();
+                this.actionBackToEdit();
 
                 return;
             }

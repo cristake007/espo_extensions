@@ -55,7 +55,7 @@ const shell = fs.readFileSync(path.join(sourceRoot, 'views/editor/shell.js'), 'u
 const canvas = fs.readFileSync(path.join(sourceRoot, 'editor/canvas/document-canvas.js'), 'utf8');
 const template = fs.readFileSync(path.join(root,
     'files/client/custom/modules/document-builder/res/templates/editor/shell.tpl'), 'utf8');
-assert.match(canvas, /contentEditable = 'true'/);
+assert.match(canvas, /contentEditable = preview \? 'false' : 'true'/);
 assert.match(canvas, /dataset\.richEditor/);
 assert.match(shell, /selectionchange/);
 assert.match(shell, /Wysiwyg\.captureRange/);
