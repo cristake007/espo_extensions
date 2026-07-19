@@ -1,0 +1,8 @@
+{
+    "DocumentBuilderTemplate/editor/:id": {
+        "params": {
+            "controller": "DocumentBuilderTemplate",
+            "action": "editor"
+        }
+    }
+}

@@ -1,0 +1,236 @@
+define([
+    'document-builder:editor/state/json',
+    'document-builder:editor/state/node-tree',
+], (Json, NodeTree) => {
+    const ROOT_KEYS = Object.freeze([
+        'schemaVersion',
+        'capabilities',
+        'document',
+        'dataSource',
+        'header',
+        'sections',
+        'footer',
+    ]);
+    const PAGE_DIMENSIONS_MM = Object.freeze({
+        A4: Object.freeze({width: 210, height: 297}),
+        Letter: Object.freeze({width: 215.9, height: 279.4}),
+        Legal: Object.freeze({width: 215.9, height: 355.6}),
+    });
+    const ORIENTATION_LIST = Object.freeze(['portrait', 'landscape']);
+    const EDGE_LIST = Object.freeze(['top', 'right', 'bottom', 'left']);
+
+    const hasOnlyKeys = (value, requiredKeys, optionalKeys = []) => {
+        if (!Json.isPlainObject(value)) {
+            return false;
+        }
+
+        const allowedKeys = [...requiredKeys, ...optionalKeys];
+
+        return requiredKeys.every(key => key in value) &&
+            Object.keys(value).every(key => allowedKeys.includes(key));
+    };
+
+    const isMeasurement = (value, unit, minimum, maximum) =>
+        hasOnlyKeys(value, ['value', 'unit']) &&
+        typeof value.value === 'number' &&
+        value.value >= minimum &&
+        value.value <= maximum &&
+        value.unit === unit;
+
+    const validatePage = (page, errors) => {
+        if (!hasOnlyKeys(page, ['size', 'orientation', 'margins'])) {
+            errors.push('document.page.structure');
+
+            return;
+        }
+
+        if (!(page.size in PAGE_DIMENSIONS_MM)) {
+            errors.push('document.page.size');
+        }
+
+        if (!ORIENTATION_LIST.includes(page.orientation)) {
+            errors.push('document.page.orientation');
+        }
+
+        if (!hasOnlyKeys(page.margins, EDGE_LIST)) {
+            errors.push('document.page.margins.structure');
+
+            return;
+        }
+
+        const validMargins = EDGE_LIST.every(edge => {
+            const valid = isMeasurement(page.margins[edge], 'mm', 0, 2000);
+
+            if (!valid) {
+                errors.push(`document.page.margins.${edge}`);
+            }
+
+            return valid;
+        });
+
+        if (!validMargins || !(page.size in PAGE_DIMENSIONS_MM) ||
+            !ORIENTATION_LIST.includes(page.orientation)) {
+            return;
+        }
+
+        const dimensions = PAGE_DIMENSIONS_MM[page.size];
+        const width = page.orientation === 'portrait' ? dimensions.width : dimensions.height;
+        const height = page.orientation === 'portrait' ? dimensions.height : dimensions.width;
+
+        if (page.margins.left.value + page.margins.right.value >= width) {
+            errors.push('document.page.printableWidth');
+        }
+
+        if (page.margins.top.value + page.margins.bottom.value >= height) {
+            errors.push('document.page.printableHeight');
+        }
+    };
+
+    const validateDefaults = (defaults, errors) => {
+        if (!hasOnlyKeys(defaults, ['fontFamily', 'fontSize', 'color', 'lineHeight', 'locale'])) {
+            errors.push('document.defaults.structure');
+
+            return;
+        }
+
+        if (typeof defaults.fontFamily !== 'string' ||
+            defaults.fontFamily.length > 100 ||
+            !/^[A-Za-z][A-Za-z0-9 ._-]*$/.test(defaults.fontFamily)) {
+            errors.push('document.defaults.fontFamily');
+        }
+
+        if (!isMeasurement(defaults.fontSize, 'pt', 0, 512)) {
+            errors.push('document.defaults.fontSize');
+        }
+
+        if (typeof defaults.color !== 'string' || !/^#[0-9A-Fa-f]{6}$/.test(defaults.color)) {
+            errors.push('document.defaults.color');
+        }
+
+        if (typeof defaults.lineHeight !== 'number' ||
+            defaults.lineHeight < 0.5 || defaults.lineHeight > 5) {
+            errors.push('document.defaults.lineHeight');
+        }
+
+        if (typeof defaults.locale !== 'string' || !/^[a-z]{2}_[A-Z]{2}$/.test(defaults.locale)) {
+            errors.push('document.defaults.locale');
+        }
+    };
+
+    const validateDataSource = (dataSource, errors) => {
+        if (!Json.isPlainObject(dataSource) ||
+            !['none', 'entity', 'spreadsheet'].includes(dataSource.type)) {
+            errors.push('dataSource.type');
+
+            return;
+        }
+
+        if (dataSource.type === 'none') {
+            if (!hasOnlyKeys(dataSource, ['type'])) {
+                errors.push('dataSource.none.structure');
+            }
+
+            return;
+        }
+
+        if (dataSource.type === 'entity') {
+            if (!hasOnlyKeys(dataSource, ['type', 'entityType', 'relationshipDepth'])) {
+                errors.push('dataSource.entity.structure');
+
+                return;
+            }
+
+            if (typeof dataSource.entityType !== 'string' ||
+                !/^[A-Za-z][A-Za-z0-9]{0,99}$/.test(dataSource.entityType)) {
+                errors.push('dataSource.entity.entityType');
+            }
+
+            if (!Number.isInteger(dataSource.relationshipDepth) ||
+                dataSource.relationshipDepth < 1 || dataSource.relationshipDepth > 3) {
+                errors.push('dataSource.entity.relationshipDepth');
+            }
+
+            return;
+        }
+
+        if (!hasOnlyKeys(dataSource, ['type', 'format'], ['worksheet'])) {
+            errors.push('dataSource.spreadsheet.structure');
+
+            return;
+        }
+
+        if (!['csv', 'xlsx'].includes(dataSource.format)) {
+            errors.push('dataSource.spreadsheet.format');
+        }
+
+        if ('worksheet' in dataSource && (
+            dataSource.format === 'csv' ||
+            typeof dataSource.worksheet !== 'string' ||
+            dataSource.worksheet.length < 1 ||
+            dataSource.worksheet.length > 100
+        )) {
+            errors.push('dataSource.spreadsheet.worksheet');
+        }
+    };
+
+    return class LayoutPrecheck {
+        check(layout) {
+            const errors = [];
+            let normalized;
+
+            try {
+                normalized = Json.canonicalize(layout);
+            } catch (error) {
+                return {valid: false, errors: ['layout.json']};
+            }
+
+            if (!Json.isPlainObject(normalized)) {
+                return {valid: false, errors: ['layout.type']};
+            }
+
+            ROOT_KEYS.forEach(key => {
+                if (!(key in normalized)) {
+                    errors.push(`layout.required.${key}`);
+                }
+            });
+
+            Object.keys(normalized).forEach(key => {
+                if (!ROOT_KEYS.includes(key)) {
+                    errors.push(`layout.unknown.${key}`);
+                }
+            });
+
+            if (normalized.schemaVersion !== 1) {
+                errors.push('schemaVersion.unsupported');
+            }
+
+            if (!Array.isArray(normalized.capabilities) || normalized.capabilities.length) {
+                errors.push('capabilities.unsupported');
+            }
+
+            if (!hasOnlyKeys(normalized.document, ['page', 'defaults'])) {
+                errors.push('document.structure');
+            } else {
+                validatePage(normalized.document.page, errors);
+                validateDefaults(normalized.document.defaults, errors);
+            }
+
+            validateDataSource(normalized.dataSource, errors);
+
+            try {
+                const nodes = NodeTree.index(normalized);
+
+                if (nodes.size) {
+                    errors.push('nodes.unsupported');
+                }
+            } catch (error) {
+                errors.push('nodes.structure');
+            }
+
+            return {
+                valid: errors.length === 0,
+                errors,
+            };
+        }
+    };
+});
