@@ -26,6 +26,12 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogu
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\RelationshipDepthLimit;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EspoEntityCatalogueMetadata;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\LanguageEntityLabelProvider;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityResolver\AclEntityResolutionAccess;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityResolver\DirectEntityResolver;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityResolver\EntityRecordReader;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityResolver\EntityResolutionAccess;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityResolver\EntityResolver;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityResolver\OrmEntityRecordReader;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\Variable\CompiledVariableReferenceValidator;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\Variable\VariableReferenceValidator;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\AclTemplateLifecycleAccess;
@@ -82,6 +88,9 @@ final class Binding implements BindingProcessor
             ->bindImplementation(EntitySourcePolicy::class, ConfiguredEntitySourcePolicy::class)
             ->bindImplementation(EntitySourceEligibility::class, EntityCatalogueService::class)
             ->bindImplementation(RelationshipDepthLimit::class, ConfiguredRelationshipDepthLimit::class)
+            ->bindImplementation(EntityResolver::class, DirectEntityResolver::class)
+            ->bindImplementation(EntityRecordReader::class, OrmEntityRecordReader::class)
+            ->bindImplementation(EntityResolutionAccess::class, AclEntityResolutionAccess::class)
             ->bindImplementation(
                 VariableReferenceValidator::class,
                 CompiledVariableReferenceValidator::class,
