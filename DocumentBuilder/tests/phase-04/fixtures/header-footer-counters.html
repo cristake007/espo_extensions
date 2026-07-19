@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ro">
+<head>
+    <meta charset="utf-8">
+    <style>
+        @page { size: A4 portrait; margin: 24mm 16mm 22mm; }
+        body { font-family: "DejaVu Sans", sans-serif; font-size: 11pt; }
+        header { position: fixed; top: -16mm; left: 0; right: 0; height: 10mm; border-bottom: 0.3mm solid #334155; }
+        footer { position: fixed; bottom: -15mm; left: 0; right: 0; height: 8mm; border-top: 0.3mm solid #334155; color: #475569; }
+        .current-page:after { content: counter(page); }
+        .page { min-height: 210mm; }
+        .break-before { page-break-before: always; }
+    </style>
+</head>
+<body>
+    <header>Document Builder — antet fix</header>
+    <footer>Subsol fix; pagina CSS <span class="current-page"></span>; totalul este adăugat prin canvas.</footer>
+    <section class="page"><h1>Pagina întâi</h1><p>Conținut controlat pentru prima pagină.</p></section>
+    <section class="page break-before"><h1>Pagina a doua</h1><p>Conținut controlat pentru a doua pagină.</p></section>
+    <section class="page break-before"><h1>Pagina a treia</h1><p>Conținut controlat pentru a treia pagină.</p></section>
+</body>
+</html>

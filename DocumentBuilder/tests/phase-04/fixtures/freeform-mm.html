@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ro">
+<head>
+    <meta charset="utf-8">
+    <style>
+        @page { size: A4 landscape; margin: 12mm; }
+        body { font-family: "DejaVu Sans", sans-serif; margin: 0; }
+        .freeform { position: relative; width: 250mm; height: 150mm; border: 0.5mm solid #111827; overflow: hidden; background: #f8fafc; }
+        .marker { position: absolute; width: 20mm; height: 20mm; border: 0.5mm solid #d22; box-sizing: border-box; }
+        .origin { left: 0; top: 0; }
+        .probe { left: 37mm; top: 29mm; width: 72mm; height: 24mm; padding: 2mm; background: #dbeafe; transform: rotate(3deg); transform-origin: center; }
+        .edge { right: 0; bottom: 0; }
+        .rule-x { position: absolute; left: 0; top: 75mm; width: 250mm; border-top: 0.25mm dashed #64748b; }
+        .rule-y { position: absolute; left: 125mm; top: 0; height: 150mm; border-left: 0.25mm dashed #64748b; }
+    </style>
+</head>
+<body>
+    <section class="freeform">
+        <div class="marker origin">0,0</div>
+        <div class="marker probe">37 × 29 mm; rotație 3°</div>
+        <div class="marker edge">margine</div>
+        <div class="rule-x"></div>
+        <div class="rule-y"></div>
+    </section>
+</body>
+</html>

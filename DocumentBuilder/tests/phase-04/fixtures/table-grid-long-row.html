@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ro">
+<head>
+    <meta charset="utf-8">
+    <style>
+        @page { size: A4 portrait; margin: 16mm; }
+        body { font-family: "DejaVu Sans", sans-serif; font-size: 9pt; }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        th, td { border: 0.3mm solid #26364f; padding: 2mm; vertical-align: top; }
+        th { background: #dce6f5; }
+        .col-a { width: 25%; }
+        .col-b { width: 50%; }
+        .col-c { width: 25%; }
+        .oversized { background: #fff3d6; line-height: 9mm; }
+    </style>
+</head>
+<body>
+    <h1>Grilă conservatoare și rând supradimensionat</h1>
+    <table>
+        <thead>
+            <tr><th class="col-a">Element</th><th class="col-b">Descriere</th><th class="col-c">Valoare</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>A</td><td>Rând normal cu lățimi procentuale deterministe.</td><td>25 / 50 / 25</td></tr>
+            <tr><td>B</td><td>Al doilea rând verifică bordurile și alinierea coloanelor.</td><td>Stabil</td></tr>
+            <tr class="oversized">
+                <td>LIMITĂ</td>
+                <td>
+                    Acest rând este intenționat prea înalt și nu este o cerință de împărțire sigură.<br>
+                    Linia 01 — probă de conținut.<br>Linia 02 — probă de conținut.<br>
+                    Linia 03 — probă de conținut.<br>Linia 04 — probă de conținut.<br>
+                    Linia 05 — probă de conținut.<br>Linia 06 — probă de conținut.<br>
+                    Linia 07 — probă de conținut.<br>Linia 08 — probă de conținut.<br>
+                    Linia 09 — probă de conținut.<br>Linia 10 — probă de conținut.<br>
+                    Linia 11 — probă de conținut.<br>Linia 12 — probă de conținut.<br>
+                    Linia 13 — probă de conținut.<br>Linia 14 — probă de conținut.<br>
+                    Linia 15 — probă de conținut.<br>Linia 16 — probă de conținut.<br>
+                    Linia 17 — probă de conținut.<br>Linia 18 — probă de conținut.<br>
+                    Linia 19 — probă de conținut.<br>Linia 20 — probă de conținut.<br>
+                    Linia 21 — probă de conținut.<br>Linia 22 — probă de conținut.<br>
+                    Linia 23 — probă de conținut.<br>Linia 24 — probă de conținut.<br>
+                    Linia 25 — probă de conținut.<br>Linia 26 — probă de conținut.<br>
+                    Linia 27 — probă de conținut.<br>Linia 28 — probă de conținut.<br>
+                    Linia 29 — probă de conținut.<br>Linia 30 — probă de conținut.
+                </td>
+                <td>Trebuie detectat</td>
+            </tr>
+            <tr><td>C</td><td>Rând după proba supradimensionată.</td><td>Final</td></tr>
+        </tbody>
+    </table>
+</body>
+</html>

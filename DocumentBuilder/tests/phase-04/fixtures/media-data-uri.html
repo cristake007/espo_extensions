@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ro">
+<head>
+    <meta charset="utf-8">
+    <style>
+        @page { size: A4 portrait; margin: 18mm; }
+        body { font-family: "DejaVu Sans", sans-serif; font-size: 10pt; }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        td { width: 50%; border: 0.3mm solid #64748b; padding: 4mm; text-align: center; }
+        img { display: block; width: 42mm; height: 30mm; object-fit: contain; margin: 2mm auto; }
+        .qr { width: 36mm; height: 36mm; }
+    </style>
+</head>
+<body>
+    <h1>Resurse locale reprezentate prin data URI</h1>
+    <table>
+        <tr><td>PNG<img alt="PNG" src="{{PNG_DATA_URI}}"></td><td>JPEG<img alt="JPEG" src="{{JPEG_DATA_URI}}"></td></tr>
+        <tr><td>WebP<img alt="WebP" src="{{WEBP_DATA_URI}}"></td><td>SVG sanitizat<img alt="SVG" src="{{SVG_DATA_URI}}"></td></tr>
+        <tr><td colspan="2">QR local<img class="qr" alt="QR" src="{{QR_DATA_URI}}"></td></tr>
+    </table>
+</body>
+</html>

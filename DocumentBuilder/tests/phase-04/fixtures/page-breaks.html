@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ro">
+<head>
+    <meta charset="utf-8">
+    <style>
+        @page { size: A4 portrait; margin: 18mm; }
+        body { font-family: "DejaVu Sans", sans-serif; font-size: 11pt; }
+        .page-break { page-break-before: always; }
+        .keep { page-break-inside: avoid; border: 0.4mm solid #365a9c; padding: 5mm; }
+        .spacer { height: 190mm; background: #f1f5f9; }
+    </style>
+</head>
+<body>
+    <section><h1>Pagina 1</h1><p>Început normal.</p><div class="spacer">Spațiu controlat</div></section>
+    <section class="page-break"><h1>Pagina 2</h1><div class="keep"><h2>Bloc indivizibil</h2><p>Titlul și paragraful trebuie să rămână împreună.</p></div></section>
+    <section class="page-break"><h1>Pagina 3</h1><p>Final după întrerupere explicită.</p></section>
+</body>
+</html>

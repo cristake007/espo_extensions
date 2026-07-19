@@ -1,0 +1,62 @@
+{
+    "schemaVersion": 1,
+    "espoCommit": "2cde9d980f84cfc3caa1adf3275a0817e1e49bfa",
+    "dompdfCommit": "f11ead23a8a76d0ff9bbc6c7c8fd7e05ca328496",
+    "runtimeStatus": "pending",
+    "fixtures": [
+        {
+            "id": "romanian-flow-pagination",
+            "file": "romanian-flow-pagination.html",
+            "pageFormat": "A4",
+            "orientation": "Portrait",
+            "expectedPageCount": {"minimum": 2, "maximum": 5},
+            "addCanvasPageText": false,
+            "risks": ["romanian-fonts", "flow-pagination"]
+        },
+        {
+            "id": "table-grid-long-row",
+            "file": "table-grid-long-row.html",
+            "pageFormat": "A4",
+            "orientation": "Portrait",
+            "expectedPageCount": {"minimum": 2, "maximum": 4},
+            "addCanvasPageText": false,
+            "risks": ["table-grid", "oversized-table-row"]
+        },
+        {
+            "id": "freeform-mm",
+            "file": "freeform-mm.html",
+            "pageFormat": "A4",
+            "orientation": "Landscape",
+            "expectedPageCount": {"minimum": 1, "maximum": 1},
+            "addCanvasPageText": false,
+            "risks": ["absolute-positioning", "millimetre-units", "rotation"]
+        },
+        {
+            "id": "header-footer-counters",
+            "file": "header-footer-counters.html",
+            "pageFormat": "A4",
+            "orientation": "Portrait",
+            "expectedPageCount": {"minimum": 3, "maximum": 3},
+            "addCanvasPageText": true,
+            "risks": ["fixed-header-footer", "current-page", "total-page-count"]
+        },
+        {
+            "id": "media-data-uri",
+            "file": "media-data-uri.html",
+            "pageFormat": "A4",
+            "orientation": "Portrait",
+            "expectedPageCount": {"minimum": 1, "maximum": 1},
+            "addCanvasPageText": false,
+            "risks": ["png", "jpeg", "webp", "sanitized-svg", "qr"]
+        },
+        {
+            "id": "page-breaks",
+            "file": "page-breaks.html",
+            "pageFormat": "A4",
+            "orientation": "Portrait",
+            "expectedPageCount": {"minimum": 3, "maximum": 3},
+            "addCanvasPageText": false,
+            "risks": ["forced-page-break", "keep-together"]
+        }
+    ]
+}
