@@ -3,5 +3,10 @@
         "route": "/DocumentBuilder/template/:id/draft",
         "method": "put",
         "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PutTemplateDraft"
+    },
+    {
+        "route": "/DocumentBuilder/template/:id/publish",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PostTemplatePublish"
     }
 ]

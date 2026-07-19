@@ -127,6 +127,7 @@
             "type": "link",
             "entity": "DocumentBuilderTemplateVersion",
             "readOnly": true,
+            "audited": true,
             "layoutListDisabled": true,
             "layoutDetailDisabled": true,
             "layoutMassUpdateDisabled": true

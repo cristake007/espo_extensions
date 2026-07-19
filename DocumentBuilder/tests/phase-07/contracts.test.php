@@ -364,6 +364,7 @@ namespace {
         'batchJob' => 500,
         'revisionConflict' => 409,
         'sourceChangeConfirmation' => 409,
+        'publicationConflict' => 409,
     ];
 
     foreach (ErrorCategory::cases() as $category) {

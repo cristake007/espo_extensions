@@ -64,7 +64,8 @@
         "fileStorage": "Fișierul generat nu a putut fi stocat.",
         "batchJob": "Lotul de documente nu a putut fi finalizat.",
         "revisionConflict": "Șablonul s-a modificat în timpul editării. Reîncărcați-l și încercați din nou.",
-        "sourceChangeConfirmation": "Schimbarea sursei șablonului necesită confirmare după verificarea referințelor nerezolvate."
+        "sourceChangeConfirmation": "Schimbarea sursei șablonului necesită confirmare după verificarea referințelor nerezolvate.",
+        "publicationConflict": "Șablonul nu mai este o schiță eligibilă pentru publicare."
     },
     "warnings": {
         "valueUnavailable": "O valoare nu a putut fi afișată.",

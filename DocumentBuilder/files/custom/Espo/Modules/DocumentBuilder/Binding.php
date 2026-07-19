@@ -14,6 +14,18 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\LayoutProcessorProv
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\NoopSourceReferenceImpactAnalyzer;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\OrmDraftTemplateStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\SourceReferenceImpactAnalyzer;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\AclPublicationRecordAccess;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\CurrentUserPublicationActor;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\DataSourcePublicationValidator;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\MediaPublicationValidator;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\NoopMediaPublicationValidator;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\NoopVariablePublicationValidator;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\OrmPublicationStore;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\Phase13DataSourcePublicationValidator;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\PublicationActor;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\PublicationRecordAccess;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\PublicationStore;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\VariablePublicationValidator;
 
 final class Binding implements BindingProcessor
 {
@@ -26,6 +38,18 @@ final class Binding implements BindingProcessor
             ->bindImplementation(
                 SourceReferenceImpactAnalyzer::class,
                 NoopSourceReferenceImpactAnalyzer::class,
+            )
+            ->bindImplementation(PublicationStore::class, OrmPublicationStore::class)
+            ->bindImplementation(PublicationRecordAccess::class, AclPublicationRecordAccess::class)
+            ->bindImplementation(PublicationActor::class, CurrentUserPublicationActor::class)
+            ->bindImplementation(
+                DataSourcePublicationValidator::class,
+                Phase13DataSourcePublicationValidator::class,
+            )
+            ->bindImplementation(MediaPublicationValidator::class, NoopMediaPublicationValidator::class)
+            ->bindImplementation(
+                VariablePublicationValidator::class,
+                NoopVariablePublicationValidator::class,
             );
     }
 }

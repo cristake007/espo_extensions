@@ -42,6 +42,8 @@ php tests/phase-11/hooks.test.php
 php tests/phase-11/acl.test.php
 php tests/phase-12/contracts.test.php
 php tests/phase-12/service.test.php
+php tests/phase-13/contracts.test.php
+php tests/phase-13/service.test.php
 ```
 
 Package inventory is checked separately after building the extension ZIP:
@@ -55,7 +57,10 @@ php tests/phase-09/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-10/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-11/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-12/package-inventory.test.php dist/document-builder-1.0.0.zip
+php tests/phase-13/package-inventory.test.php dist/document-builder-1.0.0.zip
 ```
+
+Phase 13 runtime validation requires an approved non-production EspoCRM 10.0.0 instance. After install, Clear Cache and run Administration > Rebuild. Publish a marked source-neutral draft with `POST api/v1/DocumentBuilder/template/{id}/publish` and its current `expectedRevision`; verify exactly one immutable current version exists, its checksum/publisher/time/change note and ACL projection are populated, the template points to it, and native audit history records the status/current-version switch. Retry the same request and expect HTTP 409, verify stale revisions return HTTP 409 and unauthorized publishers return HTTP 403. Exercise an injected persistence failure in a test adapter and verify no version/current-marker/template-status changes survive. Entity, spreadsheet, media, variable, and other schema-only capabilities must remain blocked until their implementation phase. Never use the production path.
 
 Phase 12 runtime validation requires an approved non-production EspoCRM 10.0.0 instance. After install, Clear Cache and run Administration > Rebuild. With a marked draft and an authorized designer, call `PUT api/v1/DocumentBuilder/template/{id}/draft` using the current revision; verify the normalized layout and incremented revision. Repeat with the stale revision and expect HTTP 409. Change `dataSource`, verify the first request returns the impact report without changing the record, then retry with `confirmSourceChange: true`. Verify an unauthorized user receives HTTP 403 and a Published or Archived template rejects the save. Never use the production path.
 
