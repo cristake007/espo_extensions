@@ -13,6 +13,12 @@ final readonly class LayoutValidator
 {
     private const MAX_ERRORS = 100;
 
+    private const PAGE_DIMENSIONS_MM = [
+        'A4' => [210.0, 297.0],
+        'Letter' => [215.9, 279.4],
+        'Legal' => [215.9, 355.6],
+    ];
+
     private const ROOT_KEYS = [
         'schemaVersion',
         'capabilities',
@@ -102,7 +108,12 @@ final readonly class LayoutValidator
             return;
         }
 
-        $this->rejectUnknownKeys($document, ['page', 'defaults'], '/document', $errors);
+        $this->rejectUnknownKeys(
+            $document,
+            ['page', 'defaults', 'titlePattern', 'filenamePattern'],
+            '/document',
+            $errors,
+        );
         $page = $document['page'] ?? null;
 
         if (!$this->isObject($page)) {
@@ -110,7 +121,7 @@ final readonly class LayoutValidator
         } else {
             $this->rejectUnknownKeys($page, ['size', 'orientation', 'margins'], '/document/page', $errors);
 
-            if (!in_array($page['size'] ?? null, ['A4', 'Letter', 'Legal'], true)) {
+            if (!array_key_exists((string) ($page['size'] ?? ''), $this->pageDimensions())) {
                 $this->add($errors, 'page.size', '/document/page/size');
             }
 
@@ -119,6 +130,7 @@ final readonly class LayoutValidator
             }
 
             $this->validateBox($page['margins'] ?? null, '/document/page/margins', $errors);
+            $this->validatePrintableArea($page, $errors);
         }
 
         $defaults = $document['defaults'] ?? null;
@@ -131,7 +143,7 @@ final readonly class LayoutValidator
 
         $this->rejectUnknownKeys(
             $defaults,
-            ['fontFamily', 'fontSize', 'color', 'lineHeight', 'locale'],
+            ['fontFamily', 'fontSize', 'color', 'lineHeight', 'locale', 'timezone'],
             '/document/defaults',
             $errors,
         );
@@ -161,6 +173,95 @@ final readonly class LayoutValidator
         if (!is_string($defaults['locale'] ?? null) || preg_match('/^[a-z]{2}_[A-Z]{2}$/D', $defaults['locale']) !== 1) {
             $this->add($errors, 'defaults.locale', '/document/defaults/locale');
         }
+
+        if (
+            !is_string($defaults['timezone'] ?? null) ||
+            preg_match('/^(?:UTC|[A-Za-z_]+(?:\/[A-Za-z0-9_+.-]+)+)$/D', $defaults['timezone']) !== 1
+        ) {
+            $this->add($errors, 'defaults.timezone', '/document/defaults/timezone');
+        }
+
+        $titlePattern = $document['titlePattern'] ?? null;
+
+        if (!is_string($titlePattern) || mb_strlen($titlePattern) > 255) {
+            $this->add($errors, 'document.titlePattern', '/document/titlePattern');
+        }
+
+        $filenamePattern = $document['filenamePattern'] ?? null;
+
+        if (
+            !is_string($filenamePattern) ||
+            $filenamePattern === '' ||
+            mb_strlen($filenamePattern) > 255 ||
+            preg_match('/[\\\\\/\x00-\x1F]/', $filenamePattern) === 1
+        ) {
+            $this->add($errors, 'document.filenamePattern', '/document/filenamePattern');
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $page
+     * @param list<ValidationError> $errors
+     */
+    private function validatePrintableArea(array $page, array &$errors): void
+    {
+        $size = $page['size'] ?? null;
+        $orientation = $page['orientation'] ?? null;
+        $margins = $page['margins'] ?? null;
+
+        if (
+            !is_string($size) ||
+            !isset($this->pageDimensions()[$size]) ||
+            !in_array($orientation, ['portrait', 'landscape'], true) ||
+            !$this->isObject($margins)
+        ) {
+            return;
+        }
+
+        $values = [];
+
+        foreach (['top', 'right', 'bottom', 'left'] as $edge) {
+            $measurement = $margins[$edge] ?? null;
+
+            if (
+                !$this->isObject($measurement) ||
+                ($measurement['unit'] ?? null) !== Unit::Millimetre->value ||
+                (!is_int($measurement['value'] ?? null) && !is_float($measurement['value'] ?? null))
+            ) {
+                return;
+            }
+
+            $values[$edge] = (float) $measurement['value'];
+        }
+
+        [$width, $height] = $this->pageDimensions()[$size];
+
+        if ($orientation === 'landscape') {
+            [$width, $height] = [$height, $width];
+        }
+
+        if ($values['left'] + $values['right'] >= $width) {
+            $this->add($errors, 'page.printableWidth', '/document/page/margins');
+        }
+
+        if ($values['top'] + $values['bottom'] >= $height) {
+            $this->add($errors, 'page.printableHeight', '/document/page/margins');
+        }
+    }
+
+    /** @return array<string, array{float, float}> */
+    private function pageDimensions(): array
+    {
+        $dimensions = self::PAGE_DIMENSIONS_MM;
+
+        foreach ($this->settings->customPageSizeList() as $definition) {
+            $dimensions[$definition['id']] = [
+                (float) $definition['widthMm'],
+                (float) $definition['heightMm'],
+            ];
+        }
+
+        return $dimensions;
     }
 
     /** @param list<ValidationError> $errors */

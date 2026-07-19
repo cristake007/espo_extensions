@@ -103,6 +103,10 @@ final class ConfigProvider
             $hardLimits,
             '/\A[A-Za-z0-9][A-Za-z0-9 ._-]{0,99}\z/D',
         );
+        $values['customPageSizeList'] = $this->normalizeCustomPageSizeList(
+            $values['customPageSizeList'],
+            $hardLimits,
+        );
 
         if ($values['allowedFontList'] === []) {
             throw new InvalidConfiguration('At least one allowed font is required.');
@@ -251,5 +255,55 @@ final class ConfigProvider
         }
 
         return $value;
+    }
+
+    /**
+     * @param list<mixed> $value
+     * @param array<string, mixed> $hardLimits
+     * @return list<array{id: string, label: string, widthMm: float|int, heightMm: float|int}>
+     */
+    private function normalizeCustomPageSizeList(array $value, array $hardLimits): array
+    {
+        $hardLimit = $hardLimits['customPageSizeList'] ?? null;
+
+        if (!is_int($hardLimit) || $hardLimit < 1 || count($value) > $hardLimit) {
+            throw new InvalidConfiguration('Setting customPageSizeList exceeds its hard limit.');
+        }
+
+        $result = [];
+
+        foreach ($value as $item) {
+            if ($item instanceof stdClass) {
+                $item = get_object_vars($item);
+            }
+
+            $keys = is_array($item) ? array_keys($item) : [];
+            sort($keys);
+
+            if (
+                !is_array($item) ||
+                $keys !== ['heightMm', 'id', 'label', 'widthMm'] ||
+                !is_string($item['id']) ||
+                preg_match('/\A[A-Za-z][A-Za-z0-9_-]{0,63}\z/D', $item['id']) !== 1 ||
+                in_array($item['id'], ['A4', 'Letter', 'Legal'], true) ||
+                !is_string($item['label']) || trim($item['label']) === '' || mb_strlen($item['label']) > 100 ||
+                (!is_int($item['widthMm']) && !is_float($item['widthMm'])) ||
+                $item['widthMm'] < 10 || $item['widthMm'] > 2000 ||
+                (!is_int($item['heightMm']) && !is_float($item['heightMm'])) ||
+                $item['heightMm'] < 10 || $item['heightMm'] > 2000
+            ) {
+                throw new InvalidConfiguration('Setting customPageSizeList contains an invalid definition.');
+            }
+
+            $result[] = $item;
+        }
+
+        $ids = array_column($result, 'id');
+
+        if (count($ids) !== count(array_unique($ids))) {
+            throw new InvalidConfiguration('Setting customPageSizeList contains duplicate identifiers.');
+        }
+
+        return $result;
     }
 }

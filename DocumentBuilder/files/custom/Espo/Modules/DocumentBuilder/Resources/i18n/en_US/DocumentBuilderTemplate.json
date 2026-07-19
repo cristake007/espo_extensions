@@ -14,7 +14,26 @@
         "Saving": "Saving",
         "Retry Save": "Retry Save",
         "Reload Draft": "Reload Draft",
-        "editorRevisionConflictTitle": "Draft changed on the server"
+        "editorRevisionConflictTitle": "Draft changed on the server",
+        "Zoom": "Zoom",
+        "Page Settings": "Page Settings",
+        "Page Size": "Page Size",
+        "Orientation": "Orientation",
+        "Portrait": "Portrait",
+        "Landscape": "Landscape",
+        "Margins (mm)": "Margins (mm)",
+        "Top": "Top",
+        "Right": "Right",
+        "Bottom": "Bottom",
+        "Left": "Left",
+        "Default Font": "Default Font",
+        "Font Size": "Font Size",
+        "Line Height": "Line Height",
+        "Text Color": "Text Color",
+        "Locale": "Locale",
+        "Timezone": "Timezone",
+        "PDF Title Pattern": "PDF Title Pattern",
+        "Filename Pattern": "Filename Pattern"
     },
     "actions": {
         "Open Editor": "Open Editor",
@@ -26,7 +45,11 @@
         "Duplicate": "Duplicate",
         "Archive": "Archive",
         "Create Draft from Version": "Create Draft from Published Version",
-        "View Versions": "View Versions"
+        "View Versions": "View Versions",
+        "Zoom In": "Zoom In",
+        "Zoom Out": "Zoom Out",
+        "Fit Width": "Fit Width",
+        "Fit Page": "Fit Page"
     },
     "messages": {
         "editorLoading": "Loading the draft editor…",

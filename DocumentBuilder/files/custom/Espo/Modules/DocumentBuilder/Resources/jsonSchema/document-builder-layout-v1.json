@@ -134,7 +134,7 @@
             "additionalProperties": false,
             "required": ["size", "orientation", "margins"],
             "properties": {
-                "size": {"enum": ["A4", "Letter", "Legal"]},
+                "size": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"},
                 "orientation": {"enum": ["portrait", "landscape"]},
                 "margins": {"$ref": "#/$defs/boxEdges"}
             }
@@ -142,7 +142,7 @@
         "documentDefaults": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["fontFamily", "fontSize", "color", "lineHeight", "locale"],
+            "required": ["fontFamily", "fontSize", "color", "lineHeight", "locale", "timezone"],
             "properties": {
                 "fontFamily": {
                     "type": "string",
@@ -153,16 +153,27 @@
                 "fontSize": {"$ref": "#/$defs/points"},
                 "color": {"$ref": "#/$defs/color"},
                 "lineHeight": {"type": "number", "minimum": 0.5, "maximum": 5},
-                "locale": {"type": "string", "pattern": "^[a-z]{2}_[A-Z]{2}$"}
+                "locale": {"type": "string", "pattern": "^[a-z]{2}_[A-Z]{2}$"},
+                "timezone": {
+                    "type": "string",
+                    "pattern": "^(UTC|[A-Za-z_]+(?:/[A-Za-z0-9_+.-]+)+)$"
+                }
             }
         },
         "document": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["page", "defaults"],
+            "required": ["page", "defaults", "titlePattern", "filenamePattern"],
             "properties": {
                 "page": {"$ref": "#/$defs/page"},
-                "defaults": {"$ref": "#/$defs/documentDefaults"}
+                "defaults": {"$ref": "#/$defs/documentDefaults"},
+                "titlePattern": {"type": "string", "maxLength": 255},
+                "filenamePattern": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255,
+                    "pattern": "^[^/\\\\\\u0000-\\u001F]+$"
+                }
             }
         },
         "noSourceDescriptor": {

@@ -35,6 +35,7 @@
         "temporaryImportRetentionHours": "Temporary Import Retention (hours)",
         "generatedDocumentRetentionDays": "Generated Document Retention (days, 0 keeps indefinitely)",
         "allowedFontList": "Allowed Fonts",
+        "customPageSizeList": "Custom Page Sizes",
         "defaultFont": "Default Font",
         "allowSvg": "Allow Sanitized SVG",
         "allowWebp": "Allow Verified WebP",

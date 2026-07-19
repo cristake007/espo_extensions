@@ -37,14 +37,14 @@ define([
         value.value <= maximum &&
         value.unit === unit;
 
-    const validatePage = (page, errors) => {
+    const validatePage = (page, errors, pageDimensions) => {
         if (!hasOnlyKeys(page, ['size', 'orientation', 'margins'])) {
             errors.push('document.page.structure');
 
             return;
         }
 
-        if (!(page.size in PAGE_DIMENSIONS_MM)) {
+        if (!(page.size in pageDimensions)) {
             errors.push('document.page.size');
         }
 
@@ -68,12 +68,12 @@ define([
             return valid;
         });
 
-        if (!validMargins || !(page.size in PAGE_DIMENSIONS_MM) ||
+        if (!validMargins || !(page.size in pageDimensions) ||
             !ORIENTATION_LIST.includes(page.orientation)) {
             return;
         }
 
-        const dimensions = PAGE_DIMENSIONS_MM[page.size];
+        const dimensions = pageDimensions[page.size];
         const width = page.orientation === 'portrait' ? dimensions.width : dimensions.height;
         const height = page.orientation === 'portrait' ? dimensions.height : dimensions.width;
 
@@ -87,7 +87,14 @@ define([
     };
 
     const validateDefaults = (defaults, errors) => {
-        if (!hasOnlyKeys(defaults, ['fontFamily', 'fontSize', 'color', 'lineHeight', 'locale'])) {
+        if (!hasOnlyKeys(defaults, [
+            'fontFamily',
+            'fontSize',
+            'color',
+            'lineHeight',
+            'locale',
+            'timezone',
+        ])) {
             errors.push('document.defaults.structure');
 
             return;
@@ -114,6 +121,11 @@ define([
 
         if (typeof defaults.locale !== 'string' || !/^[a-z]{2}_[A-Z]{2}$/.test(defaults.locale)) {
             errors.push('document.defaults.locale');
+        }
+
+        if (typeof defaults.timezone !== 'string' ||
+            !/^(UTC|[A-Za-z_]+(?:\/[A-Za-z0-9_+.-]+)+)$/.test(defaults.timezone)) {
+            errors.push('document.defaults.timezone');
         }
     };
 
@@ -174,6 +186,21 @@ define([
     };
 
     return class LayoutPrecheck {
+        constructor(customPageSizes = []) {
+            this.pageDimensions = {...PAGE_DIMENSIONS_MM};
+
+            customPageSizes.forEach(definition => {
+                if (definition && typeof definition.id === 'string' &&
+                    typeof definition.widthMm === 'number' &&
+                    typeof definition.heightMm === 'number') {
+                    this.pageDimensions[definition.id] = {
+                        width: definition.widthMm,
+                        height: definition.heightMm,
+                    };
+                }
+            });
+        }
+
         check(layout) {
             const errors = [];
             let normalized;
@@ -208,11 +235,28 @@ define([
                 errors.push('capabilities.unsupported');
             }
 
-            if (!hasOnlyKeys(normalized.document, ['page', 'defaults'])) {
+            if (!hasOnlyKeys(normalized.document, [
+                'page',
+                'defaults',
+                'titlePattern',
+                'filenamePattern',
+            ])) {
                 errors.push('document.structure');
             } else {
-                validatePage(normalized.document.page, errors);
+                validatePage(normalized.document.page, errors, this.pageDimensions);
                 validateDefaults(normalized.document.defaults, errors);
+
+                if (typeof normalized.document.titlePattern !== 'string' ||
+                    normalized.document.titlePattern.length > 255) {
+                    errors.push('document.titlePattern');
+                }
+
+                if (typeof normalized.document.filenamePattern !== 'string' ||
+                    normalized.document.filenamePattern.length < 1 ||
+                    normalized.document.filenamePattern.length > 255 ||
+                    /[\\/\u0000-\u001F]/.test(normalized.document.filenamePattern)) {
+                    errors.push('document.filenamePattern');
+                }
             }
 
             validateDataSource(normalized.dataSource, errors);

@@ -32,6 +32,7 @@
         "temporaryImportRetentionHours": 72,
         "generatedDocumentRetentionDays": 0,
         "allowedFontList": ["DejaVu Sans"],
+        "customPageSizeList": [],
         "defaultFont": "DejaVu Sans",
         "allowSvg": false,
         "allowWebp": false,
@@ -103,7 +104,8 @@
         "maxRenderedPages": 200,
         "temporaryImportRetentionHours": 720,
         "generatedDocumentRetentionDays": 3650,
-        "allowedFontList": 20
+        "allowedFontList": 20,
+        "customPageSizeList": 20
     },
     "lockedValues": {
         "allowRemoteResources": false

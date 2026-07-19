@@ -73,17 +73,65 @@
 }
 
 .document-builder-editor__canvas-host {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    padding-top: 46px;
+    background: var(--gray-lighter, #f5f5f5);
+}
+
+.document-builder-editor__canvas-toolbar {
+    position: absolute;
+    z-index: 1;
+    top: 8px;
+    left: 50%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 6px;
+    transform: translateX(-50%);
+}
+
+.document-builder-editor__canvas-toolbar output {
+    min-width: 48px;
+    text-align: center;
+}
+
+.document-builder-editor__canvas-scroll {
+    overflow: auto;
+    width: 100%;
     padding: 28px;
-    background: var(--gray-lighter, #f5f5f5);
+}
+
+.document-builder-editor__page {
+    box-sizing: border-box;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 2px 12px rgb(0 0 0 / 18%);
 }
 
 .document-builder-editor__empty {
     max-width: 420px;
     padding: 48px 24px;
     text-align: center;
+}
+
+.document-builder-editor__settings-grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 12px;
+}
+
+.document-builder-editor__settings-grid legend {
+    margin-bottom: 6px;
+    border: 0;
+    font-size: 13px;
+}
+
+.document-builder-editor__settings-grid label {
+    min-width: 0;
+    font-size: 12px;
 }
 
 .document-builder-editor__empty > .far {

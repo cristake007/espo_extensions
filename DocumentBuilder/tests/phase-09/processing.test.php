@@ -276,6 +276,30 @@ Assert::same(
     'Typed measurement bounds must identify the invalid value.',
 );
 
+$customPage = $default;
+$customPage['document']['page']['size'] = 'Badge';
+$customSettings = phase09Settings(['customPageSizeList' => [[
+    'id' => 'Badge',
+    'label' => 'Badge',
+    'widthMm' => 90,
+    'heightMm' => 55,
+]]]);
+Assert::same(
+    'Badge',
+    phase09Processor($customSettings)
+        ->process(json_encode($customPage, JSON_THROW_ON_ERROR))
+        ->layout()['document']['page']['size'],
+    'Administrator-authorized custom page size was rejected.',
+);
+$unauthorizedCustomErrors = phase09InvalidErrors(
+    fn () => phase09Processor()->process(json_encode($customPage, JSON_THROW_ON_ERROR)),
+);
+Assert::same(
+    '/document/page/size',
+    phase09FindError($unauthorizedCustomErrors, 'page.size')->path(),
+    'Unconfigured custom page sizes must fail closed.',
+);
+
 $entitySource = $partial;
 $entitySource['dataSource'] = ['type' => 'entity', 'entityType' => 'Contact', 'relationshipDepth' => 2];
 Assert::same(

@@ -66,16 +66,60 @@
             </aside>
 
             <section class="document-builder-editor__canvas-host" aria-label="{{translate 'Canvas' category='labels' scope='DocumentBuilderTemplate'}}">
-                <div class="document-builder-editor__empty">
-                    <span class="far fa-file-alt" aria-hidden="true"></span>
-                    <h3>{{translate 'editorEmptyCanvas' category='messages' scope='DocumentBuilderTemplate'}}</h3>
-                    <p class="text-muted">{{translate 'editorMechanicsPending' category='messages' scope='DocumentBuilderTemplate'}}</p>
+                <div class="document-builder-editor__canvas-toolbar" role="group" aria-label="{{translate 'Zoom' category='labels' scope='DocumentBuilderTemplate'}}">
+                    <button type="button" class="btn btn-default btn-sm" data-action="zoomOut" aria-label="{{translate 'Zoom Out' category='actions' scope='DocumentBuilderTemplate'}}">−</button>
+                    <output>{{zoom}}%</output>
+                    <button type="button" class="btn btn-default btn-sm" data-action="zoomIn" aria-label="{{translate 'Zoom In' category='actions' scope='DocumentBuilderTemplate'}}">+</button>
+                    <button type="button" class="btn btn-default btn-sm" data-action="fitWidth">{{translate 'Fit Width' category='actions' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="btn btn-default btn-sm" data-action="fitPage">{{translate 'Fit Page' category='actions' scope='DocumentBuilderTemplate'}}</button>
+                </div>
+                <div class="document-builder-editor__canvas-scroll">
+                    <div class="document-builder-editor__page" style="{{pageFrameStyle}}">
+                        <div class="document-builder-editor__empty">
+                            <span class="far fa-file-alt" aria-hidden="true"></span>
+                            <h3>{{translate 'editorEmptyCanvas' category='messages' scope='DocumentBuilderTemplate'}}</h3>
+                            <p class="text-muted">{{translate 'editorMechanicsPending' category='messages' scope='DocumentBuilderTemplate'}}</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <aside class="document-builder-editor__inspector" aria-label="{{translate 'Inspector' category='labels' scope='DocumentBuilderTemplate'}}">
-                <h3>{{translate 'Inspector' category='labels' scope='DocumentBuilderTemplate'}}</h3>
-                <p class="text-muted">{{translate 'editorInspectorPlaceholder' category='messages' scope='DocumentBuilderTemplate'}}</p>
+                <h3>{{translate 'Page Settings' category='labels' scope='DocumentBuilderTemplate'}}</h3>
+                <div class="form-group">
+                    <label>{{translate 'Page Size' category='labels' scope='DocumentBuilderTemplate'}}</label>
+                    <select class="form-control input-sm" data-page-setting="size">
+                        {{#each pageSettings.pageSizeList}}
+                        <option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>{{translate 'Orientation' category='labels' scope='DocumentBuilderTemplate'}}</label>
+                    <select class="form-control input-sm" data-page-setting="orientation">
+                        <option value="portrait" {{#if pageSettings.portrait}}selected{{/if}}>{{translate 'Portrait' category='labels' scope='DocumentBuilderTemplate'}}</option>
+                        <option value="landscape" {{#if pageSettings.landscape}}selected{{/if}}>{{translate 'Landscape' category='labels' scope='DocumentBuilderTemplate'}}</option>
+                    </select>
+                </div>
+                <fieldset class="document-builder-editor__settings-grid">
+                    <legend>{{translate 'Margins (mm)' category='labels' scope='DocumentBuilderTemplate'}}</legend>
+                    <label>{{translate 'Top' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="2000" step="0.1" value="{{pageSettings.page.margins.top.value}}" data-page-setting="marginTop" data-value-type="number"></label>
+                    <label>{{translate 'Right' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="2000" step="0.1" value="{{pageSettings.page.margins.right.value}}" data-page-setting="marginRight" data-value-type="number"></label>
+                    <label>{{translate 'Bottom' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="2000" step="0.1" value="{{pageSettings.page.margins.bottom.value}}" data-page-setting="marginBottom" data-value-type="number"></label>
+                    <label>{{translate 'Left' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="2000" step="0.1" value="{{pageSettings.page.margins.left.value}}" data-page-setting="marginLeft" data-value-type="number"></label>
+                </fieldset>
+                <div class="form-group"><label>{{translate 'Default Font' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-page-setting="fontFamily">{{#each pageSettings.fontList}}<option value="{{name}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label></div>
+                <div class="document-builder-editor__settings-grid">
+                    <label>{{translate 'Font Size' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="512" step="0.1" value="{{pageSettings.defaults.fontSize.value}}" data-page-setting="fontSize" data-value-type="number"></label>
+                    <label>{{translate 'Line Height' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0.5" max="5" step="0.1" value="{{pageSettings.defaults.lineHeight}}" data-page-setting="lineHeight" data-value-type="number"></label>
+                </div>
+                <div class="form-group"><label>{{translate 'Text Color' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="color" value="{{pageSettings.defaults.color}}" data-page-setting="color"></label></div>
+                <div class="document-builder-editor__settings-grid">
+                    <label>{{translate 'Locale' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" value="{{pageSettings.defaults.locale}}" data-page-setting="locale"></label>
+                    <label>{{translate 'Timezone' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" value="{{pageSettings.defaults.timezone}}" data-page-setting="timezone"></label>
+                </div>
+                <div class="form-group"><label>{{translate 'PDF Title Pattern' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="255" value="{{pageSettings.titlePattern}}" data-page-setting="titlePattern"></label></div>
+                <div class="form-group"><label>{{translate 'Filename Pattern' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="255" value="{{pageSettings.filenamePattern}}" data-page-setting="filenamePattern"></label></div>
             </aside>
         </main>
 

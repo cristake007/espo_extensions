@@ -137,6 +137,12 @@ namespace {
         'maxRelationshipDepth' => 3,
         'maxElements' => 250,
         'allowedFontList' => ['DejaVu Sans', 'DejaVu Serif'],
+        'customPageSizeList' => [[
+            'id' => 'Badge',
+            'label' => 'Badge',
+            'widthMm' => 90,
+            'heightMm' => 55,
+        ]],
         'defaultFont' => 'DejaVu Serif',
         'allowSvg' => true,
         'allowWebp' => true,
@@ -156,6 +162,7 @@ namespace {
     Assert::isTrue($overridden->enableListViewMassGeneration(), 'Mass-generation override failed.');
     Assert::same('ro_RO', $overridden->defaultLocale(), 'Locale override failed.');
     Assert::same('Letter', $overridden->defaultPageSize(), 'Page-size override failed.');
+    Assert::same('Badge', $overridden->customPageSizeList()[0]['id'], 'Custom page-size override failed.');
 
     foreach ($definition['minimums'] as $key => $minimum) {
         Assert::throws(
@@ -201,6 +208,8 @@ namespace {
         ['defaultLocale' => '../en_US'],
         ['defaultPdfEngine' => 'RemotePdf'],
         ['defaultPageSize' => 'Unlimited'],
+        ['customPageSizeList' => [['id' => 'A4', 'label' => 'Override', 'widthMm' => 10, 'heightMm' => 10]]],
+        ['customPageSizeList' => [['id' => 'Badge', 'label' => '', 'widthMm' => 90, 'heightMm' => 55]]],
     ] as $invalidOverrides) {
         Assert::throws(
             fn () => createProvider($invalidOverrides)->get(),

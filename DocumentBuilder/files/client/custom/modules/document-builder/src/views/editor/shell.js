@@ -6,6 +6,9 @@ define([
     'document-builder:editor/save/draft-save-coordinator',
     'document-builder:editor/save/keyboard',
     'document-builder:editor/save/dirty-guard',
+    'document-builder:editor/commands/update-document',
+    'document-builder:editor/geometry/page-geometry',
+    'document-builder:editor/page-settings',
 ], (
     View,
     EditorState,
@@ -14,6 +17,9 @@ define([
     DraftSaveCoordinator,
     Keyboard,
     DirtyGuard,
+    UpdateDocumentCommand,
+    PageGeometry,
+    PageSettings,
 ) => {
     return class extends View {
         template = 'document-builder:editor/shell'
@@ -24,6 +30,11 @@ define([
             'click [data-action="undo"]': 'actionUndo',
             'click [data-action="redo"]': 'actionRedo',
             'click [data-action="save"]': 'actionSave',
+            'click [data-action="zoomIn"]': 'actionZoomIn',
+            'click [data-action="zoomOut"]': 'actionZoomOut',
+            'click [data-action="fitWidth"]': 'actionFitWidth',
+            'click [data-action="fitPage"]': 'actionFitPage',
+            'change [data-page-setting]': 'changePageSetting',
         }
 
         setup() {
@@ -37,11 +48,24 @@ define([
             this.conflictDialogOpen = false;
             this.dirtyGuard = new DirtyGuard(this.getRouter(), this);
             this.keydownHandler = event => this.handleKeydown(event);
+            const config = this.getConfig().get('documentBuilder') || {};
+            const metadataDefaults = this.getMetadata().get(
+                ['app', 'documentBuilder', 'defaults'],
+            ) || {};
+
+            this.customPageSizes = config.customPageSizeList ||
+                metadataDefaults.customPageSizeList || [];
+            this.allowedFonts = config.allowedFontList ||
+                metadataDefaults.allowedFontList || ['DejaVu Sans'];
+            this.pageGeometry = new PageGeometry(this.customPageSizes);
+            this.zoom = 100;
 
             document.addEventListener('keydown', this.keydownHandler);
         }
 
         data() {
+            const pageSettings = this.getPageSettingsData();
+
             return {
                 isLoading: this.state === 'loading',
                 isReady: this.state === 'ready',
@@ -62,6 +86,46 @@ define([
                 isReloading: this.saveCoordinator ? this.saveCoordinator.status === 'reloading' : false,
                 isSaved: this.saveCoordinator ? this.saveCoordinator.status === 'saved' : false,
                 saveError: this.saveCoordinator ? this.saveCoordinator.errorMessage : null,
+                ...pageSettings,
+            };
+        }
+
+        getPageSettingsData() {
+            if (!this.editorState) {
+                return {pageSettings: null, pageFrameStyle: '', zoom: this.zoom};
+            }
+
+            const document = this.editorState.getLayout().document;
+            const frame = this.pageGeometry.frame(
+                document.page.size,
+                document.page.orientation,
+                this.zoom,
+            );
+            const margins = document.page.margins;
+            const px = value => this.pageGeometry.millimetresToPixels(value, this.zoom);
+
+            return {
+                pageSettings: {
+                    ...document,
+                    page: {...document.page, margins},
+                    pageSizeList: this.pageGeometry.getSizeList().map(size => ({
+                        ...size,
+                        selected: size.id === document.page.size,
+                    })),
+                    portrait: document.page.orientation === 'portrait',
+                    landscape: document.page.orientation === 'landscape',
+                    fontList: this.allowedFonts.map(font => ({
+                        name: font,
+                        selected: font === document.defaults.fontFamily,
+                    })),
+                },
+                pageFrameStyle: [
+                    `width: ${frame.widthPx}px`,
+                    `height: ${frame.heightPx}px`,
+                    `padding: ${px(margins.top.value)}px ${px(margins.right.value)}px ` +
+                        `${px(margins.bottom.value)}px ${px(margins.left.value)}px`,
+                ].join('; '),
+                zoom: frame.zoom,
             };
         }
 
@@ -108,11 +172,13 @@ define([
                     return;
                 }
 
-                this.editorState = new EditorState(this.model.get('currentDraftLayout'));
+                this.editorState = new EditorState(PageSettings.normalize(
+                    this.model.get('currentDraftLayout'),
+                ));
                 this.saveCoordinator = new DraftSaveCoordinator({
                     editorState: this.editorState,
                     draftApi: new DraftApi(),
-                    precheck: new LayoutPrecheck(),
+                    precheck: new LayoutPrecheck(this.customPageSizes),
                     templateId: this.model.id,
                     revision: this.model.get('revision'),
                 });
@@ -179,6 +245,93 @@ define([
                 this.syncDirtyGuard();
                 this.reRender();
             }
+        }
+
+        changePageSetting(event) {
+            if (!this.editorState || this.isSaveBusy()) {
+                return;
+            }
+
+            const input = event.currentTarget;
+            const path = input.dataset.pageSetting;
+            const document = this.editorState.getLayout().document;
+            const numeric = input.dataset.valueType === 'number';
+            const value = numeric ? Number(input.value) : input.value;
+
+            if (numeric && !Number.isFinite(value)) {
+                return;
+            }
+
+            const targets = {
+                size: () => { document.page.size = value; },
+                orientation: () => { document.page.orientation = value; },
+                marginTop: () => { document.page.margins.top.value = value; },
+                marginRight: () => { document.page.margins.right.value = value; },
+                marginBottom: () => { document.page.margins.bottom.value = value; },
+                marginLeft: () => { document.page.margins.left.value = value; },
+                fontFamily: () => { document.defaults.fontFamily = value; },
+                fontSize: () => { document.defaults.fontSize.value = value; },
+                color: () => { document.defaults.color = value; },
+                lineHeight: () => { document.defaults.lineHeight = value; },
+                locale: () => { document.defaults.locale = value; },
+                timezone: () => { document.defaults.timezone = value; },
+                titlePattern: () => { document.titlePattern = value; },
+                filenamePattern: () => { document.filenamePattern = value; },
+            };
+
+            if (!(path in targets)) {
+                return;
+            }
+
+            targets[path]();
+            this.executeCommand(new UpdateDocumentCommand(document));
+        }
+
+        actionZoomIn() {
+            this.setZoom(this.zoom + 25);
+        }
+
+        actionZoomOut() {
+            this.setZoom(this.zoom - 25);
+        }
+
+        actionFitWidth() {
+            this.setFittedZoom('width');
+        }
+
+        actionFitPage() {
+            this.setFittedZoom('page');
+        }
+
+        setFittedZoom(mode) {
+            const host = this.element.querySelector('.document-builder-editor__canvas-host');
+
+            if (!host || !this.editorState) {
+                return;
+            }
+
+            const {page} = this.editorState.getLayout().document;
+            const zoom = mode === 'width' ?
+                this.pageGeometry.fitWidth(page.size, page.orientation, host.clientWidth) :
+                this.pageGeometry.fitPage(
+                    page.size,
+                    page.orientation,
+                    host.clientWidth,
+                    host.clientHeight,
+                );
+
+            this.setZoom(zoom);
+        }
+
+        setZoom(zoom) {
+            const normalized = this.pageGeometry.clampZoom(zoom);
+
+            if (normalized === this.zoom) {
+                return;
+            }
+
+            this.zoom = normalized;
+            this.reRender();
         }
 
         async actionSave() {

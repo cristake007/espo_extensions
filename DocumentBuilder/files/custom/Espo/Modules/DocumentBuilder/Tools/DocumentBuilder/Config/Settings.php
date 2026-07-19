@@ -37,6 +37,7 @@ final readonly class Settings
         'temporaryImportRetentionHours',
         'generatedDocumentRetentionDays',
         'allowedFontList',
+        'customPageSizeList',
         'defaultFont',
         'allowSvg',
         'allowWebp',
@@ -98,6 +99,12 @@ final readonly class Settings
     public function allowedFontList(): array
     {
         return $this->values['allowedFontList'];
+    }
+
+    /** @return list<array{id: string, label: string, widthMm: float|int, heightMm: float|int}> */
+    public function customPageSizeList(): array
+    {
+        return $this->values['customPageSizeList'] ?? [];
     }
 
     public function defaultFont(): string { return $this->values['defaultFont']; }

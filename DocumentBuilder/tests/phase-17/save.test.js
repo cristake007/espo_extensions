@@ -117,6 +117,7 @@ const cloneLayout = layout => JSON.parse(JSON.stringify(layout));
             color: 'red',
             lineHeight: 0.25,
             locale: 'english',
+            timezone: '../UTC',
         };
         assert.deepEqual(precheck.check(invalidDefaults).errors, [
             'document.defaults.fontFamily',
@@ -124,6 +125,7 @@ const cloneLayout = layout => JSON.parse(JSON.stringify(layout));
             'document.defaults.color',
             'document.defaults.lineHeight',
             'document.defaults.locale',
+            'document.defaults.timezone',
         ]);
 
         const entitySource = cloneLayout(defaultLayout);

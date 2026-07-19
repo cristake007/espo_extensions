@@ -17,8 +17,11 @@
             "fontSize": {"value": 10, "unit": "pt"},
             "color": "#222222",
             "lineHeight": 1.2,
-            "locale": "en_US"
-        }
+            "locale": "en_US",
+            "timezone": "UTC"
+        },
+        "titlePattern": "Document",
+        "filenamePattern": "document.pdf"
     },
     "dataSource": {"type": "none"},
     "header": [],

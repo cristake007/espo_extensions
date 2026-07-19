@@ -35,6 +35,7 @@
         "temporaryImportRetentionHours": "Păstrarea importurilor temporare (ore)",
         "generatedDocumentRetentionDays": "Păstrarea documentelor generate (zile, 0 înseamnă nelimitat)",
         "allowedFontList": "Fonturi permise",
+        "customPageSizeList": "Dimensiuni de pagină personalizate",
         "defaultFont": "Font implicit",
         "allowSvg": "Permite SVG igienizat",
         "allowWebp": "Permite WebP verificat",

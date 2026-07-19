@@ -14,7 +14,26 @@
         "Saving": "Se salvează",
         "Retry Save": "Reîncearcă salvarea",
         "Reload Draft": "Reîncarcă ciorna",
-        "editorRevisionConflictTitle": "Ciorna a fost modificată pe server"
+        "editorRevisionConflictTitle": "Ciorna a fost modificată pe server",
+        "Zoom": "Zoom",
+        "Page Settings": "Setări pagină",
+        "Page Size": "Dimensiune pagină",
+        "Orientation": "Orientare",
+        "Portrait": "Portret",
+        "Landscape": "Peisaj",
+        "Margins (mm)": "Margini (mm)",
+        "Top": "Sus",
+        "Right": "Dreapta",
+        "Bottom": "Jos",
+        "Left": "Stânga",
+        "Default Font": "Font implicit",
+        "Font Size": "Dimensiune font",
+        "Line Height": "Înălțime rând",
+        "Text Color": "Culoare text",
+        "Locale": "Localizare",
+        "Timezone": "Fus orar",
+        "PDF Title Pattern": "Șablon titlu PDF",
+        "Filename Pattern": "Șablon nume fișier"
     },
     "actions": {
         "Open Editor": "Deschide editorul",
@@ -26,7 +45,11 @@
         "Duplicate": "Duplică",
         "Archive": "Arhivează",
         "Create Draft from Version": "Creează schiță din versiunea publicată",
-        "View Versions": "Vezi versiunile"
+        "View Versions": "Vezi versiunile",
+        "Zoom In": "Mărește",
+        "Zoom Out": "Micșorează",
+        "Fit Width": "Potrivește la lățime",
+        "Fit Page": "Potrivește pagina"
     },
     "messages": {
         "editorLoading": "Se încarcă editorul ciornei…",
