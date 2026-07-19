@@ -19,6 +19,16 @@ define([
         'static-text': 'editorStaticTextSample',
         paragraph: 'editorParagraphSample',
     });
+    const ICONS = Object.freeze({
+        'flow-section': 'fa-layer-group',
+        'flow-container': 'fa-object-group',
+        heading: 'fa-heading',
+        'static-text': 'fa-font',
+        paragraph: 'fa-align-left',
+        divider: 'fa-minus',
+        spacer: 'fa-arrows-alt-v',
+        'page-break': 'fa-cut',
+    });
     const previewKey = identity => JSON.stringify(identity || {});
     const previewText = value => {
         if (!value) return null;
@@ -89,7 +99,10 @@ define([
 
                 const px = value => this.pageGeometry.millimetresToPixels(value, zoom);
                 const effectiveStyle = this.styleResolver.resolve(source, node.id);
-                const flowStyle = [`--document-builder-depth: ${depth}`];
+                const flowStyle = [
+                    `--document-builder-depth: ${depth}`,
+                    '--document-builder-margin-left: 0px',
+                ];
                 const canContain = ['flow-section', 'flow-container'].includes(node.type);
                 const orientation = node.orientation === 'vertical' ? 'vertical' : 'horizontal';
                 const lineStyle = ['solid', 'dashed', 'dotted', 'double'].includes(node.lineStyle) ?
@@ -123,6 +136,10 @@ define([
                     selected: node.id === selectedId,
                     label: LABELS[node.type],
                     badgeLabel: canContain ? 'Structure' : 'Element',
+                    iconClass: ICONS[node.type],
+                    depthLabel: depth + 1,
+                    hasParent: parentId !== null,
+                    childCount: Array.isArray(node.children) ? node.children.length : 0,
                     pageNumber,
                     startsPage: explicitBreak || automaticBreak,
                     automaticPageBreak: automaticBreak,

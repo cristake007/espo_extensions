@@ -144,7 +144,10 @@
         "Page Number": "Page number",
         "Page Count": "Page count",
         "Renderer": "Renderer",
-        "Record ID": "Record ID"
+        "Record ID": "Record ID",
+        "PDF Preview": "PDF Preview",
+        "Pages": "pages",
+        "Children": "Direct children"
     },
     "actions": {
         "Open Editor": "Open Editor",
@@ -165,7 +168,8 @@
         "Fit Page": "Fit Page",
         "Move Up": "Move Up",
         "Move Down": "Move Down",
-        "Change Source": "Change Source"
+        "Change Source": "Change Source",
+        "Open in New Tab": "Open in New Tab"
     },
     "messages": {
         "Page Break Help": "Content after this marker starts on a new page.",
@@ -181,9 +185,9 @@
         "editorInspectorPlaceholder": "Select an element to inspect its properties.",
         "editorUnsavedChanges": "Unsaved changes",
         "editorSaving": "Saving draft…",
-        "editorPreviewLoading": "Loading permitted preview data…",
-        "editorPreviewActive": "Preview data is active",
-        "editorPreviewFailed": "Preview data could not be loaded. Save changes and verify record access.",
+        "editorPreviewLoading": "Rendering the PDF preview…",
+        "editorPreviewActive": "PDF preview is ready",
+        "editorPreviewFailed": "The PDF preview could not be rendered. Save changes and verify record access.",
         "editorSaved": "Draft saved",
         "editorReloading": "Reloading the server draft…",
         "editorReloaded": "The current server draft was loaded.",

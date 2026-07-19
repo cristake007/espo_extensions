@@ -23,7 +23,7 @@
             </div>
         </section>
         {{else}}
-        <header class="document-builder-editor__toolbar" aria-label="{{translate 'editorToolbar' category='labels' scope='DocumentBuilderTemplate'}}">
+        <header class="document-builder-editor__toolbar" aria-label="{{translate 'editorToolbar' category='labels' scope='DocumentBuilderTemplate'}}" {{#if previewPdfOpen}}inert aria-hidden="true"{{/if}}>
             <div class="document-builder-editor__identity">
                 <button type="button" class="btn btn-default btn-sm" data-action="backToTemplate">
                     <span class="fas fa-arrow-left" aria-hidden="true"></span>
@@ -89,7 +89,7 @@
             {{/if}}
         </section>
 
-        <main class="document-builder-editor__workspace">
+        <main class="document-builder-editor__workspace" {{#if previewPdfOpen}}inert aria-hidden="true"{{/if}}>
             <aside class="document-builder-editor__left" aria-label="{{translate 'editorLibrary' category='labels' scope='DocumentBuilderTemplate'}}">
                 <section class="document-builder-editor__panel document-builder-editor__source-selector">
                     <h3>{{translate 'Data Source' category='labels' scope='DocumentBuilderTemplate'}}</h3>
@@ -246,10 +246,12 @@
                             {{#each flowRows}}
                             <div class="document-builder-editor__drop" data-flow-drop="before" data-drop-region="{{region}}" data-drop-parent="{{parentId}}" data-drop-index="{{index}}" aria-hidden="true"></div>
                             {{#if startsPage}}<div class="document-builder-editor__page-flow-marker" role="separator"><span>{{translate 'Approximate Page' category='labels' scope='DocumentBuilderTemplate'}} {{pageNumber}}</span></div>{{/if}}
-                            <article class="document-builder-editor__flow-node {{#if selected}}is-selected{{/if}}" style="{{flowStyle}}" data-node-id="{{id}}" draggable="true" data-page="{{pageNumber}}">
+                            <article class="document-builder-editor__flow-node {{#if selected}}is-selected{{/if}} {{#if canContain}}is-structure{{else}}is-element{{/if}} {{#if isSection}}is-section{{/if}} {{#if isContainer}}is-container{{/if}} {{#if hasParent}}is-nested{{/if}}" style="{{flowStyle}}" data-node-id="{{id}}" draggable="true" data-page="{{pageNumber}}" data-depth="{{depth}}">
                                 <button type="button" class="document-builder-editor__flow-select" data-action="selectFlowNode" data-node-id="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}" aria-label="{{translate label category='labels' scope='DocumentBuilderTemplate'}}" aria-keyshortcuts="ArrowUp ArrowDown Home End">
-                                    <span class="fas {{#if isSection}}fa-layer-group{{else}}fa-square{{/if}}" aria-hidden="true"></span>
+                                    <span class="document-builder-editor__node-icon fas {{iconClass}}" aria-hidden="true"></span>
                                     <span>{{translate label category='labels' scope='DocumentBuilderTemplate'}}</span>
+                                    <span class="document-builder-editor__level-badge">L{{depthLabel}}</span>
+                                    {{#if canContain}}<span class="document-builder-editor__child-count" title="{{translate 'Children' category='labels' scope='DocumentBuilderTemplate'}}"><span class="fas fa-sitemap" aria-hidden="true"></span> {{childCount}}</span>{{/if}}
                                     <span class="document-builder-editor__node-badge">{{translate badgeLabel category='labels' scope='DocumentBuilderTemplate'}}</span>
                                 </button>
                                 {{#if isHeading}}<div class="document-builder-editor__content document-builder-editor__content--heading" data-rich-content-id="{{id}}"></div>{{/if}}
@@ -435,6 +437,24 @@
                 {{/if}}
             </aside>
         </main>
+
+        {{#if previewPdfOpen}}
+        <section class="document-builder-editor__pdf-backdrop" role="dialog" aria-modal="true" aria-labelledby="document-builder-pdf-title">
+            <div class="document-builder-editor__pdf-dialog">
+                <header class="document-builder-editor__pdf-header">
+                    <div>
+                        <h3 id="document-builder-pdf-title">{{translate 'PDF Preview' category='labels' scope='DocumentBuilderTemplate'}}</h3>
+                        <p>{{previewPageCount}} {{translate 'Pages' category='labels' scope='DocumentBuilderTemplate'}} · {{previewWarningCount}} {{translate 'Warnings' category='labels' scope='DocumentBuilderTemplate'}}</p>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default btn-sm" href="{{previewPdfUrl}}" target="_blank" rel="noopener">{{translate 'Open in New Tab' category='actions' scope='DocumentBuilderTemplate'}}</a>
+                        <button type="button" class="btn btn-primary btn-sm" data-action="closePdfPreview">{{translate 'Close'}}</button>
+                    </div>
+                </header>
+                <iframe class="document-builder-editor__pdf-frame" src="{{previewPdfUrl}}" title="{{translate 'PDF Preview' category='labels' scope='DocumentBuilderTemplate'}}"></iframe>
+            </div>
+        </section>
+        {{/if}}
 
         <footer class="document-builder-editor__status" role="status" aria-live="polite">
             <span>{{translateOption 'Draft' field='status' scope='DocumentBuilderTemplate'}}</span>

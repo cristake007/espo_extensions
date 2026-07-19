@@ -5,6 +5,19 @@ define([], () => {
         }
 
         load(templateId, expectedRevision, mode, recordId = null) {
+            const payload = this.payload(templateId, expectedRevision, mode, recordId);
+
+            return this.ajax.postRequest(`DocumentBuilder/template/${templateId}/preview`, payload);
+        }
+
+        loadPdf(templateId, expectedRevision, mode, recordId = null) {
+            const payload = this.payload(templateId, expectedRevision, mode, recordId);
+            payload.response = 'base64';
+
+            return this.ajax.postRequest(`DocumentBuilder/template/${templateId}/preview-pdf`, payload);
+        }
+
+        payload(templateId, expectedRevision, mode, recordId) {
             if (!templateId || !Number.isInteger(expectedRevision) || expectedRevision < 0 ||
                 !['sample', 'record'].includes(mode) ||
                 (mode === 'sample' && recordId !== null) ||
@@ -15,7 +28,7 @@ define([], () => {
             const payload = {expectedRevision, mode};
             if (recordId !== null) payload.recordId = recordId;
 
-            return this.ajax.postRequest(`DocumentBuilder/template/${templateId}/preview`, payload);
+            return payload;
         }
     };
 });

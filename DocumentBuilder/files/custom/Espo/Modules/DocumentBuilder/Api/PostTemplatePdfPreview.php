@@ -34,7 +34,18 @@ final readonly class PostTemplatePdfPreview implements Action
         $id = $request->getRouteParam('id');
         if ($id === null) throw new BadRequest('Template ID is required.');
         try {
-            $result = $this->service->preview($id, $this->input($request->getParsedBody()));
+            $body = $request->getParsedBody();
+            $result = $this->service->preview($id, $this->input($body));
+
+            if (($body->response ?? null) === 'base64') {
+                return ResponseComposer::json([
+                    'content' => base64_encode($result->bytes),
+                    'mediaType' => 'application/pdf',
+                    'pageCount' => $result->pageCount,
+                    'warningCount' => count($result->warnings),
+                ]);
+            }
+
             return ResponseComposer::empty()
                 ->writeBody($result->bytes)
                 ->setHeader('Content-Type', 'application/pdf')
@@ -63,13 +74,19 @@ final readonly class PostTemplatePdfPreview implements Action
     private function input(stdClass $body): PreviewRequest
     {
         $values = get_object_vars($body);
-        if (array_diff(array_keys($values), ['expectedRevision','mode','recordId']) !== []) {
+        if (array_diff(array_keys($values), ['expectedRevision','mode','recordId','response']) !== []) {
             throw new InvalidArgumentException('PDF preview payload contains unsupported properties.');
         }
         $revision = $body->expectedRevision ?? null;
         $mode = is_string($body->mode ?? null) ? PreviewMode::tryFrom($body->mode) : null;
         $recordId = $body->recordId ?? null;
-        if (!is_int($revision) || $mode === null || (!is_string($recordId) && $recordId !== null)) {
+        $response = $body->response ?? null;
+        if (
+            !is_int($revision) ||
+            $mode === null ||
+            (!is_string($recordId) && $recordId !== null) ||
+            ($response !== null && $response !== 'base64')
+        ) {
             throw new InvalidArgumentException('PDF preview payload is invalid.');
         }
         return new PreviewRequest($revision, $mode, $recordId);

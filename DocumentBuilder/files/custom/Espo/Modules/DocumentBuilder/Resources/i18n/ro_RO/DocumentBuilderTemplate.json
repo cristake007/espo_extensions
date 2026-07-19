@@ -144,7 +144,10 @@
         "Page Number": "Numărul paginii",
         "Page Count": "Numărul de pagini",
         "Renderer": "Motor de randare",
-        "Record ID": "ID înregistrare"
+        "Record ID": "ID înregistrare",
+        "PDF Preview": "Previzualizare PDF",
+        "Pages": "pagini",
+        "Children": "Copii direcți"
     },
     "actions": {
         "Open Editor": "Deschide editorul",
@@ -165,7 +168,8 @@
         "Fit Page": "Potrivește pagina",
         "Move Up": "Mută în sus",
         "Move Down": "Mută în jos",
-        "Change Source": "Schimbă sursa"
+        "Change Source": "Schimbă sursa",
+        "Open in New Tab": "Deschide în filă nouă"
     },
     "messages": {
         "Page Break Help": "Conținutul de după acest marcaj începe pe o pagină nouă.",
@@ -181,9 +185,9 @@
         "editorInspectorPlaceholder": "Selectați un element pentru a-i inspecta proprietățile.",
         "editorUnsavedChanges": "Modificări nesalvate",
         "editorSaving": "Se salvează ciorna…",
-        "editorPreviewLoading": "Se încarcă datele permise pentru previzualizare…",
-        "editorPreviewActive": "Datele de previzualizare sunt active",
-        "editorPreviewFailed": "Datele nu au putut fi încărcate. Salvați modificările și verificați accesul la înregistrare.",
+        "editorPreviewLoading": "Se generează previzualizarea PDF…",
+        "editorPreviewActive": "Previzualizarea PDF este pregătită",
+        "editorPreviewFailed": "Previzualizarea PDF nu a putut fi generată. Salvați modificările și verificați accesul la înregistrare.",
         "editorSaved": "Ciornă salvată",
         "editorReloading": "Se reîncarcă ciorna de pe server…",
         "editorReloaded": "Ciorna curentă de pe server a fost încărcată.",

@@ -249,13 +249,45 @@
 }
 
 .document-builder-editor__flow-node {
+    position: relative;
     box-sizing: border-box;
     margin-left: calc(
         var(--document-builder-margin-left) + var(--document-builder-depth) * 18px
     ) !important;
-    border: 1px solid #9fc1de;
-    border-radius: 3px;
-    background: rgb(245 250 255 / 90%);
+    border: 1px solid #b7c7d6;
+    border-left: 4px solid #6f91ad;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 8%);
+}
+
+.document-builder-editor__flow-node.is-structure {
+    border-color: #8daec9;
+    border-left-color: #337ab7;
+    background: #edf5fb;
+}
+
+.document-builder-editor__flow-node.is-section {
+    border-left-width: 6px;
+    background: #e4f0f8;
+}
+
+.document-builder-editor__flow-node.is-container {
+    border-left-color: #5b8f63;
+    background: #f0f7f1;
+}
+
+.document-builder-editor__flow-node.is-element {
+    border-left-color: #8b78a5;
+}
+
+.document-builder-editor__flow-node.is-nested::before {
+    position: absolute;
+    top: 17px;
+    left: -19px;
+    width: 15px;
+    border-top: 2px solid #9aafc0;
+    content: "";
 }
 
 .document-builder-editor__flow-node.is-selected {
@@ -338,6 +370,34 @@
     border: 0;
     background: transparent;
     text-align: left;
+}
+
+.document-builder-editor__node-icon {
+    display: inline-grid;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    place-items: center;
+    border-radius: 4px;
+    background: rgb(51 122 183 / 12%);
+    color: #2d678f;
+}
+
+.document-builder-editor__flow-node.is-container .document-builder-editor__node-icon {
+    color: #47794f;
+}
+
+.document-builder-editor__level-badge,
+.document-builder-editor__child-count {
+    color: var(--text-muted, #777);
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.document-builder-editor__level-badge {
+    padding: 1px 5px;
+    border-radius: 8px;
+    background: rgb(0 0 0 / 6%);
 }
 
 .document-builder-editor__flow-select:focus-visible,
@@ -454,6 +514,54 @@
 .document-builder-editor__status span + span::before {
     margin-right: 12px;
     content: "\2022";
+}
+
+.document-builder-editor__pdf-backdrop {
+    position: fixed;
+    z-index: 1050;
+    display: grid;
+    padding: 3vh 3vw;
+    background: rgb(0 0 0 / 72%);
+    inset: 0;
+    place-items: center;
+}
+
+.document-builder-editor__pdf-dialog {
+    display: flex;
+    overflow: hidden;
+    width: min(1200px, 94vw);
+    height: 94vh;
+    flex-direction: column;
+    border-radius: 6px;
+    background: var(--panel-bg, #fff);
+    box-shadow: 0 18px 60px rgb(0 0 0 / 45%);
+}
+
+.document-builder-editor__pdf-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--panel-default-border, #ddd);
+}
+
+.document-builder-editor__pdf-header h3,
+.document-builder-editor__pdf-header p {
+    margin: 0;
+}
+
+.document-builder-editor__pdf-header p {
+    color: var(--text-muted, #777);
+    font-size: 11px;
+}
+
+.document-builder-editor__pdf-frame {
+    width: 100%;
+    min-height: 0;
+    flex: 1 1 auto;
+    border: 0;
+    background: #525659;
 }
 
 .document-builder-editor__state {

@@ -68,6 +68,7 @@ define([
             'click [data-action="save"]': 'actionSave',
             'click [data-action="previewSample"]': 'actionPreviewSample',
             'click [data-action="previewRecord"]': 'actionPreviewRecord',
+            'click [data-action="closePdfPreview"]': 'actionClosePdfPreview',
             'input [data-preview-record-id]': 'inputPreviewRecordId',
             'click [data-action="zoomIn"]': 'actionZoomIn',
             'click [data-action="zoomOut"]': 'actionZoomOut',
@@ -155,6 +156,9 @@ define([
             this.previewMode = null;
             this.previewRecordId = '';
             this.previewValues = new Map();
+            this.previewPdfUrl = null;
+            this.previewPageCount = 0;
+            this.previewWarningCount = 0;
             this.entityCatalogue = [];
             this.entityCatalogueStatus = 'loading';
             this.metadataNodes = new Map();
@@ -204,6 +208,10 @@ define([
                 previewError: this.previewStatus === 'error',
                 previewMode: this.previewMode,
                 previewRecordId: this.previewRecordId,
+                previewPdfOpen: Boolean(this.previewPdfUrl),
+                previewPdfUrl: this.previewPdfUrl,
+                previewPageCount: this.previewPageCount,
+                previewWarningCount: this.previewWarningCount,
                 canPreview: Boolean(this.editorState && !this.editorState.isDirty() && this.previewStatus !== 'loading'),
                 canPreviewRecord: Boolean(this.editorState && !this.editorState.isDirty() &&
                     this.previewStatus !== 'loading' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(this.previewRecordId)),
@@ -508,6 +516,12 @@ define([
             if (!this.loadStarted) {
                 this.loadStarted = true;
                 this.loadModel();
+
+                return;
+            }
+
+            if (this.previewPdfUrl) {
+                this.element.querySelector('[data-action="closePdfPreview"]')?.focus({preventScroll: true});
 
                 return;
             }
@@ -1383,20 +1397,20 @@ define([
             }
 
             this.previewStatus = 'loading';
+            this.releasePdfPreview();
             await this.reRender();
 
             try {
-                const result = await this.previewApi.load(
+                const result = await this.previewApi.loadPdf(
                     this.model.id,
                     this.model.get('revision'),
                     mode,
                     recordId,
                 );
-                const values = Array.isArray(result.values) ? result.values : [];
-                this.previewValues = new Map(values.map(value => [
-                    JSON.stringify(value.identity || {}),
-                    value,
-                ]));
+                this.previewPdfUrl = this.createPdfUrl(result);
+                this.previewPageCount = Number.isInteger(result.pageCount) ? result.pageCount : 0;
+                this.previewWarningCount = Number.isInteger(result.warningCount) ? result.warningCount : 0;
+                this.previewValues = new Map();
                 this.previewMode = mode;
                 this.previewStatus = 'ready';
             } catch (xhr) {
@@ -1407,6 +1421,35 @@ define([
             }
 
             await this.reRender();
+        }
+
+        createPdfUrl(result) {
+            if (!result || result.mediaType !== 'application/pdf' || typeof result.content !== 'string') {
+                throw new TypeError('PDF preview response is invalid.');
+            }
+
+            const binary = window.atob(result.content);
+            const bytes = new Uint8Array(binary.length);
+
+            for (let index = 0; index < binary.length; index++) {
+                bytes[index] = binary.charCodeAt(index);
+            }
+
+            return URL.createObjectURL(new Blob([bytes], {type: result.mediaType}));
+        }
+
+        actionClosePdfPreview() {
+            this.releasePdfPreview();
+            this.previewStatus = 'idle';
+            this.previewMode = null;
+            this.reRender();
+        }
+
+        releasePdfPreview() {
+            if (this.previewPdfUrl) URL.revokeObjectURL(this.previewPdfUrl);
+            this.previewPdfUrl = null;
+            this.previewPageCount = 0;
+            this.previewWarningCount = 0;
         }
 
         async actionSave() {
@@ -1579,6 +1622,7 @@ define([
         }
 
         invalidatePreview() {
+            this.releasePdfPreview();
             this.previewStatus = 'idle';
             this.previewMode = null;
             this.previewValues = new Map();
@@ -1593,6 +1637,13 @@ define([
         }
 
         handleKeydown(event) {
+            if (this.previewPdfUrl && event.key === 'Escape') {
+                event.preventDefault();
+                this.actionClosePdfPreview();
+
+                return;
+            }
+
             if (this.state !== 'ready' || !Keyboard.isManualSave(event)) {
                 return;
             }
@@ -1614,6 +1665,7 @@ define([
             this.model.abortLastFetch();
             document.removeEventListener('keydown', this.keydownHandler);
             this.dirtyGuard.dispose();
+            this.releasePdfPreview();
 
             return super.remove();
         }

@@ -27,6 +27,8 @@ Assert::contains('handleFlowDragEnd', $shell, 'Canceled drags must clear transie
 Assert::contains('event.originalEvent?.dataTransfer', $shell, 'jQuery drag events must use the native data-transfer object.');
 Assert::contains('data-flow-drop="inside"', $template, 'Nested container drop targets are missing.');
 Assert::contains('flowBreadcrumbs', $template, 'Hierarchy breadcrumbs are missing.');
+Assert::contains('document-builder-editor__level-badge', $template, 'Visible nesting-level indicators are missing.');
+Assert::contains('document-builder-editor__child-count', $template, 'Container child counts are missing.');
 Assert::contains('data-flow-setting="marginLeft"', $template, 'Per-edge margin controls are missing.');
 Assert::contains('data-flow-setting="paddingRight"', $template, 'Per-edge padding controls are missing.');
 Assert::contains('data-flow-setting="keepTogether"', $template, 'Keep-together control is missing.');
