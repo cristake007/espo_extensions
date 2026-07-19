@@ -1,5 +1,8 @@
 {
     "labels": {
         "DocumentBuilder": "Document Builder"
+    },
+    "navbarTabs": {
+        "DocumentBuilder": "Document Builder"
     }
 }
