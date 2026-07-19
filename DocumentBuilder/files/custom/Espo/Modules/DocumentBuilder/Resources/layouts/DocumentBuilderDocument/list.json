@@ -1,0 +1,8 @@
+[
+    {"name": "name", "link": true},
+    {"name": "status", "width": 16},
+    {"name": "template", "width": 20},
+    {"name": "sourceDisplayName", "width": 20},
+    {"name": "generatedBy", "width": 16},
+    {"name": "createdAt", "width": 18}
+]

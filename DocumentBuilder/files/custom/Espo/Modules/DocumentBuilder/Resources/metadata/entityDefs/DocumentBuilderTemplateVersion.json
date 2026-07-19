@@ -118,6 +118,14 @@
         "createdBy": {
             "type": "belongsTo",
             "entity": "User"
+        },
+        "generatedDocuments": {
+            "type": "hasMany",
+            "entity": "DocumentBuilderDocument",
+            "foreign": "templateVersion",
+            "readOnly": true,
+            "orderBy": "createdAt",
+            "order": "desc"
         }
     },
     "collection": {

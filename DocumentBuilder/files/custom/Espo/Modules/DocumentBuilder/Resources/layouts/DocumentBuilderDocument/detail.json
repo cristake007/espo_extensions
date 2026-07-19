@@ -1,0 +1,19 @@
+[
+    {
+        "rows": [
+            [{"name": "name"}, {"name": "status"}],
+            [{"name": "template"}, {"name": "templateVersion"}],
+            [{"name": "sourceType"}, {"name": "sourceRecord"}],
+            [{"name": "sourceDisplayName"}, {"name": "spreadsheetRowNumber"}],
+            [{"name": "outputFilename"}, {"name": "pdfAttachment"}],
+            [{"name": "generatedBy"}, {"name": "completedAt"}],
+            [{"name": "warningSummary", "fullWidth": true}],
+            [{"name": "errorSummary", "fullWidth": true}],
+            [{"name": "description", "fullWidth": true}],
+            [{"name": "assignedUser"}, {"name": "teams"}],
+            [{"name": "createdAt"}, {"name": "modifiedAt"}]
+        ],
+        "style": "default",
+        "label": ""
+    }
+]

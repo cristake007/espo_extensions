@@ -1,0 +1,29 @@
+{
+    "fields": {
+        "name": {"readOnly": true},
+        "status": {"readOnly": true},
+        "template": {"readOnly": true},
+        "templateVersion": {"readOnly": true},
+        "sourceType": {"readOnly": true},
+        "sourceRecord": {"readOnly": true},
+        "sourceDisplayName": {"readOnly": true},
+        "spreadsheetImportId": {"readOnly": true},
+        "spreadsheetRowNumber": {"readOnly": true},
+        "batchId": {"readOnly": true},
+        "outputFilename": {"readOnly": true},
+        "pdfAttachment": {"readOnly": true},
+        "dataSnapshot": {"readOnly": true},
+        "templateSnapshot": {"readOnly": true},
+        "warningSummary": {"readOnly": true},
+        "errorSummary": {"readOnly": true},
+        "generatedBy": {"readOnly": true},
+        "completedAt": {"readOnly": true}
+    },
+    "links": {
+        "template": {"readOnly": true},
+        "templateVersion": {"readOnly": true},
+        "sourceRecord": {"readOnly": true},
+        "generatedBy": {"readOnly": true}
+    },
+    "systemWriteForbidden": true
+}

@@ -265,6 +265,7 @@
         "versions": "Versiuni"
     },
     "links": {
+        "generatedDocuments": "Documente generate",
         "currentPublishedVersion": "Versiunea publicată curentă",
         "assignedUser": "Utilizator responsabil",
         "teams": "Echipe",

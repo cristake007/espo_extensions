@@ -137,7 +137,7 @@ namespace {
         'id' => 'document-builder',
         'text' => '$DocumentBuilder',
         'iconClass' => 'fas fa-file-alt',
-        'itemList' => ['DocumentBuilderTemplate'],
+        'itemList' => ['DocumentBuilderTemplate', 'DocumentBuilderDocument'],
     ];
     $unrelatedGroup = [
         'type' => 'group',

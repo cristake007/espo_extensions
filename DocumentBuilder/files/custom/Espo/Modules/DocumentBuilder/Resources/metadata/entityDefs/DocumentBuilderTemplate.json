@@ -205,6 +205,14 @@
             "readOnly": true,
             "orderBy": "versionNumber",
             "order": "desc"
+        },
+        "generatedDocuments": {
+            "type": "hasMany",
+            "entity": "DocumentBuilderDocument",
+            "foreign": "template",
+            "readOnly": true,
+            "orderBy": "createdAt",
+            "order": "desc"
         }
     },
     "collection": {

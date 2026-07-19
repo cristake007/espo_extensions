@@ -1,0 +1,16 @@
+{
+    "mandatoryAttributeList": ["status"],
+    "outputFilterClassNameList": [
+        "Espo\\Modules\\DocumentBuilder\\Classes\\Record\\OutputFilters\\DocumentBuilderDocument\\Snapshot"
+    ],
+    "beforeCreateHookClassNameList": [
+        "Espo\\Modules\\DocumentBuilder\\Classes\\Record\\Hooks\\DocumentBuilderDocument\\BeforeCreate"
+    ],
+    "beforeUpdateHookClassNameList": [
+        "Espo\\Modules\\DocumentBuilder\\Classes\\Record\\Hooks\\DocumentBuilderDocument\\BeforeUpdate"
+    ],
+    "actions": {
+        "merge": {"disabled": true},
+        "duplicate": {"disabled": true}
+    }
+}

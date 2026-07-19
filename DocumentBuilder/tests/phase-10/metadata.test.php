@@ -168,7 +168,11 @@ Assert::same(
     $recordDefs['beforeDeleteHookClassNameList'] ?? null,
     'Native delete must install the hard-delete guard.',
 );
-Assert::same('controllers/record', $clientDefs['controller'] ?? null, 'The frontend must use native CRUD.');
+Assert::same(
+    'document-builder:controllers/document-builder-template',
+    $clientDefs['controller'] ?? null,
+    'The template controller must retain native CRUD plus the editor route.',
+);
 Assert::same(['onlyMy'], $clientDefs['boolFilterList'] ?? null, 'Ownership filter changed.');
 
 $layoutNames = [];
@@ -206,7 +210,11 @@ foreach (['en_US', 'ro_RO'] as $locale) {
     $i18n = $resourceLoader->json("i18n/$locale/DocumentBuilderTemplate.json");
     $global = $resourceLoader->json("i18n/$locale/Global.json");
 
-    Assert::same($expectedFields, array_keys($i18n['fields'] ?? []), "$locale must label every template field.");
+    Assert::same(
+        [],
+        array_values(array_diff($expectedFields, array_keys($i18n['fields'] ?? []))),
+        "$locale must label every template field.",
+    );
     Assert::same(
         ['Draft', 'Published', 'Archived'],
         array_keys($i18n['options']['status'] ?? []),

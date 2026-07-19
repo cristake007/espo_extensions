@@ -24,6 +24,7 @@
         "createdBy": "Created By"
     },
     "links": {
+        "generatedDocuments": "Generated Documents",
         "template": "Template",
         "publishedBy": "Published By",
         "assignedUser": "Assigned User",

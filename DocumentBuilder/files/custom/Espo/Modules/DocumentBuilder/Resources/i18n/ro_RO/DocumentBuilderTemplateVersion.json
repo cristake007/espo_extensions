@@ -24,6 +24,7 @@
         "createdBy": "Creat de"
     },
     "links": {
+        "generatedDocuments": "Documente generate",
         "template": "Șablon",
         "publishedBy": "Publicat de",
         "assignedUser": "Utilizator alocat",

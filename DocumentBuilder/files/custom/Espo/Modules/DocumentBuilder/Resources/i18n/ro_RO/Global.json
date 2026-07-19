@@ -4,14 +4,17 @@
     },
     "scopeNames": {
         "DocumentBuilderTemplate": "Șablon Document Builder",
-        "DocumentBuilderTemplateVersion": "Versiune șablon Document Builder"
+        "DocumentBuilderTemplateVersion": "Versiune șablon Document Builder",
+        "DocumentBuilderDocument": "Document generat"
     },
     "scopeNamesPlural": {
         "DocumentBuilderTemplate": "Șabloane Document Builder",
-        "DocumentBuilderTemplateVersion": "Versiuni șabloane Document Builder"
+        "DocumentBuilderTemplateVersion": "Versiuni șabloane Document Builder",
+        "DocumentBuilderDocument": "Documente generate"
     },
     "navbarTabs": {
         "DocumentBuilder": "Document Builder",
-        "DocumentBuilderTemplate": "Șabloane"
+        "DocumentBuilderTemplate": "Șabloane",
+        "DocumentBuilderDocument": "Documente generate"
     }
 }

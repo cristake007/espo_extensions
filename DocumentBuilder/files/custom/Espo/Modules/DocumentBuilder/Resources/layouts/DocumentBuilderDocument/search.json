@@ -1,0 +1,13 @@
+[
+    {"name": "name"},
+    {"name": "status"},
+    {"name": "template"},
+    {"name": "templateVersion"},
+    {"name": "sourceType"},
+    {"name": "sourceRecord"},
+    {"name": "sourceDisplayName"},
+    {"name": "generatedBy"},
+    {"name": "completedAt"},
+    {"name": "assignedUser"},
+    {"name": "teams"}
+]

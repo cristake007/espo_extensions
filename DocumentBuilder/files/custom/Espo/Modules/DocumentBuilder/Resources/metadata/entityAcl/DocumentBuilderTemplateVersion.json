@@ -15,6 +15,7 @@
         "teams": {"readOnly": true}
     },
     "links": {
+        "generatedDocuments": {"readOnly": true},
         "template": {"readOnly": true},
         "publishedBy": {"readOnly": true},
         "assignedUser": {"readOnly": true},

@@ -66,6 +66,16 @@
             "removeDisabled": true,
             "orderBy": "versionNumber",
             "orderDirection": "desc"
+        },
+        "generatedDocuments": {
+            "readOnly": true,
+            "createDisabled": true,
+            "selectDisabled": true,
+            "unlinkDisabled": true,
+            "editDisabled": true,
+            "removeDisabled": true,
+            "orderBy": "createdAt",
+            "orderDirection": "desc"
         }
     }
 }

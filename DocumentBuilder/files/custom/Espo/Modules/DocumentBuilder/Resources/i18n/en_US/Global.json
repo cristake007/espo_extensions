@@ -4,14 +4,17 @@
     },
     "scopeNames": {
         "DocumentBuilderTemplate": "Document Builder Template",
-        "DocumentBuilderTemplateVersion": "Document Builder Template Version"
+        "DocumentBuilderTemplateVersion": "Document Builder Template Version",
+        "DocumentBuilderDocument": "Generated Document"
     },
     "scopeNamesPlural": {
         "DocumentBuilderTemplate": "Document Builder Templates",
-        "DocumentBuilderTemplateVersion": "Document Builder Template Versions"
+        "DocumentBuilderTemplateVersion": "Document Builder Template Versions",
+        "DocumentBuilderDocument": "Generated Documents"
     },
     "navbarTabs": {
         "DocumentBuilder": "Document Builder",
-        "DocumentBuilderTemplate": "Templates"
+        "DocumentBuilderTemplate": "Templates",
+        "DocumentBuilderDocument": "Generated Documents"
     }
 }

@@ -1,0 +1,205 @@
+{
+    "transactionalSave": true,
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "maxLength": 190,
+            "required": true,
+            "readOnly": true
+        },
+        "status": {
+            "type": "enum",
+            "options": ["Pending", "Generating", "Completed", "Completed with Warnings", "Failed", "Cancelled"],
+            "default": "Pending",
+            "required": true,
+            "readOnly": true,
+            "audited": true,
+            "displayAsLabel": true,
+            "style": {
+                "Pending": "info",
+                "Generating": "primary",
+                "Completed": "success",
+                "Completed with Warnings": "warning",
+                "Failed": "danger",
+                "Cancelled": "default"
+            }
+        },
+        "template": {
+            "type": "link",
+            "entity": "DocumentBuilderTemplate",
+            "required": true,
+            "readOnly": true
+        },
+        "templateVersion": {
+            "type": "link",
+            "entity": "DocumentBuilderTemplateVersion",
+            "required": true,
+            "readOnly": true
+        },
+        "sourceType": {
+            "type": "enum",
+            "options": ["entity", "spreadsheet"],
+            "required": true,
+            "readOnly": true,
+            "displayAsLabel": true
+        },
+        "sourceRecord": {
+            "type": "linkParent",
+            "readOnly": true
+        },
+        "sourceDisplayName": {
+            "type": "varchar",
+            "maxLength": 255,
+            "readOnly": true
+        },
+        "spreadsheetImportId": {
+            "type": "varchar",
+            "maxLength": 64,
+            "readOnly": true,
+            "utility": true
+        },
+        "spreadsheetRowNumber": {
+            "type": "int",
+            "min": 1,
+            "readOnly": true,
+            "disableFormatting": true
+        },
+        "batchId": {
+            "type": "varchar",
+            "maxLength": 64,
+            "readOnly": true,
+            "utility": true
+        },
+        "outputFilename": {
+            "type": "varchar",
+            "maxLength": 255,
+            "required": true,
+            "readOnly": true
+        },
+        "pdfAttachment": {
+            "type": "file",
+            "readOnly": true
+        },
+        "dataSnapshot": {
+            "type": "jsonObject",
+            "readOnly": true,
+            "exportDisabled": true,
+            "layoutListDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true
+        },
+        "templateSnapshot": {
+            "type": "jsonObject",
+            "readOnly": true,
+            "exportDisabled": true,
+            "layoutListDisabled": true,
+            "layoutDetailDisabled": true,
+            "layoutMassUpdateDisabled": true
+        },
+        "warningSummary": {
+            "type": "text",
+            "readOnly": true
+        },
+        "errorSummary": {
+            "type": "text",
+            "readOnly": true
+        },
+        "generatedBy": {
+            "type": "link",
+            "entity": "User",
+            "required": true,
+            "readOnly": true,
+            "view": "views/fields/user"
+        },
+        "completedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "description": {
+            "type": "text"
+        },
+        "assignedUser": {
+            "type": "link",
+            "required": true,
+            "view": "views/fields/assigned-user"
+        },
+        "teams": {
+            "type": "linkMultiple",
+            "view": "views/fields/teams"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        }
+    },
+    "links": {
+        "template": {
+            "type": "belongsTo",
+            "entity": "DocumentBuilderTemplate",
+            "foreign": "generatedDocuments"
+        },
+        "templateVersion": {
+            "type": "belongsTo",
+            "entity": "DocumentBuilderTemplateVersion",
+            "foreign": "generatedDocuments"
+        },
+        "sourceRecord": {
+            "type": "belongsToParent"
+        },
+        "generatedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "assignedUser": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "teams": {
+            "type": "hasMany",
+            "entity": "Team",
+            "relationName": "entityTeam",
+            "layoutRelationshipsDisabled": true
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "createdAt",
+        "order": "desc",
+        "textFilterFields": ["name", "sourceDisplayName", "outputFilename", "description"],
+        "fullTextSearch": true,
+        "countDisabled": false
+    },
+    "indexes": {
+        "status": {"columns": ["status", "deleted"]},
+        "template": {"columns": ["templateId", "createdAt", "deleted"]},
+        "templateVersion": {"columns": ["templateVersionId", "createdAt", "deleted"]},
+        "sourceRecord": {"columns": ["sourceRecordType", "sourceRecordId", "createdAt", "deleted"]},
+        "spreadsheetRow": {"columns": ["spreadsheetImportId", "spreadsheetRowNumber", "deleted"]},
+        "batch": {"columns": ["batchId", "createdAt", "deleted"]},
+        "generatedBy": {"columns": ["generatedById", "createdAt", "deleted"]},
+        "assignedUser": {"columns": ["assignedUserId", "deleted"]},
+        "completedAt": {"columns": ["completedAt", "deleted"]}
+    },
+    "optimisticConcurrencyControl": true
+}

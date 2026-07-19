@@ -86,7 +86,7 @@ class AfterInstall
             'id' => self::NAVIGATION_GROUP_ID,
             'text' => '$DocumentBuilder',
             'iconClass' => 'fas fa-file-alt',
-            'itemList' => ['DocumentBuilderTemplate'],
+            'itemList' => ['DocumentBuilderTemplate', 'DocumentBuilderDocument'],
         ];
     }
 }

@@ -13,6 +13,7 @@
         "currentPublishedVersion": {"readOnly": true}
     },
     "links": {
+        "generatedDocuments": {"readOnly": true},
         "currentPublishedVersion": {"readOnly": true}
     },
     "systemWriteForbidden": true

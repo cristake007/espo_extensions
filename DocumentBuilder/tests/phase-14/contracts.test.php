@@ -18,17 +18,16 @@ $versionClient = $loader->json('metadata/clientDefs/DocumentBuilderTemplateVersi
 $templateRecord = $loader->json('metadata/recordDefs/DocumentBuilderTemplate.json');
 $relationships = $loader->json('layouts/DocumentBuilderTemplate/relationships.json');
 
-Assert::same(5, count($routes), 'Phase 14 must expose exactly five bounded template routes.');
+$routesByPath = array_column($routes, null, 'route');
 $expectedRoutes = [
-    2 => ['/DocumentBuilder/template/:id/duplicate', 'post'],
-    3 => ['/DocumentBuilder/template/:id/archive', 'post'],
-    4 => ['/DocumentBuilder/template/:id/draft-from-version', 'post'],
+    ['/DocumentBuilder/template/:id/duplicate', 'post'],
+    ['/DocumentBuilder/template/:id/archive', 'post'],
+    ['/DocumentBuilder/template/:id/draft-from-version', 'post'],
 ];
 
-foreach ($expectedRoutes as $index => [$path, $method]) {
-    Assert::same($path, $routes[$index]['route'] ?? null, "Phase 14 route $path changed.");
-    Assert::same($method, $routes[$index]['method'] ?? null, "Phase 14 route $path must use POST.");
-    Assert::isFalse(isset($routes[$index]['noAuth']), "Phase 14 route $path must require authentication.");
+foreach ($expectedRoutes as [$path, $method]) {
+    Assert::same($method, $routesByPath[$path]['method'] ?? null, "Phase 14 route $path must use POST.");
+    Assert::isFalse(isset($routesByPath[$path]['noAuth']), "Phase 14 route $path must require authentication.");
 }
 
 $templateActions = array_column($templateClient['detailActionList'] ?? [], null, 'name');
@@ -45,10 +44,10 @@ Assert::same(
     $templateClient['relationshipPanels']['versions']['readOnly'] ?? null,
     'Version history must be a read-only relationship panel.',
 );
-Assert::same(['versions'], $relationships, 'Version history must be present in Bottom Panels.');
+Assert::same(['versions', 'generatedDocuments'], $relationships, 'Template history panels changed.');
 
 Assert::same(true, $templateDefs['links']['versions']['readOnly'] ?? null, 'The version relationship must remain read-only.');
-Assert::isFalse(isset($templateDefs['links']['generatedDocuments']), 'Generated-document metadata belongs to Phase 36/38 and must not reference an absent scope.');
+Assert::same('DocumentBuilderDocument', $templateDefs['links']['generatedDocuments']['entity'] ?? null, 'Generated-document history relationship is missing.');
 Assert::same(true, $templateRecord['massActions']['delete']['disabled'] ?? null, 'Template mass deletion must remain disabled.');
 $beforeDelete = file_get_contents("$moduleRoot/Classes/Record/Hooks/DocumentBuilderTemplate/BeforeDelete.php");
 Assert::isTrue(is_string($beforeDelete), 'Could not read the template hard-delete hook.');

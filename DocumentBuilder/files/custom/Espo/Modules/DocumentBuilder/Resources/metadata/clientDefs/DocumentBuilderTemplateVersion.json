@@ -4,6 +4,18 @@
     "iconClass": "fas fa-history",
     "kanbanViewMode": false,
     "color": "#587a8c",
+    "relationshipPanels": {
+        "generatedDocuments": {
+            "readOnly": true,
+            "createDisabled": true,
+            "selectDisabled": true,
+            "unlinkDisabled": true,
+            "editDisabled": true,
+            "removeDisabled": true,
+            "orderBy": "createdAt",
+            "orderDirection": "desc"
+        }
+    },
     "detailActionList": [
         "__APPEND__",
         {

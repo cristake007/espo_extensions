@@ -1,0 +1,58 @@
+{
+    "fields": {
+        "name": "Nume",
+        "status": "Stare",
+        "template": "Șablon",
+        "templateVersion": "Versiune șablon",
+        "sourceType": "Tip sursă",
+        "sourceRecord": "Înregistrare sursă",
+        "sourceDisplayName": "Numele sursei la generare",
+        "spreadsheetImportId": "ID import foaie de calcul",
+        "spreadsheetRowNumber": "Număr rând foaie de calcul",
+        "batchId": "ID lot",
+        "outputFilename": "Nume fișier rezultat",
+        "pdfAttachment": "PDF",
+        "dataSnapshot": "Instantaneu date",
+        "templateSnapshot": "Instantaneu șablon",
+        "warningSummary": "Rezumat avertismente",
+        "errorSummary": "Rezumat erori",
+        "generatedBy": "Generat de",
+        "completedAt": "Finalizat la",
+        "description": "Note",
+        "assignedUser": "Utilizator alocat",
+        "teams": "Echipe",
+        "createdAt": "Creat la",
+        "modifiedAt": "Modificat la",
+        "createdBy": "Creat de",
+        "modifiedBy": "Modificat de"
+    },
+    "links": {
+        "template": "Șablon",
+        "templateVersion": "Versiune șablon",
+        "sourceRecord": "Înregistrare sursă",
+        "generatedBy": "Generat de",
+        "assignedUser": "Utilizator alocat",
+        "teams": "Echipe",
+        "createdBy": "Creat de",
+        "modifiedBy": "Modificat de"
+    },
+    "options": {
+        "status": {
+            "Pending": "În așteptare",
+            "Generating": "În curs de generare",
+            "Completed": "Finalizat",
+            "Completed with Warnings": "Finalizat cu avertismente",
+            "Failed": "Eșuat",
+            "Cancelled": "Anulat"
+        },
+        "sourceType": {
+            "entity": "Înregistrare entitate",
+            "spreadsheet": "Rând foaie de calcul"
+        }
+    },
+    "tooltips": {
+        "sourceDisplayName": "Eticheta istorică a sursei, salvată la generare.",
+        "dataSnapshot": "Vizibil numai cu permisiunea de vizualizare a instantaneelor de date.",
+        "templateSnapshot": "Vizibil numai cu permisiunea de vizualizare a instantaneelor de date."
+    }
+}

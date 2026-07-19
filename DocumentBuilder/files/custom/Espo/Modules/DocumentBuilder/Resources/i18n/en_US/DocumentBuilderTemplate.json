@@ -265,6 +265,7 @@
         "versions": "Versions"
     },
     "links": {
+        "generatedDocuments": "Generated Documents",
         "currentPublishedVersion": "Current Published Version",
         "assignedUser": "Assigned User",
         "teams": "Teams",
