@@ -16,7 +16,8 @@ final readonly class ElementRendererRegistry
             'flow-container' => new ElementDefinition('div', 'db-container'),
             'heading' => new ElementDefinition('h' . $this->headingLevel($node), 'db-heading'),
             'static-text' => new ElementDefinition('p', 'db-static-text'),
-            'paragraph' => new ElementDefinition('p', 'db-paragraph'),
+            'paragraph' => new ElementDefinition($this->paragraphTag($node), 'db-paragraph'),
+            'variable' => new ElementDefinition('div', 'db-variable'),
             'divider' => new ElementDefinition('hr', 'db-divider', true),
             'spacer' => new ElementDefinition('div', 'db-spacer'),
             'page-break' => new ElementDefinition('div', 'db-page-break'),
@@ -29,5 +30,14 @@ final readonly class ElementRendererRegistry
         $level = $node->attributes['level'] ?? 2;
 
         return is_int($level) && $level >= 1 && $level <= 6 ? $level : 2;
+    }
+
+    private function paragraphTag(ResolvedNode $node): string
+    {
+        foreach ($node->inline as $item) {
+            if ($item->type === 'list') return 'div';
+        }
+
+        return 'p';
     }
 }

@@ -9,6 +9,7 @@ define([
         heading: 'Heading',
         'static-text': 'Static Text',
         paragraph: 'Paragraph',
+        variable: 'Variable',
         divider: 'Divider',
         spacer: 'Spacer',
         'page-break': 'Page Break',
@@ -25,6 +26,7 @@ define([
         heading: 'fa-heading',
         'static-text': 'fa-font',
         paragraph: 'fa-align-left',
+        variable: 'fa-database',
         divider: 'fa-minus',
         spacer: 'fa-arrows-alt-v',
         'page-break': 'fa-cut',
@@ -44,6 +46,9 @@ define([
     };
     const textFromContent = (content, previewValues = new Map()) => (content || []).map(item => {
         if (item.type === 'break') return '\n';
+        if (item.type === 'list') {
+            return (item.items || []).map(listItem => textFromContent(listItem, previewValues)).join('\n');
+        }
         if (item.type === 'variable') {
             return previewText(previewValues.get(previewKey(item.identity))) ?? `{{${item.label}}}`;
         }
@@ -109,6 +114,8 @@ define([
                     node.lineStyle : 'solid';
                 const lineColor = /^#[0-9A-Fa-f]{6}$/.test(node.color || '') ? node.color : '#666666';
                 const plainText = node.type === 'static-text' ? node.text : textFromContent(node.content, previewValues);
+                const variableText = node.type === 'variable' ?
+                    previewText(previewValues.get(previewKey(node.identity))) ?? `{{${node.label}}}` : null;
                 const isContent = CONTENT_TYPES.includes(node.type);
                 const isEmpty = isContent && plainText.trim() === '';
 
@@ -149,12 +156,14 @@ define([
                     isHeading: node.type === 'heading',
                     isStaticText: node.type === 'static-text',
                     isParagraph: node.type === 'paragraph',
+                    isVariable: node.type === 'variable',
                     isDivider: node.type === 'divider',
                     isSpacer: node.type === 'spacer',
                     isPageBreak: node.type === 'page-break',
                     isContent,
                     isEmpty,
                     hasContent: isContent && !isEmpty,
+                    variableText,
                     sampleKey: isEmpty ? SAMPLE_KEYS[node.type] : null,
                     flowStyle: flowStyle.filter(Boolean).join('; '),
                     dividerOrientation: orientation,
@@ -205,7 +214,8 @@ define([
                 return bounded(node.minHeight?.value, 0, 2000, 10) +
                     (node.margin?.top?.value || 0) + (node.margin?.bottom?.value || 0);
             }
-            const text = node.type === 'static-text' ? node.text : textFromContent(node.content);
+            const text = node.type === 'static-text' ? node.text :
+                node.type === 'variable' ? node.label : textFromContent(node.content);
 
             return Math.max(8, Math.ceil(Math.max(1, text.length) / 70) * 6);
         }

@@ -257,6 +257,7 @@ define([
                     label: ({
                         'flow-section': 'Flow Section', 'flow-container': 'Flow Container',
                         heading: 'Heading', 'static-text': 'Static Text', paragraph: 'Paragraph',
+                        variable: 'Variable',
                         divider: 'Divider', spacer: 'Spacer', 'page-break': 'Page Break',
                     })[selected.node.type],
                     isSection: selected.node.type === 'flow-section',
@@ -264,6 +265,7 @@ define([
                     isHeading: selected.node.type === 'heading',
                     isStaticText: selected.node.type === 'static-text',
                     isParagraph: selected.node.type === 'paragraph',
+                    isVariable: selected.node.type === 'variable',
                     isDivider: selected.node.type === 'divider',
                     isSpacer: selected.node.type === 'spacer',
                     isPageBreak: selected.node.type === 'page-break',

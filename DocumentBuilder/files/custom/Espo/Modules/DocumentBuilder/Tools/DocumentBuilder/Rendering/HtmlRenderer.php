@@ -69,6 +69,18 @@ final readonly class HtmlRenderer
     {
         if ($item->type === 'break') return '<br>';
         if ($item->type === 'page-number') return '<span class="db-page-number" aria-label="Page number"></span>';
+        if ($item->type === 'list') {
+            $tag = $item->listStyle === 'numbered' ? 'ol' : 'ul';
+            $items = implode('', array_map(
+                fn (array $listItem): string => '<li>' . implode('', array_map(
+                    fn (ResolvedInline $inline): string => $this->inline($inline),
+                    $listItem,
+                )) . '</li>',
+                $item->items,
+            ));
+
+            return "<$tag>$items</$tag>";
+        }
         $text = $this->escape($item->text);
         foreach (['bold'=>'strong', 'italic'=>'em', 'underline'=>'u'] as $mark => $tag) {
             if (in_array($mark, $item->marks, true)) $text = "<$tag>$text</$tag>";

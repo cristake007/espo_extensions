@@ -522,6 +522,7 @@ final readonly class LayoutValidator
 
         $this->validateFlowNode($node, $kind, $path, $elementId, $errors);
         $this->validateContentNode($node, $kind, $path, $elementId, $errors);
+        $this->validateVariableElement($node, $kind, $path, $elementId, $errors);
         $this->validateBasicFlowElement($node, $kind, $path, $elementId, $errors);
         if (array_key_exists('condition', $node)) {
             try {
@@ -650,7 +651,13 @@ final readonly class LayoutValidator
             ['id', 'type', 'content', 'level', 'keepWithNext', 'style', 'condition'] :
             ['id', 'type', 'content', 'alignment', 'style', 'condition'];
         $this->rejectUnknownKeys($node, $allowedKeys, $path, $errors);
-        $this->validateInlineContent($node['content'] ?? null, "$path/content", $elementId, $errors);
+        $this->validateInlineContent(
+            $node['content'] ?? null,
+            "$path/content",
+            $elementId,
+            $errors,
+            $type === 'paragraph',
+        );
 
         if ($type === 'heading') {
             if (!is_int($node['level'] ?? null) || $node['level'] < 1 || $node['level'] > 6) {
@@ -666,6 +673,48 @@ final readonly class LayoutValidator
 
         if (!in_array($node['alignment'] ?? null, ['start', 'center', 'end', 'justify'], true)) {
             $this->add($errors, 'paragraph.alignment', "$path/alignment", $elementId);
+        }
+    }
+
+    /** @param array<string, mixed> $node @param list<ValidationError> $errors */
+    private function validateVariableElement(
+        array $node,
+        NodeKind $kind,
+        string $path,
+        ?string $elementId,
+        array &$errors,
+    ): void {
+        if (($node['type'] ?? null) !== 'variable') {
+            return;
+        }
+
+        if ($kind !== NodeKind::Element || !$this->isFlowChildPath($path)) {
+            $this->add($errors, 'variable.parent', "$path/type", $elementId);
+        }
+
+        $this->rejectUnknownKeys(
+            $node,
+            ['id', 'type', 'label', 'identity', 'presentation', 'style', 'condition'],
+            $path,
+            $errors,
+        );
+        $this->validatePlainText(
+            $node['label'] ?? null,
+            "$path/label",
+            'variable.label',
+            $elementId,
+            $errors,
+            100,
+        );
+
+        if (($node['label'] ?? null) === '') {
+            $this->add($errors, 'variable.label', "$path/label", $elementId);
+        }
+        if (!$this->isScalarVariableIdentity($node['identity'] ?? null)) {
+            $this->add($errors, 'variable.identity', "$path/identity", $elementId);
+        }
+        if (!$this->isVariablePresentation($node['presentation'] ?? null)) {
+            $this->add($errors, 'variable.presentation', "$path/presentation", $elementId);
         }
     }
 
@@ -842,6 +891,7 @@ final readonly class LayoutValidator
         string $path,
         ?string $elementId,
         array &$errors,
+        bool $allowLists = false,
     ): void {
         if (!is_array($content) || !array_is_list($content) || count($content) > 1000) {
             $this->add($errors, 'content.sequence', $path, $elementId);
@@ -859,6 +909,32 @@ final readonly class LayoutValidator
             }
 
             $type = $item['type'] ?? null;
+
+            if ($type === 'list' && $allowLists) {
+                $this->rejectUnknownKeys($item, ['type', 'style', 'items'], $itemPath, $errors);
+
+                if (!in_array($item['style'] ?? null, ['bulleted', 'numbered'], true)) {
+                    $this->add($errors, 'content.listStyle', "$itemPath/style", $elementId);
+                }
+
+                $items = $item['items'] ?? null;
+
+                if (!is_array($items) || !array_is_list($items) || $items === [] || count($items) > 100) {
+                    $this->add($errors, 'content.listItems', "$itemPath/items", $elementId);
+                    continue;
+                }
+
+                foreach ($items as $listIndex => $listItem) {
+                    $this->validateInlineContent(
+                        $listItem,
+                        "$itemPath/items/$listIndex",
+                        $elementId,
+                        $errors,
+                    );
+                }
+
+                continue;
+            }
 
             if ($type === 'text') {
                 $this->rejectUnknownKeys($item, ['type', 'text', 'marks', 'color'], $itemPath, $errors);

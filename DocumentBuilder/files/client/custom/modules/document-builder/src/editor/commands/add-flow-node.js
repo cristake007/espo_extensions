@@ -3,17 +3,18 @@ define([
     'document-builder:editor/state/node-tree',
 ], (Command, NodeTree) => {
     return class AddFlowNodeCommand extends Command {
-        constructor(flowStructure, type, target) {
+        constructor(flowStructure, type, target, options = {}) {
             super();
             this.flowStructure = flowStructure;
             this.type = type;
             this.target = target;
+            this.options = options;
             this.addedId = null;
         }
 
         apply(layout, context) {
             const node = NodeTree.prepareNewSubtree(
-                this.flowStructure.createNode(this.type),
+                this.flowStructure.createNode(this.type, this.options),
                 context.idFactory,
             );
 

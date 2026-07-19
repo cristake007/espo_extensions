@@ -65,7 +65,12 @@ $layout = [
             ['id'=>'paragraph1','type'=>'paragraph','alignment'=>'start','content'=>[
                 ['type'=>'text','text'=>'Nume: ','marks'=>[]],
                 ['type'=>'variable','tokenId'=>'token1','label'=>'Name','identity'=>$identityData,'presentation'=>$presentation],
+                ['type'=>'list','style'=>'bulleted','items'=>[
+                    [['type'=>'text','text'=>'Participant','marks'=>['bold']]],
+                    [['type'=>'variable','tokenId'=>'token2','label'=>'Name','identity'=>$identityData,'presentation'=>$presentation]],
+                ]],
             ]],
+            ['id'=>'variable1','type'=>'variable','label'=>'Name','identity'=>$identityData,'presentation'=>$presentation],
         ],
     ]],
 ];
@@ -78,18 +83,21 @@ $tree = $builder->build($layout, $values, $context);
 $snapshot = $tree->canonicalJson();
 Assert::same($snapshot, $builder->build($layout, $values, $context)->canonicalJson(), 'Tree snapshots are not deterministic.');
 Assert::contains('<script>raw name</script>', $snapshot, 'The tree changed safe text before the renderer boundary.');
-Assert::same(['static1', 'paragraph1'], array_map(
+Assert::same(['static1', 'paragraph1', 'variable1'], array_map(
     static fn ($node): string => $node->id,
     $tree->sections[0]->children,
 ), 'Stable node order or IDs changed.');
 Assert::same([], $tree->sections[0]->collectionSlots, 'Future collection slots are not initialized safely.');
+Assert::same('list', $tree->sections[0]->children[1]->inline[2]->type, 'Structured list did not enter the resolved tree.');
+Assert::same('variable', $tree->sections[0]->children[1]->inline[2]->items[1][0]->type, 'A list variable was not resolved.');
+Assert::same('<script>raw name</script>', $tree->sections[0]->children[2]->inline[0]->text, 'Standalone variable was not resolved.');
 
 $conditionLayout = $layout;
 $conditionLayout['sections'][0]['children'][0]['condition'] = ['target'=>'element','mode'=>'all','rules'=>[[
     'identity'=>$identityData,'valueType'=>'text','operator'=>'equals','operand'=>'Visible',
 ]]];
 $hidden = $builder->build($conditionLayout, $values, $context);
-Assert::same(['paragraph1'], array_map(static fn ($node): string => $node->id, $hidden->sections[0]->children), 'Hidden condition nodes entered the resolved tree.');
+Assert::same(['paragraph1', 'variable1'], array_map(static fn ($node): string => $node->id, $hidden->sections[0]->children), 'Hidden condition nodes entered the resolved tree.');
 
 $warningLayout = $layout;
 $warningLayout['sections'][0]['children'][1]['content'][1]['presentation'] =

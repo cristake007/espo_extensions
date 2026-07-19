@@ -160,8 +160,7 @@ final readonly class DocumentTreeBuilder
     ): void {
         foreach ($locations as $id => $location) {
             if ($this->isHidden($id, $locations, $hidden)) continue;
-            foreach ($location['node']['content'] ?? [] as $item) {
-                if (($item['type'] ?? null) !== 'variable') continue;
+            foreach ($this->nodeVariables($location['node']) as $item) {
                 $formatted = $this->formatVariable($item, $values, $context);
                 $target = match ($formatted->disposition) {
                     MissingValueDisposition::HideElement => $id,
@@ -196,38 +195,32 @@ final readonly class DocumentTreeBuilder
             $resolved = $this->node($child, "$path/children/$index", $hidden, $values, $context, $defaults, $warnings);
             if ($resolved !== null) $children[] = $resolved;
         }
-        $inline = [];
-        foreach ($node['content'] ?? [] as $index => $item) {
-            if ($item['type'] === 'text') {
-                $inline[] = new ResolvedInline('text', $item['text'], $item['marks'], $item['color'] ?? null);
-            } elseif ($item['type'] === 'break') {
-                $inline[] = new ResolvedInline('break', "\n");
-            } elseif ($item['type'] === 'variable') {
-                $placeholder = $this->rendererPlaceholder($item['identity'] ?? null);
-                if ($placeholder === 'pageCount') throw new PageCountUnavailable();
-                if ($placeholder === 'pageNumber') {
-                    $inline[] = new ResolvedInline('page-number', '');
-                    continue;
-                }
-                $formatted = $this->formatVariable($item, $values, $context);
-                if ($formatted->disposition === MissingValueDisposition::Failure) {
-                    throw new RequiredVariableFailure([json_encode($item['identity'], JSON_THROW_ON_ERROR)]);
-                }
-                if ($formatted->disposition === MissingValueDisposition::Warning) {
-                    $warnings[] = new DocumentWarning('variable.' . $formatted->state->value, "$path/content/$index", $node['id']);
-                }
-                if (!in_array($formatted->disposition, [MissingValueDisposition::HideElement,
-                    MissingValueDisposition::HideRow, MissingValueDisposition::HideSection], true)) {
-                    $value = $this->findValue($item['identity'], $values);
-                    $provenance = $value->value->state === VariableValueState::Present ? $value->provenance : null;
-                    $inline[] = new ResolvedInline('variable', $formatted->text ?? '', [], null, $provenance);
-                }
-            }
-        }
+        $inline = $this->resolveInlineSequence(
+            $node['content'] ?? [],
+            "$path/content",
+            $node['id'],
+            $values,
+            $context,
+            $warnings,
+        );
         if ($node['type'] === 'static-text') {
             $inline[] = new ResolvedInline('text', $node['text']);
         }
-        $attributes = array_diff_key($node, array_flip(['id', 'type', 'children', 'content', 'text', 'style', 'condition']));
+        if ($node['type'] === 'variable') {
+            $resolvedVariable = $this->resolveVariable(
+                $node,
+                $path,
+                $node['id'],
+                $values,
+                $context,
+                $warnings,
+            );
+            if ($resolvedVariable !== null) $inline[] = $resolvedVariable;
+        }
+        $attributes = array_diff_key($node, array_flip([
+            'id', 'type', 'children', 'content', 'text', 'label', 'identity', 'presentation',
+            'style', 'condition',
+        ]));
         ksort($attributes, SORT_STRING);
 
         return new ResolvedNode(
@@ -239,6 +232,128 @@ final readonly class DocumentTreeBuilder
             $children,
             true,
         );
+    }
+
+    /**
+     * @param array<string, mixed> $node
+     * @return list<array<string, mixed>>
+     */
+    private function nodeVariables(array $node): array
+    {
+        if (($node['type'] ?? null) === 'variable') return [$node];
+
+        return $this->variablesInContent($node['content'] ?? []);
+    }
+
+    /** @return list<array<string, mixed>> */
+    private function variablesInContent(mixed $content): array
+    {
+        if (!is_array($content) || !array_is_list($content)) return [];
+        $variables = [];
+
+        foreach ($content as $item) {
+            if (!is_array($item) || array_is_list($item)) continue;
+            if (($item['type'] ?? null) === 'variable') {
+                $variables[] = $item;
+                continue;
+            }
+            if (($item['type'] ?? null) !== 'list') continue;
+            foreach ($item['items'] ?? [] as $listItem) {
+                array_push($variables, ...$this->variablesInContent($listItem));
+            }
+        }
+
+        return $variables;
+    }
+
+    /**
+     * @param list<mixed> $content
+     * @param array<string, DocumentValue> $values
+     * @param list<DocumentWarning> $warnings
+     * @return list<ResolvedInline>
+     */
+    private function resolveInlineSequence(
+        array $content,
+        string $path,
+        string $nodeId,
+        array $values,
+        VariableFormatContext $context,
+        array &$warnings,
+    ): array {
+        $resolved = [];
+
+        foreach ($content as $index => $item) {
+            if (!is_array($item) || array_is_list($item)) continue;
+            $itemPath = "$path/$index";
+
+            if (($item['type'] ?? null) === 'text') {
+                $resolved[] = new ResolvedInline(
+                    'text',
+                    is_string($item['text'] ?? null) ? $item['text'] : '',
+                    is_array($item['marks'] ?? null) ? $item['marks'] : [],
+                    is_string($item['color'] ?? null) ? $item['color'] : null,
+                );
+            } elseif (($item['type'] ?? null) === 'break') {
+                $resolved[] = new ResolvedInline('break', "\n");
+            } elseif (($item['type'] ?? null) === 'variable') {
+                $variable = $this->resolveVariable($item, $itemPath, $nodeId, $values, $context, $warnings);
+                if ($variable !== null) $resolved[] = $variable;
+            } elseif (($item['type'] ?? null) === 'list') {
+                $listItems = [];
+                foreach ($item['items'] ?? [] as $listIndex => $listItem) {
+                    if (!is_array($listItem) || !array_is_list($listItem)) continue;
+                    $listItems[] = $this->resolveInlineSequence(
+                        $listItem,
+                        "$itemPath/items/$listIndex",
+                        $nodeId,
+                        $values,
+                        $context,
+                        $warnings,
+                    );
+                }
+                $resolved[] = new ResolvedInline(
+                    'list',
+                    '',
+                    listStyle: ($item['style'] ?? null) === 'numbered' ? 'numbered' : 'bulleted',
+                    items: $listItems,
+                );
+            }
+        }
+
+        return $resolved;
+    }
+
+    /**
+     * @param array<string, mixed> $item
+     * @param array<string, DocumentValue> $values
+     * @param list<DocumentWarning> $warnings
+     */
+    private function resolveVariable(
+        array $item,
+        string $path,
+        string $nodeId,
+        array $values,
+        VariableFormatContext $context,
+        array &$warnings,
+    ): ?ResolvedInline {
+        $placeholder = $this->rendererPlaceholder($item['identity'] ?? null);
+        if ($placeholder === 'pageCount') throw new PageCountUnavailable();
+        if ($placeholder === 'pageNumber') return new ResolvedInline('page-number', '');
+        $formatted = $this->formatVariable($item, $values, $context);
+        if ($formatted->disposition === MissingValueDisposition::Failure) {
+            throw new RequiredVariableFailure([json_encode($item['identity'], JSON_THROW_ON_ERROR)]);
+        }
+        if ($formatted->disposition === MissingValueDisposition::Warning) {
+            $warnings[] = new DocumentWarning('variable.' . $formatted->state->value, $path, $nodeId);
+        }
+        if (in_array($formatted->disposition, [MissingValueDisposition::HideElement,
+            MissingValueDisposition::HideRow, MissingValueDisposition::HideSection], true)) {
+            return null;
+        }
+        $value = $this->findValue($item['identity'], $values);
+        $provenance = $value->value->state === VariableValueState::Present ? $value->provenance : null;
+
+        return new ResolvedInline('variable', $formatted->text ?? '', [], null, $provenance);
     }
 
     private function rendererPlaceholder(mixed $identity): ?string

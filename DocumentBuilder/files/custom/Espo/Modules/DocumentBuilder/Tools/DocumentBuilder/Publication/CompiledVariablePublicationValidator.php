@@ -41,8 +41,10 @@ final readonly class CompiledVariablePublicationValidator implements VariablePub
         if (($value['type'] ?? null) === 'variable') {
             $identity = $value['identity'] ?? null;
 
-            return is_array($identity) && ($identity['source'] ?? null) === 'system' &&
-                ($identity['type'] ?? null) === 'system' && ($identity['path'] ?? null) === ['pageCount'];
+            if (is_array($identity) && ($identity['source'] ?? null) === 'system' &&
+                ($identity['type'] ?? null) === 'system' && ($identity['path'] ?? null) === ['pageCount']) {
+                return true;
+            }
         }
 
         foreach ($value as $item) {

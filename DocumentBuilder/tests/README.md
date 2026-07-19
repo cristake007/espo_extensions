@@ -72,6 +72,8 @@ php tests/phase-26/contracts.test.php
 php tests/phase-27/formatting.test.php
 node tests/phase-27/client.test.js
 php tests/phase-27/contracts.test.php
+node tests/editor-recovery/recovery-01.test.js
+php tests/editor-recovery/recovery-01.test.php
 ```
 
 Package inventory is checked separately after building the extension ZIP:

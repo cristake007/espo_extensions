@@ -9,6 +9,7 @@ define([
     const SECTION_TYPE = 'flow-section';
     const CONTAINER_TYPE = 'flow-container';
     const CONTENT_TYPES = Object.freeze(['heading', 'static-text', 'paragraph']);
+    const VARIABLE_TYPE = 'variable';
     const BASIC_TYPES = Object.freeze(['divider', 'spacer', 'page-break']);
     const EDGE_LIST = Object.freeze(['top', 'right', 'bottom', 'left']);
     const measurement = value => ({value, unit: 'mm'});
@@ -36,7 +37,7 @@ define([
             this.maxSections = maxSections;
         }
 
-        createNode(type) {
+        createNode(type, options = {}) {
             if (type === 'heading') return {
                 type, content: [{type: 'text', text: 'Heading', marks: []}],
                 level: 2, keepWithNext: true,
@@ -45,6 +46,23 @@ define([
             if (type === 'paragraph') return {
                 type, content: [{type: 'text', text: 'Paragraph', marks: []}], alignment: 'start',
             };
+            if (type === VARIABLE_TYPE) {
+                const identity = VariableIdentity.create(options.identity);
+                const presentation = VariablePresentation.create(options.presentation);
+
+                if (VariableIdentity.usage(identity) !== 'scalar' ||
+                    typeof options.label !== 'string' || options.label.length < 1 ||
+                    options.label.length > 100) {
+                    throw new TypeError('A standalone variable requires scalar variable data.');
+                }
+
+                return {
+                    type,
+                    label: options.label,
+                    identity: Json.clone(identity),
+                    presentation: Json.clone(presentation),
+                };
+            }
             if (type === 'divider') return {
                 type, orientation: 'horizontal', lineStyle: 'solid', color: '#666666',
                 thickness: measurement(0.5), length: measurement(100),
@@ -95,7 +113,7 @@ define([
                 return;
             }
 
-            if (![CONTAINER_TYPE, ...CONTENT_TYPES, ...BASIC_TYPES].includes(node.type) || !target.parentId) {
+            if (![CONTAINER_TYPE, ...CONTENT_TYPES, VARIABLE_TYPE, ...BASIC_TYPES].includes(node.type) || !target.parentId) {
                 throw new TypeError('Flow elements require a flow section or container parent.');
             }
 
@@ -154,6 +172,7 @@ define([
                     isHeading: node.type === 'heading',
                     isStaticText: node.type === 'static-text',
                     isParagraph: node.type === 'paragraph',
+                    isVariable: node.type === VARIABLE_TYPE,
                     isDivider: node.type === 'divider',
                     isSpacer: node.type === 'spacer',
                     isPageBreak: node.type === 'page-break',
@@ -161,6 +180,7 @@ define([
                     label: ({
                         [SECTION_TYPE]: 'Flow Section', [CONTAINER_TYPE]: 'Flow Container',
                         heading: 'Heading', 'static-text': 'Static Text', paragraph: 'Paragraph',
+                        variable: 'Variable',
                         divider: 'Divider', spacer: 'Spacer', 'page-break': 'Page Break',
                     })[node.type],
                 });
@@ -185,6 +205,7 @@ define([
                     label: ({
                         [SECTION_TYPE]: 'Flow Section', [CONTAINER_TYPE]: 'Flow Container',
                         heading: 'Heading', 'static-text': 'Static Text', paragraph: 'Paragraph',
+                        variable: 'Variable',
                         divider: 'Divider', spacer: 'Spacer', 'page-break': 'Page Break',
                     })[location.node.type],
                     current: location.node.id === nodeId,
@@ -214,14 +235,25 @@ define([
                 ['width','height'].forEach(key=>{if(!(key in style))return;const value=style[key];if(!Json.isPlainObject(value)||!Number.isFinite(value.value)||value.value<0||!['mm','percent'].includes(value.unit)||(value.unit==='mm'&&value.value>2000)||(value.unit==='percent'&&value.value>100)||Object.keys(value).some(item=>!['value','unit'].includes(item)))errors.push(`${path}.${key}`);});
                 if ('border' in style) { const border=style.border; if(!Json.isPlainObject(border)||Object.keys(border).some(key=>!['width','style','color'].includes(key))||!Json.isPlainObject(border.width)||border.width.unit!=='pt'||!Number.isFinite(border.width.value)||border.width.value<0||border.width.value>512||!['none','solid','dashed','dotted','double'].includes(border.style)||!/^#[0-9A-Fa-f]{6}$/.test(border.color||''))errors.push(`${path}.border`); }
             };
-            const validateInline = (content, path) => {
+            const validateInline = (content, path, allowLists = false) => {
                 if (!Array.isArray(content) || content.length > 1000) {
                     errors.push(`${path}.structure`); return;
                 }
                 content.forEach((item, index) => {
                     const itemPath = `${path}.${index}`;
                     if (!Json.isPlainObject(item)) { errors.push(`${itemPath}.structure`); return; }
-                    if (item.type === 'text') {
+                    if (item.type === 'list' && allowLists) {
+                        if (Object.keys(item).some(key => !['type', 'style', 'items'].includes(key)) ||
+                            !['bulleted', 'numbered'].includes(item.style) ||
+                            !Array.isArray(item.items) || item.items.length < 1 || item.items.length > 100) {
+                            errors.push(`${itemPath}.values`);
+
+                            return;
+                        }
+                        item.items.forEach((listItem, listIndex) => {
+                            validateInline(listItem, `${itemPath}.items.${listIndex}`);
+                        });
+                    } else if (item.type === 'text') {
                         const keys = ['type', 'text', 'marks', 'color'];
                         if (typeof item.text !== 'string' || item.text.length > 10000 ||
                             !Array.isArray(item.marks) || new Set(item.marks).size !== item.marks.length ||
@@ -282,9 +314,29 @@ define([
                     } else {
                         const extra = expectedType === 'heading' ? ['level', 'keepWithNext', 'style', 'condition'] : ['alignment', 'style', 'condition'];
                         if (!Json.isPlainObject(node) || Object.keys(node).some(key => !['id', 'type', 'content', ...extra].includes(key))) errors.push(`${path}.structure`);
-                        validateInline(node.content, `${path}.content`);
+                        validateInline(node.content, `${path}.content`, expectedType === 'paragraph');
                         if (expectedType === 'heading' && (!Number.isInteger(node.level) || node.level < 1 || node.level > 6 || typeof node.keepWithNext !== 'boolean')) errors.push(`${path}.values`);
                         if (expectedType === 'paragraph' && !['start', 'center', 'end', 'justify'].includes(node.alignment)) errors.push(`${path}.values`);
+                    }
+                    validateStyle(node.style, `${path}.style`); return;
+                }
+                if (expectedType === VARIABLE_TYPE) {
+                    elements++;
+                    let scalarIdentity = false;
+                    let validPresentation = false;
+                    try {
+                        scalarIdentity = VariableIdentity.usage(node.identity) === 'scalar';
+                        VariablePresentation.create(node.presentation);
+                        validPresentation = true;
+                    } catch (error) {}
+                    if (!Json.isPlainObject(node) || node.type !== VARIABLE_TYPE ||
+                        !/^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(node.id || '') ||
+                        Object.keys(node).some(key => ![
+                            'id', 'type', 'label', 'identity', 'presentation', 'style', 'condition',
+                        ].includes(key)) || typeof node.label !== 'string' ||
+                        node.label.length < 1 || node.label.length > 100 ||
+                        !scalarIdentity || !validPresentation) {
+                        errors.push(`${path}.values`);
                     }
                     validateStyle(node.style, `${path}.style`); return;
                 }

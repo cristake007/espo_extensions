@@ -41,6 +41,10 @@ final readonly class RichTextSanitizer
             }
         }
 
+        if (($node['type'] ?? null) === 'variable') {
+            $node = $this->normalizeVariable($node);
+        }
+
         if (is_array($node['children'] ?? null) && array_is_list($node['children'])) {
             foreach ($node['children'] as $index => $child) {
                 $node['children'][$index] = $this->normalizeNode($child);
@@ -69,21 +73,43 @@ final readonly class RichTextSanitizer
             }
         }
 
-        if (($item['type'] ?? null) === 'variable' && is_string($item['label'] ?? null)) {
-            $item['label'] = $this->normalizeText($item['label']);
-
-            $format = $item['presentation']['format'] ?? null;
-
-            if (is_array($format) && !array_is_list($format)) {
-                foreach (['trueLabel', 'falseLabel', 'separator', 'prefix', 'suffix', 'fallback'] as $key) {
-                    if (is_string($format[$key] ?? null)) {
-                        $item['presentation']['format'][$key] = $this->normalizeText($format[$key]);
-                    }
+        if (($item['type'] ?? null) === 'list' &&
+            is_array($item['items'] ?? null) && array_is_list($item['items'])) {
+            foreach ($item['items'] as $listIndex => $listItem) {
+                if (!is_array($listItem) || !array_is_list($listItem)) {
+                    continue;
+                }
+                foreach ($listItem as $inlineIndex => $inline) {
+                    $item['items'][$listIndex][$inlineIndex] = $this->normalizeInline($inline);
                 }
             }
         }
 
+        if (($item['type'] ?? null) === 'variable') {
+            $item = $this->normalizeVariable($item);
+        }
+
         return $item;
+    }
+
+    /** @param array<string, mixed> $variable @return array<string, mixed> */
+    private function normalizeVariable(array $variable): array
+    {
+        if (is_string($variable['label'] ?? null)) {
+            $variable['label'] = $this->normalizeText($variable['label']);
+        }
+
+        $format = $variable['presentation']['format'] ?? null;
+
+        if (is_array($format) && !array_is_list($format)) {
+            foreach (['trueLabel', 'falseLabel', 'separator', 'prefix', 'suffix', 'fallback'] as $key) {
+                if (is_string($format[$key] ?? null)) {
+                    $variable['presentation']['format'][$key] = $this->normalizeText($format[$key]);
+                }
+            }
+        }
+
+        return $variable;
     }
 
     private function normalizeText(string $value): string

@@ -32,18 +32,6 @@ final readonly class CompiledVariableReferenceValidator implements VariableRefer
             return;
         }
 
-        if (($value['type'] ?? null) === 'variable') {
-            $identity = $value['identity'] ?? null;
-
-            if (!is_array($identity) || array_is_list($identity)) {
-                throw new InvalidArgumentException('A stored variable identity is invalid.');
-            }
-
-            $this->compiler->compile($identity, $source, VariableUsage::Scalar, $columns);
-
-            return;
-        }
-
         if (array_key_exists('condition', $value)) {
             if (!is_array($value['condition']) || array_is_list($value['condition'])) {
                 throw new InvalidArgumentException('A stored visibility condition is invalid.');
@@ -54,6 +42,18 @@ final readonly class CompiledVariableReferenceValidator implements VariableRefer
             foreach ($condition->rules as $rule) {
                 $this->compiler->compile($rule->identity->toArray(), $source, VariableUsage::Scalar, $columns);
             }
+        }
+
+        if (($value['type'] ?? null) === 'variable') {
+            $identity = $value['identity'] ?? null;
+
+            if (!is_array($identity) || array_is_list($identity)) {
+                throw new InvalidArgumentException('A stored variable identity is invalid.');
+            }
+
+            $this->compiler->compile($identity, $source, VariableUsage::Scalar, $columns);
+
+            return;
         }
 
         foreach ($value as $item) {

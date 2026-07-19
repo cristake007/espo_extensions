@@ -9,6 +9,27 @@ define([
         {ALLOWED_TAGS: [], ALLOWED_ATTR: []},
     );
     const canonicalMarks = marks => MARKS.filter(mark => (marks || []).includes(mark));
+    const mapText = (content, callback) => (content || []).map(item => {
+        if (item.type === 'list') return {
+            ...item,
+            items: (item.items || []).map(listItem => mapText(listItem, callback)),
+        };
+
+        return item.type === 'text' ? callback(item) : {...item};
+    });
+    const someText = (content, predicate) => (content || []).some(item =>
+        item.type === 'text' ? predicate(item) :
+            item.type === 'list' && (item.items || []).some(listItem => someText(listItem, predicate))
+    );
+    const plainText = content => (content || []).map(item => {
+        if (item.type === 'break') return '\n';
+        if (item.type === 'variable') return `{{${item.label}}}`;
+        if (item.type === 'list') {
+            return (item.items || []).map(listItem => plainText(listItem)).join('\n');
+        }
+
+        return item.type === 'text' ? item.text : '';
+    }).join('');
 
     const api = {
         fromPlainText(value, marks = []) {
@@ -22,27 +43,41 @@ define([
         },
 
         toPlainText(content) {
-            return (content || []).map(item => {
-                if (item.type === 'break') return '\n';
-                if (item.type === 'variable') return `{{${item.label}}}`;
-                return item.type === 'text' ? item.text : '';
-            }).join('');
+            return plainText(content);
         },
 
         toggleMark(content, mark) {
             if (!MARKS.includes(mark)) throw new TypeError('Unsupported rich-text mark.');
-            const enabled = !(content || []).some(item => item.type === 'text' && item.marks.includes(mark));
+            const enabled = !someText(content, item => item.marks.includes(mark));
 
-            return (content || []).map(item => item.type !== 'text' ? {...item} : {
+            return mapText(content, item => ({
                 ...item,
                 marks: canonicalMarks(enabled ? [...item.marks, mark] : item.marks.filter(value => value !== mark)),
-            });
+            }));
         },
 
         setColor(content, color) {
             if (color !== null && !/^#[0-9A-Fa-f]{6}$/.test(color)) throw new TypeError('Invalid color.');
-            return (content || []).map(item => item.type !== 'text' ? {...item} :
-                color === null ? (({color: ignored, ...rest}) => rest)(item) : {...item, color});
+            return mapText(content, item => color === null ?
+                (({color: ignored, ...rest}) => rest)(item) : {...item, color});
+        },
+
+        createList(style, items) {
+            if (!['bulleted', 'numbered'].includes(style) || !Array.isArray(items) ||
+                items.length < 1 || items.length > 100 || items.some(item =>
+                    !Array.isArray(item) || item.length > 1000 || item.some(value =>
+                        !value || typeof value !== 'object' || Array.isArray(value) ||
+                        !['text', 'break', 'variable'].includes(value.type)
+                    )
+                )) {
+                throw new TypeError('Invalid rich-text list.');
+            }
+
+            return {
+                type: 'list',
+                style,
+                items: items.map(item => item.map(value => ({...value}))),
+            };
         },
 
         appendVariable(content, tokenId, label, identity, presentation) {
@@ -66,8 +101,19 @@ define([
 
         render(host, content, documentRef = document, variableResolver = null) {
             host.replaceChildren();
-            (content || []).forEach(item => {
-                if (item.type === 'break') { host.append(documentRef.createElement('br')); return; }
+            const renderSequence = (target, sequence) => (sequence || []).forEach(item => {
+                if (item.type === 'break') { target.append(documentRef.createElement('br')); return; }
+                if (item.type === 'list') {
+                    const list = documentRef.createElement(item.style === 'numbered' ? 'ol' : 'ul');
+                    (item.items || []).forEach(listItem => {
+                        const entry = documentRef.createElement('li');
+                        renderSequence(entry, listItem);
+                        list.append(entry);
+                    });
+                    target.append(list);
+
+                    return;
+                }
                 if (item.type === 'variable') {
                     const token = documentRef.createElement('span');
                     token.className = 'document-builder-editor__inline-variable';
@@ -79,7 +125,7 @@ define([
                     } else {
                         token.textContent = `{{${item.label}}}`;
                     }
-                    host.append(token); return;
+                    target.append(token); return;
                 }
                 if (item.type !== 'text') return;
                 let node = documentRef.createTextNode(item.text);
@@ -91,8 +137,9 @@ define([
                     const color = documentRef.createElement('span'); color.style.color = item.color;
                     color.append(node); node = color;
                 }
-                host.append(node);
+                target.append(node);
             });
+            renderSequence(host, content);
         },
     };
 

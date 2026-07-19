@@ -32,15 +32,19 @@ $nextLayout = [
             'type'=>'variable', 'tokenId'=>'token2',
             'identity'=>['source'=>'system', 'type'=>'system', 'path'=>['currentDate']],
         ]],
+        'children' => [[
+            'id'=>'variable1', 'type'=>'variable', 'identity'=>$direct,
+        ]],
     ]],
 ];
 $impact = (new CompiledSourceReferenceImpactAnalyzer($compiler))->analyze([
     'dataSource'=>$entitySource,
 ], $nextLayout);
 
-Assert::same(2, count($impact), 'Source analysis did not report every incompatible inline and condition reference.');
+Assert::same(3, count($impact), 'Source analysis did not report every incompatible element, inline, and condition reference.');
 Assert::same('section1', $impact[0]->id, 'Condition impact lost its owning node.');
 Assert::same('token1', $impact[1]->id, 'Inline impact lost its token identity.');
+Assert::same('variable1', $impact[2]->id, 'Standalone variable impact lost its element identity.');
 Assert::contains('/condition/rules/0', $impact[0]->path, 'Condition impact path is incomplete.');
 
 echo "Phase 31 complete source-switch impact tests passed.\n";

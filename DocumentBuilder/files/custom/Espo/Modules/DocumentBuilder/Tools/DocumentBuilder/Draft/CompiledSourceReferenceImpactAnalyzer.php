@@ -41,17 +41,6 @@ final readonly class CompiledSourceReferenceImpactAnalyzer implements SourceRefe
 
         $currentId = is_string($value['id'] ?? null) ? $value['id'] : $nodeId;
 
-        if (($value['type'] ?? null) === 'variable') {
-            $identity = $value['identity'] ?? null;
-            $tokenId = $value['tokenId'] ?? null;
-
-            if (is_array($identity) && !array_is_list($identity) && is_string($tokenId)) {
-                $this->compile($identity, $source, $tokenId, $path, $unresolved);
-            }
-
-            return;
-        }
-
         if (is_array($value['condition'] ?? null) && !array_is_list($value['condition'])) {
             try {
                 $condition = VisibilityCondition::fromArray($value['condition']);
@@ -70,6 +59,17 @@ final readonly class CompiledSourceReferenceImpactAnalyzer implements SourceRefe
                     $unresolved[] = new UnresolvedSourceReference($currentId, "$path/condition");
                 }
             }
+        }
+
+        if (($value['type'] ?? null) === 'variable') {
+            $identity = $value['identity'] ?? null;
+            $referenceId = is_string($value['tokenId'] ?? null) ? $value['tokenId'] : $currentId;
+
+            if (is_array($identity) && !array_is_list($identity) && is_string($referenceId)) {
+                $this->compile($identity, $source, $referenceId, $path, $unresolved);
+            }
+
+            return;
         }
 
         foreach ($value as $key => $item) {

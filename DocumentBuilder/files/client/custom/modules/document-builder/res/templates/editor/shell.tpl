@@ -267,6 +267,7 @@
                                 {{#if isHeading}}<div class="document-builder-editor__content document-builder-editor__content--heading" data-rich-content-id="{{id}}"></div>{{/if}}
                                 {{#if isStaticText}}<div class="document-builder-editor__content" data-rich-content-id="{{id}}"></div>{{/if}}
                                 {{#if isParagraph}}<div class="document-builder-editor__content document-builder-editor__content--paragraph" data-rich-content-id="{{id}}"></div>{{/if}}
+                                {{#if isVariable}}<div class="document-builder-editor__content document-builder-editor__content--variable">{{variableText}}</div>{{/if}}
                                 {{#if isDivider}}<div class="document-builder-editor__divider document-builder-editor__divider--{{dividerOrientation}}" style="{{dividerStyle}}" aria-hidden="true"></div>{{/if}}
                                 {{#if isSpacer}}<div class="document-builder-editor__spacer-marker" aria-label="{{translate 'Spacer' category='labels' scope='DocumentBuilderTemplate'}}"></div>{{/if}}
                                 {{#if isPageBreak}}<div class="document-builder-editor__page-break" role="separator"><span>{{translate 'Manual Page Break' category='labels' scope='DocumentBuilderTemplate'}}</span></div>{{/if}}
