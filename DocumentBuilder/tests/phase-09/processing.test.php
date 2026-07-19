@@ -63,7 +63,7 @@ foreach ([
     'Migration/LayoutMigration.php',
     'LayoutParser.php',
     'LayoutMigrator.php',
-    'LayoutNormalizer.php',
+    'RichTextSanitizer.php', 'LayoutNormalizer.php',
     'LayoutValidator.php',
     'CanonicalSerializer.php',
     'ProcessedLayout.php',

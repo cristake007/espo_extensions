@@ -5,6 +5,7 @@ define([
     const FLOW_CAPABILITY = 'layout.flow';
     const SECTION_TYPE = 'flow-section';
     const CONTAINER_TYPE = 'flow-container';
+    const CONTENT_TYPES = Object.freeze(['heading', 'static-text', 'paragraph']);
     const EDGE_LIST = Object.freeze(['top', 'right', 'bottom', 'left']);
     const measurement = value => ({value, unit: 'mm'});
     const box = value => ({
@@ -32,6 +33,15 @@ define([
         }
 
         createNode(type) {
+            if (type === 'heading') return {
+                type, content: [{type: 'text', text: 'Heading', marks: []}],
+                level: 2, keepWithNext: true,
+            };
+            if (type === 'static-text') return {type, text: 'Text'};
+            if (type === 'paragraph') return {
+                type, content: [{type: 'text', text: 'Paragraph', marks: []}], alignment: 'start',
+            };
+
             const common = {
                 type,
                 children: [],
@@ -75,14 +85,14 @@ define([
                 return;
             }
 
-            if (node.type !== CONTAINER_TYPE || !target.parentId) {
-                throw new TypeError('Flow containers require a flow section or container parent.');
+            if (![CONTAINER_TYPE, ...CONTENT_TYPES].includes(node.type) || !target.parentId) {
+                throw new TypeError('Flow elements require a flow section or container parent.');
             }
 
             const parent = index.get(target.parentId);
 
             if (!parent || ![SECTION_TYPE, CONTAINER_TYPE].includes(parent.node.type)) {
-                throw new TypeError('The target cannot contain a flow container.');
+                throw new TypeError('The target cannot contain a flow element.');
             }
 
             if (movingNodeId && NodeTree.contains(node, target.parentId)) {
@@ -103,7 +113,7 @@ define([
 
             if (!movingNodeId) {
                 const elementCount = [...index.values()]
-                    .filter(location => location.node.type === CONTAINER_TYPE).length;
+                    .filter(location => location.node.type !== SECTION_TYPE).length;
 
                 if (elementCount + subtreeCount(node) > this.maxElements) {
                     throw new RangeError('The configured element limit has been reached.');
@@ -131,7 +141,14 @@ define([
                     selected: node.id === selectedId,
                     isSection: node.type === SECTION_TYPE,
                     isContainer: node.type === CONTAINER_TYPE,
-                    label: node.type === SECTION_TYPE ? 'Flow Section' : 'Flow Container',
+                    isHeading: node.type === 'heading',
+                    isStaticText: node.type === 'static-text',
+                    isParagraph: node.type === 'paragraph',
+                    canContain: [SECTION_TYPE, CONTAINER_TYPE].includes(node.type),
+                    label: ({
+                        [SECTION_TYPE]: 'Flow Section', [CONTAINER_TYPE]: 'Flow Container',
+                        heading: 'Heading', 'static-text': 'Static Text', paragraph: 'Paragraph',
+                    })[node.type],
                 });
                 (node.children || []).forEach((child, childIndex) => {
                     visit(child, depth + 1, region, node.id, childIndex);
@@ -151,7 +168,10 @@ define([
             while (location) {
                 result.unshift({
                     id: location.node.id,
-                    label: location.node.type === SECTION_TYPE ? 'Flow Section' : 'Flow Container',
+                    label: ({
+                        [SECTION_TYPE]: 'Flow Section', [CONTAINER_TYPE]: 'Flow Container',
+                        heading: 'Heading', 'static-text': 'Static Text', paragraph: 'Paragraph',
+                    })[location.node.type],
                     current: location.node.id === nodeId,
                 });
                 location = location.parentId ? index.get(location.parentId) : null;
@@ -163,7 +183,48 @@ define([
         validateLayout(layout) {
             const errors = [];
             let elements = 0;
+            const validateInline = (content, path) => {
+                if (!Array.isArray(content) || content.length > 1000) {
+                    errors.push(`${path}.structure`); return;
+                }
+                content.forEach((item, index) => {
+                    const itemPath = `${path}.${index}`;
+                    if (!Json.isPlainObject(item)) { errors.push(`${itemPath}.structure`); return; }
+                    if (item.type === 'text') {
+                        const keys = ['type', 'text', 'marks', 'color'];
+                        if (typeof item.text !== 'string' || item.text.length > 10000 ||
+                            !Array.isArray(item.marks) || new Set(item.marks).size !== item.marks.length ||
+                            item.marks.some(mark => !['bold', 'italic', 'underline'].includes(mark)) ||
+                            Object.keys(item).some(key => !keys.includes(key)) ||
+                            ('color' in item && !/^#[0-9A-Fa-f]{6}$/.test(item.color))) errors.push(`${itemPath}.values`);
+                    } else if (item.type === 'break') {
+                        if (Object.keys(item).length !== 1) errors.push(`${itemPath}.structure`);
+                    } else if (item.type === 'variable') {
+                        if (!/^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(item.tokenId || '') ||
+                            typeof item.label !== 'string' || item.label.length < 1 || item.label.length > 100 ||
+                            Object.keys(item).some(key => !['type', 'tokenId', 'label'].includes(key))) errors.push(`${itemPath}.values`);
+                    } else errors.push(`${itemPath}.type`);
+                });
+            };
             const validateNode = (node, expectedType, depth, path) => {
+                if (CONTENT_TYPES.includes(expectedType)) {
+                    elements++;
+                    if (!Json.isPlainObject(node) || node.type !== expectedType ||
+                        !/^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(node.id || '')) {
+                        errors.push(`${path}.structure`); return;
+                    }
+                    if (expectedType === 'static-text') {
+                        if (!Json.isPlainObject(node) || Object.keys(node).some(key => !['id', 'type', 'text'].includes(key)) ||
+                            typeof node.text !== 'string' || node.text.length > 10000) errors.push(`${path}.values`);
+                    } else {
+                        const extra = expectedType === 'heading' ? ['level', 'keepWithNext'] : ['alignment'];
+                        if (!Json.isPlainObject(node) || Object.keys(node).some(key => !['id', 'type', 'content', ...extra].includes(key))) errors.push(`${path}.structure`);
+                        validateInline(node.content, `${path}.content`);
+                        if (expectedType === 'heading' && (!Number.isInteger(node.level) || node.level < 1 || node.level > 6 || typeof node.keepWithNext !== 'boolean')) errors.push(`${path}.values`);
+                        if (expectedType === 'paragraph' && !['start', 'center', 'end', 'justify'].includes(node.alignment)) errors.push(`${path}.values`);
+                    }
+                    return;
+                }
                 const required = expectedType === SECTION_TYPE ?
                     ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether', 'startNewPage'] :
                     ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether'];
@@ -189,7 +250,7 @@ define([
                     errors.push('flow.elements.limit');
                 }
                 node.children.forEach((child, index) => {
-                    validateNode(child, CONTAINER_TYPE, depth + 1, `${path}.children.${index}`);
+                    validateNode(child, child.type, depth + 1, `${path}.children.${index}`);
                 });
             };
 

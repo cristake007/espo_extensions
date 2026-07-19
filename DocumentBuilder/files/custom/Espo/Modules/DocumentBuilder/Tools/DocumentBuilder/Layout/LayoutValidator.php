@@ -436,6 +436,7 @@ final readonly class LayoutValidator
         }
 
         $this->validateFlowNode($node, $kind, $path, $elementId, $errors);
+        $this->validateContentNode($node, $kind, $path, $elementId, $errors);
 
         if (!array_key_exists('children', $node)) {
             return;
@@ -514,6 +515,159 @@ final readonly class LayoutValidator
 
         if ($type === 'flow-section' && !is_bool($node['startNewPage'] ?? null)) {
             $this->add($errors, 'flow.startNewPage', "$path/startNewPage", $elementId);
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $node
+     * @param list<ValidationError> $errors
+     */
+    private function validateContentNode(
+        array $node,
+        NodeKind $kind,
+        string $path,
+        ?string $elementId,
+        array &$errors,
+    ): void {
+        $type = $node['type'] ?? null;
+
+        if (!in_array($type, ['heading', 'static-text', 'paragraph'], true)) {
+            return;
+        }
+
+        if ($kind !== NodeKind::Element) {
+            $this->add($errors, 'content.parent', "$path/type", $elementId);
+        }
+
+        if ($type === 'static-text') {
+            $this->rejectUnknownKeys($node, ['id', 'type', 'text'], $path, $errors);
+            $this->validatePlainText($node['text'] ?? null, "$path/text", 'content.text', $elementId, $errors);
+
+            return;
+        }
+
+        $allowedKeys = $type === 'heading' ?
+            ['id', 'type', 'content', 'level', 'keepWithNext'] :
+            ['id', 'type', 'content', 'alignment'];
+        $this->rejectUnknownKeys($node, $allowedKeys, $path, $errors);
+        $this->validateInlineContent($node['content'] ?? null, "$path/content", $elementId, $errors);
+
+        if ($type === 'heading') {
+            if (!is_int($node['level'] ?? null) || $node['level'] < 1 || $node['level'] > 6) {
+                $this->add($errors, 'heading.level', "$path/level", $elementId);
+            }
+
+            if (!is_bool($node['keepWithNext'] ?? null)) {
+                $this->add($errors, 'heading.keepWithNext', "$path/keepWithNext", $elementId);
+            }
+
+            return;
+        }
+
+        if (!in_array($node['alignment'] ?? null, ['start', 'center', 'end', 'justify'], true)) {
+            $this->add($errors, 'paragraph.alignment', "$path/alignment", $elementId);
+        }
+    }
+
+    /** @param list<ValidationError> $errors */
+    private function validateInlineContent(
+        mixed $content,
+        string $path,
+        ?string $elementId,
+        array &$errors,
+    ): void {
+        if (!is_array($content) || !array_is_list($content) || count($content) > 1000) {
+            $this->add($errors, 'content.sequence', $path, $elementId);
+
+            return;
+        }
+
+        foreach ($content as $index => $item) {
+            $itemPath = "$path/$index";
+
+            if (!$this->isObject($item)) {
+                $this->add($errors, 'content.item', $itemPath, $elementId);
+
+                continue;
+            }
+
+            $type = $item['type'] ?? null;
+
+            if ($type === 'text') {
+                $this->rejectUnknownKeys($item, ['type', 'text', 'marks', 'color'], $itemPath, $errors);
+                $this->validatePlainText(
+                    $item['text'] ?? null,
+                    "$itemPath/text",
+                    'content.text',
+                    $elementId,
+                    $errors,
+                );
+                $marks = $item['marks'] ?? null;
+
+                if (
+                    !is_array($marks) || !array_is_list($marks) ||
+                    count($marks) !== count(array_unique($marks)) ||
+                    array_diff($marks, ['bold', 'italic', 'underline']) !== []
+                ) {
+                    $this->add($errors, 'content.marks', "$itemPath/marks", $elementId);
+                }
+
+                if (array_key_exists('color', $item) &&
+                    (!is_string($item['color']) || preg_match('/^#[0-9A-Fa-f]{6}$/D', $item['color']) !== 1)) {
+                    $this->add($errors, 'value.color', "$itemPath/color", $elementId);
+                }
+
+                continue;
+            }
+
+            if ($type === 'break') {
+                $this->rejectUnknownKeys($item, ['type'], $itemPath, $errors);
+
+                continue;
+            }
+
+            if ($type === 'variable') {
+                $this->rejectUnknownKeys($item, ['type', 'tokenId', 'label'], $itemPath, $errors);
+
+                if (!is_string($item['tokenId'] ?? null) ||
+                    preg_match('/^[A-Za-z][A-Za-z0-9_-]{0,63}$/D', $item['tokenId']) !== 1) {
+                    $this->add($errors, 'content.tokenId', "$itemPath/tokenId", $elementId);
+                }
+
+                $this->validatePlainText(
+                    $item['label'] ?? null,
+                    "$itemPath/label",
+                    'content.tokenLabel',
+                    $elementId,
+                    $errors,
+                    100,
+                );
+                if (($item['label'] ?? null) === '') {
+                    $this->add($errors, 'content.tokenLabel', "$itemPath/label", $elementId);
+                }
+
+                continue;
+            }
+
+            $this->add($errors, 'content.type', "$itemPath/type", $elementId);
+        }
+    }
+
+    /** @param list<ValidationError> $errors */
+    private function validatePlainText(
+        mixed $value,
+        string $path,
+        string $code,
+        ?string $elementId,
+        array &$errors,
+        int $maxLength = 10000,
+    ): void {
+        if (
+            !is_string($value) ||
+            mb_strlen($value) > $maxLength ||
+            preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', $value) === 1
+        ) {
+            $this->add($errors, $code, $path, $elementId);
         }
     }
 

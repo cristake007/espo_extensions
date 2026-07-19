@@ -20,6 +20,7 @@ $requiredEntries = [
     'EmptyJsonObject.php',
     'LayoutMigrator.php',
     'LayoutNormalizer.php',
+    'RichTextSanitizer.php',
     'LayoutParser.php',
     'LayoutProcessor.php',
     'LayoutValidator.php',

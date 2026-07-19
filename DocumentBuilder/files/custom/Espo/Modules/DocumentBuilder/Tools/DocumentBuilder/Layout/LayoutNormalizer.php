@@ -8,8 +8,12 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\Settings;
 
 final readonly class LayoutNormalizer
 {
-    public function __construct(private Settings $settings)
-    {}
+    private RichTextSanitizer $richTextSanitizer;
+
+    public function __construct(private Settings $settings, ?RichTextSanitizer $richTextSanitizer = null)
+    {
+        $this->richTextSanitizer = $richTextSanitizer ?? new RichTextSanitizer();
+    }
 
     /**
      * @param array<string, mixed> $layout
@@ -23,7 +27,9 @@ final readonly class LayoutNormalizer
             $this->settings->defaultPageSize(),
         );
 
-        return $this->mergeKnownObjects($layout, $defaults);
+        return $this->richTextSanitizer->normalizeLayout(
+            $this->mergeKnownObjects($layout, $defaults),
+        );
     }
 
     /**

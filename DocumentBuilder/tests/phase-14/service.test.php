@@ -55,7 +55,7 @@ namespace {
         'LayoutDefaults.php', 'ValidationError.php', 'ValidationResult.php',
         'Error/LayoutProcessingException.php', 'Error/LayoutTooLarge.php', 'Error/MalformedLayout.php',
         'Error/UnsupportedSchemaVersion.php', 'Error/InvalidLayout.php', 'Migration/LayoutMigration.php',
-        'LayoutParser.php', 'LayoutMigrator.php', 'LayoutNormalizer.php', 'LayoutValidator.php',
+        'LayoutParser.php', 'LayoutMigrator.php', 'RichTextSanitizer.php', 'LayoutNormalizer.php', 'LayoutValidator.php',
         'CanonicalSerializer.php', 'ProcessedLayout.php', 'LayoutProcessor.php',
     ] as $relativePath) {
         require "$layoutRoot/$relativePath";

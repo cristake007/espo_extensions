@@ -146,6 +146,25 @@
     border: 2px solid var(--brand-primary, #337ab7);
 }
 
+.document-builder-editor__content {
+    padding: 4px 8px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.document-builder-editor__content--heading {
+    font-size: 1.35em;
+    font-weight: 600;
+}
+
+.document-builder-editor__inline-variable {
+    display: inline-block;
+    padding: 0 3px;
+    border-radius: 3px;
+    background: #e8f2fb;
+    color: #24658f;
+}
+
 .document-builder-editor__flow-select {
     display: flex;
     width: 100%;

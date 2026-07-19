@@ -65,6 +65,9 @@
                         <span class="far fa-square" aria-hidden="true"></span>
                         {{translate 'Flow Container' category='labels' scope='DocumentBuilderTemplate'}}
                     </button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addHeading" data-library-type="heading" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Heading' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addStaticText" data-library-type="static-text" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Static Text' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addParagraph" data-library-type="paragraph" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Paragraph' category='labels' scope='DocumentBuilderTemplate'}}</button>
                 </section>
                 <section class="document-builder-editor__panel">
                     <h3>{{translate 'Variables' category='labels' scope='DocumentBuilderTemplate'}}</h3>
@@ -91,7 +94,12 @@
                                     <span class="fas {{#if isSection}}fa-layer-group{{else}}fa-square{{/if}}" aria-hidden="true"></span>
                                     {{translate label category='labels' scope='DocumentBuilderTemplate'}}
                                 </button>
+                                {{#if isHeading}}<div class="document-builder-editor__content document-builder-editor__content--heading" data-rich-content-id="{{id}}"></div>{{/if}}
+                                {{#if isStaticText}}<div class="document-builder-editor__content" data-rich-content-id="{{id}}"></div>{{/if}}
+                                {{#if isParagraph}}<div class="document-builder-editor__content document-builder-editor__content--paragraph" data-rich-content-id="{{id}}"></div>{{/if}}
+                                {{#if canContain}}
                                 <div class="document-builder-editor__drop document-builder-editor__drop--inside" data-flow-drop="inside" data-drop-parent="{{id}}" data-drop-index="" aria-label="{{translate 'Drop Inside' category='labels' scope='DocumentBuilderTemplate'}}"></div>
+                                {{/if}}
                             </article>
                             {{/each}}
                         </div>
@@ -114,12 +122,31 @@
                     <button type="button" class="btn btn-link btn-xs" data-action="selectBreadcrumb" data-node-id="{{id}}" {{#if current}}aria-current="page"{{/if}}>{{translate label category='labels' scope='DocumentBuilderTemplate'}}</button>
                     {{/each}}
                 </nav>
-                <h3>{{#if selectedFlowNode.isSection}}{{translate 'Flow Section' category='labels' scope='DocumentBuilderTemplate'}}{{else}}{{translate 'Flow Container' category='labels' scope='DocumentBuilderTemplate'}}{{/if}}</h3>
+                <h3>{{translate selectedFlowNode.label category='labels' scope='DocumentBuilderTemplate'}}</h3>
                 <div class="btn-group btn-group-sm document-builder-editor__flow-actions">
                     <button type="button" class="btn btn-default" data-action="moveFlowUp">{{translate 'Move Up' category='actions' scope='DocumentBuilderTemplate'}}</button>
                     <button type="button" class="btn btn-default" data-action="moveFlowDown">{{translate 'Move Down' category='actions' scope='DocumentBuilderTemplate'}}</button>
                     <button type="button" class="btn btn-danger" data-action="removeFlowNode">{{translate 'Remove'}}</button>
                 </div>
+                {{#if selectedFlowNode.isContent}}
+                <div class="form-group"><label>{{translate 'Content' category='labels' scope='DocumentBuilderTemplate'}}<textarea class="form-control" maxlength="10000" rows="8" data-content-setting="text">{{selectedFlowNode.plainText}}</textarea></label></div>
+                {{#unless selectedFlowNode.isStaticText}}
+                <div class="btn-group btn-group-sm" role="group" aria-label="{{translate 'Formatting' category='labels' scope='DocumentBuilderTemplate'}}">
+                    <button type="button" class="btn btn-default" data-rich-mark="bold"><strong>B</strong></button>
+                    <button type="button" class="btn btn-default" data-rich-mark="italic"><em>I</em></button>
+                    <button type="button" class="btn btn-default" data-rich-mark="underline"><u>U</u></button>
+                    <button type="button" class="btn btn-default" data-action="addInlineVariable">{{translate 'Variable' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                </div>
+                <div class="form-group"><label>{{translate 'Text Color' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="color" value="#000000" data-rich-color></label></div>
+                {{/unless}}
+                {{#if selectedFlowNode.isHeading}}
+                <div class="form-group"><label>{{translate 'Heading Level' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="1" max="6" value="{{selectedFlowNode.level}}" data-content-setting="level"></label></div>
+                <div class="checkbox"><label><input type="checkbox" data-content-setting="keepWithNext" {{#if selectedFlowNode.keepWithNext}}checked{{/if}}> {{translate 'Keep With Next' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
+                {{/if}}
+                {{#if selectedFlowNode.isParagraph}}
+                <div class="form-group"><label>{{translate 'Alignment' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-content-setting="alignment"><option value="start">Start</option><option value="center">Center</option><option value="end">End</option><option value="justify">Justify</option></select></label></div>
+                {{/if}}
+                {{else}}
                 <fieldset class="document-builder-editor__settings-grid">
                     <legend>{{translate 'Margin (mm)' category='labels' scope='DocumentBuilderTemplate'}}</legend>
                     <label>{{translate 'Top' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="2000" step="0.1" value="{{selectedFlowNode.margin.top.value}}" data-flow-setting="marginTop"></label>
@@ -137,6 +164,7 @@
                 <div class="form-group"><label>{{translate 'Minimum Height (mm)' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="2000" step="0.1" value="{{selectedFlowNode.minHeight.value}}" data-flow-setting="minHeight"></label></div>
                 <div class="checkbox"><label><input type="checkbox" data-flow-setting="keepTogether" {{#if selectedFlowNode.keepTogether}}checked{{/if}}> {{translate 'Keep Together' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
                 {{#if selectedFlowNode.isSection}}<div class="checkbox"><label><input type="checkbox" data-flow-setting="startNewPage" {{#if selectedFlowNode.startNewPage}}checked{{/if}}> {{translate 'Start New Page' category='labels' scope='DocumentBuilderTemplate'}}</label></div>{{/if}}
+                {{/if}}
                 {{else}}
                 <h3>{{translate 'Page Settings' category='labels' scope='DocumentBuilderTemplate'}}</h3>
                 <div class="form-group">

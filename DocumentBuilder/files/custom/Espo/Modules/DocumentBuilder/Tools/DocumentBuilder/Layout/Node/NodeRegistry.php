@@ -40,6 +40,9 @@ final readonly class NodeRegistry
         return new self(
             new NodeDefinition(NodeKind::Section, 'flow-section', [Capability::FlowLayout]),
             new NodeDefinition(NodeKind::Element, 'flow-container', [Capability::FlowLayout]),
+            new NodeDefinition(NodeKind::Element, 'heading', [Capability::FlowLayout]),
+            new NodeDefinition(NodeKind::Element, 'static-text', [Capability::FlowLayout]),
+            new NodeDefinition(NodeKind::Element, 'paragraph', [Capability::FlowLayout]),
         );
     }
 }

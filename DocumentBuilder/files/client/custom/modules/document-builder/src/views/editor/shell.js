@@ -11,6 +11,7 @@ define([
     'document-builder:editor/geometry/page-geometry',
     'document-builder:editor/page-settings',
     'document-builder:editor/flow/flow-structure',
+    'document-builder:editor/content/rich-text',
     'document-builder:editor/commands/add-flow-node',
     'document-builder:editor/commands/move-flow-node',
     'document-builder:editor/commands/remove-flow-node',
@@ -28,6 +29,7 @@ define([
     PageGeometry,
     PageSettings,
     FlowStructure,
+    RichText,
     AddFlowNodeCommand,
     MoveFlowNodeCommand,
     RemoveFlowNodeCommand,
@@ -49,12 +51,20 @@ define([
             'change [data-page-setting]': 'changePageSetting',
             'click [data-action="addFlowSection"]': 'actionAddFlowSection',
             'click [data-action="addFlowContainer"]': 'actionAddFlowContainer',
+            'click [data-action="addHeading"]': 'actionAddContent',
+            'click [data-action="addStaticText"]': 'actionAddContent',
+            'click [data-action="addParagraph"]': 'actionAddContent',
             'click [data-action="selectFlowNode"]': 'actionSelectFlowNode',
             'click [data-action="selectBreadcrumb"]': 'actionSelectFlowNode',
             'click [data-action="removeFlowNode"]': 'actionRemoveFlowNode',
             'click [data-action="moveFlowUp"]': 'actionMoveFlowUp',
             'click [data-action="moveFlowDown"]': 'actionMoveFlowDown',
             'change [data-flow-setting]': 'changeFlowSetting',
+            'change [data-content-setting]': 'changeContentSetting',
+            'paste [data-content-setting="text"]': 'pasteContentText',
+            'click [data-rich-mark]': 'actionToggleRichMark',
+            'change [data-rich-color]': 'changeRichColor',
+            'click [data-action="addInlineVariable"]': 'actionAddInlineVariable',
             'dragstart [draggable="true"]': 'handleFlowDragStart',
             'dragover [data-flow-drop]': 'handleFlowDragOver',
             'dragleave [data-flow-drop]': 'handleFlowDragLeave',
@@ -136,20 +146,22 @@ define([
                 const location = locations.get(row.id);
                 const px = value => this.pageGeometry.millimetresToPixels(value, this.zoom);
                 const containerLength = location.container.length;
+                const flowStyle = [row.depthStyle];
+
+                if (row.canContain) flowStyle.push(
+                    `--document-builder-margin-left: ${px(row.margin.left.value)}px`,
+                    `min-height: ${px(row.minHeight.value)}px`,
+                    `margin: ${px(row.margin.top.value)}px ${px(row.margin.right.value)}px ` +
+                        `${px(row.margin.bottom.value)}px ${px(row.margin.left.value)}px`,
+                    `padding: ${px(row.padding.top.value)}px ${px(row.padding.right.value)}px ` +
+                        `${px(row.padding.bottom.value)}px ${px(row.padding.left.value)}px`,
+                );
 
                 return {
                     ...row,
                     canMoveUp: location.index > 0,
                     canMoveDown: location.index < containerLength - 1,
-                    flowStyle: [
-                        row.depthStyle,
-                        `--document-builder-margin-left: ${px(row.margin.left.value)}px`,
-                        `min-height: ${px(row.minHeight.value)}px`,
-                        `margin: ${px(row.margin.top.value)}px ${px(row.margin.right.value)}px ` +
-                            `${px(row.margin.bottom.value)}px ${px(row.margin.left.value)}px`,
-                        `padding: ${px(row.padding.top.value)}px ${px(row.padding.right.value)}px ` +
-                            `${px(row.padding.bottom.value)}px ${px(row.padding.left.value)}px`,
-                    ].join('; '),
+                    flowStyle: flowStyle.join('; '),
                 };
             });
             const selected = selectedId ? locations.get(selectedId) : null;
@@ -159,8 +171,18 @@ define([
                 hasFlowRows: rows.length > 0,
                 selectedFlowNode: selected ? {
                     ...selected.node,
+                    label: ({
+                        'flow-section': 'Flow Section', 'flow-container': 'Flow Container',
+                        heading: 'Heading', 'static-text': 'Static Text', paragraph: 'Paragraph',
+                    })[selected.node.type],
                     isSection: selected.node.type === 'flow-section',
                     isContainer: selected.node.type === 'flow-container',
+                    isHeading: selected.node.type === 'heading',
+                    isStaticText: selected.node.type === 'static-text',
+                    isParagraph: selected.node.type === 'paragraph',
+                    isContent: ['heading', 'static-text', 'paragraph'].includes(selected.node.type),
+                    plainText: selected.node.type === 'static-text' ? selected.node.text :
+                        RichText.toPlainText(selected.node.content),
                 } : null,
                 flowBreadcrumbs: selectedId ? this.flowStructure.breadcrumbs(layout, selectedId) : [],
                 canAddFlowContainer: Boolean(selected &&
@@ -208,6 +230,7 @@ define([
         }
 
         afterRender() {
+            this.renderContentNodes();
             if (!this.loadStarted) {
                 this.loadStarted = true;
                 this.loadModel();
@@ -333,6 +356,79 @@ define([
             const parentId = this.editorState && this.editorState.getSelectedId();
 
             if (parentId) this.addFlowNode('flow-container', {parentId, index: null});
+        }
+
+        actionAddContent(event) {
+            const parentId = this.editorState && this.editorState.getSelectedId();
+            const type = event.currentTarget.dataset.libraryType;
+
+            if (parentId && type) this.addFlowNode(type, {parentId, index: null});
+        }
+
+        renderContentNodes() {
+            if (!this.editorState || !this.element) return;
+            const locations = NodeTree.index(this.editorState.getLayout());
+            this.element.querySelectorAll('[data-rich-content-id]').forEach(host => {
+                const node = locations.get(host.dataset.richContentId)?.node;
+                if (!node) return;
+                if (node.type === 'static-text') host.textContent = node.text;
+                else RichText.render(host, node.content);
+            });
+        }
+
+        selectedContentNode() {
+            if (!this.editorState) return null;
+            const id = this.editorState.getSelectedId();
+            return id ? NodeTree.getLocation(this.editorState.getLayout(), id) : null;
+        }
+
+        changeContentSetting(event) {
+            const location = this.selectedContentNode();
+            if (!location || this.isSaveBusy()) return;
+            const input = event.currentTarget;
+            const patch = {};
+            if (input.dataset.contentSetting === 'text') {
+                patch[location.node.type === 'static-text' ? 'text' : 'content'] =
+                    location.node.type === 'static-text' ? input.value : RichText.fromPlainText(input.value);
+            } else if (input.dataset.contentSetting === 'level') patch.level = Number(input.value);
+            else if (input.dataset.contentSetting === 'alignment') patch.alignment = input.value;
+            else if (input.dataset.contentSetting === 'keepWithNext') patch.keepWithNext = input.checked;
+            else return;
+            this.executeCommand(new UpdateNodeCommand(location.node.id, patch));
+        }
+
+        pasteContentText(event) {
+            event.preventDefault();
+            const input = event.currentTarget;
+            const text = event.originalEvent?.clipboardData?.getData('text/plain') ||
+                event.clipboardData?.getData('text/plain') || '';
+            input.value = input.value.slice(0, input.selectionStart) + text + input.value.slice(input.selectionEnd);
+            this.changeContentSetting({currentTarget: input});
+        }
+
+        actionToggleRichMark(event) {
+            const location = this.selectedContentNode();
+            if (!location || !location.node.content) return;
+            this.executeCommand(new UpdateNodeCommand(location.node.id, {
+                content: RichText.toggleMark(location.node.content, event.currentTarget.dataset.richMark),
+            }));
+        }
+
+        changeRichColor(event) {
+            const location = this.selectedContentNode();
+            if (!location || !location.node.content) return;
+            this.executeCommand(new UpdateNodeCommand(location.node.id, {
+                content: RichText.setColor(location.node.content, event.currentTarget.value),
+            }));
+        }
+
+        actionAddInlineVariable() {
+            const location = this.selectedContentNode();
+            if (!location || !location.node.content) return;
+            const tokenId = `token_${Date.now().toString(36)}`;
+            this.executeCommand(new UpdateNodeCommand(location.node.id, {
+                content: RichText.appendVariable(location.node.content, tokenId, 'Variable'),
+            }));
         }
 
         addFlowNode(type, target) {

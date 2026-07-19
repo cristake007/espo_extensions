@@ -134,6 +134,68 @@
                 "verticalAlignment": {"enum": ["start", "center", "end"]}
             }
         },
+        "inlineText": {
+            "type": "object", "additionalProperties": false,
+            "required": ["type", "text", "marks"],
+            "properties": {
+                "type": {"const": "text"},
+                "text": {"type": "string", "maxLength": 10000},
+                "marks": {"type": "array", "uniqueItems": true, "items": {"enum": ["bold", "italic", "underline"]}},
+                "color": {"$ref": "#/$defs/color"}
+            }
+        },
+        "inlineBreak": {
+            "type": "object", "additionalProperties": false,
+            "required": ["type"], "properties": {"type": {"const": "break"}}
+        },
+        "inlineVariable": {
+            "type": "object", "additionalProperties": false,
+            "required": ["type", "tokenId", "label"],
+            "properties": {
+                "type": {"const": "variable"},
+                "tokenId": {"$ref": "#/$defs/stableId"},
+                "label": {"type": "string", "minLength": 1, "maxLength": 100}
+            }
+        },
+        "inlineContent": {
+            "type": "array", "maxItems": 1000,
+            "items": {"oneOf": [
+                {"$ref": "#/$defs/inlineText"},
+                {"$ref": "#/$defs/inlineBreak"},
+                {"$ref": "#/$defs/inlineVariable"}
+            ]}
+        },
+        "heading": {
+            "type": "object", "additionalProperties": false,
+            "required": ["id", "type", "content", "level", "keepWithNext"],
+            "properties": {
+                "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "heading"},
+                "content": {"$ref": "#/$defs/inlineContent"},
+                "level": {"type": "integer", "minimum": 1, "maximum": 6},
+                "keepWithNext": {"type": "boolean"}
+            }
+        },
+        "staticText": {
+            "type": "object", "additionalProperties": false,
+            "required": ["id", "type", "text"],
+            "properties": {
+                "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "static-text"},
+                "text": {"type": "string", "maxLength": 10000}
+            }
+        },
+        "paragraph": {
+            "type": "object", "additionalProperties": false,
+            "required": ["id", "type", "content", "alignment"],
+            "properties": {
+                "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "paragraph"},
+                "content": {"$ref": "#/$defs/inlineContent"},
+                "alignment": {"enum": ["start", "center", "end", "justify"]}
+            }
+        },
+        "flowElement": {"oneOf": [
+            {"$ref": "#/$defs/flowContainer"}, {"$ref": "#/$defs/heading"},
+            {"$ref": "#/$defs/staticText"}, {"$ref": "#/$defs/paragraph"}
+        ]},
         "flowContainer": {
             "type": "object",
             "additionalProperties": false,
@@ -145,7 +207,7 @@
                 "type": {"const": "flow-container"},
                 "children": {
                     "type": "array",
-                    "items": {"$ref": "#/$defs/flowContainer"}
+                    "items": {"$ref": "#/$defs/flowElement"}
                 },
                 "margin": {"$ref": "#/$defs/boxEdges"},
                 "padding": {"$ref": "#/$defs/boxEdges"},
@@ -165,7 +227,7 @@
                 "type": {"const": "flow-section"},
                 "children": {
                     "type": "array",
-                    "items": {"$ref": "#/$defs/flowContainer"}
+                    "items": {"$ref": "#/$defs/flowElement"}
                 },
                 "margin": {"$ref": "#/$defs/boxEdges"},
                 "padding": {"$ref": "#/$defs/boxEdges"},
