@@ -125,7 +125,67 @@
                 </section>
                 <section class="document-builder-editor__panel">
                     <h3>{{translate 'Variables' category='labels' scope='DocumentBuilderTemplate'}}</h3>
-                    <p class="text-muted">{{translate 'editorVariablesPlaceholder' category='messages' scope='DocumentBuilderTemplate'}}</p>
+                    {{#unless variableBrowserHasSource}}
+                    <p class="text-muted">{{translate 'editorVariableSourceRequired' category='messages' scope='DocumentBuilderTemplate'}}</p>
+                    {{else}}
+                    <label class="sr-only" for="document-builder-variable-search">{{translate 'Search Variables' category='labels' scope='DocumentBuilderTemplate'}}</label>
+                    <input id="document-builder-variable-search" type="search" class="form-control input-sm" maxlength="100" value="{{variableSearch}}" data-variable-search placeholder="{{translate 'Search Variables' category='labels' scope='DocumentBuilderTemplate'}}">
+                    {{#if variableBrowserLoading}}
+                    <p role="status"><span class="fas fa-spinner fa-spin" aria-hidden="true"></span> {{translate 'editorMetadataLoading' category='messages' scope='DocumentBuilderTemplate'}}</p>
+                    {{/if}}
+                    {{#if variableBrowserError}}
+                    <div class="alert alert-warning" role="alert">
+                        <p>{{translate 'editorMetadataFailed' category='messages' scope='DocumentBuilderTemplate'}}</p>
+                        <button type="button" class="btn btn-default btn-xs" data-action="retryMetadataNode" data-path="">{{translate 'Retry'}}</button>
+                    </div>
+                    {{/if}}
+                    <div class="document-builder-editor__variable-tree" role="tree" aria-label="{{translate 'Readable Metadata' category='labels' scope='DocumentBuilderTemplate'}}">
+                        {{#each variableRows}}
+                        {{#if isField}}
+                        <div class="document-builder-editor__variable-row is-field" style="{{depthStyle}}" role="treeitem" data-variable-row>
+                            <span class="fas fa-font" aria-hidden="true"></span>
+                            <span class="document-builder-editor__variable-label">{{label}}</span>
+                            <code>{{name}}</code>
+                            <span class="document-builder-editor__variable-badge">{{translate fieldKind category='labels' scope='DocumentBuilderTemplate'}}</span>
+                            {{#if custom}}<span class="document-builder-editor__variable-badge">{{translate 'Custom' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
+                            <span class="document-builder-editor__variable-type">{{type}}</span>
+                            {{#if required}}<span class="sr-only">{{translate 'Required' category='labels' scope='DocumentBuilderTemplate'}}</span><span aria-hidden="true">*</span>{{/if}}
+                            {{#if readOnly}}<span class="fas fa-lock" title="{{translate 'Read Only' category='labels' scope='DocumentBuilderTemplate'}}"></span>{{/if}}
+                        </div>
+                        {{/if}}
+                        {{#if isRelationship}}
+                            {{#if expandable}}
+                            <button type="button" class="document-builder-editor__variable-row is-relationship" style="{{depthStyle}}" role="treeitem" aria-expanded="{{#if expanded}}true{{else}}false{{/if}}" data-action="toggleMetadataRelationship" data-path="{{pathKey}}" data-variable-row>
+                                <span class="fas {{#if expanded}}fa-chevron-down{{else}}fa-chevron-right{{/if}}" aria-hidden="true"></span>
+                                <span class="document-builder-editor__variable-label">{{label}}</span>
+                                <code>{{name}}</code>
+                                <span class="document-builder-editor__variable-badge">{{translate relationshipKind category='labels' scope='DocumentBuilderTemplate'}}</span>
+                                {{#if custom}}<span class="document-builder-editor__variable-badge">{{translate 'Custom' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
+                            </button>
+                            {{else}}
+                            <div class="document-builder-editor__variable-row is-relationship is-limited" style="{{depthStyle}}" role="treeitem" aria-disabled="true" data-variable-row>
+                                <span class="fas fa-ban" aria-hidden="true"></span>
+                                <span class="document-builder-editor__variable-label">{{label}}</span>
+                                <code>{{name}}</code>
+                                <span class="document-builder-editor__variable-badge">{{translate relationshipKind category='labels' scope='DocumentBuilderTemplate'}}</span>
+                                {{#if custom}}<span class="document-builder-editor__variable-badge">{{translate 'Custom' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
+                                {{#if circular}}<span class="sr-only">{{translate 'Circular' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
+                                {{#if depthLimited}}<span class="sr-only">{{translate 'Depth Limit' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
+                            </div>
+                            {{/if}}
+                        {{/if}}
+                        {{#if isLoading}}
+                        <div class="document-builder-editor__variable-row" style="{{depthStyle}}" role="status"><span class="fas fa-spinner fa-spin" aria-hidden="true"></span> {{translate 'editorMetadataLoading' category='messages' scope='DocumentBuilderTemplate'}}</div>
+                        {{/if}}
+                        {{#if isLoadError}}
+                        <div class="document-builder-editor__variable-row" style="{{depthStyle}}" role="alert">
+                            {{translate 'editorMetadataFailed' category='messages' scope='DocumentBuilderTemplate'}}
+                            <button type="button" class="btn btn-link btn-xs" data-action="retryMetadataNode" data-path="{{pathKey}}">{{translate 'Retry'}}</button>
+                        </div>
+                        {{/if}}
+                        {{/each}}
+                    </div>
+                    {{/unless}}
                 </section>
             </aside>
 

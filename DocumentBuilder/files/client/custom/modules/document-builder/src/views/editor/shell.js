@@ -21,6 +21,8 @@ define([
     'document-builder:editor/commands/update-node',
     'document-builder:editor/commands/update-data-source',
     'document-builder:services/entity-catalogue-api',
+    'document-builder:services/entity-metadata-api',
+    'document-builder:editor/variables/metadata-browser',
 ], (
     View,
     EditorState,
@@ -44,6 +46,8 @@ define([
     UpdateNodeCommand,
     UpdateDataSourceCommand,
     EntityCatalogueApi,
+    EntityMetadataApi,
+    MetadataBrowser,
 ) => {
     return class extends View {
         template = 'document-builder:editor/shell'
@@ -61,6 +65,9 @@ define([
             'change [data-page-setting]': 'changePageSetting',
             'change [data-source-setting]': 'changeSourceSetting',
             'click [data-action="retryEntityCatalogue"]': 'actionRetryEntityCatalogue',
+            'input [data-variable-search]': 'inputVariableSearch',
+            'click [data-action="toggleMetadataRelationship"]': 'actionToggleMetadataRelationship',
+            'click [data-action="retryMetadataNode"]': 'actionRetryMetadataNode',
             'click [data-action="addFlowSection"]': 'actionAddFlowSection',
             'click [data-action="addFlowContainer"]': 'actionAddFlowContainer',
             'click [data-action="addHeading"]': 'actionAddContent',
@@ -126,8 +133,13 @@ define([
             });
             this.editorValidator = new EditorValidator(this.customPageSizes, this.flowLimits);
             this.entityCatalogueApi = new EntityCatalogueApi();
+            this.entityMetadataApi = new EntityMetadataApi();
             this.entityCatalogue = [];
             this.entityCatalogueStatus = 'loading';
+            this.metadataNodes = new Map();
+            this.expandedMetadataPaths = new Set();
+            this.metadataGeneration = 0;
+            this.variableSearch = '';
             this.maxRelationshipDepth = config.maxRelationshipDepth ||
                 metadataDefaults.maxRelationshipDepth || 2;
             this.pendingFocusNodeId = null;
@@ -141,6 +153,7 @@ define([
             const flow = this.getFlowData();
             const validation = this.getValidationData();
             const source = this.getSourceData();
+            const variableBrowser = this.getVariableBrowserData();
 
             return {
                 isLoading: this.state === 'loading',
@@ -167,6 +180,7 @@ define([
                 ...flow,
                 ...validation,
                 ...source,
+                ...variableBrowser,
             };
         }
 
@@ -317,6 +331,38 @@ define([
             };
         }
 
+        getVariableBrowserData() {
+            if (!this.editorState) {
+                return {variableRows: [], variableBrowserHasSource: false};
+            }
+
+            const source = this.editorState.getLayout().dataSource;
+
+            if (source.type !== 'entity') {
+                return {
+                    variableRows: [],
+                    variableBrowserHasSource: false,
+                    variableSearch: this.variableSearch,
+                };
+            }
+
+            const rows = MetadataBrowser.flatten(
+                this.metadataNodes,
+                this.expandedMetadataPaths,
+                this.variableSearch,
+            );
+            const root = this.metadataNodes.get('');
+
+            return {
+                variableRows: rows,
+                hasVariableRows: rows.length > 0,
+                variableBrowserHasSource: true,
+                variableBrowserLoading: root?.status === 'loading',
+                variableBrowserError: root?.status === 'error',
+                variableSearch: this.variableSearch,
+            };
+        }
+
         getPageSettingsData() {
             if (!this.editorState) {
                 return {pageSettings: null, pageFrameStyle: '', zoom: this.zoom};
@@ -426,6 +472,7 @@ define([
                     revision: this.model.get('revision'),
                 });
                 await this.loadEntityCatalogue();
+                await this.resetMetadataBrowser();
                 this.state = 'ready';
                 this.shouldFocusEntry = true;
                 this.syncDirtyGuard();
@@ -483,6 +530,69 @@ define([
 
         async actionRetryEntityCatalogue() {
             await this.loadEntityCatalogue();
+            await this.resetMetadataBrowser();
+            await this.reRender();
+        }
+
+        async resetMetadataBrowser() {
+            this.metadataGeneration++;
+            this.metadataNodes.clear();
+            this.expandedMetadataPaths.clear();
+            const source = this.editorState?.getLayout().dataSource;
+
+            if (source?.type === 'entity') await this.loadMetadataNode([]);
+        }
+
+        async loadMetadataNode(path) {
+            const source = this.editorState?.getLayout().dataSource;
+
+            if (source?.type !== 'entity') return;
+            const key = path.join('.');
+            const entityType = source.entityType;
+            const generation = this.metadataGeneration;
+            this.metadataNodes.set(key, {status: 'loading', node: null});
+
+            try {
+                const node = await this.entityMetadataApi.get(entityType, path);
+                if (generation !== this.metadataGeneration ||
+                    this.editorState?.getLayout().dataSource.entityType !== entityType) return;
+                this.metadataNodes.set(key, {status: 'ready', node});
+            } catch (xhr) {
+                if (xhr) xhr.errorIsHandled = true;
+                if (generation !== this.metadataGeneration) return;
+                this.metadataNodes.set(key, {status: 'error', node: null});
+            }
+        }
+
+        inputVariableSearch(event) {
+            this.variableSearch = event.currentTarget.value.slice(0, 100);
+            const query = this.variableSearch.trim().toLocaleLowerCase();
+
+            this.element.querySelectorAll('[data-variable-row]').forEach(row => {
+                row.hidden = Boolean(query) && !row.textContent.toLocaleLowerCase().includes(query);
+            });
+        }
+
+        async actionToggleMetadataRelationship(event) {
+            const pathKey = event.currentTarget.dataset.path;
+            const path = pathKey ? pathKey.split('.') : [];
+
+            if (this.expandedMetadataPaths.has(pathKey)) {
+                this.expandedMetadataPaths.delete(pathKey);
+                await this.reRender();
+
+                return;
+            }
+
+            this.expandedMetadataPaths.add(pathKey);
+            if (!this.metadataNodes.has(pathKey)) await this.loadMetadataNode(path);
+            await this.reRender();
+        }
+
+        async actionRetryMetadataNode(event) {
+            const pathKey = event.currentTarget.dataset.path || '';
+
+            await this.loadMetadataNode(pathKey ? pathKey.split('.') : []);
             await this.reRender();
         }
 
@@ -939,17 +1049,25 @@ define([
                 return;
             }
 
-            await this.confirm({
-                message: this.translate(
-                    'confirmEntitySourceChange',
-                    'messages',
-                    'DocumentBuilderTemplate',
-                ),
-                confirmText: this.translate('Change Source', 'actions', 'DocumentBuilderTemplate'),
-            });
+            try {
+                await this.confirm({
+                    message: this.translate(
+                        'confirmEntitySourceChange',
+                        'messages',
+                        'DocumentBuilderTemplate',
+                    ),
+                    confirmText: this.translate('Change Source', 'actions', 'DocumentBuilderTemplate'),
+                });
+            } catch (error) {
+                await this.reRender();
+
+                return;
+            }
 
             if (this.executeCommand(new UpdateDataSourceCommand(next))) {
                 this.saveCoordinator.confirmSourceChange();
+                await this.resetMetadataBrowser();
+                await this.reRender();
             }
         }
 

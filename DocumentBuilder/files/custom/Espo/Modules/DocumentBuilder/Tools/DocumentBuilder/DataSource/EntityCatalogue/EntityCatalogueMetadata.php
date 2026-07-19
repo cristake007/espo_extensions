@@ -12,4 +12,7 @@ interface EntityCatalogueMetadata
     public function hasEntityDefinition(string $entityType): bool;
 
     public function isCustom(string $entityType): bool;
+
+    /** @return array<string, mixed> */
+    public function entityDefinition(string $entityType): array;
 }

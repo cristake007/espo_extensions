@@ -28,5 +28,10 @@
         "route": "/DocumentBuilder/entity-catalogue",
         "method": "get",
         "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\GetEntityCatalogue"
+    },
+    {
+        "route": "/DocumentBuilder/entity-catalogue/:entityType/metadata-tree",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\GetEntityMetadataTree"
     }
 ]

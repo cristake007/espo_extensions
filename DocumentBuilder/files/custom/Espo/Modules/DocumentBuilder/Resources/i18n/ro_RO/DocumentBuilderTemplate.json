@@ -89,7 +89,17 @@
         "Data Source": "Sursă de date",
         "Entity Source": "Entitate sursă",
         "No Source": "Fără sursă",
-        "Custom": "Personalizată"
+        "Custom": "Personalizată",
+        "Search Variables": "Caută câmpuri și relații",
+        "Readable Metadata": "Câmpuri și relații disponibile pentru citire",
+        "Direct": "Direct",
+        "Calculated": "Calculat",
+        "Single": "Unic",
+        "Collection": "Colecție",
+        "Required": "Obligatoriu",
+        "Read Only": "Doar citire",
+        "Circular": "Relație circulară",
+        "Depth Limit": "Limita de adâncime a relației a fost atinsă"
     },
     "actions": {
         "Open Editor": "Deschide editorul",
@@ -154,6 +164,9 @@
         "editorEntitySourceHelp": "Sunt afișate numai entitățile permise de configurare și de accesul curent la citire.",
         "editorUnavailableEntitySource": "Entitate sursă indisponibilă",
         "confirmEntitySourceChange": "Schimbați sursa de date a șablonului? Referințele dependente de sursa existentă pot deveni indisponibile.",
+        "editorVariableSourceRequired": "Selectați o entitate sursă pentru a naviga câmpurile și relațiile disponibile pentru citire.",
+        "editorMetadataLoading": "Se încarcă metadatele disponibile pentru citire…",
+        "editorMetadataFailed": "Metadatele disponibile pentru citire nu au putut fi încărcate.",
         "confirmDuplicate": "Creați o copie nouă în starea Schiță? Versiunile publicate și istoricul generării nu vor fi copiate.",
         "confirmArchive": "Arhivați acest șablon? Generarea nouă va fi dezactivată, iar istoricul existent va fi păstrat.",
         "confirmDraftFromVersion": "Înlocuiți conținutul schiței cu versiunea publicată imuabilă selectată?",

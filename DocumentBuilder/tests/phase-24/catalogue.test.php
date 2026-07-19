@@ -62,6 +62,11 @@ final class Phase24Metadata implements EntityCatalogueMetadata
     {
         return $entityType === 'CustomRecord';
     }
+
+    public function entityDefinition(string $entityType): array
+    {
+        return $this->hasEntityDefinition($entityType) ? ['fields' => [], 'links' => []] : [];
+    }
 }
 
 final class Phase24Access implements EntityCatalogueAccess
@@ -71,6 +76,8 @@ final class Phase24Access implements EntityCatalogueAccess
     public function __construct(private array $readable) {}
     public function requireCatalogueAccess(): void { $this->required++; }
     public function canRead(string $entityType): bool { return in_array($entityType, $this->readable, true); }
+    public function canReadField(string $entityType, string $field): bool { return $this->canRead($entityType); }
+    public function canReadLink(string $entityType, string $link): bool { return $this->canRead($entityType); }
 }
 
 final class Phase24Policy implements EntitySourcePolicy
@@ -93,6 +100,8 @@ final class Phase24Labels implements EntityLabelProvider
             'CustomRecord' => 'Înregistrare proprie',
         ][$entityType] ?? $entityType;
     }
+    public function fieldLabel(string $entityType, string $field): string { return $field; }
+    public function linkLabel(string $entityType, string $link): string { return $link; }
 }
 
 $metadata = new Phase24Metadata();

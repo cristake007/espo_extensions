@@ -89,7 +89,17 @@
         "Data Source": "Data Source",
         "Entity Source": "Entity Source",
         "No Source": "No Source",
-        "Custom": "Custom"
+        "Custom": "Custom",
+        "Search Variables": "Search fields and relationships",
+        "Readable Metadata": "Readable fields and relationships",
+        "Direct": "Direct",
+        "Calculated": "Calculated",
+        "Single": "Single",
+        "Collection": "Collection",
+        "Required": "Required",
+        "Read Only": "Read only",
+        "Circular": "Circular relationship",
+        "Depth Limit": "Relationship depth limit reached"
     },
     "actions": {
         "Open Editor": "Open Editor",
@@ -154,6 +164,9 @@
         "editorEntitySourceHelp": "Only entities allowed by configuration and your current read access are listed.",
         "editorUnavailableEntitySource": "Unavailable entity source",
         "confirmEntitySourceChange": "Change the template data source? Existing source-dependent references may become unavailable.",
+        "editorVariableSourceRequired": "Select an entity data source to browse readable fields and relationships.",
+        "editorMetadataLoading": "Loading readable metadata…",
+        "editorMetadataFailed": "Readable metadata could not be loaded.",
         "confirmDuplicate": "Create a new draft copy of this template? Published versions and generation history will not be copied.",
         "confirmArchive": "Archive this template? New generation will be disabled and existing history will be preserved.",
         "confirmDraftFromVersion": "Replace the current draft content with the selected immutable published version?",

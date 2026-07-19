@@ -34,4 +34,11 @@ final readonly class EspoEntityCatalogueMetadata implements EntityCatalogueMetad
         return (is_array($scope) && ($scope['isCustom'] ?? false) === true) ||
             (is_array($entity) && ($entity['isCustom'] ?? $entity['custom'] ?? false) === true);
     }
+
+    public function entityDefinition(string $entityType): array
+    {
+        $definition = $this->metadata->get(['entityDefs', $entityType], []);
+
+        return is_array($definition) ? $definition : [];
+    }
 }
