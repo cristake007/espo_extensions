@@ -476,6 +476,15 @@ The layers are sequential. Focused tasks inside a layer may be executed only in 
 - **Validation:** Metadata contracts, valid status transitions, completed-field immutability, snapshot permission, normal generated-document ACL, and future optional links remaining nullable.
 - **Complete when:** A pending generation record can represent success, warning, failure, or cancellation without storing PDF bytes in JSON/database fields.
 
+## Editor recovery approval gate — before Phase 37 implementation
+
+- **Status:** Phase 36 is the latest implemented phase on `main`; Phase 37 and all later phases are paused at this gate.
+- **Objective:** Recover the existing flow editor as a document-first, directly editable canvas before generation persistence extends the completed implementation surface.
+- **Authoritative recovery specification:** [`docs/editor-recovery-assessment.md`](docs/editor-recovery-assessment.md).
+- **Constraints:** Retain EspoCRM views, templates, AMD modules, canonical editor state and commands, existing backend services, and the current PDF pipeline. Do not begin Layer 6 grid or media work as part of recovery.
+- **Approval:** Implementation must not start until the revised assessment, affected-file map, and recovery sequence are approved.
+- **Complete when:** The recovery acceptance criteria are satisfied and focused regression checks confirm that draft save, undo/redo, variables, preview data, PDF Proof, validation, and existing flow rendering contracts remain intact.
+
 ## Phase 37 — Persist PDF attachments, snapshots, and safe filenames transactionally
 
 - **Objective:** Give completed generation artifacts durable storage and recoverable failure behavior.
