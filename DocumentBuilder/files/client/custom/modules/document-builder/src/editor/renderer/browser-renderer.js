@@ -18,9 +18,24 @@ define([
         'static-text': 'editorStaticTextSample',
         paragraph: 'editorParagraphSample',
     });
-    const textFromContent = content => (content || []).map(item => {
+    const previewKey = identity => JSON.stringify(identity || {});
+    const previewText = value => {
+        if (!value) return null;
+        if (value.state === 'restricted' || value.state === 'forbidden') return '[restricted]';
+        if (value.state === 'missing') return '[missing]';
+        if (value.state === 'invalid') return '[invalid]';
+        if (Array.isArray(value.value)) return value.value.join(', ');
+        if (value.value && typeof value.value === 'object') {
+            if (value.type === 'currency') return `${value.value.amount} ${value.value.currency}`;
+            return '[invalid]';
+        }
+        return value.value === null || value.value === undefined ? '[missing]' : String(value.value);
+    };
+    const textFromContent = (content, previewValues = new Map()) => (content || []).map(item => {
         if (item.type === 'break') return '\n';
-        if (item.type === 'variable') return `{{${item.label}}}`;
+        if (item.type === 'variable') {
+            return previewText(previewValues.get(previewKey(item.identity))) ?? `{{${item.label}}}`;
+        }
         return item.type === 'text' ? item.text : '';
     }).join('');
     const bounded = (value, minimum, maximum, fallback) =>
@@ -32,7 +47,7 @@ define([
             this.pageGeometry = pageGeometry;
         }
 
-        render(layout, {selectedId = null, zoom = 100} = {}) {
+        render(layout, {selectedId = null, zoom = 100, previewValues = new Map()} = {}) {
             const source = Json.clone(layout);
             const locations = NodeTree.index(source);
             const rows = [];
@@ -61,7 +76,7 @@ define([
                 const lineStyle = ['solid', 'dashed', 'dotted', 'double'].includes(node.lineStyle) ?
                     node.lineStyle : 'solid';
                 const lineColor = /^#[0-9A-Fa-f]{6}$/.test(node.color || '') ? node.color : '#666666';
-                const plainText = node.type === 'static-text' ? node.text : textFromContent(node.content);
+                const plainText = node.type === 'static-text' ? node.text : textFromContent(node.content, previewValues);
                 const isContent = CONTENT_TYPES.includes(node.type);
                 const isEmpty = isContent && plainText.trim() === '';
 

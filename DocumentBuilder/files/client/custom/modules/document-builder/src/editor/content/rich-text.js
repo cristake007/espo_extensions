@@ -64,14 +64,21 @@ define([
             }];
         },
 
-        render(host, content, documentRef = document) {
+        render(host, content, documentRef = document, variableResolver = null) {
             host.replaceChildren();
             (content || []).forEach(item => {
                 if (item.type === 'break') { host.append(documentRef.createElement('br')); return; }
                 if (item.type === 'variable') {
                     const token = documentRef.createElement('span');
                     token.className = 'document-builder-editor__inline-variable';
-                    token.textContent = `{{${item.label}}}`;
+                    const preview = typeof variableResolver === 'function' ? variableResolver(item.identity) : null;
+                    if (preview && typeof preview.text === 'string') {
+                        token.textContent = preview.text;
+                        token.classList.add(`is-${preview.state}`);
+                        token.dataset.previewOrigin = preview.origin;
+                    } else {
+                        token.textContent = `{{${item.label}}}`;
+                    }
                     host.append(token); return;
                 }
                 if (item.type !== 'text') return;

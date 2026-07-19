@@ -22,6 +22,7 @@ define([
     'document-builder:editor/commands/update-data-source',
     'document-builder:services/entity-catalogue-api',
     'document-builder:services/entity-metadata-api',
+    'document-builder:services/preview-api',
     'document-builder:editor/variables/metadata-browser',
     'document-builder:editor/variables/variable-presentation',
 ], (
@@ -48,6 +49,7 @@ define([
     UpdateDataSourceCommand,
     EntityCatalogueApi,
     EntityMetadataApi,
+    PreviewApi,
     MetadataBrowser,
     VariablePresentation,
 ) => {
@@ -60,6 +62,9 @@ define([
             'click [data-action="undo"]': 'actionUndo',
             'click [data-action="redo"]': 'actionRedo',
             'click [data-action="save"]': 'actionSave',
+            'click [data-action="previewSample"]': 'actionPreviewSample',
+            'click [data-action="previewRecord"]': 'actionPreviewRecord',
+            'input [data-preview-record-id]': 'inputPreviewRecordId',
             'click [data-action="zoomIn"]': 'actionZoomIn',
             'click [data-action="zoomOut"]': 'actionZoomOut',
             'click [data-action="fitWidth"]': 'actionFitWidth',
@@ -137,6 +142,11 @@ define([
             this.editorValidator = new EditorValidator(this.customPageSizes, this.flowLimits);
             this.entityCatalogueApi = new EntityCatalogueApi();
             this.entityMetadataApi = new EntityMetadataApi();
+            this.previewApi = new PreviewApi();
+            this.previewStatus = 'idle';
+            this.previewMode = null;
+            this.previewRecordId = '';
+            this.previewValues = new Map();
             this.entityCatalogue = [];
             this.entityCatalogueStatus = 'loading';
             this.metadataNodes = new Map();
@@ -180,6 +190,15 @@ define([
                 isReloading: this.saveCoordinator ? this.saveCoordinator.status === 'reloading' : false,
                 isSaved: this.saveCoordinator ? this.saveCoordinator.status === 'saved' : false,
                 saveError: this.saveCoordinator ? this.saveCoordinator.errorMessage : null,
+                previewStatus: this.previewStatus,
+                previewLoading: this.previewStatus === 'loading',
+                previewActive: this.previewStatus === 'ready' && Boolean(this.editorState && !this.editorState.isDirty()),
+                previewError: this.previewStatus === 'error',
+                previewMode: this.previewMode,
+                previewRecordId: this.previewRecordId,
+                canPreview: Boolean(this.editorState && !this.editorState.isDirty() && this.previewStatus !== 'loading'),
+                canPreviewRecord: Boolean(this.editorState && !this.editorState.isDirty() &&
+                    this.previewStatus !== 'loading' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(this.previewRecordId)),
                 ...pageSettings,
                 ...flow,
                 ...validation,
@@ -196,7 +215,11 @@ define([
             const layout = this.editorState.getLayout();
             const selectedId = this.editorState.getSelectedId();
             const locations = NodeTree.index(layout);
-            const rendered = this.browserRenderer.render(layout, {selectedId, zoom: this.zoom});
+            const rendered = this.browserRenderer.render(layout, {
+                selectedId,
+                zoom: this.zoom,
+                previewValues: this.editorState.isDirty() ? new Map() : this.previewValues,
+            });
             const rows = rendered.rows;
             const selected = selectedId ? locations.get(selectedId) : null;
             const effectiveStyle = selected ? this.styleResolver.resolve(layout, selectedId) : null;
@@ -676,6 +699,7 @@ define([
             const rendered = this.browserRenderer.render(layout, {
                 selectedId: this.editorState.getSelectedId(),
                 zoom: this.zoom,
+                previewValues: this.editorState.isDirty() ? new Map() : this.previewValues,
             });
             const rows = new Map(rendered.rows.map(row => [row.id, row]));
             this.element.querySelectorAll('[data-rich-content-id]').forEach(host => {
@@ -699,7 +723,20 @@ define([
                 }
                 host.removeAttribute('aria-label');
                 if (node.type === 'static-text') host.textContent = node.text;
-                else RichText.render(host, node.content);
+                else RichText.render(host, node.content, document, identity => {
+                    const preview = this.editorState.isDirty() ? null :
+                        this.previewValues.get(JSON.stringify(identity || {}));
+                    if (!preview) return null;
+                    let text = preview.value;
+                    if (preview.state === 'forbidden') text = '[restricted]';
+                    else if (preview.state === 'missing') text = '[missing]';
+                    else if (preview.state === 'invalid') text = '[invalid]';
+                    else if (Array.isArray(text)) text = text.join(', ');
+                    else if (text && typeof text === 'object') {
+                        text = preview.type === 'currency' ? `${text.amount} ${text.currency}` : '[invalid]';
+                    }
+                    return {text: String(text ?? '[missing]'), state: preview.state, origin: preview.origin};
+                });
             });
         }
 
@@ -1193,6 +1230,51 @@ define([
 
             this.zoom = normalized;
             this.reRender();
+        }
+
+        inputPreviewRecordId(event) {
+            this.previewRecordId = event.currentTarget.value.trim();
+            this.reRender();
+        }
+
+        actionPreviewSample() {
+            this.loadPreview('sample', null);
+        }
+
+        actionPreviewRecord() {
+            this.loadPreview('record', this.previewRecordId);
+        }
+
+        async loadPreview(mode, recordId) {
+            if (!this.editorState || this.editorState.isDirty() || this.previewStatus === 'loading') {
+                return;
+            }
+
+            this.previewStatus = 'loading';
+            await this.reRender();
+
+            try {
+                const result = await this.previewApi.load(
+                    this.model.id,
+                    this.model.get('revision'),
+                    mode,
+                    recordId,
+                );
+                const values = Array.isArray(result.values) ? result.values : [];
+                this.previewValues = new Map(values.map(value => [
+                    JSON.stringify(value.identity || {}),
+                    value,
+                ]));
+                this.previewMode = mode;
+                this.previewStatus = 'ready';
+            } catch (xhr) {
+                if (xhr) xhr.errorIsHandled = true;
+                this.previewValues = new Map();
+                this.previewMode = null;
+                this.previewStatus = 'error';
+            }
+
+            await this.reRender();
         }
 
         async actionSave() {

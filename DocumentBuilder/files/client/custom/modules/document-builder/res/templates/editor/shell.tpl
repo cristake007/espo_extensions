@@ -34,7 +34,9 @@
             <div class="btn-group" role="group" aria-label="{{translate 'editorActions' category='labels' scope='DocumentBuilderTemplate'}}">
                 <button type="button" class="btn btn-default btn-sm" data-action="undo" {{#unless canUndo}}disabled{{/unless}}>{{translate 'Undo' category='actions' scope='DocumentBuilderTemplate'}}</button>
                 <button type="button" class="btn btn-default btn-sm" data-action="redo" {{#unless canRedo}}disabled{{/unless}}>{{translate 'Redo' category='actions' scope='DocumentBuilderTemplate'}}</button>
-                <button type="button" class="btn btn-default btn-sm" disabled>{{translate 'Preview' category='actions' scope='DocumentBuilderTemplate'}}</button>
+                <button type="button" class="btn btn-default btn-sm" data-action="previewSample" {{#unless canPreview}}disabled{{/unless}}>{{translate 'Sample Preview' category='actions' scope='DocumentBuilderTemplate'}}</button>
+                <input class="form-control input-sm" type="text" maxlength="64" value="{{previewRecordId}}" data-preview-record-id placeholder="{{translate 'Record ID' category='labels' scope='DocumentBuilderTemplate'}}" aria-label="{{translate 'Record ID' category='labels' scope='DocumentBuilderTemplate'}}">
+                <button type="button" class="btn btn-default btn-sm" data-action="previewRecord" {{#unless canPreviewRecord}}disabled{{/unless}}>{{translate 'Record Preview' category='actions' scope='DocumentBuilderTemplate'}}</button>
                 <button type="button" class="btn btn-primary btn-sm" data-action="save" aria-keyshortcuts="Control+S Meta+S" {{#unless canSave}}disabled{{/unless}}>
                     {{#if isSaving}}
                         <span class="fas fa-spinner fa-spin" aria-hidden="true"></span>
@@ -46,6 +48,10 @@
                 <button type="button" class="btn btn-success btn-sm" disabled>{{translate 'Publish' category='actions' scope='DocumentBuilderTemplate'}}</button>
             </div>
         </header>
+
+        {{#if previewLoading}}<div class="alert alert-info" role="status">{{translate 'editorPreviewLoading' category='messages' scope='DocumentBuilderTemplate'}}</div>{{/if}}
+        {{#if previewActive}}<div class="alert alert-success" role="status">{{translate 'editorPreviewActive' category='messages' scope='DocumentBuilderTemplate'}} · {{previewMode}}</div>{{/if}}
+        {{#if previewError}}<div class="alert alert-danger" role="alert">{{translate 'editorPreviewFailed' category='messages' scope='DocumentBuilderTemplate'}}</div>{{/if}}
 
         {{#if saveError}}
         <div class="alert alert-danger document-builder-editor__save-error" role="alert">

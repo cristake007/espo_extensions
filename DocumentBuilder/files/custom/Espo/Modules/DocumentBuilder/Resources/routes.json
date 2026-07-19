@@ -5,6 +5,11 @@
         "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PutTemplateDraft"
     },
     {
+        "route": "/DocumentBuilder/template/:id/preview",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PostTemplatePreview"
+    },
+    {
         "route": "/DocumentBuilder/template/:id/publish",
         "method": "post",
         "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PostTemplatePublish"

@@ -52,6 +52,10 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\PublicationAc
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\PublicationRecordAccess;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\PublicationStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\VariablePublicationValidator;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview\NoopPreviewRateLimit;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview\OrmPreviewTemplateStore;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview\PreviewRateLimit;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview\PreviewTemplateStore;
 
 final class Binding implements BindingProcessor
 {
@@ -94,6 +98,8 @@ final class Binding implements BindingProcessor
             ->bindImplementation(EntityRecordReader::class, OrmEntityRecordReader::class)
             ->bindImplementation(RelatedRecordReader::class, OrmRelatedRecordReader::class)
             ->bindImplementation(EntityResolutionAccess::class, AclEntityResolutionAccess::class)
+            ->bindImplementation(PreviewTemplateStore::class, OrmPreviewTemplateStore::class)
+            ->bindImplementation(PreviewRateLimit::class, NoopPreviewRateLimit::class)
             ->bindImplementation(
                 VariableReferenceValidator::class,
                 CompiledVariableReferenceValidator::class,

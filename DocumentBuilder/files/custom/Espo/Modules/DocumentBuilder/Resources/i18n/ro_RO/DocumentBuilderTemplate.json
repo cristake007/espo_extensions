@@ -143,7 +143,8 @@
         "Current User Name": "Numele utilizatorului curent",
         "Page Number": "Numărul paginii",
         "Page Count": "Numărul de pagini",
-        "Renderer": "Motor de randare"
+        "Renderer": "Motor de randare",
+        "Record ID": "ID înregistrare"
     },
     "actions": {
         "Open Editor": "Deschide editorul",
@@ -151,6 +152,8 @@
         "Undo": "Anulează",
         "Redo": "Refă",
         "Preview": "Previzualizează",
+        "Sample Preview": "Previzualizare exemplu",
+        "Record Preview": "Previzualizare înregistrare",
         "Publish": "Publică",
         "Duplicate": "Duplică",
         "Archive": "Arhivează",
@@ -178,6 +181,9 @@
         "editorInspectorPlaceholder": "Selectați un element pentru a-i inspecta proprietățile.",
         "editorUnsavedChanges": "Modificări nesalvate",
         "editorSaving": "Se salvează ciorna…",
+        "editorPreviewLoading": "Se încarcă datele permise pentru previzualizare…",
+        "editorPreviewActive": "Datele de previzualizare sunt active",
+        "editorPreviewFailed": "Datele nu au putut fi încărcate. Salvați modificările și verificați accesul la înregistrare.",
         "editorSaved": "Ciornă salvată",
         "editorReloading": "Se reîncarcă ciorna de pe server…",
         "editorReloaded": "Ciorna curentă de pe server a fost încărcată.",

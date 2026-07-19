@@ -143,7 +143,8 @@
         "Current User Name": "Current user name",
         "Page Number": "Page number",
         "Page Count": "Page count",
-        "Renderer": "Renderer"
+        "Renderer": "Renderer",
+        "Record ID": "Record ID"
     },
     "actions": {
         "Open Editor": "Open Editor",
@@ -151,6 +152,8 @@
         "Undo": "Undo",
         "Redo": "Redo",
         "Preview": "Preview",
+        "Sample Preview": "Sample Preview",
+        "Record Preview": "Record Preview",
         "Publish": "Publish",
         "Duplicate": "Duplicate",
         "Archive": "Archive",
@@ -178,6 +181,9 @@
         "editorInspectorPlaceholder": "Select an element to inspect its properties.",
         "editorUnsavedChanges": "Unsaved changes",
         "editorSaving": "Saving draft…",
+        "editorPreviewLoading": "Loading permitted preview data…",
+        "editorPreviewActive": "Preview data is active",
+        "editorPreviewFailed": "Preview data could not be loaded. Save changes and verify record access.",
         "editorSaved": "Draft saved",
         "editorReloading": "Reloading the server draft…",
         "editorReloaded": "The current server draft was loaded.",
