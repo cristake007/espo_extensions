@@ -57,6 +57,7 @@ assert.match(shell, /new DuplicateNodeCommand\(nodeId, null, this\.flowStructure
 assert.match(shell, /event\.key === 'Escape'[\s\S]*cancelFlowDrag\(\)/);
 assert.match(shell, /updateDropTargetCompatibility/);
 assert.match(css, /is-dragging[^}]*drop\.is-compatible/s);
-assert.match(css, /hover-toolbar[\s\S]*position:\s*absolute/);
+assert.match(canvas, /node\.selected[\s\S]*selectionToolbar/);
+assert.match(css, /selection-toolbar[\s\S]*position:\s*absolute/);
 
-console.log('Editor recovery 03 hover command and drag-state tests passed.');
+console.log('Editor recovery 03 selected command and drag-state tests passed.');

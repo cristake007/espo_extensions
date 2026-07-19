@@ -16,7 +16,6 @@ define(['document-builder:editor/content/rich-text'], RichText => {
                 host.insertBefore(empty, host.firstChild);
             }
 
-            if (!preview) host.append(this.hoverToolbar(documentRef, translate));
         }
 
         renderChildren(host, children, parentId, region, documentRef, translate, variableResolver, preview) {
@@ -52,6 +51,9 @@ define(['document-builder:editor/content/rich-text'], RichText => {
                 element.setAttribute('aria-keyshortcuts', 'ArrowUp ArrowDown Home End');
             }
             element.setAttribute('aria-label', translate(node.label, 'labels'));
+            if (!preview && node.selected) {
+                element.append(this.selectionToolbar(documentRef, node.id, translate));
+            }
 
             if (CONTAINER_TYPES.includes(node.type)) {
                 if (!preview) element.dataset.flowContainerDrop = '';
@@ -123,11 +125,10 @@ define(['document-builder:editor/content/rich-text'], RichText => {
             return target;
         }
 
-        hoverToolbar(documentRef, translate) {
+        selectionToolbar(documentRef, nodeId, translate) {
             const toolbar = documentRef.createElement('div');
-            toolbar.className = 'document-builder-editor__hover-toolbar';
-            toolbar.dataset.hoverToolbar = '';
-            toolbar.hidden = true;
+            toolbar.className = 'document-builder-editor__selection-toolbar';
+            toolbar.dataset.selectionToolbar = '';
             toolbar.setAttribute('role', 'toolbar');
             toolbar.setAttribute('aria-label', translate('Element Actions', 'labels'));
             [
@@ -139,9 +140,9 @@ define(['document-builder:editor/content/rich-text'], RichText => {
                 const button = documentRef.createElement('button');
                 const icon = documentRef.createElement('span');
                 button.type = 'button';
-                button.className = 'btn btn-default btn-xs document-builder-editor__hover-action';
+                button.className = 'btn btn-default btn-xs document-builder-editor__selection-action';
                 if (action) button.dataset.action = action;
-                button.dataset.hoverAction = '';
+                button.dataset.nodeId = nodeId;
                 button.draggable = draggable;
                 button.title = translate(label, 'actions');
                 button.setAttribute('aria-label', translate(label, 'actions'));

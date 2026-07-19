@@ -142,9 +142,6 @@ define([
             'dragleave [data-flow-drop], [data-flow-container-drop]': 'handleFlowDragLeave',
             'drop [data-flow-drop], [data-flow-container-drop]': 'handleFlowDrop',
             'dragend [draggable="true"]': 'handleFlowDragEnd',
-            'mouseover [data-document-canvas]': 'handleCanvasHover',
-            'focusin [data-document-canvas]': 'handleCanvasHover',
-            'mouseleave [data-document-canvas]': 'scheduleCanvasHoverHide',
         }
 
         setup() {
@@ -197,7 +194,6 @@ define([
             this.pdfProofLoading = false;
             this.pdfProofError = false;
             this.pendingCanvasScroll = null;
-            this.hoverHideTimer = null;
             this.entityCatalogue = [];
             this.entityCatalogueStatus = 'loading';
             this.metadataNodes = new Map();
@@ -1774,56 +1770,6 @@ define([
                 ));
         }
 
-        handleCanvasHover(event) {
-            const canvas = event.currentTarget;
-            const target = event.target;
-            if (!target || typeof target.closest !== 'function') return;
-            const toolbar = canvas.querySelector('[data-hover-toolbar]');
-            if (!toolbar) return;
-            this.cancelCanvasHoverHide();
-            if (target.closest('[data-hover-toolbar]')) return;
-            const node = target.closest('.document-builder-editor__flow-node');
-            if (!node) {
-                this.scheduleCanvasHoverHide();
-
-                return;
-            }
-
-            toolbar.hidden = false;
-            toolbar.dataset.nodeId = node.dataset.nodeId;
-            toolbar.querySelectorAll('[data-hover-action]').forEach(button => {
-                button.dataset.nodeId = node.dataset.nodeId;
-            });
-            const canvasRect = canvas.getBoundingClientRect();
-            const nodeRect = node.getBoundingClientRect();
-            const top = Math.max(0, nodeRect.top - canvasRect.top - toolbar.offsetHeight);
-            const left = Math.max(0, Math.min(
-                canvas.clientWidth - toolbar.offsetWidth,
-                nodeRect.right - canvasRect.left - toolbar.offsetWidth,
-            ));
-            toolbar.style.top = `${top}px`;
-            toolbar.style.left = `${left}px`;
-        }
-
-        scheduleCanvasHoverHide() {
-            this.cancelCanvasHoverHide();
-            this.hoverHideTimer = setTimeout(() => {
-                this.hoverHideTimer = null;
-                this.hideCanvasHover();
-            }, 180);
-        }
-
-        cancelCanvasHoverHide() {
-            if (this.hoverHideTimer === null) return;
-            clearTimeout(this.hoverHideTimer);
-            this.hoverHideTimer = null;
-        }
-
-        hideCanvasHover() {
-            const toolbar = this.element.querySelector('[data-hover-toolbar]');
-            if (toolbar) toolbar.hidden = true;
-        }
-
         changePageSetting(event) {
             if (!this.editorState || this.isSaveBusy()) {
                 return;
@@ -2333,7 +2279,6 @@ define([
             this.model.abortLastFetch();
             document.removeEventListener('keydown', this.keydownHandler);
             document.removeEventListener('selectionchange', this.selectionchangeHandler);
-            this.cancelCanvasHoverHide();
             this.dirtyGuard.dispose();
             this.releasePdfPreview();
 
