@@ -13,4 +13,6 @@ interface EntityResolutionAccess
     public function canReadRecord(Entity $record): bool;
 
     public function canReadField(string $entityType, string $field): bool;
+
+    public function canReadLink(string $entityType, string $link): bool;
 }

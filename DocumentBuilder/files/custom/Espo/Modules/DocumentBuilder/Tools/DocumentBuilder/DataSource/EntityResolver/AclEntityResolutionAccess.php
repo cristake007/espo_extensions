@@ -27,4 +27,9 @@ final readonly class AclEntityResolutionAccess implements EntityResolutionAccess
     {
         return $this->acl->checkField($entityType, $field, Table::ACTION_READ);
     }
+
+    public function canReadLink(string $entityType, string $link): bool
+    {
+        return $this->acl->checkLink($entityType, $link, Table::ACTION_READ);
+    }
 }

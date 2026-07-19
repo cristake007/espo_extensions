@@ -96,6 +96,11 @@ namespace {
         {
             return $this->fields[$field] ?? true;
         }
+
+        public function canReadLink(string $entityType, string $link): bool
+        {
+            return true;
+        }
     }
 
     final class TestReader implements EntityRecordReader

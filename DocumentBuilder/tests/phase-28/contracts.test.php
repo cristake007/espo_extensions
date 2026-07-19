@@ -21,7 +21,7 @@ Assert::contains("'deleted' => false", $reader, 'Deleted source records must be 
 Assert::contains('MAX_SELECT_FIELDS', $planner, 'The direct select plan has no hard bound.');
 Assert::contains('VariableValueState::Forbidden', $resolver, 'Restricted direct values need a non-leaking marker.');
 Assert::isFalse(str_contains($resolver . $planner, 'getMessage()'), 'Resolver errors must not relay internal or raw-value details.');
-Assert::contains('bindImplementation(EntityResolver::class, DirectEntityResolver::class)', $binding, 'The direct resolver is not available through dependency injection.');
+Assert::contains('bindImplementation(EntityResolver::class, EntityPathResolver::class)', $binding, 'The entity-path resolver is not available through dependency injection.');
 Assert::contains('bindImplementation(EntityRecordReader::class, OrmEntityRecordReader::class)', $binding, 'The bounded ORM reader is not bound.');
 Assert::contains('bindImplementation(EntityResolutionAccess::class, AclEntityResolutionAccess::class)', $binding, 'The resolution ACL adapter is not bound.');
 
