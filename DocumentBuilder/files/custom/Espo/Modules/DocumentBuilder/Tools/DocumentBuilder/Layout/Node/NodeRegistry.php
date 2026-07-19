@@ -43,6 +43,9 @@ final readonly class NodeRegistry
             new NodeDefinition(NodeKind::Element, 'heading', [Capability::FlowLayout]),
             new NodeDefinition(NodeKind::Element, 'static-text', [Capability::FlowLayout]),
             new NodeDefinition(NodeKind::Element, 'paragraph', [Capability::FlowLayout]),
+            new NodeDefinition(NodeKind::Element, 'divider', [Capability::FlowLayout]),
+            new NodeDefinition(NodeKind::Element, 'spacer', [Capability::FlowLayout]),
+            new NodeDefinition(NodeKind::Element, 'page-break', [Capability::FlowLayout]),
         );
     }
 }

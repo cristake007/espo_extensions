@@ -68,6 +68,9 @@
                     <button type="button" class="document-builder-editor__library-item" data-action="addHeading" data-library-type="heading" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Heading' category='labels' scope='DocumentBuilderTemplate'}}</button>
                     <button type="button" class="document-builder-editor__library-item" data-action="addStaticText" data-library-type="static-text" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Static Text' category='labels' scope='DocumentBuilderTemplate'}}</button>
                     <button type="button" class="document-builder-editor__library-item" data-action="addParagraph" data-library-type="paragraph" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Paragraph' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addDivider" data-library-type="divider" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Divider' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addSpacer" data-library-type="spacer" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Spacer' category='labels' scope='DocumentBuilderTemplate'}}</button>
+                    <button type="button" class="document-builder-editor__library-item" data-action="addPageBreak" data-library-type="page-break" draggable="true" aria-disabled="{{#if canAddFlowContainer}}false{{else}}true{{/if}}">{{translate 'Page Break' category='labels' scope='DocumentBuilderTemplate'}}</button>
                 </section>
                 <section class="document-builder-editor__panel">
                     <h3>{{translate 'Variables' category='labels' scope='DocumentBuilderTemplate'}}</h3>
@@ -97,6 +100,9 @@
                                 {{#if isHeading}}<div class="document-builder-editor__content document-builder-editor__content--heading" data-rich-content-id="{{id}}"></div>{{/if}}
                                 {{#if isStaticText}}<div class="document-builder-editor__content" data-rich-content-id="{{id}}"></div>{{/if}}
                                 {{#if isParagraph}}<div class="document-builder-editor__content document-builder-editor__content--paragraph" data-rich-content-id="{{id}}"></div>{{/if}}
+                                {{#if isDivider}}<div class="document-builder-editor__divider document-builder-editor__divider--{{dividerOrientation}}" style="{{dividerStyle}}" aria-hidden="true"></div>{{/if}}
+                                {{#if isSpacer}}<div class="document-builder-editor__spacer-marker" aria-label="{{translate 'Spacer' category='labels' scope='DocumentBuilderTemplate'}}"></div>{{/if}}
+                                {{#if isPageBreak}}<div class="document-builder-editor__page-break" role="separator"><span>{{translate 'Manual Page Break' category='labels' scope='DocumentBuilderTemplate'}}</span></div>{{/if}}
                                 {{#if canContain}}
                                 <div class="document-builder-editor__drop document-builder-editor__drop--inside" data-flow-drop="inside" data-drop-parent="{{id}}" data-drop-index="" aria-label="{{translate 'Drop Inside' category='labels' scope='DocumentBuilderTemplate'}}"></div>
                                 {{/if}}
@@ -128,6 +134,21 @@
                     <button type="button" class="btn btn-default" data-action="moveFlowDown">{{translate 'Move Down' category='actions' scope='DocumentBuilderTemplate'}}</button>
                     <button type="button" class="btn btn-danger" data-action="removeFlowNode">{{translate 'Remove'}}</button>
                 </div>
+                {{#if selectedFlowNode.isBasicFlow}}
+                {{#if selectedFlowNode.isDivider}}
+                <div class="form-group"><label>{{translate 'Orientation' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-basic-flow-setting="orientation"><option value="horizontal" {{#if selectedFlowNode.horizontal}}selected{{/if}}>Horizontal</option><option value="vertical" {{#if selectedFlowNode.vertical}}selected{{/if}}>Vertical</option></select></label></div>
+                <div class="form-group"><label>{{translate 'Line Style' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-basic-flow-setting="style"><option value="solid" {{#if selectedFlowNode.solid}}selected{{/if}}>Solid</option><option value="dashed" {{#if selectedFlowNode.dashed}}selected{{/if}}>Dashed</option><option value="dotted" {{#if selectedFlowNode.dotted}}selected{{/if}}>Dotted</option><option value="double" {{#if selectedFlowNode.double}}selected{{/if}}>Double</option></select></label></div>
+                <div class="form-group"><label>{{translate 'Color' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="color" value="{{selectedFlowNode.color}}" data-basic-flow-setting="color"></label></div>
+                <div class="document-builder-editor__settings-grid">
+                    <label>{{translate 'Thickness (mm)' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0.1" max="20" step="0.1" value="{{selectedFlowNode.thickness.value}}" data-basic-flow-setting="thickness"></label>
+                    <label>{{translate 'Length (mm)' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="1" max="2000" step="0.1" value="{{selectedFlowNode.length.value}}" data-basic-flow-setting="length"></label>
+                </div>
+                {{/if}}
+                {{#if selectedFlowNode.isSpacer}}
+                <div class="form-group"><label>{{translate 'Height (mm)' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0.1" max="500" step="0.1" value="{{selectedFlowNode.height.value}}" data-basic-flow-setting="height"></label></div>
+                {{/if}}
+                {{#if selectedFlowNode.isPageBreak}}<p class="text-muted">{{translate 'Page Break Help' category='messages' scope='DocumentBuilderTemplate'}}</p>{{/if}}
+                {{else}}
                 {{#if selectedFlowNode.isContent}}
                 <div class="form-group"><label>{{translate 'Content' category='labels' scope='DocumentBuilderTemplate'}}<textarea class="form-control" maxlength="10000" rows="8" data-content-setting="text">{{selectedFlowNode.plainText}}</textarea></label></div>
                 {{#unless selectedFlowNode.isStaticText}}
@@ -164,6 +185,7 @@
                 <div class="form-group"><label>{{translate 'Minimum Height (mm)' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="2000" step="0.1" value="{{selectedFlowNode.minHeight.value}}" data-flow-setting="minHeight"></label></div>
                 <div class="checkbox"><label><input type="checkbox" data-flow-setting="keepTogether" {{#if selectedFlowNode.keepTogether}}checked{{/if}}> {{translate 'Keep Together' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
                 {{#if selectedFlowNode.isSection}}<div class="checkbox"><label><input type="checkbox" data-flow-setting="startNewPage" {{#if selectedFlowNode.startNewPage}}checked{{/if}}> {{translate 'Start New Page' category='labels' scope='DocumentBuilderTemplate'}}</label></div>{{/if}}
+                {{/if}}
                 {{/if}}
                 {{else}}
                 <h3>{{translate 'Page Settings' category='labels' scope='DocumentBuilderTemplate'}}</h3>

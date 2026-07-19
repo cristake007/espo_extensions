@@ -437,6 +437,7 @@ final readonly class LayoutValidator
 
         $this->validateFlowNode($node, $kind, $path, $elementId, $errors);
         $this->validateContentNode($node, $kind, $path, $elementId, $errors);
+        $this->validateBasicFlowElement($node, $kind, $path, $elementId, $errors);
 
         if (!array_key_exists('children', $node)) {
             return;
@@ -535,7 +536,7 @@ final readonly class LayoutValidator
             return;
         }
 
-        if ($kind !== NodeKind::Element) {
+        if ($kind !== NodeKind::Element || !$this->isFlowChildPath($path)) {
             $this->add($errors, 'content.parent', "$path/type", $elementId);
         }
 
@@ -567,6 +568,95 @@ final readonly class LayoutValidator
         if (!in_array($node['alignment'] ?? null, ['start', 'center', 'end', 'justify'], true)) {
             $this->add($errors, 'paragraph.alignment', "$path/alignment", $elementId);
         }
+    }
+
+    /** @param array<string, mixed> $node @param list<ValidationError> $errors */
+    private function validateBasicFlowElement(
+        array $node,
+        NodeKind $kind,
+        string $path,
+        ?string $elementId,
+        array &$errors,
+    ): void {
+        $type = $node['type'] ?? null;
+
+        if (!in_array($type, ['divider', 'spacer', 'page-break'], true)) {
+            return;
+        }
+
+        if ($kind !== NodeKind::Element || !$this->isFlowChildPath($path)) {
+            $this->add($errors, 'flowElement.parent', "$path/type", $elementId);
+        }
+
+        if ($type === 'page-break') {
+            $this->rejectUnknownKeys($node, ['id', 'type'], $path, $errors);
+
+            return;
+        }
+
+        if ($type === 'spacer') {
+            $this->rejectUnknownKeys($node, ['id', 'type', 'height'], $path, $errors);
+            $this->validateBoundedMillimetres(
+                $node['height'] ?? null, 0.1, 500.0, "$path/height", 'spacer.height', $elementId, $errors,
+            );
+
+            return;
+        }
+
+        $this->rejectUnknownKeys(
+            $node,
+            ['id', 'type', 'orientation', 'style', 'color', 'thickness', 'length'],
+            $path,
+            $errors,
+        );
+
+        if (!in_array($node['orientation'] ?? null, ['horizontal', 'vertical'], true)) {
+            $this->add($errors, 'divider.orientation', "$path/orientation", $elementId);
+        }
+
+        if (!in_array($node['style'] ?? null, ['solid', 'dashed', 'dotted', 'double'], true)) {
+            $this->add($errors, 'divider.style', "$path/style", $elementId);
+        }
+
+        if (!is_string($node['color'] ?? null) || preg_match('/^#[0-9A-Fa-f]{6}$/D', $node['color']) !== 1) {
+            $this->add($errors, 'value.color', "$path/color", $elementId);
+        }
+
+        $this->validateBoundedMillimetres(
+            $node['thickness'] ?? null, 0.1, 20.0, "$path/thickness", 'divider.thickness', $elementId, $errors,
+        );
+        $this->validateBoundedMillimetres(
+            $node['length'] ?? null, 1.0, 2000.0, "$path/length", 'divider.length', $elementId, $errors,
+        );
+    }
+
+    /** @param list<ValidationError> $errors */
+    private function validateBoundedMillimetres(
+        mixed $measurement,
+        float $minimum,
+        float $maximum,
+        string $path,
+        string $code,
+        ?string $elementId,
+        array &$errors,
+    ): void {
+        $this->validateMeasurement($measurement, Unit::Millimetre, $path, $errors);
+
+        if (!$this->isObject($measurement)) {
+            return;
+        }
+
+        $value = $measurement['value'] ?? null;
+
+        if ((!is_int($value) && !is_float($value)) || $value < $minimum || $value > $maximum) {
+            $this->add($errors, $code, "$path/value", $elementId);
+        }
+    }
+
+    private function isFlowChildPath(string $path): bool
+    {
+        return (str_starts_with($path, '/sections/') || str_starts_with($path, '/sections[')) &&
+            (str_contains($path, '/children/') || str_contains($path, '/children['));
     }
 
     /** @param list<ValidationError> $errors */

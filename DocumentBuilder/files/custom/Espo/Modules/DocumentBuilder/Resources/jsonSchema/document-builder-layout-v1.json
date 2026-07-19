@@ -192,9 +192,59 @@
                 "alignment": {"enum": ["start", "center", "end", "justify"]}
             }
         },
+        "divider": {
+            "type": "object", "additionalProperties": false,
+            "required": ["id", "type", "orientation", "style", "color", "thickness", "length"],
+            "properties": {
+                "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "divider"},
+                "orientation": {"enum": ["horizontal", "vertical"]},
+                "style": {"enum": ["solid", "dashed", "dotted", "double"]},
+                "color": {"$ref": "#/$defs/color"},
+                "thickness": {
+                    "type": "object", "additionalProperties": false,
+                    "required": ["value", "unit"],
+                    "properties": {
+                        "value": {"type": "number", "minimum": 0.1, "maximum": 20},
+                        "unit": {"const": "mm"}
+                    }
+                },
+                "length": {
+                    "type": "object", "additionalProperties": false,
+                    "required": ["value", "unit"],
+                    "properties": {
+                        "value": {"type": "number", "minimum": 1, "maximum": 2000},
+                        "unit": {"const": "mm"}
+                    }
+                }
+            }
+        },
+        "spacer": {
+            "type": "object", "additionalProperties": false,
+            "required": ["id", "type", "height"],
+            "properties": {
+                "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "spacer"},
+                "height": {
+                    "type": "object", "additionalProperties": false,
+                    "required": ["value", "unit"],
+                    "properties": {
+                        "value": {"type": "number", "minimum": 0.1, "maximum": 500},
+                        "unit": {"const": "mm"}
+                    }
+                }
+            }
+        },
+        "pageBreak": {
+            "type": "object", "additionalProperties": false,
+            "required": ["id", "type"],
+            "properties": {
+                "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "page-break"}
+            }
+        },
         "flowElement": {"oneOf": [
             {"$ref": "#/$defs/flowContainer"}, {"$ref": "#/$defs/heading"},
-            {"$ref": "#/$defs/staticText"}, {"$ref": "#/$defs/paragraph"}
+            {"$ref": "#/$defs/staticText"}, {"$ref": "#/$defs/paragraph"},
+            {"$ref": "#/$defs/divider"}, {"$ref": "#/$defs/spacer"},
+            {"$ref": "#/$defs/pageBreak"}
         ]},
         "flowContainer": {
             "type": "object",

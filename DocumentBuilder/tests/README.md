@@ -54,6 +54,8 @@ node tests/phase-19/flow.test.js
 php tests/phase-19/server-validation.test.php
 node tests/phase-20/content.test.js
 php tests/phase-20/server-validation.test.php
+node tests/phase-21/elements.test.js
+php tests/phase-21/server-validation.test.php
 ```
 
 Package inventory is checked separately after building the extension ZIP:
@@ -75,9 +77,10 @@ php tests/phase-17/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-18/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-19/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-20/package-inventory.test.php dist/document-builder-1.0.0.zip
+php tests/phase-21/package-inventory.test.php dist/document-builder-1.0.0.zip
 ```
 
-Phase 15–20 runtime validation remains pending until an approved non-production EspoCRM 10.0.0 instance is provided. Install the rebuilt ZIP there, clear cache, run Administration > Rebuild, then exercise editor entry, save/reload/conflict protection, page settings, flow drag/drop, restricted rich-text paste and formatting, inline-variable placeholders, and literal XSS payload display as inert text. Never use `/opt/crm.cursurituv.ro` for these checks.
+Phase 15–21 runtime validation remains pending until an approved non-production EspoCRM 10.0.0 instance is provided. Install the rebuilt ZIP there, clear cache, run Administration > Rebuild, then exercise editor entry, save/reload/conflict protection, page settings, flow drag/drop, restricted rich-text paste and formatting, inline-variable placeholders, divider/spacer/page-break rendering and reordering, and literal XSS payload display as inert text. Never use `/opt/crm.cursurituv.ro` for these checks.
 
 Phase 14 runtime validation requires an approved non-production EspoCRM 10.0.0 instance. After install, Clear Cache and run Administration > Rebuild. Duplicate a marked template and verify the copy is a revision-zero draft with the design/source/assignment projection but no published versions or generation history. Archive a published template and verify it becomes inactive while its version panel and immutable records remain intact. Create a draft from both the current and an older published version, verify revision increment and restored layout/source summaries, then confirm every historical version is byte-for-byte unchanged. Exercise stale revisions and users lacking design, publish, record-edit, or version-read access. Confirm normal and mass hard-delete remain unavailable. Generated-document navigation is intentionally deferred until the `DocumentBuilderDocument` scope is introduced in Phase 36 and its template workflow in Phase 38. Never use the production path.
 

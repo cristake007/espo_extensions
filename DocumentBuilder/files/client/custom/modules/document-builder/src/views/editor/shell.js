@@ -54,6 +54,9 @@ define([
             'click [data-action="addHeading"]': 'actionAddContent',
             'click [data-action="addStaticText"]': 'actionAddContent',
             'click [data-action="addParagraph"]': 'actionAddContent',
+            'click [data-action="addDivider"]': 'actionAddContent',
+            'click [data-action="addSpacer"]': 'actionAddContent',
+            'click [data-action="addPageBreak"]': 'actionAddContent',
             'click [data-action="selectFlowNode"]': 'actionSelectFlowNode',
             'click [data-action="selectBreadcrumb"]': 'actionSelectFlowNode',
             'click [data-action="removeFlowNode"]': 'actionRemoveFlowNode',
@@ -61,6 +64,7 @@ define([
             'click [data-action="moveFlowDown"]': 'actionMoveFlowDown',
             'change [data-flow-setting]': 'changeFlowSetting',
             'change [data-content-setting]': 'changeContentSetting',
+            'change [data-basic-flow-setting]': 'changeBasicFlowSetting',
             'paste [data-content-setting="text"]': 'pasteContentText',
             'click [data-rich-mark]': 'actionToggleRichMark',
             'change [data-rich-color]': 'changeRichColor',
@@ -147,6 +151,12 @@ define([
                 const px = value => this.pageGeometry.millimetresToPixels(value, this.zoom);
                 const containerLength = location.container.length;
                 const flowStyle = [row.depthStyle];
+                const dividerOrientation = row.orientation === 'vertical' ? 'vertical' : 'horizontal';
+                const dividerLineStyle = ['solid', 'dashed', 'dotted', 'double'].includes(row.style) ?
+                    row.style : 'solid';
+                const dividerColor = /^#[0-9A-Fa-f]{6}$/.test(row.color || '') ? row.color : '#666666';
+                const bounded = (value, minimum, maximum, fallback) =>
+                    Number.isFinite(value) && value >= minimum && value <= maximum ? value : fallback;
 
                 if (row.canContain) flowStyle.push(
                     `--document-builder-margin-left: ${px(row.margin.left.value)}px`,
@@ -156,12 +166,25 @@ define([
                     `padding: ${px(row.padding.top.value)}px ${px(row.padding.right.value)}px ` +
                         `${px(row.padding.bottom.value)}px ${px(row.padding.left.value)}px`,
                 );
+                if (row.isSpacer) flowStyle.push(
+                    `height: ${px(bounded(row.height?.value, 0.1, 500, 10))}px`,
+                );
 
                 return {
                     ...row,
                     canMoveUp: location.index > 0,
                     canMoveDown: location.index < containerLength - 1,
                     flowStyle: flowStyle.join('; '),
+                    dividerOrientation,
+                    dividerStyle: row.isDivider ? (dividerOrientation === 'horizontal' ? [
+                        `width: ${px(bounded(row.length?.value, 1, 2000, 100))}px`,
+                        `border-top: ${px(bounded(row.thickness?.value, 0.1, 20, 0.5))}px ` +
+                            `${dividerLineStyle} ${dividerColor}`,
+                    ] : [
+                        `height: ${px(bounded(row.length?.value, 1, 2000, 100))}px`,
+                        `border-left: ${px(bounded(row.thickness?.value, 0.1, 20, 0.5))}px ` +
+                            `${dividerLineStyle} ${dividerColor}`,
+                    ]).join('; ') : '',
                 };
             });
             const selected = selectedId ? locations.get(selectedId) : null;
@@ -174,12 +197,23 @@ define([
                     label: ({
                         'flow-section': 'Flow Section', 'flow-container': 'Flow Container',
                         heading: 'Heading', 'static-text': 'Static Text', paragraph: 'Paragraph',
+                        divider: 'Divider', spacer: 'Spacer', 'page-break': 'Page Break',
                     })[selected.node.type],
                     isSection: selected.node.type === 'flow-section',
                     isContainer: selected.node.type === 'flow-container',
                     isHeading: selected.node.type === 'heading',
                     isStaticText: selected.node.type === 'static-text',
                     isParagraph: selected.node.type === 'paragraph',
+                    isDivider: selected.node.type === 'divider',
+                    isSpacer: selected.node.type === 'spacer',
+                    isPageBreak: selected.node.type === 'page-break',
+                    isBasicFlow: ['divider', 'spacer', 'page-break'].includes(selected.node.type),
+                    horizontal: selected.node.orientation === 'horizontal',
+                    vertical: selected.node.orientation === 'vertical',
+                    solid: selected.node.style === 'solid',
+                    dashed: selected.node.style === 'dashed',
+                    dotted: selected.node.style === 'dotted',
+                    double: selected.node.style === 'double',
                     isContent: ['heading', 'static-text', 'paragraph'].includes(selected.node.type),
                     plainText: selected.node.type === 'static-text' ? selected.node.text :
                         RichText.toPlainText(selected.node.content),
@@ -394,6 +428,32 @@ define([
             else if (input.dataset.contentSetting === 'alignment') patch.alignment = input.value;
             else if (input.dataset.contentSetting === 'keepWithNext') patch.keepWithNext = input.checked;
             else return;
+            this.executeCommand(new UpdateNodeCommand(location.node.id, patch));
+        }
+
+        changeBasicFlowSetting(event) {
+            const location = this.selectedContentNode();
+            if (!location || this.isSaveBusy()) return;
+            const input = event.currentTarget;
+            const setting = input.dataset.basicFlowSetting;
+            const patch = {};
+
+            if (setting === 'orientation' && ['horizontal', 'vertical'].includes(input.value)) {
+                patch.orientation = input.value;
+            } else if (setting === 'style' && ['solid', 'dashed', 'dotted', 'double'].includes(input.value)) {
+                patch.style = input.value;
+            } else if (setting === 'color' && /^#[0-9A-Fa-f]{6}$/.test(input.value)) {
+                patch.color = input.value;
+            } else if (['thickness', 'length', 'height'].includes(setting)) {
+                const value = Number(input.value);
+                const bounds = {thickness: [0.1, 20], length: [1, 2000], height: [0.1, 500]};
+
+                if (!Number.isFinite(value) || value < bounds[setting][0] || value > bounds[setting][1]) {
+                    return;
+                }
+                patch[setting] = {value, unit: 'mm'};
+            } else return;
+
             this.executeCommand(new UpdateNodeCommand(location.node.id, patch));
         }
 

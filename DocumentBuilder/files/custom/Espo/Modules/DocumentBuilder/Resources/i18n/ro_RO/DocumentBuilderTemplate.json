@@ -45,6 +45,15 @@
         "Heading Level": "Nivel titlu",
         "Keep With Next": "Păstrează cu următorul",
         "Alignment": "Aliniere",
+        "Divider": "Separator",
+        "Spacer": "Spațiu",
+        "Page Break": "Întrerupere de pagină",
+        "Manual Page Break": "Întrerupere manuală de pagină",
+        "Line Style": "Stil linie",
+        "Color": "Culoare",
+        "Thickness (mm)": "Grosime (mm)",
+        "Length (mm)": "Lungime (mm)",
+        "Height (mm)": "Înălțime (mm)",
         "Drop Inside": "Plasează în interior",
         "Drop Section": "Plasează secțiunea",
         "Hierarchy": "Ierarhie",
@@ -73,6 +82,7 @@
         "Move Down": "Mută în jos"
     },
     "messages": {
+        "Page Break Help": "Conținutul de după acest marcaj începe pe o pagină nouă.",
         "editorLoading": "Se încarcă editorul ciornei…",
         "editorAccessDenied": "Nu aveți permisiunea de a edita acest șablon.",
         "editorDraftOnly": "Numai șabloanele ciornă pot fi deschise în editor.",

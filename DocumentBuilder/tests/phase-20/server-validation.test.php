@@ -29,7 +29,8 @@ $layout['sections'] = [[
         ],'margin'=>$box(),'padding'=>$box(),'minHeight'=>['value'=>10,'unit'=>'mm'],'keepTogether'=>false,
     ]],'margin'=>$box(),'padding'=>$box(),'minHeight'=>['value'=>20,'unit'=>'mm'],'keepTogether'=>false,'startNewPage'=>false,
 ]];
-Assert::isTrue($validator->validate($layout)->isValid(), 'Literal markup represented as text must remain valid and escaped at rendering.');
+$initialResult = $validator->validate($layout);
+Assert::isTrue($initialResult->isValid(), 'Literal markup represented as text must remain valid and escaped at rendering: ' . implode(',', array_map(fn ($error) => $error->code(), $initialResult->errors())));
 $codes = fn ($value) => array_map(fn ($error) => $error->code(), $validator->validate($value)->errors());
 foreach ([
     ['key'=>'html','value'=>'<b>raw</b>','code'=>'property.unknown'],
@@ -56,4 +57,6 @@ $normalized=$normalizer->normalizeLayout($dirty);
 Assert::same("a\nb", $normalized['sections'][0]['children'][0]['children'][0]['content'][0]['text'], 'Server newline normalization failed.');
 Assert::same(['bold','underline'], $normalized['sections'][0]['children'][0]['children'][0]['content'][0]['marks'], 'Server mark canonicalization failed.');
 Assert::isTrue($validator->validate($normalized)->isValid(), 'Server-authoritative normalized content was rejected.');
+$bad=$layout;$bad['footer']=[$layout['sections'][0]['children'][0]['children'][0]];
+Assert::isTrue(in_array('content.parent',$codes($bad),true),'Content was accepted outside the flow hierarchy.');
 echo "Phase 20 server content validation, rejection, and normalization tests passed.\n";

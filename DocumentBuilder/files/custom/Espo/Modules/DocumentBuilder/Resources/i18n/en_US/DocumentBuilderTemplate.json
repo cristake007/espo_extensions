@@ -45,6 +45,15 @@
         "Heading Level": "Heading Level",
         "Keep With Next": "Keep With Next",
         "Alignment": "Alignment",
+        "Divider": "Divider",
+        "Spacer": "Spacer",
+        "Page Break": "Page Break",
+        "Manual Page Break": "Manual Page Break",
+        "Line Style": "Line Style",
+        "Color": "Color",
+        "Thickness (mm)": "Thickness (mm)",
+        "Length (mm)": "Length (mm)",
+        "Height (mm)": "Height (mm)",
         "Drop Inside": "Drop Inside",
         "Drop Section": "Drop Section",
         "Hierarchy": "Hierarchy",
@@ -73,6 +82,7 @@
         "Move Down": "Move Down"
     },
     "messages": {
+        "Page Break Help": "Content after this marker starts on a new page.",
         "editorLoading": "Loading the draft editor…",
         "editorAccessDenied": "You do not have permission to edit this template.",
         "editorDraftOnly": "Only draft templates can be opened in the editor.",

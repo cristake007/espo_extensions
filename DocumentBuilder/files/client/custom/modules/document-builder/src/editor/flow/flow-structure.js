@@ -6,6 +6,7 @@ define([
     const SECTION_TYPE = 'flow-section';
     const CONTAINER_TYPE = 'flow-container';
     const CONTENT_TYPES = Object.freeze(['heading', 'static-text', 'paragraph']);
+    const BASIC_TYPES = Object.freeze(['divider', 'spacer', 'page-break']);
     const EDGE_LIST = Object.freeze(['top', 'right', 'bottom', 'left']);
     const measurement = value => ({value, unit: 'mm'});
     const box = value => ({
@@ -41,6 +42,12 @@ define([
             if (type === 'paragraph') return {
                 type, content: [{type: 'text', text: 'Paragraph', marks: []}], alignment: 'start',
             };
+            if (type === 'divider') return {
+                type, orientation: 'horizontal', style: 'solid', color: '#666666',
+                thickness: measurement(0.5), length: measurement(100),
+            };
+            if (type === 'spacer') return {type, height: measurement(10)};
+            if (type === 'page-break') return {type};
 
             const common = {
                 type,
@@ -85,7 +92,7 @@ define([
                 return;
             }
 
-            if (![CONTAINER_TYPE, ...CONTENT_TYPES].includes(node.type) || !target.parentId) {
+            if (![CONTAINER_TYPE, ...CONTENT_TYPES, ...BASIC_TYPES].includes(node.type) || !target.parentId) {
                 throw new TypeError('Flow elements require a flow section or container parent.');
             }
 
@@ -144,10 +151,14 @@ define([
                     isHeading: node.type === 'heading',
                     isStaticText: node.type === 'static-text',
                     isParagraph: node.type === 'paragraph',
+                    isDivider: node.type === 'divider',
+                    isSpacer: node.type === 'spacer',
+                    isPageBreak: node.type === 'page-break',
                     canContain: [SECTION_TYPE, CONTAINER_TYPE].includes(node.type),
                     label: ({
                         [SECTION_TYPE]: 'Flow Section', [CONTAINER_TYPE]: 'Flow Container',
                         heading: 'Heading', 'static-text': 'Static Text', paragraph: 'Paragraph',
+                        divider: 'Divider', spacer: 'Spacer', 'page-break': 'Page Break',
                     })[node.type],
                 });
                 (node.children || []).forEach((child, childIndex) => {
@@ -171,6 +182,7 @@ define([
                     label: ({
                         [SECTION_TYPE]: 'Flow Section', [CONTAINER_TYPE]: 'Flow Container',
                         heading: 'Heading', 'static-text': 'Static Text', paragraph: 'Paragraph',
+                        divider: 'Divider', spacer: 'Spacer', 'page-break': 'Page Break',
                     })[location.node.type],
                     current: location.node.id === nodeId,
                 });
@@ -207,6 +219,25 @@ define([
                 });
             };
             const validateNode = (node, expectedType, depth, path) => {
+                if (BASIC_TYPES.includes(expectedType)) {
+                    elements++;
+                    if (!Json.isPlainObject(node) || node.type !== expectedType ||
+                        !/^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(node.id || '')) {
+                        errors.push(`${path}.structure`); return;
+                    }
+                    if (expectedType === 'page-break') {
+                        if (Object.keys(node).some(key => !['id', 'type'].includes(key))) errors.push(`${path}.structure`);
+                    } else if (expectedType === 'spacer') {
+                        if (Object.keys(node).some(key => !['id', 'type', 'height'].includes(key)) ||
+                            !isMeasurement(node.height) || node.height.value < 0.1 || node.height.value > 500) errors.push(`${path}.values`);
+                    } else if (Object.keys(node).some(key => !['id', 'type', 'orientation', 'style', 'color', 'thickness', 'length'].includes(key)) ||
+                        !['horizontal', 'vertical'].includes(node.orientation) ||
+                        !['solid', 'dashed', 'dotted', 'double'].includes(node.style) ||
+                        !/^#[0-9A-Fa-f]{6}$/.test(node.color || '') ||
+                        !isMeasurement(node.thickness) || node.thickness.value < 0.1 || node.thickness.value > 20 ||
+                        !isMeasurement(node.length) || node.length.value < 1) errors.push(`${path}.values`);
+                    return;
+                }
                 if (CONTENT_TYPES.includes(expectedType)) {
                     elements++;
                     if (!Json.isPlainObject(node) || node.type !== expectedType ||
