@@ -1,0 +1,15 @@
+{
+    "schemaVersion": 1,
+    "sections": [
+        {
+            "id": "sectionOne",
+            "type": "flow",
+            "children": [
+                {
+                    "id": "elementOne",
+                    "type": "raw-html"
+                }
+            ]
+        }
+    ]
+}

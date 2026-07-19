@@ -9,6 +9,8 @@
         {"path": "acl/cases.json", "kind": "acl-cases", "license": "original-project-test-data"},
         {"path": "layout/phase-08-cases.json", "kind": "layout-contract-cases", "license": "original-project-test-data"},
         {"path": "layout/phase-08-default.json", "kind": "canonical-layout", "license": "original-project-test-data"},
+        {"path": "layout/phase-09-invalid-locality.json", "kind": "invalid-layout", "license": "original-project-test-data"},
+        {"path": "layout/phase-09-partial.json", "kind": "partial-layout", "license": "original-project-test-data"},
         {"path": "media/media-cases.json", "kind": "media-cases", "license": "original-project-test-data"},
         {"path": "media/safe-reference-free.svg", "kind": "media", "license": "original-project-test-data"},
         {"path": "metadata/entityDefs/Account.json", "kind": "entity-metadata", "license": "original-project-test-data"},

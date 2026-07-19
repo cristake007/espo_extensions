@@ -49,6 +49,16 @@ final readonly class CapabilityRegistry
     }
 
     /** @param list<Capability> $capabilities */
+    public function requireUsable(array $capabilities): void
+    {
+        foreach ($capabilities as $capability) {
+            if ($this->status($capability) === CapabilityStatus::SchemaOnly) {
+                throw new CapabilityUnavailable($capability);
+            }
+        }
+    }
+
+    /** @param list<Capability> $capabilities */
     public function requirePublishable(array $capabilities): void
     {
         foreach ($capabilities as $capability) {
