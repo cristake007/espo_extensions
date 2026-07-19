@@ -71,7 +71,7 @@ final readonly class HtmlRenderer
     /** @param array<string, mixed> $page */
     private function pageCss(array $page): string
     {
-        $size = in_array($page['size'] ?? null, ['A4','Letter','Legal'], true) ? $page['size'] : 'A4';
+        $size = in_array($page['size'] ?? null, ['A4','Letter','Legal'], true) ? $page['size'] : null;
         $orientation = ($page['orientation'] ?? null) === 'landscape' ? 'landscape' : 'portrait';
         $margins = $page['margins'] ?? [];
         $parts = [];
@@ -81,7 +81,8 @@ final readonly class HtmlRenderer
                 rtrim(rtrim(number_format((float) $value, 4, '.', ''), '0'), '.') . 'mm' : '0mm';
         }
 
-        return '@page{size:' . $size . ' ' . $orientation . ';margin:' . implode(' ', $parts) . ';}';
+        return '@page{' . ($size !== null ? 'size:' . $size . ' ' . $orientation . ';' : '') .
+            'margin:' . implode(' ', $parts) . ';}';
     }
 
     private function language(mixed $locale): string

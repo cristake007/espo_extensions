@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout;
 
-final readonly class StyleResolver
+final readonly class StyleResolver implements ResolvedStyleProvider
 {
     /** @param list<string> $allowedFonts */
     public function __construct(private array $allowedFonts, private string $fallbackFont = 'DejaVu Sans') {}

@@ -17,7 +17,7 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Condition\Conditio
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Condition\ConditionTarget;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Condition\RequiredVariableFailure;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Condition\VisibilityCondition;
-use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\StyleResolver;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\ResolvedStyleProvider;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Tree\DocumentValue;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Tree\DocumentWarning;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Tree\ResolvedDocument;
@@ -30,7 +30,7 @@ final readonly class DocumentTreeBuilder
     public function __construct(
         private VariableFormatter $formatter,
         private ConditionEvaluator $conditions,
-        private StyleResolver $styles,
+        private ResolvedStyleProvider $styles,
     ) {}
 
     /**

@@ -40,6 +40,8 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\AclTemplateLife
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\OrmTemplateLifecycleStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\TemplateLifecycleAccess;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\TemplateLifecycleStore;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\ConfiguredStyleResolver;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\ResolvedStyleProvider;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\AclPublicationRecordAccess;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\CurrentUserPublicationActor;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\DataSourcePublicationValidator;
@@ -52,10 +54,16 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\PublicationAc
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\PublicationRecordAccess;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\PublicationStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\VariablePublicationValidator;
-use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview\NoopPreviewRateLimit;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview\FilePdfPreviewConcurrency;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview\FilePreviewRateLimit;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview\OrmPreviewTemplateStore;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview\PdfPreviewConcurrency;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview\PreviewRateLimit;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Preview\PreviewTemplateStore;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Pdf\DompdfEngineFactory;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Pdf\PdfEngineFactory;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Pdf\RenderWorkspaceFactory;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Pdf\SystemRenderWorkspaceFactory;
 
 final class Binding implements BindingProcessor
 {
@@ -99,7 +107,11 @@ final class Binding implements BindingProcessor
             ->bindImplementation(RelatedRecordReader::class, OrmRelatedRecordReader::class)
             ->bindImplementation(EntityResolutionAccess::class, AclEntityResolutionAccess::class)
             ->bindImplementation(PreviewTemplateStore::class, OrmPreviewTemplateStore::class)
-            ->bindImplementation(PreviewRateLimit::class, NoopPreviewRateLimit::class)
+            ->bindImplementation(PreviewRateLimit::class, FilePreviewRateLimit::class)
+            ->bindImplementation(PdfPreviewConcurrency::class, FilePdfPreviewConcurrency::class)
+            ->bindImplementation(PdfEngineFactory::class, DompdfEngineFactory::class)
+            ->bindImplementation(RenderWorkspaceFactory::class, SystemRenderWorkspaceFactory::class)
+            ->bindImplementation(ResolvedStyleProvider::class, ConfiguredStyleResolver::class)
             ->bindImplementation(
                 VariableReferenceValidator::class,
                 CompiledVariableReferenceValidator::class,

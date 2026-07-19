@@ -33,6 +33,7 @@ foreach (['ConditionMode.php', 'ConditionTarget.php', 'ConditionOperator.php', '
     'RequiredVariableFailure.php'] as $file) {
     require "$module/Layout/Condition/$file";
 }
+require "$module/Layout/ResolvedStyleProvider.php";
 require "$module/Layout/StyleResolver.php";
 foreach (['DocumentValue.php', 'DocumentWarning.php', 'ResolvedInline.php', 'ResolvedNode.php',
     'ResolvedDocument.php'] as $file) {

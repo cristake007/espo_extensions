@@ -10,6 +10,11 @@
         "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PostTemplatePreview"
     },
     {
+        "route": "/DocumentBuilder/template/:id/preview-pdf",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PostTemplatePdfPreview"
+    },
+    {
         "route": "/DocumentBuilder/template/:id/publish",
         "method": "post",
         "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PostTemplatePublish"
