@@ -53,6 +53,36 @@
         </div>
         {{/if}}
 
+        <section class="document-builder-editor__validation {{#if validationBlocking}}has-errors{{else}}{{#if hasValidationIssues}}has-warnings{{else}}is-valid{{/if}}{{/if}}" aria-labelledby="document-builder-validation-title">
+            <h3 id="document-builder-validation-title">
+                <span class="fas {{#if validationBlocking}}fa-times-circle{{else}}{{#if hasValidationIssues}}fa-exclamation-triangle{{else}}fa-check-circle{{/if}}{{/if}}" aria-hidden="true"></span>
+                {{translate 'Validation' category='labels' scope='DocumentBuilderTemplate'}}
+            </h3>
+            <p id="document-builder-validation-summary" aria-live="polite">
+                {{validationErrorCount}} {{translate 'Errors' category='labels' scope='DocumentBuilderTemplate'}},
+                {{validationWarningCount}} {{translate 'Warnings' category='labels' scope='DocumentBuilderTemplate'}}.
+                {{#if validationBlocking}}{{translate 'editorValidationBlocksSave' category='messages' scope='DocumentBuilderTemplate'}}{{/if}}
+            </p>
+            {{#if hasValidationIssues}}
+            <ul class="document-builder-editor__validation-list">
+                {{#each validationIssues}}
+                <li class="is-{{severity}}">
+                    <span class="document-builder-editor__severity">
+                        <span class="fas {{#if blocking}}fa-times-circle{{else}}fa-exclamation-triangle{{/if}}" aria-hidden="true"></span>
+                        {{severityText}}:
+                    </span>
+                    {{#if canFocus}}
+                    <button type="button" class="btn btn-link btn-xs" data-action="focusValidationIssue" data-node-id="{{nodeId}}">{{message}}</button>
+                    {{else}}
+                    <span>{{message}}</span>
+                    {{/if}}
+                    {{#if blocking}}<code>{{code}}</code>{{/if}}
+                </li>
+                {{/each}}
+            </ul>
+            {{/if}}
+        </section>
+
         <main class="document-builder-editor__workspace">
             <aside class="document-builder-editor__left" aria-label="{{translate 'editorLibrary' category='labels' scope='DocumentBuilderTemplate'}}">
                 <section class="document-builder-editor__panel">
@@ -78,7 +108,7 @@
                 </section>
             </aside>
 
-            <section class="document-builder-editor__canvas-host" aria-label="{{translate 'Canvas' category='labels' scope='DocumentBuilderTemplate'}}">
+            <section class="document-builder-editor__canvas-host" aria-label="{{translate 'Canvas' category='labels' scope='DocumentBuilderTemplate'}}" aria-describedby="document-builder-validation-summary">
                 <div class="document-builder-editor__canvas-toolbar" role="group" aria-label="{{translate 'Zoom' category='labels' scope='DocumentBuilderTemplate'}}">
                     <button type="button" class="btn btn-default btn-sm" data-action="zoomOut" aria-label="{{translate 'Zoom Out' category='actions' scope='DocumentBuilderTemplate'}}">−</button>
                     <output>{{zoom}}%</output>
@@ -92,10 +122,12 @@
                         <div class="document-builder-editor__flow-tree">
                             {{#each flowRows}}
                             <div class="document-builder-editor__drop" data-flow-drop="before" data-drop-region="{{region}}" data-drop-parent="{{parentId}}" data-drop-index="{{index}}" aria-hidden="true"></div>
-                            <article class="document-builder-editor__flow-node {{#if selected}}is-selected{{/if}}" style="{{flowStyle}}" data-node-id="{{id}}" draggable="true">
-                                <button type="button" class="document-builder-editor__flow-select" data-action="selectFlowNode" data-node-id="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}">
+                            {{#if startsPage}}<div class="document-builder-editor__page-flow-marker" role="separator"><span>{{translate 'Approximate Page' category='labels' scope='DocumentBuilderTemplate'}} {{pageNumber}}</span></div>{{/if}}
+                            <article class="document-builder-editor__flow-node {{#if selected}}is-selected{{/if}}" style="{{flowStyle}}" data-node-id="{{id}}" draggable="true" data-page="{{pageNumber}}">
+                                <button type="button" class="document-builder-editor__flow-select" data-action="selectFlowNode" data-node-id="{{id}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}" aria-label="{{translate label category='labels' scope='DocumentBuilderTemplate'}}" aria-keyshortcuts="ArrowUp ArrowDown Home End">
                                     <span class="fas {{#if isSection}}fa-layer-group{{else}}fa-square{{/if}}" aria-hidden="true"></span>
-                                    {{translate label category='labels' scope='DocumentBuilderTemplate'}}
+                                    <span>{{translate label category='labels' scope='DocumentBuilderTemplate'}}</span>
+                                    <span class="document-builder-editor__node-badge">{{translate badgeLabel category='labels' scope='DocumentBuilderTemplate'}}</span>
                                 </button>
                                 {{#if isHeading}}<div class="document-builder-editor__content document-builder-editor__content--heading" data-rich-content-id="{{id}}"></div>{{/if}}
                                 {{#if isStaticText}}<div class="document-builder-editor__content" data-rich-content-id="{{id}}"></div>{{/if}}
@@ -259,6 +291,7 @@
         <footer class="document-builder-editor__status" role="status" aria-live="polite">
             <span>{{translateOption 'Draft' field='status' scope='DocumentBuilderTemplate'}}</span>
             <span>{{translate 'Revision' category='labels' scope='DocumentBuilderTemplate'}}: {{revision}}</span>
+            <span>{{translate 'Approximate Pages' category='labels' scope='DocumentBuilderTemplate'}}: {{approximatedPageCount}}</span>
             <span>
                 {{#if isSaving}}
                     {{translate 'editorSaving' category='messages' scope='DocumentBuilderTemplate'}}

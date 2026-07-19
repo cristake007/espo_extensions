@@ -13,6 +13,8 @@ define([
     'document-builder:editor/flow/flow-structure',
     'document-builder:editor/content/rich-text',
     'document-builder:editor/style/style-resolver',
+    'document-builder:editor/renderer/browser-renderer',
+    'document-builder:editor/validation/editor-validator',
     'document-builder:editor/commands/add-flow-node',
     'document-builder:editor/commands/move-flow-node',
     'document-builder:editor/commands/remove-flow-node',
@@ -32,6 +34,8 @@ define([
     FlowStructure,
     RichText,
     StyleResolver,
+    BrowserRenderer,
+    EditorValidator,
     AddFlowNodeCommand,
     MoveFlowNodeCommand,
     RemoveFlowNodeCommand,
@@ -60,7 +64,9 @@ define([
             'click [data-action="addSpacer"]': 'actionAddContent',
             'click [data-action="addPageBreak"]': 'actionAddContent',
             'click [data-action="selectFlowNode"]': 'actionSelectFlowNode',
+            'keydown [data-action="selectFlowNode"]': 'handleNodeKeydown',
             'click [data-action="selectBreadcrumb"]': 'actionSelectFlowNode',
+            'click [data-action="focusValidationIssue"]': 'actionFocusValidationIssue',
             'click [data-action="removeFlowNode"]': 'actionRemoveFlowNode',
             'click [data-action="moveFlowUp"]': 'actionMoveFlowUp',
             'click [data-action="moveFlowDown"]': 'actionMoveFlowDown',
@@ -108,6 +114,12 @@ define([
             this.styleResolver = new StyleResolver(this.allowedFonts);
             this.flowDrag = null;
             this.pageGeometry = new PageGeometry(this.customPageSizes);
+            this.browserRenderer = new BrowserRenderer({
+                styleResolver: this.styleResolver,
+                pageGeometry: this.pageGeometry,
+            });
+            this.editorValidator = new EditorValidator(this.customPageSizes, this.flowLimits);
+            this.pendingFocusNodeId = null;
             this.zoom = 100;
 
             document.addEventListener('keydown', this.keydownHandler);
@@ -116,6 +128,7 @@ define([
         data() {
             const pageSettings = this.getPageSettingsData();
             const flow = this.getFlowData();
+            const validation = this.getValidationData();
 
             return {
                 isLoading: this.state === 'loading',
@@ -131,7 +144,8 @@ define([
                 canSave: Boolean(
                     this.editorState &&
                     this.editorState.isDirty() &&
-                    !this.isSaveBusy()
+                    !this.isSaveBusy() &&
+                    !validation.validationBlocking
                 ),
                 isSaving: this.saveCoordinator ? this.saveCoordinator.status === 'saving' : false,
                 isReloading: this.saveCoordinator ? this.saveCoordinator.status === 'reloading' : false,
@@ -139,6 +153,7 @@ define([
                 saveError: this.saveCoordinator ? this.saveCoordinator.errorMessage : null,
                 ...pageSettings,
                 ...flow,
+                ...validation,
             };
         }
 
@@ -150,55 +165,15 @@ define([
             const layout = this.editorState.getLayout();
             const selectedId = this.editorState.getSelectedId();
             const locations = NodeTree.index(layout);
-            const rows = this.flowStructure.flatten(layout, selectedId).map(row => {
-                const location = locations.get(row.id);
-                const px = value => this.pageGeometry.millimetresToPixels(value, this.zoom);
-                const containerLength = location.container.length;
-                const flowStyle = [row.depthStyle];
-                const effectiveStyle = this.styleResolver.resolve(layout, row.id);
-                const dividerOrientation = row.orientation === 'vertical' ? 'vertical' : 'horizontal';
-                const dividerLineStyle = ['solid', 'dashed', 'dotted', 'double'].includes(row.lineStyle) ?
-                    row.lineStyle : 'solid';
-                const dividerColor = /^#[0-9A-Fa-f]{6}$/.test(row.color || '') ? row.color : '#666666';
-                const bounded = (value, minimum, maximum, fallback) =>
-                    Number.isFinite(value) && value >= minimum && value <= maximum ? value : fallback;
-
-                if (row.canContain) flowStyle.push(
-                    `--document-builder-margin-left: ${px(row.margin.left.value)}px`,
-                    `min-height: ${px(row.minHeight.value)}px`,
-                    `margin: ${px(row.margin.top.value)}px ${px(row.margin.right.value)}px ` +
-                        `${px(row.margin.bottom.value)}px ${px(row.margin.left.value)}px`,
-                    `padding: ${px(row.padding.top.value)}px ${px(row.padding.right.value)}px ` +
-                        `${px(row.padding.bottom.value)}px ${px(row.padding.left.value)}px`,
-                );
-                if (row.isSpacer) flowStyle.push(
-                    `height: ${px(bounded(row.height?.value, 0.1, 500, 10))}px`,
-                );
-                flowStyle.push(this.styleResolver.toCss(effectiveStyle, px));
-
-                return {
-                    ...row,
-                    canMoveUp: location.index > 0,
-                    canMoveDown: location.index < containerLength - 1,
-                    flowStyle: flowStyle.join('; '),
-                    dividerOrientation,
-                    dividerStyle: row.isDivider ? (dividerOrientation === 'horizontal' ? [
-                        `width: ${px(bounded(row.length?.value, 1, 2000, 100))}px`,
-                        `border-top: ${px(bounded(row.thickness?.value, 0.1, 20, 0.5))}px ` +
-                            `${dividerLineStyle} ${dividerColor}`,
-                    ] : [
-                        `height: ${px(bounded(row.length?.value, 1, 2000, 100))}px`,
-                        `border-left: ${px(bounded(row.thickness?.value, 0.1, 20, 0.5))}px ` +
-                            `${dividerLineStyle} ${dividerColor}`,
-                    ]).join('; ') : '',
-                };
-            });
+            const rendered = this.browserRenderer.render(layout, {selectedId, zoom: this.zoom});
+            const rows = rendered.rows;
             const selected = selectedId ? locations.get(selectedId) : null;
             const effectiveStyle = selected ? this.styleResolver.resolve(layout, selectedId) : null;
 
             return {
                 flowRows: rows,
                 hasFlowRows: rows.length > 0,
+                approximatedPageCount: rendered.pageCount,
                 selectedFlowNode: selected ? {
                     ...selected.node,
                     label: ({
@@ -250,6 +225,41 @@ define([
             };
         }
 
+        getValidationData() {
+            if (!this.editorState) {
+                return {
+                    validationIssues: [],
+                    validationErrorCount: 0,
+                    validationWarningCount: 0,
+                    validationBlocking: false,
+                    hasValidationIssues: false,
+                };
+            }
+
+            const result = this.editorValidator.validate(this.editorState.getLayout());
+
+            return {
+                validationIssues: result.issues.map(issue => ({
+                    ...issue,
+                    canFocus: Boolean(issue.nodeId),
+                    message: this.translate(
+                        issue.messageKey,
+                        'messages',
+                        'DocumentBuilderTemplate',
+                    ),
+                    severityText: this.translate(
+                        issue.severityLabel,
+                        'labels',
+                        'DocumentBuilderTemplate',
+                    ),
+                })),
+                validationErrorCount: result.errorCount,
+                validationWarningCount: result.warningCount,
+                validationBlocking: result.blocking,
+                hasValidationIssues: result.issues.length > 0,
+            };
+        }
+
         getPageSettingsData() {
             if (!this.editorState) {
                 return {pageSettings: null, pageFrameStyle: '', zoom: this.zoom};
@@ -296,6 +306,21 @@ define([
                 this.loadModel();
 
                 return;
+            }
+
+            if (this.pendingFocusNodeId) {
+                const nodeId = this.pendingFocusNodeId;
+                const focusTarget = [...this.element.querySelectorAll(
+                    '[data-action="selectFlowNode"]',
+                )].find(element => element.dataset.nodeId === nodeId);
+
+                this.pendingFocusNodeId = null;
+                if (focusTarget) {
+                    focusTarget.focus({preventScroll: false});
+                    focusTarget.scrollIntoView({block: 'center'});
+
+                    return;
+                }
             }
 
             if (!this.shouldFocusEntry) {
@@ -427,10 +452,33 @@ define([
 
         renderContentNodes() {
             if (!this.editorState || !this.element) return;
-            const locations = NodeTree.index(this.editorState.getLayout());
+            const layout = this.editorState.getLayout();
+            const locations = NodeTree.index(layout);
+            const rendered = this.browserRenderer.render(layout, {
+                selectedId: this.editorState.getSelectedId(),
+                zoom: this.zoom,
+            });
+            const rows = new Map(rendered.rows.map(row => [row.id, row]));
             this.element.querySelectorAll('[data-rich-content-id]').forEach(host => {
                 const node = locations.get(host.dataset.richContentId)?.node;
+                const row = rows.get(host.dataset.richContentId);
                 if (!node) return;
+                host.classList.toggle('is-sample', Boolean(row?.isEmpty));
+                if (row?.isEmpty) {
+                    host.textContent = this.translate(
+                        row.sampleKey,
+                        'messages',
+                        'DocumentBuilderTemplate',
+                    );
+                    host.setAttribute('aria-label', this.translate(
+                        'editorEmptyContentLabel',
+                        'labels',
+                        'DocumentBuilderTemplate',
+                    ));
+
+                    return;
+                }
+                host.removeAttribute('aria-label');
                 if (node.type === 'static-text') host.textContent = node.text;
                 else RichText.render(host, node.content);
             });
@@ -561,10 +609,49 @@ define([
             if (this.selectNode(event.currentTarget.dataset.nodeId)) this.reRender();
         }
 
-        actionRemoveFlowNode() {
+        actionFocusValidationIssue(event) {
+            const nodeId = event.currentTarget.dataset.nodeId;
+
+            if (!nodeId || !this.editorState ||
+                !NodeTree.getLocation(this.editorState.getLayout(), nodeId)) return;
+            this.selectNode(nodeId);
+            this.pendingFocusNodeId = nodeId;
+            this.reRender();
+        }
+
+        handleNodeKeydown(event) {
+            if (!['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
+            const controls = [...this.element.querySelectorAll(
+                '[data-action="selectFlowNode"]',
+            )];
+            const current = controls.indexOf(event.currentTarget);
+
+            if (current < 0 || controls.length === 0) return;
+            event.preventDefault();
+            const target = event.key === 'Home' ? 0 : event.key === 'End' ? controls.length - 1 :
+                Math.max(0, Math.min(controls.length - 1,
+                    current + (event.key === 'ArrowDown' ? 1 : -1)));
+            controls[target].focus();
+        }
+
+        async actionRemoveFlowNode() {
             const nodeId = this.editorState && this.editorState.getSelectedId();
 
-            if (nodeId) this.executeCommand(new RemoveFlowNodeCommand(this.flowStructure, nodeId));
+            if (!nodeId) return;
+            const location = NodeTree.getLocation(this.editorState.getLayout(), nodeId);
+
+            if (location?.node.children?.length) {
+                await this.confirm({
+                    message: this.translate(
+                        'confirmRemoveComplexNode',
+                        'messages',
+                        'DocumentBuilderTemplate',
+                    ),
+                    confirmText: this.translate('Remove'),
+                });
+            }
+
+            this.executeCommand(new RemoveFlowNodeCommand(this.flowStructure, nodeId));
         }
 
         actionMoveFlowUp() {
@@ -810,6 +897,16 @@ define([
                 this.isSaveBusy() ||
                 this.conflictDialogOpen
             ) {
+                return;
+            }
+
+            if (this.editorValidator.validate(this.editorState.getLayout()).blocking) {
+                Espo.Ui.error(this.translate(
+                    'editorValidationBlocksSave',
+                    'messages',
+                    'DocumentBuilderTemplate',
+                ));
+
                 return;
             }
 

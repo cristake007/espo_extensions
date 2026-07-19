@@ -1,0 +1,22 @@
+<?php
+declare(strict_types=1);
+use DocumentBuilder\Tests\Support\Assert;
+require dirname(__DIR__) . '/bootstrap.php';
+$root = dirname(__DIR__, 2);
+$client = "$root/files/client/custom/modules/document-builder";
+$renderer = file_get_contents("$client/src/editor/renderer/browser-renderer.js");
+$validator = file_get_contents("$client/src/editor/validation/editor-validator.js");
+$shell = file_get_contents("$client/src/views/editor/shell.js");
+$template = file_get_contents("$client/res/templates/editor/shell.tpl");
+$css = file_get_contents("$client/res/css/editor.css");
+Assert::contains('Json.clone(layout)', $renderer, 'The browser renderer must read a detached layout.');
+Assert::isFalse(str_contains($renderer, 'EditorState'), 'The browser renderer must not own editor state.');
+Assert::contains("severity: 'error'", $validator, 'Blocking validation severity is missing.');
+Assert::contains("severity: 'warning'", $validator, 'Warning validation severity is missing.');
+Assert::contains('data-action="focusValidationIssue"', $template, 'Validation issues must support focus navigation.');
+Assert::contains('aria-keyshortcuts="ArrowUp ArrowDown Home End"', $template, 'Canvas keyboard traversal is not exposed.');
+Assert::contains('document-builder-editor__node-badge', $template, 'Type badges are missing.');
+Assert::contains('fa-times-circle', $template, 'Errors need a non-color indication.');
+Assert::contains('confirmRemoveComplexNode', $shell, 'Complex deletion must be confirmed.');
+Assert::contains(':focus-visible', $css, 'Keyboard focus styling is missing.');
+echo "Phase 23 renderer, validation, navigation, deletion, and accessibility contracts passed.\n";

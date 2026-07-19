@@ -26,6 +26,44 @@
     border-radius: 0;
 }
 
+.document-builder-editor__validation {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--panel-default-border, #ddd);
+    background: #f3faf4;
+}
+
+.document-builder-editor__validation.has-errors {
+    border-left: 4px solid #a94442;
+    background: #fdf2f2;
+}
+
+.document-builder-editor__validation.has-warnings {
+    border-left: 4px solid #8a6d3b;
+    background: #fcf8e3;
+}
+
+.document-builder-editor__validation h3,
+.document-builder-editor__validation p {
+    display: inline;
+    margin: 0 10px 0 0;
+    font-size: 13px;
+}
+
+.document-builder-editor__validation-list {
+    max-height: 100px;
+    overflow: auto;
+    margin: 6px 0 0;
+    padding-left: 20px;
+}
+
+.document-builder-editor__validation-list .is-error {
+    font-weight: 600;
+}
+
+.document-builder-editor__severity {
+    white-space: nowrap;
+}
+
 .document-builder-editor__identity {
     display: flex;
     min-width: 0;
@@ -146,6 +184,11 @@
     border: 2px solid var(--brand-primary, #337ab7);
 }
 
+.document-builder-editor__flow-node:focus-within {
+    outline: 3px solid var(--brand-primary, #337ab7);
+    outline-offset: 2px;
+}
+
 .document-builder-editor__content {
     padding: 4px 8px;
     white-space: pre-wrap;
@@ -155,6 +198,11 @@
 .document-builder-editor__content--heading {
     font-size: 1.35em;
     font-weight: 600;
+}
+
+.document-builder-editor__content.is-sample {
+    color: var(--text-muted, #777) !important;
+    font-style: italic;
 }
 
 .document-builder-editor__inline-variable {
@@ -212,6 +260,41 @@
     border: 0;
     background: transparent;
     text-align: left;
+}
+
+.document-builder-editor__flow-select:focus-visible,
+.document-builder-editor__validation button:focus-visible {
+    outline: 2px solid var(--brand-primary, #337ab7);
+    outline-offset: 2px;
+}
+
+.document-builder-editor__node-badge {
+    margin-left: auto;
+    padding: 1px 5px;
+    border: 1px solid currentcolor;
+    border-radius: 8px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.document-builder-editor__page-flow-marker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 18px 0 8px;
+    color: #555;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.document-builder-editor__page-flow-marker::before,
+.document-builder-editor__page-flow-marker::after {
+    flex: 1;
+    border-top: 2px double #777;
+    content: "";
 }
 
 .document-builder-editor__drop {
