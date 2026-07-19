@@ -475,12 +475,26 @@
     position: absolute;
     z-index: 4;
     display: flex;
-    gap: 3px;
-    padding: 3px;
+    gap: 2px;
+    padding: 2px;
     border: 1px solid var(--panel-default-border, #ddd);
     border-radius: 4px;
     background: var(--panel-bg, #fff);
     box-shadow: 0 2px 8px rgb(0 0 0 / 16%);
+}
+
+.document-builder-editor__hover-action {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+}
+
+.document-builder-editor__hover-action[draggable="true"] {
+    cursor: grab;
 }
 
 .document-builder-editor__hover-toolbar[hidden] {

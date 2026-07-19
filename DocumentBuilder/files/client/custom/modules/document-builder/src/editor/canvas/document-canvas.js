@@ -131,16 +131,23 @@ define(['document-builder:editor/content/rich-text'], RichText => {
             toolbar.setAttribute('role', 'toolbar');
             toolbar.setAttribute('aria-label', translate('Element Actions', 'labels'));
             [
-                ['editFlowNode', 'Edit'],
-                ['duplicateFlowNode', 'Duplicate'],
-                ['removeFlowNode', 'Remove'],
-            ].forEach(([action, label]) => {
+                [null, 'Move', 'fa-grip-vertical', true],
+                ['editFlowNode', 'Edit', 'fa-pen', false],
+                ['duplicateFlowNode', 'Duplicate', 'fa-copy', false],
+                ['removeFlowNode', 'Remove', 'fa-trash-alt', false],
+            ].forEach(([action, label, iconName, draggable]) => {
                 const button = documentRef.createElement('button');
+                const icon = documentRef.createElement('span');
                 button.type = 'button';
-                button.className = 'btn btn-default btn-xs';
-                button.dataset.action = action;
+                button.className = 'btn btn-default btn-xs document-builder-editor__hover-action';
+                if (action) button.dataset.action = action;
                 button.dataset.hoverAction = '';
-                button.textContent = translate(label, 'actions');
+                button.draggable = draggable;
+                button.title = translate(label, 'actions');
+                button.setAttribute('aria-label', translate(label, 'actions'));
+                icon.className = `fas ${iconName}`;
+                icon.setAttribute('aria-hidden', 'true');
+                button.append(icon);
                 toolbar.append(button);
             });
 
