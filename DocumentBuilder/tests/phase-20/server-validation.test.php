@@ -34,7 +34,7 @@ Assert::isTrue($initialResult->isValid(), 'Literal markup represented as text mu
 $codes = fn ($value) => array_map(fn ($error) => $error->code(), $validator->validate($value)->errors());
 foreach ([
     ['key'=>'html','value'=>'<b>raw</b>','code'=>'property.unknown'],
-    ['key'=>'style','value'=>'background:url(javascript:alert(1))','code'=>'property.unknown'],
+    ['key'=>'style','value'=>'background:url(javascript:alert(1))','code'=>'style.type'],
     ['key'=>'onerror','value'=>'alert(1)','code'=>'property.unknown'],
 ] as $case) {
     $bad=$layout; $bad['sections'][0]['children'][0]['children'][0][$case['key']]=$case['value'];

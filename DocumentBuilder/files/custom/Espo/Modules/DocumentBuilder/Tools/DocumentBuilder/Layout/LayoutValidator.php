@@ -132,7 +132,7 @@ final readonly class LayoutValidator
 
         $this->rejectUnknownKeys(
             $document,
-            ['page', 'defaults', 'titlePattern', 'filenamePattern'],
+            ['page', 'defaults', 'titlePattern', 'filenamePattern', 'style'],
             '/document',
             $errors,
         );
@@ -218,6 +218,10 @@ final readonly class LayoutValidator
             preg_match('/[\\\\\/\x00-\x1F]/', $filenamePattern) === 1
         ) {
             $this->add($errors, 'document.filenamePattern', '/document/filenamePattern');
+        }
+
+        if (array_key_exists('style', $document)) {
+            $this->validateStyle($document['style'], '/document/style', null, $errors);
         }
     }
 
@@ -438,6 +442,9 @@ final readonly class LayoutValidator
         $this->validateFlowNode($node, $kind, $path, $elementId, $errors);
         $this->validateContentNode($node, $kind, $path, $elementId, $errors);
         $this->validateBasicFlowElement($node, $kind, $path, $elementId, $errors);
+        if (array_key_exists('style', $node)) {
+            $this->validateStyle($node['style'], "$path/style", $elementId, $errors);
+        }
 
         if (!array_key_exists('children', $node)) {
             return;
@@ -486,7 +493,7 @@ final readonly class LayoutValidator
             return;
         }
 
-        $allowedKeys = ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether'];
+        $allowedKeys = ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether', 'style'];
 
         if ($type === 'flow-section') {
             $allowedKeys[] = 'startNewPage';
@@ -541,15 +548,15 @@ final readonly class LayoutValidator
         }
 
         if ($type === 'static-text') {
-            $this->rejectUnknownKeys($node, ['id', 'type', 'text'], $path, $errors);
+            $this->rejectUnknownKeys($node, ['id', 'type', 'text', 'style'], $path, $errors);
             $this->validatePlainText($node['text'] ?? null, "$path/text", 'content.text', $elementId, $errors);
 
             return;
         }
 
         $allowedKeys = $type === 'heading' ?
-            ['id', 'type', 'content', 'level', 'keepWithNext'] :
-            ['id', 'type', 'content', 'alignment'];
+            ['id', 'type', 'content', 'level', 'keepWithNext', 'style'] :
+            ['id', 'type', 'content', 'alignment', 'style'];
         $this->rejectUnknownKeys($node, $allowedKeys, $path, $errors);
         $this->validateInlineContent($node['content'] ?? null, "$path/content", $elementId, $errors);
 
@@ -589,13 +596,13 @@ final readonly class LayoutValidator
         }
 
         if ($type === 'page-break') {
-            $this->rejectUnknownKeys($node, ['id', 'type'], $path, $errors);
+            $this->rejectUnknownKeys($node, ['id', 'type', 'style'], $path, $errors);
 
             return;
         }
 
         if ($type === 'spacer') {
-            $this->rejectUnknownKeys($node, ['id', 'type', 'height'], $path, $errors);
+            $this->rejectUnknownKeys($node, ['id', 'type', 'height', 'style'], $path, $errors);
             $this->validateBoundedMillimetres(
                 $node['height'] ?? null, 0.1, 500.0, "$path/height", 'spacer.height', $elementId, $errors,
             );
@@ -605,7 +612,7 @@ final readonly class LayoutValidator
 
         $this->rejectUnknownKeys(
             $node,
-            ['id', 'type', 'orientation', 'style', 'color', 'thickness', 'length'],
+            ['id', 'type', 'orientation', 'lineStyle', 'color', 'thickness', 'length', 'style'],
             $path,
             $errors,
         );
@@ -614,8 +621,8 @@ final readonly class LayoutValidator
             $this->add($errors, 'divider.orientation', "$path/orientation", $elementId);
         }
 
-        if (!in_array($node['style'] ?? null, ['solid', 'dashed', 'dotted', 'double'], true)) {
-            $this->add($errors, 'divider.style', "$path/style", $elementId);
+        if (!in_array($node['lineStyle'] ?? null, ['solid', 'dashed', 'dotted', 'double'], true)) {
+            $this->add($errors, 'divider.style', "$path/lineStyle", $elementId);
         }
 
         if (!is_string($node['color'] ?? null) || preg_match('/^#[0-9A-Fa-f]{6}$/D', $node['color']) !== 1) {
@@ -657,6 +664,73 @@ final readonly class LayoutValidator
     {
         return (str_starts_with($path, '/sections/') || str_starts_with($path, '/sections[')) &&
             (str_contains($path, '/children/') || str_contains($path, '/children['));
+    }
+
+    /** @param list<ValidationError> $errors */
+    private function validateStyle(mixed $style, string $path, ?string $elementId, array &$errors): void
+    {
+        if (!$this->isObject($style)) {
+            $this->add($errors, 'style.type', $path, $elementId);
+            return;
+        }
+        $this->rejectUnknownKeys($style, [
+            'margin', 'padding', 'backgroundColor', 'border', 'opacity',
+            'horizontalAlignment', 'verticalAlignment', 'width', 'height', 'color',
+            'fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textDecoration',
+            'lineHeight', 'letterSpacing', 'textTransform',
+        ], $path, $errors);
+        foreach (['margin', 'padding'] as $key) if (array_key_exists($key, $style)) {
+            $this->validateBox($style[$key], "$path/$key", $errors);
+        }
+        foreach (['backgroundColor', 'color'] as $key) if (array_key_exists($key, $style) &&
+            (!is_string($style[$key]) || preg_match('/^#[0-9A-Fa-f]{6}$/D', $style[$key]) !== 1)) {
+            $this->add($errors, 'value.color', "$path/$key", $elementId);
+        }
+        if (array_key_exists('opacity', $style) && ((!is_int($style['opacity']) && !is_float($style['opacity'])) || $style['opacity'] < 0 || $style['opacity'] > 1)) {
+            $this->add($errors, 'style.opacity', "$path/opacity", $elementId);
+        }
+        $enums = [
+            'horizontalAlignment'=>['start','center','end','stretch'], 'verticalAlignment'=>['start','center','end'],
+            'fontWeight'=>['normal','bold','100','200','300','400','500','600','700','800','900'],
+            'fontStyle'=>['normal','italic'], 'textDecoration'=>['none','underline'],
+            'textTransform'=>['none','uppercase','lowercase','capitalize'],
+        ];
+        foreach ($enums as $key=>$values) if (array_key_exists($key,$style) && !in_array($style[$key],$values,true)) {
+            $this->add($errors, 'style.enum', "$path/$key", $elementId);
+        }
+        if (array_key_exists('fontFamily',$style) && (!is_string($style['fontFamily']) || !in_array($style['fontFamily'],$this->settings->allowedFontList(),true))) {
+            $this->add($errors, 'style.fontFamily', "$path/fontFamily", $elementId);
+        }
+        if (array_key_exists('fontSize',$style)) {
+            $this->validateMeasurement($style['fontSize'], Unit::Point, "$path/fontSize", $errors);
+            $value=$style['fontSize']['value']??null;
+            if ((!is_int($value)&&!is_float($value))||$value<1||$value>512) $this->add($errors,'style.fontSize',"$path/fontSize/value",$elementId);
+        }
+        if (array_key_exists('lineHeight',$style) && ((!is_int($style['lineHeight'])&&!is_float($style['lineHeight']))||$style['lineHeight']<0.5||$style['lineHeight']>5)) {
+            $this->add($errors,'style.lineHeight',"$path/lineHeight",$elementId);
+        }
+        foreach (['width','height'] as $key) if (array_key_exists($key,$style)) {
+            $measurement=$style[$key]; $unit=is_array($measurement)?($measurement['unit']??null):null;
+            if (!$this->isObject($measurement)||!in_array($unit,['mm','percent'],true)||(!is_int($measurement['value']??null)&&!is_float($measurement['value']??null))||$measurement['value']<0||($unit==='mm'&&$measurement['value']>2000)||($unit==='percent'&&$measurement['value']>100)||array_diff(array_keys($measurement),['value','unit'])!==[]) {
+                $this->add($errors,'style.dimension',"$path/$key",$elementId);
+            }
+        }
+        if (array_key_exists('letterSpacing',$style)) {
+            $measurement=$style['letterSpacing'];
+            if (!$this->isObject($measurement)||($measurement['unit']??null)!=='pt'||(!is_int($measurement['value']??null)&&!is_float($measurement['value']??null))||$measurement['value'] < -20||$measurement['value']>100||array_diff(array_keys($measurement),['value','unit'])!==[]) {
+                $this->add($errors,'style.letterSpacing',"$path/letterSpacing",$elementId);
+            }
+        }
+        if (array_key_exists('border',$style)) {
+            $border=$style['border'];
+            if (!$this->isObject($border)) $this->add($errors,'style.border',"$path/border",$elementId);
+            else {
+                $this->rejectUnknownKeys($border,['width','style','color'],"$path/border",$errors);
+                $this->validateMeasurement($border['width']??null,Unit::Point,"$path/border/width",$errors);
+                if (!in_array($border['style']??null,['none','solid','dashed','dotted','double'],true)) $this->add($errors,'style.border',"$path/border/style",$elementId);
+                if (!is_string($border['color']??null)||preg_match('/^#[0-9A-Fa-f]{6}$/D',$border['color'])!==1) $this->add($errors,'value.color',"$path/border/color",$elementId);
+            }
+        }
     }
 
     /** @param list<ValidationError> $errors */

@@ -244,7 +244,7 @@ define([
                 'defaults',
                 'titlePattern',
                 'filenamePattern',
-            ])) {
+            ], ['style'])) {
                 errors.push('document.structure');
             } else {
                 validatePage(normalized.document.page, errors, this.pageDimensions);

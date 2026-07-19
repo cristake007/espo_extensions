@@ -131,7 +131,18 @@
                 "border": {"$ref": "#/$defs/border"},
                 "opacity": {"type": "number", "minimum": 0, "maximum": 1},
                 "horizontalAlignment": {"enum": ["start", "center", "end", "stretch"]},
-                "verticalAlignment": {"enum": ["start", "center", "end"]}
+                "verticalAlignment": {"enum": ["start", "center", "end"]},
+                "width": {"oneOf": [{"$ref": "#/$defs/millimetres"}, {"$ref": "#/$defs/percent"}]},
+                "height": {"oneOf": [{"$ref": "#/$defs/millimetres"}, {"$ref": "#/$defs/percent"}]},
+                "color": {"$ref": "#/$defs/color"},
+                "fontFamily": {"type": "string", "minLength": 1, "maxLength": 100, "pattern": "^[A-Za-z][A-Za-z0-9 ._-]*$"},
+                "fontSize": {"$ref": "#/$defs/points"},
+                "fontWeight": {"enum": ["normal", "bold", "100", "200", "300", "400", "500", "600", "700", "800", "900"]},
+                "fontStyle": {"enum": ["normal", "italic"]},
+                "textDecoration": {"enum": ["none", "underline"]},
+                "lineHeight": {"type": "number", "minimum": 0.5, "maximum": 5},
+                "letterSpacing": {"type": "object", "additionalProperties": false, "required": ["value", "unit"], "properties": {"value": {"type": "number", "minimum": -20, "maximum": 100}, "unit": {"const": "pt"}}},
+                "textTransform": {"enum": ["none", "uppercase", "lowercase", "capitalize"]}
             }
         },
         "inlineText": {
@@ -172,7 +183,7 @@
                 "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "heading"},
                 "content": {"$ref": "#/$defs/inlineContent"},
                 "level": {"type": "integer", "minimum": 1, "maximum": 6},
-                "keepWithNext": {"type": "boolean"}
+                "keepWithNext": {"type": "boolean"}, "style": {"$ref": "#/$defs/commonStyle"}
             }
         },
         "staticText": {
@@ -180,7 +191,7 @@
             "required": ["id", "type", "text"],
             "properties": {
                 "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "static-text"},
-                "text": {"type": "string", "maxLength": 10000}
+                "text": {"type": "string", "maxLength": 10000}, "style": {"$ref": "#/$defs/commonStyle"}
             }
         },
         "paragraph": {
@@ -189,16 +200,16 @@
             "properties": {
                 "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "paragraph"},
                 "content": {"$ref": "#/$defs/inlineContent"},
-                "alignment": {"enum": ["start", "center", "end", "justify"]}
+                "alignment": {"enum": ["start", "center", "end", "justify"]}, "style": {"$ref": "#/$defs/commonStyle"}
             }
         },
         "divider": {
             "type": "object", "additionalProperties": false,
-            "required": ["id", "type", "orientation", "style", "color", "thickness", "length"],
+            "required": ["id", "type", "orientation", "lineStyle", "color", "thickness", "length"],
             "properties": {
                 "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "divider"},
                 "orientation": {"enum": ["horizontal", "vertical"]},
-                "style": {"enum": ["solid", "dashed", "dotted", "double"]},
+                "lineStyle": {"enum": ["solid", "dashed", "dotted", "double"]},
                 "color": {"$ref": "#/$defs/color"},
                 "thickness": {
                     "type": "object", "additionalProperties": false,
@@ -215,7 +226,7 @@
                         "value": {"type": "number", "minimum": 1, "maximum": 2000},
                         "unit": {"const": "mm"}
                     }
-                }
+                }, "style": {"$ref": "#/$defs/commonStyle"}
             }
         },
         "spacer": {
@@ -230,14 +241,14 @@
                         "value": {"type": "number", "minimum": 0.1, "maximum": 500},
                         "unit": {"const": "mm"}
                     }
-                }
+                }, "style": {"$ref": "#/$defs/commonStyle"}
             }
         },
         "pageBreak": {
             "type": "object", "additionalProperties": false,
             "required": ["id", "type"],
             "properties": {
-                "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "page-break"}
+                "id": {"$ref": "#/$defs/stableId"}, "type": {"const": "page-break"}, "style": {"$ref": "#/$defs/commonStyle"}
             }
         },
         "flowElement": {"oneOf": [
@@ -262,7 +273,7 @@
                 "margin": {"$ref": "#/$defs/boxEdges"},
                 "padding": {"$ref": "#/$defs/boxEdges"},
                 "minHeight": {"$ref": "#/$defs/millimetres"},
-                "keepTogether": {"type": "boolean"}
+                "keepTogether": {"type": "boolean"}, "style": {"$ref": "#/$defs/commonStyle"}
             }
         },
         "flowSection": {
@@ -283,7 +294,7 @@
                 "padding": {"$ref": "#/$defs/boxEdges"},
                 "minHeight": {"$ref": "#/$defs/millimetres"},
                 "keepTogether": {"type": "boolean"},
-                "startNewPage": {"type": "boolean"}
+                "startNewPage": {"type": "boolean"}, "style": {"$ref": "#/$defs/commonStyle"}
             }
         },
         "page": {
@@ -330,7 +341,8 @@
                     "minLength": 1,
                     "maxLength": 255,
                     "pattern": "^[^/\\\\\\u0000-\\u001F]+$"
-                }
+                },
+                "style": {"$ref": "#/$defs/commonStyle"}
             }
         },
         "noSourceDescriptor": {

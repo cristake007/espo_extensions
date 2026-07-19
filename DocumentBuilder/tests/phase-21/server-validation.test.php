@@ -15,7 +15,7 @@ $validator=new LayoutValidator($settings,NodeRegistry::phase19(),CapabilityRegis
 $layout=(new FixtureLoader("$root/tests/fixtures"))->json('layout/phase-08-default.json');
 $box=fn()=>array_fill_keys(['top','right','bottom','left'],['value'=>0,'unit'=>'mm']);
 $elements=[
- ['id'=>'divider','type'=>'divider','orientation'=>'vertical','style'=>'double','color'=>'#123ABC','thickness'=>['value'=>1.5,'unit'=>'mm'],'length'=>['value'=>80,'unit'=>'mm']],
+ ['id'=>'divider','type'=>'divider','orientation'=>'vertical','lineStyle'=>'double','color'=>'#123ABC','thickness'=>['value'=>1.5,'unit'=>'mm'],'length'=>['value'=>80,'unit'=>'mm']],
  ['id'=>'spacer','type'=>'spacer','height'=>['value'=>12.5,'unit'=>'mm']],
  ['id'=>'pageBreak','type'=>'page-break'],
 ];
@@ -23,7 +23,7 @@ $layout['capabilities']=['layout.flow']; $layout['sections']=[['id'=>'section','
 $initialResult=$validator->validate($layout);Assert::isTrue($initialResult->isValid(),'Canonical Phase 21 elements were rejected: '.implode(',',array_map(fn($error)=>$error->code().':'.$error->path(),$initialResult->errors())));
 $codes=fn($candidate)=>array_map(fn($error)=>$error->code(),$validator->validate($candidate)->errors());
 $cases=[
- [0,'orientation','diagonal','divider.orientation'],[0,'style','groove','divider.style'],[0,'color','url(javascript:alert(1))','value.color'],
+ [0,'orientation','diagonal','divider.orientation'],[0,'lineStyle','groove','divider.style'],[0,'color','url(javascript:alert(1))','value.color'],
  [0,'thickness',['value'=>0,'unit'=>'mm'],'divider.thickness'],[0,'length',['value'=>2001,'unit'=>'mm'],'divider.length'],
  [1,'height',['value'=>501,'unit'=>'mm'],'spacer.height'],[2,'label','stored label','property.unknown'],
 ];

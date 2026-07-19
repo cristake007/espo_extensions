@@ -43,7 +43,7 @@ define([
                 type, content: [{type: 'text', text: 'Paragraph', marks: []}], alignment: 'start',
             };
             if (type === 'divider') return {
-                type, orientation: 'horizontal', style: 'solid', color: '#666666',
+                type, orientation: 'horizontal', lineStyle: 'solid', color: '#666666',
                 thickness: measurement(0.5), length: measurement(100),
             };
             if (type === 'spacer') return {type, height: measurement(10)};
@@ -195,6 +195,22 @@ define([
         validateLayout(layout) {
             const errors = [];
             let elements = 0;
+            const validateStyle = (style, path) => {
+                if (style === undefined) return;
+                const keys=['margin','padding','backgroundColor','border','opacity','horizontalAlignment','verticalAlignment','width','height','color','fontFamily','fontSize','fontWeight','fontStyle','textDecoration','lineHeight','letterSpacing','textTransform'];
+                if (!Json.isPlainObject(style)||Object.keys(style).some(key=>!keys.includes(key))) { errors.push(`${path}.structure`); return; }
+                ['backgroundColor','color'].forEach(key=>{if(key in style&&!/^#[0-9A-Fa-f]{6}$/.test(style[key]))errors.push(`${path}.${key}`);});
+                if ('fontFamily' in style && (typeof style.fontFamily!=='string'||style.fontFamily.length<1||style.fontFamily.length>100||!/^[A-Za-z][A-Za-z0-9 ._-]*$/.test(style.fontFamily))) errors.push(`${path}.fontFamily`);
+                const enums={fontWeight:['normal','bold','100','200','300','400','500','600','700','800','900'],fontStyle:['normal','italic'],textDecoration:['none','underline'],textTransform:['none','uppercase','lowercase','capitalize'],horizontalAlignment:['start','center','end','stretch'],verticalAlignment:['start','center','end']};
+                Object.entries(enums).forEach(([key,values])=>{if(key in style&&!values.includes(style[key]))errors.push(`${path}.${key}`);});
+                if ('opacity' in style&&(!Number.isFinite(style.opacity)||style.opacity<0||style.opacity>1))errors.push(`${path}.opacity`);
+                if ('lineHeight' in style&&(!Number.isFinite(style.lineHeight)||style.lineHeight<.5||style.lineHeight>5))errors.push(`${path}.lineHeight`);
+                if ('fontSize' in style&&(!Json.isPlainObject(style.fontSize)||style.fontSize.unit!=='pt'||!Number.isFinite(style.fontSize.value)||style.fontSize.value<1||style.fontSize.value>512))errors.push(`${path}.fontSize`);
+                if ('letterSpacing' in style&&(!Json.isPlainObject(style.letterSpacing)||style.letterSpacing.unit!=='pt'||!Number.isFinite(style.letterSpacing.value)||style.letterSpacing.value < -20||style.letterSpacing.value>100))errors.push(`${path}.letterSpacing`);
+                ['margin','padding'].forEach(key=>{if(key in style&&!isBox(style[key]))errors.push(`${path}.${key}`);});
+                ['width','height'].forEach(key=>{if(!(key in style))return;const value=style[key];if(!Json.isPlainObject(value)||!Number.isFinite(value.value)||value.value<0||!['mm','percent'].includes(value.unit)||(value.unit==='mm'&&value.value>2000)||(value.unit==='percent'&&value.value>100)||Object.keys(value).some(item=>!['value','unit'].includes(item)))errors.push(`${path}.${key}`);});
+                if ('border' in style) { const border=style.border; if(!Json.isPlainObject(border)||Object.keys(border).some(key=>!['width','style','color'].includes(key))||!Json.isPlainObject(border.width)||border.width.unit!=='pt'||!Number.isFinite(border.width.value)||border.width.value<0||border.width.value>512||!['none','solid','dashed','dotted','double'].includes(border.style)||!/^#[0-9A-Fa-f]{6}$/.test(border.color||''))errors.push(`${path}.border`); }
+            };
             const validateInline = (content, path) => {
                 if (!Array.isArray(content) || content.length > 1000) {
                     errors.push(`${path}.structure`); return;
@@ -226,17 +242,17 @@ define([
                         errors.push(`${path}.structure`); return;
                     }
                     if (expectedType === 'page-break') {
-                        if (Object.keys(node).some(key => !['id', 'type'].includes(key))) errors.push(`${path}.structure`);
+                        if (Object.keys(node).some(key => !['id', 'type', 'style'].includes(key))) errors.push(`${path}.structure`);
                     } else if (expectedType === 'spacer') {
-                        if (Object.keys(node).some(key => !['id', 'type', 'height'].includes(key)) ||
+                        if (Object.keys(node).some(key => !['id', 'type', 'height', 'style'].includes(key)) ||
                             !isMeasurement(node.height) || node.height.value < 0.1 || node.height.value > 500) errors.push(`${path}.values`);
-                    } else if (Object.keys(node).some(key => !['id', 'type', 'orientation', 'style', 'color', 'thickness', 'length'].includes(key)) ||
+                    } else if (Object.keys(node).some(key => !['id', 'type', 'orientation', 'lineStyle', 'color', 'thickness', 'length', 'style'].includes(key)) ||
                         !['horizontal', 'vertical'].includes(node.orientation) ||
-                        !['solid', 'dashed', 'dotted', 'double'].includes(node.style) ||
+                        !['solid', 'dashed', 'dotted', 'double'].includes(node.lineStyle) ||
                         !/^#[0-9A-Fa-f]{6}$/.test(node.color || '') ||
                         !isMeasurement(node.thickness) || node.thickness.value < 0.1 || node.thickness.value > 20 ||
                         !isMeasurement(node.length) || node.length.value < 1) errors.push(`${path}.values`);
-                    return;
+                    validateStyle(node.style, `${path}.style`); return;
                 }
                 if (CONTENT_TYPES.includes(expectedType)) {
                     elements++;
@@ -245,24 +261,25 @@ define([
                         errors.push(`${path}.structure`); return;
                     }
                     if (expectedType === 'static-text') {
-                        if (!Json.isPlainObject(node) || Object.keys(node).some(key => !['id', 'type', 'text'].includes(key)) ||
+                        if (!Json.isPlainObject(node) || Object.keys(node).some(key => !['id', 'type', 'text', 'style'].includes(key)) ||
                             typeof node.text !== 'string' || node.text.length > 10000) errors.push(`${path}.values`);
                     } else {
-                        const extra = expectedType === 'heading' ? ['level', 'keepWithNext'] : ['alignment'];
+                        const extra = expectedType === 'heading' ? ['level', 'keepWithNext', 'style'] : ['alignment', 'style'];
                         if (!Json.isPlainObject(node) || Object.keys(node).some(key => !['id', 'type', 'content', ...extra].includes(key))) errors.push(`${path}.structure`);
                         validateInline(node.content, `${path}.content`);
                         if (expectedType === 'heading' && (!Number.isInteger(node.level) || node.level < 1 || node.level > 6 || typeof node.keepWithNext !== 'boolean')) errors.push(`${path}.values`);
                         if (expectedType === 'paragraph' && !['start', 'center', 'end', 'justify'].includes(node.alignment)) errors.push(`${path}.values`);
                     }
-                    return;
+                    validateStyle(node.style, `${path}.style`); return;
                 }
                 const required = expectedType === SECTION_TYPE ?
                     ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether', 'startNewPage'] :
                     ['id', 'type', 'children', 'margin', 'padding', 'minHeight', 'keepTogether'];
+                const allowed = [...required, 'style'];
 
                 if (!Json.isPlainObject(node) || node.type !== expectedType ||
                     !required.every(key => key in node) ||
-                    Object.keys(node).some(key => !required.includes(key))) {
+                    Object.keys(node).some(key => !allowed.includes(key))) {
                     errors.push(`${path}.structure`);
 
                     return;
@@ -277,6 +294,7 @@ define([
                 }
 
                 if (depth > this.maxNestingDepth) errors.push(`${path}.depth`);
+                validateStyle(node.style, `${path}.style`);
                 if (expectedType === CONTAINER_TYPE && ++elements > this.maxElements) {
                     errors.push('flow.elements.limit');
                 }
@@ -286,6 +304,7 @@ define([
             };
 
             if (layout.sections.length > this.maxSections) errors.push('flow.sections.limit');
+            validateStyle(layout.document.style, 'document.style');
             layout.sections.forEach((section, index) => {
                 validateNode(section, SECTION_TYPE, 1, `flow.sections.${index}`);
             });

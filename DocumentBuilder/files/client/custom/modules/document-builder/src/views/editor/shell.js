@@ -12,6 +12,7 @@ define([
     'document-builder:editor/page-settings',
     'document-builder:editor/flow/flow-structure',
     'document-builder:editor/content/rich-text',
+    'document-builder:editor/style/style-resolver',
     'document-builder:editor/commands/add-flow-node',
     'document-builder:editor/commands/move-flow-node',
     'document-builder:editor/commands/remove-flow-node',
@@ -30,6 +31,7 @@ define([
     PageSettings,
     FlowStructure,
     RichText,
+    StyleResolver,
     AddFlowNodeCommand,
     MoveFlowNodeCommand,
     RemoveFlowNodeCommand,
@@ -65,6 +67,7 @@ define([
             'change [data-flow-setting]': 'changeFlowSetting',
             'change [data-content-setting]': 'changeContentSetting',
             'change [data-basic-flow-setting]': 'changeBasicFlowSetting',
+            'change [data-style-setting]': 'changeStyleSetting',
             'paste [data-content-setting="text"]': 'pasteContentText',
             'click [data-rich-mark]': 'actionToggleRichMark',
             'change [data-rich-color]': 'changeRichColor',
@@ -102,6 +105,7 @@ define([
                 maxSections: config.maxSections || metadataDefaults.maxSections || 100,
             };
             this.flowStructure = new FlowStructure(this.flowLimits);
+            this.styleResolver = new StyleResolver(this.allowedFonts);
             this.flowDrag = null;
             this.pageGeometry = new PageGeometry(this.customPageSizes);
             this.zoom = 100;
@@ -151,9 +155,10 @@ define([
                 const px = value => this.pageGeometry.millimetresToPixels(value, this.zoom);
                 const containerLength = location.container.length;
                 const flowStyle = [row.depthStyle];
+                const effectiveStyle = this.styleResolver.resolve(layout, row.id);
                 const dividerOrientation = row.orientation === 'vertical' ? 'vertical' : 'horizontal';
-                const dividerLineStyle = ['solid', 'dashed', 'dotted', 'double'].includes(row.style) ?
-                    row.style : 'solid';
+                const dividerLineStyle = ['solid', 'dashed', 'dotted', 'double'].includes(row.lineStyle) ?
+                    row.lineStyle : 'solid';
                 const dividerColor = /^#[0-9A-Fa-f]{6}$/.test(row.color || '') ? row.color : '#666666';
                 const bounded = (value, minimum, maximum, fallback) =>
                     Number.isFinite(value) && value >= minimum && value <= maximum ? value : fallback;
@@ -169,6 +174,7 @@ define([
                 if (row.isSpacer) flowStyle.push(
                     `height: ${px(bounded(row.height?.value, 0.1, 500, 10))}px`,
                 );
+                flowStyle.push(this.styleResolver.toCss(effectiveStyle, px));
 
                 return {
                     ...row,
@@ -188,6 +194,7 @@ define([
                 };
             });
             const selected = selectedId ? locations.get(selectedId) : null;
+            const effectiveStyle = selected ? this.styleResolver.resolve(layout, selectedId) : null;
 
             return {
                 flowRows: rows,
@@ -210,13 +217,32 @@ define([
                     isBasicFlow: ['divider', 'spacer', 'page-break'].includes(selected.node.type),
                     horizontal: selected.node.orientation === 'horizontal',
                     vertical: selected.node.orientation === 'vertical',
-                    solid: selected.node.style === 'solid',
-                    dashed: selected.node.style === 'dashed',
-                    dotted: selected.node.style === 'dotted',
-                    double: selected.node.style === 'double',
+                    solid: selected.node.lineStyle === 'solid',
+                    dashed: selected.node.lineStyle === 'dashed',
+                    dotted: selected.node.lineStyle === 'dotted',
+                    double: selected.node.lineStyle === 'double',
                     isContent: ['heading', 'static-text', 'paragraph'].includes(selected.node.type),
                     plainText: selected.node.type === 'static-text' ? selected.node.text :
                         RichText.toPlainText(selected.node.content),
+                    effectiveStyle,
+                    inspectorStyle: {...effectiveStyle,
+                        backgroundColor: effectiveStyle.backgroundColor || '#FFFFFF',
+                        opacity: effectiveStyle.opacity ?? 1,
+                        letterSpacing: effectiveStyle.letterSpacing || {value: 0, unit: 'pt'},
+                        width: effectiveStyle.width || {value: '', unit: 'mm'},
+                        height: effectiveStyle.height || {value: '', unit: 'mm'},
+                        border: effectiveStyle.border || {width: {value: 0, unit: 'pt'}, style: 'none', color: '#000000'},
+                    },
+                    styleChoices: {
+                        weightNormal: !effectiveStyle.fontWeight || effectiveStyle.fontWeight === 'normal',
+                        weightBold: effectiveStyle.fontWeight === 'bold', weight400: effectiveStyle.fontWeight === '400', weight700: effectiveStyle.fontWeight === '700',
+                        fontNormal: !effectiveStyle.fontStyle || effectiveStyle.fontStyle === 'normal', fontItalic: effectiveStyle.fontStyle === 'italic',
+                        decorationNone: !effectiveStyle.textDecoration || effectiveStyle.textDecoration === 'none', decorationUnderline: effectiveStyle.textDecoration === 'underline',
+                        transformNone: !effectiveStyle.textTransform || effectiveStyle.textTransform === 'none', transformUpper: effectiveStyle.textTransform === 'uppercase', transformLower: effectiveStyle.textTransform === 'lowercase', transformCapitalize: effectiveStyle.textTransform === 'capitalize',
+                        alignStart: !effectiveStyle.horizontalAlignment || effectiveStyle.horizontalAlignment === 'start', alignCenter: effectiveStyle.horizontalAlignment === 'center', alignEnd: effectiveStyle.horizontalAlignment === 'end', alignStretch: effectiveStyle.horizontalAlignment === 'stretch',
+                        valignStart: !effectiveStyle.verticalAlignment || effectiveStyle.verticalAlignment === 'start', valignCenter: effectiveStyle.verticalAlignment === 'center', valignEnd: effectiveStyle.verticalAlignment === 'end',
+                    },
+                    styleFontList: this.allowedFonts.map(name => ({name, selected: effectiveStyle.fontFamily === name})),
                 } : null,
                 flowBreadcrumbs: selectedId ? this.flowStructure.breadcrumbs(layout, selectedId) : [],
                 canAddFlowContainer: Boolean(selected &&
@@ -441,7 +467,7 @@ define([
             if (setting === 'orientation' && ['horizontal', 'vertical'].includes(input.value)) {
                 patch.orientation = input.value;
             } else if (setting === 'style' && ['solid', 'dashed', 'dotted', 'double'].includes(input.value)) {
-                patch.style = input.value;
+                patch.lineStyle = input.value;
             } else if (setting === 'color' && /^#[0-9A-Fa-f]{6}$/.test(input.value)) {
                 patch.color = input.value;
             } else if (['thickness', 'length', 'height'].includes(setting)) {
@@ -455,6 +481,33 @@ define([
             } else return;
 
             this.executeCommand(new UpdateNodeCommand(location.node.id, patch));
+        }
+
+        changeStyleSetting(event) {
+            const location = this.selectedContentNode();
+            if (!location || this.isSaveBusy()) return;
+            const input = event.currentTarget; const setting = input.dataset.styleSetting;
+            const style = {...(location.node.style || {})};
+            const enums = {
+                fontWeight:['normal','bold','100','200','300','400','500','600','700','800','900'],
+                fontStyle:['normal','italic'], textDecoration:['none','underline'],
+                textTransform:['none','uppercase','lowercase','capitalize'],
+                horizontalAlignment:['start','center','end','stretch'],
+                verticalAlignment:['start','center','end'],
+            };
+            if (setting === 'fontFamily' && this.allowedFonts.includes(input.value)) style.fontFamily = input.value;
+            else if (setting in enums && enums[setting].includes(input.value)) style[setting] = input.value;
+            else if (['color','backgroundColor'].includes(setting) && /^#[0-9A-Fa-f]{6}$/.test(input.value)) style[setting] = input.value;
+            else if (setting === 'opacity') { const value=Number(input.value); if(!Number.isFinite(value)||value<0||value>1)return; style.opacity=value; }
+            else if (setting === 'lineHeight') { const value=Number(input.value); if(!Number.isFinite(value)||value<.5||value>5)return; style.lineHeight=value; }
+            else if (setting === 'fontSize') { const value=Number(input.value); if(!Number.isFinite(value)||value<1||value>512)return; style.fontSize={value,unit:'pt'}; }
+            else if (setting === 'letterSpacing') { const value=Number(input.value); if(!Number.isFinite(value)||value < -20||value>100)return; style.letterSpacing={value,unit:'pt'}; }
+            else if (['width','height'].includes(setting)) { const value=Number(input.value); if(!Number.isFinite(value)||value<0||value>2000)return; style[setting]={value,unit:'mm'}; }
+            else if (setting === 'borderWidth') { const value=Number(input.value); if(!Number.isFinite(value)||value<0||value>512)return; style.border={...(style.border||{}),width:{value,unit:'pt'},style:style.border?.style||'solid',color:style.border?.color||'#000000'}; }
+            else if (setting === 'borderStyle' && ['none','solid','dashed','dotted','double'].includes(input.value)) style.border={...(style.border||{}),width:style.border?.width||{value:1,unit:'pt'},style:input.value,color:style.border?.color||'#000000'};
+            else if (setting === 'borderColor' && /^#[0-9A-Fa-f]{6}$/.test(input.value)) style.border={...(style.border||{}),width:style.border?.width||{value:1,unit:'pt'},style:style.border?.style||'solid',color:input.value};
+            else return;
+            this.executeCommand(new UpdateNodeCommand(location.node.id, {style}));
         }
 
         pasteContentText(event) {

@@ -32,8 +32,8 @@ const sectionId = add('flow-section'); const containerId = add('flow-container',
 const dividerId = add('divider', containerId); const spacerId = add('spacer', containerId); const pageBreakId = add('page-break', containerId);
 let children = state.getLayout().sections[0].children[0].children;
 assert.deepEqual(children.map(node => node.type), ['divider', 'spacer', 'page-break']);
-assert.deepEqual(children[0], {id: dividerId, type: 'divider', orientation: 'horizontal', style: 'solid', color: '#666666', thickness: {value: 0.5, unit: 'mm'}, length: {value: 100, unit: 'mm'}});
-assert.equal(state.execute(new UpdateNodeCommand(dividerId, {orientation: 'vertical', style: 'dashed', thickness: {value: 2, unit: 'mm'}})), true);
+assert.deepEqual(children[0], {id: dividerId, type: 'divider', orientation: 'horizontal', lineStyle: 'solid', color: '#666666', thickness: {value: 0.5, unit: 'mm'}, length: {value: 100, unit: 'mm'}});
+assert.equal(state.execute(new UpdateNodeCommand(dividerId, {orientation: 'vertical', lineStyle: 'dashed', thickness: {value: 2, unit: 'mm'}})), true);
 assert.equal(state.execute(new UpdateNodeCommand(spacerId, {height: {value: 25, unit: 'mm'}})), true);
 assert.equal(state.execute(new MoveFlowNodeCommand(flow, pageBreakId, {parentId: containerId, index: 0})), true);
 children = state.getLayout().sections[0].children[0].children;
