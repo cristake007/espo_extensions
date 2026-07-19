@@ -43,8 +43,14 @@ assert.deepEqual(RichText.fromPlainText('<img onerror=alert(1)>safe\r\nline', ['
     {type: 'text', text: 'safe', marks: ['italic']}, {type: 'break'},
     {type: 'text', text: 'line', marks: ['italic']},
 ]);
-assert.throws(() => RichText.appendVariable([], 'bad token', 'x'), /Invalid/);
-const content = RichText.appendVariable([{type: 'text', text: '<script>', marks: []}], 'token_safe', 'Name');
+const identity = {source: 'system', type: 'system', path: ['currentDate']};
+assert.throws(() => RichText.appendVariable([], 'bad token', 'x', identity), /Invalid/);
+const content = RichText.appendVariable(
+    [{type: 'text', text: '<script>', marks: []}],
+    'token_safe',
+    'Name',
+    identity,
+);
 const created = [];
 const documentRef = {
     createTextNode(text) { const node = {kind: 'text', text}; created.push(node); return node; },

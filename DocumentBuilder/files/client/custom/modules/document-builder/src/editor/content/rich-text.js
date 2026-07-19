@@ -1,4 +1,7 @@
-define(['dompurify'], DOMPurify => {
+define([
+    'dompurify',
+    'document-builder:editor/variables/variable-identity',
+], (DOMPurify, VariableIdentity) => {
     const MARKS = Object.freeze(['bold', 'italic', 'underline']);
     const normalize = value => DOMPurify.sanitize(
         String(value ?? '').replace(/\r\n?/g, '\n'),
@@ -41,14 +44,20 @@ define(['dompurify'], DOMPurify => {
                 color === null ? (({color: ignored, ...rest}) => rest)(item) : {...item, color});
         },
 
-        appendVariable(content, tokenId, label) {
+        appendVariable(content, tokenId, label, identity) {
             const normalizedLabel = normalize(label);
             if (!/^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(tokenId) ||
                 !normalizedLabel || normalizedLabel.length > 100) {
                 throw new TypeError('Invalid inline variable token.');
             }
+            const normalizedIdentity = VariableIdentity.create(identity);
+
+            if (VariableIdentity.usage(normalizedIdentity) !== 'scalar') {
+                throw new TypeError('Inline content only accepts scalar variables.');
+            }
+
             return [...(content || []).map(item => ({...item})), {
-                type: 'variable', tokenId, label: normalizedLabel,
+                type: 'variable', tokenId, label: normalizedLabel, identity: normalizedIdentity,
             }];
         },
 

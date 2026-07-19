@@ -23,7 +23,7 @@ $layout['capabilities'] = ['layout.flow'];
 $layout['sections'] = [[
     'id'=>'section','type'=>'flow-section','children'=>[[
         'id'=>'container','type'=>'flow-container','children'=>[
-            ['id'=>'heading','type'=>'heading','content'=>[['type'=>'text','text'=>'<script>alert(1)</script>','marks'=>['bold'],'color'=>'#123ABC'],['type'=>'variable','tokenId'=>'token_name','label'=>'Name']],'level'=>2,'keepWithNext'=>true],
+            ['id'=>'heading','type'=>'heading','content'=>[['type'=>'text','text'=>'<script>alert(1)</script>','marks'=>['bold'],'color'=>'#123ABC'],['type'=>'variable','tokenId'=>'token_name','label'=>'Name','identity'=>['source'=>'system','type'=>'system','path'=>['currentDate']]]],'level'=>2,'keepWithNext'=>true],
             ['id'=>'static','type'=>'static-text','text'=>'<img onerror=alert(1)>'],
             ['id'=>'paragraph','type'=>'paragraph','content'=>[['type'=>'text','text'=>'Safe','marks'=>['italic']],['type'=>'break']],'alignment'=>'justify'],
         ],'margin'=>$box(),'padding'=>$box(),'minHeight'=>['value'=>10,'unit'=>'mm'],'keepTogether'=>false,
@@ -48,6 +48,10 @@ $bad=$layout; $bad['sections'][0]['children'][0]['children'][2]['content']=[['ty
 Assert::isTrue(in_array('content.type', $codes($bad), true), 'A data-URL inline link was accepted.');
 $bad=$layout; $bad['sections'][0]['children'][0]['children'][0]['content'][1]['label']='';
 Assert::isTrue(in_array('content.tokenLabel', $codes($bad), true), 'An empty inline-variable label was accepted.');
+$bad=$layout; $bad['sections'][0]['children'][0]['children'][0]['content'][1]['identity']=['source'=>'entity','type'=>'collection','entityType'=>'Contact','path'=>['courses']];
+Assert::isTrue(in_array('content.variableIdentity', $codes($bad), true), 'A collection identity was accepted in scalar inline content.');
+$bad=$layout; $bad['sections'][0]['children'][0]['children'][0]['content'][1]['identity']=['source'=>'entity','type'=>'direct','entityType'=>'Contact','path'=>['account','name']];
+Assert::isTrue(in_array('content.variableIdentity', $codes($bad), true), 'A non-canonical direct identity was accepted.');
 $bad=$layout; $bad['sections'][0]['children'][0]['children'][0]['content'][0]['marks']=['bold','bold'];
 Assert::isTrue(in_array('content.marks', $codes($bad), true), 'Duplicate formatting marks were accepted.');
 $normalizer = new RichTextSanitizer(); $dirty=$layout;

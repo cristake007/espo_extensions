@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft;
 
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EntitySourceEligibility;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\Variable\VariableReferenceValidator;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\CanonicalSerializer;
 use Espo\ORM\Entity;
 use InvalidArgumentException;
@@ -19,6 +20,7 @@ final readonly class DraftSaveService
         private SourceReferenceImpactAnalyzer $impactAnalyzer,
         private EntitySourceEligibility $entitySourceEligibility,
         private CanonicalSerializer $serializer,
+        private VariableReferenceValidator $variableReferenceValidator,
     ) {}
 
     public function save(string $templateId, DraftSaveRequest $request): DraftSaveResult
@@ -74,12 +76,14 @@ final readonly class DraftSaveService
                 }
             }
 
+            $spreadsheetSchema = !$sourceChanged && $nextSource['type'] === 'spreadsheet'
+                ? $template->get('spreadsheetSchema')
+                : new stdClass();
+            $this->variableReferenceValidator->validate($nextLayout, $spreadsheetSchema);
+
             $nextRevision = $actualRevision + 1;
             $sourceType = $nextSource['type'];
             $entityType = $sourceType === 'entity' ? $nextSource['entityType'] : null;
-            $spreadsheetSchema = !$sourceChanged && $sourceType === 'spreadsheet'
-                ? $template->get('spreadsheetSchema')
-                : new stdClass();
 
             $template->setMultiple([
                 'currentDraftLayout' => $nextLayout,

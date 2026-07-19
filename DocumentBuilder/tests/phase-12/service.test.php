@@ -16,6 +16,7 @@ namespace {
     use DocumentBuilder\Tests\Support\FixtureLoader;
     use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Config\Settings;
     use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EntitySourceEligibility;
+    use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\Variable\VariableReferenceValidator;
     use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\DraftRecordAccess;
     use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\DraftSaveRequest;
     use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\DraftSaveService;
@@ -46,6 +47,7 @@ namespace {
 
     require "$moduleRoot/Tools/DocumentBuilder/Config/Settings.php";
     require "$moduleRoot/Tools/DocumentBuilder/DataSource/EntityCatalogue/EntitySourceEligibility.php";
+    require "$moduleRoot/Tools/DocumentBuilder/DataSource/Variable/VariableReferenceValidator.php";
 
     foreach ([
         'SchemaVersion.php', 'StableId.php', 'Unit.php', 'Measurement.php', 'NestingDepth.php',
@@ -170,6 +172,9 @@ namespace {
         $impactAnalyzer,
         new Phase12EntitySourceEligibility(),
         new CanonicalSerializer(),
+        new class implements VariableReferenceValidator {
+            public function validate(array $layout, mixed $spreadsheetSchema): void {}
+        },
     );
 
     $first = $service->save('template-1', new DraftSaveRequest('{"schemaVersion":1,"document":{}}', 0, changeNote: ' First save '));

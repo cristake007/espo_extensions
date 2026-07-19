@@ -1,7 +1,8 @@
 define([
     'document-builder:editor/state/json',
     'document-builder:editor/state/node-tree',
-], (Json, NodeTree) => {
+    'document-builder:editor/variables/variable-identity',
+], (Json, NodeTree, VariableIdentity) => {
     const FLOW_CAPABILITY = 'layout.flow';
     const SECTION_TYPE = 'flow-section';
     const CONTAINER_TYPE = 'flow-container';
@@ -228,9 +229,14 @@ define([
                     } else if (item.type === 'break') {
                         if (Object.keys(item).length !== 1) errors.push(`${itemPath}.structure`);
                     } else if (item.type === 'variable') {
+                        let scalarIdentity = false;
+                        try {
+                            scalarIdentity = VariableIdentity.usage(item.identity) === 'scalar';
+                        } catch (error) {}
                         if (!/^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(item.tokenId || '') ||
                             typeof item.label !== 'string' || item.label.length < 1 || item.label.length > 100 ||
-                            Object.keys(item).some(key => !['type', 'tokenId', 'label'].includes(key))) errors.push(`${itemPath}.values`);
+                            !scalarIdentity ||
+                            Object.keys(item).some(key => !['type', 'tokenId', 'label', 'identity'].includes(key))) errors.push(`${itemPath}.values`);
                     } else errors.push(`${itemPath}.type`);
                 });
             };

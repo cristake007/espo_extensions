@@ -791,7 +791,12 @@ final readonly class LayoutValidator
             }
 
             if ($type === 'variable') {
-                $this->rejectUnknownKeys($item, ['type', 'tokenId', 'label'], $itemPath, $errors);
+                $this->rejectUnknownKeys(
+                    $item,
+                    ['type', 'tokenId', 'label', 'identity'],
+                    $itemPath,
+                    $errors,
+                );
 
                 if (!is_string($item['tokenId'] ?? null) ||
                     preg_match('/^[A-Za-z][A-Za-z0-9_-]{0,63}$/D', $item['tokenId']) !== 1) {
@@ -810,11 +815,56 @@ final readonly class LayoutValidator
                     $this->add($errors, 'content.tokenLabel', "$itemPath/label", $elementId);
                 }
 
+                if (!$this->isScalarVariableIdentity($item['identity'] ?? null)) {
+                    $this->add($errors, 'content.variableIdentity', "$itemPath/identity", $elementId);
+                }
+
                 continue;
             }
 
             $this->add($errors, 'content.type', "$itemPath/type", $elementId);
         }
+    }
+
+    private function isScalarVariableIdentity(mixed $identity): bool
+    {
+        if (!$this->isObject($identity)) {
+            return false;
+        }
+
+        $source = $identity['source'] ?? null;
+        $type = $identity['type'] ?? null;
+        $path = $identity['path'] ?? null;
+        $entity = $identity['entityType'] ?? null;
+        $allowedKeys = $source === 'entity' ?
+            ['source', 'type', 'entityType', 'path'] : ['source', 'type', 'path'];
+
+        if (count($identity) !== count($allowedKeys) ||
+            array_diff(array_keys($identity), $allowedKeys) !== [] ||
+            array_diff($allowedKeys, array_keys($identity)) !== [] ||
+            !is_array($path) || !array_is_list($path) || $path === [] || count($path) > 4) {
+            return false;
+        }
+
+        foreach ($path as $segment) {
+            if (!is_string($segment) ||
+                preg_match('/\A[A-Za-z][A-Za-z0-9_]{0,99}\z/D', $segment) !== 1) {
+                return false;
+            }
+        }
+
+        if ($source === 'entity') {
+            return in_array($type, ['direct', 'related'], true) &&
+                is_string($entity) &&
+                preg_match('/\A[A-Za-z][A-Za-z0-9]{0,99}\z/D', $entity) === 1 &&
+                (($type === 'direct' && count($path) === 1) ||
+                    ($type === 'related' && count($path) >= 2));
+        }
+
+        return count($path) === 1 && (
+            ($source === 'system' && $type === 'system') ||
+            ($source === 'spreadsheet' && $type === 'spreadsheet')
+        );
     }
 
     /** @param list<ValidationError> $errors */

@@ -26,6 +26,8 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogu
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\RelationshipDepthLimit;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\EspoEntityCatalogueMetadata;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\EntityCatalogue\LanguageEntityLabelProvider;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\Variable\CompiledVariableReferenceValidator;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\DataSource\Variable\VariableReferenceValidator;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\AclTemplateLifecycleAccess;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\OrmTemplateLifecycleStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\TemplateLifecycleAccess;
@@ -80,6 +82,10 @@ final class Binding implements BindingProcessor
             ->bindImplementation(EntitySourcePolicy::class, ConfiguredEntitySourcePolicy::class)
             ->bindImplementation(EntitySourceEligibility::class, EntityCatalogueService::class)
             ->bindImplementation(RelationshipDepthLimit::class, ConfiguredRelationshipDepthLimit::class)
+            ->bindImplementation(
+                VariableReferenceValidator::class,
+                CompiledVariableReferenceValidator::class,
+            )
             ->bindImplementation(EntityLabelProvider::class, LanguageEntityLabelProvider::class);
     }
 }

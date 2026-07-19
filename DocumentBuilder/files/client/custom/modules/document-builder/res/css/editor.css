@@ -138,6 +138,10 @@
     cursor: pointer;
 }
 
+.document-builder-editor__variable-row.is-insertable {
+    cursor: pointer;
+}
+
 .document-builder-editor__variable-row.is-limited {
     color: var(--text-muted, #777);
     cursor: not-allowed;

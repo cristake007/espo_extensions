@@ -142,7 +142,7 @@
                     <div class="document-builder-editor__variable-tree" role="tree" aria-label="{{translate 'Readable Metadata' category='labels' scope='DocumentBuilderTemplate'}}">
                         {{#each variableRows}}
                         {{#if isField}}
-                        <div class="document-builder-editor__variable-row is-field" style="{{depthStyle}}" role="treeitem" data-variable-row>
+                        <button type="button" class="document-builder-editor__variable-row is-field is-insertable" style="{{depthStyle}}" role="treeitem" data-action="insertMetadataVariable" data-variable-path="{{variablePathKey}}" data-variable-label="{{label}}" data-variable-row>
                             <span class="fas fa-font" aria-hidden="true"></span>
                             <span class="document-builder-editor__variable-label">{{label}}</span>
                             <code>{{name}}</code>
@@ -151,7 +151,7 @@
                             <span class="document-builder-editor__variable-type">{{type}}</span>
                             {{#if required}}<span class="sr-only">{{translate 'Required' category='labels' scope='DocumentBuilderTemplate'}}</span><span aria-hidden="true">*</span>{{/if}}
                             {{#if readOnly}}<span class="fas fa-lock" title="{{translate 'Read Only' category='labels' scope='DocumentBuilderTemplate'}}"></span>{{/if}}
-                        </div>
+                        </button>
                         {{/if}}
                         {{#if isRelationship}}
                             {{#if expandable}}
@@ -298,7 +298,6 @@
                     <button type="button" class="btn btn-default" data-rich-mark="bold"><strong>B</strong></button>
                     <button type="button" class="btn btn-default" data-rich-mark="italic"><em>I</em></button>
                     <button type="button" class="btn btn-default" data-rich-mark="underline"><u>U</u></button>
-                    <button type="button" class="btn btn-default" data-action="addInlineVariable">{{translate 'Variable' category='labels' scope='DocumentBuilderTemplate'}}</button>
                 </div>
                 <div class="form-group"><label>{{translate 'Text Color' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="color" value="#000000" data-rich-color></label></div>
                 {{/unless}}

@@ -90,7 +90,7 @@ define([
             'paste [data-content-setting="text"]': 'pasteContentText',
             'click [data-rich-mark]': 'actionToggleRichMark',
             'change [data-rich-color]': 'changeRichColor',
-            'click [data-action="addInlineVariable"]': 'actionAddInlineVariable',
+            'click [data-action="insertMetadataVariable"]': 'actionInsertMetadataVariable',
             'dragstart [draggable="true"]': 'handleFlowDragStart',
             'dragover [data-flow-drop]': 'handleFlowDragOver',
             'dragleave [data-flow-drop]': 'handleFlowDragLeave',
@@ -769,12 +769,18 @@ define([
             }));
         }
 
-        actionAddInlineVariable() {
+        actionInsertMetadataVariable(event) {
             const location = this.selectedContentNode();
-            if (!location || !location.node.content) return;
-            const tokenId = `token_${Date.now().toString(36)}`;
+            if (!location || !location.node.content || location.node.type === 'static-text') return;
+            const identity = MetadataBrowser.identityAt(
+                this.metadataNodes,
+                event.currentTarget.dataset.variablePath,
+            );
+            const label = event.currentTarget.dataset.variableLabel;
+            const tokenId = this.editorState.idFactory.create('variable');
+
             this.executeCommand(new UpdateNodeCommand(location.node.id, {
-                content: RichText.appendVariable(location.node.content, tokenId, 'Variable'),
+                content: RichText.appendVariable(location.node.content, tokenId, label, identity),
             }));
         }
 
