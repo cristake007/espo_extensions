@@ -65,7 +65,8 @@
         "batchJob": "Lotul de documente nu a putut fi finalizat.",
         "revisionConflict": "Șablonul s-a modificat în timpul editării. Reîncărcați-l și încercați din nou.",
         "sourceChangeConfirmation": "Schimbarea sursei șablonului necesită confirmare după verificarea referințelor nerezolvate.",
-        "publicationConflict": "Șablonul nu mai este o schiță eligibilă pentru publicare."
+        "publicationConflict": "Șablonul nu mai este o schiță eligibilă pentru publicare.",
+        "lifecycleConflict": "Șablonul nu mai este eligibil pentru această acțiune de ciclu de viață."
     },
     "warnings": {
         "valueUnavailable": "O valoare nu a putut fi afișată.",

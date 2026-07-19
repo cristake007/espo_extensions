@@ -44,6 +44,8 @@ php tests/phase-12/contracts.test.php
 php tests/phase-12/service.test.php
 php tests/phase-13/contracts.test.php
 php tests/phase-13/service.test.php
+php tests/phase-14/contracts.test.php
+php tests/phase-14/service.test.php
 ```
 
 Package inventory is checked separately after building the extension ZIP:
@@ -58,7 +60,10 @@ php tests/phase-10/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-11/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-12/package-inventory.test.php dist/document-builder-1.0.0.zip
 php tests/phase-13/package-inventory.test.php dist/document-builder-1.0.0.zip
+php tests/phase-14/package-inventory.test.php dist/document-builder-1.0.0.zip
 ```
+
+Phase 14 runtime validation requires an approved non-production EspoCRM 10.0.0 instance. After install, Clear Cache and run Administration > Rebuild. Duplicate a marked template and verify the copy is a revision-zero draft with the design/source/assignment projection but no published versions or generation history. Archive a published template and verify it becomes inactive while its version panel and immutable records remain intact. Create a draft from both the current and an older published version, verify revision increment and restored layout/source summaries, then confirm every historical version is byte-for-byte unchanged. Exercise stale revisions and users lacking design, publish, record-edit, or version-read access. Confirm normal and mass hard-delete remain unavailable. Generated-document navigation is intentionally deferred until the `DocumentBuilderDocument` scope is introduced in Phase 36 and its template workflow in Phase 38. Never use the production path.
 
 Phase 13 runtime validation requires an approved non-production EspoCRM 10.0.0 instance. After install, Clear Cache and run Administration > Rebuild. Publish a marked source-neutral draft with `POST api/v1/DocumentBuilder/template/{id}/publish` and its current `expectedRevision`; verify exactly one immutable current version exists, its checksum/publisher/time/change note and ACL projection are populated, the template points to it, and native audit history records the status/current-version switch. Retry the same request and expect HTTP 409, verify stale revisions return HTTP 409 and unauthorized publishers return HTTP 403. Exercise an injected persistence failure in a test adapter and verify no version/current-marker/template-status changes survive. Entity, spreadsheet, media, variable, and other schema-only capabilities must remain blocked until their implementation phase. Never use the production path.
 

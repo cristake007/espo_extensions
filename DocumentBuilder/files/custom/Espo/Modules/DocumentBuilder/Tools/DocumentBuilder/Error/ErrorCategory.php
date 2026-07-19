@@ -18,6 +18,7 @@ enum ErrorCategory: string
     case RevisionConflict = 'revisionConflict';
     case SourceChangeConfirmation = 'sourceChangeConfirmation';
     case PublicationConflict = 'publicationConflict';
+    case LifecycleConflict = 'lifecycleConflict';
 
     public function httpStatus(): int
     {
@@ -34,6 +35,7 @@ enum ErrorCategory: string
             self::RevisionConflict,
             self::SourceChangeConfirmation,
             self::PublicationConflict => 409,
+            self::LifecycleConflict => 409,
         };
     }
 

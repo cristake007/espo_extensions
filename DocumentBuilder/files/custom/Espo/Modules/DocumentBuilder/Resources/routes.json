@@ -8,5 +8,20 @@
         "route": "/DocumentBuilder/template/:id/publish",
         "method": "post",
         "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PostTemplatePublish"
+    },
+    {
+        "route": "/DocumentBuilder/template/:id/duplicate",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PostTemplateDuplicate"
+    },
+    {
+        "route": "/DocumentBuilder/template/:id/archive",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PostTemplateArchive"
+    },
+    {
+        "route": "/DocumentBuilder/template/:id/draft-from-version",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\DocumentBuilder\\Api\\PostTemplateDraftFromVersion"
     }
 ]

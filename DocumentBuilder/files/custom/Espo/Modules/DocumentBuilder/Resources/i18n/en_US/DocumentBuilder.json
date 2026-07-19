@@ -65,7 +65,8 @@
         "batchJob": "The document batch could not be completed.",
         "revisionConflict": "The template changed while you were editing it. Reload it and try again.",
         "sourceChangeConfirmation": "Changing the template source requires confirmation after reviewing unresolved references.",
-        "publicationConflict": "The template is no longer an eligible draft for publication."
+        "publicationConflict": "The template is no longer an eligible draft for publication.",
+        "lifecycleConflict": "The template is no longer eligible for this lifecycle action."
     },
     "warnings": {
         "valueUnavailable": "A value could not be displayed.",

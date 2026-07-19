@@ -1,4 +1,11 @@
 {
+    "actions": {
+        "Create Draft from Version": "Creează schiță din această versiune"
+    },
+    "messages": {
+        "confirmDraftFromVersion": "Înlocuiți schița șablonului cu această versiune publicată imuabilă?",
+        "draftCreated": "Schiță creată din această versiune."
+    },
     "fields": {
         "name": "Nume",
         "template": "Șablon",

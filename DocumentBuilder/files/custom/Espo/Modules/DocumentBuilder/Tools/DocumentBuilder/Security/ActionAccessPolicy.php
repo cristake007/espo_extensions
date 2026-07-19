@@ -21,6 +21,15 @@ final readonly class ActionAccessPolicy
         }
     }
 
+    public function requireScopeCreate(ActionPermission $permission, string $scope): void
+    {
+        $this->requireAction($permission);
+
+        if (!$this->acl->checkScope($scope, Table::ACTION_CREATE)) {
+            throw new PermissionDenied();
+        }
+    }
+
     public function requireRecordRead(ActionPermission $permission, Entity $record): void
     {
         $this->requireAction($permission);

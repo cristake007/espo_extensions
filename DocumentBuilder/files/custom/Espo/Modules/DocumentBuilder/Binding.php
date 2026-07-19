@@ -14,6 +14,10 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\LayoutProcessorProv
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\NoopSourceReferenceImpactAnalyzer;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\OrmDraftTemplateStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Draft\SourceReferenceImpactAnalyzer;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\AclTemplateLifecycleAccess;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\OrmTemplateLifecycleStore;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\TemplateLifecycleAccess;
+use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Lifecycle\TemplateLifecycleStore;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\AclPublicationRecordAccess;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\CurrentUserPublicationActor;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Publication\DataSourcePublicationValidator;
@@ -50,6 +54,14 @@ final class Binding implements BindingProcessor
             ->bindImplementation(
                 VariablePublicationValidator::class,
                 NoopVariablePublicationValidator::class,
+            )
+            ->bindImplementation(
+                TemplateLifecycleStore::class,
+                OrmTemplateLifecycleStore::class,
+            )
+            ->bindImplementation(
+                TemplateLifecycleAccess::class,
+                AclTemplateLifecycleAccess::class,
             );
     }
 }

@@ -2,6 +2,20 @@
     "labels": {
         "Create DocumentBuilderTemplate": "Create Document Builder Template"
     },
+    "actions": {
+        "Duplicate": "Duplicate",
+        "Archive": "Archive",
+        "Create Draft from Version": "Create Draft from Published Version",
+        "View Versions": "View Versions"
+    },
+    "messages": {
+        "confirmDuplicate": "Create a new draft copy of this template? Published versions and generation history will not be copied.",
+        "confirmArchive": "Archive this template? New generation will be disabled and existing history will be preserved.",
+        "confirmDraftFromVersion": "Replace the current draft content with the selected immutable published version?",
+        "duplicated": "Template duplicated.",
+        "archived": "Template archived.",
+        "draftCreated": "Draft created from the published version."
+    },
     "fields": {
         "name": "Name",
         "category": "Category",
@@ -22,14 +36,16 @@
         "createdAt": "Created At",
         "modifiedAt": "Modified At",
         "createdBy": "Created By",
-        "modifiedBy": "Modified By"
+        "modifiedBy": "Modified By",
+        "versions": "Versions"
     },
     "links": {
         "currentPublishedVersion": "Current Published Version",
         "assignedUser": "Assigned User",
         "teams": "Teams",
         "createdBy": "Created By",
-        "modifiedBy": "Modified By"
+        "modifiedBy": "Modified By",
+        "versions": "Versions"
     },
     "options": {
         "status": {

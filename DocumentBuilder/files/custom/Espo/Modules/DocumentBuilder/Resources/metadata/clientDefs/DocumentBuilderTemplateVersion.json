@@ -3,5 +3,18 @@
     "boolFilterList": ["onlyMy"],
     "iconClass": "fas fa-history",
     "kanbanViewMode": false,
-    "color": "#587a8c"
+    "color": "#587a8c",
+    "detailActionList": [
+        "__APPEND__",
+        {
+            "name": "draftFromVersion",
+            "label": "Create Draft from Version",
+            "handler": "document-builder:handlers/version-lifecycle",
+            "actionFunction": "createDraftFromVersion",
+            "checkVisibilityFunction": "isDraftFromVersionVisible",
+            "acl": "read",
+            "iconClass": "fas fa-code-branch",
+            "groupIndex": 0
+        }
+    ]
 }

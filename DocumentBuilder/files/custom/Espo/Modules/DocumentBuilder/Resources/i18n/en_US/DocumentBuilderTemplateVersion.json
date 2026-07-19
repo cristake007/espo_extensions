@@ -1,4 +1,11 @@
 {
+    "actions": {
+        "Create Draft from Version": "Create Draft from This Version"
+    },
+    "messages": {
+        "confirmDraftFromVersion": "Replace the template draft with this immutable published version?",
+        "draftCreated": "Draft created from this version."
+    },
     "fields": {
         "name": "Name",
         "template": "Template",

@@ -3,5 +3,59 @@
     "boolFilterList": ["onlyMy"],
     "iconClass": "fas fa-file-alt",
     "kanbanViewMode": false,
-    "color": "#3c6e91"
+    "color": "#3c6e91",
+    "detailActionList": [
+        "__APPEND__",
+        {
+            "name": "duplicateTemplate",
+            "label": "Duplicate",
+            "handler": "document-builder:handlers/template-lifecycle",
+            "actionFunction": "duplicate",
+            "acl": "read",
+            "iconClass": "fas fa-copy",
+            "groupIndex": 0
+        },
+        {
+            "name": "draftFromPublishedVersion",
+            "label": "Create Draft from Version",
+            "handler": "document-builder:handlers/template-lifecycle",
+            "actionFunction": "createDraftFromPublishedVersion",
+            "checkVisibilityFunction": "isDraftFromPublishedVersionVisible",
+            "acl": "edit",
+            "iconClass": "fas fa-code-branch",
+            "groupIndex": 0
+        },
+        {
+            "name": "viewVersions",
+            "label": "View Versions",
+            "handler": "document-builder:handlers/template-lifecycle",
+            "actionFunction": "viewVersions",
+            "checkVisibilityFunction": "isVersionHistoryVisible",
+            "acl": "read",
+            "iconClass": "fas fa-history",
+            "groupIndex": 1
+        },
+        {
+            "name": "archiveTemplate",
+            "label": "Archive",
+            "handler": "document-builder:handlers/template-lifecycle",
+            "actionFunction": "archive",
+            "checkVisibilityFunction": "isArchiveVisible",
+            "acl": "edit",
+            "iconClass": "fas fa-archive",
+            "groupIndex": 2
+        }
+    ],
+    "relationshipPanels": {
+        "versions": {
+            "readOnly": true,
+            "createDisabled": true,
+            "selectDisabled": true,
+            "unlinkDisabled": true,
+            "editDisabled": true,
+            "removeDisabled": true,
+            "orderBy": "versionNumber",
+            "orderDirection": "desc"
+        }
+    }
 }
