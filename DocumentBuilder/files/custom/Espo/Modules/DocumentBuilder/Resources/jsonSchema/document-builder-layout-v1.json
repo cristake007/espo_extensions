@@ -161,13 +161,45 @@
         },
         "inlineVariable": {
             "type": "object", "additionalProperties": false,
-            "required": ["type", "tokenId", "label", "identity"],
+            "required": ["type", "tokenId", "label", "identity", "presentation"],
             "properties": {
                 "type": {"const": "variable"},
                 "tokenId": {"$ref": "#/$defs/stableId"},
                 "label": {"type": "string", "minLength": 1, "maxLength": 100},
-                "identity": {"$ref": "#/$defs/scalarVariableIdentity"}
+                "identity": {"$ref": "#/$defs/scalarVariableIdentity"},
+                "presentation": {"$ref": "#/$defs/variablePresentation"}
             }
+        },
+        "variableFormat": {
+            "type": "object", "additionalProperties": false,
+            "required": ["type", "decimals", "dateStyle", "timeStyle", "currency", "trueLabel", "falseLabel", "separator", "trim", "case", "prefix", "suffix", "fallback"],
+            "properties": {
+                "type": {"enum": ["auto", "date", "datetime", "number", "currency", "boolean", "enum", "multiValue"]},
+                "decimals": {"type": "integer", "minimum": 0, "maximum": 6},
+                "dateStyle": {"enum": ["short", "medium", "long"]},
+                "timeStyle": {"enum": ["short", "medium"]},
+                "currency": {"type": ["string", "null"], "pattern": "^[A-Z]{3}$"},
+                "trueLabel": {"type": ["string", "null"], "maxLength": 100},
+                "falseLabel": {"type": ["string", "null"], "maxLength": 100},
+                "separator": {"type": "string", "minLength": 1, "maxLength": 10},
+                "trim": {"type": "boolean"},
+                "case": {"enum": ["none", "upper", "lower", "title"]},
+                "prefix": {"type": "string", "maxLength": 100},
+                "suffix": {"type": "string", "maxLength": 100},
+                "fallback": {"type": ["string", "null"], "maxLength": 200}
+            }
+        },
+        "variablePresentation": {
+            "type": "object", "additionalProperties": false,
+            "required": ["format", "missing"],
+            "properties": {
+                "format": {"$ref": "#/$defs/variableFormat"},
+                "missing": {"enum": ["empty", "fallback", "hideElement", "hideRow", "hideSection", "warning", "required"]}
+            },
+            "allOf": [{
+                "if": {"properties": {"missing": {"const": "fallback"}}},
+                "then": {"properties": {"format": {"properties": {"fallback": {"type": "string"}}}}}
+            }]
         },
         "variablePath": {
             "type": "array", "minItems": 1, "maxItems": 4,

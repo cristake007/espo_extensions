@@ -71,6 +71,16 @@ final readonly class RichTextSanitizer
 
         if (($item['type'] ?? null) === 'variable' && is_string($item['label'] ?? null)) {
             $item['label'] = $this->normalizeText($item['label']);
+
+            $format = $item['presentation']['format'] ?? null;
+
+            if (is_array($format) && !array_is_list($format)) {
+                foreach (['trueLabel', 'falseLabel', 'separator', 'prefix', 'suffix', 'fallback'] as $key) {
+                    if (is_string($format[$key] ?? null)) {
+                        $item['presentation']['format'][$key] = $this->normalizeText($format[$key]);
+                    }
+                }
+            }
         }
 
         return $item;

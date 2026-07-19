@@ -125,6 +125,42 @@
                 </section>
                 <section class="document-builder-editor__panel">
                     <h3>{{translate 'Variables' category='labels' scope='DocumentBuilderTemplate'}}</h3>
+                    {{#with variablePresentation}}
+                    <details class="document-builder-editor__variable-presentation">
+                        <summary>{{translate 'Variable Presentation' category='labels' scope='DocumentBuilderTemplate'}}</summary>
+                        <div class="form-group"><label>{{translate 'Value Format' category='labels' scope='DocumentBuilderTemplate'}}
+                            <select class="form-control input-sm" data-variable-presentation="type">
+                                {{#each formatOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{translate value category='labels' scope='DocumentBuilderTemplate'}}</option>{{/each}}
+                            </select>
+                        </label></div>
+                        <div class="document-builder-editor__settings-grid">
+                            <label>{{translate 'Decimals' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="6" value="{{decimals}}" data-variable-presentation="decimals"></label>
+                            <label>{{translate 'Currency Code' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="3" pattern="[A-Z]{3}" value="{{currency}}" data-variable-presentation="currency"></label>
+                            <label>{{translate 'Date Style' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="dateStyle"><option value="short" {{#if dateStyleShort}}selected{{/if}}>{{translate 'short' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="medium" {{#if dateStyleMedium}}selected{{/if}}>{{translate 'medium' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="long" {{#if dateStyleLong}}selected{{/if}}>{{translate 'long' category='labels' scope='DocumentBuilderTemplate'}}</option></select></label>
+                            <label>{{translate 'Time Style' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="timeStyle"><option value="short" {{#if timeStyleShort}}selected{{/if}}>{{translate 'short' category='labels' scope='DocumentBuilderTemplate'}}</option><option value="medium" {{#if timeStyleMedium}}selected{{/if}}>{{translate 'medium' category='labels' scope='DocumentBuilderTemplate'}}</option></select></label>
+                            <label>{{translate 'Text Case' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="case">{{#each caseOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{translate value category='labels' scope='DocumentBuilderTemplate'}}</option>{{/each}}</select></label>
+                            <label>{{translate 'Multi-value Separator' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="10" value="{{separator}}" data-variable-presentation="separator"></label>
+                            <label>{{translate 'True Label' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="100" value="{{trueLabel}}" data-variable-presentation="trueLabel"></label>
+                            <label>{{translate 'False Label' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="100" value="{{falseLabel}}" data-variable-presentation="falseLabel"></label>
+                            <label>{{translate 'Prefix' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="100" value="{{prefix}}" data-variable-presentation="prefix"></label>
+                            <label>{{translate 'Suffix' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="100" value="{{suffix}}" data-variable-presentation="suffix"></label>
+                        </div>
+                        <div class="checkbox"><label><input type="checkbox" data-variable-presentation="trim" {{#if trim}}checked{{/if}}> {{translate 'Trim Text' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
+                        <div class="form-group"><label>{{translate 'Fallback Text' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="200" value="{{fallback}}" data-variable-presentation="fallback"></label></div>
+                        <div class="form-group"><label>{{translate 'Missing Value Policy' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="missing">{{#each missingOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{translate value category='labels' scope='DocumentBuilderTemplate'}}</option>{{/each}}</select></label></div>
+                    </details>
+                    {{/with}}
+                    <h4>{{translate 'System Variables' category='labels' scope='DocumentBuilderTemplate'}}</h4>
+                    <div class="document-builder-editor__variable-tree" role="tree" aria-label="{{translate 'System Variables' category='labels' scope='DocumentBuilderTemplate'}}">
+                        {{#each systemVariableRows}}
+                        <button type="button" class="document-builder-editor__variable-row is-field is-insertable" role="treeitem" data-action="insertMetadataVariable" data-system-variable="{{name}}" data-variable-label="{{translate label category='labels' scope='DocumentBuilderTemplate'}}">
+                            <span class="fas fa-cog" aria-hidden="true"></span>
+                            <span class="document-builder-editor__variable-label">{{translate label category='labels' scope='DocumentBuilderTemplate'}}</span>
+                            <code>{{name}}</code>
+                            {{#if rendererPlaceholder}}<span class="document-builder-editor__variable-badge">{{translate 'Renderer' category='labels' scope='DocumentBuilderTemplate'}}</span>{{/if}}
+                        </button>
+                        {{/each}}
+                    </div>
                     {{#unless variableBrowserHasSource}}
                     <p class="text-muted">{{translate 'editorVariableSourceRequired' category='messages' scope='DocumentBuilderTemplate'}}</p>
                     {{else}}

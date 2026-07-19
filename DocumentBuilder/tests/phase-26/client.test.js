@@ -19,6 +19,7 @@ function load(name) {
 const VariableIdentity = load('document-builder:editor/variables/variable-identity');
 const MetadataBrowser = load('document-builder:editor/variables/metadata-browser');
 const RichText = load('document-builder:editor/content/rich-text');
+const VariablePresentation = load('document-builder:editor/variables/variable-presentation');
 const direct = VariableIdentity.entityField('Contact', ['firstName']);
 const related = VariableIdentity.entityField('Contact', ['account', 'name']);
 const collection = VariableIdentity.entityCollection('Contact', ['courses']);
@@ -46,9 +47,10 @@ nodes.get('account').node.fields[0].label = 'Renamed label';
 assert.deepEqual(MetadataBrowser.identityAt(nodes, 'account.name'), related);
 assert.throws(() => MetadataBrowser.identityAt(nodes, 'account.password'), /readable metadata/);
 
-const token = RichText.appendVariable([], 'variable_1', 'Display only', related)[0];
+const presentation = VariablePresentation.defaults();
+const token = RichText.appendVariable([], 'variable_1', 'Display only', related, presentation)[0];
 assert.deepEqual(token.identity, related);
 assert.equal(token.label, 'Display only');
-assert.throws(() => RichText.appendVariable([], 'variable_2', 'Courses', collection), /scalar/);
+assert.throws(() => RichText.appendVariable([], 'variable_2', 'Courses', collection, presentation), /scalar/);
 
 console.log('Phase 26 client identity, label independence, safe insertion, and scalar-usage tests passed.');

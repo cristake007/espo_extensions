@@ -24,6 +24,7 @@ const StableIdFactory = load('document-builder:editor/state/stable-id-factory');
 const AddFlowNodeCommand = load('document-builder:editor/commands/add-flow-node');
 const UpdateNodeCommand = load('document-builder:editor/commands/update-node');
 const LayoutPrecheck = load('document-builder:editor/validation/layout-precheck');
+const VariablePresentation = load('document-builder:editor/variables/variable-presentation');
 const layout = JSON.parse(fs.readFileSync(path.join(root, 'tests/fixtures/layout/phase-08-default.json')));
 const ids = ['section', 'container', 'heading', 'static', 'paragraph'];
 const state = new EditorState(layout, new StableIdFactory(() => ids.shift()));
@@ -44,12 +45,14 @@ assert.deepEqual(RichText.fromPlainText('<img onerror=alert(1)>safe\r\nline', ['
     {type: 'text', text: 'line', marks: ['italic']},
 ]);
 const identity = {source: 'system', type: 'system', path: ['currentDate']};
-assert.throws(() => RichText.appendVariable([], 'bad token', 'x', identity), /Invalid/);
+const presentation = VariablePresentation.defaults();
+assert.throws(() => RichText.appendVariable([], 'bad token', 'x', identity, presentation), /Invalid/);
 const content = RichText.appendVariable(
     [{type: 'text', text: '<script>', marks: []}],
     'token_safe',
     'Name',
     identity,
+    presentation,
 );
 const created = [];
 const documentRef = {

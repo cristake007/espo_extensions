@@ -23,6 +23,7 @@ define([
     'document-builder:services/entity-catalogue-api',
     'document-builder:services/entity-metadata-api',
     'document-builder:editor/variables/metadata-browser',
+    'document-builder:editor/variables/variable-presentation',
 ], (
     View,
     EditorState,
@@ -48,6 +49,7 @@ define([
     EntityCatalogueApi,
     EntityMetadataApi,
     MetadataBrowser,
+    VariablePresentation,
 ) => {
     return class extends View {
         template = 'document-builder:editor/shell'
@@ -91,6 +93,7 @@ define([
             'click [data-rich-mark]': 'actionToggleRichMark',
             'change [data-rich-color]': 'changeRichColor',
             'click [data-action="insertMetadataVariable"]': 'actionInsertMetadataVariable',
+            'change [data-variable-presentation]': 'changeVariablePresentation',
             'dragstart [draggable="true"]': 'handleFlowDragStart',
             'dragover [data-flow-drop]': 'handleFlowDragOver',
             'dragleave [data-flow-drop]': 'handleFlowDragLeave',
@@ -140,6 +143,7 @@ define([
             this.expandedMetadataPaths = new Set();
             this.metadataGeneration = 0;
             this.variableSearch = '';
+            this.variablePresentationDraft = VariablePresentation.defaults();
             this.maxRelationshipDepth = config.maxRelationshipDepth ||
                 metadataDefaults.maxRelationshipDepth || 2;
             this.pendingFocusNodeId = null;
@@ -333,7 +337,7 @@ define([
 
         getVariableBrowserData() {
             if (!this.editorState) {
-                return {variableRows: [], variableBrowserHasSource: false};
+                return {variableRows: [], systemVariableRows: [], variableBrowserHasSource: false};
             }
 
             const source = this.editorState.getLayout().dataSource;
@@ -341,8 +345,10 @@ define([
             if (source.type !== 'entity') {
                 return {
                     variableRows: [],
+                    systemVariableRows: MetadataBrowser.systemRows(),
                     variableBrowserHasSource: false,
                     variableSearch: this.variableSearch,
+                    variablePresentation: this.variablePresentationData(),
                 };
             }
 
@@ -355,11 +361,38 @@ define([
 
             return {
                 variableRows: rows,
+                systemVariableRows: MetadataBrowser.systemRows(),
                 hasVariableRows: rows.length > 0,
                 variableBrowserHasSource: true,
                 variableBrowserLoading: root?.status === 'loading',
                 variableBrowserError: root?.status === 'error',
                 variableSearch: this.variableSearch,
+                variablePresentation: this.variablePresentationData(),
+            };
+        }
+
+        variablePresentationData() {
+            const presentation = this.variablePresentationDraft;
+            const format = presentation.format;
+            const selected = (value, expected) => value === expected;
+
+            return {
+                ...format,
+                missing: presentation.missing,
+                formatOptions: VariablePresentation.FORMAT_TYPES.map(value => ({
+                    value, selected: selected(format.type, value),
+                })),
+                missingOptions: VariablePresentation.MISSING_POLICIES.map(value => ({
+                    value, selected: selected(presentation.missing, value),
+                })),
+                caseOptions: VariablePresentation.CASES.map(value => ({
+                    value, selected: selected(format.case, value),
+                })),
+                dateStyleShort: format.dateStyle === 'short',
+                dateStyleMedium: format.dateStyle === 'medium',
+                dateStyleLong: format.dateStyle === 'long',
+                timeStyleShort: format.timeStyle === 'short',
+                timeStyleMedium: format.timeStyle === 'medium',
             };
         }
 
@@ -772,16 +805,54 @@ define([
         actionInsertMetadataVariable(event) {
             const location = this.selectedContentNode();
             if (!location || !location.node.content || location.node.type === 'static-text') return;
-            const identity = MetadataBrowser.identityAt(
-                this.metadataNodes,
-                event.currentTarget.dataset.variablePath,
-            );
+            const systemVariable = event.currentTarget.dataset.systemVariable;
+            const identity = systemVariable ? MetadataBrowser.systemIdentityAt(systemVariable) :
+                MetadataBrowser.identityAt(
+                    this.metadataNodes,
+                    event.currentTarget.dataset.variablePath,
+                );
             const label = event.currentTarget.dataset.variableLabel;
             const tokenId = this.editorState.idFactory.create('variable');
 
             this.executeCommand(new UpdateNodeCommand(location.node.id, {
-                content: RichText.appendVariable(location.node.content, tokenId, label, identity),
+                content: RichText.appendVariable(
+                    location.node.content,
+                    tokenId,
+                    label,
+                    identity,
+                    this.variablePresentationDraft,
+                ),
             }));
+        }
+
+        changeVariablePresentation(event) {
+            const input = event.currentTarget;
+            const setting = input.dataset.variablePresentation;
+            const next = {
+                format: {...this.variablePresentationDraft.format},
+                missing: this.variablePresentationDraft.missing,
+            };
+
+            if (setting === 'missing') {
+                next.missing = input.value;
+                if (input.value === 'fallback' && next.format.fallback === null) {
+                    next.format.fallback = '';
+                }
+            }
+            else if (setting === 'decimals') next.format.decimals = Number(input.value);
+            else if (setting === 'trim') next.format.trim = input.checked;
+            else if (setting === 'fallback') next.format.fallback = input.value;
+            else if (['currency', 'trueLabel', 'falseLabel'].includes(setting)) {
+                next.format[setting] = input.value === '' ? null : input.value;
+            } else if (['type', 'dateStyle', 'timeStyle', 'separator', 'case', 'prefix', 'suffix'].includes(setting)) {
+                next.format[setting] = input.value;
+            } else return;
+
+            try {
+                this.variablePresentationDraft = VariablePresentation.create(next);
+            } catch (error) {
+                this.reRender();
+            }
         }
 
         addFlowNode(type, target) {

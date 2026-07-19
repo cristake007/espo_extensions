@@ -793,7 +793,7 @@ final readonly class LayoutValidator
             if ($type === 'variable') {
                 $this->rejectUnknownKeys(
                     $item,
-                    ['type', 'tokenId', 'label', 'identity'],
+                    ['type', 'tokenId', 'label', 'identity', 'presentation'],
                     $itemPath,
                     $errors,
                 );
@@ -817,6 +817,10 @@ final readonly class LayoutValidator
 
                 if (!$this->isScalarVariableIdentity($item['identity'] ?? null)) {
                     $this->add($errors, 'content.variableIdentity', "$itemPath/identity", $elementId);
+                }
+
+                if (!$this->isVariablePresentation($item['presentation'] ?? null)) {
+                    $this->add($errors, 'content.variablePresentation', "$itemPath/presentation", $elementId);
                 }
 
                 continue;
@@ -865,6 +869,67 @@ final readonly class LayoutValidator
             ($source === 'system' && $type === 'system') ||
             ($source === 'spreadsheet' && $type === 'spreadsheet')
         );
+    }
+
+    private function isVariablePresentation(mixed $presentation): bool
+    {
+        if (!$this->hasExactKeys($presentation, ['format', 'missing']) ||
+            !$this->hasExactKeys($presentation['format'], [
+                'type', 'decimals', 'dateStyle', 'timeStyle', 'currency', 'trueLabel',
+                'falseLabel', 'separator', 'trim', 'case', 'prefix', 'suffix', 'fallback',
+            ])) {
+            return false;
+        }
+
+        $format = $presentation['format'];
+        $nullableTexts = [
+            'currency' => [3, '/\A[A-Z]{3}\z/D'],
+            'trueLabel' => [100, null],
+            'falseLabel' => [100, null],
+            'fallback' => [200, null],
+        ];
+
+        foreach ($nullableTexts as $key => [$maximum, $pattern]) {
+            $value = $format[$key];
+
+            if ($value !== null && (!$this->isSafeBoundedText($value, $maximum) ||
+                ($pattern !== null && preg_match($pattern, $value) !== 1))) {
+                return false;
+            }
+        }
+
+        if (!in_array($format['type'], [
+            'auto', 'date', 'datetime', 'number', 'currency', 'boolean', 'enum', 'multiValue',
+        ], true) || !is_int($format['decimals']) || $format['decimals'] < 0 ||
+            $format['decimals'] > 6 ||
+            !in_array($format['dateStyle'], ['short', 'medium', 'long'], true) ||
+            !in_array($format['timeStyle'], ['short', 'medium'], true) ||
+            !$this->isSafeBoundedText($format['separator'], 10) || $format['separator'] === '' ||
+            !is_bool($format['trim']) ||
+            !in_array($format['case'], ['none', 'upper', 'lower', 'title'], true) ||
+            !$this->isSafeBoundedText($format['prefix'], 100) ||
+            !$this->isSafeBoundedText($format['suffix'], 100) ||
+            !in_array($presentation['missing'], [
+                'empty', 'fallback', 'hideElement', 'hideRow', 'hideSection', 'warning', 'required',
+            ], true)) {
+            return false;
+        }
+
+        return $presentation['missing'] !== 'fallback' || $format['fallback'] !== null;
+    }
+
+    /** @param list<string> $keys */
+    private function hasExactKeys(mixed $value, array $keys): bool
+    {
+        return $this->isObject($value) && count($value) === count($keys) &&
+            array_diff(array_keys($value), $keys) === [] &&
+            array_diff($keys, array_keys($value)) === [];
+    }
+
+    private function isSafeBoundedText(mixed $value, int $maximum): bool
+    {
+        return is_string($value) && mb_strlen($value) <= $maximum &&
+            preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', $value) !== 1;
     }
 
     /** @param list<ValidationError> $errors */

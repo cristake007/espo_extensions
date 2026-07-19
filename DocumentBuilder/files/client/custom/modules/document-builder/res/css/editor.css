@@ -120,6 +120,15 @@
     margin-top: 8px;
 }
 
+.document-builder-editor__variable-presentation {
+    margin-top: 8px;
+}
+
+.document-builder-editor__variable-presentation > summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+
 .document-builder-editor__variable-row {
     display: flex;
     width: calc(100% - var(--document-builder-variable-depth, 0) * 12px);

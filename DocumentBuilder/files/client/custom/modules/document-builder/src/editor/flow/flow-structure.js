@@ -2,7 +2,8 @@ define([
     'document-builder:editor/state/json',
     'document-builder:editor/state/node-tree',
     'document-builder:editor/variables/variable-identity',
-], (Json, NodeTree, VariableIdentity) => {
+    'document-builder:editor/variables/variable-presentation',
+], (Json, NodeTree, VariableIdentity, VariablePresentation) => {
     const FLOW_CAPABILITY = 'layout.flow';
     const SECTION_TYPE = 'flow-section';
     const CONTAINER_TYPE = 'flow-container';
@@ -230,13 +231,18 @@ define([
                         if (Object.keys(item).length !== 1) errors.push(`${itemPath}.structure`);
                     } else if (item.type === 'variable') {
                         let scalarIdentity = false;
+                        let validPresentation = false;
                         try {
                             scalarIdentity = VariableIdentity.usage(item.identity) === 'scalar';
+                            VariablePresentation.create(item.presentation);
+                            validPresentation = true;
                         } catch (error) {}
                         if (!/^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(item.tokenId || '') ||
                             typeof item.label !== 'string' || item.label.length < 1 || item.label.length > 100 ||
-                            !scalarIdentity ||
-                            Object.keys(item).some(key => !['type', 'tokenId', 'label', 'identity'].includes(key))) errors.push(`${itemPath}.values`);
+                            !scalarIdentity || !validPresentation ||
+                            Object.keys(item).some(key => ![
+                                'type', 'tokenId', 'label', 'identity', 'presentation',
+                            ].includes(key))) errors.push(`${itemPath}.values`);
                     } else errors.push(`${itemPath}.type`);
                 });
             };

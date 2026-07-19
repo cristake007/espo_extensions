@@ -1,4 +1,11 @@
 define(['document-builder:editor/variables/variable-identity'], VariableIdentity => {
+    const SYSTEM_VARIABLES = Object.freeze([
+        Object.freeze({name: 'currentDate', label: 'Current Date', valueType: 'date'}),
+        Object.freeze({name: 'currentDateTime', label: 'Current Date and Time', valueType: 'datetime'}),
+        Object.freeze({name: 'currentUserName', label: 'Current User Name', valueType: 'text'}),
+        Object.freeze({name: 'pageNumber', label: 'Page Number', valueType: 'number', rendererPlaceholder: true}),
+        Object.freeze({name: 'pageCount', label: 'Page Count', valueType: 'number', rendererPlaceholder: true}),
+    ]);
     const flatten = (nodes, expandedPaths, search = '') => {
         const rows = [];
         const query = search.trim().toLocaleLowerCase();
@@ -72,5 +79,18 @@ define(['document-builder:editor/variables/variable-identity'], VariableIdentity
         return VariableIdentity.entityField(state.node.rootEntityType, [...path, name]);
     };
 
-    return Object.freeze({flatten, identityAt});
+    const systemRows = () => SYSTEM_VARIABLES.map(item => ({
+        ...item,
+        identity: VariableIdentity.system(item.name),
+    }));
+
+    const systemIdentityAt = name => {
+        if (!SYSTEM_VARIABLES.some(item => item.name === name)) {
+            throw new TypeError('The selected system variable is unsupported.');
+        }
+
+        return VariableIdentity.system(name);
+    };
+
+    return Object.freeze({flatten, identityAt, systemRows, systemIdentityAt});
 });

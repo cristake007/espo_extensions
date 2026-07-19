@@ -19,11 +19,12 @@ $settings = new Settings([
 $validator = new LayoutValidator($settings, NodeRegistry::phase19(), CapabilityRegistry::phase19());
 $layout = (new FixtureLoader("$root/tests/fixtures"))->json('layout/phase-08-default.json');
 $box = fn () => array_fill_keys(['top','right','bottom','left'], ['value'=>0,'unit'=>'mm']);
+$presentation = ['format'=>['type'=>'auto','decimals'=>2,'dateStyle'=>'medium','timeStyle'=>'short','currency'=>null,'trueLabel'=>null,'falseLabel'=>null,'separator'=>', ','trim'=>true,'case'=>'none','prefix'=>'','suffix'=>'','fallback'=>null],'missing'=>'empty'];
 $layout['capabilities'] = ['layout.flow'];
 $layout['sections'] = [[
     'id'=>'section','type'=>'flow-section','children'=>[[
         'id'=>'container','type'=>'flow-container','children'=>[
-            ['id'=>'heading','type'=>'heading','content'=>[['type'=>'text','text'=>'<script>alert(1)</script>','marks'=>['bold'],'color'=>'#123ABC'],['type'=>'variable','tokenId'=>'token_name','label'=>'Name','identity'=>['source'=>'system','type'=>'system','path'=>['currentDate']]]],'level'=>2,'keepWithNext'=>true],
+            ['id'=>'heading','type'=>'heading','content'=>[['type'=>'text','text'=>'<script>alert(1)</script>','marks'=>['bold'],'color'=>'#123ABC'],['type'=>'variable','tokenId'=>'token_name','label'=>'Name','identity'=>['source'=>'system','type'=>'system','path'=>['currentDate']],'presentation'=>$presentation]],'level'=>2,'keepWithNext'=>true],
             ['id'=>'static','type'=>'static-text','text'=>'<img onerror=alert(1)>'],
             ['id'=>'paragraph','type'=>'paragraph','content'=>[['type'=>'text','text'=>'Safe','marks'=>['italic']],['type'=>'break']],'alignment'=>'justify'],
         ],'margin'=>$box(),'padding'=>$box(),'minHeight'=>['value'=>10,'unit'=>'mm'],'keepTogether'=>false,
@@ -52,14 +53,20 @@ $bad=$layout; $bad['sections'][0]['children'][0]['children'][0]['content'][1]['i
 Assert::isTrue(in_array('content.variableIdentity', $codes($bad), true), 'A collection identity was accepted in scalar inline content.');
 $bad=$layout; $bad['sections'][0]['children'][0]['children'][0]['content'][1]['identity']=['source'=>'entity','type'=>'direct','entityType'=>'Contact','path'=>['account','name']];
 Assert::isTrue(in_array('content.variableIdentity', $codes($bad), true), 'A non-canonical direct identity was accepted.');
+$bad=$layout; $bad['sections'][0]['children'][0]['children'][0]['content'][1]['presentation']['format']['expression']='value.toString()';
+Assert::isTrue(in_array('content.variablePresentation', $codes($bad), true), 'An arbitrary format expression was accepted.');
+$bad=$layout; $bad['sections'][0]['children'][0]['children'][0]['content'][1]['presentation']['missing']='fallback';
+Assert::isTrue(in_array('content.variablePresentation', $codes($bad), true), 'A fallback policy without fallback text was accepted.');
 $bad=$layout; $bad['sections'][0]['children'][0]['children'][0]['content'][0]['marks']=['bold','bold'];
 Assert::isTrue(in_array('content.marks', $codes($bad), true), 'Duplicate formatting marks were accepted.');
 $normalizer = new RichTextSanitizer(); $dirty=$layout;
 $dirty['sections'][0]['children'][0]['children'][0]['content'][0]['text']="a\r\nb";
 $dirty['sections'][0]['children'][0]['children'][0]['content'][0]['marks']=['underline','bold','underline'];
+$dirty['sections'][0]['children'][0]['children'][0]['content'][1]['presentation']['format']['fallback']="a\r\nb";
 $normalized=$normalizer->normalizeLayout($dirty);
 Assert::same("a\nb", $normalized['sections'][0]['children'][0]['children'][0]['content'][0]['text'], 'Server newline normalization failed.');
 Assert::same(['bold','underline'], $normalized['sections'][0]['children'][0]['children'][0]['content'][0]['marks'], 'Server mark canonicalization failed.');
+Assert::same("a\nb", $normalized['sections'][0]['children'][0]['children'][0]['content'][1]['presentation']['format']['fallback'], 'Variable presentation text normalization failed.');
 Assert::isTrue($validator->validate($normalized)->isValid(), 'Server-authoritative normalized content was rejected.');
 $bad=$layout;$bad['footer']=[$layout['sections'][0]['children'][0]['children'][0]];
 Assert::isTrue(in_array('content.parent',$codes($bad),true),'Content was accepted outside the flow hierarchy.');
