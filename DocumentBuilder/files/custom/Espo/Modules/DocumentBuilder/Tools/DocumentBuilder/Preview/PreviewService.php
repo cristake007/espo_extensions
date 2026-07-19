@@ -51,7 +51,7 @@ final readonly class PreviewService
         $layout = $this->layout($template->get('currentDraftLayout'));
 
         if ($request->mode === PreviewMode::Sample) {
-            $values = $this->samples->resolve($layout);
+            $values = ($layout['dataSource']['type'] ?? null) === 'none' ? [] : $this->samples->resolve($layout);
         } else {
             $resolved = $this->entities->resolve($layout, (string) $request->recordId);
             $values = array_map(
