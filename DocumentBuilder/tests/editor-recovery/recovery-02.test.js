@@ -72,7 +72,8 @@ const heading = container.children.find(item => item.dataset?.nodeId === 'headin
 assert.equal(section.tag, 'section');
 assert.equal(container.tag, 'div');
 assert.equal(heading.tag, 'h2');
-assert.equal(heading.children[0].text, 'Nested title');
+assert.equal(heading.children[0].dataset.richEditor, '');
+assert.equal(heading.children[0].children[0].text, 'Nested title');
 assert.equal(section.attributes['aria-keyshortcuts'], 'ArrowUp ArrowDown Home End');
 assert.equal(host.children.filter(item => item.dataset?.flowDrop).length, 2);
 assert.equal(container.children.filter(item => item.dataset?.flowDrop).length, 2);

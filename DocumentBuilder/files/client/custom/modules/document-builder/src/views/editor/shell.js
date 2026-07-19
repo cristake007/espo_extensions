@@ -12,6 +12,7 @@ define([
     'document-builder:editor/page-settings',
     'document-builder:editor/flow/flow-structure',
     'document-builder:editor/content/rich-text',
+    'document-builder:editor/content/wysiwyg',
     'document-builder:editor/style/style-resolver',
     'document-builder:editor/renderer/browser-renderer',
     'document-builder:editor/canvas/document-canvas',
@@ -44,6 +45,7 @@ define([
     PageSettings,
     FlowStructure,
     RichText,
+    Wysiwyg,
     StyleResolver,
     BrowserRenderer,
     DocumentCanvas,
@@ -112,7 +114,15 @@ define([
             'change [data-basic-flow-setting]': 'changeBasicFlowSetting',
             'change [data-style-setting]': 'changeStyleSetting',
             'paste [data-content-setting="text"]': 'pasteContentText',
+            'focusin [data-rich-editor]': 'activateRichTextEditor',
+            'mouseup [data-rich-editor]': 'captureRichTextSelection',
+            'keyup [data-rich-editor]': 'captureRichTextSelection',
+            'input [data-rich-editor]': 'inputRichText',
+            'paste [data-rich-editor]': 'pasteRichText',
+            'keydown [data-rich-editor]': 'handleRichTextKeydown',
+            'mousedown [data-rich-mark], [data-rich-command]': 'preserveRichTextSelection',
             'click [data-rich-mark]': 'actionToggleRichMark',
+            'click [data-rich-command]': 'actionRichTextCommand',
             'change [data-rich-color]': 'changeRichColor',
             'click [data-action="insertMetadataVariable"]': 'actionInsertMetadataVariable',
             'change [data-variable-presentation]': 'changeVariablePresentation',
@@ -141,6 +151,7 @@ define([
             this.conflictDialogOpen = false;
             this.dirtyGuard = new DirtyGuard(this.getRouter(), this);
             this.keydownHandler = event => this.handleKeydown(event);
+            this.selectionchangeHandler = () => this.captureDocumentSelection();
             const config = this.getConfig().get('documentBuilder') || {};
             const metadataDefaults = this.getMetadata().get(
                 ['app', 'documentBuilder', 'defaults'],
@@ -186,9 +197,11 @@ define([
                 metadataDefaults.maxRelationshipDepth || 2;
             this.pendingFocusNodeId = null;
             this.rightSidebarTab = 'elements';
+            this.richTextSelection = null;
             this.zoom = 100;
 
             document.addEventListener('keydown', this.keydownHandler);
+            document.addEventListener('selectionchange', this.selectionchangeHandler);
         }
 
         data() {
@@ -300,6 +313,12 @@ define([
                         this.variablePresentationData(selected.node.presentation) : null,
                     plainText: selected.node.type === 'static-text' ? selected.node.text :
                         RichText.toPlainText(selected.node.content),
+                    alignmentChoices: {
+                        start: selected.node.alignment === 'start',
+                        center: selected.node.alignment === 'center',
+                        end: selected.node.alignment === 'end',
+                        justify: selected.node.alignment === 'justify',
+                    },
                     hasCondition: Boolean(condition),
                     conditionEditor: {
                         targets: [['element', 'Element'], ['parent', 'Parent']].map(([value, label]) => ({
@@ -889,7 +908,8 @@ define([
                 patch[location.node.type === 'static-text' ? 'text' : 'content'] =
                     location.node.type === 'static-text' ? input.value : RichText.fromPlainText(input.value);
             } else if (input.dataset.contentSetting === 'level') patch.level = Number(input.value);
-            else if (input.dataset.contentSetting === 'alignment') patch.alignment = input.value;
+            else if (input.dataset.contentSetting === 'alignment' &&
+                ['start', 'center', 'end', 'justify'].includes(input.value)) patch.alignment = input.value;
             else if (input.dataset.contentSetting === 'keepWithNext') patch.keepWithNext = input.checked;
             else return;
             this.executeCommand(new UpdateNodeCommand(location.node.id, patch));
@@ -957,7 +977,110 @@ define([
             this.changeContentSetting({currentTarget: input});
         }
 
+        activateRichTextEditor(event) {
+            event.stopPropagation();
+            const surface = event.currentTarget;
+            const nodeId = surface.dataset.nodeId;
+            if (!nodeId || !this.editorState) return;
+            this.editorState.select(nodeId);
+            this.captureRichTextSelection({currentTarget: surface});
+            this.element.querySelectorAll('.document-builder-editor__flow-node.is-selected')
+                .forEach(element => element.classList.remove('is-selected'));
+            surface.closest('.document-builder-editor__flow-node')?.classList.add('is-selected');
+        }
+
+        captureDocumentSelection() {
+            if (!this.element) return;
+            const selection = document.getSelection?.();
+            if (!selection || selection.rangeCount < 1) return;
+            const common = selection.getRangeAt(0).commonAncestorContainer;
+            const owner = common.nodeType === 1 ? common : common.parentNode;
+            const surface = owner?.closest?.('[data-rich-editor]');
+            if (surface && this.element.contains(surface)) {
+                this.captureRichTextSelection({currentTarget: surface});
+            }
+        }
+
+        captureRichTextSelection(event) {
+            const surface = event.currentTarget;
+            const selection = surface.ownerDocument?.getSelection?.() || document.getSelection?.();
+            const range = Wysiwyg.captureRange(surface, selection);
+            if (range) this.richTextSelection = {nodeId: surface.dataset.nodeId, range};
+        }
+
+        inputRichText(event) {
+            event.stopPropagation();
+            if (event.currentTarget.textContent || event.currentTarget.querySelector('br, ul, ol')) {
+                event.currentTarget.closest('.document-builder-editor__flow-node')?.classList.remove('is-sample');
+                delete event.currentTarget.dataset.placeholder;
+            }
+            this.syncRichTextSurface(event.currentTarget);
+            this.captureRichTextSelection(event);
+        }
+
+        pasteRichText(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const text = event.originalEvent?.clipboardData?.getData('text/plain') ||
+                event.clipboardData?.getData('text/plain') || '';
+            const documentRef = event.currentTarget.ownerDocument || document;
+            const selection = documentRef.getSelection?.();
+            const range = Wysiwyg.captureRange(event.currentTarget, selection);
+            if (!range) return;
+            const inserted = documentRef.createTextNode(text);
+            range.deleteContents();
+            range.insertNode(inserted);
+            range.setStartAfter(inserted);
+            range.collapse(true);
+            Wysiwyg.restoreRange(selection, range);
+            this.syncRichTextSurface(event.currentTarget);
+            this.captureRichTextSelection(event);
+        }
+
+        handleRichTextKeydown(event) {
+            event.stopPropagation();
+        }
+
+        preserveRichTextSelection(event) {
+            if (this.richTextSelection) event.preventDefault();
+        }
+
+        syncRichTextSurface(surface) {
+            if (!this.editorState || this.isSaveBusy()) return false;
+            const location = NodeTree.getLocation(this.editorState.getLayout(), surface.dataset.nodeId);
+            if (!location || !['heading', 'paragraph'].includes(location.node.type)) return false;
+            const content = Wysiwyg.read(surface, location.node.content);
+
+            return this.executeCommand(
+                new UpdateNodeCommand(location.node.id, {content}),
+                {render: false},
+            );
+        }
+
+        activeRichTextSurface() {
+            const active = this.richTextSelection;
+            if (!active || !this.element) return null;
+
+            return [...this.element.querySelectorAll('[data-rich-editor]')]
+                .find(surface => surface.dataset.nodeId === active.nodeId) || null;
+        }
+
+        applyRichTextCommand(command, value = null) {
+            const surface = this.activeRichTextSurface();
+            if (!surface || !this.richTextSelection) return false;
+            const selection = surface.ownerDocument?.getSelection?.() || document.getSelection?.();
+            if (!Wysiwyg.restoreRange(selection, this.richTextSelection.range)) return false;
+            if (!Wysiwyg.applyCommand(surface.ownerDocument || document, command, value)) return false;
+            this.syncRichTextSurface(surface);
+            this.captureRichTextSelection({currentTarget: surface});
+            surface.focus({preventScroll: true});
+
+            return true;
+        }
+
         actionToggleRichMark(event) {
+            const commands = {bold: 'bold', italic: 'italic', underline: 'underline'};
+            if (this.applyRichTextCommand(commands[event.currentTarget.dataset.richMark])) return;
             const location = this.selectedContentNode();
             if (!location || !location.node.content) return;
             this.executeCommand(new UpdateNodeCommand(location.node.id, {
@@ -966,11 +1089,16 @@ define([
         }
 
         changeRichColor(event) {
+            if (this.applyRichTextCommand('foreColor', event.currentTarget.value)) return;
             const location = this.selectedContentNode();
             if (!location || !location.node.content) return;
             this.executeCommand(new UpdateNodeCommand(location.node.id, {
                 content: RichText.setColor(location.node.content, event.currentTarget.value),
             }));
+        }
+
+        actionRichTextCommand(event) {
+            this.applyRichTextCommand(event.currentTarget.dataset.richCommand);
         }
 
         actionInsertMetadataVariable(event) {
@@ -984,6 +1112,29 @@ define([
                 );
             const label = event.currentTarget.dataset.variableLabel;
             const tokenId = this.editorState.idFactory.create('variable');
+            const variable = {
+                type: 'variable', tokenId, label, identity,
+                presentation: this.variablePresentationDraft,
+            };
+            const surface = this.activeRichTextSurface();
+
+            if (surface && this.richTextSelection?.nodeId === location.node.id) {
+                const result = Wysiwyg.insertVariable(
+                    surface,
+                    this.richTextSelection.range,
+                    variable,
+                    location.node.content,
+                    surface.ownerDocument || document,
+                );
+                this.richTextSelection = {nodeId: location.node.id, range: result.range.cloneRange()};
+                this.executeCommand(
+                    new UpdateNodeCommand(location.node.id, {content: result.content}),
+                    {render: false},
+                );
+                surface.focus({preventScroll: true});
+
+                return;
+            }
 
             this.executeCommand(new UpdateNodeCommand(location.node.id, {
                 content: RichText.appendVariable(
@@ -1825,7 +1976,7 @@ define([
             }
         }
 
-        executeCommand(command) {
+        executeCommand(command, {render = true} = {}) {
             if (!this.editorState) {
                 throw new Error('The editor state is not ready.');
             }
@@ -1840,7 +1991,7 @@ define([
                 this.saveCoordinator.noteEdit();
                 this.invalidatePreview();
                 this.syncDirtyGuard();
-                this.reRender();
+                if (render) this.reRender();
             }
 
             return changed;
@@ -1895,6 +2046,7 @@ define([
             this.isRemoved = true;
             this.model.abortLastFetch();
             document.removeEventListener('keydown', this.keydownHandler);
+            document.removeEventListener('selectionchange', this.selectionchangeHandler);
             this.dirtyGuard.dispose();
             this.releasePdfPreview();
 

@@ -77,6 +77,7 @@ php tests/editor-recovery/recovery-01.test.php
 node tests/editor-recovery/recovery-02.test.js
 node tests/editor-recovery/recovery-03.test.js
 node tests/editor-recovery/recovery-04.test.js
+node tests/editor-recovery/recovery-05.test.js
 ```
 
 Package inventory is checked separately after building the extension ZIP:

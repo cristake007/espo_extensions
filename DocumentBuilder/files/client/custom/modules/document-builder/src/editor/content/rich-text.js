@@ -117,6 +117,11 @@ define([
                 if (item.type === 'variable') {
                     const token = documentRef.createElement('span');
                     token.className = 'document-builder-editor__inline-variable';
+                    if (token.dataset) {
+                        token.dataset.richVariable = '';
+                        token.dataset.tokenId = item.tokenId;
+                    }
+                    token.contentEditable = 'false';
                     const preview = typeof variableResolver === 'function' ? variableResolver(item.identity) : null;
                     if (preview && typeof preview.text === 'string') {
                         token.textContent = preview.text;

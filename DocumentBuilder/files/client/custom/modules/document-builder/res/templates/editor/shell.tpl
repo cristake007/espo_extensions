@@ -343,6 +343,10 @@
                     <button type="button" class="btn btn-default" data-rich-mark="bold"><strong>B</strong></button>
                     <button type="button" class="btn btn-default" data-rich-mark="italic"><em>I</em></button>
                     <button type="button" class="btn btn-default" data-rich-mark="underline"><u>U</u></button>
+                    {{#if selectedFlowNode.isParagraph}}
+                    <button type="button" class="btn btn-default" data-rich-command="insertUnorderedList" title="{{translate 'Bulleted List' category='labels' scope='DocumentBuilderTemplate'}}">•</button>
+                    <button type="button" class="btn btn-default" data-rich-command="insertOrderedList" title="{{translate 'Numbered List' category='labels' scope='DocumentBuilderTemplate'}}">1.</button>
+                    {{/if}}
                 </div>
                 <div class="form-group"><label>{{translate 'Text Color' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="color" value="#000000" data-rich-color></label></div>
                 {{/unless}}
@@ -351,7 +355,7 @@
                 <div class="checkbox"><label><input type="checkbox" data-content-setting="keepWithNext" {{#if selectedFlowNode.keepWithNext}}checked{{/if}}> {{translate 'Keep With Next' category='labels' scope='DocumentBuilderTemplate'}}</label></div>
                 {{/if}}
                 {{#if selectedFlowNode.isParagraph}}
-                <div class="form-group"><label>{{translate 'Alignment' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-content-setting="alignment"><option value="start">Start</option><option value="center">Center</option><option value="end">End</option><option value="justify">Justify</option></select></label></div>
+                <div class="form-group"><label>{{translate 'Alignment' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-content-setting="alignment"><option value="start" {{#if selectedFlowNode.alignmentChoices.start}}selected{{/if}}>Start</option><option value="center" {{#if selectedFlowNode.alignmentChoices.center}}selected{{/if}}>Center</option><option value="end" {{#if selectedFlowNode.alignmentChoices.end}}selected{{/if}}>End</option><option value="justify" {{#if selectedFlowNode.alignmentChoices.justify}}selected{{/if}}>Justify</option></select></label></div>
                 {{/if}}
                 {{else}}
                 <fieldset class="document-builder-editor__settings-grid">

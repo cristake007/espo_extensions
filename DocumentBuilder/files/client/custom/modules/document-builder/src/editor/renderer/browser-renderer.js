@@ -120,6 +120,10 @@ define([
                     flowStyle.push(`height: ${px(bounded(node.height?.value, 0.1, 500, 10))}px`);
                 }
                 flowStyle.push(this.styleResolver.toCss(effectiveStyle, px));
+                if (['heading', 'paragraph'].includes(node.type) &&
+                    ['start', 'center', 'end', 'justify'].includes(node.alignment)) {
+                    flowStyle.push(`text-align: ${{start: 'left', end: 'right'}[node.alignment] || node.alignment}`);
+                }
 
                 const projection = {
                     ...Json.clone(node),

@@ -72,12 +72,21 @@ define(['document-builder:editor/content/rich-text'], RichText => {
             }
 
             if (node.isHeading || node.isParagraph) {
+                const editor = documentRef.createElement(node.isHeading ? 'span' : 'div');
+                editor.className = 'document-builder-editor__rich-editor';
+                editor.dataset.richEditor = '';
+                editor.dataset.nodeId = node.id;
+                editor.contentEditable = 'true';
+                editor.draggable = false;
+                editor.spellcheck = true;
+                editor.setAttribute('aria-label', translate('Edit Content', 'labels'));
                 if (node.isEmpty) {
                     element.classList.add('is-sample');
-                    element.textContent = translate(node.sampleKey, 'messages');
+                    editor.dataset.placeholder = translate(node.sampleKey, 'messages');
                 } else {
-                    RichText.render(element, node.content, documentRef, variableResolver);
+                    RichText.render(editor, node.content, documentRef, variableResolver);
                 }
+                element.append(editor);
             } else if (node.isStaticText) {
                 element.textContent = node.text;
             } else if (node.isVariable) {
