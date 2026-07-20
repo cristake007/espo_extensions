@@ -138,7 +138,7 @@ namespace {
             'allowedFontList' => ['DejaVu Sans', 'DejaVu Serif'],
             'defaultFont' => 'DejaVu Serif',
             'defaultLocale' => 'ro_RO',
-            'defaultPageSize' => 'Letter',
+            'defaultPageSize' => 'A3',
         ]]),
         new Metadata(['app' => ['documentBuilder' => $definition]]),
     );
@@ -167,8 +167,8 @@ namespace {
     Assert::isTrue(is_array($layout), 'Create hook must persist a canonical layout object.');
     Assert::same('DejaVu Serif', $layout['document']['defaults']['fontFamily'] ?? null, 'Configured default font was ignored.');
     Assert::same('ro_RO', $layout['document']['defaults']['locale'] ?? null, 'Configured default locale was ignored.');
-    Assert::same('Letter', $layout['document']['page']['size'] ?? null, 'Configured page size was ignored.');
-    Assert::same('Letter', $entity->values['pageSize'] ?? null, 'Page summary must match the canonical layout.');
+    Assert::same('A3', $layout['document']['page']['size'] ?? null, 'Configured page size was ignored.');
+    Assert::same('A3', $entity->values['pageSize'] ?? null, 'Page summary must match the canonical layout.');
     Assert::same('portrait', $entity->values['orientation'] ?? null, 'Orientation summary must match the canonical layout.');
 
     Assert::throws(

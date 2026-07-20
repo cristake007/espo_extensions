@@ -16,8 +16,7 @@ final readonly class LayoutValidator
 
     private const PAGE_DIMENSIONS_MM = [
         'A4' => [210.0, 297.0],
-        'Letter' => [215.9, 279.4],
-        'Legal' => [215.9, 355.6],
+        'A3' => [297.0, 420.0],
     ];
 
     private const ROOT_KEYS = [

@@ -15,13 +15,6 @@ final readonly class CompiledVariablePublicationValidator implements VariablePub
 
     public function validate(PublicationValidationContext $context): void
     {
-        if ($this->containsPageCount($context->processedLayout->layout())) {
-            throw new PublicationValidationException(
-                PublicationBlockerCategory::Capability,
-                'renderer.pageCountUnsupported',
-            );
-        }
-
         try {
             $this->validator->validate(
                 $context->processedLayout->layout(),
@@ -35,22 +28,4 @@ final readonly class CompiledVariablePublicationValidator implements VariablePub
         }
     }
 
-    private function containsPageCount(mixed $value): bool
-    {
-        if (!is_array($value)) return false;
-        if (($value['type'] ?? null) === 'variable') {
-            $identity = $value['identity'] ?? null;
-
-            if (is_array($identity) && ($identity['source'] ?? null) === 'system' &&
-                ($identity['type'] ?? null) === 'system' && ($identity['path'] ?? null) === ['pageCount']) {
-                return true;
-            }
-        }
-
-        foreach ($value as $item) {
-            if ($this->containsPageCount($item)) return true;
-        }
-
-        return false;
-    }
 }

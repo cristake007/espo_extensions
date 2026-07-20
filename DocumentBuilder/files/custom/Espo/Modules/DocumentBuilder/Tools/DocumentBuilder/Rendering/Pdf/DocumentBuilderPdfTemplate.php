@@ -38,7 +38,7 @@ final readonly class DocumentBuilderPdfTemplate implements Template
     public function getPageFormat(): string
     {
         $size = $this->document->page['size'] ?? 'A4';
-        return in_array($size, ['A4','Letter','Legal'], true) ? $size : self::PAGE_FORMAT_CUSTOM;
+        return in_array($size, ['A4','A3'], true) ? $size : self::PAGE_FORMAT_CUSTOM;
     }
     public function getPageWidth(): float { return $this->dimensions['widthMm']; }
     public function getPageHeight(): float { return $this->dimensions['heightMm']; }
@@ -58,8 +58,7 @@ final readonly class DocumentBuilderPdfTemplate implements Template
         $size = $this->document->page['size'] ?? 'A4';
         $standard = [
             'A4'=>['widthMm'=>210.0,'heightMm'=>297.0],
-            'Letter'=>['widthMm'=>215.9,'heightMm'=>279.4],
-            'Legal'=>['widthMm'=>215.9,'heightMm'=>355.6],
+            'A3'=>['widthMm'=>297.0,'heightMm'=>420.0],
         ];
         if (isset($standard[$size])) return $standard[$size];
         foreach ($this->settings->customPageSizeList() as $custom) {

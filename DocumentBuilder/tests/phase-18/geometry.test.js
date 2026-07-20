@@ -37,6 +37,7 @@ const layout = JSON.parse(fs.readFileSync(
 ));
 
 const geometry = new PageGeometry();
+assert.deepEqual(geometry.getSizeList().map(item => item.id), ['A4', 'A3']);
 assert.ok(Math.abs(geometry.millimetresToPixels(25.4) - 96) < 1e-10);
 assert.equal(geometry.frame('A4', 'portrait', 100).widthMm, 210);
 assert.equal(geometry.frame('A4', 'landscape', 100).widthMm, 297);

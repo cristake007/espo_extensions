@@ -15,7 +15,7 @@ final class LayoutDefaults
         string $locale = 'en_US',
         string $pageSize = 'A4',
     ): array {
-        if (!in_array($pageSize, ['A4', 'Letter', 'Legal'], true)) {
+        if (!in_array($pageSize, ['A4', 'A3'], true)) {
             throw new InvalidArgumentException('The default page size is not canonical.');
         }
 

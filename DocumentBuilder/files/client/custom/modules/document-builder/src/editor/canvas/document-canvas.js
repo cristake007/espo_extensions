@@ -110,7 +110,10 @@ define(['document-builder:editor/content/rich-text'], RichText => {
                 }
                 element.append(editor);
             } else if (node.isVariable) {
-                element.textContent = node.variableText;
+                const value = documentRef.createElement('span');
+                value.className = 'document-builder-editor__variable-value';
+                value.textContent = node.variableText;
+                element.append(value);
             } else if (node.isDivider) {
                 element.style.cssText += `;${node.dividerStyle || ''}`;
             } else if (node.isSpacer) {

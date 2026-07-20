@@ -54,6 +54,12 @@ $codes = fn (array $candidate): array => array_map(
     fn ($error) => $error->code(),
     $validator->validate($candidate)->errors(),
 );
+$a3 = $layout;
+$a3['document']['page']['size'] = 'A3';
+Assert::isTrue($validator->validate($a3)->isValid(), 'A3 page geometry was rejected.');
+$legacySize = $layout;
+$legacySize['document']['page']['size'] = 'Letter';
+Assert::isTrue(in_array('page.size', $codes($legacySize), true), 'A non-A4/A3 page size was accepted.');
 
 $bad = $layout;
 $bad['document']['chrome']['header']['height']['value'] = 16;

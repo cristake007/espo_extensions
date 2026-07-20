@@ -14,8 +14,7 @@ define([
     ]);
     const PAGE_DIMENSIONS_MM = Object.freeze({
         A4: Object.freeze({width: 210, height: 297}),
-        Letter: Object.freeze({width: 215.9, height: 279.4}),
-        Legal: Object.freeze({width: 215.9, height: 355.6}),
+        A3: Object.freeze({width: 297, height: 420}),
     });
     const ORIENTATION_LIST = Object.freeze(['portrait', 'landscape']);
     const EDGE_LIST = Object.freeze(['top', 'right', 'bottom', 'left']);

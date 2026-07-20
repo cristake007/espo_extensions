@@ -112,6 +112,6 @@
     },
     "allowedValues": {
         "defaultPdfEngine": ["Dompdf"],
-        "defaultPageSize": ["A4", "Letter", "Legal"]
+        "defaultPageSize": ["A4", "A3"]
     }
 }

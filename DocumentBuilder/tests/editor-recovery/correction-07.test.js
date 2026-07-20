@@ -13,6 +13,9 @@ const css = fs.readFileSync(path.join(root,
 assert.match(canvas, /if \(!preview && node\.selected\)[\s\S]*selectionToolbar/);
 assert.match(canvas, /toolbar\.dataset\.selectionToolbar = ''/);
 assert.match(canvas, /button\.dataset\.nodeId = nodeId/);
+assert.match(canvas, /value\.className = 'document-builder-editor__variable-value'/);
+assert.match(canvas, /element\.append\(value\)/);
+assert.doesNotMatch(canvas, /element\.textContent = node\.variableText/);
 assert.doesNotMatch(canvas, /hoverToolbar|data\.hoverToolbar/);
 assert.doesNotMatch(shell, /mouseover \[data-document-canvas\]|handleCanvasHover|hoverHideTimer/);
 assert.match(css, /selection-toolbar[\s\S]*position:\s*absolute[\s\S]*right:\s*0[\s\S]*transform:\s*translateY/);

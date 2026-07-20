@@ -20,8 +20,18 @@ final readonly class HtmlRenderer
     public function render(ResolvedDocument $document): string
     {
         $body = implode('', array_map(fn (ResolvedNode $node): string => $this->node($node), $document->sections));
-        $header = $this->chromeRegion('header', $document->header, $document->chrome['header'] ?? null);
-        $footer = $this->chromeRegion('footer', $document->footer, $document->chrome['footer'] ?? null);
+        $header = $this->chromeRegion(
+            'header',
+            $document->header,
+            $document->chrome['header'] ?? null,
+            $document->page['margins']['top']['value'] ?? null,
+        );
+        $footer = $this->chromeRegion(
+            'footer',
+            $document->footer,
+            $document->chrome['footer'] ?? null,
+            $document->page['margins']['bottom']['value'] ?? null,
+        );
         $language = $this->language($document->defaults['locale'] ?? 'en_US');
         $pageCss = $this->pageCss($document->page);
         $baseCss = 'html,body{margin:0;padding:0;}body{font-family:DejaVu Sans,sans-serif;}' .
@@ -34,13 +44,16 @@ final readonly class HtmlRenderer
     }
 
     /** @param list<ResolvedNode> $nodes */
-    private function chromeRegion(string $region, array $nodes, mixed $settings): string
+    private function chromeRegion(string $region, array $nodes, mixed $settings, mixed $margin): string
     {
         if ($nodes === [] || !is_array($settings)) return '';
         $height = $settings['height']['value'] ?? 0;
-        if (!is_int($height) && !is_float($height) || $height <= 0 || $height > 100) return '';
-        $position = $region === 'header' ? 'top:-' . $this->decimal((float) $height) . 'mm;' :
-            'bottom:-' . $this->decimal((float) $height) . 'mm;';
+        if ((!is_int($height) && !is_float($height)) || $height <= 0 || $height > 100 ||
+            (!is_int($margin) && !is_float($margin)) || $margin < $height || $margin > 2000) {
+            return '';
+        }
+        $position = ($region === 'header' ? 'top:-' : 'bottom:-') .
+            $this->decimal((float) $margin) . 'mm;';
         $attributes = ' class="db-page-' . $region . '" style="position:fixed;' . $position .
             'left:0;right:0;height:' . $this->decimal((float) $height) . 'mm;overflow:hidden;"' .
             ' data-show-first-page="' . (($settings['showOnFirstPage'] ?? true) ? '1' : '0') . '"' .
@@ -69,6 +82,9 @@ final readonly class HtmlRenderer
     {
         if ($item->type === 'break') return '<br>';
         if ($item->type === 'page-number') return '<span class="db-page-number" aria-label="Page number"></span>';
+        if ($item->type === 'page-count') {
+            return '<span class="db-page-count" aria-label="Page count">' . PageCountPlaceholder::TOKEN . '</span>';
+        }
         if ($item->type === 'list') {
             $tag = $item->listStyle === 'numbered' ? 'ol' : 'ul';
             $items = implode('', array_map(
@@ -105,7 +121,7 @@ final readonly class HtmlRenderer
     /** @param array<string, mixed> $page */
     private function pageCss(array $page): string
     {
-        $size = in_array($page['size'] ?? null, ['A4','Letter','Legal'], true) ? $page['size'] : null;
+        $size = in_array($page['size'] ?? null, ['A4','A3'], true) ? $page['size'] : null;
         $orientation = ($page['orientation'] ?? null) === 'landscape' ? 'landscape' : 'portrait';
         $margins = $page['margins'] ?? [];
         $parts = [];

@@ -5,8 +5,7 @@ define([], () => {
     const MAX_ZOOM = 200;
     const STANDARD_SIZES = Object.freeze({
         A4: Object.freeze({id: 'A4', label: 'A4', widthMm: 210, heightMm: 297}),
-        Letter: Object.freeze({id: 'Letter', label: 'Letter', widthMm: 215.9, heightMm: 279.4}),
-        Legal: Object.freeze({id: 'Legal', label: 'Legal', widthMm: 215.9, heightMm: 355.6}),
+        A3: Object.freeze({id: 'A3', label: 'A3', widthMm: 297, heightMm: 420}),
     });
 
     const normalizeDefinition = definition => {

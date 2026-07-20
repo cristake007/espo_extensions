@@ -25,6 +25,7 @@ foreach (['PdfRenderFailure.php','PdfRenderResult.php','RenderWorkspace.php','Re
     require "$module/Rendering/Pdf/$file";
 }
 require "$module/Rendering/PdfRenderer.php";
+require "$module/Rendering/PageCountPlaceholder.php";
 
 final class Phase34Workspace implements RenderWorkspace
 {
@@ -56,6 +57,25 @@ final class Phase34Engines implements PdfEngineFactory
         return new Phase34Engine($this->fail, $this->pages);
     }
 }
+final class Phase34PageCountEngine implements PdfEngine
+{
+    public function __construct(private Phase34PageCountEngines $factory) {}
+    public function render(string $html): PdfRenderResult { return $this->factory->render($html); }
+}
+final class Phase34PageCountEngines implements PdfEngineFactory
+{
+    /** @var list<string> */ public array $html = [];
+    /** @var list<int> */ private array $pageCounts = [2, 2];
+    public function create(ResolvedDocument $document, RenderWorkspace $workspace): PdfEngine
+    {
+        return new Phase34PageCountEngine($this);
+    }
+    public function render(string $html): PdfRenderResult
+    {
+        $this->html[] = $html;
+        return new PdfRenderResult('%PDF-1.7 page-count', array_shift($this->pageCounts) ?? 2);
+    }
+}
 final readonly class Phase34PdfSettings implements SettingsProvider
 {
     public function __construct(private Settings $settings) {}
@@ -80,6 +100,17 @@ Assert::throws(fn () => (new PdfRenderer($failingEngines,$failingWorkspaces,$set
 Assert::isTrue($failingWorkspaces->created[0]->cleaned,'Failed render workspace was not cleaned.');
 $pageEngines = new Phase34Engines(false,21);
 Assert::throws(fn () => (new PdfRenderer($pageEngines,new Phase34Workspaces(),$settings))->render($document,'<html></html>'),PdfRenderFailure::class,'Page limit was not enforced.');
+
+$pageCountEngines = new Phase34PageCountEngines();
+$pageCountResult = (new PdfRenderer($pageCountEngines, new Phase34Workspaces(), $settings))->render(
+    $document,
+    '<html>' . \Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\PageCountPlaceholder::TOKEN . '</html>',
+);
+Assert::same(2, $pageCountResult->pageCount, 'Total-page rendering returned the wrong stable page count.');
+Assert::same(2, count($pageCountEngines->html), 'Total-page rendering did not converge with fresh engines.');
+Assert::contains('<html>1</html>', $pageCountEngines->html[0], 'First total-page render did not use the bounded initial value.');
+Assert::contains('<html>2</html>', $pageCountEngines->html[1], 'Final total-page render did not contain the actual total.');
+Assert::isFalse(str_contains($pageCountEngines->html[1], \Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\PageCountPlaceholder::TOKEN), 'Internal total-page token reached the PDF engine.');
 
 $systemWorkspace = (new SystemRenderWorkspaceFactory())->create();
 $systemPath = $systemWorkspace->path();

@@ -15,6 +15,7 @@ $module = dirname(__DIR__, 2) . '/files/custom/Espo/Modules/DocumentBuilder/Tool
 foreach (['DocumentWarning.php','ResolvedInline.php','ResolvedNode.php','ResolvedDocument.php'] as $file) require "$module/Tree/$file";
 foreach (['ElementDefinition.php','ElementRendererRegistry.php','TypedStyleMapper.php'] as $file) require "$module/Html/$file";
 require "$module/HtmlRenderer.php";
+require "$module/PageCountPlaceholder.php";
 
 $defaults = ['fontFamily'=>'DejaVu Sans','fontSize'=>['value'=>10,'unit'=>'pt'],
     'color'=>'#222222','lineHeight'=>1.2,'locale'=>'ro_RO'];
@@ -29,6 +30,7 @@ $heading = new ResolvedNode('heading1','heading',[
 $paragraph = new ResolvedNode('paragraph1','paragraph',$defaults,['alignment'=>'start'],[
     new ResolvedInline('text','Bună & „lume”',[]),new ResolvedInline('break',"\n"),
     new ResolvedInline('variable','Ștefan <Admin>'),
+    new ResolvedInline('page-count', ''),
     new ResolvedInline('list', '', listStyle: 'numbered', items: [
         [new ResolvedInline('text', 'Primul <element>')],
         [new ResolvedInline('variable', 'Al doilea & final')],
@@ -59,6 +61,7 @@ Assert::contains('@page{size:A4 portrait;margin:10mm 11mm 12mm 13mm;}',$html,'Pa
 Assert::contains('<h2 id="heading1" class="db-heading"',$html,'Heading renderer is missing.');
 Assert::contains('&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;',$html,'Text injection was not escaped.');
 Assert::contains('Bună &amp; „lume”<br>Ștefan &lt;Admin&gt;',$html,'Romanian inline rendering changed.');
+Assert::contains(\Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\PageCountPlaceholder::TOKEN,$html,'Total-page placeholder is missing from renderer HTML.');
 Assert::contains('<ol><li>Primul &lt;element&gt;</li><li>Al doilea &amp; final</li></ol>',$html,'Structured list rendering changed.');
 Assert::contains('<div id="variable1" class="db-variable"',$html,'Standalone variable renderer is missing.');
 Assert::contains('page-break-after:avoid;',$html,'Keep-with-next CSS is missing.');
@@ -67,5 +70,7 @@ Assert::contains('border-top:0.5mm dashed #123456;',$html,'Typed divider CSS cha
 Assert::isFalse(str_contains($html,'attacker.invalid'),'An arbitrary CSS URL entered HTML.');
 Assert::isFalse(str_contains($html,'position:fixed'),'A non-allowlisted style entered HTML.');
 Assert::isFalse(str_contains($html,'<script>'),'Raw script markup entered HTML.');
+$a3 = new ResolvedDocument(['size'=>'A3','orientation'=>'landscape','margins'=>$box],$defaults,[$section]);
+Assert::contains('@page{size:A3 landscape;margin:10mm 11mm 12mm 13mm;}', $renderer->render($a3), 'A3 page geometry CSS is missing.');
 
 echo "Phase 33 deterministic conservative HTML tests passed.\n";

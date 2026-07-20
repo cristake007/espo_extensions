@@ -163,8 +163,7 @@ define([
                 ['app', 'documentBuilder', 'defaults'],
             ) || {};
 
-            this.customPageSizes = config.customPageSizeList ||
-                metadataDefaults.customPageSizeList || [];
+            this.customPageSizes = [];
             this.allowedFonts = config.allowedFontList ||
                 metadataDefaults.allowedFontList || ['DejaVu Sans'];
             this.flowLimits = {

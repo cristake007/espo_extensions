@@ -59,8 +59,8 @@ $tree = new ResolvedDocument(
 $renderer = new HtmlRenderer(new ElementRendererRegistry(), new TypedStyleMapper());
 $html = $renderer->render($tree);
 
-Assert::contains('<header class="db-page-header" style="position:fixed;top:-10mm;', $html, 'Header is not fixed in its reserved margin.');
-Assert::contains('<footer class="db-page-footer" style="position:fixed;bottom:-8mm;', $html, 'Footer is not fixed in its reserved margin.');
+Assert::contains('<header class="db-page-header" style="position:fixed;top:-15mm;', $html, 'Header is not positioned from the page margin.');
+Assert::contains('<footer class="db-page-footer" style="position:fixed;bottom:-15mm;', $html, 'Footer is not positioned from the page margin.');
 Assert::contains('data-show-first-page="0"', $html, 'First-page visibility was not preserved.');
 Assert::contains('data-disable-on-full-page="0"', $html, 'Full-page suppression preference was not preserved.');
 Assert::contains('<span class="db-page-number" aria-label="Page number"></span>', $html, 'Current-page renderer placeholder is missing.');

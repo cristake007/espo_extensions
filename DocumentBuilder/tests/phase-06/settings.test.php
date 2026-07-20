@@ -150,7 +150,7 @@ namespace {
         'allowRemoteResources' => false,
         'enableListViewMassGeneration' => true,
         'defaultLocale' => 'ro_RO',
-        'defaultPageSize' => 'Letter',
+        'defaultPageSize' => 'A3',
     ];
     $overridden = createProvider($validOverrides)->get();
     Assert::same(['Account', 'Contact'], $overridden->enabledSourceEntityTypeList(), 'Source allow-list override failed.');
@@ -162,7 +162,7 @@ namespace {
     Assert::isTrue($overridden->allowWebp(), 'WebP administrator override failed.');
     Assert::isTrue($overridden->enableListViewMassGeneration(), 'Mass-generation override failed.');
     Assert::same('ro_RO', $overridden->defaultLocale(), 'Locale override failed.');
-    Assert::same('Letter', $overridden->defaultPageSize(), 'Page-size override failed.');
+    Assert::same('A3', $overridden->defaultPageSize(), 'Page-size override failed.');
     Assert::same('Badge', $overridden->customPageSizeList()[0]['id'], 'Custom page-size override failed.');
 
     foreach ($definition['minimums'] as $key => $minimum) {

@@ -17,7 +17,6 @@ use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Condition\Conditio
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\Condition\RequiredVariableFailure;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Layout\StyleResolver;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\DocumentTreeBuilder;
-use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\PageCountUnavailable;
 use Espo\Modules\DocumentBuilder\Tools\DocumentBuilder\Rendering\Tree\DocumentValue;
 
 require dirname(__DIR__) . '/bootstrap.php';
@@ -41,7 +40,6 @@ foreach (['DocumentValue.php', 'DocumentWarning.php', 'ResolvedInline.php', 'Res
     require "$module/Rendering/Tree/$file";
 }
 require "$module/Rendering/DocumentTreeBuilder.php";
-require "$module/Rendering/PageCountUnavailable.php";
 
 $builder = new DocumentTreeBuilder(
     new VariableFormatter(new MissingValueResolver()),
@@ -138,10 +136,7 @@ Assert::same('page-number', $chromeTree->header[0]->inline[0]->type, 'Current-pa
 Assert::same('footer1', $chromeTree->footer[0]->id, 'Footer did not enter the resolved tree.');
 Assert::same($chromeLayout['document']['chrome'], $chromeTree->chrome, 'Page chrome render settings changed in the tree.');
 $chromeLayout['header'][0]['content'][0]['identity']['path'] = ['pageCount'];
-Assert::throws(
-    fn () => $builder->build($chromeLayout, $values, $context),
-    PageCountUnavailable::class,
-    'Unproven total-page count produced misleading output.',
-);
+$pageCountTree = $builder->build($chromeLayout, $values, $context);
+Assert::same('page-count', $pageCountTree->header[0]->inline[0]->type, 'Total-page placeholder did not enter the render tree.');
 
 echo "Phase 32 immutable resolved-tree tests passed.\n";

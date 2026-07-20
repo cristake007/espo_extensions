@@ -337,7 +337,7 @@ final readonly class DocumentTreeBuilder
         array &$warnings,
     ): ?ResolvedInline {
         $placeholder = $this->rendererPlaceholder($item['identity'] ?? null);
-        if ($placeholder === 'pageCount') throw new PageCountUnavailable();
+        if ($placeholder === 'pageCount') return new ResolvedInline('page-count', '');
         if ($placeholder === 'pageNumber') return new ResolvedInline('page-number', '');
         $formatted = $this->formatVariable($item, $values, $context);
         if ($formatted->disposition === MissingValueDisposition::Failure) {

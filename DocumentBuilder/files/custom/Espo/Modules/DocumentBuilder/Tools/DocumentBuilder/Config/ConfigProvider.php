@@ -285,7 +285,7 @@ final class ConfigProvider implements SettingsProvider
                 $keys !== ['heightMm', 'id', 'label', 'widthMm'] ||
                 !is_string($item['id']) ||
                 preg_match('/\A[A-Za-z][A-Za-z0-9_-]{0,63}\z/D', $item['id']) !== 1 ||
-                in_array($item['id'], ['A4', 'Letter', 'Legal'], true) ||
+                in_array($item['id'], ['A4', 'A3'], true) ||
                 !is_string($item['label']) || trim($item['label']) === '' || mb_strlen($item['label']) > 100 ||
                 (!is_int($item['widthMm']) && !is_float($item['widthMm'])) ||
                 $item['widthMm'] < 10 || $item['widthMm'] > 2000 ||

@@ -119,7 +119,7 @@
         },
         "pageSize": {
             "type": "enum",
-            "options": ["A4", "Letter", "Legal"],
+            "options": ["A4", "A3"],
             "default": "A4",
             "required": true,
             "readOnly": true
