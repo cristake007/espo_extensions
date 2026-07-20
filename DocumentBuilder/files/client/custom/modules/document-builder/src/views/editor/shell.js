@@ -95,6 +95,7 @@ define([
             'click [data-action="focusVariables"]': 'actionFocusVariables',
             'click [data-action="showElementsTab"]': 'actionShowElementsTab',
             'click [data-action="showPropertiesTab"]': 'actionShowPropertiesTab',
+            'click [data-action="toggleInspectorSection"]': 'actionToggleInspectorSection',
             'click [data-action="addFlowSection"]': 'actionAddFlowSection',
             'click [data-action="addFlowContainer"]': 'actionAddFlowContainer',
             'click [data-action="addHeading"]': 'actionAddContent',
@@ -206,8 +207,12 @@ define([
                 metadataDefaults.maxRelationshipDepth || 2;
             this.pendingFocusNodeId = null;
             this.rightSidebarTab = 'elements';
+            this.canvasSelectionActive = false;
+            this.openInspectorSections = new Set(['content', 'layout']);
             this.richTextSelection = null;
             this.wysiwygGeneration = 0;
+            this.flowDragSource = null;
+            this.pendingCanvasAnimationId = null;
             this.zoom = 100;
 
             document.addEventListener('keydown', this.keydownHandler);
@@ -267,9 +272,13 @@ define([
                 canvasSelected: Boolean(
                     this.editorState &&
                     !this.canvasPreviewOpen &&
-                    !this.editorState.getSelectedId() &&
+                    this.canvasSelectionActive &&
                     this.rightSidebarTab === 'properties'
                 ),
+                inspectorContentOpen: this.openInspectorSections.has('content'),
+                inspectorLayoutOpen: this.openInspectorSections.has('layout'),
+                inspectorAppearanceOpen: this.openInspectorSections.has('appearance'),
+                inspectorVisibilityOpen: this.openInspectorSections.has('visibility'),
                 ...pageSettings,
                 ...flow,
                 ...validation,
@@ -303,6 +312,13 @@ define([
             const supportsAppearance = ['flow-section', 'flow-container', 'heading', 'static-text', 'paragraph', 'variable'].includes(selectedType);
             const supportsContainerAlignment = ['flow-section', 'flow-container'].includes(selectedType);
             const condition = selected?.node.condition || null;
+            const operatorLabels = {
+                exists: 'exists', missing: 'is missing', equals: 'equals',
+                notEquals: 'does not equal', contains: 'contains', startsWith: 'starts with',
+                greaterThan: 'is greater than', greaterOrEqual: 'is at least',
+                lessThan: 'is less than', lessOrEqual: 'is at most',
+                isTrue: 'is true', isFalse: 'is false',
+            };
             const conditionRules = condition?.rules || [{
                 identity: null, valueType: 'text', operator: 'exists', operand: null,
             }];
@@ -351,6 +367,19 @@ define([
                         justify: selected.node.alignment === 'justify',
                     },
                     hasCondition: Boolean(condition),
+                    conditionSummary: condition ? {
+                        targetLabel: condition.target === 'parent' ? 'Parent' : 'Element',
+                        modeLabel: condition.mode === 'any' ? 'any rule' : 'all rules',
+                        rules: condition.rules.map((rule, index) => ({
+                            number: index + 1,
+                            path: rule.identity?.path?.join('.') || 'Unknown variable',
+                            operatorLabel: operatorLabels[rule.operator] || rule.operator,
+                            hasOperand: !['exists', 'missing', 'isTrue', 'isFalse']
+                                .includes(rule.operator),
+                            operandLabel: Array.isArray(rule.operand) ?
+                                rule.operand.join(', ') : String(rule.operand ?? ''),
+                        })),
+                    } : null,
                     conditionEditor: {
                         targets: [['element', 'Element'], ['parent', 'Parent']].map(([value, label]) => ({
                             value, label, selected: value === (condition?.target || 'element'),
@@ -360,6 +389,7 @@ define([
                         })),
                         rules: conditionRules.map((rule, index) => ({
                             index,
+                            number: index + 1,
                             path: rule.identity?.path?.join('.') || '',
                             operand: rule.operand ?? '',
                             canRemove: conditionRules.length > 1,
@@ -626,6 +656,7 @@ define([
 
         afterRender() {
             this.renderContentNodes();
+            this.animatePendingCanvasNode();
             if (this.pendingCanvasScroll) {
                 const scroll = this.element.querySelector('.document-builder-editor__canvas-scroll');
                 if (scroll) {
@@ -859,9 +890,33 @@ define([
         }
 
         actionShowPropertiesTab() {
-            if (this.rightSidebarTab === 'properties') return;
+            if (this.rightSidebarTab === 'properties') {
+                if (!this.editorState?.getSelectedId() && !this.canvasSelectionActive) {
+                    this.canvasSelectionActive = true;
+                    this.reRender();
+                }
+
+                return;
+            }
+            if (!this.editorState?.getSelectedId()) this.canvasSelectionActive = true;
             this.rightSidebarTab = 'properties';
             this.reRender();
+        }
+
+        actionToggleInspectorSection(event) {
+            const sectionName = event.currentTarget.dataset.inspectorSection;
+            const section = event.currentTarget.closest('[data-inspector-section]');
+
+            if (!sectionName || !section) return;
+            const willOpen = !section.classList.contains('is-open');
+            const body = section.querySelector('.document-builder-editor__inspector-section-body');
+
+            section.classList.toggle('is-open', willOpen);
+            event.currentTarget.setAttribute('aria-expanded', String(willOpen));
+            body?.toggleAttribute('inert', !willOpen);
+            body?.setAttribute('aria-hidden', String(!willOpen));
+            if (willOpen) this.openInspectorSections.add(sectionName);
+            else this.openInspectorSections.delete(sectionName);
         }
 
         actionFocusVariables() {
@@ -1373,8 +1428,10 @@ define([
             const command = new AddFlowNodeCommand(this.flowStructure, type, target, options);
 
             try {
-                if (this.executeCommand(command)) {
+                if (this.executeCommand(command, {render: false})) {
                     this.editorState.select(command.addedId);
+                    this.canvasSelectionActive = false;
+                    this.pendingCanvasAnimationId = command.addedId;
                     this.reRender();
                 }
             } catch (error) {
@@ -1389,6 +1446,7 @@ define([
             const selectionChanged = this.selectNode(event.currentTarget.dataset.nodeId);
             const tabChanged = this.rightSidebarTab !== 'properties';
 
+            this.canvasSelectionActive = false;
             this.rightSidebarTab = 'properties';
             if (selectionChanged || tabChanged) {
                 this.rememberCanvasScroll();
@@ -1399,11 +1457,15 @@ define([
         actionSelectCanvas(event) {
             if (this.canvasPreviewOpen || !this.editorState ||
                 event.target.closest?.('.document-builder-editor__flow-node')) return;
+            const pageSelected = Boolean(event.target.closest?.('.document-builder-editor__page'));
             const selectionChanged = this.selectNode(null);
-            const tabChanged = this.rightSidebarTab !== 'properties';
+            const selectionStateChanged = this.canvasSelectionActive !== pageSelected;
+            const nextTab = pageSelected ? 'properties' : 'elements';
+            const tabChanged = this.rightSidebarTab !== nextTab;
 
-            this.rightSidebarTab = 'properties';
-            if (selectionChanged || tabChanged) {
+            this.canvasSelectionActive = pageSelected;
+            this.rightSidebarTab = nextTab;
+            if (selectionChanged || selectionStateChanged || tabChanged) {
                 this.rememberCanvasScroll();
                 this.reRender();
             }
@@ -1416,6 +1478,7 @@ define([
             if (!nodeId || !this.editorState ||
                 !NodeTree.getLocation(this.editorState.getLayout(), nodeId)) return;
             this.selectNode(nodeId);
+            this.canvasSelectionActive = false;
             this.rightSidebarTab = 'properties';
             this.reRender();
         }
@@ -1672,6 +1735,8 @@ define([
                     {kind: 'node', nodeId: source.dataset.nodeId};
             }
             this.element.classList.add('is-dragging');
+            this.flowDragSource = source;
+            source.classList.add('is-drag-source');
             dataTransfer.effectAllowed = this.flowDrag.kind === 'node' ? 'move' : 'copy';
             dataTransfer.setData('application/x-document-builder-flow', JSON.stringify(this.flowDrag));
             this.updateDropTargetCompatibility();
@@ -1720,11 +1785,12 @@ define([
 
                 return;
             }
-            this.executeCommand(new MoveFlowNodeCommand(
+            this.pendingCanvasAnimationId = this.flowDrag.nodeId;
+            if (!this.executeCommand(new MoveFlowNodeCommand(
                 this.flowStructure,
                 this.flowDrag.nodeId,
                 target,
-            ));
+            ))) this.pendingCanvasAnimationId = null;
         }
 
         showInvalidFlowDrop() {
@@ -1787,6 +1853,8 @@ define([
 
         cancelFlowDrag() {
             this.flowDrag = null;
+            this.flowDragSource?.classList.remove('is-drag-source');
+            this.flowDragSource = null;
             this.element.classList.remove('is-dragging');
             this.element.querySelectorAll('.is-drag-over, .is-compatible').forEach(element => {
                 element.classList.remove('is-drag-over', 'is-compatible');
@@ -1795,6 +1863,16 @@ define([
                 .forEach(element => element.classList.remove(
                     'is-rich-drop-before', 'is-rich-drop-after',
                 ));
+        }
+
+        animatePendingCanvasNode() {
+            if (!this.pendingCanvasAnimationId || !this.element) return;
+            const nodeId = this.pendingCanvasAnimationId;
+            const element = [...this.element.querySelectorAll('[data-node-id]')]
+                .find(candidate => candidate.dataset.nodeId === nodeId);
+
+            this.pendingCanvasAnimationId = null;
+            element?.classList.add('is-drop-settling');
         }
 
         changePageSetting(event) {
@@ -2262,7 +2340,16 @@ define([
                 return false;
             }
 
-            return this.editorState.select(nodeId);
+            const changed = this.editorState.select(nodeId);
+
+            if (nodeId !== null) {
+                this.canvasSelectionActive = false;
+                const selected = NodeTree.getLocation(this.editorState.getLayout(), nodeId);
+
+                if (selected?.node.condition) this.openInspectorSections.add('visibility');
+            }
+
+            return changed;
         }
 
         handleKeydown(event) {

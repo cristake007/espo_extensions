@@ -89,6 +89,7 @@ assert.match(template, /data-document-canvas/);
 assert.doesNotMatch(template, /level-badge|child-count|node-badge/);
 assert.match(css, /\.document-builder-editor__flow-node\s*\{[^}]*outline:\s*1px solid/s);
 assert.match(css, /\.document-builder-editor__flow-node\.is-flow-container\s*\{[^}]*outline-style:\s*dashed/s);
+assert.match(css, /\.document-builder-editor__node-condition-badge\s*\{/s);
 assert.match(css, /\.document-builder-editor__flow-node\.is-selected\s*\{[^}]*outline:/s);
 assert.match(css, /\.document-builder-editor__drop\s*\{[^}]*display:\s*none/s);
 assert.doesNotMatch(css, /document-builder-depth/);

@@ -56,7 +56,11 @@ for (const action of ['editFlowNode', 'duplicateFlowNode', 'removeFlowNode']) {
 assert.match(shell, /new DuplicateNodeCommand\(nodeId, null, this\.flowStructure\)/);
 assert.match(shell, /event\.key === 'Escape'[\s\S]*cancelFlowDrag\(\)/);
 assert.match(shell, /updateDropTargetCompatibility/);
+assert.match(shell, /pendingCanvasAnimationId/);
+assert.match(shell, /is-drag-source/);
 assert.match(css, /is-dragging[^}]*drop\.is-compatible/s);
+assert.match(css, /@keyframes document-builder-drop-settle/);
+assert.match(css, /prefers-reduced-motion:\s*reduce/);
 assert.match(canvas, /node\.selected[\s\S]*selectionToolbar/);
 assert.match(css, /selection-toolbar[\s\S]*position:\s*absolute/);
 

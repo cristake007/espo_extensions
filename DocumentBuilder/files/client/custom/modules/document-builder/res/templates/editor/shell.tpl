@@ -252,11 +252,14 @@
                 </nav>
                 <h3>{{translate selectedFlowNode.label category='labels' scope='DocumentBuilderTemplate'}}</h3>
                 <div class="btn-group btn-group-sm document-builder-editor__flow-actions">
-                    <button type="button" class="btn btn-default" data-action="moveFlowUp">{{translate 'Move Up' category='actions' scope='DocumentBuilderTemplate'}}</button>
-                    <button type="button" class="btn btn-default" data-action="moveFlowDown">{{translate 'Move Down' category='actions' scope='DocumentBuilderTemplate'}}</button>
-                    <button type="button" class="btn btn-danger" data-action="removeFlowNode">{{translate 'Remove'}}</button>
+                    <button type="button" class="btn btn-default document-builder-editor__icon-button" data-action="moveFlowUp" title="{{translate 'Move Up' category='actions' scope='DocumentBuilderTemplate'}}" aria-label="{{translate 'Move Up' category='actions' scope='DocumentBuilderTemplate'}}"><span class="fas fa-arrow-up" aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn-default document-builder-editor__icon-button" data-action="moveFlowDown" title="{{translate 'Move Down' category='actions' scope='DocumentBuilderTemplate'}}" aria-label="{{translate 'Move Down' category='actions' scope='DocumentBuilderTemplate'}}"><span class="fas fa-arrow-down" aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn-danger document-builder-editor__icon-button" data-action="removeFlowNode" title="{{translate 'Remove'}}" aria-label="{{translate 'Remove'}}"><span class="fas fa-trash-alt" aria-hidden="true"></span></button>
                 </div>
                 {{#if selectedFlowNode.isVariable}}
+                <section class="document-builder-editor__inspector-section {{#if inspectorContentOpen}}is-open{{/if}}" data-inspector-section="content">
+                    <button type="button" class="document-builder-editor__inspector-section-toggle" data-action="toggleInspectorSection" data-inspector-section="content" aria-expanded="{{#if inspectorContentOpen}}true{{else}}false{{/if}}"><span class="fas fa-chevron-right" aria-hidden="true"></span><span>Variable Format</span></button>
+                    <div class="document-builder-editor__inspector-section-body" {{#unless inspectorContentOpen}}inert aria-hidden="true"{{/unless}}><div class="document-builder-editor__inspector-section-content">
                 <p class="document-builder-editor__variable-identity" title="{{selectedFlowNode.variablePath}}"><code>{{selectedFlowNode.variablePath}}</code></p>
                 {{#with selectedFlowNode.variablePresentation}}
                 <fieldset class="document-builder-editor__variable-presentation">
@@ -279,15 +282,34 @@
                     <div class="form-group"><label>{{translate 'Missing Value Policy' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-variable-presentation="missing">{{#each missingOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{translate value category='labels' scope='DocumentBuilderTemplate'}}</option>{{/each}}</select></label></div>
                 </fieldset>
                 {{/with}}
+                    </div></div>
+                </section>
                 {{/if}}
+                <section class="document-builder-editor__inspector-section {{#if inspectorVisibilityOpen}}is-open{{/if}}" data-inspector-section="visibility">
+                    <button type="button" class="document-builder-editor__inspector-section-toggle" data-action="toggleInspectorSection" data-inspector-section="visibility" aria-expanded="{{#if inspectorVisibilityOpen}}true{{else}}false{{/if}}"><span class="fas fa-chevron-right" aria-hidden="true"></span><span>Visibility</span>{{#if selectedFlowNode.hasCondition}}<span class="document-builder-editor__section-status" title="Condition active"><span class="fas fa-eye" aria-hidden="true"></span> Active</span>{{/if}}</button>
+                    <div class="document-builder-editor__inspector-section-body" {{#unless inspectorVisibilityOpen}}inert aria-hidden="true"{{/unless}}><div class="document-builder-editor__inspector-section-content">
                 <fieldset class="document-builder-editor__condition-controls">
-                    <legend>Visibility Condition</legend>
+                    <legend class="sr-only">Visibility Condition</legend>
+                    {{#with selectedFlowNode.conditionSummary}}
+                    <div class="document-builder-editor__condition-summary">
+                        <div class="document-builder-editor__condition-summary-heading"><span class="fas fa-eye" aria-hidden="true"></span><span>Show {{targetLabel}} when {{modeLabel}} match</span></div>
+                        <ol class="document-builder-editor__condition-summary-list">
+                            {{#each rules}}
+                            <li><span class="document-builder-editor__condition-rule-number">{{number}}</span><code>{{path}}</code><span>{{operatorLabel}}</span>{{#if hasOperand}}<strong>{{operandLabel}}</strong>{{/if}}</li>
+                            {{/each}}
+                        </ol>
+                    </div>
+                    {{/with}}
                     <div class="document-builder-editor__settings-grid">
                         <label>Target<select class="form-control input-sm" data-condition-setting="target">{{#each selectedFlowNode.conditionEditor.targets}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
                         <label>Match<select class="form-control input-sm" data-condition-setting="mode">{{#each selectedFlowNode.conditionEditor.modes}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
                     </div>
                     {{#each selectedFlowNode.conditionEditor.rules}}
-                    <div class="panel panel-default" data-condition-rule="{{index}}">
+                    <div class="panel panel-default document-builder-editor__condition-rule" data-condition-rule="{{index}}">
+                        <div class="document-builder-editor__condition-rule-heading">
+                            <span>Rule {{number}}</span>
+                            {{#if canRemove}}<button type="button" class="btn btn-default btn-xs document-builder-editor__icon-button" data-action="removeConditionRule" data-rule-index="{{index}}" title="Remove this rule" aria-label="Remove rule {{number}}"><span class="fas fa-trash-alt" aria-hidden="true"></span></button>{{/if}}
+                        </div>
                         <div class="panel-body">
                             <div class="form-group"><label>Variable path<input class="form-control input-sm" type="text" maxlength="403" placeholder="account.name" value="{{path}}" data-condition-rule-setting="path"></label></div>
                             <div class="document-builder-editor__settings-grid">
@@ -295,20 +317,24 @@
                                 <label>Operator<select class="form-control input-sm" data-condition-rule-setting="operator">{{#each operators}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
                             </div>
                             <div class="form-group"><label>Comparison value<input class="form-control input-sm" type="text" maxlength="1000" value="{{operand}}" data-condition-rule-setting="operand"></label></div>
-                            {{#if canRemove}}<button type="button" class="btn btn-default btn-xs" data-action="removeConditionRule" data-rule-index="{{index}}">Remove Rule</button>{{/if}}
                         </div>
                     </div>
                     {{/each}}
-                    <div class="btn-group btn-group-sm">
-                        <button type="button" class="btn btn-primary" data-action="applyCondition">Apply Condition</button>
-                        <button type="button" class="btn btn-default" data-action="addConditionRule">Add Rule</button>
-                        {{#if selectedFlowNode.hasCondition}}<button type="button" class="btn btn-default" data-action="removeCondition">Remove Condition</button>{{/if}}
+                    <div class="btn-group btn-group-sm document-builder-editor__condition-actions" role="group" aria-label="Visibility condition actions">
+                        <button type="button" class="btn btn-primary document-builder-editor__icon-button" data-action="applyCondition" title="Apply condition" aria-label="Apply condition"><span class="fas fa-check" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-default document-builder-editor__icon-button" data-action="addConditionRule" title="Add rule" aria-label="Add rule"><span class="fas fa-plus" aria-hidden="true"></span></button>
+                        {{#if selectedFlowNode.hasCondition}}<button type="button" class="btn btn-danger document-builder-editor__icon-button" data-action="removeCondition" title="Remove visibility condition" aria-label="Remove visibility condition"><span class="fas fa-trash-alt" aria-hidden="true"></span></button>{{/if}}
                     </div>
                     <p class="text-muted">Conditions are shallow, bounded rule groups. Saving validates the variable against the selected source.</p>
                 </fieldset>
+                    </div></div>
+                </section>
                 {{#if selectedFlowNode.supportsStyle}}
+                <section class="document-builder-editor__inspector-section {{#if inspectorAppearanceOpen}}is-open{{/if}}" data-inspector-section="appearance">
+                    <button type="button" class="document-builder-editor__inspector-section-toggle" data-action="toggleInspectorSection" data-inspector-section="appearance" aria-expanded="{{#if inspectorAppearanceOpen}}true{{else}}false{{/if}}"><span class="fas fa-chevron-right" aria-hidden="true"></span><span>Appearance</span></button>
+                    <div class="document-builder-editor__inspector-section-body" {{#unless inspectorAppearanceOpen}}inert aria-hidden="true"{{/unless}}><div class="document-builder-editor__inspector-section-content">
                 <fieldset class="document-builder-editor__style-controls">
-                    <legend>{{translate 'Style' category='labels' scope='DocumentBuilderTemplate'}}</legend>
+                    <legend class="sr-only">{{translate 'Style' category='labels' scope='DocumentBuilderTemplate'}}</legend>
                     {{#if selectedFlowNode.supportsTypography}}
                     <div class="form-group"><label>{{translate 'Font' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-style-setting="fontFamily">{{#each selectedFlowNode.styleFontList}}<option value="{{name}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label></div>
                     <div class="document-builder-editor__settings-grid">
@@ -343,7 +369,12 @@
                     <div class="form-group"><label>{{translate 'Alignment' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-style-setting="horizontalAlignment"><option value="start" {{#if selectedFlowNode.styleChoices.alignStart}}selected{{/if}}>Start</option><option value="center" {{#if selectedFlowNode.styleChoices.alignCenter}}selected{{/if}}>Center</option><option value="end" {{#if selectedFlowNode.styleChoices.alignEnd}}selected{{/if}}>End</option><option value="stretch" {{#if selectedFlowNode.styleChoices.alignStretch}}selected{{/if}}>Stretch</option></select></label></div>
                     {{/if}}
                 </fieldset>
+                    </div></div>
+                </section>
                 {{/if}}
+                <section class="document-builder-editor__inspector-section {{#if inspectorLayoutOpen}}is-open{{/if}}" data-inspector-section="layout">
+                    <button type="button" class="document-builder-editor__inspector-section-toggle" data-action="toggleInspectorSection" data-inspector-section="layout" aria-expanded="{{#if inspectorLayoutOpen}}true{{else}}false{{/if}}"><span class="fas fa-chevron-right" aria-hidden="true"></span><span>Content &amp; Layout</span></button>
+                    <div class="document-builder-editor__inspector-section-body" {{#unless inspectorLayoutOpen}}inert aria-hidden="true"{{/unless}}><div class="document-builder-editor__inspector-section-content">
                 {{#if selectedFlowNode.isBasicFlow}}
                 {{#if selectedFlowNode.isDivider}}
                 <div class="form-group"><label>{{translate 'Orientation' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-basic-flow-setting="orientation"><option value="horizontal" {{#if selectedFlowNode.horizontal}}selected{{/if}}>Horizontal</option><option value="vertical" {{#if selectedFlowNode.vertical}}selected{{/if}}>Vertical</option></select></label></div>
@@ -401,8 +432,14 @@
                 {{#if selectedFlowNode.isSection}}<div class="checkbox"><label><input type="checkbox" data-flow-setting="startNewPage" {{#if selectedFlowNode.startNewPage}}checked{{/if}}> {{translate 'Start New Page' category='labels' scope='DocumentBuilderTemplate'}}</label></div>{{/if}}
                 {{/if}}
                 {{/if}}
+                    </div></div>
+                </section>
                 {{else}}
+                {{#if canvasSelected}}
                 <h3>{{translate 'Page Settings' category='labels' scope='DocumentBuilderTemplate'}}</h3>
+                <section class="document-builder-editor__inspector-section {{#if inspectorLayoutOpen}}is-open{{/if}}" data-inspector-section="layout">
+                    <button type="button" class="document-builder-editor__inspector-section-toggle" data-action="toggleInspectorSection" data-inspector-section="layout" aria-expanded="{{#if inspectorLayoutOpen}}true{{else}}false{{/if}}"><span class="fas fa-chevron-right" aria-hidden="true"></span><span>Page Layout</span></button>
+                    <div class="document-builder-editor__inspector-section-body" {{#unless inspectorLayoutOpen}}inert aria-hidden="true"{{/unless}}><div class="document-builder-editor__inspector-section-content">
                 <div class="form-group">
                     <label>{{translate 'Page Size' category='labels' scope='DocumentBuilderTemplate'}}</label>
                     <select class="form-control input-sm" data-page-setting="size">
@@ -425,6 +462,11 @@
                     <label>{{translate 'Bottom' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="2000" step="0.1" value="{{pageSettings.page.margins.bottom.value}}" data-page-setting="marginBottom" data-value-type="number"></label>
                     <label>{{translate 'Left' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="2000" step="0.1" value="{{pageSettings.page.margins.left.value}}" data-page-setting="marginLeft" data-value-type="number"></label>
                 </fieldset>
+                    </div></div>
+                </section>
+                <section class="document-builder-editor__inspector-section {{#if inspectorContentOpen}}is-open{{/if}}" data-inspector-section="content">
+                    <button type="button" class="document-builder-editor__inspector-section-toggle" data-action="toggleInspectorSection" data-inspector-section="content" aria-expanded="{{#if inspectorContentOpen}}true{{else}}false{{/if}}"><span class="fas fa-chevron-right" aria-hidden="true"></span><span>Header &amp; Footer</span></button>
+                    <div class="document-builder-editor__inspector-section-body" {{#unless inspectorContentOpen}}inert aria-hidden="true"{{/unless}}><div class="document-builder-editor__inspector-section-content">
                 {{#with pageChromeHeader}}
                 <fieldset class="document-builder-editor__chrome-settings">
                     <legend>{{translate 'Header' category='labels' scope='DocumentBuilderTemplate'}}</legend>
@@ -457,6 +499,11 @@
                     {{/if}}
                 </fieldset>
                 {{/with}}
+                    </div></div>
+                </section>
+                <section class="document-builder-editor__inspector-section {{#if inspectorAppearanceOpen}}is-open{{/if}}" data-inspector-section="appearance">
+                    <button type="button" class="document-builder-editor__inspector-section-toggle" data-action="toggleInspectorSection" data-inspector-section="appearance" aria-expanded="{{#if inspectorAppearanceOpen}}true{{else}}false{{/if}}"><span class="fas fa-chevron-right" aria-hidden="true"></span><span>Document Defaults</span></button>
+                    <div class="document-builder-editor__inspector-section-body" {{#unless inspectorAppearanceOpen}}inert aria-hidden="true"{{/unless}}><div class="document-builder-editor__inspector-section-content">
                 <div class="form-group"><label>{{translate 'Default Font' category='labels' scope='DocumentBuilderTemplate'}}<select class="form-control input-sm" data-page-setting="fontFamily">{{#each pageSettings.fontList}}<option value="{{name}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label></div>
                 <div class="document-builder-editor__settings-grid">
                     <label>{{translate 'Font Size' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" type="number" min="0" max="512" step="0.1" value="{{pageSettings.defaults.fontSize.value}}" data-page-setting="fontSize" data-value-type="number"></label>
@@ -469,6 +516,14 @@
                 </div>
                 <div class="form-group"><label>{{translate 'PDF Title Pattern' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="255" value="{{pageSettings.titlePattern}}" data-page-setting="titlePattern"></label></div>
                 <div class="form-group"><label>{{translate 'Filename Pattern' category='labels' scope='DocumentBuilderTemplate'}}<input class="form-control input-sm" maxlength="255" value="{{pageSettings.filenamePattern}}" data-page-setting="filenamePattern"></label></div>
+                    </div></div>
+                </section>
+                {{else}}
+                <div class="document-builder-editor__no-selection">
+                    <span class="fas fa-mouse-pointer" aria-hidden="true"></span>
+                    <p>Select the page or an element to edit its properties.</p>
+                </div>
+                {{/if}}
                 {{/if}}
                 {{/if}}
             </aside>

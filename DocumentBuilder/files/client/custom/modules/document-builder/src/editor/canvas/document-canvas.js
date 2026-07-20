@@ -52,6 +52,18 @@ define(['document-builder:editor/content/rich-text'], RichText => {
                 element.setAttribute('aria-keyshortcuts', 'ArrowUp ArrowDown Home End');
             }
             element.setAttribute('aria-label', translate(node.label, 'labels'));
+            if (!preview && node.hasCondition) {
+                const badge = documentRef.createElement('span');
+                const icon = documentRef.createElement('span');
+
+                badge.className = 'document-builder-editor__node-condition-badge';
+                badge.title = translate('Visibility Condition', 'labels');
+                badge.setAttribute('aria-label', translate('Visibility Condition', 'labels'));
+                icon.className = 'fas fa-eye';
+                icon.setAttribute('aria-hidden', 'true');
+                badge.append(icon);
+                element.append(badge);
+            }
             if (!preview && node.selected) {
                 element.append(this.selectionToolbar(documentRef, node.id, translate));
             }

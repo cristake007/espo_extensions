@@ -155,6 +155,7 @@ define([
                     isContent,
                     isEmpty,
                     hasContent: isContent && !isEmpty,
+                    hasCondition: Boolean(node.condition),
                     variableText,
                     sampleKey: isEmpty ? SAMPLE_KEYS[node.type] : null,
                     flowStyle: flowStyle.filter(Boolean).join('; '),
