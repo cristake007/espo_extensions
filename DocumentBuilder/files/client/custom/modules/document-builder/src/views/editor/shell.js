@@ -905,7 +905,9 @@ define([
 
         actionToggleInspectorSection(event) {
             const sectionName = event.currentTarget.dataset.inspectorSection;
-            const section = event.currentTarget.closest('[data-inspector-section]');
+            const section = event.currentTarget.closest(
+                '.document-builder-editor__inspector-section',
+            );
 
             if (!sectionName || !section) return;
             const willOpen = !section.classList.contains('is-open');

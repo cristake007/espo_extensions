@@ -394,6 +394,20 @@
     box-shadow: inset 3px 0 0 rgb(109 139 158 / 18%);
 }
 
+.document-builder-editor__workspace:not(.is-preview) .document-builder-editor__flow-node.is-flow-section {
+    padding: max(var(--document-builder-node-padding-top, 0px), 14px)
+        max(var(--document-builder-node-padding-right, 0px), 14px)
+        max(var(--document-builder-node-padding-bottom, 0px), 14px)
+        max(var(--document-builder-node-padding-left, 0px), 14px) !important;
+}
+
+.document-builder-editor__workspace:not(.is-preview) .document-builder-editor__flow-node.is-flow-container {
+    padding: max(var(--document-builder-node-padding-top, 0px), 12px)
+        max(var(--document-builder-node-padding-right, 0px), 12px)
+        max(var(--document-builder-node-padding-bottom, 0px), 12px)
+        max(var(--document-builder-node-padding-left, 0px), 12px) !important;
+}
+
 .document-builder-editor__workspace:not(.is-preview) .document-builder-editor__flow-node.is-container-node::before {
     position: absolute;
     z-index: 2;

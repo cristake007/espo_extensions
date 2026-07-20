@@ -85,11 +85,16 @@ const template = fs.readFileSync(path.join(root,
     'files/client/custom/modules/document-builder/res/templates/editor/shell.tpl'), 'utf8');
 const css = fs.readFileSync(path.join(root,
     'files/client/custom/modules/document-builder/res/css/editor.css'), 'utf8');
+const renderer = fs.readFileSync(path.join(sourceRoot,
+    'editor/renderer/browser-renderer.js'), 'utf8');
 assert.match(template, /data-document-canvas/);
 assert.doesNotMatch(template, /level-badge|child-count|node-badge/);
 assert.match(css, /\.document-builder-editor__flow-node\s*\{[^}]*outline:\s*1px solid/s);
 assert.match(css, /\.document-builder-editor__flow-node\.is-flow-container\s*\{[^}]*outline-style:\s*dashed/s);
 assert.match(css, /\.document-builder-editor__node-condition-badge\s*\{/s);
+assert.match(css, /flow-node\.is-flow-section\s*\{[^}]*padding:\s*max\([^}]*14px/s);
+assert.match(css, /flow-node\.is-flow-container\s*\{[^}]*padding:\s*max\([^}]*12px/s);
+assert.match(renderer, /--document-builder-node-padding-top/);
 assert.match(css, /\.document-builder-editor__flow-node\.is-selected\s*\{[^}]*outline:/s);
 assert.match(css, /\.document-builder-editor__drop\s*\{[^}]*display:\s*none/s);
 assert.doesNotMatch(css, /document-builder-depth/);

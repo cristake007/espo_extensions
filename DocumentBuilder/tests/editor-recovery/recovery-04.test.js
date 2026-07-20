@@ -58,4 +58,60 @@ assert.match(template, /document-builder-editor__condition-summary-list/);
 assert.match(template, /data-action="removeConditionRule"[^>]*aria-label="Remove rule/);
 assert.match(template, /document-builder-editor__no-selection/);
 
+let shellDefinition;
+new Function('define', shell)((dependencies, factory) => {
+    shellDefinition = {dependencies, factory};
+});
+const dependencyStubs = shellDefinition.dependencies.map((name, index) =>
+    index === 0 ? class View {} : {}
+);
+const ShellView = shellDefinition.factory(...dependencyStubs);
+const view = new ShellView();
+const sectionClasses = new Set();
+const bodyAttributes = new Map();
+const body = {
+    toggleAttribute(name, force) {
+        if (force) bodyAttributes.set(name, '');
+        else bodyAttributes.delete(name);
+    },
+    setAttribute(name, value) { bodyAttributes.set(name, value); },
+};
+const section = {
+    classList: {
+        contains(name) { return sectionClasses.has(name); },
+        toggle(name, force) {
+            if (force) sectionClasses.add(name);
+            else sectionClasses.delete(name);
+        },
+    },
+    querySelector(selector) {
+        assert.equal(selector, '.document-builder-editor__inspector-section-body');
+
+        return body;
+    },
+};
+const toggleAttributes = new Map();
+const toggle = {
+    dataset: {inspectorSection: 'visibility'},
+    closest(selector) {
+        assert.equal(selector, '.document-builder-editor__inspector-section');
+
+        return section;
+    },
+    setAttribute(name, value) { toggleAttributes.set(name, value); },
+};
+view.openInspectorSections = new Set();
+view.actionToggleInspectorSection({currentTarget: toggle});
+assert.equal(sectionClasses.has('is-open'), true);
+assert.equal(toggleAttributes.get('aria-expanded'), 'true');
+assert.equal(bodyAttributes.has('inert'), false);
+assert.equal(bodyAttributes.get('aria-hidden'), 'false');
+assert.equal(view.openInspectorSections.has('visibility'), true);
+view.actionToggleInspectorSection({currentTarget: toggle});
+assert.equal(sectionClasses.has('is-open'), false);
+assert.equal(toggleAttributes.get('aria-expanded'), 'false');
+assert.equal(bodyAttributes.has('inert'), true);
+assert.equal(bodyAttributes.get('aria-hidden'), 'true');
+assert.equal(view.openInspectorSections.has('visibility'), false);
+
 console.log('Editor recovery 04 sidebar contract tests passed.');

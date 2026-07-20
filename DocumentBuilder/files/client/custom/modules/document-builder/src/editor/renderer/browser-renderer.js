@@ -113,6 +113,10 @@ define([
                 if (canContain) {
                     flowStyle.push(
                         `--document-builder-margin-left: ${px(node.margin.left.value)}px`,
+                        `--document-builder-node-padding-top: ${px(node.padding.top.value)}px`,
+                        `--document-builder-node-padding-right: ${px(node.padding.right.value)}px`,
+                        `--document-builder-node-padding-bottom: ${px(node.padding.bottom.value)}px`,
+                        `--document-builder-node-padding-left: ${px(node.padding.left.value)}px`,
                         `min-height: ${px(node.minHeight.value)}px`,
                         `margin: ${px(node.margin.top.value)}px ${px(node.margin.right.value)}px ` +
                             `${px(node.margin.bottom.value)}px ${px(node.margin.left.value)}px`,
