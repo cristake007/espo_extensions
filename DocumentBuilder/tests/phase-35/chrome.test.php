@@ -65,6 +65,12 @@ Assert::contains('data-show-first-page="0"', $html, 'First-page visibility was n
 Assert::contains('data-disable-on-full-page="0"', $html, 'Full-page suppression preference was not preserved.');
 Assert::contains('<span class="db-page-number" aria-label="Page number"></span>', $html, 'Current-page renderer placeholder is missing.');
 Assert::contains('.db-page-number::after{content:counter(page);}', $html, 'Current-page PDF counter rule is missing.');
+$bodyResetOffset = strpos($html, 'html,body{margin:0;padding:0;}');
+$pageRuleOffset = strpos($html, '@page{');
+Assert::isTrue(
+    is_int($bodyResetOffset) && is_int($pageRuleOffset) && $bodyResetOffset < $pageRuleOffset,
+    'The Dompdf body reset overrides the configured page margins.',
+);
 Assert::same($html, $renderer->render($tree), 'Page chrome HTML is not deterministic.');
 
 echo "Phase 35 deterministic header/footer HTML tests passed.\n";

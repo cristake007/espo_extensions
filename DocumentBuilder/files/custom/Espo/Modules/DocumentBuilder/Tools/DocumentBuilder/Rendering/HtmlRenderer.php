@@ -39,7 +39,7 @@ final readonly class HtmlRenderer
             '.db-page-number::after{content:counter(page);}';
 
         return '<!doctype html><html lang="' . $language . '"><head><meta charset="UTF-8">' .
-            '<style>' . $pageCss . $baseCss . '</style></head><body>' . $header . $footer . $body .
+            '<style>' . $baseCss . $pageCss . '</style></head><body>' . $header . $footer . $body .
             '</body></html>';
     }
 
