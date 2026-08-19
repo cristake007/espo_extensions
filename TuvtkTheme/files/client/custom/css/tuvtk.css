@@ -28121,7 +28121,8 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
 @media screen and (min-width: 768px) {
   body[data-navbar="side"] #navbar > .navbar,
   body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar {
-    border-right: 1px solid var(--tuvtk-primary) !important;
+    border-right: 1px solid #c8d3e1 !important;
+    transition: border-right-color 160ms ease;
   }
 
   body[data-navbar="side"] #navbar > .navbar::after,
@@ -28136,8 +28137,23 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
     clear: none;
     width: 1px;
     height: auto;
-    background: var(--tuvtk-primary);
+    background: #c8d3e1;
     pointer-events: none;
+    transition: background-color 160ms ease;
+  }
+
+  body[data-navbar="side"] #navbar > .navbar:has(a.minimizer:hover),
+  body[data-navbar="side"] #navbar > .navbar:has(a.minimizer:focus-visible),
+  body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar:has(a.minimizer:hover),
+  body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar:has(a.minimizer:focus-visible) {
+    border-right-color: var(--tuvtk-primary) !important;
+  }
+
+  body[data-navbar="side"] #navbar > .navbar:has(a.minimizer:hover)::after,
+  body[data-navbar="side"] #navbar > .navbar:has(a.minimizer:focus-visible)::after,
+  body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar:has(a.minimizer:hover)::after,
+  body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar:has(a.minimizer:focus-visible)::after {
+    background: var(--tuvtk-primary);
   }
 
   body[data-navbar="side"] #navbar .navbar a.minimizer {
@@ -28220,9 +28236,33 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
 }
 
 @media (prefers-reduced-motion: reduce) {
+  body[data-navbar="side"] #navbar > .navbar,
+  body[data-navbar="side"] #navbar > .navbar::after,
   body[data-navbar="side"] #navbar .navbar a.minimizer {
     transition: none;
   }
+}
+
+/* Collapsed navbar item tooltip rendered through Espo's popover utility. */
+.popover.tuvtk-navbar-tooltip {
+  --dropdown-bg: #1f2937;
+  --dropdown-border: var(--tuvtk-primary);
+  max-width: 240px;
+  border-color: var(--tuvtk-primary);
+  border-radius: 4px;
+  background: #1f2937;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(16, 42, 76, 0.22);
+  pointer-events: none;
+}
+
+.popover.tuvtk-navbar-tooltip > .popover-content {
+  padding: 7px 10px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
 }
 
 /* =========================================================

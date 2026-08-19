@@ -8,9 +8,11 @@ payload installs these files:
 
 ```text
 custom/Espo/Modules/TuvtkTheme/Resources/metadata/themes/Tuvtk.json
+custom/Espo/Modules/TuvtkTheme/Resources/metadata/clientDefs/App.json
 client/custom/css/tuvtk.css
 client/custom/css/tuvtk-iframe.css
 client/custom/img/tuvtk-login-office.png
+client/custom/modules/tuvtk-theme/src/views/site/navbar.js
 ```
 
 ## Build
@@ -18,10 +20,10 @@ client/custom/img/tuvtk-login-office.png
 From the repository root:
 
 ```bash
-./build.sh --extension ./TuvtkTheme --zip 1.0.10 files scripts
+./build.sh --extension ./TuvtkTheme --zip 1.0.11 files scripts
 ```
 
-The resulting `dist/tuvtk-theme-1.0.10.zip` can be uploaded from
+The resulting `dist/tuvtk-theme-1.0.11.zip` can be uploaded from
 **Administration > Extensions** in EspoCRM. After installation, run
 **Administration > Rebuild** and clear the browser cache. The theme is then
 available as `Tuvtk` in EspoCRM's appearance settings.
@@ -36,11 +38,14 @@ Side-navbar items use compact, vertically balanced rows. Their red hover and
 active marker expands smoothly from the vertical center toward both edges.
 Nested flyout entries use the same compact height and balanced vertical spacing
 as the primary sidebar items.
-The full-height sidebar rail uses the primary theme blue and renders above
-hamburger and separator backgrounds, so it remains continuous. Its compact
-outlined collapse handle is centered vertically and follows the rail when the
-navbar is collapsed.
+The full-height sidebar rail uses muted grey at rest and transitions to the
+primary theme blue when its compact collapse handle is hovered or focused. It
+renders above hamburger and separator backgrounds, so it remains continuous.
+The outlined handle is centered vertically and follows the rail when the navbar
+is collapsed.
+Collapsed sidebar items use themed, accessible hover and keyboard-focus
+tooltips instead of the browser's native title tooltip.
 
-Use the `tuvtk-theme-1.0.10.zip` release asset when downloading the extension
+Use the `tuvtk-theme-1.0.11.zip` release asset when downloading the extension
 from GitHub. GitHub's automatically generated **Source code** ZIP is a copy of
 the whole repository and is not an EspoCRM installation package.
