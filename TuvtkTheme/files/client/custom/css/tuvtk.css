@@ -28043,8 +28043,36 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-divider > div.nav-divi
 
 /* Normal menu items: no right border, only left active marker */
 body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a {
+  position: relative;
+  height: 36px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
   border-right: 0 !important;
-  border-left: 3px solid transparent !important;
+  border-left: 0 !important;
+  line-height: 20px;
+}
+
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a .fas,
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a .far,
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a .short-label,
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a .full-label {
+  line-height: 20px !important;
+}
+
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a > .group-caret {
+  top: 8px !important;
+}
+
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 3px;
+  height: 0;
+  background: #D41131;
+  transform: translateY(-50%);
+  transition: height 180ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Hover / active state */
@@ -28054,7 +28082,20 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.active:not(.tab-divider) >
 body[data-navbar="side"] #navbar .navbar ul.tabs > li.active:not(.tab-divider) > a:focus {
   background: #f4f8fc !important;
   color: #D41131 !important;
-  border-left-color: #D41131 !important;
+  border-left-color: transparent !important;
+}
+
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a:hover::before,
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a:focus-visible::before,
+body[data-navbar="side"] #navbar .navbar ul.tabs > li.active:not(.tab-divider) > a::before,
+body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-divider) > a::before {
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a::before {
+    transition: none;
+  }
 }
 
 /* =========================================================
