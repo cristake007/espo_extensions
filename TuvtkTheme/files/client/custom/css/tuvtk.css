@@ -28063,6 +28063,25 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a > .g
   top: 8px !important;
 }
 
+/* Match nested navbar flyout rows to the compact primary navbar items. */
+body[data-navbar="side"] #navbar .navbar ul.tabs .dropdown-menu > li:not(.divider) > a {
+  height: 36px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  line-height: 20px !important;
+}
+
+body[data-navbar="side"] #navbar .navbar ul.tabs .dropdown-menu > li:not(.divider) > a .fas,
+body[data-navbar="side"] #navbar .navbar ul.tabs .dropdown-menu > li:not(.divider) > a .far,
+body[data-navbar="side"] #navbar .navbar ul.tabs .dropdown-menu > li:not(.divider) > a .short-label,
+body[data-navbar="side"] #navbar .navbar ul.tabs .dropdown-menu > li:not(.divider) > a .full-label {
+  line-height: 20px !important;
+}
+
+body[data-navbar="side"] #navbar .navbar ul.tabs .dropdown-menu > li:not(.divider) > a > .group-caret {
+  top: 8px !important;
+}
+
 body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a::before {
   content: "";
   position: absolute;
