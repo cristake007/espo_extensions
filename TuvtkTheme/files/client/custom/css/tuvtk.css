@@ -28105,6 +28105,22 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
     border-right: 1px solid var(--tuvtk-primary) !important;
   }
 
+  body[data-navbar="side"] #navbar > .navbar::after,
+  body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar::after {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    right: -1px;
+    bottom: 0;
+    display: block;
+    clear: none;
+    width: 1px;
+    height: auto;
+    background: var(--tuvtk-primary);
+    pointer-events: none;
+  }
+
   body[data-navbar="side"] #navbar .navbar a.minimizer {
     position: fixed;
     z-index: 4;
