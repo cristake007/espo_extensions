@@ -28058,7 +28058,7 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.active:not(.tab-divider) >
 }
 
 /* =========================================================
-   Compiled from scss/tuvtk-logo.scss
+   Navbar and login logo sizing
    ========================================================= */
 :root {
   --logo-width: 190px;

@@ -12,18 +12,12 @@ client/custom/css/tuvtk.css
 client/custom/css/tuvtk-iframe.css
 ```
 
-Logo sizing overrides are maintained as SCSS in:
-
-```text
-scss/tuvtk-logo.scss
-```
-
 ## Build
 
 From the repository root:
 
 ```bash
-./build.sh --extension ./TuvtkTheme --zip 1.0.2 files scripts scss
+./build.sh --extension ./TuvtkTheme --zip 1.0.2 files scripts
 ```
 
 The resulting `dist/tuvtk-theme-1.0.2.zip` can be uploaded from
