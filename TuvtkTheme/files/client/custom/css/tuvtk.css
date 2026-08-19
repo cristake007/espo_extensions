@@ -28043,8 +28043,36 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-divider > div.nav-divi
 
 /* Normal menu items: no right border, only left active marker */
 body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a {
+  position: relative;
+  height: 36px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
   border-right: 0 !important;
-  border-left: 3px solid transparent !important;
+  border-left: 0 !important;
+  line-height: 20px;
+}
+
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a .fas,
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a .far,
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a .short-label,
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a .full-label {
+  line-height: 20px !important;
+}
+
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a > .group-caret {
+  top: 8px !important;
+}
+
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 3px;
+  height: 0;
+  background: #D41131;
+  transform: translateY(-50%);
+  transition: height 180ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Hover / active state */
@@ -28054,5 +28082,167 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.active:not(.tab-divider) >
 body[data-navbar="side"] #navbar .navbar ul.tabs > li.active:not(.tab-divider) > a:focus {
   background: #f4f8fc !important;
   color: #D41131 !important;
-  border-left-color: #D41131 !important;
+  border-left-color: transparent !important;
+}
+
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a:hover::before,
+body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a:focus-visible::before,
+body[data-navbar="side"] #navbar .navbar ul.tabs > li.active:not(.tab-divider) > a::before,
+body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-divider) > a::before {
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a::before {
+    transition: none;
+  }
+}
+
+/* =========================================================
+   Navbar and login logo sizing
+   ========================================================= */
+:root {
+  --logo-width: 190px;
+  --navbar-height: 52px;
+  --navbar-header-height: 76px;
+}
+
+#navbar .navbar .navbar-brand {
+  height: 52px !important;
+}
+
+#navbar .navbar .navbar-brand > img.logo {
+  width: auto !important;
+  height: 52px !important;
+  max-height: 52px !important;
+}
+
+#login .logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 110px;
+  margin: 0 auto;
+}
+
+#login .logo-container img.logo {
+  width: auto;
+  height: auto;
+  max-width: min(320px, 100%);
+  max-height: 110px;
+}
+
+/* Remove the default login card while retaining its semantic structure. */
+#login.panel {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#login.panel > .panel-heading {
+  min-height: 0;
+  padding: 0 0 38px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#login.panel > .panel-body {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+body:has(> .container.content > .container-centering > #login) footer {
+  display: none !important;
+}
+
+/* Espo adds navbar clearance to bodies without a side-navbar attribute. */
+body:not([data-navbar="side"]):has(> .container.content > .container-centering > #login) {
+  padding-top: 0 !important;
+}
+
+/* =========================================================
+   Login page: 25% form panel and 75% office image
+   ========================================================= */
+@media (min-width: 992px) {
+  body:has(> .container.content > .container-centering > #login) {
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+    background-color: #fff;
+  }
+
+  body:has(> .container.content > .container-centering > #login)::before {
+    content: "";
+    position: fixed;
+    z-index: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 25%;
+    background-image:
+      linear-gradient(rgba(10, 30, 62, 0.10), rgba(10, 30, 62, 0.10)),
+      url("../img/tuvtk-login-office.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  body > .container.content:has(> .container-centering > #login) {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 25%;
+    max-width: none;
+    height: 100vh;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    box-shadow: 12px 0 36px rgba(16, 42, 76, 0.16);
+  }
+
+  body > .container.content > .container-centering:has(> #login) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    top: 0;
+    padding: 32px clamp(20px, 2vw, 40px);
+  }
+
+  body > .container.content > .container-centering > #login {
+    position: static;
+    top: auto;
+    width: 100%;
+    max-width: 400px;
+    margin: 0;
+  }
+
+}
+
+@media (max-width: 991px) {
+  body:has(> .container.content > .container-centering > #login) {
+    min-height: 100vh;
+  }
+
+  body > .container.content > .container-centering:has(> #login) {
+    min-height: 100vh;
+    height: auto;
+    top: 0;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  body > .container.content > .container-centering > #login {
+    top: auto;
+  }
 }
