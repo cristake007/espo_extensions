@@ -1,0 +1,10 @@
+{
+    "name": "TUVTK Theme",
+    "version": "1.0.0",
+    "acceptableVersions": [
+        ">=10.0.0"
+    ],
+    "releaseDate": "2026-08-19",
+    "author": "Cristian Popa",
+    "description": "TUVTK custom theme for EspoCRM. Package ID: tuvtk-theme."
+}
