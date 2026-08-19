@@ -18,10 +18,10 @@ client/custom/img/tuvtk-login-office.png
 From the repository root:
 
 ```bash
-./build.sh --extension ./TuvtkTheme --zip 1.0.3 files scripts
+./build.sh --extension ./TuvtkTheme --zip 1.0.4 files scripts
 ```
 
-The resulting `dist/tuvtk-theme-1.0.3.zip` can be uploaded from
+The resulting `dist/tuvtk-theme-1.0.4.zip` can be uploaded from
 **Administration > Extensions** in EspoCRM. After installation, run
 **Administration > Rebuild** and clear the browser cache. The theme is then
 available as `Tuvtk` in EspoCRM's appearance settings.
@@ -29,8 +29,9 @@ available as `Tuvtk` in EspoCRM's appearance settings.
 On desktop login screens, the login form occupies the left 25 percent of the
 viewport and the bundled office image fills the right 75 percent. Both regions
 use the full `100vh` viewport height. Smaller screens use a single-column login
-layout without the image.
+layout without the image. The form uses an open layout without the default
+EspoCRM card chrome or login-page footer.
 
-Use the `tuvtk-theme-1.0.3.zip` release asset when downloading the extension
+Use the `tuvtk-theme-1.0.4.zip` release asset when downloading the extension
 from GitHub. GitHub's automatically generated **Source code** ZIP is a copy of
 the whole repository and is not an EspoCRM installation package.
