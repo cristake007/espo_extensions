@@ -28077,7 +28077,7 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.active:not(.tab-divider) >
 }
 
 #login .logo-container {
-  width: 240px;
+  width: min(240px, 100%);
   height: 70px;
 }
 
@@ -28085,4 +28085,97 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.active:not(.tab-divider) >
   width: auto;
   max-width: 100%;
   max-height: 100%;
+}
+
+/* =========================================================
+   Login page: 25% form panel and 75% office image
+   ========================================================= */
+@media (min-width: 992px) {
+  body:has(> .container.content > .container-centering > #login) {
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+    background-color: #fff;
+  }
+
+  body:has(> .container.content > .container-centering > #login)::before {
+    content: "";
+    position: fixed;
+    z-index: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 25%;
+    background-image:
+      linear-gradient(rgba(10, 30, 62, 0.10), rgba(10, 30, 62, 0.10)),
+      url("../img/tuvtk-login-office.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  body > .container.content:has(> .container-centering > #login) {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 25%;
+    max-width: none;
+    height: 100vh;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    box-shadow: 12px 0 36px rgba(16, 42, 76, 0.16);
+  }
+
+  body > .container.content > .container-centering:has(> #login) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    top: 0;
+    padding: 32px clamp(20px, 2vw, 40px) 64px;
+  }
+
+  body > .container.content > .container-centering > #login {
+    position: static;
+    top: auto;
+    width: 100%;
+    max-width: 400px;
+    margin: 0;
+  }
+
+  body:has(> .container.content > .container-centering > #login) > footer {
+    position: fixed;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: 25%;
+    margin: 0;
+    padding: 12px 20px;
+    background: #fff;
+  }
+}
+
+@media (max-width: 991px) {
+  body:has(> .container.content > .container-centering > #login) {
+    min-height: 100vh;
+  }
+
+  body > .container.content > .container-centering:has(> #login) {
+    min-height: 100vh;
+    height: auto;
+    top: 0;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  body > .container.content > .container-centering > #login {
+    top: auto;
+  }
 }
