@@ -1,0 +1,46 @@
+{
+    "stylesheet": "client/custom/css/tuvtk.css",
+    "stylesheetIframe": "client/custom/css/tuvtk-iframe.css",
+    "stylesheetIframeFallback": "client/css/espo/light-iframe.css",
+    "logo": "client/img/logo-light.svg",
+    "params": {
+        "navbar": {
+            "type": "enum",
+            "default": "side",
+            "options": [
+                "side",
+                "top"
+            ]
+        }
+    },
+    "mappedParams": {
+        "navbarHeight": {
+            "param": "navbar",
+            "valueMap": {
+                "side": 32,
+                "top": 43
+            }
+        }
+    },
+    "dashboardCellHeight": 40,
+    "dashboardCellMargin": 16,
+    "navbarHeight": 43,
+    "modalFooterAtTheTop": true,
+    "modalFullHeight": true,
+    "fontSize": 14,
+    "textColor": "#304253",
+    "hoverColor": "#164194",
+    "chartGridColor": "#cfd7df",
+    "chartSuccessColor": "#58c97a",
+    "chartTickColor": "#e8eced",
+    "chartColorList": ["#164194", "#4e6cad", "#d41131", "#6fa8d6", "#7cc4a4", "#edc555", "#8a7cc2", "#bfbfbf"],
+    "chartColorAlternativeList": ["#164194", "#d41131", "#6fa8d6", "#7cc4a4", "#edc555"],
+    "calendarColors": {
+        "": "#d5ddf6a0",
+        "bg": "#eef3f8a0",
+        "Call": "#7da0c8",
+        "Meeting": "#164194",
+        "Task": "#88ce9b"
+    },
+    "isDark": false
+}
