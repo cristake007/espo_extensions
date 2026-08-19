@@ -1,0 +1,36 @@
+$navbar-logo-width: 190px;
+$navbar-logo-height: 52px;
+$navbar-header-height: 76px;
+$login-logo-width: 240px;
+$login-logo-height: 70px;
+
+:root {
+    --logo-width: #{$navbar-logo-width};
+    --navbar-height: #{$navbar-logo-height};
+    --navbar-header-height: #{$navbar-header-height};
+}
+
+#navbar .navbar {
+    .navbar-brand {
+        height: $navbar-logo-height !important;
+
+        > img.logo {
+            width: auto !important;
+            height: $navbar-logo-height !important;
+            max-height: $navbar-logo-height !important;
+        }
+    }
+}
+
+#login {
+    .logo-container {
+        width: $login-logo-width;
+        height: $login-logo-height;
+
+        img.logo {
+            width: auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+}

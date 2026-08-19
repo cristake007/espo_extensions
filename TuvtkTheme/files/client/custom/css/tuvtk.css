@@ -28056,3 +28056,33 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.active:not(.tab-divider) >
   color: #D41131 !important;
   border-left-color: #D41131 !important;
 }
+
+/* =========================================================
+   Compiled from scss/tuvtk-logo.scss
+   ========================================================= */
+:root {
+  --logo-width: 190px;
+  --navbar-height: 52px;
+  --navbar-header-height: 76px;
+}
+
+#navbar .navbar .navbar-brand {
+  height: 52px !important;
+}
+
+#navbar .navbar .navbar-brand > img.logo {
+  width: auto !important;
+  height: 52px !important;
+  max-height: 52px !important;
+}
+
+#login .logo-container {
+  width: 240px;
+  height: 70px;
+}
+
+#login .logo-container img.logo {
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+}

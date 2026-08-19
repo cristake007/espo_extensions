@@ -12,19 +12,25 @@ client/custom/css/tuvtk.css
 client/custom/css/tuvtk-iframe.css
 ```
 
+Logo sizing overrides are maintained as SCSS in:
+
+```text
+scss/tuvtk-logo.scss
+```
+
 ## Build
 
 From the repository root:
 
 ```bash
-./build.sh --extension ./TuvtkTheme --zip 1.0.1 files scripts
+./build.sh --extension ./TuvtkTheme --zip 1.0.2 files scripts scss
 ```
 
-The resulting `dist/tuvtk-theme-1.0.1.zip` can be uploaded from
+The resulting `dist/tuvtk-theme-1.0.2.zip` can be uploaded from
 **Administration > Extensions** in EspoCRM. After installation, run
 **Administration > Rebuild** and clear the browser cache. The theme is then
 available as `Tuvtk` in EspoCRM's appearance settings.
 
-Use the `tuvtk-theme-1.0.1.zip` release asset when downloading the extension
+Use the `tuvtk-theme-1.0.2.zip` release asset when downloading the extension
 from GitHub. GitHub's automatically generated **Source code** ZIP is a copy of
 the whole repository and is not an EspoCRM installation package.
