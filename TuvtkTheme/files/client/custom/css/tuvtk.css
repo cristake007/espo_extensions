@@ -28098,6 +28098,72 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
   }
 }
 
+/* Sidebar rail collapse handle */
+@media screen and (min-width: 768px) {
+  body[data-navbar="side"] #navbar .navbar a.minimizer {
+    position: fixed;
+    z-index: 4;
+    top: 50%;
+    left: calc(var(--navbar-width) - 15px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #c8d3e1;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--tuvtk-muted) !important;
+    box-shadow: 0 2px 8px rgba(16, 42, 76, 0.12);
+    transform: translateY(-50%);
+    transition:
+      border-color 160ms ease,
+      color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
+  }
+
+  body[data-navbar="side"].minimized:not(.side-menu-opened) #navbar .navbar a.minimizer {
+    left: calc(var(--navbar-minimized-width) - 15px);
+    display: flex;
+    margin: 0;
+  }
+
+  body[data-navbar="side"].minimized.side-menu-opened #navbar .navbar a.minimizer {
+    left: calc(var(--navbar-width) - 15px);
+    display: flex;
+    margin: 0;
+  }
+
+  body[data-navbar="side"] #navbar .navbar a.minimizer > span {
+    width: auto;
+    margin: 0 !important;
+    font-size: 11px;
+    line-height: 1;
+  }
+
+  body[data-navbar="side"] #navbar .navbar a.minimizer:hover,
+  body[data-navbar="side"] #navbar .navbar a.minimizer:focus-visible {
+    border-color: var(--tuvtk-primary);
+    color: var(--tuvtk-primary) !important;
+    box-shadow: 0 3px 12px rgba(22, 65, 148, 0.20);
+    transform: translateY(-50%) scale(1.06);
+  }
+
+  body[data-navbar="side"] #navbar .navbar a.minimizer:focus-visible {
+    outline: 2px solid rgba(22, 65, 148, 0.28);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-navbar="side"] #navbar .navbar a.minimizer {
+    transition: none;
+  }
+}
+
 /* =========================================================
    Navbar and login logo sizing
    ========================================================= */
