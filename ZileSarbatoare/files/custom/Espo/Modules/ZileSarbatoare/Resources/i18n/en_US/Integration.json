@@ -25,7 +25,9 @@
     },
     "labels": {
         "synchronizeNow": "Synchronize now",
-        "synchronizing": "Synchronizing..."
+        "synchronizing": "Synchronizing...",
+        "addManualHoliday": "Add manual day",
+        "manageHolidays": "Manage holidays"
     },
     "options": {
         "frequency": {

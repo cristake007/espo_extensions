@@ -19,7 +19,7 @@ class AfterInstall
         $config = $container->getByClass(Config::class);
         $configChanges = [];
 
-        foreach (['calendarEntityList', 'tabList', 'quickCreateList'] as $listName) {
+        foreach (['calendarEntityList'] as $listName) {
             $entityTypeList = $config->get($listName) ?? [];
 
             if (!is_array($entityTypeList)) {
@@ -29,6 +29,23 @@ class AfterInstall
             if (!in_array(self::ENTITY_TYPE, $entityTypeList, true)) {
                 $entityTypeList[] = self::ENTITY_TYPE;
                 $configChanges[$listName] = array_values($entityTypeList);
+            }
+        }
+
+        foreach (['tabList', 'quickCreateList'] as $listName) {
+            $entityTypeList = $config->get($listName) ?? [];
+
+            if (!is_array($entityTypeList)) {
+                throw new RuntimeException("$listName must be an array.");
+            }
+
+            $filteredList = array_values(array_filter(
+                $entityTypeList,
+                static fn (mixed $entityType): bool => $entityType !== self::ENTITY_TYPE,
+            ));
+
+            if ($filteredList !== $entityTypeList) {
+                $configChanges[$listName] = $filteredList;
             }
         }
 

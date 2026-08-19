@@ -207,16 +207,10 @@ namespace {
         $freshWriter->changes['calendarEntityList'],
         'Fresh installation did not preserve unrelated Calendar entries.',
     );
-    assertSameValue(
-        ['Home', 'Calendar', 'ZileLibere'],
-        $freshWriter->changes['tabList'],
-        'Fresh installation did not expose the manual holiday list.',
-    );
-    assertSameValue(
-        ['Meeting', 'ZileLibere'],
-        $freshWriter->changes['quickCreateList'],
-        'Fresh installation did not expose manual holiday Quick Create.',
-    );
+    assertSameValue(false, array_key_exists('tabList', $freshWriter->changes),
+        'Fresh installation unexpectedly changed the navbar tab list.');
+    assertSameValue(false, array_key_exists('quickCreateList', $freshWriter->changes),
+        'Fresh installation unexpectedly changed Quick Create.');
     assertSameValue(
         true,
         $freshWriter->changes['integrations']->ExistingConnector,
@@ -247,8 +241,12 @@ namespace {
         'integrations' => (object) ['NagerDate' => false, 'ExistingConnector' => true],
     ], $upgradeWriter, $upgradeEntityManager));
 
-    assertSameValue([], $upgradeWriter->changes, 'Upgrade rewrote existing configuration.');
-    assertSameValue(0, $upgradeWriter->saveCount, 'Upgrade saved unchanged configuration.');
+    assertSameValue(
+        ['tabList' => ['Home'], 'quickCreateList' => ['Meeting']],
+        $upgradeWriter->changes,
+        'Upgrade did not remove obsolete global holiday navigation actions.',
+    );
+    assertSameValue(1, $upgradeWriter->saveCount, 'Upgrade did not save navbar cleanup once.');
     assertSameValue(0, $upgradeEntityManager->saveCount, 'Upgrade overwrote saved integration settings.');
     assertSameValue($savedValues, $upgradeIntegration->values, 'Upgrade changed saved integration values.');
 
@@ -315,16 +313,10 @@ namespace {
         $reinstallWriter->changes['calendarEntityList'],
         'Reinstall did not restore Calendar registration.',
     );
-    assertSameValue(
-        ['Home', 'Calendar', 'ZileLibere'],
-        $reinstallWriter->changes['tabList'],
-        'Reinstall did not restore the manual holiday list.',
-    );
-    assertSameValue(
-        ['Meeting', 'ZileLibere'],
-        $reinstallWriter->changes['quickCreateList'],
-        'Reinstall did not restore manual holiday Quick Create.',
-    );
+    assertSameValue(false, array_key_exists('tabList', $reinstallWriter->changes),
+        'Reinstall unexpectedly restored the obsolete navbar tab.');
+    assertSameValue(false, array_key_exists('quickCreateList', $reinstallWriter->changes),
+        'Reinstall unexpectedly restored holiday Quick Create.');
     assertSameValue(1, $reinstallWriter->saveCount, 'Reinstall did not save only required config.');
     assertSameValue(0, $reinstallEntityManager->saveCount, 'Reinstall reset retained integration settings.');
     assertSameValue($savedValues, $upgradeIntegration->values, 'Reinstall changed retained integration values.');

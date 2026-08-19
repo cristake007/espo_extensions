@@ -6,7 +6,7 @@ const root = resolve(import.meta.dirname, '../..');
 const read = path => readFileSync(resolve(root, path), 'utf8');
 
 const manifest = JSON.parse(read('manifest.json'));
-assert.equal(manifest.version, '0.9.1');
+assert.equal(manifest.version, '0.9.2');
 
 const uninstall = read('scripts/BeforeUninstall.php');
 assert.match(uninstall, /getRDBRepositoryByClass\(ScheduledJob::class\)/);
@@ -22,7 +22,7 @@ assert.deepEqual(Object.keys(jobs), ['SyncZileSarbatoare']);
 assert.equal(jobs.SyncZileSarbatoare.isDefault, true);
 
 const readme = read('README.md');
-assert.match(readme, /build\.sh --extension ZileSarbatoare --zip 0\.9\.1 files scripts/);
+assert.match(readme, /build\.sh --extension ZileSarbatoare --zip 0\.9\.2 files scripts/);
 assert.match(readme, /bin\/command rebuild/);
 assert.match(readme, /populate-scheduled-jobs/);
 assert.match(readme, /cron or daemon/i);
@@ -49,6 +49,11 @@ assert.equal(
     'zile-sarbatoare:views/modals/zile-libere-detail',
 );
 
+const scope = JSON.parse(read(
+    'files/custom/Espo/Modules/ZileSarbatoare/Resources/metadata/scopes/ZileLibere.json',
+));
+assert.equal(scope.tab, false, 'ZileLibere must not be offered as a navbar tab.');
+
 const detailModal = read(
     'files/client/custom/modules/zile-sarbatoare/src/views/modals/zile-libere-detail.js',
 );
@@ -60,6 +65,10 @@ assert.ok(
 const integrationView = read(
     'files/client/custom/modules/zile-sarbatoare/src/views/admin/integrations/nager-date.js',
 );
+assert.match(integrationView, /'helpers\/record-modal'/);
+assert.match(integrationView, /addActionHandler\('addManualHoliday'/);
+assert.match(integrationView, /entityType: 'ZileLibere'/);
+assert.match(integrationView, /navigate\('#ZileLibere', \{trigger: true\}\)/);
 assert.match(integrationView, /Espo\.Ui\.notify\(result\.message, 'info', 8000/);
 assert.ok(
     integrationView.indexOf('Espo.Ui.notify(false)') <

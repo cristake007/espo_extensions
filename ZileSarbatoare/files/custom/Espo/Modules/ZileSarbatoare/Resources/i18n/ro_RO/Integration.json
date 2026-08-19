@@ -25,7 +25,9 @@
     },
     "labels": {
         "synchronizeNow": "Sincronizează acum",
-        "synchronizing": "Se sincronizează..."
+        "synchronizing": "Se sincronizează...",
+        "addManualHoliday": "Adaugă zi manuală",
+        "manageHolidays": "Gestionează zilele"
     },
     "options": {
         "frequency": {

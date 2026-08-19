@@ -1,4 +1,4 @@
-define(['views/admin/integrations/edit'], (IntegrationsEditView) => {
+define(['views/admin/integrations/edit', 'helpers/record-modal'], (IntegrationsEditView, RecordModal) => {
     return class NagerDateIntegrationView extends IntegrationsEditView {
 
         template = 'zile-sarbatoare:admin/integrations/nager-date'
@@ -33,6 +33,8 @@ define(['views/admin/integrations/edit'], (IntegrationsEditView) => {
             super.setup();
 
             this.addActionHandler('synchronize', () => this.synchronize());
+            this.addActionHandler('addManualHoliday', () => this.addManualHoliday());
+            this.addActionHandler('manageHolidays', () => this.manageHolidays());
         }
 
         createFieldView(type, name, readOnly, params) {
@@ -148,6 +150,19 @@ define(['views/admin/integrations/edit'], (IntegrationsEditView) => {
                     Espo.Ui.notify(result.message, 'info', 8000, {closeButton: true});
                 }
             }
+        }
+
+        async addManualHoliday() {
+            const helper = new RecordModal();
+
+            await helper.showCreate(this, {
+                entityType: 'ZileLibere',
+                focusForCreate: true,
+            });
+        }
+
+        manageHolidays() {
+            this.getRouter().navigate('#ZileLibere', {trigger: true});
         }
     };
 });

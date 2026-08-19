@@ -37,7 +37,7 @@ test('ZileLibere stores one canonical date and the required synchronization scop
     );
 });
 
-test('navigation and Quick Create use the holiday icon and compact manual layout', async () => {
+test('integration actions use the holiday modal and compact manual layout', async () => {
     const clientDefs = await readJson('Resources', 'metadata', 'clientDefs', 'ZileLibere.json');
     const calendarDefs = await readJson('Resources', 'metadata', 'clientDefs', 'Calendar.json');
     const detailSmall = await readJson('Resources', 'layouts', 'ZileLibere', 'detailSmall.json');
@@ -60,6 +60,7 @@ test('scope is a global one-day calendar entity with read-only role mutation lev
     assert.equal(scope.type, 'Event');
     assert.equal(scope.calendar, true);
     assert.equal(scope.calendarOneDay, true);
+    assert.equal(scope.tab, false);
     assert.deepEqual(scope.aclActionLevelListMap.read, ['all', 'no']);
     assert.deepEqual(scope.aclActionLevelListMap.create, ['no']);
     assert.deepEqual(scope.aclActionLevelListMap.edit, ['no']);
@@ -111,11 +112,13 @@ test('calendar query preserves strict ACL and does not filter by assigned user',
     assert.doesNotMatch(source, /assignedUserId|leftJoin\('users'\)/);
 });
 
-test('calendar registration is additive and idempotent', async () => {
+test('calendar registration is additive while global navigation is removed', async () => {
     const source = await readFile(path.join(extensionRoot, 'scripts', 'AfterInstall.php'), 'utf8');
 
-    assert.match(source, /\['calendarEntityList', 'tabList', 'quickCreateList'\]/);
+    assert.match(source, /\['calendarEntityList'\]/);
     assert.match(source, /in_array\(self::ENTITY_TYPE, \$entityTypeList, true\)/);
     assert.match(source, /\$entityTypeList\[\] = self::ENTITY_TYPE/);
+    assert.match(source, /\['tabList', 'quickCreateList'\]/);
+    assert.match(source, /\$entityType !== self::ENTITY_TYPE/);
     assert.doesNotMatch(source, /\['ZileLibere'\]/);
 });

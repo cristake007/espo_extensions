@@ -13,7 +13,7 @@
         "delete": ["no"]
     },
     "layouts": true,
-    "tab": true,
+    "tab": false,
     "importable": false,
     "customizable": false,
     "stream": false,

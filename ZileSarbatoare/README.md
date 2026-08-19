@@ -18,27 +18,29 @@ database.
 From the `projects/espo_extensions` repository root:
 
 ```bash
-bash build.sh --extension ZileSarbatoare --zip 0.9.1 files scripts
+bash build.sh --extension ZileSarbatoare --zip 0.9.2 files scripts
 ```
 
-Upload `dist/zile-sarbatoare-0.9.1.zip` in **Administration > Extensions**, or
+Upload `dist/zile-sarbatoare-0.9.2.zip` in **Administration > Extensions**, or
 install it from the EspoCRM root:
 
 ```bash
-bin/command extension --file="/path/to/zile-sarbatoare-0.9.1.zip"
+bin/command extension --file="/path/to/zile-sarbatoare-0.9.2.zip"
 bin/command rebuild
 bin/command populate-scheduled-jobs
 ```
 
 Installing the same version again or upgrading preserves saved Nager.Date
-settings. Installation appends `ZileLibere` to `calendarEntityList`, `tabList`,
-and `quickCreateList` without replacing existing configuration.
+settings. Installation appends `ZileLibere` to `calendarEntityList` without
+replacing existing configuration. It removes `ZileLibere` from the navbar and
+Quick Create during both fresh installations and upgrades.
 
 ## Manual holidays
 
-Administrators can add company-specific days from **Zile sărbătoare > Create** or
-from EspoCRM's **Quick Create** menu. Manual records remain editable and are not
-removed or overwritten by Nager.Date synchronization.
+Administrators can add company-specific days with **Add manual day** on
+**Administration > Integrations > Nager.Date**. **Manage holidays** opens the
+full holiday list without requiring a navbar entry. Manual records remain
+editable and are not removed or overwritten by Nager.Date synchronization.
 
 ## First synchronization
 
