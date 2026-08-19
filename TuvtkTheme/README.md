@@ -3,12 +3,13 @@
 Installable EspoCRM extension containing the custom `Tuvtk` theme used by
 `intern.cursurituv.ro`.
 
-The package installs these files:
+The extension was created with the repository scaffold generator. Its theme
+payload installs these files:
 
 ```text
-custom/Espo/Custom/Resources/metadata/themes/Tuvtk.json
-client/css/espo/tuvtk.css
-client/css/espo/tuvtk-iframe.css
+custom/Espo/Modules/TuvtkTheme/Resources/metadata/themes/Tuvtk.json
+client/custom/css/tuvtk.css
+client/custom/css/tuvtk-iframe.css
 ```
 
 ## Build
@@ -16,15 +17,14 @@ client/css/espo/tuvtk-iframe.css
 From the repository root:
 
 ```bash
-./build.sh --extension ./TuvtkTheme --zip 1.0.0 files
+./build.sh --extension ./TuvtkTheme --zip 1.0.1 files scripts
 ```
 
-The resulting ZIP can be uploaded from **Administration > Extensions** in
-EspoCRM. After installation, run **Administration > Rebuild** and clear the
-browser cache. The theme is then available as `Tuvtk` in EspoCRM's appearance
-settings.
+The resulting `dist/tuvtk-theme-1.0.1.zip` can be uploaded from
+**Administration > Extensions** in EspoCRM. After installation, run
+**Administration > Rebuild** and clear the browser cache. The theme is then
+available as `Tuvtk` in EspoCRM's appearance settings.
 
-Use the `tuvtk-theme-1.0.0.zip` release asset when downloading the extension
-from GitHub. Do not upload GitHub's automatically generated **Source code** ZIP;
-it contains a parent repository directory, so EspoCRM cannot find
-`manifest.json` at the archive root.
+Use the `tuvtk-theme-1.0.1.zip` release asset when downloading the extension
+from GitHub. GitHub's automatically generated **Source code** ZIP is a copy of
+the whole repository and is not an EspoCRM installation package.
