@@ -28100,16 +28100,21 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
 
 /* Sidebar rail collapse handle */
 @media screen and (min-width: 768px) {
+  body[data-navbar="side"] #navbar > .navbar,
+  body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar {
+    border-right: 1px solid var(--tuvtk-primary) !important;
+  }
+
   body[data-navbar="side"] #navbar .navbar a.minimizer {
     position: fixed;
     z-index: 4;
     top: 50%;
-    left: calc(var(--navbar-width) - 15px);
+    left: calc(var(--navbar-width) - 10px);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     margin: 0;
     padding: 0;
     border: 1px solid #c8d3e1;
@@ -28126,22 +28131,43 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
   }
 
   body[data-navbar="side"].minimized:not(.side-menu-opened) #navbar .navbar a.minimizer {
-    left: calc(var(--navbar-minimized-width) - 15px);
+    left: calc(var(--navbar-minimized-width) - 10px);
     display: flex;
     margin: 0;
   }
 
   body[data-navbar="side"].minimized.side-menu-opened #navbar .navbar a.minimizer {
-    left: calc(var(--navbar-width) - 15px);
+    left: calc(var(--navbar-width) - 10px);
     display: flex;
     margin: 0;
   }
 
   body[data-navbar="side"] #navbar .navbar a.minimizer > span {
-    width: auto;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
     margin: 0 !important;
-    font-size: 11px;
+    font-size: 8px;
     line-height: 1;
+  }
+
+  body[data-navbar="side"]:not(.minimized) #navbar .navbar a.minimizer > span.left {
+    display: flex !important;
+  }
+
+  body[data-navbar="side"]:not(.minimized) #navbar .navbar a.minimizer > span.right {
+    display: none !important;
+  }
+
+  body[data-navbar="side"].minimized #navbar .navbar a.minimizer > span.left {
+    display: none !important;
+  }
+
+  body[data-navbar="side"].minimized #navbar .navbar a.minimizer > span.right {
+    display: flex !important;
   }
 
   body[data-navbar="side"] #navbar .navbar a.minimizer:hover,

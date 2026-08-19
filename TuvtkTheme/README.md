@@ -18,10 +18,10 @@ client/custom/img/tuvtk-login-office.png
 From the repository root:
 
 ```bash
-./build.sh --extension ./TuvtkTheme --zip 1.0.7 files scripts
+./build.sh --extension ./TuvtkTheme --zip 1.0.8 files scripts
 ```
 
-The resulting `dist/tuvtk-theme-1.0.7.zip` can be uploaded from
+The resulting `dist/tuvtk-theme-1.0.8.zip` can be uploaded from
 **Administration > Extensions** in EspoCRM. After installation, run
 **Administration > Rebuild** and clear the browser cache. The theme is then
 available as `Tuvtk` in EspoCRM's appearance settings.
@@ -34,9 +34,10 @@ EspoCRM card chrome or login-page footer.
 
 Side-navbar items use compact, vertically balanced rows. Their red hover and
 active marker expands smoothly from the vertical center toward both edges.
-The collapse control is an outlined circular handle centered on the sidebar
-rail and follows the rail when the navbar is collapsed.
+The full-height sidebar rail uses the primary theme blue. Its compact outlined
+collapse handle is centered vertically and follows the rail when the navbar is
+collapsed.
 
-Use the `tuvtk-theme-1.0.7.zip` release asset when downloading the extension
+Use the `tuvtk-theme-1.0.8.zip` release asset when downloading the extension
 from GitHub. GitHub's automatically generated **Source code** ZIP is a copy of
 the whole repository and is not an EspoCRM installation package.
