@@ -28119,6 +28119,11 @@ body:has(> .container.content > .container-centering > #login) footer {
   display: none !important;
 }
 
+/* Espo adds navbar clearance to bodies without a side-navbar attribute. */
+body:not([data-navbar="side"]):has(> .container.content > .container-centering > #login) {
+  padding-top: 0 !important;
+}
+
 /* =========================================================
    Login page: 25% form panel and 75% office image
    ========================================================= */
