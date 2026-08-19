@@ -28265,6 +28265,11 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
   white-space: nowrap;
 }
 
+.popover.tuvtk-navbar-tooltip.right > .arrow,
+.popover.tuvtk-navbar-tooltip.right > .arrow::after {
+  border-right-color: #1f2937;
+}
+
 /* =========================================================
    Navbar and login logo sizing
    ========================================================= */

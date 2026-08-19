@@ -57,6 +57,12 @@ define('tuvtk-theme:views/site/navbar', ['views/site/navbar', 'ui', 'jquery'], f
                         noToggleInit: true,
                     }, this);
 
+                    const bootstrapPopover = $anchor.data('bs.popover');
+
+                    if (bootstrapPopover) {
+                        bootstrapPopover.options.animation = false;
+                    }
+
                     $anchor.on('inserted.bs.popover.tuvtk-navbar', markTooltip);
 
                     const show = () => {
@@ -65,10 +71,11 @@ define('tuvtk-theme:views/site/navbar', ['views/site/navbar', 'ui', 'jquery'], f
                             return;
                         }
 
+                        this.hideTuvtkCollapsedTooltips(anchor);
                         popover.show();
                         markTooltip();
                     };
-                    const hide = () => popover.hide();
+                    const hide = () => $anchor.popover('hide');
 
                     anchor.addEventListener('mouseenter', show);
                     anchor.addEventListener('mouseleave', hide);
@@ -88,8 +95,12 @@ define('tuvtk-theme:views/site/navbar', ['views/site/navbar', 'ui', 'jquery'], f
                 });
         }
 
-        hideTuvtkCollapsedTooltips() {
-            (this.tuvtkCollapsedTooltipList || []).forEach(item => item.popover.hide());
+        hideTuvtkCollapsedTooltips(exceptAnchor) {
+            (this.tuvtkCollapsedTooltipList || []).forEach(item => {
+                if (item.anchor !== exceptAnchor) {
+                    item.$anchor.popover('hide');
+                }
+            });
         }
 
         destroyTuvtkCollapsedTooltips() {

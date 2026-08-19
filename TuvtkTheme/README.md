@@ -20,10 +20,10 @@ client/custom/modules/tuvtk-theme/src/views/site/navbar.js
 From the repository root:
 
 ```bash
-./build.sh --extension ./TuvtkTheme --zip 1.0.11 files scripts
+./build.sh --extension ./TuvtkTheme --zip 1.0.12 files scripts
 ```
 
-The resulting `dist/tuvtk-theme-1.0.11.zip` can be uploaded from
+The resulting `dist/tuvtk-theme-1.0.12.zip` can be uploaded from
 **Administration > Extensions** in EspoCRM. After installation, run
 **Administration > Rebuild** and clear the browser cache. The theme is then
 available as `Tuvtk` in EspoCRM's appearance settings.
@@ -44,8 +44,9 @@ renders above hamburger and separator backgrounds, so it remains continuous.
 The outlined handle is centered vertically and follows the rail when the navbar
 is collapsed.
 Collapsed sidebar items use themed, accessible hover and keyboard-focus
-tooltips instead of the browser's native title tooltip.
+tooltips instead of the browser's native title tooltip. Only one tooltip can be
+visible at a time, and it closes immediately when its item loses hover or focus.
 
-Use the `tuvtk-theme-1.0.11.zip` release asset when downloading the extension
+Use the `tuvtk-theme-1.0.12.zip` release asset when downloading the extension
 from GitHub. GitHub's automatically generated **Source code** ZIP is a copy of
 the whole repository and is not an EspoCRM installation package.
