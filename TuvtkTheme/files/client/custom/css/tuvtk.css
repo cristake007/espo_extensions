@@ -28063,6 +28063,25 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a > .g
   top: 8px !important;
 }
 
+/* Match nested navbar flyout rows to the compact primary navbar items. */
+body[data-navbar="side"] #navbar .navbar ul.tabs .dropdown-menu > li:not(.divider) > a {
+  height: 36px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  line-height: 20px !important;
+}
+
+body[data-navbar="side"] #navbar .navbar ul.tabs .dropdown-menu > li:not(.divider) > a .fas,
+body[data-navbar="side"] #navbar .navbar ul.tabs .dropdown-menu > li:not(.divider) > a .far,
+body[data-navbar="side"] #navbar .navbar ul.tabs .dropdown-menu > li:not(.divider) > a .short-label,
+body[data-navbar="side"] #navbar .navbar ul.tabs .dropdown-menu > li:not(.divider) > a .full-label {
+  line-height: 20px !important;
+}
+
+body[data-navbar="side"] #navbar .navbar ul.tabs .dropdown-menu > li:not(.divider) > a > .group-caret {
+  top: 8px !important;
+}
+
 body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a::before {
   content: "";
   position: absolute;
@@ -28096,6 +28115,159 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
   body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a::before {
     transition: none;
   }
+}
+
+/* Sidebar rail collapse handle */
+@media screen and (min-width: 768px) {
+  body[data-navbar="side"] #navbar > .navbar,
+  body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar {
+    border-right: 1px solid #c8d3e1 !important;
+    transition: border-right-color 160ms ease;
+  }
+
+  body[data-navbar="side"] #navbar > .navbar::after,
+  body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar::after {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    right: -1px;
+    bottom: 0;
+    display: block;
+    clear: none;
+    width: 1px;
+    height: auto;
+    background: #c8d3e1;
+    pointer-events: none;
+    transition: background-color 160ms ease;
+  }
+
+  body[data-navbar="side"] #navbar > .navbar:has(a.minimizer:hover),
+  body[data-navbar="side"] #navbar > .navbar:has(a.minimizer:focus-visible),
+  body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar:has(a.minimizer:hover),
+  body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar:has(a.minimizer:focus-visible) {
+    border-right-color: var(--tuvtk-primary) !important;
+  }
+
+  body[data-navbar="side"] #navbar > .navbar:has(a.minimizer:hover)::after,
+  body[data-navbar="side"] #navbar > .navbar:has(a.minimizer:focus-visible)::after,
+  body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar:has(a.minimizer:hover)::after,
+  body[data-navbar="side"].minimized.side-menu-opened #navbar > .navbar:has(a.minimizer:focus-visible)::after {
+    background: var(--tuvtk-primary);
+  }
+
+  body[data-navbar="side"] #navbar .navbar a.minimizer {
+    position: fixed;
+    z-index: 4;
+    top: 50%;
+    left: calc(var(--navbar-width) - 10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #c8d3e1;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--tuvtk-muted) !important;
+    box-shadow: 0 2px 8px rgba(16, 42, 76, 0.12);
+    transform: translateY(-50%);
+    transition:
+      border-color 160ms ease,
+      color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
+  }
+
+  body[data-navbar="side"].minimized:not(.side-menu-opened) #navbar .navbar a.minimizer {
+    left: calc(var(--navbar-minimized-width) - 10px);
+    display: flex;
+    margin: 0;
+  }
+
+  body[data-navbar="side"].minimized.side-menu-opened #navbar .navbar a.minimizer {
+    left: calc(var(--navbar-width) - 10px);
+    display: flex;
+    margin: 0;
+  }
+
+  body[data-navbar="side"] #navbar .navbar a.minimizer > span {
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin: 0 !important;
+    font-size: 8px;
+    line-height: 1;
+  }
+
+  body[data-navbar="side"]:not(.minimized) #navbar .navbar a.minimizer > span.left {
+    display: flex !important;
+  }
+
+  body[data-navbar="side"]:not(.minimized) #navbar .navbar a.minimizer > span.right {
+    display: none !important;
+  }
+
+  body[data-navbar="side"].minimized #navbar .navbar a.minimizer > span.left {
+    display: none !important;
+  }
+
+  body[data-navbar="side"].minimized #navbar .navbar a.minimizer > span.right {
+    display: flex !important;
+  }
+
+  body[data-navbar="side"] #navbar .navbar a.minimizer:hover,
+  body[data-navbar="side"] #navbar .navbar a.minimizer:focus-visible {
+    border-color: var(--tuvtk-primary);
+    color: var(--tuvtk-primary) !important;
+    box-shadow: 0 3px 12px rgba(22, 65, 148, 0.20);
+    transform: translateY(-50%) scale(1.06);
+  }
+
+  body[data-navbar="side"] #navbar .navbar a.minimizer:focus-visible {
+    outline: 2px solid rgba(22, 65, 148, 0.28);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-navbar="side"] #navbar > .navbar,
+  body[data-navbar="side"] #navbar > .navbar::after,
+  body[data-navbar="side"] #navbar .navbar a.minimizer {
+    transition: none;
+  }
+}
+
+/* Collapsed navbar item tooltip rendered through Espo's popover utility. */
+.popover.tuvtk-navbar-tooltip {
+  --dropdown-bg: #1f2937;
+  --dropdown-border: var(--tuvtk-primary);
+  max-width: 240px;
+  border-color: var(--tuvtk-primary);
+  border-radius: 4px;
+  background: #1f2937;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(16, 42, 76, 0.22);
+  pointer-events: none;
+}
+
+.popover.tuvtk-navbar-tooltip > .popover-content {
+  padding: 7px 10px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.popover.tuvtk-navbar-tooltip.right > .arrow,
+.popover.tuvtk-navbar-tooltip.right > .arrow::after {
+  border-right-color: #1f2937;
 }
 
 /* =========================================================

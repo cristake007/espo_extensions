@@ -658,6 +658,11 @@ for (const testCase of [
         'Nu există zile libere disponibile pentru anul și lunile selectate. ' +
             'Verifică dacă anul a fost sincronizat în extensia Zile Sărbătoare.'
     );
+    assert.equal(
+        notifications.at(-1)?.[3]?.closeButton,
+        true,
+        'the no-results holiday notification must provide a close button'
+    );
 }
 
 {
