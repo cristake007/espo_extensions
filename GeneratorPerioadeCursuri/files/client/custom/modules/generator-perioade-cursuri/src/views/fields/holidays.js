@@ -563,7 +563,9 @@ define('generator-perioade-cursuri:views/fields/holidays', [
         notifyHolidayImport(messageKey) {
             Espo.Ui.notify(
                 this.translate(messageKey, 'messages', 'GeneratorPerioadeCursuri'),
-                'warning'
+                'warning',
+                undefined,
+                {closeButton: true}
             );
         }
 
