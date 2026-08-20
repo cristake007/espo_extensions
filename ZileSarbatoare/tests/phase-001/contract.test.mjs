@@ -53,6 +53,26 @@ test('integration actions use the holiday modal and compact manual layout', asyn
     assert.deepEqual(fieldNames, ['name', 'dateStart', 'countryCode', 'description']);
 });
 
+test('module loads its non-working-day calendar stylesheet additively', async () => {
+    const client = await readJson('Resources', 'metadata', 'app', 'client.json');
+    const css = await readFile(
+        path.join(
+            extensionRoot,
+            'files', 'client', 'custom', 'modules', 'zile-sarbatoare',
+            'css', 'zile-sarbatoare.css'
+        ),
+        'utf8'
+    );
+
+    assert.deepEqual(client.cssList, [
+        '__APPEND__',
+        'client/custom/modules/zile-sarbatoare/css/zile-sarbatoare.css',
+    ]);
+    assert.match(css, /\.zile-sarbatoare-non-working-day\.fc-daygrid-day/);
+    assert.match(css, /\.zile-sarbatoare-non-working-day\.fc-timegrid-col/);
+    assert.match(css, /\.zile-sarbatoare-non-working-day\.fc-col-header-cell/);
+});
+
 test('scope is a global one-day calendar entity with read-only role mutation levels', async () => {
     const scope = await readJson('Resources', 'metadata', 'scopes', 'ZileLibere.json');
     const entity = await readSource('Entities', 'ZileLibere.php');

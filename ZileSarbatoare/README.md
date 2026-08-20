@@ -18,14 +18,14 @@ database.
 From the `projects/espo_extensions` repository root:
 
 ```bash
-bash build.sh --extension ZileSarbatoare --zip 0.9.3 files scripts
+bash build.sh --extension ZileSarbatoare --zip 0.9.4 files scripts
 ```
 
-Upload `dist/zile-sarbatoare-0.9.3.zip` in **Administration > Extensions**, or
+Upload `dist/zile-sarbatoare-0.9.4.zip` in **Administration > Extensions**, or
 install it from the EspoCRM root:
 
 ```bash
-bin/command extension --file="/path/to/zile-sarbatoare-0.9.3.zip"
+bin/command extension --file="/path/to/zile-sarbatoare-0.9.4.zip"
 bin/command rebuild
 bin/command populate-scheduled-jobs
 ```
@@ -54,6 +54,12 @@ read-only, and synchronized records retain their update and deletion guards.
 3. Select **Synchronize now**.
 4. Confirm the accepted, created, updated, and removed counts.
 5. Open Calendar and verify the imported all-day entries.
+
+Dates represented by visible **Zile sărbătoare** events receive the same subtle
+red hatch as Saturdays and Sundays in month and week views. The CSS belongs to
+this extension and is loaded additively, so no EspoCRM core or theme files are
+modified. Hiding the **Zile sărbătoare** event type also removes the day-cell
+highlight.
 
 Automatic synchronization uses the existing EspoCRM job runner. Verify it from
 the EspoCRM root with:

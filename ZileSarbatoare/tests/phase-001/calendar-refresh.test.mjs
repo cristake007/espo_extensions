@@ -23,6 +23,7 @@ function loadView(relativePath, dependency, browserWindow) {
             assert.equal(names.length, 1);
             ViewClass = factory(dependency);
         },
+        MutationObserver: class {},
         window: browserWindow,
     };
 
@@ -48,6 +49,12 @@ function createWindow() {
             if (listeners.get(name) === callback) {
                 listeners.delete(name);
             }
+        },
+        clearTimeout() {},
+        setTimeout(callback) {
+            callback();
+
+            return 1;
         },
     };
 }
@@ -110,4 +117,26 @@ test('timeline refresh uses the same successful-save event', () => {
 
     assert.equal(timeline.refreshCalls.length, 1);
     assert.equal(timeline.refreshCalls[0], undefined);
+});
+
+test('calendar derives unique non-working dates only from ZileLibere events', () => {
+    const CalendarView = loadView('calendar/calendar.js', BaseView, createWindow());
+    const calendar = new CalendarView();
+
+    calendar.calendar = {
+        getEvents() {
+            return [
+                {extendedProps: {scope: 'Meeting', dateStartDate: '2026-12-24'}},
+                {extendedProps: {scope: 'ZileLibere', dateStartDate: '2026-12-26'}},
+                {extendedProps: {scope: 'ZileLibere', dateStartDate: '2026-12-25'}},
+                {extendedProps: {scope: 'ZileLibere', dateStartDate: '2026-12-25'}},
+                {extendedProps: {scope: 'ZileLibere', dateStartDate: 'invalid'}},
+            ];
+        },
+    };
+
+    assert.deepEqual(
+        [...calendar.getNonWorkingDateList()],
+        ['2026-12-25', '2026-12-26']
+    );
 });
