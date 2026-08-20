@@ -125,6 +125,43 @@ $assertSame(
 );
 $assertContains($title, $builder->build($canonicalEvents, 21000), 'MEC XML must retain literal Romanian title text.');
 
+$generatedScheduleXlsx = $makeXlsx(
+    ['Rand', 'title', 'Permalink', 'Durata Curs', 'Investitie', 'Octombrie', 'Noiembrie', 'Decembrie'],
+    [
+        [
+            1,
+            'Măsurarea eficacității unui sistem de management al calității',
+            'https://tuvkarpat.ro/cursuri/masurarea-eficacitatii-unui-sistem-de-management-al-calitatii/',
+            '1 zile',
+            '200 euro',
+            '21.10.2026',
+            '19.11.2026',
+            '10.12.2026',
+        ],
+        [
+            170,
+            'Certificare în metoda de control nedistructiv - examinare cu ultrasunete',
+            'https://tuvkarpat.ro/cursuri/certificare-in-metoda-de-control-nedistructiv-examinare-cu-ultrasunete/',
+            '18 zile',
+            '500 euro',
+            '01-26.10.2026',
+            '02-25.11.2026',
+            'not enough working days in month',
+        ],
+    ]
+);
+$generatedEvents = $parser->parse($generatedScheduleXlsx, 'generated-schedule.xlsx');
+$assertSame(
+    ['21.10.2026', '19.11.2026', '10.12.2026', '01-26.10.2026', '02-25.11.2026'],
+    array_column($generatedEvents, 'dateRange'),
+    'XML parsing must accept the generator workbook and skip unavailable-period placeholders.'
+);
+$assertSame(
+    5,
+    substr_count($builder->build($generatedEvents, 21000), '<item>'),
+    'XML generation must create events for every generated date while omitting the unavailable period.'
+);
+
 $bothColumnsXlsx = $makeXlsx(
     ['title', 'nume curs', 'course name', 'Permalink', 'Ianuarie'],
     [

@@ -1,5 +1,14 @@
 # Codex Change Log
 
+## 20260820 - XML Export Compatibility for Unavailable Periods
+
+- Made the XML schedule parser ignore the generator's
+  `not enough working days in month` placeholder while retaining all valid
+  single-day and date-range periods from the same workbook.
+- Added an end-to-end XLSX-to-XML regression test using the generated schedule
+  column layout.
+- Bumped the corrective package version to `2.6.2`.
+
 ## 20260716 - Persistent Word Matcher Review and Full-Width Layout
 
 - Kept `Review Matches` available for every saved matcher record, including
