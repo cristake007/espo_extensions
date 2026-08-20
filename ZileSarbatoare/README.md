@@ -18,14 +18,14 @@ database.
 From the `projects/espo_extensions` repository root:
 
 ```bash
-bash build.sh --extension ZileSarbatoare --zip 0.9.2 files scripts
+bash build.sh --extension ZileSarbatoare --zip 0.9.3 files scripts
 ```
 
-Upload `dist/zile-sarbatoare-0.9.2.zip` in **Administration > Extensions**, or
+Upload `dist/zile-sarbatoare-0.9.3.zip` in **Administration > Extensions**, or
 install it from the EspoCRM root:
 
 ```bash
-bin/command extension --file="/path/to/zile-sarbatoare-0.9.2.zip"
+bin/command extension --file="/path/to/zile-sarbatoare-0.9.3.zip"
 bin/command rebuild
 bin/command populate-scheduled-jobs
 ```
@@ -41,6 +41,11 @@ Administrators can add company-specific days with **Add manual day** on
 **Administration > Integrations > Nager.Date**. **Manage holidays** opens the
 full holiday list without requiring a navbar entry. Manual records remain
 editable and are not removed or overwritten by Nager.Date synchronization.
+
+The **Zile sărbătoare** entity is available in **Administration > Entity
+Manager**, where administrators can adjust its list, detail, edit, and search
+layouts or add custom fields. Fields owned by Nager.Date synchronization remain
+read-only, and synchronized records retain their update and deletion guards.
 
 ## First synchronization
 

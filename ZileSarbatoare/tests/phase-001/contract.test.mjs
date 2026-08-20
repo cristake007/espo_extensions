@@ -61,6 +61,8 @@ test('scope is a global one-day calendar entity with read-only role mutation lev
     assert.equal(scope.calendar, true);
     assert.equal(scope.calendarOneDay, true);
     assert.equal(scope.tab, false);
+    assert.equal(scope.layouts, true);
+    assert.equal(scope.customizable, true);
     assert.deepEqual(scope.aclActionLevelListMap.read, ['all', 'no']);
     assert.deepEqual(scope.aclActionLevelListMap.create, ['no']);
     assert.deepEqual(scope.aclActionLevelListMap.edit, ['no']);
