@@ -3,10 +3,20 @@
         <button class="btn btn-default btn-xs-wide" data-action="save">{{translate 'Save'}}</button>
         <button class="btn btn-default btn-xs-wide" data-action="cancel">{{translate 'Cancel'}}</button>
     </div>
-    <button class="btn btn-primary btn-xs-wide pull-right" data-action="synchronize">
-        <span class="fas fa-sync-alt fa-sm"></span>
-        <span class="synchronize-label">{{translate 'synchronizeNow' scope='Integration' category='labels'}}</span>
-    </button>
+    <div class="btn-group pull-right">
+        <button class="btn btn-default" data-action="addManualHoliday">
+            <span class="fas fa-plus fa-sm"></span>
+            {{translate 'addManualHoliday' scope='Integration' category='labels'}}
+        </button>
+        <button class="btn btn-default" data-action="manageHolidays">
+            <span class="fas fa-calendar-day fa-sm"></span>
+            {{translate 'manageHolidays' scope='Integration' category='labels'}}
+        </button>
+        <button class="btn btn-primary" data-action="synchronize">
+            <span class="fas fa-sync-alt fa-sm"></span>
+            <span class="synchronize-label">{{translate 'synchronizeNow' scope='Integration' category='labels'}}</span>
+        </button>
+    </div>
 </div>
 
 <div class="row">

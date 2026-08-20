@@ -151,9 +151,9 @@ namespace {
         throw new RuntimeException('Calendar registration must preserve existing entries and append ZileLibere.');
     }
 
-    if ($writer->changes['tabList'] !== ['ZileLibere'] ||
-        $writer->changes['quickCreateList'] !== ['ZileLibere']) {
-        throw new RuntimeException('Manual holiday creation must be exposed in navigation and Quick Create.');
+    if (array_key_exists('tabList', $writer->changes) ||
+        array_key_exists('quickCreateList', $writer->changes)) {
+        throw new RuntimeException('Fresh installation must not add global holiday navigation actions.');
     }
 
     if ($writer->saveCount !== 1) {
@@ -180,8 +180,11 @@ namespace {
         ['Meeting', 'ZileLibere'],
     ));
 
-    if ($writer->saveCount !== 0 || $writer->changes !== []) {
-        throw new RuntimeException('Existing calendar and integration settings must not be rewritten.');
+    if ($writer->saveCount !== 1 || $writer->changes !== [
+        'tabList' => ['Home'],
+        'quickCreateList' => ['Meeting'],
+    ]) {
+        throw new RuntimeException('An upgrade must remove obsolete global holiday navigation actions.');
     }
 
     if ($savedIntegration->values !== [] || $savedConfig->NagerDate !== false) {
