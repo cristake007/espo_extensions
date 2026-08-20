@@ -1,5 +1,8 @@
 {
     "controller": "controllers/record",
+    "recordViews": {
+        "list": "document-builder:views/document-builder-document/record/list"
+    },
     "boolFilterList": ["onlyMy"],
     "iconClass": "fas fa-file-pdf",
     "kanbanViewMode": false,

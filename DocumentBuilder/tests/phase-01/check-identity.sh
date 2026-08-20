@@ -37,7 +37,7 @@ php -r '
 
     $expected = [
         "name" => "Document Builder",
-        "version" => "1.0.0",
+        "version" => "1.0.1",
         "acceptableVersions" => [">=10.0.0"],
         "php" => [">=8.3.0 <8.6.0"],
     ];
@@ -70,7 +70,7 @@ for labels_file in "$english_labels" "$romanian_labels"; do
     ' "$labels_file"
 done
 
-grep -Fq './build.sh --extension ./DocumentBuilder --zip 1.0.0 files scripts' "$extension_root/README.md" ||
+grep -Fq './build.sh --extension ./DocumentBuilder --zip 1.0.1 files scripts' "$extension_root/README.md" ||
     fail 'README build command is not normalized'
 
 printf 'Phase 01 identity checks passed.\n'

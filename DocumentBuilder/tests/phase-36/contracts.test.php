@@ -17,6 +17,10 @@ $access = file_get_contents("$module/Classes/Acl/DocumentBuilderDocumentAccessCh
 $createHook = file_get_contents("$module/Classes/Record/Hooks/DocumentBuilderDocument/BeforeCreate.php");
 $updateHook = file_get_contents("$module/Classes/Record/Hooks/DocumentBuilderDocument/BeforeUpdate.php");
 $install = file_get_contents("$root/scripts/AfterInstall.php");
+$controller = file_get_contents("$module/Controllers/DocumentBuilderDocument.php");
+$listView = file_get_contents(
+    "$root/files/client/custom/modules/document-builder/src/views/document-builder-document/record/list.js",
+);
 
 Assert::same('DocumentBuilderDocument', $template['links']['generatedDocuments']['entity'] ?? null, 'Template history inverse link is missing.');
 Assert::same('template', $template['links']['generatedDocuments']['foreign'] ?? null, 'Template history inverse is not canonical.');
@@ -28,5 +32,9 @@ Assert::contains('return false;', $access, 'Direct record creation is not denied
 Assert::contains('can only be created by the generation service', $createHook, 'Native CRUD can create false history.');
 Assert::contains('DocumentHistoryPolicy::IMMUTABLE_AFTER_SUCCESS', $updateHook, 'Record updates bypass immutable provenance policy.');
 Assert::contains("'DocumentBuilderTemplate', 'DocumentBuilderDocument'", $install, 'Generated-document navigation is missing.');
+Assert::contains('extends Record', $controller, 'Generated-document native API controller is missing.');
+Assert::contains("extends RecordListView", $listView, 'Generated-document custom list must extend the native record list.');
+Assert::contains("if (this.collection.length)", $listView, 'Generated-document empty state must not replace populated lists.');
+Assert::contains("#DocumentBuilderTemplate/create", $listView, 'Generated-document empty state must link to template creation.');
 
 echo "Phase 36 inverse links, ACL, hooks, and navigation contracts passed.\n";

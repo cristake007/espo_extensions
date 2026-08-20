@@ -91,29 +91,29 @@ node tests/editor-recovery/correction-07.test.js
 Package inventory is checked separately after building the extension ZIP:
 
 ```sh
-php tests/phase-02/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-06/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-07/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-08/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-09/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-10/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-11/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-12/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-13/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-14/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-15/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-16/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-17/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-18/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-19/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-20/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-21/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-22/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-23/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-24/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-25/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-26/package-inventory.test.php dist/document-builder-1.0.0.zip
-php tests/phase-27/package-inventory.test.php dist/document-builder-1.0.0.zip
+php tests/phase-02/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-06/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-07/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-08/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-09/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-10/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-11/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-12/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-13/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-14/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-15/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-16/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-17/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-18/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-19/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-20/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-21/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-22/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-23/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-24/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-25/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-26/package-inventory.test.php dist/document-builder-1.0.1.zip
+php tests/phase-27/package-inventory.test.php dist/document-builder-1.0.1.zip
 ```
 
 Phase 15–27 runtime validation remains pending until an approved non-production EspoCRM 10.0.0 instance is provided. Install the rebuilt ZIP there, clear cache, run Administration > Rebuild, then exercise editor entry, save/reload/conflict protection, page settings, flow drag/drop, restricted rich-text paste and formatting, stable inline-variable insertion, bounded variable presentation controls, divider/spacer/page-break rendering and reordering, inherited styling/typography and Romanian diacritics, sample/empty rendering, validation issue focus, keyboard traversal, complex-node deletion confirmation, ACL-filtered standard/custom entity source selection, source-change confirmation, readable field/link browsing, metadata search, circular/depth-limited expansion, label-independent variable references, missing-value policies, and literal XSS/CSS payload display as inert or rejected data. Never use `/opt/crm.cursurituv.ro` for these checks.

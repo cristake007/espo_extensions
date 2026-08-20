@@ -1,4 +1,11 @@
 {
+    "labels": {
+        "createTemplate": "Create a Template"
+    },
+    "messages": {
+        "generatedDocumentsEmptyTitle": "Your generated documents will appear here",
+        "generatedDocumentsEmptyText": "No documents have been generated yet. Create a template now to prepare it for document generation."
+    },
     "fields": {
         "name": "Name",
         "status": "Status",

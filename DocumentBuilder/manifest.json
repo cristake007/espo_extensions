@@ -1,13 +1,13 @@
 {
     "name": "Document Builder",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "acceptableVersions": [
         ">=10.0.0"
     ],
     "php": [
         ">=8.3.0 <8.6.0"
     ],
-    "releaseDate": "2026-07-19",
+    "releaseDate": "2026-08-20",
     "author": "Cristian Popa",
     "description": "Visual document design and PDF generation with an EspoCRM 10.0.0 verified baseline. Package ID: document-builder."
 }

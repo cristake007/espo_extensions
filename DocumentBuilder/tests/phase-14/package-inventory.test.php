@@ -48,7 +48,14 @@ if ($routes === false) {
 
 $routeDefs = json_decode($routes, true, flags: JSON_THROW_ON_ERROR);
 
-if (($routeDefs[4]['route'] ?? null) !== '/DocumentBuilder/template/:id/draft-from-version') {
+$draftFromVersionRoute = array_values(array_filter(
+    $routeDefs,
+    static fn (mixed $route): bool => is_array($route) &&
+        ($route['route'] ?? null) === '/DocumentBuilder/template/:id/draft-from-version' &&
+        ($route['method'] ?? null) === 'post',
+));
+
+if (count($draftFromVersionRoute) !== 1) {
     throw new RuntimeException('The packaged draft-from-version route is missing.');
 }
 
