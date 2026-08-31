@@ -29,7 +29,7 @@ workflow, notifications, public-holiday synchronization, or document generation.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.3.9 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.3.10 files scripts
 ```
 
 Run the phase contract tests:
@@ -51,5 +51,6 @@ current date. A user's holiday profile must be initialized in
 **Administration > Holiday Profiles** before their first booking.
 
 Calendar displays every user's time off to internal users. Each marker includes
-the umbrella icon and the booking user's name. Users can still edit or delete
-only their own bookings, and portal access remains disabled.
+the umbrella icon and the booking user's name. The **Time Off / Concediu** page
+lists only the signed-in user's requests. Users can still edit or delete only
+their own bookings, and portal access remains disabled.

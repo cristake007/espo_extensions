@@ -41,6 +41,15 @@ test('HolidayRequest is an owner-scoped calendar event with derived accounting f
     assert.equal(scope.tab, true);
     assert.equal(scope.aclPortal, false);
     assert.match(controller, /extends Record/);
+    assert.match(controller, /fetchSearchParamsFromRequest/);
+    assert.match(controller, /->withWhereAdded\(WhereItem::fromRaw/);
+    assert.match(controller, /'attribute'\s*=>\s*'assignedUserId'/);
+    assert.match(controller, /'value'\s*=>\s*\$this->user->getId\(\)/);
+
+    const listLayout = await readJson('Resources', 'layouts', 'HolidayRequest', 'list.json');
+    const searchLayout = await readJson('Resources', 'layouts', 'HolidayRequest', 'search.json');
+    assert.equal(listLayout.some(item => item.name === 'assignedUser'), false);
+    assert.equal(searchLayout.includes('assignedUser'), false);
 
     for (const field of ['name', 'days', 'assignedUser', 'profile', 'accountingKey', 'accountingRevision']) {
         assert.equal(entityAcl.fields[field].readOnly, true, `${field} must be server-managed`);
