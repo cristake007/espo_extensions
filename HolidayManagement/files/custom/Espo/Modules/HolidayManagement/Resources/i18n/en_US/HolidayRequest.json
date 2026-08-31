@@ -8,7 +8,8 @@
         "Approve Holiday": "Approve",
         "Reject Holiday": "Reject",
         "Holiday Approvals": "Holiday Approvals",
-        "Requester": "Requester"
+        "Requester": "Requester",
+        "Open Approval Page": "Open full page"
     },
     "fields": {
         "name": "Name",

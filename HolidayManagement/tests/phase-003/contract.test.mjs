@@ -196,6 +196,15 @@ test('either configured approver can make the single final decision', async () =
     assert.match(approvalPage, /data-action="approve"/);
     assert.match(approvalPage, /data-action="reject"/);
     assert.match(approvalPage, /requesterName/);
+    const personalList = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'holiday-request', 'list.js'
+    ), 'utf8');
+    assert.match(personalList, /loadApprovalQueue\(\)/);
+    assert.match(personalList, /holiday-approval-panel/);
+    assert.match(personalList, /decideApproval\(row, 'Approved'\)/);
+    assert.match(personalList, /decideApproval\(row, 'Rejected'\)/);
     assert.match(approvalActions, /decision === 'Approved'/);
     assert.match(approvalActions, /decide\(view, 'Rejected'/);
     assert.match(approvalActions, /state\.canDecide/);

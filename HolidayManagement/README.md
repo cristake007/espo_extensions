@@ -32,7 +32,7 @@ approval notifications, public-holiday synchronization, or document generation.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.4.1 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.4.2 files scripts
 ```
 
 Run the phase contract tests:

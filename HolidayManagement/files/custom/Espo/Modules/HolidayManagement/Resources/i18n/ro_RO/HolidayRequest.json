@@ -8,7 +8,8 @@
         "Approve Holiday": "Aproba",
         "Reject Holiday": "Respinge",
         "Holiday Approvals": "Aprobari concedii",
-        "Requester": "Solicitant"
+        "Requester": "Solicitant",
+        "Open Approval Page": "Deschide pagina completa"
     },
     "fields": {
         "name": "Denumire",
