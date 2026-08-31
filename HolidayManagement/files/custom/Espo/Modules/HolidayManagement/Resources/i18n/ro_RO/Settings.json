@@ -14,7 +14,7 @@
     },
     "tooltips": {
         "holidayManagementAnnualEntitlementDays": "Numarul anual de zile acordat implicit la initializarea profilului de concediu.",
-        "holidayManagementResetDate": "Selectati luna si ziua resetarii anuale. Anul selectat este ignorat.",
+        "holidayManagementResetDate": "Selectati data resetarii anuale cu selectorul de data EspoCRM. Anul este ignorat; este acceptat si formatul LL-ZZ, de exemplu 01-01.",
         "holidayManagementResetCeilingDays": "Soldurile peste aceasta valoare vor necesita fluxul ulterior de resetare in asteptare sau o exceptie de administrator.",
         "holidayManagementResetWarningDays": "Porneste avertizarea inainte de atingerea plafonului de resetare.",
         "holidayManagementResetWarningRepeatDays": "Numarul de zile dintre avertizarile repetate.",

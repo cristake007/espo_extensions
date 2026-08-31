@@ -11,6 +11,7 @@
             "type": "date",
             "default": null,
             "required": true,
+            "view": "holiday-management:views/fields/annual-reset-date",
             "tooltip": true
         },
         "holidayManagementResetCeilingDays": {

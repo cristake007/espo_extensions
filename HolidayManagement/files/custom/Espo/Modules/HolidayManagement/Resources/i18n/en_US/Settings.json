@@ -14,7 +14,7 @@
     },
     "tooltips": {
         "holidayManagementAnnualEntitlementDays": "Annual days granted by default when a holiday profile is initialized.",
-        "holidayManagementResetDate": "Select the month and day of the annual reset. The selected year is ignored.",
+        "holidayManagementResetDate": "Select the annual reset date with the EspoCRM date picker. The year is ignored; MM-DD input such as 01-01 is also accepted.",
         "holidayManagementResetCeilingDays": "Balances above this value require the later reset workflow to remain pending or use an administrator exception.",
         "holidayManagementResetWarningDays": "Start warning before reaching the reset ceiling.",
         "holidayManagementResetWarningRepeatDays": "Days between repeated reset warnings.",

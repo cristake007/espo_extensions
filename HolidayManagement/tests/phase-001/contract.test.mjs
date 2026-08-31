@@ -200,5 +200,15 @@ test('reset-date setting uses the native EspoCRM date field', async () => {
     assert.equal(field.type, 'date');
     assert.equal(field.required, true);
     assert.equal(field.pattern, undefined);
-    assert.equal(field.view, undefined);
+    assert.equal(field.view, 'holiday-management:views/fields/annual-reset-date');
+
+    const source = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'fields', 'annual-reset-date.js'
+    ), 'utf8');
+
+    assert.match(source, /define\(\['views\/fields\/date'\]/);
+    assert.match(source, /return `2000-\$\{value\}`/);
+    assert.doesNotMatch(source, /type=["']date/);
 });
