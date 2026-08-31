@@ -190,14 +190,15 @@ test('settings view declares three explicit EspoCRM tabs', async () => {
     assert.equal((source.match(/tabLabel:/g) ?? []).length, 3);
 });
 
-test('reset-date field accepts a zero-padded MM-DD value without named-pattern lookup', async () => {
+test('reset-date setting uses the native EspoCRM date field', async () => {
     const metadata = await readJson(
         'files', 'custom', 'Espo', 'Modules', 'HolidayManagement',
         'Resources', 'metadata', 'entityDefs', 'Settings.json'
     );
-    const pattern = metadata.fields.holidayManagementResetDate.pattern;
+    const field = metadata.fields.holidayManagementResetDate;
 
-    assert.equal(pattern, '(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])');
-    assert.equal(new RegExp(`^${pattern}$`).test('01-01'), true);
-    assert.equal(new RegExp(`^${pattern}$`).test('13-01'), false);
+    assert.equal(field.type, 'date');
+    assert.equal(field.required, true);
+    assert.equal(field.pattern, undefined);
+    assert.equal(field.view, undefined);
 });

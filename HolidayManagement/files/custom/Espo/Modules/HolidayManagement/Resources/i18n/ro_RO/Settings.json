@@ -1,7 +1,7 @@
 {
     "fields": {
         "holidayManagementAnnualEntitlementDays": "Drept anual implicit (zile)",
-        "holidayManagementResetDate": "Data implicita de resetare (LL-ZZ)",
+        "holidayManagementResetDate": "Data implicita de resetare",
         "holidayManagementResetCeilingDays": "Plafon de resetare (zile)",
         "holidayManagementResetWarningDays": "Prag de avertizare (zile)",
         "holidayManagementResetWarningRepeatDays": "Repetarea avertizarii (zile)",
@@ -14,7 +14,7 @@
     },
     "tooltips": {
         "holidayManagementAnnualEntitlementDays": "Numarul anual de zile acordat implicit la initializarea profilului de concediu.",
-        "holidayManagementResetDate": "Data implicita a resetarii anuale, in format LL-ZZ.",
+        "holidayManagementResetDate": "Selectati luna si ziua resetarii anuale. Anul selectat este ignorat.",
         "holidayManagementResetCeilingDays": "Soldurile peste aceasta valoare vor necesita fluxul ulterior de resetare in asteptare sau o exceptie de administrator.",
         "holidayManagementResetWarningDays": "Porneste avertizarea inainte de atingerea plafonului de resetare.",
         "holidayManagementResetWarningRepeatDays": "Numarul de zile dintre avertizarile repetate.",

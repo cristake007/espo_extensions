@@ -1,7 +1,7 @@
 {
     "fields": {
         "holidayManagementAnnualEntitlementDays": "Default Annual Entitlement (days)",
-        "holidayManagementResetDate": "Default Reset Date (MM-DD)",
+        "holidayManagementResetDate": "Default Reset Date",
         "holidayManagementResetCeilingDays": "Reset Ceiling (days)",
         "holidayManagementResetWarningDays": "Reset Warning Threshold (days)",
         "holidayManagementResetWarningRepeatDays": "Warning Repeat Interval (days)",
@@ -14,7 +14,7 @@
     },
     "tooltips": {
         "holidayManagementAnnualEntitlementDays": "Annual days granted by default when a holiday profile is initialized.",
-        "holidayManagementResetDate": "Default annual reset date in MM-DD format.",
+        "holidayManagementResetDate": "Select the month and day of the annual reset. The selected year is ignored.",
         "holidayManagementResetCeilingDays": "Balances above this value require the later reset workflow to remain pending or use an administrator exception.",
         "holidayManagementResetWarningDays": "Start warning before reaching the reset ceiling.",
         "holidayManagementResetWarningRepeatDays": "Days between repeated reset warnings.",
