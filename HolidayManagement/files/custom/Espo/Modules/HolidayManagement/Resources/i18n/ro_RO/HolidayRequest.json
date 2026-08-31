@@ -6,7 +6,9 @@
         "Profile Not Ready": "Profilul de concediu nu a fost initializat. Contactati un administrator.",
         "Approval Required": "Aprobare in asteptare",
         "Approve Holiday": "Aproba",
-        "Reject Holiday": "Respinge"
+        "Reject Holiday": "Respinge",
+        "Holiday Approvals": "Aprobari concedii",
+        "Requester": "Solicitant"
     },
     "fields": {
         "name": "Denumire",
@@ -27,7 +29,9 @@
         "confirmRejectHoliday": "Respingeti aceasta cerere si restituiti zilele rezervate? Decizia este finala.",
         "holidayApproved": "Cererea de concediu a fost aprobata.",
         "holidayRejected": "Cererea a fost respinsa, iar zilele rezervate au fost restituite.",
-        "approvalDecisionFailed": "Decizia de aprobare nu a putut fi salvata. Reincarcati cererea si incercati din nou."
+        "approvalDecisionFailed": "Decizia de aprobare nu a putut fi salvata. Reincarcati cererea si incercati din nou.",
+        "Not Holiday Approver": "Contul dumneavoastra nu este configurat ca aprobator de concedii.",
+        "No Pending Approvals": "Nu exista cereri de concediu care asteapta aprobarea dumneavoastra."
     },
     "options": {
         "status": {

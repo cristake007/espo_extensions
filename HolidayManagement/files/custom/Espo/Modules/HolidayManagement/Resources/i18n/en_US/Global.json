@@ -1,6 +1,7 @@
 {
     "labels": {
-        "My Holiday": "My Time Off"
+        "My Holiday": "My Time Off",
+        "Holiday Approvals": "Holiday Approvals"
     },
     "scopeNames": {
         "HolidayRequest": "Time Off"

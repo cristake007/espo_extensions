@@ -33,5 +33,10 @@
         "route": "/HolidayManagement/requests/:id/decision",
         "method": "post",
         "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\PostDecision"
+    },
+    {
+        "route": "/HolidayManagement/approvalQueue",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\GetApprovalQueue"
     }
 ]

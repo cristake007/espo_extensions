@@ -1,6 +1,7 @@
 {
     "labels": {
-        "My Holiday": "Concediul meu"
+        "My Holiday": "Concediul meu",
+        "Holiday Approvals": "Aprobari concedii"
     },
     "scopeNames": {
         "HolidayRequest": "Concediu"

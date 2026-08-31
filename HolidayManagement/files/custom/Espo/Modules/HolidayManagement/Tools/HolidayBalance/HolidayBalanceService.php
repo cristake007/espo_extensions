@@ -265,6 +265,49 @@ final class HolidayBalanceService
     }
 
     /** @return array<string, mixed> */
+    public function listPendingApprovals(): array
+    {
+        $this->assertInternalUser();
+
+        if (!$this->isConfiguredApprover()) {
+            return [
+                'isApprover' => false,
+                'list' => [],
+                'total' => 0,
+            ];
+        }
+
+        $requests = $this->entityManager
+            ->getRDBRepository(self::REQUEST)
+            ->where([
+                'status' => self::STATUS_PENDING,
+                'assignedUserId!=' => $this->user->getId(),
+            ])
+            ->order('dateStartDate')
+            ->find();
+        $list = [];
+
+        foreach ($requests as $request) {
+            $list[] = [
+                'id' => $request->getId(),
+                'requesterId' => $request->get('assignedUserId'),
+                'requesterName' => $request->get('assignedUserName'),
+                'dateStart' => $request->get('dateStartDate'),
+                'dateEnd' => $request->get('dateEndDate'),
+                'days' => $request->get('days'),
+                'description' => $request->get('description'),
+                'status' => self::STATUS_PENDING,
+            ];
+        }
+
+        return [
+            'isApprover' => true,
+            'list' => $list,
+            'total' => count($list),
+        ];
+    }
+
+    /** @return array<string, mixed> */
     public function decideHoliday(string $requestId, string $decision): array
     {
         if (!in_array($decision, [self::STATUS_APPROVED, self::STATUS_REJECTED], true)) {

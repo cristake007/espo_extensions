@@ -6,7 +6,9 @@
         "Profile Not Ready": "Your holiday profile has not been initialized. Please contact an administrator.",
         "Approval Required": "Pending approval",
         "Approve Holiday": "Approve",
-        "Reject Holiday": "Reject"
+        "Reject Holiday": "Reject",
+        "Holiday Approvals": "Holiday Approvals",
+        "Requester": "Requester"
     },
     "fields": {
         "name": "Name",
@@ -27,7 +29,9 @@
         "confirmRejectHoliday": "Reject this holiday request and refund its reserved days? This decision is final.",
         "holidayApproved": "Holiday request approved.",
         "holidayRejected": "Holiday request rejected and reserved days refunded.",
-        "approvalDecisionFailed": "The approval decision could not be saved. Refresh the request and try again."
+        "approvalDecisionFailed": "The approval decision could not be saved. Refresh the request and try again.",
+        "Not Holiday Approver": "Your account is not configured as a holiday approver.",
+        "No Pending Approvals": "There are no holiday requests awaiting your approval."
     },
     "options": {
         "status": {

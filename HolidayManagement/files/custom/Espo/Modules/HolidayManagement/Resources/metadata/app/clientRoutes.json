@@ -1,0 +1,8 @@
+{
+    "HolidayRequest/approvals": {
+        "params": {
+            "controller": "HolidayRequest",
+            "action": "approvals"
+        }
+    }
+}

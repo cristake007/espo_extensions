@@ -80,7 +80,10 @@ test('all internal users can read shared requests but mutate only their own', as
         delete: 'own',
     });
     assert.equal(scope.tab, true);
-    assert.deepEqual(auxiliaryNavbar.menuItems, {});
+    assert.equal(
+        auxiliaryNavbar.menuItems.holidayApprovals.link,
+        '#HolidayRequest/approvals'
+    );
     assert.match(afterInstall, /tabList/);
     assert.match(afterInstall, /NAVIGATION_ENTITY\s*=\s*'HolidayRequest'/);
 });
@@ -104,7 +107,8 @@ test('request lifecycle hooks reserve, adjust, and refund the profile balance', 
     for (const method of [
         'getMyBalance', 'prepareHolidayForCreate', 'reserveHoliday',
         'prepareHolidayForUpdate', 'adjustHoliday', 'cancelHoliday',
-        'getApprovalState', 'decideHoliday', 'processApprovalDecision',
+        'getApprovalState', 'listPendingApprovals', 'decideHoliday',
+        'processApprovalDecision',
     ]) {
         assert.match(balanceSource, new RegExp(`public function ${method}\\(`));
     }
@@ -152,6 +156,18 @@ test('either configured approver can make the single final decision', async () =
         'files', 'client', 'custom', 'modules', 'holiday-management',
         'src', 'views', 'holiday-request', 'record', 'approval-actions.js'
     ), 'utf8');
+    const approvalQueue = await readModuleSource(
+        'Tools', 'HolidayRequest', 'Api', 'GetApprovalQueue.php'
+    );
+    const clientRoutes = await readJson('Resources', 'metadata', 'app', 'clientRoutes.json');
+    const requestClient = await readJson(
+        'Resources', 'metadata', 'clientDefs', 'HolidayRequest.json'
+    );
+    const approvalPage = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'holiday-request', 'approvals.js'
+    ), 'utf8');
     const ledger = await readJson('Resources', 'metadata', 'entityDefs', 'HolidayLedger.json');
 
     assert.ok(routes.some(item =>
@@ -162,8 +178,24 @@ test('either configured approver can make the single final decision', async () =
         item.route === '/HolidayManagement/requests/:id/decision' &&
         item.method === 'post'
     ));
+    assert.ok(routes.some(item =>
+        item.route === '/HolidayManagement/approvalQueue' &&
+        item.method === 'get'
+    ));
     assert.match(getApproval, /getApprovalState\(\$id\)/);
     assert.match(postDecision, /decideHoliday\(\$id, \$data->decision\)/);
+    assert.match(approvalQueue, /listPendingApprovals\(\)/);
+    assert.deepEqual(clientRoutes['HolidayRequest/approvals'], {
+        params: {controller: 'HolidayRequest', action: 'approvals'},
+    });
+    assert.equal(
+        requestClient.controller,
+        'holiday-management:controllers/holiday-request'
+    );
+    assert.match(approvalPage, /HolidayManagement\/approvalQueue/);
+    assert.match(approvalPage, /data-action="approve"/);
+    assert.match(approvalPage, /data-action="reject"/);
+    assert.match(approvalPage, /requesterName/);
     assert.match(approvalActions, /decision === 'Approved'/);
     assert.match(approvalActions, /decide\(view, 'Rejected'/);
     assert.match(approvalActions, /state\.canDecide/);
