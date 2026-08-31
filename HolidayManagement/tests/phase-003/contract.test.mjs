@@ -126,6 +126,11 @@ test('calendar query shows all users and supports multi-day overlap', async () =
         'files', 'client', 'custom', 'modules', 'holiday-management',
         'src', 'views', 'calendar', 'calendar.js'
     ), 'utf8');
+    const calendarCss = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'css', 'calendar.css'
+    ), 'utf8');
     const nonWorkingDayProvider = await readModuleSource(
         'Tools', 'HolidayRequest', 'NonWorkingDayProvider.php'
     );
@@ -148,6 +153,10 @@ test('calendar query shows all users and supports multi-day overlap', async () =
     assert.match(calendarView, /event\.title = `\\u2602 \$\{userName\}`/);
     assert.match(calendarView, /replace\(\/\^Holiday - \/, ''\)/);
     assert.doesNotMatch(calendarView, /display:\s*'background'/);
+    assert.match(calendarCss, /width:\s*max-content/);
+    assert.match(calendarCss, /min-width:\s*24px/);
+    assert.match(calendarCss, /white-space:\s*nowrap/);
+    assert.doesNotMatch(calendarCss, /(?<!min-)width:\s*24px/);
     assert.match(nonWorkingDayProvider, /ENTITY_TYPE\s*=\s*'ZileLibere'/);
     assert.match(nonWorkingDayProvider, /COUNTRY_CODE\s*=\s*'RO'/);
     assert.match(nonWorkingDayProvider, /'dateStart>='/);

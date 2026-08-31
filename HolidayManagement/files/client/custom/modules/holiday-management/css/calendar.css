@@ -9,7 +9,11 @@
     height: 24px;
     justify-content: center;
     margin: 2px;
-    width: 24px;
+    min-width: 24px;
+    overflow: visible;
+    padding: 0 7px;
+    white-space: nowrap;
+    width: max-content;
 }
 
 .fc .holiday-request-marker .fc-event-main,
@@ -18,7 +22,8 @@
     align-items: center;
     display: flex;
     justify-content: center;
-    width: 100%;
+    overflow: visible;
+    width: auto;
 }
 
 .fc .holiday-request-marker .fc-event-title {
@@ -26,6 +31,7 @@
     font-size: 15px;
     line-height: 1;
     padding: 0;
+    white-space: nowrap;
 }
 
 .fc .holiday-request-list-event {

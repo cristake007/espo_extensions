@@ -29,7 +29,7 @@ workflow, notifications, public-holiday synchronization, or document generation.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.3.6 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.3.7 files scripts
 ```
 
 Run the phase contract tests:
