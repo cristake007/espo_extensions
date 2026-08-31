@@ -9,7 +9,6 @@ use Espo\Core\Acl\AccessDeleteChecker;
 use Espo\Core\Acl\AccessEditChecker;
 use Espo\Core\Acl\AccessEntityCREDChecker;
 use Espo\Core\Acl\AccessReadChecker;
-use Espo\Core\Acl\DefaultAccessChecker;
 use Espo\Core\Acl\ScopeData;
 use Espo\Entities\User;
 use Espo\Modules\ZileSarbatoare\Entities\ZileLibere;
@@ -22,12 +21,9 @@ final class AccessChecker implements
     AccessDeleteChecker,
     AccessEntityCREDChecker
 {
-    public function __construct(private DefaultAccessChecker $defaultAccessChecker)
-    {}
-
     public function check(User $user, ScopeData $data): bool
     {
-        return $this->defaultAccessChecker->check($user, $data);
+        return $this->isActiveInternalUser($user);
     }
 
     public function checkCreate(User $user, ScopeData $data): bool
@@ -37,7 +33,7 @@ final class AccessChecker implements
 
     public function checkRead(User $user, ScopeData $data): bool
     {
-        return $this->defaultAccessChecker->checkRead($user, $data);
+        return $this->isActiveInternalUser($user);
     }
 
     public function checkEdit(User $user, ScopeData $data): bool
@@ -57,7 +53,7 @@ final class AccessChecker implements
 
     public function checkEntityRead(User $user, Entity $entity, ScopeData $data): bool
     {
-        return $this->defaultAccessChecker->checkEntityRead($user, $entity, $data);
+        return $this->isActiveInternalUser($user);
     }
 
     public function checkEntityEdit(User $user, Entity $entity, ScopeData $data): bool
@@ -83,5 +79,12 @@ final class AccessChecker implements
         return
             (bool) $entity->get('managed') ||
             $entity->get('source') === ZileLibere::SOURCE_NAGER_DATE;
+    }
+
+    private function isActiveInternalUser(User $user): bool
+    {
+        return
+            (bool) $user->get('isActive') &&
+            in_array($user->get('type'), [User::TYPE_REGULAR, User::TYPE_ADMIN], true);
     }
 }

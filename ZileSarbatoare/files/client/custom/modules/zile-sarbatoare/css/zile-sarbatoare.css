@@ -1,0 +1,26 @@
+.calendar-container .fc {
+    --zile-sarbatoare-non-working-bg: rgba(212, 17, 49, 0.045);
+    --zile-sarbatoare-non-working-stripe: rgba(212, 17, 49, 0.075);
+    --zile-sarbatoare-non-working-text: #8b6570;
+}
+
+.calendar-container .fc .zile-sarbatoare-non-working-day.fc-daygrid-day,
+.calendar-container .fc .zile-sarbatoare-non-working-day.fc-timegrid-col {
+    background-color: var(--zile-sarbatoare-non-working-bg) !important;
+    background-image: repeating-linear-gradient(
+        135deg,
+        transparent 0,
+        transparent 8px,
+        var(--zile-sarbatoare-non-working-stripe) 8px,
+        var(--zile-sarbatoare-non-working-stripe) 9px
+    ) !important;
+}
+
+.calendar-container .fc .zile-sarbatoare-non-working-day.fc-col-header-cell {
+    background: rgba(212, 17, 49, 0.065);
+}
+
+.calendar-container .fc .zile-sarbatoare-non-working-day.fc-col-header-cell .fc-col-header-cell-cushion,
+.calendar-container .fc .zile-sarbatoare-non-working-day .fc-daygrid-day-number {
+    color: var(--zile-sarbatoare-non-working-text) !important;
+}

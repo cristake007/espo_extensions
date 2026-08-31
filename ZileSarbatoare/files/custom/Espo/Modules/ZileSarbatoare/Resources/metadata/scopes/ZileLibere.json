@@ -15,7 +15,7 @@
     "layouts": true,
     "tab": false,
     "importable": false,
-    "customizable": false,
+    "customizable": true,
     "stream": false,
     "calendar": true,
     "calendarOneDay": true,

@@ -18,14 +18,14 @@ database.
 From the `projects/espo_extensions` repository root:
 
 ```bash
-bash build.sh --extension ZileSarbatoare --zip 0.9.2 files scripts
+bash build.sh --extension ZileSarbatoare --zip 0.9.5 files scripts
 ```
 
-Upload `dist/zile-sarbatoare-0.9.2.zip` in **Administration > Extensions**, or
+Upload `dist/zile-sarbatoare-0.9.5.zip` in **Administration > Extensions**, or
 install it from the EspoCRM root:
 
 ```bash
-bin/command extension --file="/path/to/zile-sarbatoare-0.9.2.zip"
+bin/command extension --file="/path/to/zile-sarbatoare-0.9.5.zip"
 bin/command rebuild
 bin/command populate-scheduled-jobs
 ```
@@ -42,6 +42,16 @@ Administrators can add company-specific days with **Add manual day** on
 full holiday list without requiring a navbar entry. Manual records remain
 editable and are not removed or overwritten by Nager.Date synchronization.
 
+Every active regular or administrator user has mandatory read-only access to
+`ZileLibere`, regardless of assigned roles. Creating manual records and editing
+or deleting eligible manual records remain administrator-only. Portal, API,
+system, and inactive users receive no access from this policy.
+
+The **Zile sărbătoare** entity is available in **Administration > Entity
+Manager**, where administrators can adjust its list, detail, edit, and search
+layouts or add custom fields. Fields owned by Nager.Date synchronization remain
+read-only, and synchronized records retain their update and deletion guards.
+
 ## First synchronization
 
 1. Open **Administration > Integrations > Nager.Date**.
@@ -49,6 +59,12 @@ editable and are not removed or overwritten by Nager.Date synchronization.
 3. Select **Synchronize now**.
 4. Confirm the accepted, created, updated, and removed counts.
 5. Open Calendar and verify the imported all-day entries.
+
+Dates represented by visible **Zile sărbătoare** events receive the same subtle
+red hatch as Saturdays and Sundays in month and week views. The CSS belongs to
+this extension and is loaded additively, so no EspoCRM core or theme files are
+modified. Hiding the **Zile sărbătoare** event type also removes the day-cell
+highlight.
 
 Automatic synchronization uses the existing EspoCRM job runner. Verify it from
 the EspoCRM root with:
@@ -80,8 +96,8 @@ $isFree = $calendar->esteZiLibera('2026-07-15', 'RO');
   page and the EspoCRM logs. Existing holiday data is retained after network,
   validation, or transactional write failures.
 - If records do not appear in Calendar, run `bin/command rebuild`, verify
-  `ZileLibere` is present in `calendarEntityList`, and verify role-level read
-  access to **Zile sărbătoare**.
+  `ZileLibere` is present in `calendarEntityList`, and confirm the user is an
+  active regular or administrator user.
 
 ## Uninstall and data retention
 

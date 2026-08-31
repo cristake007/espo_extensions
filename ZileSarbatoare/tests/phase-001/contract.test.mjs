@@ -53,18 +53,48 @@ test('integration actions use the holiday modal and compact manual layout', asyn
     assert.deepEqual(fieldNames, ['name', 'dateStart', 'countryCode', 'description']);
 });
 
+test('module loads its non-working-day calendar stylesheet additively', async () => {
+    const client = await readJson('Resources', 'metadata', 'app', 'client.json');
+    const css = await readFile(
+        path.join(
+            extensionRoot,
+            'files', 'client', 'custom', 'modules', 'zile-sarbatoare',
+            'css', 'zile-sarbatoare.css'
+        ),
+        'utf8'
+    );
+
+    assert.deepEqual(client.cssList, [
+        '__APPEND__',
+        'client/custom/modules/zile-sarbatoare/css/zile-sarbatoare.css',
+    ]);
+    assert.match(css, /\.zile-sarbatoare-non-working-day\.fc-daygrid-day/);
+    assert.match(css, /\.zile-sarbatoare-non-working-day\.fc-timegrid-col/);
+    assert.match(css, /\.zile-sarbatoare-non-working-day\.fc-col-header-cell/);
+});
+
 test('scope is a global one-day calendar entity with read-only role mutation levels', async () => {
     const scope = await readJson('Resources', 'metadata', 'scopes', 'ZileLibere.json');
+    const acl = await readJson('Resources', 'metadata', 'app', 'acl.json');
     const entity = await readSource('Entities', 'ZileLibere.php');
 
     assert.equal(scope.type, 'Event');
     assert.equal(scope.calendar, true);
     assert.equal(scope.calendarOneDay, true);
     assert.equal(scope.tab, false);
+    assert.equal(scope.layouts, true);
+    assert.equal(scope.customizable, true);
     assert.deepEqual(scope.aclActionLevelListMap.read, ['all', 'no']);
     assert.deepEqual(scope.aclActionLevelListMap.create, ['no']);
     assert.deepEqual(scope.aclActionLevelListMap.edit, ['no']);
     assert.deepEqual(scope.aclActionLevelListMap.delete, ['no']);
+    assert.deepEqual(acl.mandatory.scopeLevel.ZileLibere, {
+        create: 'no',
+        read: 'all',
+        edit: 'no',
+        delete: 'no',
+    });
+    assert.equal(scope.aclPortal, false);
     assert.equal(scope.importable, false);
     assert.match(entity, /function getAssignedUser\(\): \?Link/);
     assert.match(entity, /getAssignedUser\(\): \?Link\s*\{\s*return null;/s);
@@ -100,6 +130,10 @@ test('manual record hooks own defaults and reject managed update and deletion pa
     assert.match(remove, /Synchronized Zile libere records cannot be deleted/);
     assert.match(accessChecker, /function checkCreate[\s\S]*?return \$user->isAdmin\(\);/);
     assert.match(accessChecker, /function checkEntityCreate[\s\S]*?return \$user->isAdmin\(\);/);
+    assert.match(accessChecker, /User::TYPE_REGULAR/);
+    assert.match(accessChecker, /User::TYPE_ADMIN/);
+    assert.match(accessChecker, /get\('isActive'\)/);
+    assert.doesNotMatch(accessChecker, /defaultAccessChecker->check(?:Entity)?Read/);
 });
 
 test('calendar query preserves strict ACL and does not filter by assigned user', async () => {

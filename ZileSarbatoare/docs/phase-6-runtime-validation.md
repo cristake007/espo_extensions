@@ -3,13 +3,14 @@
 Status: **not executed — an EspoCRM runtime is not available in this workspace**
 
 Run this checklist on a disposable, non-production EspoCRM `>=10.0.0` instance
-using PHP `>=8.4`. Back up the database first. Use an administrator, a regular
-user with `ZileLibere` read access, and a regular user without that access.
+using PHP `>=8.4`. Back up the database first. Use an administrator, two active
+regular users whose roles respectively allow and deny `ZileLibere` read access,
+plus portal and API users.
 
 ## Install and rebuild
 
 ```bash
-bin/command extension --file="/path/to/zile-sarbatoare-0.8.0.zip"
+bin/command extension --file="/path/to/zile-sarbatoare-0.9.5.zip"
 bin/command rebuild
 bin/command populate-scheduled-jobs
 bin/command app-info --binding
@@ -34,9 +35,10 @@ Verify:
 3. Confirm a managed record cannot be edited or deleted through ordinary APIs.
 4. Create two named records on one date. Confirm both appear exactly once as
    one-day, all-day Calendar items.
-5. Confirm the administrator and read-enabled user see the global items.
-6. Confirm the user without `ZileLibere` read access sees neither list nor
-   Calendar records.
+5. Confirm the administrator and both active regular users see the global items.
+6. Confirm both active regular users can read the list and Calendar records,
+   while neither can create, edit, or delete records.
+7. Confirm portal and API users cannot access `ZileLibere`.
 
 ## Synchronization and transactions
 

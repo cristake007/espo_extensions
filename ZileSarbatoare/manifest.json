@@ -1,13 +1,13 @@
 {
     "name": "Zile Sărbătoare",
-    "version": "0.9.2",
+    "version": "0.9.5",
     "acceptableVersions": [
         ">=10.0.0"
     ],
     "php": [
         ">=8.4"
     ],
-    "releaseDate": "2026-07-18",
+    "releaseDate": "2026-08-31",
     "author": "Cristian Popa",
     "description": "Calendar central de zile nelucrătoare pentru EspoCRM, cu sincronizare Nager.Date. Package ID: zile-sarbatoare."
 }

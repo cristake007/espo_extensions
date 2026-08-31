@@ -54,7 +54,8 @@ query through the existing record-service calendar query extension point. The
 query must:
 
 1. use the EspoCRM Select Builder for `ZileLibere`;
-2. call `withStrictAccessControl()` so role-level read denial is preserved;
+2. call `withStrictAccessControl()` so the mandatory scope policy and server
+   access checker are applied;
 3. omit assigned-user and users-link predicates;
 4. exclude soft-deleted rows through the ORM default;
 5. select one row per `ZileLibere` record;
@@ -62,9 +63,11 @@ query must:
    end date slots; and
 7. filter the requested half-open date range using only `dateStart`.
 
-This means a user with entity read access sees the shared records, while a user
-without read access does not. A same-date pair remains two named calendar
-events because the query does not deduplicate records.
+The module's `app/acl.json` grants `read: all` as a mandatory scope level while
+forcing create, edit, and delete to `no` for non-admin users. Its server access
+checker limits the read grant to active regular and administrator users, and
+`aclPortal: false` keeps portal access disabled. A same-date pair remains two
+named calendar events because the query does not deduplicate records.
 
 The EspoCRM extension point is currently named `getCalenderQuery` in core
 (including the spelling). It is retained for backward compatibility in
@@ -149,8 +152,9 @@ available. The focused runtime spike must verify:
 1. install/rebuild creates `zile_libere` with the two planned indexes;
 2. a single record with one stored date appears once as an all-day item;
 3. two records on one date appear twice;
-4. an administrator and a regular user with read access see the records;
-5. a regular user without read access does not see them;
+4. an administrator and active regular users see the records regardless of
+   assigned role levels;
+5. inactive, API, system, and portal users receive no access from the module;
 6. Calendar, navigation, and Quick Create registration is additive and
    upgrade-idempotent;
 7. integration defaults, custom view loading, enabled-state reads, and admin

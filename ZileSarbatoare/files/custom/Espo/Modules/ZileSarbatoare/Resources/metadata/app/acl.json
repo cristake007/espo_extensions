@@ -1,0 +1,12 @@
+{
+    "mandatory": {
+        "scopeLevel": {
+            "ZileLibere": {
+                "create": "no",
+                "read": "all",
+                "edit": "no",
+                "delete": "no"
+            }
+        }
+    }
+}
