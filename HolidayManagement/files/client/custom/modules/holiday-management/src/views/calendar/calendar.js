@@ -1,5 +1,7 @@
 define(['crm:views/calendar/calendar'], (CalendarView) => {
     return class extends CalendarView {
+        eventAttributes = ['assignedUserName'];
+
         setup() {
             super.setup();
 
@@ -22,6 +24,9 @@ define(['crm:views/calendar/calendar'], (CalendarView) => {
                     return;
                 }
 
+                const userName = event.assignedUserName || event.title;
+                event.title = `\u2602 ${userName}`;
+
                 if (this.mode === 'listWeek') {
                     event.className = ['holiday-request-list-event'];
                     renderedEvents.push(event);
@@ -38,7 +43,6 @@ define(['crm:views/calendar/calendar'], (CalendarView) => {
                     renderedEvents.push({
                         ...event,
                         id: `${event.id}-marker-${dateString}`,
-                        title: '\u2602',
                         start: dateString,
                         end: date.clone().add(1, 'day').format('YYYY-MM-DD'),
                         allDay: true,

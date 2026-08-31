@@ -41,6 +41,7 @@ final class HolidayRequest extends Record
             ['null', 'status'],
             ['dateStartDate', 'dateStartDate'],
             ['dateEndDate', 'dateEndDate'],
+            'assignedUserName',
             ['null', 'parentType'],
             ['null', 'parentId'],
             Field::CREATED_AT,
@@ -60,7 +61,6 @@ final class HolidayRequest extends Record
                 ->buildQueryBuilder()
                 ->select($select)
                 ->where([
-                    'assignedUserId' => $userId,
                     'dateStartDate<' => substr($to, 0, 10),
                     'dateEndDate>=' => substr($from, 0, 10),
                 ])

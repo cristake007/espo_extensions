@@ -47,7 +47,7 @@ test('HolidayRequest is an owner-scoped calendar event with derived accounting f
     }
 });
 
-test('all internal users receive own CRUD access from the main navigation', async () => {
+test('all internal users can read shared requests but mutate only their own', async () => {
     const acl = await readJson('Resources', 'metadata', 'app', 'acl.json');
     const scope = await readJson('Resources', 'metadata', 'scopes', 'HolidayRequest.json');
     const auxiliaryNavbar = await readJson('Resources', 'metadata', 'app', 'clientNavbar.json');
@@ -57,7 +57,7 @@ test('all internal users receive own CRUD access from the main navigation', asyn
     assert.equal(acl.mandatory.scopeLevel.Calendar, true);
     assert.deepEqual(access, {
         create: 'yes',
-        read: 'own',
+        read: 'all',
         edit: 'own',
         delete: 'own',
     });
@@ -112,7 +112,7 @@ test('request lifecycle hooks reserve, adjust, and refund the profile balance', 
     assert.match(repositoryHook, /->cancelHoliday\(/);
 });
 
-test('calendar query shows only the selected user and supports multi-day overlap', async () => {
+test('calendar query shows all users and supports multi-day overlap', async () => {
     const source = await readModuleSource('Services', 'HolidayRequest.php');
     const calendar = await readJson('Resources', 'metadata', 'clientDefs', 'Calendar.json');
     const requestClient = await readJson('Resources', 'metadata', 'clientDefs', 'HolidayRequest.json');
@@ -134,7 +134,8 @@ test('calendar query shows only the selected user and supports multi-day overlap
 
     assert.match(source, /getCalenderQuery/);
     assert.match(source, /withStrictAccessControl\(\)/);
-    assert.match(source, /'assignedUserId'\s*=>\s*\$userId/);
+    assert.match(source, /'assignedUserName'/);
+    assert.doesNotMatch(source, /'assignedUserId'\s*=>\s*\$userId/);
     assert.match(source, /'dateStartDate<'/);
     assert.match(source, /'dateEndDate>='/);
     assert.equal(calendar.colors.HolidayRequest, '#4F8A8B');
@@ -144,7 +145,8 @@ test('calendar query shows only the selected user and supports multi-day overlap
     );
     assert.match(calendarView, /holiday-request-marker/);
     assert.match(calendarView, /-marker-\$\{dateString\}/);
-    assert.match(calendarView, /title:\s*'\\u2602'/);
+    assert.match(calendarView, /event\.title = `\\u2602 \$\{userName\}`/);
+    assert.match(calendarView, /eventAttributes = \['assignedUserName'\]/);
     assert.doesNotMatch(calendarView, /display:\s*'background'/);
     assert.match(nonWorkingDayProvider, /ENTITY_TYPE\s*=\s*'ZileLibere'/);
     assert.match(nonWorkingDayProvider, /COUNTRY_CODE\s*=\s*'RO'/);
