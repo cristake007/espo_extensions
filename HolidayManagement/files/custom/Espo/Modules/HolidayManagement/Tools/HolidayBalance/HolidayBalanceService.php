@@ -648,17 +648,19 @@ final class HolidayBalanceService
         }
 
         $availableDays = max(0.0, $currentBalance - $limit);
+        $shortfallDays = max(0.0, $daysToDeduct - $availableDays);
         $action = $isAdjustment ? 'change requires' : 'booking requires';
         $kind = $isAdjustment ? 'additional holiday days' : 'holiday days';
 
         throw new Conflict(sprintf(
-            'This %s %s %s, but only %s are available. Current balance: %s days; minimum allowed balance: %s days.',
+            'This %s %s %s, but only %s are available. Requested: %s days; available: %s days; shortfall: %s days.',
             $action,
             $this->formatDays($daysToDeduct),
             $kind,
             $this->formatDays($availableDays),
-            $this->formatDays($currentBalance),
-            $this->formatDays($limit),
+            $this->formatDays($daysToDeduct),
+            $this->formatDays($availableDays),
+            $this->formatDays($shortfallDays),
         ));
     }
 
