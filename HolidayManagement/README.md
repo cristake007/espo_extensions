@@ -16,6 +16,8 @@ The extension includes settings, balance accounting, and self-service booking:
 - a standard **Time Off / Concediu** main-navigation entry showing the
   signed-in user's remaining balance;
 - self-service holiday bookings from both that page and EspoCRM Calendar;
+- requester-visible pending, approved, and rejected states, with a final
+  decision by either configured approver from the Calendar request detail;
 - weekday and Romanian `ZileLibere` calculation, overlap prevention, configured
   balance-limit enforcement, and automatic balance reservation,
   adjustment, and refund when a booking is created, edited, or deleted.
@@ -23,13 +25,14 @@ The extension includes settings, balance accounting, and self-service booking:
 Bookings are immediately reserved against the initialized holiday profile. The
 working-day total excludes weekends and Romanian dates already stored by the
 `ZileSarbatoare` extension as `ZileLibere`. Holiday Management only reads those
-records; it does not modify them. The extension does not yet include an approval
-workflow, notifications, public-holiday synchronization, or document generation.
+records; it does not modify them. Rejected requests refund their reserved days
+exactly once and no longer appear in Calendar. The extension does not yet include
+approval notifications, public-holiday synchronization, or document generation.
 
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.3.10 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.4.0 files scripts
 ```
 
 Run the phase contract tests:

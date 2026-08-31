@@ -15,5 +15,10 @@
         "reason": "Reason",
         "effectiveDate": "Effective Date",
         "idempotencyKey": "Idempotency Key"
+    },
+    "options": {
+        "type": {
+            "holidayRejected": "Holiday Rejected"
+        }
     }
 }

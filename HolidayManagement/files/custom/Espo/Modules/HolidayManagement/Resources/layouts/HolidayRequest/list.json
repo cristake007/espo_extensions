@@ -2,5 +2,6 @@
     {"name": "dateStartDate", "width": 18},
     {"name": "dateEndDate", "width": 18},
     {"name": "days", "width": 12},
+    {"name": "status", "width": 16},
     {"name": "description"}
 ]

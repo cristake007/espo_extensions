@@ -33,6 +33,11 @@ test('HolidayRequest is an owner-scoped calendar event with derived accounting f
     );
     assert.equal(defs.fields.dateEndDate.afterOrEqual, true);
     assert.equal(defs.fields.days.readOnly, true);
+    assert.deepEqual(defs.fields.status.options, ['Pending', 'Approved', 'Rejected']);
+    assert.equal(defs.fields.status.default, 'Pending');
+    assert.equal(defs.fields.status.audited, true);
+    assert.equal(defs.fields.decidedBy.audited, true);
+    assert.equal(defs.fields.decidedAt.audited, true);
     assert.equal(defs.fields.assignedUser.readOnly, true);
     assert.equal(defs.fields.profile.readOnly, true);
     assert.equal(defs.indexes.accountingKeyUnique.unique, true);
@@ -49,9 +54,13 @@ test('HolidayRequest is an owner-scoped calendar event with derived accounting f
     const listLayout = await readJson('Resources', 'layouts', 'HolidayRequest', 'list.json');
     const searchLayout = await readJson('Resources', 'layouts', 'HolidayRequest', 'search.json');
     assert.equal(listLayout.some(item => item.name === 'assignedUser'), false);
+    assert.equal(listLayout.some(item => item.name === 'status'), true);
     assert.equal(searchLayout.includes('assignedUser'), false);
 
-    for (const field of ['name', 'days', 'assignedUser', 'profile', 'accountingKey', 'accountingRevision']) {
+    for (const field of [
+        'name', 'days', 'status', 'decidedBy', 'decidedAt', 'assignedUser',
+        'profile', 'accountingKey', 'accountingRevision',
+    ]) {
         assert.equal(entityAcl.fields[field].readOnly, true, `${field} must be server-managed`);
     }
 });
@@ -95,6 +104,7 @@ test('request lifecycle hooks reserve, adjust, and refund the profile balance', 
     for (const method of [
         'getMyBalance', 'prepareHolidayForCreate', 'reserveHoliday',
         'prepareHolidayForUpdate', 'adjustHoliday', 'cancelHoliday',
+        'getApprovalState', 'decideHoliday', 'processApprovalDecision',
     ]) {
         assert.match(balanceSource, new RegExp(`public function ${method}\\(`));
     }
@@ -107,6 +117,11 @@ test('request lifecycle hooks reserve, adjust, and refund the profile balance', 
     assert.match(balanceSource, /holidayBooked/);
     assert.match(balanceSource, /holidayAdjusted/);
     assert.match(balanceSource, /holidayCancelled/);
+    assert.match(balanceSource, /holidayRejected/);
+    assert.match(balanceSource, /holidayManagementApproversIds/);
+    assert.match(balanceSource, /An approver cannot decide their own holiday request/);
+    assert.match(balanceSource, /currentStatus !== self::STATUS_PENDING/);
+    assert.match(balanceSource, /getTransactionManager\(\)->run/);
     assert.match(
         balanceSource,
         /This %s %s %s, but only %s are available\. Requested: %s days; available: %s days; shortfall: %s days\./
@@ -121,6 +136,39 @@ test('request lifecycle hooks reserve, adjust, and refund the profile balance', 
     assert.match(repositoryHook, /->reserveHoliday\(/);
     assert.match(repositoryHook, /->adjustHoliday\(/);
     assert.match(repositoryHook, /->cancelHoliday\(/);
+    assert.match(repositoryHook, /->processApprovalDecision\(/);
+});
+
+test('either configured approver can make the single final decision', async () => {
+    const routes = await readJson('Resources', 'routes.json');
+    const getApproval = await readModuleSource(
+        'Tools', 'HolidayRequest', 'Api', 'GetApproval.php'
+    );
+    const postDecision = await readModuleSource(
+        'Tools', 'HolidayRequest', 'Api', 'PostDecision.php'
+    );
+    const approvalActions = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'holiday-request', 'record', 'approval-actions.js'
+    ), 'utf8');
+    const ledger = await readJson('Resources', 'metadata', 'entityDefs', 'HolidayLedger.json');
+
+    assert.ok(routes.some(item =>
+        item.route === '/HolidayManagement/requests/:id/approval' &&
+        item.method === 'get'
+    ));
+    assert.ok(routes.some(item =>
+        item.route === '/HolidayManagement/requests/:id/decision' &&
+        item.method === 'post'
+    ));
+    assert.match(getApproval, /getApprovalState\(\$id\)/);
+    assert.match(postDecision, /decideHoliday\(\$id, \$data->decision\)/);
+    assert.match(approvalActions, /decision === 'Approved'/);
+    assert.match(approvalActions, /decide\(view, 'Rejected'/);
+    assert.match(approvalActions, /state\.canDecide/);
+    assert.match(approvalActions, /zile-sarbatoare:calendar-refresh/);
+    assert.ok(ledger.fields.type.options.includes('holidayRejected'));
 });
 
 test('calendar query shows all users and supports multi-day overlap', async () => {
@@ -154,6 +202,9 @@ test('calendar query shows all users and supports multi-day overlap', async () =
     assert.doesNotMatch(source, /'assignedUserId'\s*=>\s*\$userId/);
     assert.match(source, /'dateStartDate<'/);
     assert.match(source, /'dateEndDate>='/);
+    assert.match(source, /\['status', 'status'\]/);
+    assert.match(source, /\['status!='\s*=>\s*'Rejected'\]/);
+    assert.match(source, /\['status'\s*=>\s*null\]/);
     assert.equal(calendar.colors.HolidayRequest, '#4F8A8B');
     assert.equal(
         calendar.calendarView,
@@ -177,6 +228,14 @@ test('calendar query shows all users and supports multi-day overlap', async () =
         '__APPEND__',
         'client/custom/modules/holiday-management/css/calendar.css',
     ]);
+    assert.equal(
+        requestClient.recordViews.detail,
+        'holiday-management:views/holiday-request/record/detail'
+    );
+    assert.equal(
+        requestClient.recordViews.detailSmall,
+        'holiday-management:views/holiday-request/record/detail-small'
+    );
     assert.equal(
         requestClient.recordViews.editSmall,
         'holiday-management:views/holiday-request/record/edit-small'
@@ -215,6 +274,10 @@ test('self-service page fetches only the signed-in balance and presents bilingua
         assert.equal(typeof global.scopeNames.HolidayRequest, 'string');
         assert.equal(typeof request.messages.holidayBalanceSummary, 'string');
         assert.equal(typeof request.labels['Profile Not Ready'], 'string');
+        assert.equal(typeof request.fields.status, 'string');
+        assert.equal(typeof request.options.status.Pending, 'string');
+        assert.equal(typeof request.messages.confirmApproveHoliday, 'string');
+        assert.equal(typeof request.messages.confirmRejectHoliday, 'string');
     }
 });
 

@@ -25,6 +25,10 @@ final class HolidayBalanceService
 {
     private const PROFILE = 'HolidayProfile';
     private const LEDGER = 'HolidayLedger';
+    private const REQUEST = 'HolidayRequest';
+    private const STATUS_PENDING = 'Pending';
+    private const STATUS_APPROVED = 'Approved';
+    private const STATUS_REJECTED = 'Rejected';
 
     public function __construct(
         private EntityManager $entityManager,
@@ -83,6 +87,10 @@ final class HolidayBalanceService
             'dateStartDate' => $dateStart,
             'dateEndDate' => $dateEnd,
             'days' => $days,
+            'status' => self::STATUS_PENDING,
+            'decidedById' => null,
+            'decidedByName' => null,
+            'decidedAt' => null,
             'assignedUserId' => $userId,
             'assignedUserName' => $this->user->get('name'),
             'profileId' => $profile->getId(),
@@ -126,6 +134,12 @@ final class HolidayBalanceService
     {
         $userId = (string) $request->getFetched('assignedUserId');
         $this->assertRequestOwner($userId);
+        $status = (string) ($request->getFetched('status') ?: self::STATUS_PENDING);
+
+        if ($status !== self::STATUS_PENDING) {
+            throw new Conflict('Only a pending holiday request can be edited.');
+        }
+
         [$dateStart, $dateEnd] = $this->normalizeRequestDates($request);
         $this->assertBookingDatesAllowed(
             $dateStart,
@@ -143,6 +157,9 @@ final class HolidayBalanceService
             'dateStartDate' => $dateStart,
             'dateEndDate' => $dateEnd,
             'days' => $daysAfter,
+            'status' => $status,
+            'decidedById' => $request->getFetched('decidedById'),
+            'decidedAt' => $request->getFetched('decidedAt'),
             'assignedUserId' => $userId,
             'profileId' => $profile->getId(),
             'accountingKey' => $request->getFetched('accountingKey'),
@@ -191,6 +208,11 @@ final class HolidayBalanceService
     {
         $userId = (string) $request->get('assignedUserId');
         $this->assertRequestOwner($userId);
+
+        if ($request->get('status') === self::STATUS_REJECTED) {
+            return;
+        }
+
         $profile = $this->lockProfileByUser($userId);
         $days = max(0, (int) $request->get('days'));
         $before = $this->snapshot($profile);
@@ -209,6 +231,132 @@ final class HolidayBalanceService
             ),
             sprintf(
                 'holiday-cancelled:%s:%d',
+                $request->get('accountingKey'),
+                $request->get('accountingRevision'),
+            ),
+            $request,
+        );
+    }
+
+    /** @return array<string, mixed> */
+    public function getApprovalState(string $requestId): array
+    {
+        $this->assertInternalUser();
+
+        $request = $this->entityManager
+            ->getRDBRepository(self::REQUEST)
+            ->where(['id' => $requestId])
+            ->findOne();
+
+        if (!$request) {
+            throw new NotFound('Holiday request not found.');
+        }
+
+        $status = (string) ($request->get('status') ?: self::STATUS_PENDING);
+
+        return [
+            'id' => $request->getId(),
+            'status' => $status,
+            'canDecide' =>
+                $status === self::STATUS_PENDING &&
+                $this->isConfiguredApprover() &&
+                $request->get('assignedUserId') !== $this->user->getId(),
+        ];
+    }
+
+    /** @return array<string, mixed> */
+    public function decideHoliday(string $requestId, string $decision): array
+    {
+        if (!in_array($decision, [self::STATUS_APPROVED, self::STATUS_REJECTED], true)) {
+            throw new BadRequest('Decision must be Approved or Rejected.');
+        }
+
+        $this->assertConfiguredApprover();
+
+        return $this->entityManager->getTransactionManager()->run(
+            function () use ($requestId, $decision): array {
+                $request = $this->entityManager
+                    ->getRDBRepository(self::REQUEST)
+                    ->where(['id' => $requestId])
+                    ->forUpdate()
+                    ->findOne();
+
+                if (!$request) {
+                    throw new NotFound('Holiday request not found.');
+                }
+
+                if ($request->get('assignedUserId') === $this->user->getId()) {
+                    throw new Forbidden('An approver cannot decide their own holiday request.');
+                }
+
+                $currentStatus = (string) ($request->get('status') ?: self::STATUS_PENDING);
+
+                if ($currentStatus !== self::STATUS_PENDING) {
+                    throw new Conflict(sprintf(
+                        'This holiday request has already been %s.',
+                        strtolower($currentStatus),
+                    ));
+                }
+
+                $request->set([
+                    'status' => $decision,
+                    'decidedById' => $this->user->getId(),
+                    'decidedByName' => $this->user->get('name'),
+                    'decidedAt' => DateTimeUtil::getSystemNowString(),
+                ]);
+                $this->entityManager->saveEntity($request);
+
+                return [
+                    'id' => $request->getId(),
+                    'status' => $request->get('status'),
+                    'decidedById' => $request->get('decidedById'),
+                    'decidedByName' => $request->get('decidedByName'),
+                    'decidedAt' => $request->get('decidedAt'),
+                ];
+            },
+        );
+    }
+
+    public function processApprovalDecision(Entity $request): void
+    {
+        $statusBefore = (string) ($request->getFetched('status') ?: self::STATUS_PENDING);
+        $statusAfter = (string) $request->get('status');
+
+        if (
+            $statusBefore !== self::STATUS_PENDING ||
+            !in_array($statusAfter, [self::STATUS_APPROVED, self::STATUS_REJECTED], true)
+        ) {
+            throw new Conflict('A holiday approval decision can only be made once.');
+        }
+
+        $this->assertConfiguredApprover();
+
+        if ($request->get('assignedUserId') === $this->user->getId()) {
+            throw new Forbidden('An approver cannot decide their own holiday request.');
+        }
+
+        if ($statusAfter !== self::STATUS_REJECTED) {
+            return;
+        }
+
+        $profile = $this->lockProfileByUser((string) $request->get('assignedUserId'));
+        $days = max(0, (int) $request->get('days'));
+        $before = $this->snapshot($profile);
+        $profile->set('balance', (float) $profile->get('balance') + $days);
+        $this->entityManager->saveEntity($profile);
+        $this->createLedger(
+            $profile,
+            'holidayRejected',
+            $days,
+            $before,
+            $this->snapshot($profile),
+            sprintf(
+                'Holiday rejected for %s through %s.',
+                $request->get('dateStartDate'),
+                $request->get('dateEndDate'),
+            ),
+            sprintf(
+                'holiday-rejected:%s:%d',
                 $request->get('accountingKey'),
                 $request->get('accountingRevision'),
             ),
@@ -521,6 +669,25 @@ final class HolidayBalanceService
         }
     }
 
+    private function assertConfiguredApprover(): void
+    {
+        $this->assertInternalUser();
+
+        if (!$this->isConfiguredApprover()) {
+            throw new Forbidden('Only a configured holiday approver can make this decision.');
+        }
+    }
+
+    private function isConfiguredApprover(): bool
+    {
+        $approverIds = $this->config->get('holidayManagementApproversIds') ?? [];
+
+        return
+            is_array($approverIds) &&
+            is_string($this->user->getId()) &&
+            in_array($this->user->getId(), $approverIds, true);
+    }
+
     private function lockProfileByUser(string $userId): Entity
     {
         $profile = $this->entityManager
@@ -618,6 +785,10 @@ final class HolidayBalanceService
             'assignedUserId' => $userId,
             'dateStartDate<=' => $dateEnd,
             'dateEndDate>=' => $dateStart,
+            'OR' => [
+                ['status!=' => self::STATUS_REJECTED],
+                ['status' => null],
+            ],
         ];
 
         if (!$request->isNew()) {

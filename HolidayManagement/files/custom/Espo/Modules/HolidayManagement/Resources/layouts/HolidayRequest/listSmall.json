@@ -1,5 +1,6 @@
 [
     {"name": "dateStartDate", "width": 35},
     {"name": "dateEndDate", "width": 35},
-    {"name": "days", "width": 20}
+    {"name": "days", "width": 20},
+    {"name": "status", "width": 20}
 ]

@@ -3,19 +3,37 @@
         "Create HolidayRequest": "Programeaza concediu",
         "Holiday Balance": "Sold concediu",
         "Balance Unavailable": "Soldul de concediu nu a putut fi incarcat.",
-        "Profile Not Ready": "Profilul de concediu nu a fost initializat. Contactati un administrator."
+        "Profile Not Ready": "Profilul de concediu nu a fost initializat. Contactati un administrator.",
+        "Approval Required": "Aprobare in asteptare",
+        "Approve Holiday": "Aproba",
+        "Reject Holiday": "Respinge"
     },
     "fields": {
         "name": "Denumire",
         "dateStartDate": "Prima zi",
         "dateEndDate": "Ultima zi",
         "days": "Zile lucratoare",
+        "status": "Stare aprobare",
+        "decidedBy": "Decizie de",
+        "decidedAt": "Data deciziei",
         "description": "Nota",
         "assignedUser": "Utilizator",
         "profile": "Profil de concediu"
     },
     "messages": {
         "holidayBalanceSummary": "{remaining} zile ramase · {entitlement} zile drept anual",
-        "holidayBalanceReset": "Urmatoarea resetare: {date}"
+        "holidayBalanceReset": "Urmatoarea resetare: {date}",
+        "confirmApproveHoliday": "Aprobati aceasta cerere de concediu? Decizia este finala.",
+        "confirmRejectHoliday": "Respingeti aceasta cerere si restituiti zilele rezervate? Decizia este finala.",
+        "holidayApproved": "Cererea de concediu a fost aprobata.",
+        "holidayRejected": "Cererea a fost respinsa, iar zilele rezervate au fost restituite.",
+        "approvalDecisionFailed": "Decizia de aprobare nu a putut fi salvata. Reincarcati cererea si incercati din nou."
+    },
+    "options": {
+        "status": {
+            "Pending": "Aprobare in asteptare",
+            "Approved": "Aprobata",
+            "Rejected": "Respinsa"
+        }
     }
 }

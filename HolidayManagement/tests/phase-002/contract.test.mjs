@@ -77,7 +77,7 @@ test('profile and ledger are internal PHASE-002 entities with no standard write 
     }
 });
 
-test('current release still excludes holiday-sync, approval, notice, and document entities', async () => {
+test('approval remains field-based without extra response, notice, or document entities', async () => {
     const entityFiles = await readdir(path.join(moduleRoot, 'Resources', 'metadata', 'entityDefs'));
     const forbidden = [
         'CompanyHoliday.json',
@@ -198,7 +198,7 @@ test('pending resets use balance plus entitlement eligibility and reasoned overr
     assert.match(source, /pendingResetKey/);
 });
 
-test('module keeps the four admin balance routes and adds the self-service balance route', async () => {
+test('module exposes balance, self-service, and approval routes', async () => {
     const routes = await readModuleJson('Resources', 'routes.json');
 
     assert.deepEqual(routes, [
@@ -226,6 +226,16 @@ test('module keeps the four admin balance routes and adds the self-service balan
             route: '/HolidayManagement/myBalance',
             method: 'get',
             actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\GetMyBalance',
+        },
+        {
+            route: '/HolidayManagement/requests/:id/approval',
+            method: 'get',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\GetApproval',
+        },
+        {
+            route: '/HolidayManagement/requests/:id/decision',
+            method: 'post',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\PostDecision',
         },
     ]);
 });
@@ -274,10 +284,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.3.10 package', async () => {
+test('accounting metadata remains bilingual in the 1.4.0 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.3.10');
+    assert.equal(manifest.version, '1.4.0');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');

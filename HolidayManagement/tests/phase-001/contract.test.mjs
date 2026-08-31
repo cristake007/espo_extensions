@@ -143,7 +143,7 @@ test('English and Romanian settings/admin translations cover every field', async
     }
 });
 
-test('current release still excludes approval, company-holiday, and document entities', async () => {
+test('approval remains field-based without extra response or document entities', async () => {
     const forbidden = [
         'CompanyHoliday',
         'HolidayApprovalResponse',

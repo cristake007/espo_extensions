@@ -36,6 +36,30 @@
             "readOnly": true,
             "default": 0
         },
+        "status": {
+            "type": "enum",
+            "options": ["Pending", "Approved", "Rejected"],
+            "default": "Pending",
+            "required": true,
+            "readOnly": true,
+            "audited": true,
+            "style": {
+                "Pending": "warning",
+                "Approved": "success",
+                "Rejected": "danger"
+            }
+        },
+        "decidedBy": {
+            "type": "link",
+            "entity": "User",
+            "readOnly": true,
+            "audited": true
+        },
+        "decidedAt": {
+            "type": "datetime",
+            "readOnly": true,
+            "audited": true
+        },
         "description": {
             "type": "text"
         },
@@ -88,6 +112,10 @@
         "profile": {
             "type": "belongsTo",
             "entity": "HolidayProfile"
+        },
+        "decidedBy": {
+            "type": "belongsTo",
+            "entity": "User"
         },
         "createdBy": {
             "type": "belongsTo",

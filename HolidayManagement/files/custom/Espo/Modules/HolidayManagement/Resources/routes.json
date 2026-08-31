@@ -23,5 +23,15 @@
         "route": "/HolidayManagement/myBalance",
         "method": "get",
         "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\GetMyBalance"
+    },
+    {
+        "route": "/HolidayManagement/requests/:id/approval",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\GetApproval"
+    },
+    {
+        "route": "/HolidayManagement/requests/:id/decision",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\PostDecision"
     }
 ]

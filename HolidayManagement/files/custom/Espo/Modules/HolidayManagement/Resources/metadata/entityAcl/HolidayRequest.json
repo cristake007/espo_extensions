@@ -2,6 +2,9 @@
     "fields": {
         "name": {"readOnly": true},
         "days": {"readOnly": true},
+        "status": {"readOnly": true},
+        "decidedBy": {"readOnly": true},
+        "decidedAt": {"readOnly": true},
         "assignedUser": {"readOnly": true},
         "profile": {"readOnly": true},
         "accountingKey": {"readOnly": true},

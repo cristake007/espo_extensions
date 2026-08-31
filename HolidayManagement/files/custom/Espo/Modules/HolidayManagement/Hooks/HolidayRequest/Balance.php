@@ -25,6 +25,14 @@ final class Balance implements BeforeSave, BeforeRemove
             return;
         }
 
+        $status = $entity->get('status') ?: 'Pending';
+        $fetchedStatus = $entity->getFetched('status') ?: 'Pending';
+
+        if ($status !== $fetchedStatus) {
+            $this->balanceService->processApprovalDecision($entity);
+            return;
+        }
+
         $this->balanceService->adjustHoliday($entity);
     }
 

@@ -24,7 +24,7 @@
         },
         "type": {
             "type": "enum",
-            "options": ["initialization", "bulkUpdate", "correction", "annualGrant", "resetPending", "resetOverride", "automaticReset", "holidayBooked", "holidayAdjusted", "holidayCancelled"],
+            "options": ["initialization", "bulkUpdate", "correction", "annualGrant", "resetPending", "resetOverride", "automaticReset", "holidayBooked", "holidayAdjusted", "holidayCancelled", "holidayRejected"],
             "required": true,
             "readOnly": true
         },

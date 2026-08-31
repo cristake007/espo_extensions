@@ -3,7 +3,9 @@
         "label": "Overview",
         "rows": [
             [{"name": "dateStartDate"}, {"name": "dateEndDate"}],
-            [{"name": "days"}, {"name": "assignedUser"}],
+            [{"name": "days"}, {"name": "status"}],
+            [{"name": "assignedUser"}, {"name": "decidedBy"}],
+            [{"name": "decidedAt"}, false],
             [{"name": "description", "fullWidth": true}]
         ]
     }

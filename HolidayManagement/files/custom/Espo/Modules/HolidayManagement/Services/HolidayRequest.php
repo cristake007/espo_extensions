@@ -38,7 +38,7 @@ final class HolidayRequest extends Record
             'name',
             ['null', 'dateStart'],
             ['null', 'dateEnd'],
-            ['null', 'status'],
+            ['status', 'status'],
             ['dateStartDate', 'dateStartDate'],
             ['dateEndDate', 'dateEndDate'],
             ['null', 'parentType'],
@@ -62,6 +62,10 @@ final class HolidayRequest extends Record
                 ->where([
                     'dateStartDate<' => substr($to, 0, 10),
                     'dateEndDate>=' => substr($from, 0, 10),
+                    'OR' => [
+                        ['status!=' => 'Rejected'],
+                        ['status' => null],
+                    ],
                 ])
                 ->build();
         } catch (BadRequest | Forbidden $e) {

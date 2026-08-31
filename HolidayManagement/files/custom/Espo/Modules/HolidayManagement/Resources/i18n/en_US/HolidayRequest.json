@@ -3,19 +3,37 @@
         "Create HolidayRequest": "Book time off",
         "Holiday Balance": "Holiday Balance",
         "Balance Unavailable": "The holiday balance could not be loaded.",
-        "Profile Not Ready": "Your holiday profile has not been initialized. Please contact an administrator."
+        "Profile Not Ready": "Your holiday profile has not been initialized. Please contact an administrator.",
+        "Approval Required": "Pending approval",
+        "Approve Holiday": "Approve",
+        "Reject Holiday": "Reject"
     },
     "fields": {
         "name": "Name",
         "dateStartDate": "First Day",
         "dateEndDate": "Last Day",
         "days": "Working Days",
+        "status": "Approval Status",
+        "decidedBy": "Decision By",
+        "decidedAt": "Decision At",
         "description": "Note",
         "assignedUser": "User",
         "profile": "Holiday Profile"
     },
     "messages": {
         "holidayBalanceSummary": "{remaining} days remaining · {entitlement} days annual entitlement",
-        "holidayBalanceReset": "Next reset: {date}"
+        "holidayBalanceReset": "Next reset: {date}",
+        "confirmApproveHoliday": "Approve this holiday request? This decision is final.",
+        "confirmRejectHoliday": "Reject this holiday request and refund its reserved days? This decision is final.",
+        "holidayApproved": "Holiday request approved.",
+        "holidayRejected": "Holiday request rejected and reserved days refunded.",
+        "approvalDecisionFailed": "The approval decision could not be saved. Refresh the request and try again."
+    },
+    "options": {
+        "status": {
+            "Pending": "Pending approval",
+            "Approved": "Approved",
+            "Rejected": "Rejected"
+        }
     }
 }

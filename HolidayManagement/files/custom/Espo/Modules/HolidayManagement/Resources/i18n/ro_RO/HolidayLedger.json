@@ -15,5 +15,10 @@
         "reason": "Motiv",
         "effectiveDate": "Data efectiva",
         "idempotencyKey": "Cheie de idempotenta"
+    },
+    "options": {
+        "type": {
+            "holidayRejected": "Concediu respins"
+        }
     }
 }

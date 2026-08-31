@@ -5,6 +5,8 @@
         "list": "holiday-management:views/holiday-request/list"
     },
     "recordViews": {
+        "detail": "holiday-management:views/holiday-request/record/detail",
+        "detailSmall": "holiday-management:views/holiday-request/record/detail-small",
         "editSmall": "holiday-management:views/holiday-request/record/edit-small"
     }
 }
