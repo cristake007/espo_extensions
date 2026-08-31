@@ -1,6 +1,7 @@
 {
     "fields": {
         "profile": "Holiday Profile",
+        "request": "Holiday Request",
         "user": "User",
         "type": "Entry Type",
         "delta": "Delta",

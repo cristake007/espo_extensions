@@ -18,5 +18,10 @@
         "route": "/HolidayManagement/reset",
         "method": "post",
         "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostReset"
+    },
+    {
+        "route": "/HolidayManagement/myBalance",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\GetMyBalance"
     }
 ]

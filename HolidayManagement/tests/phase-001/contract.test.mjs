@@ -137,10 +137,9 @@ test('English and Romanian settings/admin translations cover every field', async
     }
 });
 
-test('current release does not add PHASE-003+ entities or document templates', async () => {
+test('current release still excludes approval, company-holiday, and document entities', async () => {
     const forbidden = [
         'CompanyHoliday',
-        'HolidayRequest',
         'HolidayApprovalResponse',
         'HolidayDocument',
     ];
@@ -191,14 +190,14 @@ test('settings view declares three explicit EspoCRM tabs', async () => {
     assert.equal((source.match(/tabLabel:/g) ?? []).length, 3);
 });
 
-test('reset-date pattern uses EspoCRM 10 regular-expression metadata shape', async () => {
-    const patterns = await readJson(
+test('reset-date field accepts a zero-padded MM-DD value without named-pattern lookup', async () => {
+    const metadata = await readJson(
         'files', 'custom', 'Espo', 'Modules', 'HolidayManagement',
-        'Resources', 'metadata', 'app', 'regExpPatterns.json'
+        'Resources', 'metadata', 'entityDefs', 'Settings.json'
     );
+    const pattern = metadata.fields.holidayManagementResetDate.pattern;
 
-    assert.deepEqual(patterns.holidayManagementMonthDay, {
-        pattern: '^(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$',
-        isSystem: false,
-    });
+    assert.equal(pattern, '(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])');
+    assert.equal(new RegExp(`^${pattern}$`).test('01-01'), true);
+    assert.equal(new RegExp(`^${pattern}$`).test('13-01'), false);
 });

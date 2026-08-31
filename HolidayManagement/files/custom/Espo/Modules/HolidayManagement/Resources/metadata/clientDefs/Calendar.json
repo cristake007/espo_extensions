@@ -1,0 +1,6 @@
+{
+    "calendarView": "holiday-management:views/calendar/calendar",
+    "colors": {
+        "HolidayRequest": "#4F8A8B"
+    }
+}

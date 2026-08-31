@@ -7,6 +7,9 @@ use Espo\Core\Utils\Config\ConfigWriter;
 
 class AfterInstall
 {
+    private const CALENDAR_ENTITY = 'HolidayRequest';
+    private const NAVIGATION_ENTITY = 'HolidayRequest';
+
     /** @var array<string, int|string|null> */
     private const DEFAULTS = [
         'holidayManagementAnnualEntitlementDays' => null,
@@ -36,14 +39,48 @@ class AfterInstall
             $missingDefaults[$name] = $value;
         }
 
-        if ($missingDefaults === []) {
+        $calendarEntityList = $config->get('calendarEntityList') ?? [];
+        $tabList = $config->get('tabList') ?? [];
+
+        if (!is_array($calendarEntityList)) {
+            throw new RuntimeException('calendarEntityList must be an array.');
+        }
+
+        if (!is_array($tabList)) {
+            throw new RuntimeException('tabList must be an array.');
+        }
+
+        $calendarChanged = !in_array(self::CALENDAR_ENTITY, $calendarEntityList, true);
+
+        if ($calendarChanged) {
+            $calendarEntityList[] = self::CALENDAR_ENTITY;
+        }
+
+        $navigationChanged = !in_array(self::NAVIGATION_ENTITY, $tabList, true);
+
+        if ($navigationChanged) {
+            $tabList[] = self::NAVIGATION_ENTITY;
+        }
+
+        if ($missingDefaults === [] && !$calendarChanged && !$navigationChanged) {
             return;
         }
 
         $configWriter = $container->getByClass(InjectableFactory::class)
             ->create(ConfigWriter::class);
 
-        $configWriter->setMultiple($missingDefaults);
+        if ($missingDefaults !== []) {
+            $configWriter->setMultiple($missingDefaults);
+        }
+
+        if ($calendarChanged) {
+            $configWriter->set('calendarEntityList', array_values($calendarEntityList));
+        }
+
+        if ($navigationChanged) {
+            $configWriter->set('tabList', array_values($tabList));
+        }
+
         $configWriter->save();
     }
 }

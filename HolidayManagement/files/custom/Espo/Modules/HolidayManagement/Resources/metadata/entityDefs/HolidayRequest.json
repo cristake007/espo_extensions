@@ -1,0 +1,118 @@
+{
+    "transactionalSave": true,
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "readOnly": true
+        },
+        "dateStart": {
+            "type": "datetimeOptional",
+            "utility": true
+        },
+        "dateEnd": {
+            "type": "datetimeOptional",
+            "utility": true,
+            "after": "dateStart"
+        },
+        "dateStartDate": {
+            "type": "date",
+            "required": true,
+            "audited": true,
+            "useNumericFormat": true,
+            "view": "holiday-management:views/holiday-request/fields/start-date"
+        },
+        "dateEndDate": {
+            "type": "date",
+            "required": true,
+            "audited": true,
+            "useNumericFormat": true,
+            "after": "dateStartDate",
+            "afterOrEqual": true
+        },
+        "days": {
+            "type": "int",
+            "required": true,
+            "readOnly": true,
+            "default": 0
+        },
+        "description": {
+            "type": "text"
+        },
+        "assignedUser": {
+            "type": "link",
+            "entity": "User",
+            "required": true,
+            "readOnly": true
+        },
+        "profile": {
+            "type": "link",
+            "entity": "HolidayProfile",
+            "required": true,
+            "readOnly": true
+        },
+        "accountingKey": {
+            "type": "varchar",
+            "maxLength": 64,
+            "required": true,
+            "readOnly": true
+        },
+        "accountingRevision": {
+            "type": "int",
+            "required": true,
+            "readOnly": true,
+            "default": 1
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true
+        }
+    },
+    "links": {
+        "assignedUser": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "profile": {
+            "type": "belongsTo",
+            "entity": "HolidayProfile"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "dateStartDate",
+        "order": "desc",
+        "textFilterFields": ["name", "description"]
+    },
+    "indexes": {
+        "assignedUserRange": {
+            "columns": ["assignedUserId", "dateStartDate", "dateEndDate", "deleted"]
+        },
+        "profileRange": {
+            "columns": ["profileId", "dateStartDate", "dateEndDate", "deleted"]
+        },
+        "accountingKeyUnique": {
+            "unique": true,
+            "columns": ["accountingKey"]
+        }
+    }
+}

@@ -6,11 +6,19 @@ namespace Espo\Modules\HolidayManagement\Tools\HolidayBalance;
 
 use DateTimeImmutable;
 use Espo\Core\Exceptions\BadRequest;
+use Espo\Core\Exceptions\Conflict;
+use Espo\Core\Exceptions\Forbidden;
 use Espo\Core\Exceptions\NotFound;
+use Espo\Core\Utils\DateTime as DateTimeUtil;
+use Espo\Core\Utils\Id\RecordIdGenerator;
 use Espo\Core\Utils\Config;
 use Espo\Entities\User;
+use Espo\Modules\HolidayManagement\Tools\HolidayRequest\WorkingDayCalculator;
+use Espo\Modules\HolidayManagement\Tools\HolidayRequest\BookingDatePolicy;
+use Espo\Modules\HolidayManagement\Tools\HolidayRequest\NonWorkingDayProvider;
 use Espo\ORM\Entity;
 use Espo\ORM\EntityManager;
+use InvalidArgumentException;
 use stdClass;
 
 final class HolidayBalanceService
@@ -22,7 +30,190 @@ final class HolidayBalanceService
         private EntityManager $entityManager,
         private Config $config,
         private User $user,
+        private WorkingDayCalculator $workingDayCalculator,
+        private NonWorkingDayProvider $nonWorkingDayProvider,
+        private BookingDatePolicy $bookingDatePolicy,
+        private DateTimeUtil $dateTime,
+        private RecordIdGenerator $recordIdGenerator,
     ) {}
+
+    /** @return array<string, mixed> */
+    public function getMyBalance(): array
+    {
+        $profile = $this->entityManager
+            ->getRDBRepository(self::PROFILE)
+            ->where(['userId' => $this->user->getId()])
+            ->findOne();
+
+        if (!$profile || !(bool) $profile->get('isInitialized')) {
+            return [
+                'initialized' => false,
+                'profileId' => $profile?->getId(),
+                'balance' => null,
+                'annualEntitlement' => null,
+                'nextResetDate' => null,
+            ];
+        }
+
+        return [
+            'initialized' => true,
+            'profileId' => $profile->getId(),
+            'balance' => (float) $profile->get('balance'),
+            'annualEntitlement' => (float) $profile->get('annualEntitlement'),
+            'nextResetDate' => $profile->get('nextResetDate'),
+        ];
+    }
+
+    public function prepareHolidayForCreate(Entity $request): void
+    {
+        $this->assertInternalUser();
+        [$dateStart, $dateEnd] = $this->normalizeRequestDates($request);
+        $this->assertBookingDatesAllowed($dateStart, $dateEnd);
+        $userId = (string) $this->user->getId();
+        $profile = $this->findProfileByUser($userId);
+        $days = $this->countWorkingDays($dateStart, $dateEnd);
+
+        $requestId = $this->recordIdGenerator->generate();
+        $accountingKey = hash('sha256', $requestId . ':' . $userId);
+        $request->set([
+            'id' => $requestId,
+            'name' => 'Holiday - ' . $this->user->get('name'),
+            'dateStart' => null,
+            'dateEnd' => null,
+            'dateStartDate' => $dateStart,
+            'dateEndDate' => $dateEnd,
+            'days' => $days,
+            'assignedUserId' => $userId,
+            'assignedUserName' => $this->user->get('name'),
+            'profileId' => $profile->getId(),
+            'profileName' => $profile->get('name'),
+            'accountingKey' => $accountingKey,
+            'accountingRevision' => 1,
+        ]);
+    }
+
+    public function reserveHoliday(Entity $request): void
+    {
+        $userId = (string) $request->get('assignedUserId');
+        $this->assertRequestOwner($userId);
+        $profile = $this->lockProfileByUser($userId);
+        $dateStart = (string) $request->get('dateStartDate');
+        $dateEnd = (string) $request->get('dateEndDate');
+        $days = (int) $request->get('days');
+
+        $this->assertNoRequestOverlap($request, $userId, $dateStart, $dateEnd);
+
+        $balanceBefore = (float) $profile->get('balance');
+        $balanceAfter = $balanceBefore - $days;
+        $this->assertBalanceLimit($balanceAfter);
+
+        $before = $this->snapshot($profile);
+        $profile->set('balance', $balanceAfter);
+        $this->entityManager->saveEntity($profile);
+        $this->createLedger(
+            $profile,
+            'holidayBooked',
+            -$days,
+            $before,
+            $this->snapshot($profile),
+            sprintf('Holiday booked for %s through %s.', $dateStart, $dateEnd),
+            'holiday-booked:' . $request->get('accountingKey'),
+            $request,
+        );
+    }
+
+    public function prepareHolidayForUpdate(Entity $request): void
+    {
+        $userId = (string) $request->getFetched('assignedUserId');
+        $this->assertRequestOwner($userId);
+        [$dateStart, $dateEnd] = $this->normalizeRequestDates($request);
+        $this->assertBookingDatesAllowed(
+            $dateStart,
+            $dateEnd,
+            (string) $request->getFetched('dateStartDate'),
+            (string) $request->getFetched('dateEndDate'),
+        );
+        $profile = $this->findProfileByUser($userId);
+        $daysAfter = $this->countWorkingDays($dateStart, $dateEnd);
+
+        $request->set([
+            'name' => (string) $request->getFetched('name'),
+            'dateStart' => null,
+            'dateEnd' => null,
+            'dateStartDate' => $dateStart,
+            'dateEndDate' => $dateEnd,
+            'days' => $daysAfter,
+            'assignedUserId' => $userId,
+            'profileId' => $profile->getId(),
+            'accountingKey' => $request->getFetched('accountingKey'),
+            'accountingRevision' => $request->getFetched('accountingRevision'),
+        ]);
+    }
+
+    public function adjustHoliday(Entity $request): void
+    {
+        $userId = (string) $request->get('assignedUserId');
+        $this->assertRequestOwner($userId);
+        $profile = $this->lockProfileByUser($userId);
+        $dateStart = (string) $request->get('dateStartDate');
+        $dateEnd = (string) $request->get('dateEndDate');
+        $daysBefore = (int) $request->getFetched('days');
+        $daysAfter = (int) $request->get('days');
+        $dayDifference = $daysAfter - $daysBefore;
+
+        $this->assertNoRequestOverlap($request, $userId, $dateStart, $dateEnd);
+
+        if ($dayDifference === 0) {
+            return;
+        }
+
+        $balanceAfter = (float) $profile->get('balance') - $dayDifference;
+        $this->assertBalanceLimit($balanceAfter);
+        $revision = (int) $request->getFetched('accountingRevision') + 1;
+        $request->set('accountingRevision', $revision);
+        $before = $this->snapshot($profile);
+        $profile->set('balance', $balanceAfter);
+        $this->entityManager->saveEntity($profile);
+        $this->createLedger(
+            $profile,
+            'holidayAdjusted',
+            -$dayDifference,
+            $before,
+            $this->snapshot($profile),
+            sprintf('Holiday changed to %s through %s.', $dateStart, $dateEnd),
+            sprintf('holiday-adjusted:%s:%d', $request->getFetched('accountingKey'), $revision),
+            $request,
+        );
+    }
+
+    public function cancelHoliday(Entity $request): void
+    {
+        $userId = (string) $request->get('assignedUserId');
+        $this->assertRequestOwner($userId);
+        $profile = $this->lockProfileByUser($userId);
+        $days = max(0, (int) $request->get('days'));
+        $before = $this->snapshot($profile);
+        $profile->set('balance', (float) $profile->get('balance') + $days);
+        $this->entityManager->saveEntity($profile);
+        $this->createLedger(
+            $profile,
+            'holidayCancelled',
+            $days,
+            $before,
+            $this->snapshot($profile),
+            sprintf(
+                'Holiday cancelled for %s through %s.',
+                $request->get('dateStartDate'),
+                $request->get('dateEndDate'),
+            ),
+            sprintf(
+                'holiday-cancelled:%s:%d',
+                $request->get('accountingKey'),
+                $request->get('accountingRevision'),
+            ),
+            $request,
+        );
+    }
 
     /** @return array<int, array<string, mixed>> */
     public function listProfiles(): array
@@ -310,6 +501,150 @@ final class HolidayBalanceService
         return $eligibleUser;
     }
 
+    private function assertInternalUser(): void
+    {
+        if (
+            !(bool) $this->user->get('isActive') ||
+            !in_array($this->user->get('type'), [User::TYPE_REGULAR, User::TYPE_ADMIN], true)
+        ) {
+            throw new Forbidden('Only active internal users can book holiday.');
+        }
+    }
+
+    private function assertRequestOwner(string $userId): void
+    {
+        $this->assertInternalUser();
+
+        if (!$this->user->isAdmin() && $userId !== $this->user->getId()) {
+            throw new Forbidden('A holiday booking can only be changed by its owner.');
+        }
+    }
+
+    private function lockProfileByUser(string $userId): Entity
+    {
+        $profile = $this->entityManager
+            ->getRDBRepository(self::PROFILE)
+            ->where(['userId' => $userId])
+            ->forUpdate()
+            ->findOne();
+
+        if (!$profile || !(bool) $profile->get('isInitialized')) {
+            throw new BadRequest('The holiday profile is not initialized.');
+        }
+
+        return $profile;
+    }
+
+    private function findProfileByUser(string $userId): Entity
+    {
+        $profile = $this->entityManager
+            ->getRDBRepository(self::PROFILE)
+            ->where(['userId' => $userId])
+            ->findOne();
+
+        if (!$profile || !(bool) $profile->get('isInitialized')) {
+            throw new BadRequest('The holiday profile is not initialized.');
+        }
+
+        return $profile;
+    }
+
+    /** @return array{string, string} */
+    private function normalizeRequestDates(Entity $request): array
+    {
+        $dateStart = $this->requestDate($request, 'dateStartDate', 'dateStart');
+        $dateEnd = $this->requestDate($request, 'dateEndDate', 'dateEnd');
+
+        return [$dateStart, $dateEnd];
+    }
+
+    private function requestDate(Entity $request, string $dateField, string $dateTimeField): string
+    {
+        $date = $request->get($dateField);
+
+        if (is_string($date) && $date !== '') {
+            return $date;
+        }
+
+        $dateTime = $request->get($dateTimeField);
+
+        if (!is_string($dateTime) || strlen($dateTime) < 10) {
+            throw new BadRequest('Both the first and last holiday day are required.');
+        }
+
+        return substr($dateTime, 0, 10);
+    }
+
+    private function countWorkingDays(string $dateStart, string $dateEnd): int
+    {
+        try {
+            return $this->workingDayCalculator->count(
+                $dateStart,
+                $dateEnd,
+                $this->nonWorkingDayProvider->getDates($dateStart, $dateEnd),
+            );
+        } catch (InvalidArgumentException $e) {
+            throw new BadRequest($e->getMessage());
+        }
+    }
+
+    private function assertBookingDatesAllowed(
+        string $dateStart,
+        string $dateEnd,
+        ?string $originalDateStart = null,
+        ?string $originalDateEnd = null,
+    ): void {
+        try {
+            $this->bookingDatePolicy->assertAllowed(
+                $dateStart,
+                $dateEnd,
+                $this->dateTime->getToday()->toString(),
+                $originalDateStart,
+                $originalDateEnd,
+            );
+        } catch (InvalidArgumentException $e) {
+            throw new BadRequest($e->getMessage());
+        }
+    }
+
+    private function assertNoRequestOverlap(
+        Entity $request,
+        string $userId,
+        string $dateStart,
+        string $dateEnd,
+    ): void {
+        $where = [
+            'assignedUserId' => $userId,
+            'dateStartDate<=' => $dateEnd,
+            'dateEndDate>=' => $dateStart,
+        ];
+
+        if (!$request->isNew()) {
+            $where['id!='] = $request->getId();
+        }
+
+        $overlap = $this->entityManager
+            ->getRDBRepository('HolidayRequest')
+            ->where($where)
+            ->findOne();
+
+        if ($overlap) {
+            throw new Conflict('The selected dates overlap another holiday booking.');
+        }
+    }
+
+    private function assertBalanceLimit(float $balance): void
+    {
+        $limit = (float) ($this->config->get('holidayManagementNegativeBalanceLimitDays') ?? -21.0);
+
+        if ($balance < $limit) {
+            throw new Conflict(sprintf(
+                'This booking would exceed the minimum holiday balance of %s days.',
+                $limit,
+            ));
+        }
+    }
+
     private function lockProfile(string $profileId): Entity
     {
         $profile = $this->entityManager
@@ -409,6 +744,7 @@ final class HolidayBalanceService
         array $after,
         ?string $reason,
         string $idempotencyKey,
+        ?Entity $request = null,
     ): Entity {
         $ledger = $this->entityManager->getNewEntity(self::LEDGER);
         $ledger->set([
@@ -417,6 +753,8 @@ final class HolidayBalanceService
             'profileName' => $profile->get('name'),
             'userId' => $profile->get('userId'),
             'userName' => $profile->get('userName'),
+            'requestId' => $request?->getId(),
+            'requestName' => $request?->get('name'),
             'type' => $type,
             'delta' => $delta,
             'balanceBefore' => $before['balance'],

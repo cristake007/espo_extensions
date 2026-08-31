@@ -9,6 +9,7 @@ usage() {
 Usage:
   ./build.sh
   ./build.sh --new
+  ./build.sh --extension /path/to/Extension --validate
   ./build.sh --extension /path/to/Extension --zip [VERSION] [paths...]
 
 Modes:
@@ -23,8 +24,13 @@ Modes:
       The ZIP root will contain manifest.json, README.md when present, and the
       requested paths.
 
+  --extension PATH --validate
+      Validates the manifest and module descriptors, all JSON under files and
+      scripts, and PHP syntax where PHP files are present.
+
 Examples:
   ./build.sh
+  ./build.sh --extension /opt/DemoExtension --validate
   ./build.sh --extension /opt/DemoExtension --zip files scripts
   ./build.sh --extension ./GeneratorPerioadeCursuri --zip files scripts
 USAGE
@@ -38,6 +44,12 @@ fail() {
 require_zip() {
     if ! command -v zip >/dev/null 2>&1; then
         fail "zip is not installed. Install it first, for example: sudo apt install zip"
+    fi
+}
+
+require_php() {
+    if ! command -v php >/dev/null 2>&1; then
+        fail "php is required for JSON and PHP syntax validation"
     fi
 }
 
@@ -79,6 +91,91 @@ json_escape() {
     printf '%s' "$input"
 }
 
+validate_extension() {
+    local extension_abs="$1"
+    local manifest_path="${extension_abs}/manifest.json"
+    local modules_root="${extension_abs}/files/custom/Espo/Modules"
+    local json_file php_file validation_output module_dir descriptor legacy_descriptor
+    local module_found=false
+    local validation_roots=("${manifest_path}")
+
+    [ -f "$manifest_path" ] || fail "manifest.json was not found in ${extension_abs}"
+    [ -d "$modules_root" ] || fail "EspoCRM module directory was not found in ${extension_abs}/files"
+
+    require_php
+
+    [ ! -d "${extension_abs}/files" ] || validation_roots+=("${extension_abs}/files")
+    [ ! -d "${extension_abs}/scripts" ] || validation_roots+=("${extension_abs}/scripts")
+
+    while IFS= read -r -d '' json_file; do
+        # The single-quoted program is intentionally passed verbatim to PHP.
+        # shellcheck disable=SC2016
+        if ! validation_output="$(php -r '
+            $path = $argv[1];
+
+            try {
+                json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException $e) {
+                fwrite(STDERR, $path . ": " . $e->getMessage() . PHP_EOL);
+                exit(1);
+            }
+        ' "$json_file" 2>&1)"; then
+            [ -z "$validation_output" ] || printf '%s\n' "$validation_output" >&2
+            fail "invalid JSON: ${json_file}"
+        fi
+    done < <(find "${validation_roots[@]}" -type f -name '*.json' -print0)
+
+    legacy_descriptor="$(find "$modules_root" -type f -path '*/Resources/metadata/app/module.json' -print -quit)"
+
+    if [ -n "$legacy_descriptor" ]; then
+        fail "module descriptor is in the wrong location: ${legacy_descriptor}; use Resources/module.json"
+    fi
+
+    while IFS= read -r -d '' module_dir; do
+        module_found=true
+        descriptor="${module_dir}/Resources/module.json"
+
+        [ -f "$descriptor" ] || fail "module descriptor was not found: ${descriptor}"
+
+        # The single-quoted program is intentionally passed verbatim to PHP.
+        # shellcheck disable=SC2016
+        if ! validation_output="$(php -r '
+            $path = $argv[1];
+            $data = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+
+            if (!array_key_exists("order", $data) || !is_int($data["order"])) {
+                fwrite(STDERR, $path . ": order must be an integer" . PHP_EOL);
+                exit(1);
+            }
+        ' "$descriptor" 2>&1)"; then
+            [ -z "$validation_output" ] || printf '%s\n' "$validation_output" >&2
+            fail "invalid module descriptor: ${descriptor}"
+        fi
+    done < <(find "$modules_root" -mindepth 1 -maxdepth 1 -type d -print0)
+
+    [ "$module_found" = true ] || fail "no EspoCRM module was found in ${modules_root}"
+
+    while IFS= read -r -d '' php_file; do
+        if ! validation_output="$(php -l "$php_file" 2>&1)"; then
+            [ -z "$validation_output" ] || printf '%s\n' "$validation_output" >&2
+            fail "invalid PHP syntax: ${php_file}"
+        fi
+    done < <(find "${validation_roots[@]}" -type f -name '*.php' -print0)
+
+    echo "Validated ${extension_abs}"
+}
+
+validate_extension_command() {
+    local extension_abs
+
+    [ "$#" -eq 3 ] || fail "validation usage: --extension PATH --validate"
+    [ "$1" = "--extension" ] || fail "validation usage: --extension PATH --validate"
+    [ "$3" = "--validate" ] || fail "validation usage: --extension PATH --validate"
+
+    extension_abs="$(cd "$2" 2>/dev/null && pwd)" || fail "extension path not found: $2"
+    validate_extension "$extension_abs"
+}
+
 create_extension() {
     local display_name module_name package_name extension_dir today escaped_name
 
@@ -106,17 +203,19 @@ create_extension() {
     escaped_name="$(json_escape "$display_name")"
 
     mkdir -p \
-        "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/app" \
+        "${extension_dir}/files/custom/Espo/Modules/${module_name}/Controllers" \
+        "${extension_dir}/files/custom/Espo/Modules/${module_name}/Entities" \
+        "${extension_dir}/files/custom/Espo/Modules/${module_name}/Hooks" \
+        "${extension_dir}/files/custom/Espo/Modules/${module_name}/Tools" \
+        "${extension_dir}/files/custom/Espo/Modules/${module_name}/Classes/FieldValidators" \
+        "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/entityDefs" \
+        "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/scopes" \
+        "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/clientDefs" \
+        "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/recordDefs" \
         "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/aclDefs" \
+        "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/layouts" \
         "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/i18n/en_US" \
         "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/i18n/ro_RO" \
-        "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/entityDefs" \
-        "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/clientDefs" \
-        "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/recordDefs" \
-        "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/aclDefs" \
-        "${extension_dir}/files/custom/Espo/Custom/Resources/layouts/Contact" \
-        "${extension_dir}/files/custom/Espo/Custom/Resources/i18n/en_US" \
-        "${extension_dir}/files/custom/Espo/Custom/Resources/i18n/ro_RO" \
         "${extension_dir}/files/client/custom/modules/${package_name}/src" \
         "${extension_dir}/scripts"
 
@@ -149,29 +248,36 @@ Module code lives under:
 files/custom/Espo/Modules/${module_name}
 \`\`\`
 
-Module ACL files can be placed under:
+Custom entity metadata belongs under:
 
 \`\`\`text
+files/custom/Espo/Modules/${module_name}/Resources/metadata/entityDefs
+files/custom/Espo/Modules/${module_name}/Resources/metadata/scopes
+files/custom/Espo/Modules/${module_name}/Resources/metadata/clientDefs
+files/custom/Espo/Modules/${module_name}/Resources/metadata/recordDefs
 files/custom/Espo/Modules/${module_name}/Resources/metadata/aclDefs
 \`\`\`
 
-Native EspoCRM entity overrides can be placed under:
+Layouts and translations belong under:
 
 \`\`\`text
-files/custom/Espo/Custom/Resources/metadata/entityDefs
-files/custom/Espo/Custom/Resources/metadata/clientDefs
-files/custom/Espo/Custom/Resources/metadata/recordDefs
-files/custom/Espo/Custom/Resources/metadata/aclDefs
-files/custom/Espo/Custom/Resources/layouts
-files/custom/Espo/Custom/Resources/i18n
+files/custom/Espo/Modules/${module_name}/Resources/layouts/<EntityType>
+files/custom/Espo/Modules/${module_name}/Resources/i18n/en_US
+files/custom/Espo/Modules/${module_name}/Resources/i18n/ro_RO
 \`\`\`
 
-Example native Contact field override:
+Existing EspoCRM entities are extended through this module's metadata. Example:
 
 \`\`\`text
-files/custom/Espo/Custom/Resources/metadata/entityDefs/Contact.json
-files/custom/Espo/Custom/Resources/i18n/en_US/Contact.json
-files/custom/Espo/Custom/Resources/i18n/ro_RO/Contact.json
+files/custom/Espo/Modules/${module_name}/Resources/metadata/entityDefs/Contact.json
+files/custom/Espo/Modules/${module_name}/Resources/i18n/en_US/Contact.json
+files/custom/Espo/Modules/${module_name}/Resources/i18n/ro_RO/Contact.json
+\`\`\`
+
+Validate the extension locally:
+
+\`\`\`bash
+./build.sh --extension ./${module_name} --validate
 \`\`\`
 
 Build an installable ZIP from the repository root:
@@ -181,7 +287,7 @@ Build an installable ZIP from the repository root:
 \`\`\`
 EOF_README
 
-    cat > "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/app/module.json" <<'JSON'
+    cat > "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/module.json" <<'JSON'
 {
     "order": 100
 }
@@ -203,18 +309,22 @@ JSON
 }
 JSON
 
+    touch "${extension_dir}/files/custom/Espo/Modules/${module_name}/Controllers/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Modules/${module_name}/Entities/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Modules/${module_name}/Hooks/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Modules/${module_name}/Tools/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Modules/${module_name}/Classes/FieldValidators/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/entityDefs/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/scopes/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/clientDefs/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/recordDefs/.gitkeep"
     touch "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/metadata/aclDefs/.gitkeep"
-    touch "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/entityDefs/.gitkeep"
-    touch "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/clientDefs/.gitkeep"
-    touch "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/recordDefs/.gitkeep"
-    touch "${extension_dir}/files/custom/Espo/Custom/Resources/metadata/aclDefs/.gitkeep"
-    touch "${extension_dir}/files/custom/Espo/Custom/Resources/layouts/Contact/.gitkeep"
-    touch "${extension_dir}/files/custom/Espo/Custom/Resources/i18n/en_US/.gitkeep"
-    touch "${extension_dir}/files/custom/Espo/Custom/Resources/i18n/ro_RO/.gitkeep"
+    touch "${extension_dir}/files/custom/Espo/Modules/${module_name}/Resources/layouts/.gitkeep"
     touch "${extension_dir}/files/client/custom/modules/${package_name}/src/.gitkeep"
     touch "${extension_dir}/scripts/.gitkeep"
 
     echo "Created ${extension_dir}"
+    echo "Validate with: ./build.sh --extension ${extension_dir} --validate"
     echo "Build with: ./build.sh --extension ${extension_dir} --zip 1.0.0 files scripts"
 }
 
@@ -254,7 +364,7 @@ zip_extension() {
     extension_abs="$(cd "$extension_path" 2>/dev/null && pwd)" || fail "extension path not found: ${extension_path}"
     manifest_path="${extension_abs}/manifest.json"
 
-    [ -f "$manifest_path" ] || fail "manifest.json was not found in ${extension_abs}"
+    validate_extension "$extension_abs"
 
     version="$(sed -nE 's/^[[:space:]]*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*$/\1/p' "$manifest_path" | head -n 1)"
 
@@ -313,7 +423,14 @@ main() {
             [ "$#" -eq 0 ] || fail "--new does not accept extra arguments"
             create_extension
             ;;
-        --extension|--zip)
+        --extension)
+            if [ "${3:-}" = "--validate" ]; then
+                validate_extension_command "$@"
+            else
+                zip_extension "$@"
+            fi
+            ;;
+        --zip)
             zip_extension "$@"
             ;;
         -h|--help)

@@ -1,0 +1,20 @@
+{
+    "earlyBeforeCreateHookClassNameList": [
+        "Espo\\Modules\\HolidayManagement\\Classes\\Record\\Hooks\\HolidayRequest\\BeforeCreate"
+    ],
+    "earlyBeforeUpdateHookClassNameList": [
+        "Espo\\Modules\\HolidayManagement\\Classes\\Record\\Hooks\\HolidayRequest\\BeforeUpdate"
+    ],
+    "relationships": {
+        "profile": {
+            "linkForeignAccessCheckDisabled": true
+        }
+    },
+    "massActions": {
+        "update": {"disabled": true},
+        "delete": {"disabled": false}
+    },
+    "actions": {
+        "merge": {"disabled": true}
+    }
+}

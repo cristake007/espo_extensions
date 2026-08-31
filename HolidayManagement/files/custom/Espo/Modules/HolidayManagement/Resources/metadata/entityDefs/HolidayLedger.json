@@ -17,9 +17,14 @@
             "required": true,
             "readOnly": true
         },
+        "request": {
+            "type": "link",
+            "entity": "HolidayRequest",
+            "readOnly": true
+        },
         "type": {
             "type": "enum",
-            "options": ["initialization", "bulkUpdate", "correction", "annualGrant", "resetPending", "resetOverride", "automaticReset"],
+            "options": ["initialization", "bulkUpdate", "correction", "annualGrant", "resetPending", "resetOverride", "automaticReset", "holidayBooked", "holidayAdjusted", "holidayCancelled"],
             "required": true,
             "readOnly": true
         },
@@ -91,6 +96,10 @@
         "user": {
             "type": "belongsTo",
             "entity": "User"
+        },
+        "request": {
+            "type": "belongsTo",
+            "entity": "HolidayRequest"
         },
         "actor": {
             "type": "belongsTo",

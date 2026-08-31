@@ -1,0 +1,10 @@
+[
+    {
+        "label": "Overview",
+        "rows": [
+            [{"name": "dateStartDate"}, {"name": "dateEndDate"}],
+            [{"name": "days"}, {"name": "assignedUser"}],
+            [{"name": "description", "fullWidth": true}]
+        ]
+    }
+]

@@ -1,0 +1,21 @@
+{
+    "labels": {
+        "Create HolidayRequest": "Book time off",
+        "Holiday Balance": "Holiday Balance",
+        "Balance Unavailable": "The holiday balance could not be loaded.",
+        "Profile Not Ready": "Your holiday profile has not been initialized. Please contact an administrator."
+    },
+    "fields": {
+        "name": "Name",
+        "dateStartDate": "First Day",
+        "dateEndDate": "Last Day",
+        "days": "Working Days",
+        "description": "Note",
+        "assignedUser": "User",
+        "profile": "Holiday Profile"
+    },
+    "messages": {
+        "holidayBalanceSummary": "{remaining} days remaining · {entitlement} days annual entitlement",
+        "holidayBalanceReset": "Next reset: {date}"
+    }
+}

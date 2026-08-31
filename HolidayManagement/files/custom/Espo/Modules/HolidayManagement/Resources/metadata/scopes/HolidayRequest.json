@@ -1,0 +1,24 @@
+{
+    "entity": true,
+    "layouts": true,
+    "tab": true,
+    "acl": true,
+    "aclPortal": false,
+    "aclActionList": ["create", "read", "edit", "delete"],
+    "aclActionLevelListMap": {
+        "create": ["yes", "no"],
+        "read": ["all", "team", "own", "no"],
+        "edit": ["all", "team", "own", "no"],
+        "delete": ["all", "team", "own", "no"]
+    },
+    "customizable": false,
+    "importable": false,
+    "stream": false,
+    "disabled": false,
+    "type": "Event",
+    "module": "HolidayManagement",
+    "object": true,
+    "calendar": true,
+    "isCustom": false,
+    "preserveAuditLog": true
+}

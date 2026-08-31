@@ -1,6 +1,7 @@
 {
     "fields": {
         "profile": "Profil de concediu",
+        "request": "Cerere de concediu",
         "user": "Utilizator",
         "type": "Tip inregistrare",
         "delta": "Diferenta",

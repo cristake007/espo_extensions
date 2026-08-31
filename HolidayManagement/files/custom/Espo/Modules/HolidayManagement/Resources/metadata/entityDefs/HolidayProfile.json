@@ -67,6 +67,11 @@
             "type": "hasMany",
             "entity": "HolidayLedger",
             "foreign": "profile"
+        },
+        "holidayRequests": {
+            "type": "hasMany",
+            "entity": "HolidayRequest",
+            "foreign": "profile"
         }
     },
     "indexes": {

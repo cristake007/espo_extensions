@@ -18,7 +18,7 @@
         "holidayManagementResetCeilingDays": "Soldurile peste aceasta valoare vor necesita fluxul ulterior de resetare in asteptare sau o exceptie de administrator.",
         "holidayManagementResetWarningDays": "Porneste avertizarea inainte de atingerea plafonului de resetare.",
         "holidayManagementResetWarningRepeatDays": "Numarul de zile dintre avertizarile repetate.",
-        "holidayManagementNegativeBalanceLimitDays": "Cel mai mic sold permis. Folositi zero sau un numar negativ.",
+        "holidayManagementNegativeBalanceLimitDays": "Cel mai mic sold permis. Setati zero pentru a interzice soldul negativ.",
         "holidayManagementApproverRole": "Rolul selectat poate contine cel mult doi utilizatori activi obisnuiti sau administratori.",
         "holidayManagementApprovalBlock1Title": "Titlul tiparit pentru primul bloc de aprobare.",
         "holidayManagementApprovalBlock1Name": "Suprascriere optionala a numelui tiparit. Lasati necompletat pentru numele real al aprobatorului.",

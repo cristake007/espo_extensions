@@ -1,0 +1,10 @@
+{
+    "controller": "controllers/record",
+    "iconClass": "fas fa-umbrella-beach",
+    "views": {
+        "list": "holiday-management:views/holiday-request/list"
+    },
+    "recordViews": {
+        "editSmall": "holiday-management:views/holiday-request/record/edit-small"
+    }
+}

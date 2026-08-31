@@ -34,38 +34,37 @@ EnhancedContacts/
 ├── README.md
 ├── files/
 │   ├── custom/Espo/Modules/EnhancedContacts/
+│   │   ├── Controllers/.gitkeep
+│   │   ├── Entities/.gitkeep
+│   │   ├── Hooks/.gitkeep
+│   │   ├── Tools/.gitkeep
+│   │   ├── Classes/FieldValidators/.gitkeep
 │   │   └── Resources/
-│   │       ├── metadata/
-│   │       │   ├── app/module.json
-│   │       │   └── aclDefs/.gitkeep
-│   │       └── i18n/
-│   │           ├── en_US/Global.json
-│   │           └── ro_RO/Global.json
-│   ├── custom/Espo/Custom/
-│   │   └── Resources/
+│   │       ├── module.json
 │   │       ├── metadata/
 │   │       │   ├── entityDefs/.gitkeep
+│   │       │   ├── scopes/.gitkeep
 │   │       │   ├── clientDefs/.gitkeep
 │   │       │   ├── recordDefs/.gitkeep
 │   │       │   └── aclDefs/.gitkeep
-│   │       ├── layouts/Contact/.gitkeep
+│   │       ├── layouts/.gitkeep
 │   │       └── i18n/
-│   │           ├── en_US/.gitkeep
-│   │           └── ro_RO/.gitkeep
+│   │           ├── en_US/Global.json
+│   │           └── ro_RO/Global.json
 │   └── client/custom/modules/enhanced-contacts/
 │       └── src/.gitkeep
 └── scripts/
     └── .gitkeep
 ```
 
-## Native entity overrides
+## Existing entity augmentation
 
-Use the `Custom` tree when an extension must modify an existing EspoCRM entity, such as `Contact`.
+Installable extensions augment existing EspoCRM entities through their own module metadata. The `custom/Espo/Custom` tree is reserved for instance-specific customization and is not generated.
 
 Example Contact test field:
 
 ```text
-files/custom/Espo/Custom/Resources/metadata/entityDefs/Contact.json
+files/custom/Espo/Modules/EnhancedContacts/Resources/metadata/entityDefs/Contact.json
 ```
 
 ```json
@@ -83,8 +82,8 @@ files/custom/Espo/Custom/Resources/metadata/entityDefs/Contact.json
 Labels:
 
 ```text
-files/custom/Espo/Custom/Resources/i18n/en_US/Contact.json
-files/custom/Espo/Custom/Resources/i18n/ro_RO/Contact.json
+files/custom/Espo/Modules/EnhancedContacts/Resources/i18n/en_US/Contact.json
+files/custom/Espo/Modules/EnhancedContacts/Resources/i18n/ro_RO/Contact.json
 ```
 
 ```json
@@ -95,14 +94,23 @@ files/custom/Espo/Custom/Resources/i18n/ro_RO/Contact.json
 }
 ```
 
-ACL definition folders are also generated for both custom module entities and native overrides:
+The same module metadata locations are used for new custom entities and existing-entity augmentation:
 
 ```text
+files/custom/Espo/Modules/<ModuleName>/Resources/metadata/entityDefs
+files/custom/Espo/Modules/<ModuleName>/Resources/metadata/scopes
+files/custom/Espo/Modules/<ModuleName>/Resources/metadata/clientDefs
+files/custom/Espo/Modules/<ModuleName>/Resources/metadata/recordDefs
 files/custom/Espo/Modules/<ModuleName>/Resources/metadata/aclDefs
-files/custom/Espo/Custom/Resources/metadata/aclDefs
 ```
 
 ## Build an installable ZIP
+
+Validate first:
+
+```bash
+./build.sh --extension ./EnhancedContacts --validate
+```
 
 From the repository root:
 
@@ -159,12 +167,16 @@ Examples:
 
 ```text
 files/custom/Espo/Modules/EnhancedContacts/Resources/metadata/entityDefs/ContactEmail.json
+files/custom/Espo/Modules/EnhancedContacts/Resources/metadata/scopes/ContactEmail.json
+files/custom/Espo/Modules/EnhancedContacts/Resources/metadata/clientDefs/ContactEmail.json
 files/custom/Espo/Modules/EnhancedContacts/Resources/metadata/aclDefs/ContactEmail.json
-files/custom/Espo/Modules/EnhancedContacts/Services/SomeService.php
+files/custom/Espo/Modules/EnhancedContacts/Controllers/ContactEmail.php
+files/custom/Espo/Modules/EnhancedContacts/Entities/ContactEmail.php
+files/custom/Espo/Modules/EnhancedContacts/Hooks/Contact/SomeHook.php
+files/custom/Espo/Modules/EnhancedContacts/Tools/Contacts/SomeService.php
 files/client/custom/modules/enhanced-contacts/src/views/some-view.js
-files/custom/Espo/Custom/Resources/metadata/entityDefs/Contact.json
-files/custom/Espo/Custom/Resources/metadata/aclDefs/Contact.json
-files/custom/Espo/Custom/Resources/layouts/Contact/detail.json
+files/custom/Espo/Modules/EnhancedContacts/Resources/metadata/entityDefs/Contact.json
+files/custom/Espo/Modules/EnhancedContacts/Resources/layouts/Contact/detail.json
 ```
 
 Avoid placing generated ZIP files inside `files/`.
@@ -184,4 +196,4 @@ Avoid placing generated ZIP files inside `files/`.
 - Add only the EspoCRM files needed by the extension.
 - Keep generated ZIP files out of Git.
 - Prefer one extension folder per extension in this repository.
-- Before packaging, check JSON syntax and PHP syntax where applicable.
+- Run `--validate` before packaging; ZIP builds also run validation automatically.

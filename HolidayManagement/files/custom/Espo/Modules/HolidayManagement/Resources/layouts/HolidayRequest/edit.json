@@ -1,0 +1,9 @@
+[
+    {
+        "label": "Overview",
+        "rows": [
+            [{"name": "dateStartDate"}, {"name": "dateEndDate"}],
+            [{"name": "description", "fullWidth": true}]
+        ]
+    }
+]

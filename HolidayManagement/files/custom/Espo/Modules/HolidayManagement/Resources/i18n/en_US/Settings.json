@@ -18,7 +18,7 @@
         "holidayManagementResetCeilingDays": "Balances above this value require the later reset workflow to remain pending or use an administrator exception.",
         "holidayManagementResetWarningDays": "Start warning before reaching the reset ceiling.",
         "holidayManagementResetWarningRepeatDays": "Days between repeated reset warnings.",
-        "holidayManagementNegativeBalanceLimitDays": "The lowest permitted balance. Use zero or a negative number.",
+        "holidayManagementNegativeBalanceLimitDays": "The lowest permitted balance. Set this to zero to prevent a negative balance.",
         "holidayManagementApproverRole": "The selected role may contain at most two active regular or administrator users.",
         "holidayManagementApprovalBlock1Title": "Printed title for the first approval block.",
         "holidayManagementApprovalBlock1Name": "Optional printed-name override. Leave blank to use the actual approver name.",

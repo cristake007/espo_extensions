@@ -1,0 +1,11 @@
+{
+    "labels": {
+        "My Holiday": "Concediul meu"
+    },
+    "scopeNames": {
+        "HolidayRequest": "Concediu"
+    },
+    "scopeNamesPlural": {
+        "HolidayRequest": "Concedii"
+    }
+}

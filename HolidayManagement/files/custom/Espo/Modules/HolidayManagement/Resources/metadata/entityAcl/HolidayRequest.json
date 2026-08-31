@@ -1,0 +1,10 @@
+{
+    "fields": {
+        "name": {"readOnly": true},
+        "days": {"readOnly": true},
+        "assignedUser": {"readOnly": true},
+        "profile": {"readOnly": true},
+        "accountingKey": {"readOnly": true},
+        "accountingRevision": {"readOnly": true}
+    }
+}

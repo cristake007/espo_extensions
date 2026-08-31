@@ -1,0 +1,11 @@
+{
+    "labels": {
+        "My Holiday": "My Time Off"
+    },
+    "scopeNames": {
+        "HolidayRequest": "Time Off"
+    },
+    "scopeNamesPlural": {
+        "HolidayRequest": "Time Off"
+    }
+}
