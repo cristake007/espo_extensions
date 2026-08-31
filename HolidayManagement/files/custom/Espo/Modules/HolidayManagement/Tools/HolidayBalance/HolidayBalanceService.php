@@ -105,7 +105,7 @@ final class HolidayBalanceService
 
         $balanceBefore = (float) $profile->get('balance');
         $balanceAfter = $balanceBefore - $days;
-        $this->assertBalanceLimit($balanceAfter);
+        $this->assertBalanceLimit($balanceBefore, $days);
 
         $before = $this->snapshot($profile);
         $profile->set('balance', $balanceAfter);
@@ -167,8 +167,9 @@ final class HolidayBalanceService
             return;
         }
 
-        $balanceAfter = (float) $profile->get('balance') - $dayDifference;
-        $this->assertBalanceLimit($balanceAfter);
+        $balanceBefore = (float) $profile->get('balance');
+        $balanceAfter = $balanceBefore - $dayDifference;
+        $this->assertBalanceLimit($balanceBefore, $dayDifference, true);
         $revision = (int) $request->getFetched('accountingRevision') + 1;
         $request->set('accountingRevision', $revision);
         $before = $this->snapshot($profile);
@@ -633,16 +634,37 @@ final class HolidayBalanceService
         }
     }
 
-    private function assertBalanceLimit(float $balance): void
+    private function assertBalanceLimit(
+        float $currentBalance,
+        float $daysToDeduct,
+        bool $isAdjustment = false,
+    ): void
     {
         $limit = (float) ($this->config->get('holidayManagementNegativeBalanceLimitDays') ?? -21.0);
+        $balanceAfter = $currentBalance - $daysToDeduct;
 
-        if ($balance < $limit) {
-            throw new Conflict(sprintf(
-                'This booking would exceed the minimum holiday balance of %s days.',
-                $limit,
-            ));
+        if ($balanceAfter >= $limit) {
+            return;
         }
+
+        $availableDays = max(0.0, $currentBalance - $limit);
+        $action = $isAdjustment ? 'change requires' : 'booking requires';
+        $kind = $isAdjustment ? 'additional holiday days' : 'holiday days';
+
+        throw new Conflict(sprintf(
+            'This %s %s %s, but only %s are available. Current balance: %s days; minimum allowed balance: %s days.',
+            $action,
+            $this->formatDays($daysToDeduct),
+            $kind,
+            $this->formatDays($availableDays),
+            $this->formatDays($currentBalance),
+            $this->formatDays($limit),
+        ));
+    }
+
+    private function formatDays(float $value): string
+    {
+        return rtrim(rtrim(number_format($value, 2, '.', ''), '0'), '.');
     }
 
     private function lockProfile(string $profileId): Entity

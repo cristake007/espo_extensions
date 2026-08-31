@@ -98,6 +98,12 @@ test('request lifecycle hooks reserve, adjust, and refund the profile balance', 
     assert.match(balanceSource, /holidayBooked/);
     assert.match(balanceSource, /holidayAdjusted/);
     assert.match(balanceSource, /holidayCancelled/);
+    assert.match(
+        balanceSource,
+        /This %s %s %s, but only %s are available\. Current balance: %s days; minimum allowed balance: %s days\./
+    );
+    assert.match(balanceSource, /\$isAdjustment \? 'change requires' : 'booking requires'/);
+    assert.match(balanceSource, /max\(0\.0, \$currentBalance - \$limit\)/);
 
     const repositoryHook = await readModuleSource('Hooks', 'HolidayRequest', 'Balance.php');
     assert.match(repositoryHook, /implements BeforeSave, BeforeRemove/);
