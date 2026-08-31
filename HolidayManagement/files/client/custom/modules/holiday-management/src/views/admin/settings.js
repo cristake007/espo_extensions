@@ -24,7 +24,7 @@ define(['views/settings/record/edit'], (Dep) => {
                 tabLabel: 'Approval',
                 rows: [
                     [
-                        {name: 'holidayManagementApproverRole'},
+                        {name: 'holidayManagementApprovers'},
                         false,
                     ],
                 ],

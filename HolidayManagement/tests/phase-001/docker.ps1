@@ -79,7 +79,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'EspoCRM rebuild failed.' }
 
     docker compose -p $projectName -f $composeFile exec -T espocrm php -l /tmp/HolidayManagement-AfterInstall.php
-    docker compose -p $projectName -f $composeFile exec -T espocrm php -l custom/Espo/Modules/HolidayManagement/FieldValidators/Settings/ApproverRole/AtMostTwoActiveInternalUsers.php
+    docker compose -p $projectName -f $composeFile exec -T espocrm php -l custom/Espo/Modules/HolidayManagement/FieldValidators/Settings/Approvers/Valid.php
     if ($LASTEXITCODE -ne 0) { throw 'PHP syntax validation failed.' }
 
     $metadata = Invoke-EspoApi -Method GET -Path 'Metadata'
@@ -107,8 +107,8 @@ try {
     Assert-Equal $settings.holidayManagementApprovalBlock1Title $persistedTitle 'Printed title did not persist.'
     Assert-Equal $settings.holidayManagementApprovalBlock1Name $persistedName 'Printed name did not persist.'
 
-    $role = Invoke-EspoApi -Method POST -Path 'Role' -Body (@{name = 'Phase 001 Approvers'} | ConvertTo-Json -Compress)
     $userIds = @()
+    $userNames = @{}
 
     foreach ($number in 1..3) {
         $userBody = @{
@@ -119,26 +119,39 @@ try {
             isActive = $true
             password = 'Phase001-User-Password'
             passwordConfirm = 'Phase001-User-Password'
-            rolesIds = @($role.id)
-            rolesNames = @{$role.id = $role.name}
         } | ConvertTo-Json -Compress
 
         $user = Invoke-EspoApi -Method POST -Path 'User' -Body $userBody
         $userIds += $user.id
+        $userNames[$user.id] = $user.name
     }
 
-    $roleSetting = @{
-        holidayManagementApproverRoleId = $role.id
-        holidayManagementApproverRoleName = $role.name
+    $threeApprovers = @{
+        holidayManagementApproversIds = $userIds
+        holidayManagementApproversNames = $userNames
     } | ConvertTo-Json -Compress
-    Invoke-EspoApi -Method PUT -Path 'Settings' -Body $roleSetting -ExpectedStatus 400 | Out-Null
+    Invoke-EspoApi -Method PUT -Path 'Settings' -Body $threeApprovers -ExpectedStatus 400 | Out-Null
 
     $deactivate = @{isActive = $false} | ConvertTo-Json -Compress
     Invoke-EspoApi -Method PUT -Path "User/$($userIds[2])" -Body $deactivate | Out-Null
-    Invoke-EspoApi -Method PUT -Path 'Settings' -Body $roleSetting | Out-Null
+    Invoke-EspoApi -Method PUT -Path 'Settings' -Body $threeApprovers -ExpectedStatus 400 | Out-Null
+
+    $selectedIds = @($userIds[0], $userIds[1])
+    $selectedNames = @{}
+    $selectedNames[$userIds[0]] = $userNames[$userIds[0]]
+    $selectedNames[$userIds[1]] = $userNames[$userIds[1]]
+    $twoApprovers = @{
+        holidayManagementApproversIds = $selectedIds
+        holidayManagementApproversNames = $selectedNames
+    } | ConvertTo-Json -Compress
+    Invoke-EspoApi -Method PUT -Path 'Settings' -Body $twoApprovers | Out-Null
 
     $settings = Invoke-EspoApi -Method GET -Path 'Settings'
-    Assert-Equal $settings.holidayManagementApproverRoleId $role.id 'Accepted approver role did not persist.'
+    Assert-Equal $settings.holidayManagementApproversIds.Count 2 'Accepted approvers did not persist.'
+    if (($settings.holidayManagementApproversIds -notcontains $selectedIds[0]) -or
+        ($settings.holidayManagementApproversIds -notcontains $selectedIds[1])) {
+        throw 'The persisted approver selection does not contain both selected users.'
+    }
 
     Write-Output 'PHASE-001 Docker install/settings tests passed.'
 }

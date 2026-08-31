@@ -42,13 +42,13 @@
             "max": 0,
             "tooltip": true
         },
-        "holidayManagementApproverRole": {
-            "type": "link",
-            "entity": "Role",
+        "holidayManagementApprovers": {
+            "type": "linkMultiple",
+            "entity": "User",
             "required": true,
             "tooltip": true,
             "validatorClassNameList": [
-                "Espo\\Modules\\HolidayManagement\\FieldValidators\\Settings\\ApproverRole\\AtMostTwoActiveInternalUsers"
+                "Espo\\Modules\\HolidayManagement\\FieldValidators\\Settings\\Approvers\\Valid"
             ]
         },
         "holidayManagementApprovalBlock1Title": {

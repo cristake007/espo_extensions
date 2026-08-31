@@ -50,15 +50,16 @@ test('settings metadata exposes every phase-001 setting with stable defaults', a
         assert.equal(metadata.fields[name].default, value, `wrong default for ${name}`);
     }
 
-    assert.deepEqual(metadata.fields.holidayManagementApproverRole, {
-        type: 'link',
-        entity: 'Role',
+    assert.deepEqual(metadata.fields.holidayManagementApprovers, {
+        type: 'linkMultiple',
+        entity: 'User',
         required: true,
         tooltip: true,
         validatorClassNameList: [
-            'Espo\\Modules\\HolidayManagement\\FieldValidators\\Settings\\ApproverRole\\AtMostTwoActiveInternalUsers',
+            'Espo\\Modules\\HolidayManagement\\FieldValidators\\Settings\\Approvers\\Valid',
         ],
     });
+    assert.equal(metadata.fields.holidayManagementApproverRole, undefined);
 });
 
 test('all settings are admin-only config parameters', async () => {
@@ -67,7 +68,7 @@ test('all settings are admin-only config parameters', async () => {
         'Resources', 'metadata', 'app', 'config.json'
     );
 
-    const expected = [...Object.keys(settingDefaults), 'holidayManagementApproverRole'];
+    const expected = [...Object.keys(settingDefaults), 'holidayManagementApprovers'];
     assert.deepEqual(Object.keys(config.params).sort(), expected.sort());
 
     for (const name of expected) {
@@ -92,16 +93,18 @@ test('print settings contain exactly two title/name blocks and no signature data
     assert.equal(names.some(name => /signature/i.test(name)), false);
 });
 
-test('server-side validator rejects a role with more than two active internal users', async () => {
+test('server-side validator accepts only one or two active internal approvers', async () => {
     const source = await readFile(path.join(
         moduleRoot,
-        'FieldValidators', 'Settings', 'ApproverRole', 'AtMostTwoActiveInternalUsers.php'
+        'FieldValidators', 'Settings', 'Approvers', 'Valid.php'
     ), 'utf8');
 
+    assert.match(source, /\$field \. 'Ids'/);
+    assert.match(source, /count\(\$ids\) < 1 \|\| count\(\$ids\) > 2/);
     assert.match(source, /User::TYPE_REGULAR/);
     assert.match(source, /User::TYPE_ADMIN/);
     assert.match(source, /'isActive'\s*=>\s*true/);
-    assert.match(source, /\$activeInternalUserCount\s*>\s*2/);
+    assert.match(source, /\$activeInternalUserCount !== count\(\$ids\)/);
     assert.doesNotMatch(source, /TYPE_PORTAL|TYPE_API|TYPE_SYSTEM/);
 });
 
@@ -114,6 +117,9 @@ test('install script persists missing defaults without overwriting existing valu
 
     assert.match(source, /->has\(\$name\)/);
     assert.match(source, /setMultiple\(\$missingDefaults\)/);
+    assert.match(source, /'holidayManagementApproversIds'\s*=>\s*\[\]/);
+    assert.match(source, /\$missingDefaults\['holidayManagementApproversNames'\]\s*=\s*\(object\) \[\]/);
+    assert.doesNotMatch(source, /holidayManagementApproverRole/);
 });
 
 test('English and Romanian settings/admin translations cover every field', async () => {
@@ -127,7 +133,7 @@ test('English and Romanian settings/admin translations cover every field', async
             'Resources', 'i18n', locale, 'Admin.json'
         );
 
-        for (const name of [...Object.keys(settingDefaults), 'holidayManagementApproverRole']) {
+        for (const name of [...Object.keys(settingDefaults), 'holidayManagementApprovers']) {
             assert.equal(typeof settings.fields[name], 'string', `${locale} missing ${name}`);
             assert.notEqual(settings.fields[name].trim(), '');
         }

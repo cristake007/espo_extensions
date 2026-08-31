@@ -6,7 +6,7 @@ The extension includes settings, balance accounting, and self-service booking:
 
 - annual entitlement and reset-date defaults;
 - reset ceiling, warning, warning-repeat, and negative-balance limits;
-- one approver role, limited to at most two active regular/admin users;
+- one or two directly selected active regular/admin holiday approvers;
 - exactly two printed approval title/name blocks. Blank configured names mean
   that the later document phase must use the actual approver names.
 - one holiday profile per eligible internal user;
@@ -29,7 +29,7 @@ workflow, notifications, public-holiday synchronization, or document generation.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.3.8 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.3.9 files scripts
 ```
 
 Run the phase contract tests:

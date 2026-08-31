@@ -10,7 +10,7 @@ class AfterInstall
     private const CALENDAR_ENTITY = 'HolidayRequest';
     private const NAVIGATION_ENTITY = 'HolidayRequest';
 
-    /** @var array<string, int|string|null> */
+    /** @var array<string, mixed> */
     private const DEFAULTS = [
         'holidayManagementAnnualEntitlementDays' => null,
         'holidayManagementResetDate' => null,
@@ -18,8 +18,7 @@ class AfterInstall
         'holidayManagementResetWarningDays' => 80,
         'holidayManagementResetWarningRepeatDays' => 30,
         'holidayManagementNegativeBalanceLimitDays' => -21,
-        'holidayManagementApproverRoleId' => null,
-        'holidayManagementApproverRoleName' => null,
+        'holidayManagementApproversIds' => [],
         'holidayManagementApprovalBlock1Title' => "",
         'holidayManagementApprovalBlock1Name' => "",
         'holidayManagementApprovalBlock2Title' => "",
@@ -37,6 +36,10 @@ class AfterInstall
             }
 
             $missingDefaults[$name] = $value;
+        }
+
+        if (!$config->has('holidayManagementApproversNames')) {
+            $missingDefaults['holidayManagementApproversNames'] = (object) [];
         }
 
         $calendarEntityList = $config->get('calendarEntityList') ?? [];
