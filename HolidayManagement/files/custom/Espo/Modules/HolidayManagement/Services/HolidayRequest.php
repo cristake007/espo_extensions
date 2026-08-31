@@ -41,7 +41,6 @@ final class HolidayRequest extends Record
             ['null', 'status'],
             ['dateStartDate', 'dateStartDate'],
             ['dateEndDate', 'dateEndDate'],
-            'assignedUserName',
             ['null', 'parentType'],
             ['null', 'parentId'],
             Field::CREATED_AT,

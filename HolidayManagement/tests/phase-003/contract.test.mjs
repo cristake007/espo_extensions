@@ -134,7 +134,7 @@ test('calendar query shows all users and supports multi-day overlap', async () =
 
     assert.match(source, /getCalenderQuery/);
     assert.match(source, /withStrictAccessControl\(\)/);
-    assert.match(source, /'assignedUserName'/);
+    assert.doesNotMatch(source, /'assignedUserName'/);
     assert.doesNotMatch(source, /'assignedUserId'\s*=>\s*\$userId/);
     assert.match(source, /'dateStartDate<'/);
     assert.match(source, /'dateEndDate>='/);
@@ -146,7 +146,7 @@ test('calendar query shows all users and supports multi-day overlap', async () =
     assert.match(calendarView, /holiday-request-marker/);
     assert.match(calendarView, /-marker-\$\{dateString\}/);
     assert.match(calendarView, /event\.title = `\\u2602 \$\{userName\}`/);
-    assert.match(calendarView, /eventAttributes = \['assignedUserName'\]/);
+    assert.match(calendarView, /replace\(\/\^Holiday - \/, ''\)/);
     assert.doesNotMatch(calendarView, /display:\s*'background'/);
     assert.match(nonWorkingDayProvider, /ENTITY_TYPE\s*=\s*'ZileLibere'/);
     assert.match(nonWorkingDayProvider, /COUNTRY_CODE\s*=\s*'RO'/);

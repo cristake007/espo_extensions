@@ -1,7 +1,5 @@
 define(['crm:views/calendar/calendar'], (CalendarView) => {
     return class extends CalendarView {
-        eventAttributes = ['assignedUserName'];
-
         setup() {
             super.setup();
 
@@ -24,7 +22,7 @@ define(['crm:views/calendar/calendar'], (CalendarView) => {
                     return;
                 }
 
-                const userName = event.assignedUserName || event.title;
+                const userName = event.title.replace(/^Holiday - /, '');
                 event.title = `\u2602 ${userName}`;
 
                 if (this.mode === 'listWeek') {
