@@ -32,6 +32,9 @@ test('HolidayRequest is an owner-scoped calendar event with derived accounting f
         'holiday-management:views/holiday-request/fields/start-date'
     );
     assert.equal(defs.fields.dateEndDate.afterOrEqual, true);
+    assert.equal(defs.fields.color.type, 'foreign');
+    assert.equal(defs.fields.color.link, 'profile');
+    assert.equal(defs.fields.color.field, 'calendarColor');
     assert.equal(defs.fields.days.readOnly, true);
     assert.deepEqual(defs.fields.status.options, ['Pending', 'Approved', 'Rejected']);
     assert.equal(defs.fields.status.default, 'Pending');
@@ -244,6 +247,9 @@ test('calendar query shows all users and supports multi-day overlap', async () =
     assert.match(source, /'dateStartDate<'/);
     assert.match(source, /'dateEndDate>='/);
     assert.match(source, /\['status', 'status'\]/);
+    assert.match(source, /additionalAttributeList/);
+    assert.match(source, /\['profile\.calendarColor', 'color'\]/);
+    assert.match(source, /leftJoin\('profile'\)/);
     assert.match(source, /\['status!='\s*=>\s*'Rejected'\]/);
     assert.match(source, /\['status'\s*=>\s*null\]/);
     assert.equal(calendar.colors.HolidayRequest, '#4F8A8B');
@@ -251,15 +257,13 @@ test('calendar query shows all users and supports multi-day overlap', async () =
         calendar.calendarView,
         'holiday-management:views/calendar/calendar'
     );
-    assert.match(calendarView, /holiday-request-marker/);
-    assert.match(calendarView, /-marker-\$\{dateString\}/);
+    assert.doesNotMatch(calendarView, /holiday-request-marker/);
+    assert.doesNotMatch(calendarView, /-marker-\$\{dateString\}/);
+    assert.match(calendarView, /return events;/);
     assert.match(calendarView, /event\.title = `\\u2602 \$\{userName\}`/);
     assert.match(calendarView, /replace\(\/\^Holiday - \/, ''\)/);
     assert.doesNotMatch(calendarView, /display:\s*'background'/);
-    assert.match(calendarCss, /width:\s*max-content/);
-    assert.match(calendarCss, /min-width:\s*24px/);
-    assert.match(calendarCss, /white-space:\s*nowrap/);
-    assert.doesNotMatch(calendarCss, /(?<!min-)width:\s*24px/);
+    assert.doesNotMatch(calendarCss, /holiday-request-marker/);
     assert.match(nonWorkingDayProvider, /ENTITY_TYPE\s*=\s*'ZileLibere'/);
     assert.match(nonWorkingDayProvider, /COUNTRY_CODE\s*=\s*'RO'/);
     assert.match(nonWorkingDayProvider, /'dateStart>='/);

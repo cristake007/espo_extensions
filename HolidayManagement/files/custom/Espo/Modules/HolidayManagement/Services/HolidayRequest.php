@@ -48,16 +48,29 @@ final class HolidayRequest extends Record
 
         $additionalAttributeList =
             $this->metadata->get(['app', 'calendar', 'additionalAttributeList']) ?? [];
+        $requiresProfileJoin = false;
 
         foreach ($additionalAttributeList as $attribute) {
+            if ($attribute === 'color') {
+                $select[] = ['profile.calendarColor', 'color'];
+                $requiresProfileJoin = true;
+
+                continue;
+            }
+
             $select[] = $seed->hasAttribute($attribute) ?
                 [$attribute, $attribute] :
                 ['null', $attribute];
         }
 
         try {
-            return $builder
-                ->buildQueryBuilder()
+            $queryBuilder = $builder->buildQueryBuilder();
+
+            if ($requiresProfileJoin) {
+                $queryBuilder->leftJoin('profile');
+            }
+
+            return $queryBuilder
                 ->select($select)
                 ->where([
                     'dateStartDate<' => substr($to, 0, 10),

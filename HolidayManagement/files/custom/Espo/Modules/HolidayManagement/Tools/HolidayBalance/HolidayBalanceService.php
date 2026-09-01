@@ -29,6 +29,7 @@ final class HolidayBalanceService
     private const STATUS_PENDING = 'Pending';
     private const STATUS_APPROVED = 'Approved';
     private const STATUS_REJECTED = 'Rejected';
+    private const DEFAULT_CALENDAR_COLOR = '#4F8A8B';
 
     public function __construct(
         private EntityManager $entityManager,
@@ -435,6 +436,7 @@ final class HolidayBalanceService
                 'annualEntitlement' => $profile?->get('annualEntitlement'),
                 'balance' => $profile?->get('balance'),
                 'nextResetDate' => $profile?->get('nextResetDate'),
+                'calendarColor' => $profile?->get('calendarColor') ?: self::DEFAULT_CALENDAR_COLOR,
                 'isInitialized' => (bool) ($profile?->get('isInitialized') ?? false),
                 'resetPending' => (bool) ($profile?->get('resetPending') ?? false),
             ];
@@ -600,6 +602,8 @@ final class HolidayBalanceService
         $nextResetDate = trim((string) ($item['nextResetDate'] ?? ''));
         $annualEntitlement = $this->finiteNumber($item['annualEntitlement'] ?? null, 'Annual entitlement');
         $openingBalance = $this->finiteNumber($item['openingBalance'] ?? null, 'Opening balance');
+        $calendarColor = array_key_exists('calendarColor', $item) ?
+            $this->validateCalendarColor($item['calendarColor']) : null;
 
         if ($userId === '') {
             throw new BadRequest('User ID is required.');
@@ -614,6 +618,7 @@ final class HolidayBalanceService
             $nextResetDate,
             $annualEntitlement,
             $openingBalance,
+            $calendarColor,
         ): array {
             $existing = $this->findLedgerByKey($idempotencyKey);
 
@@ -644,6 +649,7 @@ final class HolidayBalanceService
                     'annualEntitlement' => 0.0,
                     'balance' => 0.0,
                     'nextResetDate' => $nextResetDate,
+                    'calendarColor' => $calendarColor ?? self::DEFAULT_CALENDAR_COLOR,
                     'isInitialized' => false,
                     'resetPending' => false,
                 ]);
@@ -657,6 +663,11 @@ final class HolidayBalanceService
                 'nextResetDate' => $nextResetDate,
                 'isInitialized' => true,
             ]);
+
+            if ($calendarColor !== null) {
+                $profile->set('calendarColor', $calendarColor);
+            }
+
             $this->entityManager->saveEntity($profile);
 
             $ledger = $this->createLedger(
@@ -691,6 +702,15 @@ final class HolidayBalanceService
         }
 
         return $eligibleUser;
+    }
+
+    private function validateCalendarColor(mixed $value): string
+    {
+        if (!is_string($value) || !preg_match('/^#[0-9A-Fa-f]{6}$/', $value)) {
+            throw new BadRequest('Calendar color must be a six-digit hexadecimal color.');
+        }
+
+        return strtoupper($value);
     }
 
     private function assertInternalUser(): void
@@ -1035,6 +1055,7 @@ final class HolidayBalanceService
             'balance' => (float) $profile->get('balance'),
             'annualEntitlement' => (float) $profile->get('annualEntitlement'),
             'nextResetDate' => $profile->get('nextResetDate'),
+            'calendarColor' => $profile->get('calendarColor') ?: self::DEFAULT_CALENDAR_COLOR,
             'resetPending' => (bool) $profile->get('resetPending'),
             'duplicate' => $duplicate,
             'automaticResetLedgerId' => $automaticReset?->getId(),

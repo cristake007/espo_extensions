@@ -33,6 +33,8 @@ test('HolidayProfile is unique per user and keeps service-managed accounting sta
     assert.equal(defs.fields.annualEntitlement.type, 'float');
     assert.equal(defs.fields.balance.readOnly, true);
     assert.equal(defs.fields.nextResetDate.type, 'date');
+    assert.equal(defs.fields.calendarColor.type, 'colorpicker');
+    assert.equal(defs.fields.calendarColor.default, '#4F8A8B');
     assert.equal(defs.fields.isInitialized.readOnly, true);
     assert.equal(defs.fields.resetPending.readOnly, true);
     assert.equal(defs.fields.pendingResetDate.readOnly, true);
@@ -284,15 +286,19 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.match(source, /annualEntitlement/);
     assert.match(source, /openingBalance/);
     assert.match(source, /nextResetDate/);
+    assert.match(source, /calendarColor/);
+    assert.match(source, /views\/fields\/date/);
+    assert.match(source, /views\/fields\/colorpicker/);
+    assert.doesNotMatch(source, /type="date"/);
     assert.match(source, /idempotencyKey/);
     assert.match(source, /prop\('disabled'/);
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.4.2 package', async () => {
+test('accounting metadata remains bilingual in the 1.4.3 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.4.2');
+    assert.equal(manifest.version, '1.4.3');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');
@@ -303,7 +309,7 @@ test('accounting metadata remains bilingual in the 1.4.2 package', async () => {
         assert.equal(typeof admin.descriptions.holidayManagementProfiles, 'string');
 
         for (const field of [
-            'user', 'annualEntitlement', 'balance', 'nextResetDate',
+            'user', 'annualEntitlement', 'balance', 'nextResetDate', 'calendarColor',
             'isInitialized', 'resetPending',
         ]) {
             assert.equal(typeof profile.fields[field], 'string', `${locale} missing profile ${field}`);

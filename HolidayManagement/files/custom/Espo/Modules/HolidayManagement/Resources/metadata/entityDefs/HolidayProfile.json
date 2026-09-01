@@ -28,6 +28,12 @@
             "required": true,
             "readOnly": true
         },
+        "calendarColor": {
+            "type": "colorpicker",
+            "required": true,
+            "readOnly": true,
+            "default": "#4F8A8B"
+        },
         "isInitialized": {
             "type": "bool",
             "required": true,

@@ -1,40 +1,8 @@
-.fc .holiday-request-marker {
-    align-items: center;
-    background: #4f8a8b;
-    border: 1px solid #326567;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(24, 65, 66, 0.3);
-    display: inline-flex;
-    font-weight: 600;
-    height: 24px;
-    justify-content: center;
-    margin: 2px;
-    min-width: 24px;
-    overflow: visible;
-    padding: 0 7px;
-    white-space: nowrap;
-    width: max-content;
-}
-
-.fc .holiday-request-marker .fc-event-main,
-.fc .holiday-request-marker .fc-event-main-frame,
-.fc .holiday-request-marker .fc-event-title-container {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    overflow: visible;
-    width: auto;
-}
-
-.fc .holiday-request-marker .fc-event-title {
-    color: #fff;
-    font-size: 15px;
-    line-height: 1;
-    padding: 0;
-    white-space: nowrap;
-}
-
 .fc .holiday-request-list-event {
     border-left: 5px solid #326567;
     font-weight: 600;
+}
+
+.holiday-profile-color-field {
+    min-width: 120px;
 }

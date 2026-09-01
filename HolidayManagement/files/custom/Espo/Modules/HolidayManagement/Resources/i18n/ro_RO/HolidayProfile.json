@@ -4,6 +4,7 @@
         "annualEntitlement": "Drept anual",
         "balance": "Sold",
         "nextResetDate": "Urmatoarea data de resetare",
+        "calendarColor": "Culoare calendar",
         "isInitialized": "Initializat",
         "resetPending": "Resetare in asteptare",
         "pendingResetDate": "Data resetarii in asteptare",

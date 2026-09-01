@@ -75,6 +75,12 @@
             "required": true,
             "readOnly": true
         },
+        "color": {
+            "type": "foreign",
+            "link": "profile",
+            "field": "calendarColor",
+            "readOnly": true
+        },
         "accountingKey": {
             "type": "varchar",
             "maxLength": 64,

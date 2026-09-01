@@ -4,6 +4,7 @@
         "annualEntitlement": "Annual Entitlement",
         "balance": "Balance",
         "nextResetDate": "Next Reset Date",
+        "calendarColor": "Calendar Color",
         "isInitialized": "Initialized",
         "resetPending": "Reset Pending",
         "pendingResetDate": "Pending Reset Date",

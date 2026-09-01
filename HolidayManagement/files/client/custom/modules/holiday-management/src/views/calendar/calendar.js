@@ -13,12 +13,9 @@ define(['crm:views/calendar/calendar'], (CalendarView) => {
 
         convertToFcEvents(list) {
             const events = super.convertToFcEvents(list);
-            const renderedEvents = [];
 
             events.forEach(event => {
                 if (event.scope !== 'HolidayRequest') {
-                    renderedEvents.push(event);
-
                     return;
                 }
 
@@ -27,33 +24,10 @@ define(['crm:views/calendar/calendar'], (CalendarView) => {
 
                 if (this.mode === 'listWeek') {
                     event.className = ['holiday-request-list-event'];
-                    renderedEvents.push(event);
-
-                    return;
-                }
-
-                let date = this.dateToMoment(event.dateStartDate);
-                const lastDate = this.dateToMoment(event.dateEndDate);
-
-                while (!date.isAfter(lastDate, 'day')) {
-                    const dateString = date.format('YYYY-MM-DD');
-
-                    renderedEvents.push({
-                        ...event,
-                        id: `${event.id}-marker-${dateString}`,
-                        start: dateString,
-                        end: date.clone().add(1, 'day').format('YYYY-MM-DD'),
-                        allDay: true,
-                        display: 'block',
-                        editable: false,
-                        className: ['holiday-request-marker'],
-                    });
-
-                    date = date.add(1, 'day');
                 }
             });
 
-            return renderedEvents;
+            return events;
         }
 
         addModel(model) {
