@@ -53,6 +53,10 @@ test('HolidayRequest is an owner-scoped calendar event with derived accounting f
     assert.match(controller, /->withWhereAdded\(WhereItem::fromRaw/);
     assert.match(controller, /'attribute'\s*=>\s*'assignedUserId'/);
     assert.match(controller, /'value'\s*=>\s*\$this->user->getId\(\)/);
+    assert.match(controller, /holidayManagementApproversIds/);
+    assert.match(controller, /'type'\s*=>\s*'notEquals'/);
+    assert.match(controller, /'attribute'\s*=>\s*'status'/);
+    assert.match(controller, /'value'\s*=>\s*'Pending'/);
 
     const listLayout = await readJson('Resources', 'layouts', 'HolidayRequest', 'list.json');
     const searchLayout = await readJson('Resources', 'layouts', 'HolidayRequest', 'search.json');
@@ -85,7 +89,7 @@ test('all internal users can read shared requests but mutate only their own', as
     assert.equal(scope.tab, true);
     assert.equal(
         auxiliaryNavbar.menuItems.holidayApprovals.link,
-        '#HolidayRequest/approvals'
+        '#HolidayRequest'
     );
     assert.match(afterInstall, /tabList/);
     assert.match(afterInstall, /NAVIGATION_ENTITY\s*=\s*'HolidayRequest'/);
@@ -126,7 +130,7 @@ test('request lifecycle hooks reserve, adjust, and refund the profile balance', 
     assert.match(balanceSource, /holidayCancelled/);
     assert.match(balanceSource, /holidayRejected/);
     assert.match(balanceSource, /holidayManagementApproversIds/);
-    assert.match(balanceSource, /An approver cannot decide their own holiday request/);
+    assert.doesNotMatch(balanceSource, /An approver cannot decide their own holiday request/);
     assert.match(balanceSource, /currentStatus !== self::STATUS_PENDING/);
     assert.match(balanceSource, /getTransactionManager\(\)->run/);
     assert.match(
@@ -148,6 +152,9 @@ test('request lifecycle hooks reserve, adjust, and refund the profile balance', 
 
 test('either configured approver can make the single final decision', async () => {
     const routes = await readJson('Resources', 'routes.json');
+    const balanceSource = await readModuleSource(
+        'Tools', 'HolidayBalance', 'HolidayBalanceService.php'
+    );
     const getApproval = await readModuleSource(
         'Tools', 'HolidayRequest', 'Api', 'GetApproval.php'
     );
@@ -162,15 +169,9 @@ test('either configured approver can make the single final decision', async () =
     const approvalQueue = await readModuleSource(
         'Tools', 'HolidayRequest', 'Api', 'GetApprovalQueue.php'
     );
-    const clientRoutes = await readJson('Resources', 'metadata', 'app', 'clientRoutes.json');
     const requestClient = await readJson(
         'Resources', 'metadata', 'clientDefs', 'HolidayRequest.json'
     );
-    const approvalPage = await readFile(path.join(
-        extensionRoot,
-        'files', 'client', 'custom', 'modules', 'holiday-management',
-        'src', 'views', 'holiday-request', 'approvals.js'
-    ), 'utf8');
     const ledger = await readJson('Resources', 'metadata', 'entityDefs', 'HolidayLedger.json');
 
     assert.ok(routes.some(item =>
@@ -188,17 +189,12 @@ test('either configured approver can make the single final decision', async () =
     assert.match(getApproval, /getApprovalState\(\$id\)/);
     assert.match(postDecision, /decideHoliday\(\$id, \$data->decision\)/);
     assert.match(approvalQueue, /listPendingApprovals\(\)/);
-    assert.deepEqual(clientRoutes['HolidayRequest/approvals'], {
-        params: {controller: 'HolidayRequest', action: 'approvals'},
-    });
-    assert.equal(
-        requestClient.controller,
-        'holiday-management:controllers/holiday-request'
+    assert.doesNotMatch(balanceSource, /assignedUserId!='\s*=>\s*\$this->user->getId\(\)/);
+    assert.doesNotMatch(
+        balanceSource,
+        /get\('assignedUserId'\)\s*===\s*\$this->user->getId\(\)/
     );
-    assert.match(approvalPage, /HolidayManagement\/approvalQueue/);
-    assert.match(approvalPage, /data-action="approve"/);
-    assert.match(approvalPage, /data-action="reject"/);
-    assert.match(approvalPage, /requesterName/);
+    assert.equal(requestClient.controller, undefined);
     const personalList = await readFile(path.join(
         extensionRoot,
         'files', 'client', 'custom', 'modules', 'holiday-management',
@@ -206,8 +202,11 @@ test('either configured approver can make the single final decision', async () =
     ), 'utf8');
     assert.match(personalList, /loadApprovalQueue\(\)/);
     assert.match(personalList, /holiday-approval-panel/);
+    assert.doesNotMatch(personalList, /Calendar\/show\/mode=timeline/);
     assert.match(personalList, /decideApproval\(row, 'Approved'\)/);
     assert.match(personalList, /decideApproval\(row, 'Rejected'\)/);
+    assert.match(personalList, /await this\.confirm\(\{/);
+    assert.doesNotMatch(personalList, /window\.confirm/);
     assert.match(approvalActions, /decision === 'Approved'/);
     assert.match(approvalActions, /decide\(view, 'Rejected'/);
     assert.match(approvalActions, /state\.canDecide/);
@@ -310,6 +309,11 @@ test('self-service page fetches only the signed-in balance and presents bilingua
         'files', 'client', 'custom', 'modules', 'holiday-management',
         'src', 'views', 'holiday-request', 'list.js'
     ), 'utf8');
+    const style = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'css', 'calendar.css'
+    ), 'utf8');
     const route = routes.find(item => item.route === '/HolidayManagement/myBalance');
 
     assert.deepEqual(route, {
@@ -322,7 +326,15 @@ test('self-service page fetches only the signed-in balance and presents bilingua
     assert.match(client, /HolidayManagement\/myBalance/);
     assert.match(client, /balance\.balance/);
     assert.match(client, /annualEntitlement/);
+    assert.match(client, /holiday-balance-card__metric/);
+    assert.doesNotMatch(client, /holiday-balance-card--\$\{state\}/);
+    assert.match(client, /toDisplayDate/);
     assert.match(client, /catch \(error\)/);
+    assert.match(style, /\.holiday-balance-card__number/);
+    assert.match(style, /var\(--tuvtk-secondary, var\(--brand-danger\)\)/);
+    assert.match(style, /var\(--tuvtk-surface, var\(--panel-bg\)\)/);
+    assert.match(style, /\.holiday-balance-card \{[^}]*box-shadow:\s*none;/s);
+    assert.match(style, /@media \(max-width: 767px\)/);
 
     for (const locale of ['en_US', 'ro_RO']) {
         const global = await readJson('Resources', 'i18n', locale, 'Global.json');
@@ -331,6 +343,9 @@ test('self-service page fetches only the signed-in balance and presents bilingua
         assert.equal(typeof global.labels['My Holiday'], 'string');
         assert.equal(typeof global.scopeNames.HolidayRequest, 'string');
         assert.equal(typeof request.messages.holidayBalanceSummary, 'string');
+        assert.equal(typeof request.labels['Days Available'], 'string');
+        assert.equal(typeof request.labels['Annual Entitlement'], 'string');
+        assert.equal(typeof request.labels['Next Reset'], 'string');
         assert.equal(typeof request.labels['Profile Not Ready'], 'string');
         assert.equal(typeof request.fields.status, 'string');
         assert.equal(typeof request.options.status.Pending, 'string');

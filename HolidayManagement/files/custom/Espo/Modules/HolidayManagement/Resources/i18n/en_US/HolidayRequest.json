@@ -2,14 +2,17 @@
     "labels": {
         "Create HolidayRequest": "Book time off",
         "Holiday Balance": "Holiday Balance",
+        "Days Available": "Days available",
+        "Annual Entitlement": "Annual entitlement",
+        "Next Reset": "Next reset",
+        "Not Set": "Not set",
         "Balance Unavailable": "The holiday balance could not be loaded.",
         "Profile Not Ready": "Your holiday profile has not been initialized. Please contact an administrator.",
         "Approval Required": "Pending approval",
         "Approve Holiday": "Approve",
         "Reject Holiday": "Reject",
         "Holiday Approvals": "Holiday Approvals",
-        "Requester": "Requester",
-        "Open Approval Page": "Open full page"
+        "Requester": "Requester"
     },
     "fields": {
         "name": "Name",

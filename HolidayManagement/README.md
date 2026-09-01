@@ -39,7 +39,7 @@ balance of -5 with a 21-day entitlement becomes 16.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.4.5 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.5.0 files scripts
 ```
 
 Run the phase contract tests:

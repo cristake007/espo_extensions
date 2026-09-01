@@ -2,14 +2,17 @@
     "labels": {
         "Create HolidayRequest": "Programeaza concediu",
         "Holiday Balance": "Sold concediu",
+        "Days Available": "Zile disponibile",
+        "Annual Entitlement": "Drept anual",
+        "Next Reset": "Urmatoarea resetare",
+        "Not Set": "Nesetat",
         "Balance Unavailable": "Soldul de concediu nu a putut fi incarcat.",
         "Profile Not Ready": "Profilul de concediu nu a fost initializat. Contactati un administrator.",
         "Approval Required": "Aprobare in asteptare",
         "Approve Holiday": "Aproba",
         "Reject Holiday": "Respinge",
         "Holiday Approvals": "Aprobari concedii",
-        "Requester": "Solicitant",
-        "Open Approval Page": "Deschide pagina completa"
+        "Requester": "Solicitant"
     },
     "fields": {
         "name": "Denumire",

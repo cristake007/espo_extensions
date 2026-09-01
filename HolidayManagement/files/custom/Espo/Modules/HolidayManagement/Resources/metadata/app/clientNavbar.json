@@ -3,7 +3,7 @@
         "holidayApprovals": {
             "order": 35,
             "groupIndex": 0,
-            "link": "#HolidayRequest/approvals",
+            "link": "#HolidayRequest",
             "labelTranslation": "Global.labels.Holiday Approvals",
             "iconClass": "fas fa-user-check"
         }

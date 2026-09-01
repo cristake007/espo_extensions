@@ -29,10 +29,6 @@ define(['views/list'], (ListView) => {
                         this.translate('Holiday Approvals', 'labels', 'HolidayRequest')
                     ),
                     $('<span>').addClass('badge margin-left').text(String(rows.length)),
-                    $('<a>')
-                        .addClass('btn btn-default btn-xs pull-right')
-                        .attr('href', '#HolidayRequest/approvals')
-                        .text(this.translate('Open Approval Page', 'labels', 'HolidayRequest')),
                 );
             const body = $('<div>').addClass('panel-body');
             const panel = $('<div>')
@@ -124,9 +120,14 @@ define(['views/list'], (ListView) => {
                 ? this.translate('confirmApproveHoliday', 'messages', 'HolidayRequest')
                 : this.translate('confirmRejectHoliday', 'messages', 'HolidayRequest');
 
-            if (!window.confirm(message)) {
-                return;
-            }
+            await this.confirm({
+                message,
+                confirmText: this.translate(
+                    decision === 'Approved' ? 'Approve Holiday' : 'Reject Holiday',
+                    'labels',
+                    'HolidayRequest',
+                ),
+            });
 
             row.find('button').prop('disabled', true);
 
@@ -154,13 +155,22 @@ define(['views/list'], (ListView) => {
 
         async loadHolidayBalance() {
             const panel = $('<div>')
-                .addClass('panel panel-default holiday-balance-panel margin-bottom')
+                .addClass('panel panel-default holiday-balance-panel holiday-balance-card margin-bottom')
                 .append(
                     $('<div>')
-                        .addClass('panel-heading')
-                        .text(this.translate('Holiday Balance', 'labels', 'HolidayRequest')),
+                        .addClass('panel-heading holiday-balance-card__heading')
+                        .append(
+                            $('<span>')
+                                .addClass('fas fa-umbrella-beach holiday-balance-card__icon')
+                                .attr('aria-hidden', 'true'),
+                            $('<span>').text(this.translate(
+                                'Holiday Balance',
+                                'labels',
+                                'HolidayRequest'
+                            )),
+                        ),
                     $('<div>')
-                        .addClass('panel-body')
+                        .addClass('panel-body holiday-balance-card__body')
                         .append($('<span>').addClass('text-muted').text(this.translate('Loading...'))),
                 );
 
@@ -193,17 +203,55 @@ define(['views/list'], (ListView) => {
                 return;
             }
 
-            const summary = this
-                .translate('holidayBalanceSummary', 'messages', 'HolidayRequest')
-                .replace('{remaining}', String(balance.balance))
-                .replace('{entitlement}', String(balance.annualEntitlement));
-            const reset = this
-                .translate('holidayBalanceReset', 'messages', 'HolidayRequest')
-                .replace('{date}', String(balance.nextResetDate));
+            const displayDate = balance.nextResetDate
+                ? this.getDateTime().toDisplayDate(String(balance.nextResetDate))
+                : this.translate('Not Set', 'labels', 'HolidayRequest');
 
             body.append(
-                $('<strong>').text(summary),
-                $('<span>').addClass('text-muted pull-right').text(reset),
+                $('<div>').addClass('holiday-balance-card__metric').append(
+                    $('<div>')
+                        .addClass('holiday-balance-card__number')
+                        .text(String(balance.balance)),
+                    $('<div>')
+                        .addClass('holiday-balance-card__metric-label')
+                        .text(this.translate('Days Available', 'labels', 'HolidayRequest')),
+                ),
+                $('<div>').addClass('holiday-balance-card__details').append(
+                    $('<div>').addClass('holiday-balance-card__detail').append(
+                        $('<span>')
+                            .addClass('fas fa-calendar-check holiday-balance-card__detail-icon')
+                            .attr('aria-hidden', 'true'),
+                        $('<div>').append(
+                            $('<div>')
+                                .addClass('holiday-balance-card__detail-label')
+                                .text(this.translate(
+                                    'Annual Entitlement',
+                                    'labels',
+                                    'HolidayRequest'
+                                )),
+                            $('<div>')
+                                .addClass('holiday-balance-card__detail-value')
+                                .text(String(balance.annualEntitlement)),
+                        ),
+                    ),
+                    $('<div>').addClass('holiday-balance-card__detail').append(
+                        $('<span>')
+                            .addClass('fas fa-redo-alt holiday-balance-card__detail-icon')
+                            .attr('aria-hidden', 'true'),
+                        $('<div>').append(
+                            $('<div>')
+                                .addClass('holiday-balance-card__detail-label')
+                                .text(this.translate(
+                                    'Next Reset',
+                                    'labels',
+                                    'HolidayRequest'
+                                )),
+                            $('<div>')
+                                .addClass('holiday-balance-card__detail-value')
+                                .text(displayDate),
+                        ),
+                    ),
+                ),
             );
         }
     };

@@ -14,3 +14,123 @@
 body.holiday-management-approver #navbar a[data-name="holidayApprovals"] {
     display: block;
 }
+
+.holiday-balance-card {
+    --holiday-balance-accent: var(--tuvtk-secondary, var(--brand-danger));
+    --holiday-balance-accent-surface: var(--tuvtk-hover, var(--state-primary-bg));
+    background: var(--tuvtk-surface, var(--panel-bg));
+    border: 1px solid var(--tuvtk-border, var(--panel-default-border));
+    border-radius: 3px;
+    box-shadow: none;
+    color: var(--tuvtk-text, var(--text-color));
+    overflow: hidden;
+}
+
+.holiday-balance-card .holiday-balance-card__heading {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    display: flex;
+    font-size: 14px;
+    font-weight: 600;
+    gap: 9px;
+    padding: 16px 18px 8px;
+}
+
+.holiday-balance-card__icon {
+    color: var(--holiday-balance-accent);
+    font-size: 16px;
+}
+
+.holiday-balance-card .holiday-balance-card__body {
+    align-items: stretch;
+    display: flex;
+    gap: 18px;
+    padding: 8px 18px 18px;
+}
+
+.holiday-balance-card__metric {
+    align-items: center;
+    background: var(--holiday-balance-accent-surface);
+    border-left: 4px solid var(--holiday-balance-accent);
+    border-radius: 3px;
+    display: flex;
+    flex: 0 0 210px;
+    justify-content: space-between;
+    min-height: 78px;
+    padding: 13px 16px;
+}
+
+.holiday-balance-card__number {
+    color: var(--holiday-balance-accent);
+    font-size: 38px;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1;
+}
+
+.holiday-balance-card__metric-label {
+    color: var(--tuvtk-muted, var(--text-muted-color));
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.25;
+    max-width: 78px;
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.holiday-balance-card__details {
+    align-items: stretch;
+    display: flex;
+    flex: 1 1 auto;
+    gap: 12px;
+}
+
+.holiday-balance-card__detail {
+    align-items: center;
+    background: var(--tuvtk-surface, var(--panel-bg));
+    border: 1px solid var(--tuvtk-border-soft, var(--panel-default-border));
+    border-radius: 3px;
+    display: flex;
+    flex: 1 1 0;
+    gap: 12px;
+    min-width: 0;
+    padding: 13px 15px;
+}
+
+.holiday-balance-card__detail-icon {
+    color: var(--holiday-balance-accent);
+    flex: 0 0 auto;
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+.holiday-balance-card__detail-label {
+    color: var(--tuvtk-label, var(--text-muted-color));
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.holiday-balance-card__detail-value {
+    font-size: 17px;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+    .holiday-balance-card .holiday-balance-card__body,
+    .holiday-balance-card__details {
+        flex-direction: column;
+    }
+
+    .holiday-balance-card__metric {
+        flex-basis: auto;
+    }
+}

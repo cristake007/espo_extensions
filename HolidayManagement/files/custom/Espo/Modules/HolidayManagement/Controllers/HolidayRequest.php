@@ -13,11 +13,23 @@ final class HolidayRequest extends Record
 {
     protected function fetchSearchParamsFromRequest(Request $request): SearchParams
     {
-        return parent::fetchSearchParamsFromRequest($request)
+        $searchParams = parent::fetchSearchParamsFromRequest($request)
             ->withWhereAdded(WhereItem::fromRaw([
                 'type' => 'equals',
                 'attribute' => 'assignedUserId',
                 'value' => $this->user->getId(),
             ]));
+
+        $approverIds = $this->config->get('holidayManagementApproversIds') ?? [];
+
+        if (is_array($approverIds) && in_array($this->user->getId(), $approverIds, true)) {
+            $searchParams = $searchParams->withWhereAdded(WhereItem::fromRaw([
+                'type' => 'notEquals',
+                'attribute' => 'status',
+                'value' => 'Pending',
+            ]));
+        }
+
+        return $searchParams;
     }
 }

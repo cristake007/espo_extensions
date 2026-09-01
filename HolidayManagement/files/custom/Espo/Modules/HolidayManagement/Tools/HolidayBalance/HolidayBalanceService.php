@@ -260,8 +260,7 @@ final class HolidayBalanceService
             'status' => $status,
             'canDecide' =>
                 $status === self::STATUS_PENDING &&
-                $this->isConfiguredApprover() &&
-                $request->get('assignedUserId') !== $this->user->getId(),
+                $this->isConfiguredApprover(),
         ];
     }
 
@@ -280,10 +279,7 @@ final class HolidayBalanceService
 
         $requests = $this->entityManager
             ->getRDBRepository(self::REQUEST)
-            ->where([
-                'status' => self::STATUS_PENDING,
-                'assignedUserId!=' => $this->user->getId(),
-            ])
+            ->where(['status' => self::STATUS_PENDING])
             ->order('dateStartDate')
             ->find();
         $list = [];
@@ -329,10 +325,6 @@ final class HolidayBalanceService
                     throw new NotFound('Holiday request not found.');
                 }
 
-                if ($request->get('assignedUserId') === $this->user->getId()) {
-                    throw new Forbidden('An approver cannot decide their own holiday request.');
-                }
-
                 $currentStatus = (string) ($request->get('status') ?: self::STATUS_PENDING);
 
                 if ($currentStatus !== self::STATUS_PENDING) {
@@ -374,10 +366,6 @@ final class HolidayBalanceService
         }
 
         $this->assertConfiguredApprover();
-
-        if ($request->get('assignedUserId') === $this->user->getId()) {
-            throw new Forbidden('An approver cannot decide their own holiday request.');
-        }
 
         if ($statusAfter !== self::STATUS_REJECTED) {
             return;
