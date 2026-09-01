@@ -6,3 +6,11 @@
 .holiday-profile-color-field {
     min-width: 120px;
 }
+
+#navbar a[data-name="holidayApprovals"] {
+    display: none;
+}
+
+body.holiday-management-approver #navbar a[data-name="holidayApprovals"] {
+    display: block;
+}

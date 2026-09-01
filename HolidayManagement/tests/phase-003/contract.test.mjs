@@ -238,6 +238,11 @@ test('calendar query shows all users and supports multi-day overlap', async () =
         'Tools', 'HolidayRequest', 'NonWorkingDayProvider.php'
     );
     const client = await readJson('Resources', 'metadata', 'app', 'client.json');
+    const approverMenu = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'js', 'approver-menu.js'
+    ), 'utf8');
     const module = await readJson('Resources', 'module.json');
 
     assert.match(source, /getCalenderQuery/);
@@ -273,6 +278,14 @@ test('calendar query shows all users and supports multi-day overlap', async () =
         '__APPEND__',
         'client/custom/modules/holiday-management/css/calendar.css',
     ]);
+    assert.deepEqual(client.scriptList, [
+        '__APPEND__',
+        'client/custom/modules/holiday-management/js/approver-menu.js',
+    ]);
+    assert.match(calendarCss, /a\[data-name="holidayApprovals"\]/);
+    assert.match(calendarCss, /body\.holiday-management-approver/);
+    assert.match(approverMenu, /HolidayManagement\/approvalQueue/);
+    assert.match(approverMenu, /response\.isApprover === true/);
     assert.equal(
         requestClient.recordViews.detail,
         'holiday-management:views/holiday-request/record/detail'
