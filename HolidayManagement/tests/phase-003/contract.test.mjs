@@ -172,6 +172,11 @@ test('either configured approver can make the single final decision', async () =
     const requestClient = await readJson(
         'Resources', 'metadata', 'clientDefs', 'HolidayRequest.json'
     );
+    const controller = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'controllers', 'holiday-request.js'
+    ), 'utf8');
     const ledger = await readJson('Resources', 'metadata', 'entityDefs', 'HolidayLedger.json');
 
     assert.ok(routes.some(item =>
@@ -194,7 +199,13 @@ test('either configured approver can make the single final decision', async () =
         balanceSource,
         /get\('assignedUserId'\)\s*===\s*\$this->user->getId\(\)/
     );
-    assert.equal(requestClient.controller, undefined);
+    assert.equal(
+        requestClient.controller,
+        'holiday-management:controllers/holiday-request'
+    );
+    assert.match(controller, /define\(\['controllers\/record'\]/);
+    assert.match(controller, /extends RecordController/);
+    assert.doesNotMatch(controller, /actionApprovals|Calendar\/show\/mode=timeline/);
     const personalList = await readFile(path.join(
         extensionRoot,
         'files', 'client', 'custom', 'modules', 'holiday-management',
