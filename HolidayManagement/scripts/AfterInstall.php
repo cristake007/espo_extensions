@@ -14,9 +14,7 @@ class AfterInstall
     private const DEFAULTS = [
         'holidayManagementAnnualEntitlementDays' => null,
         'holidayManagementResetDate' => null,
-        'holidayManagementResetCeilingDays' => 90,
-        'holidayManagementResetWarningDays' => 80,
-        'holidayManagementResetWarningRepeatDays' => 30,
+        'holidayManagementCarryOverLimitDays' => 90,
         'holidayManagementNegativeBalanceLimitDays' => -21,
         'holidayManagementApproversIds' => [],
         'holidayManagementApprovalBlock1Title' => "",

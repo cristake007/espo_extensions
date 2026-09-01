@@ -6,13 +6,7 @@
         "holidayManagementResetDate": {
             "level": "admin"
         },
-        "holidayManagementResetCeilingDays": {
-            "level": "admin"
-        },
-        "holidayManagementResetWarningDays": {
-            "level": "admin"
-        },
-        "holidayManagementResetWarningRepeatDays": {
+        "holidayManagementCarryOverLimitDays": {
             "level": "admin"
         },
         "holidayManagementNegativeBalanceLimitDays": {

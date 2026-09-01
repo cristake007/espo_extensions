@@ -412,6 +412,8 @@ final class HolidayBalanceService
     public function listProfiles(): array
     {
         $profilesByUser = [];
+        $defaultEntitlement = $this->config->get('holidayManagementAnnualEntitlementDays');
+        $defaultResetDate = $this->getDefaultNextResetDate();
 
         foreach ($this->entityManager->getRDBRepository(self::PROFILE)->find() as $profile) {
             $profilesByUser[(string) $profile->get('userId')] = $profile;
@@ -433,9 +435,9 @@ final class HolidayBalanceService
                 'userId' => $eligibleUser->getId(),
                 'userName' => $eligibleUser->get('name'),
                 'profileId' => $profile?->getId(),
-                'annualEntitlement' => $profile?->get('annualEntitlement'),
+                'annualEntitlement' => $profile?->get('annualEntitlement') ?? $defaultEntitlement,
                 'balance' => $profile?->get('balance'),
-                'nextResetDate' => $profile?->get('nextResetDate'),
+                'nextResetDate' => $profile?->get('nextResetDate') ?? $defaultResetDate,
                 'calendarColor' => $profile?->get('calendarColor') ?: self::DEFAULT_CALENDAR_COLOR,
                 'isInitialized' => (bool) ($profile?->get('isInitialized') ?? false),
                 'resetPending' => (bool) ($profile?->get('resetPending') ?? false),
@@ -517,9 +519,7 @@ final class HolidayBalanceService
                 $idempotencyKey,
             );
 
-            $automaticReset = $this->applyPendingResetIfEligible($profile);
-
-            return $this->mutationResult($profile, $ledger, false, $automaticReset);
+            return $this->mutationResult($profile, $ledger);
         });
     }
 
@@ -556,35 +556,9 @@ final class HolidayBalanceService
             }
 
             $before = $this->snapshot($profile);
-            $balance = (float) $profile->get('balance');
-            $entitlement = (float) $profile->get('annualEntitlement');
-            $canApply = BalanceMath::canApplyReset($balance, $entitlement, $this->getCeiling());
-
-            if (!$canApply && !$force) {
-                $profile->set([
-                    'resetPending' => true,
-                    'pendingResetDate' => $profile->get('nextResetDate'),
-                    'pendingResetKey' => $idempotencyKey,
-                ]);
-                $this->entityManager->saveEntity($profile);
-
-                $ledger = $this->createLedger(
-                    $profile,
-                    'resetPending',
-                    0.0,
-                    $before,
-                    $this->snapshot($profile),
-                    null,
-                    $idempotencyKey,
-                );
-
-                return $this->mutationResult($profile, $ledger);
-            }
-
-            $type = $force && !$canApply ? 'resetOverride' : 'annualGrant';
             $ledger = $this->applyResetGrant(
                 $profile,
-                $type,
+                $force ? 'resetOverride' : 'annualGrant',
                 $idempotencyKey,
                 $force ? trim((string) $reason) : null,
                 $before,
@@ -680,10 +654,37 @@ final class HolidayBalanceService
                 $idempotencyKey,
             );
 
-            $automaticReset = $this->applyPendingResetIfEligible($profile);
-
-            return $this->mutationResult($profile, $ledger, false, $automaticReset);
+            return $this->mutationResult($profile, $ledger);
         });
+    }
+
+    public function processDueResets(): int
+    {
+        $today = $this->dateTime->getToday()->toString();
+        $profiles = $this->entityManager
+            ->getRDBRepository(self::PROFILE)
+            ->where([
+                'isInitialized' => true,
+                'nextResetDate<=' => $today,
+            ])
+            ->order('nextResetDate')
+            ->find();
+        $processed = 0;
+
+        foreach ($profiles as $profile) {
+            $nextResetDate = (string) $profile->get('nextResetDate');
+            $iteration = 0;
+
+            while ($nextResetDate !== '' && $nextResetDate <= $today && $iteration < 100) {
+                $key = sprintf('scheduled-reset:%s:%s', $profile->getId(), $nextResetDate);
+                $result = $this->reset((string) $profile->getId(), $key);
+                $nextResetDate = (string) $result['nextResetDate'];
+                $processed++;
+                $iteration++;
+            }
+        }
+
+        return $processed;
     }
 
     private function findEligibleUser(string $userId): User
@@ -939,8 +940,15 @@ final class HolidayBalanceService
         array $before,
     ): Entity {
         $entitlement = (float) $profile->get('annualEntitlement');
+        $balanceBefore = (float) $profile->get('balance');
+        $carryOverLimit = $this->getCarryOverLimit();
+        $balanceAfter = BalanceMath::calculateResetBalance(
+            $balanceBefore,
+            $entitlement,
+            $carryOverLimit,
+        );
         $profile->set([
-            'balance' => BalanceMath::applyEntitlement((float) $profile->get('balance'), $entitlement),
+            'balance' => $balanceAfter,
             'nextResetDate' => $this->nextYear((string) $profile->get('nextResetDate')),
             'resetPending' => false,
             'pendingResetDate' => null,
@@ -951,42 +959,16 @@ final class HolidayBalanceService
         return $this->createLedger(
             $profile,
             $type,
-            $entitlement,
+            $balanceAfter - $balanceBefore,
             $before,
             $this->snapshot($profile),
-            $reason,
+            $reason ?? sprintf(
+                'Annual entitlement %s days; resulting balance %s days (cap %s days).',
+                $this->formatDays($entitlement),
+                $this->formatDays($balanceAfter),
+                $this->formatDays($carryOverLimit),
+            ),
             $idempotencyKey,
-        );
-    }
-
-    private function applyPendingResetIfEligible(Entity $profile): ?Entity
-    {
-        if (!(bool) $profile->get('resetPending')) {
-            return null;
-        }
-
-        $balance = (float) $profile->get('balance');
-        $entitlement = (float) $profile->get('annualEntitlement');
-
-        if (!BalanceMath::canApplyReset($balance, $entitlement, $this->getCeiling())) {
-            return null;
-        }
-
-        $before = $this->snapshot($profile);
-        $pendingKey = (string) $profile->get('pendingResetKey');
-        $automaticKey = 'automatic-reset:' . hash('sha256', $profile->getId() . ':' . $pendingKey);
-        $existing = $this->findLedgerByKey($automaticKey);
-
-        if ($existing) {
-            return $existing;
-        }
-
-        return $this->applyResetGrant(
-            $profile,
-            'automaticReset',
-            $automaticKey,
-            'Pending reset became eligible',
-            $before,
         );
     }
 
@@ -1078,9 +1060,39 @@ final class HolidayBalanceService
         return $this->mutationResult($profile, $ledger, true);
     }
 
-    private function getCeiling(): float
+    private function getDefaultNextResetDate(): ?string
     {
-        return (float) ($this->config->get('holidayManagementResetCeilingDays') ?? 90.0);
+        $configured = $this->config->get('holidayManagementResetDate');
+
+        if (!is_string($configured) || !preg_match('/^\d{4}-(\d{2})-(\d{2})$/', $configured, $match)) {
+            return null;
+        }
+
+        $month = (int) $match[1];
+        $day = (int) $match[2];
+        $today = $this->dateTime->getToday()->toString();
+        $year = (int) substr($today, 0, 4);
+
+        for ($offset = 0; $offset <= 8; $offset++) {
+            $candidateYear = $year + $offset;
+
+            if (!checkdate($month, $day, $candidateYear)) {
+                continue;
+            }
+
+            $candidate = sprintf('%04d-%02d-%02d', $candidateYear, $month, $day);
+
+            if ($candidate >= $today) {
+                return $candidate;
+            }
+        }
+
+        return null;
+    }
+
+    private function getCarryOverLimit(): float
+    {
+        return max(0.0, (float) ($this->config->get('holidayManagementCarryOverLimitDays') ?? 90.0));
     }
 
     private function validateIdempotencyKey(string $idempotencyKey): void

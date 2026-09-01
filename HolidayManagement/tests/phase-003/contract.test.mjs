@@ -350,5 +350,8 @@ test('install and uninstall hooks safely register the request calendar entity an
     assert.match(beforeUninstall, /calendarEntityList/);
     assert.match(beforeUninstall, /tabList/);
     assert.match(beforeUninstall, /HolidayRequest/);
-    assert.doesNotMatch(beforeUninstall, /removeEntity|DELETE|DROP/i);
+    assert.match(beforeUninstall, /ScheduledJob/);
+    assert.match(beforeUninstall, /ProcessHolidayResets/);
+    assert.match(beforeUninstall, /where\(\['job' => self::SCHEDULED_JOB\]\)/);
+    assert.doesNotMatch(beforeUninstall, /DELETE|DROP/i);
 });

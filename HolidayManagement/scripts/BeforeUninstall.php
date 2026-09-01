@@ -6,14 +6,19 @@ use Espo\Core\Container;
 use Espo\Core\InjectableFactory;
 use Espo\Core\Utils\Config;
 use Espo\Core\Utils\Config\ConfigWriter;
+use Espo\Entities\ScheduledJob;
+use Espo\ORM\EntityManager;
 
 class BeforeUninstall
 {
     private const CALENDAR_ENTITY = 'HolidayRequest';
     private const NAVIGATION_ENTITY = 'HolidayRequest';
+    private const SCHEDULED_JOB = 'ProcessHolidayResets';
 
     public function run(Container $container): void
     {
+        $this->removeScheduledJob($container);
+
         $config = $container->getByClass(Config::class);
         $calendarEntityList = $config->get('calendarEntityList') ?? [];
         $tabList = $config->get('tabList') ?? [];
@@ -51,5 +56,18 @@ class BeforeUninstall
         }
 
         $configWriter->save();
+    }
+
+    private function removeScheduledJob(Container $container): void
+    {
+        $entityManager = $container->getByClass(EntityManager::class);
+        $scheduledJobs = $entityManager
+            ->getRDBRepositoryByClass(ScheduledJob::class)
+            ->where(['job' => self::SCHEDULED_JOB])
+            ->find();
+
+        foreach ($scheduledJobs as $scheduledJob) {
+            $entityManager->removeEntity($scheduledJob);
+        }
     }
 }

@@ -2,9 +2,7 @@
     "fields": {
         "holidayManagementAnnualEntitlementDays": "Drept anual implicit (zile)",
         "holidayManagementResetDate": "Data implicita de resetare",
-        "holidayManagementResetCeilingDays": "Plafon de resetare (zile)",
-        "holidayManagementResetWarningDays": "Prag de avertizare (zile)",
-        "holidayManagementResetWarningRepeatDays": "Repetarea avertizarii (zile)",
+        "holidayManagementCarryOverLimitDays": "Plafon sold reportat (zile)",
         "holidayManagementNegativeBalanceLimitDays": "Limita soldului negativ (zile)",
         "holidayManagementApprovers": "Aprobatori concedii",
         "holidayManagementApprovalBlock1Title": "Titlu bloc aprobare 1",
@@ -15,9 +13,7 @@
     "tooltips": {
         "holidayManagementAnnualEntitlementDays": "Numarul anual de zile acordat implicit la initializarea profilului de concediu.",
         "holidayManagementResetDate": "Selectati data resetarii anuale cu selectorul de data EspoCRM. Anul este ignorat; este acceptat si formatul LL-ZZ, de exemplu 01-01.",
-        "holidayManagementResetCeilingDays": "Soldurile peste aceasta valoare vor necesita fluxul ulterior de resetare in asteptare sau o exceptie de administrator.",
-        "holidayManagementResetWarningDays": "Porneste avertizarea inainte de atingerea plafonului de resetare.",
-        "holidayManagementResetWarningRepeatDays": "Numarul de zile dintre avertizarile repetate.",
+        "holidayManagementCarryOverLimitDays": "Soldul maxim acumulat dupa resetarea anuala, masurat in zile. Zilele reportate nu expira in functie de vechime. Dreptul anual se adauga numai pana la acest plafon; un sold deja la plafon ramane neschimbat. Soldurile negative reduc noul drept anual.",
         "holidayManagementNegativeBalanceLimitDays": "Cel mai mic sold permis. Setati zero pentru a interzice soldul negativ.",
         "holidayManagementApprovers": "Selectati unul sau doi utilizatori interni activi care pot aproba cererile de concediu.",
         "holidayManagementApprovalBlock1Title": "Titlul tiparit pentru primul bloc de aprobare.",

@@ -68,11 +68,42 @@ namespace Espo\Core\Utils\Config {
     }
 }
 
+namespace Espo\Entities {
+    class ScheduledJob {}
+}
+
+namespace Espo\ORM {
+    final class FakeRepository
+    {
+        public function where(array $where): self
+        {
+            return $this;
+        }
+
+        public function find(): array
+        {
+            return [];
+        }
+    }
+
+    final class EntityManager
+    {
+        public function getRDBRepositoryByClass(string $className): FakeRepository
+        {
+            return new FakeRepository();
+        }
+
+        public function removeEntity(object $entity): void
+        {}
+    }
+}
+
 namespace {
     use Espo\Core\Container;
     use Espo\Core\InjectableFactory;
     use Espo\Core\Utils\Config;
     use Espo\Core\Utils\Config\ConfigWriter;
+    use Espo\ORM\EntityManager;
 
     require_once __DIR__ . '/../../scripts/AfterInstall.php';
     require_once __DIR__ . '/../../scripts/BeforeUninstall.php';
@@ -82,6 +113,7 @@ namespace {
         return new Container([
             Config::class => new Config($values),
             InjectableFactory::class => new InjectableFactory($writer),
+            EntityManager::class => new EntityManager(),
         ]);
     }
 

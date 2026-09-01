@@ -158,7 +158,7 @@ test('HolidayBalanceService serializes and de-duplicates every profile mutation'
     assert.match(source, /->forUpdate\(\)/);
     assert.match(source, /findLedgerByKey/);
     assert.ok(
-        (source.match(/findLedgerByKey\(/g) ?? []).length >= 8,
+        (source.match(/findLedgerByKey\(/g) ?? []).length >= 7,
         'idempotency must be rechecked after acquiring mutation locks'
     );
     assert.match(source, /idempotencyKey/);
@@ -186,18 +186,32 @@ test('service audits complete before and after state for initialization and corr
     assert.match(source, /Correction reason is required/);
 });
 
-test('pending resets use balance plus entitlement eligibility and reasoned override', async () => {
+test('annual resets cap positive carry-over and retain negative balances', async () => {
     const source = await readModuleSource(
         'Tools', 'HolidayBalance', 'HolidayBalanceService.php'
     );
 
-    assert.match(source, /BalanceMath::canApplyReset\(/);
-    assert.match(source, /holidayManagementResetCeilingDays/);
-    assert.match(source, /resetPending/);
-    assert.match(source, /automaticReset/);
+    assert.match(source, /BalanceMath::calculateResetBalance\(/);
+    assert.match(source, /holidayManagementCarryOverLimitDays/);
+    assert.match(source, /processDueResets/);
+    assert.match(source, /nextResetDate<=/);
+    assert.match(source, /scheduled-reset:/);
     assert.match(source, /resetOverride/);
     assert.match(source, /Forced reset reason is required/);
-    assert.match(source, /pendingResetKey/);
+    assert.doesNotMatch(source, /holidayManagementResetCeilingDays/);
+});
+
+test('daily scheduled job processes due annual holiday resets', async () => {
+    const scheduledJobs = await readModuleJson('Resources', 'metadata', 'app', 'scheduledJobs.json');
+    const source = await readModuleSource('Jobs', 'ProcessHolidayResets.php');
+
+    assert.deepEqual(scheduledJobs.ProcessHolidayResets, {
+        jobClassName: 'Espo\\Modules\\HolidayManagement\\Jobs\\ProcessHolidayResets',
+        scheduling: '5 0 * * *',
+        isDefault: true,
+    });
+    assert.match(source, /implements JobDataLess/);
+    assert.match(source, /->processDueResets\(\)/);
 });
 
 test('module exposes balance, self-service, and approval routes', async () => {
@@ -295,10 +309,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.4.4 package', async () => {
+test('accounting metadata remains bilingual in the 1.4.5 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.4.4');
+    assert.equal(manifest.version, '1.4.5');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');

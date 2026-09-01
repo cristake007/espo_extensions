@@ -2,9 +2,7 @@
     "fields": {
         "holidayManagementAnnualEntitlementDays": "Default Annual Entitlement (days)",
         "holidayManagementResetDate": "Default Reset Date",
-        "holidayManagementResetCeilingDays": "Reset Ceiling (days)",
-        "holidayManagementResetWarningDays": "Reset Warning Threshold (days)",
-        "holidayManagementResetWarningRepeatDays": "Warning Repeat Interval (days)",
+        "holidayManagementCarryOverLimitDays": "Carry-over Balance Cap (days)",
         "holidayManagementNegativeBalanceLimitDays": "Negative Balance Limit (days)",
         "holidayManagementApprovers": "Holiday Approvers",
         "holidayManagementApprovalBlock1Title": "Approval Block 1 Title",
@@ -15,9 +13,7 @@
     "tooltips": {
         "holidayManagementAnnualEntitlementDays": "Annual days granted by default when a holiday profile is initialized.",
         "holidayManagementResetDate": "Select the annual reset date with the EspoCRM date picker. The year is ignored; MM-DD input such as 01-01 is also accepted.",
-        "holidayManagementResetCeilingDays": "Balances above this value require the later reset workflow to remain pending or use an administrator exception.",
-        "holidayManagementResetWarningDays": "Start warning before reaching the reset ceiling.",
-        "holidayManagementResetWarningRepeatDays": "Days between repeated reset warnings.",
+        "holidayManagementCarryOverLimitDays": "Maximum accumulated balance after an annual reset, measured in days. Carried days do not expire based on age. Entitlement is added only up to this cap; a balance already at the cap stays there. Negative balances reduce the new entitlement.",
         "holidayManagementNegativeBalanceLimitDays": "The lowest permitted balance. Set this to zero to prevent a negative balance.",
         "holidayManagementApprovers": "Select one or two active internal users who can approve holiday requests.",
         "holidayManagementApprovalBlock1Title": "Printed title for the first approval block.",

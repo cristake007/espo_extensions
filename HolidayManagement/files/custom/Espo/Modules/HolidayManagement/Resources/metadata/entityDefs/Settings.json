@@ -14,25 +14,11 @@
             "view": "holiday-management:views/fields/annual-reset-date",
             "tooltip": true
         },
-        "holidayManagementResetCeilingDays": {
+        "holidayManagementCarryOverLimitDays": {
             "type": "int",
             "default": 90,
             "required": true,
-            "min": 1,
-            "tooltip": true
-        },
-        "holidayManagementResetWarningDays": {
-            "type": "int",
-            "default": 80,
-            "required": true,
             "min": 0,
-            "tooltip": true
-        },
-        "holidayManagementResetWarningRepeatDays": {
-            "type": "int",
-            "default": 30,
-            "required": true,
-            "min": 1,
             "tooltip": true
         },
         "holidayManagementNegativeBalanceLimitDays": {

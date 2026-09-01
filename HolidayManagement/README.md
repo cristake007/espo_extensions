@@ -5,14 +5,14 @@ EspoCRM 10 extension for employee holiday balances and self-service booking.
 The extension includes settings, balance accounting, and self-service booking:
 
 - annual entitlement and reset-date defaults;
-- reset ceiling, warning, warning-repeat, and negative-balance limits;
+- a maximum accumulated balance of 90 days and a negative-balance limit;
 - one or two directly selected active regular/admin holiday approvers;
 - exactly two printed approval title/name blocks. Blank configured names mean
   that the later document phase must use the actual approver names.
 - one holiday profile per eligible internal user;
 - admin-only bulk initialization with entitlement, opening balance and reset date;
 - transactional, idempotent corrections and annual grants;
-- append-only balance ledger and pending/forced reset handling;
+- append-only balance ledger and automatic annual resets;
 - a standard **Time Off / Concediu** main-navigation entry showing the
   signed-in user's remaining balance;
 - self-service holiday bookings from both that page and EspoCRM Calendar;
@@ -29,10 +29,17 @@ records; it does not modify them. Rejected requests refund their reserved days
 exactly once and no longer appear in Calendar. The extension does not yet include
 approval notifications, public-holiday synchronization, or document generation.
 
+At each profile's reset date, the daily scheduled job grants that profile's
+annual entitlement without allowing the resulting accumulated balance to
+exceed the configured cap (90 days by default). A balance already at 90 stays
+at 90 across future resets. Carried days do not expire based on their age. A
+negative balance is carried in full and reduces the grant; for example, a
+balance of -5 with a 21-day entitlement becomes 16.
+
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.4.4 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.4.5 files scripts
 ```
 
 Run the phase contract tests:

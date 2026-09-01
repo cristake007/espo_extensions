@@ -90,9 +90,7 @@ try {
     $settings = Invoke-EspoApi -Method GET -Path 'Settings'
     Assert-Equal $settings.holidayManagementAnnualEntitlementDays $null 'Annual entitlement must be configured explicitly.'
     Assert-Equal $settings.holidayManagementResetDate $null 'Reset date must be configured explicitly.'
-    Assert-Equal $settings.holidayManagementResetCeilingDays 90 'Reset ceiling default mismatch.'
-    Assert-Equal $settings.holidayManagementResetWarningDays 80 'Warning threshold default mismatch.'
-    Assert-Equal $settings.holidayManagementResetWarningRepeatDays 30 'Warning repeat default mismatch.'
+    Assert-Equal $settings.holidayManagementCarryOverLimitDays 90 'Carry-over limit default mismatch.'
     Assert-Equal $settings.holidayManagementNegativeBalanceLimitDays -21 'Negative limit default mismatch.'
 
     $persistedTitle = 'Director'

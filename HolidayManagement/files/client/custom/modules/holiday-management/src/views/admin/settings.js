@@ -10,12 +10,8 @@ define(['views/settings/record/edit'], (Dep) => {
                         {name: 'holidayManagementResetDate'},
                     ],
                     [
-                        {name: 'holidayManagementResetCeilingDays'},
+                        {name: 'holidayManagementCarryOverLimitDays'},
                         {name: 'holidayManagementNegativeBalanceLimitDays'},
-                    ],
-                    [
-                        {name: 'holidayManagementResetWarningDays'},
-                        {name: 'holidayManagementResetWarningRepeatDays'},
                     ],
                 ],
             },

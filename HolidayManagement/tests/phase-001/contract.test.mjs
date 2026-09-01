@@ -16,9 +16,7 @@ const moduleRoot = path.join(
 const settingDefaults = {
     holidayManagementAnnualEntitlementDays: null,
     holidayManagementResetDate: null,
-    holidayManagementResetCeilingDays: 90,
-    holidayManagementResetWarningDays: 80,
-    holidayManagementResetWarningRepeatDays: 30,
+    holidayManagementCarryOverLimitDays: 90,
     holidayManagementNegativeBalanceLimitDays: -21,
     holidayManagementApprovalBlock1Title: '',
     holidayManagementApprovalBlock1Name: '',
@@ -60,6 +58,9 @@ test('settings metadata exposes every phase-001 setting with stable defaults', a
         ],
     });
     assert.equal(metadata.fields.holidayManagementApproverRole, undefined);
+    assert.equal(metadata.fields.holidayManagementResetCeilingDays, undefined);
+    assert.equal(metadata.fields.holidayManagementResetWarningDays, undefined);
+    assert.equal(metadata.fields.holidayManagementResetWarningRepeatDays, undefined);
 });
 
 test('all settings are admin-only config parameters', async () => {

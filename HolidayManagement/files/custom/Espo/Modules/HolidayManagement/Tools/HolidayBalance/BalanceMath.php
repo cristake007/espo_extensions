@@ -6,13 +6,12 @@ namespace Espo\Modules\HolidayManagement\Tools\HolidayBalance;
 
 final class BalanceMath
 {
-    public static function canApplyReset(float $balance, float $entitlement, float $ceiling): bool
+    public static function calculateResetBalance(
+        float $balance,
+        float $entitlement,
+        float $balanceCap,
+    ): float
     {
-        return $balance + $entitlement <= $ceiling;
-    }
-
-    public static function applyEntitlement(float $balance, float $entitlement): float
-    {
-        return $balance + $entitlement;
+        return min($balance + $entitlement, max(0.0, $balanceCap));
     }
 }
