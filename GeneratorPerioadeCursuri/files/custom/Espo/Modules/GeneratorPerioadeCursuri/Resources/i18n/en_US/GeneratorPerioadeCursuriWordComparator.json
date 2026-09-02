@@ -7,21 +7,17 @@
         "uploadScheduleTitle": "Upload website Excel export",
         "uploadSourceButton": "Choose file",
         "uploadSourceAction": "or drag and drop it here",
-        "wordComparisonResult": "Word Comparison",
         "wordComparisonResultWithCounts": "Word Comparison - {wordCount} Word courses, {excelCount} website courses",
-        "wordCourse": "Course in Word Document",
-        "websiteCourse": "Course on Website (Excel)",
+        "course": "Course",
         "duration": "Duration",
         "price": "Price",
         "status": "Status",
-        "same": "Same",
-        "different": "Different",
-        "missingWord": "Missing in Word",
-        "missingExcel": "Missing on website",
-        "missingBoth": "Missing in both",
-        "notFoundOnWebsite": "Not found on website",
-        "onlyInWord": "Only in Word Document",
-        "onlyOnWebsite": "Only on Website"
+        "word": "Word",
+        "website": "Website",
+        "rowStatusSame": "No changes",
+        "rowStatusChanged": "Changed",
+        "rowStatusMissingWebsite": "Not on website",
+        "rowStatusMissingWord": "Not in Word"
     },
     "fields": {
         "name": "Comparison Name",
@@ -43,9 +39,7 @@
         "wordCompareUnavailable": "Upload the Word document and the website Excel export before comparing.",
         "wordCompareFailed": "The comparison could not be completed.",
         "wordCompareReady": "The comparison is ready.",
-        "wordCompareSummary": "{matched} matched, {different} different, {wordOnly} only in Word, {excelOnly} only on the website.",
-        "noWordRows": "No compatible Word rows.",
-        "noWordOnlyRows": "Every Word course was found on the website.",
-        "noExcelOnlyRows": "Every website course was found in the Word document."
+        "wordCompareSummary": "{matched} matched courses ({different} with changes), {wordOnly} only in Word, {excelOnly} only on the website.",
+        "noWordRows": "No compatible Word rows."
     }
 }

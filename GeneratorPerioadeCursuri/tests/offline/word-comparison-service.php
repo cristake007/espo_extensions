@@ -52,6 +52,26 @@ $captureException = static function (callable $callback): ?Throwable {
     return null;
 };
 
+$findRowByWordTitle = static function (array $rows, string $title): ?array {
+    foreach ($rows as $row) {
+        if ($row['wordTitle'] === $title) {
+            return $row;
+        }
+    }
+
+    return null;
+};
+
+$findRowByExcelTitle = static function (array $rows, string $title): ?array {
+    foreach ($rows as $row) {
+        if ($row['excelTitle'] === $title) {
+            return $row;
+        }
+    }
+
+    return null;
+};
+
 $makeXlsx = static function (array $header, array $rows): string {
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
@@ -110,84 +130,124 @@ $makeDocx = static function (array $rows): string {
     }
 };
 
-// A word row that has a duration mismatch, a price mismatch, and an exact title match.
-$wordRows = [
-    ['Curs de auditor intern', '5 zile', '1500 lei', '', '', ''],
-    ['Curs care nu exista pe site', '3 zile', '900 lei', '', '', ''],
-];
-$wordBytes = $makeDocx($wordRows);
-
-$excelHeader = ['title', 'Permalink', 'Durata Curs', 'Investitie', 'Ianuarie'];
-$excelRows = [
-    ['Curs de auditor intern', '/curs/auditor', '6 zile', '1500,00 lei', '05-06.01.2026'],
-    ['Curs care nu are pereche in Word', '/curs/altul', '2 zile', '500 lei', '10.01.2026'],
-];
-$excelBytes = $makeXlsx($excelHeader, $excelRows);
-
 $entityManager = new EntityManager();
 $fileStorageManager = new FileStorageManager();
 $service = new WordComparisonService($entityManager, $fileStorageManager);
 $entityType = 'GeneratorPerioadeCursuriWordComparator';
 
-$entityManager->entities[$entityType . ':record-1'] = new Record('record-1', [
-    'wordTemplateFileId' => 'word-1',
-    'wordScheduleFileId' => 'excel-1',
-]);
-$entityManager->entities['Attachment:word-1'] = new Attachment('word-1', 'template.docx', $entityType, 'record-1', 'wordTemplateFile');
-$entityManager->entities['Attachment:excel-1'] = new Attachment('excel-1', 'export.xlsx', $entityType, 'record-1', 'wordScheduleFile');
-$fileStorageManager->contents['word-1'] = $wordBytes;
-$fileStorageManager->contents['excel-1'] = $excelBytes;
+$setUpRecord = static function (
+    string $recordId,
+    string $wordBytes,
+    string $excelBytes
+) use ($entityManager, $fileStorageManager, $entityType): void {
+    $entityManager->entities[$entityType . ':' . $recordId] = new Record($recordId, [
+        'wordTemplateFileId' => $recordId . '-word',
+        'wordScheduleFileId' => $recordId . '-excel',
+    ]);
+    $entityManager->entities['Attachment:' . $recordId . '-word'] = new Attachment(
+        $recordId . '-word',
+        'template.docx',
+        $entityType,
+        $recordId,
+        'wordTemplateFile'
+    );
+    $entityManager->entities['Attachment:' . $recordId . '-excel'] = new Attachment(
+        $recordId . '-excel',
+        'export.xlsx',
+        $entityType,
+        $recordId,
+        'wordScheduleFile'
+    );
+    $fileStorageManager->contents[$recordId . '-word'] = $wordBytes;
+    $fileStorageManager->contents[$recordId . '-excel'] = $excelBytes;
+};
 
+// --- Scenario 1: a course renamed in Word (SR EN ISO 9001:2015 -> ISO 9001:2026), a
+// course that only exists in Word, and a course that only exists on the website.
+
+$wordRows = [
+    ['Indicatori de performanță bazat pe ISO 9001:2026', '5 zile', '1500 lei', '', '', ''],
+    ['Managementul proiectelor europene', '3 zile', '900 lei', '', '', ''],
+];
+$wordBytes = $makeDocx($wordRows);
+
+$excelHeader = ['title', 'Permalink', 'Durata Curs', 'Investitie', 'Ianuarie'];
+$excelRows = [
+    ['Indicatori de performanță bazat pe SR EN ISO 9001:2015', '/curs/iso9001', '6 zile', '1500,00 lei', '05-06.01.2026'],
+    ['Expert achizitii publice', '/curs/altul', '2 zile', '500 lei', '10.01.2026'],
+];
+$excelBytes = $makeXlsx($excelHeader, $excelRows);
+
+$setUpRecord('record-1', $wordBytes, $excelBytes);
 $result = $service->compare('record-1');
 
 $assertSame(true, $result['success'], 'A successful comparison must report success.');
 $assertSame(2, $result['wordCount'], 'Every compatible Word row must be counted.');
 $assertSame(2, $result['excelCount'], 'Every compatible Excel row must be counted.');
-$assertSame(1, $result['wordOnlyCount'], 'A Word row without a confident match must be counted as Word-only.');
+$assertSame(1, $result['matchedCount'], 'The renamed course must still be paired across Word and the website.');
+$assertSame(1, $result['wordOnlyCount'], 'A Word row without a plausible Excel counterpart must be counted as Word-only.');
 $assertSame(1, $result['excelOnlyCount'], 'An Excel row never matched must be counted as Excel-only.');
+$assertSame(3, count($result['rows']), 'The unified row list must include the matched pair, the Word-only row, and the Excel-only row together (no separate tables).');
 
-$matchedRow = $result['rows'][0];
-$assertSame(true, $matchedRow['matched'], 'An exact-title Word row must be matched to its Excel counterpart.');
-$assertSame('same', $matchedRow['title']['status'], 'Identical titles must be reported as the same.');
-$assertSame('different', $matchedRow['duration']['status'], '5 zile vs 6 zile must be reported as different.');
-$assertSame('5 zile', $matchedRow['duration']['word'], 'The Word duration text must be preserved.');
-$assertSame('6 zile', $matchedRow['duration']['excel'], 'The Excel duration text must be preserved.');
+$renamedRow = $findRowByWordTitle($result['rows'], 'Indicatori de performanță bazat pe ISO 9001:2026');
+$assertSame(true, $renamedRow['matched'] ?? null, 'A retitled course (dropped "SR EN", changed year) must still be recognized as the same course.');
+$assertSame(
+    'Indicatori de performanță bazat pe SR EN ISO 9001:2015',
+    $renamedRow['excelTitle'] ?? null,
+    'The matched row must carry the website title alongside the Word title.'
+);
+$assertSame('different', $renamedRow['title']['status'], 'A changed course name must be flagged as different even though the courses were paired.');
+$assertSame('different', $renamedRow['duration']['status'], '5 zile vs 6 zile must be reported as different.');
+$assertSame('5 zile', $renamedRow['duration']['word'], 'The Word duration text must be preserved.');
+$assertSame('6 zile', $renamedRow['duration']['excel'], 'The Excel duration text must be preserved.');
 $assertSame(
     'same',
-    $matchedRow['price']['status'],
+    $renamedRow['price']['status'],
     '1500 lei and 1500,00 lei must compare equal once formatting is normalized.'
 );
 
-$unmatchedRow = $result['rows'][1];
-$assertSame(false, $unmatchedRow['matched'], 'A Word row with no close Excel title must be reported as unmatched.');
-$assertSame('missingExcel', $unmatchedRow['title']['status'], 'An unmatched Word row must report a missing Excel title.');
+$wordOnlyRow = $findRowByWordTitle($result['rows'], 'Managementul proiectelor europene');
+$assertSame(false, $wordOnlyRow['matched'] ?? null, 'A Word course with no plausible Excel counterpart must stay unmatched.');
+$assertSame(null, $wordOnlyRow['excelTitle'], 'An unmatched Word row must not carry an Excel title.');
 
-$assertSame(1, count($result['excelOnly']), 'Exactly one Excel row must remain unmatched.');
-$assertSame(
-    'Curs care nu are pereche in Word',
-    $result['excelOnly'][0]['title'],
-    'The unmatched Excel row must report its own title.'
+$excelOnlyRow = $findRowByExcelTitle($result['rows'], 'Expert achizitii publice');
+$assertSame(false, $excelOnlyRow['matched'] ?? null, 'An Excel course with no plausible Word counterpart must stay unmatched.');
+$assertSame(null, $excelOnlyRow['wordTitle'], 'An Excel-only row must not carry a Word title, and must live in the same rows list as everything else.');
+
+// --- Scenario 2: two similarly worded but genuinely different courses (different ISO
+// standard numbers) must not be force-paired just because the surrounding words match.
+
+$distinctWordRows = [
+    ['Auditor intern ISO 9001', '2 zile', '800 lei', '', '', ''],
+];
+$distinctWordBytes = $makeDocx($distinctWordRows);
+$distinctExcelBytes = $makeXlsx(
+    ['title', 'Permalink', 'Durata Curs', 'Investitie', 'Ianuarie'],
+    [['Auditor intern ISO 14001', '/curs/14001', '2 zile', '800 lei', '10.01.2026']]
 );
 
-// Missing required Excel columns must fail with a clear message.
-$missingColumnsExcel = $makeXlsx(['title'], [['Curs fara coloane']]);
-$entityManager->entities[$entityType . ':record-2'] = new Record('record-2', [
-    'wordTemplateFileId' => 'word-1',
-    'wordScheduleFileId' => 'excel-2',
-]);
-$entityManager->entities['Attachment:excel-2'] = new Attachment('excel-2', 'export.xlsx', $entityType, 'record-2', 'wordScheduleFile');
-$fileStorageManager->contents['excel-2'] = $missingColumnsExcel;
+$setUpRecord('record-2', $distinctWordBytes, $distinctExcelBytes);
+$distinctResult = $service->compare('record-2');
 
-$missingColumnsException = $captureException(fn () => $service->compare('record-2'));
+$assertSame(0, $distinctResult['matchedCount'], 'Courses naming two different ISO standards must not be paired despite similar wording.');
+$assertSame(1, $distinctResult['wordOnlyCount'], 'The Word-only ISO 9001 course must be reported on its own.');
+$assertSame(1, $distinctResult['excelOnlyCount'], 'The Excel-only ISO 14001 course must be reported on its own.');
+
+// --- Missing required Excel columns must fail with a clear message.
+
+$missingColumnsExcel = $makeXlsx(['title'], [['Curs fara coloane']]);
+$setUpRecord('record-3', $wordBytes, $missingColumnsExcel);
+$missingColumnsException = $captureException(fn () => $service->compare('record-3'));
 $assertSame(true, $missingColumnsException instanceof BadRequest, 'A schedule Excel file missing Durata Curs must raise a BadRequest.');
 $assertContains('Durata Curs', $missingColumnsException?->getMessage() ?? '', 'The error must name the missing duration column.');
 
-// A record without an uploaded Word document must fail before any file is read.
-$entityManager->entities[$entityType . ':record-3'] = new Record('record-3', [
+// --- A record without an uploaded Word document must fail before any file is read.
+
+$entityManager->entities[$entityType . ':record-4'] = new Record('record-4', [
     'wordTemplateFileId' => null,
-    'wordScheduleFileId' => 'excel-1',
+    'wordScheduleFileId' => 'record-1-excel',
 ]);
-$missingWordException = $captureException(fn () => $service->compare('record-3'));
+$missingWordException = $captureException(fn () => $service->compare('record-4'));
 $assertSame(true, $missingWordException instanceof BadRequest, 'A record without a Word document must raise a BadRequest.');
 
 if ($failures !== []) {

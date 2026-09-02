@@ -217,33 +217,63 @@
     color: var(--state-info-text-10) !important;
 }
 
-.word-compare-status-label.label.label-state.label-success {
+.word-compare-table {
+    font-size: 14px;
+}
+
+.word-compare-table th,
+.word-compare-table td {
+    vertical-align: middle;
+}
+
+.word-compare-table .word-compare-subhead {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--tuvtk-text-muted, #767b91);
+    text-align: center;
+}
+
+.word-compare-table thead tr:first-child th {
+    text-align: center;
+}
+
+.word-compare-table .word-compare-status-cell {
+    white-space: nowrap;
+}
+
+.word-compare-row-status-label.label.label-state {
+    font-size: 12px;
+    padding: 4px 8px;
+}
+
+tr.word-compare-row-same .word-compare-row-status-label {
     background-color: var(--state-success-bg) !important;
     color: var(--state-success-text) !important;
 }
 
-.word-compare-status-label.label.label-state.label-danger {
-    background-color: var(--state-danger-bg) !important;
-    color: var(--state-danger-text) !important;
-}
-
-.word-compare-status-label.label.label-state.label-warning {
+tr.word-compare-row-different .word-compare-row-status-label {
     background-color: var(--state-warning-bg) !important;
     color: var(--state-warning-text) !important;
 }
 
-.word-compare-value-pair {
-    font-size: 12px;
-    line-height: 1.5;
-    margin-bottom: 4px;
-}
-
-tr.word-compare-row-different > td {
-    background-color: var(--state-warning-bg-5) !important;
+tr.word-compare-row-missing .word-compare-row-status-label {
+    background-color: var(--state-danger-bg) !important;
+    color: var(--state-danger-text) !important;
 }
 
 tr.word-compare-row-missing > td {
     background-color: var(--state-danger-bg-5) !important;
+}
+
+.word-compare-table td.word-compare-cell-diff {
+    background-color: var(--state-warning-bg) !important;
+    font-weight: 600;
+}
+
+.word-compare-table td.word-compare-cell-missing {
+    background-color: rgba(127, 127, 127, 0.12) !important;
 }
 
 .wordpress-updater-workspace {

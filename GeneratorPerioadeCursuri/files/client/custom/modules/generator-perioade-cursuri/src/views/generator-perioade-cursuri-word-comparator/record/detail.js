@@ -69,8 +69,6 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-compara
             }
 
             const rows = result.rows || [];
-            const excelOnly = result.excelOnly || [];
-            const wordOnlyCount = rows.filter(row => !row.matched).length;
 
             container.innerHTML = [
                 '<div class="panel panel-default">',
@@ -78,30 +76,34 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-compara
                 '<h4 class="panel-title">' + RecordUi.escapeHtml(this.composeComparisonTitle(result)) + '</h4>',
                 '</div>',
                 '<div class="panel-body">',
-                '<p class="text-muted">' + RecordUi.escapeHtml(this.composeComparisonSummary(result, wordOnlyCount)) + '</p>',
+                '<p class="text-muted">' + RecordUi.escapeHtml(this.composeComparisonSummary(result)) + '</p>',
                 '<div class="table-responsive">',
-                '<table class="table table-bordered table-striped table-hover" style="table-layout: auto;">',
+                '<table class="table table-bordered table-striped table-hover word-compare-table" style="table-layout: auto;">',
                 '<thead>',
                 '<tr>',
-                '<th>' + RecordUi.escapeHtml(this.translate('wordCourse', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
-                '<th>' + RecordUi.escapeHtml(this.translate('websiteCourse', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
-                '<th>' + RecordUi.escapeHtml(this.translate('duration', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
-                '<th>' + RecordUi.escapeHtml(this.translate('price', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
+                '<th rowspan="2">' + RecordUi.escapeHtml(this.translate('status', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
+                '<th colspan="2">' + RecordUi.escapeHtml(this.translate('course', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
+                '<th colspan="2">' + RecordUi.escapeHtml(this.translate('duration', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
+                '<th colspan="2">' + RecordUi.escapeHtml(this.translate('price', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
+                '</tr>',
+                '<tr>',
+                '<th class="word-compare-subhead">' + RecordUi.escapeHtml(this.translate('word', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
+                '<th class="word-compare-subhead">' + RecordUi.escapeHtml(this.translate('website', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
+                '<th class="word-compare-subhead">' + RecordUi.escapeHtml(this.translate('word', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
+                '<th class="word-compare-subhead">' + RecordUi.escapeHtml(this.translate('website', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
+                '<th class="word-compare-subhead">' + RecordUi.escapeHtml(this.translate('word', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
+                '<th class="word-compare-subhead">' + RecordUi.escapeHtml(this.translate('website', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
                 '</tr>',
                 '</thead>',
                 '<tbody>',
                 rows.length ?
                     rows.map(row => this.composeComparisonRow(row)).join('') :
-                    '<tr><td colspan="4" class="text-muted">' +
+                    '<tr><td colspan="7" class="text-muted">' +
                     RecordUi.escapeHtml(this.translate('noWordRows', 'messages', 'GeneratorPerioadeCursuriWordComparator')) +
                     '</td></tr>',
                 '</tbody>',
                 '</table>',
                 '</div>',
-                '<h5>' + RecordUi.escapeHtml(this.translate('onlyOnWebsite', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</h5>',
-                excelOnly.length ?
-                    this.composeExcelOnlyTable(excelOnly) :
-                    '<p class="text-muted">' + RecordUi.escapeHtml(this.translate('noExcelOnlyRows', 'messages', 'GeneratorPerioadeCursuriWordComparator')) + '</p>',
                 '</div>',
                 '</div>'
             ].join('');
@@ -119,33 +121,52 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-compara
                 .replace('{excelCount}', String(result.excelCount || 0));
         }
 
-        composeComparisonSummary(result, wordOnlyCount) {
-            const matched = (result.rows || []).filter(row => row.matched).length;
-
+        composeComparisonSummary(result) {
             return this.translate('wordCompareSummary', 'messages', 'GeneratorPerioadeCursuriWordComparator')
-                .replace('{matched}', String(matched))
+                .replace('{matched}', String(result.matchedCount || 0))
                 .replace('{different}', String(result.differentCount || 0))
-                .replace('{wordOnly}', String(wordOnlyCount))
+                .replace('{wordOnly}', String(result.wordOnlyCount || 0))
                 .replace('{excelOnly}', String(result.excelOnlyCount || 0));
         }
 
         composeComparisonRow(row) {
-            const rowClass = !row.matched ?
-                'word-compare-row-missing' :
-                (this.rowHasDifference(row) ? 'word-compare-row-different' : 'word-compare-row-same');
+            const missingWebsite = row.excelTitle === null;
+            const missingWord = row.wordTitle === null;
+
+            let rowClass;
+            let rowStatusKey;
+
+            if (missingWebsite) {
+                rowClass = 'word-compare-row-missing';
+                rowStatusKey = 'rowStatusMissingWebsite';
+            } else if (missingWord) {
+                rowClass = 'word-compare-row-missing';
+                rowStatusKey = 'rowStatusMissingWord';
+            } else if (this.rowHasDifference(row)) {
+                rowClass = 'word-compare-row-different';
+                rowStatusKey = 'rowStatusChanged';
+            } else {
+                rowClass = 'word-compare-row-same';
+                rowStatusKey = 'rowStatusSame';
+            }
+
+            const course = this.composeValueCells(row.title);
+            const duration = this.composeValueCells(row.duration);
+            const price = this.composeValueCells(row.price);
 
             return [
                 '<tr class="' + rowClass + '">',
-                '<td style="min-width: 220px; white-space: normal; vertical-align: top;">' + RecordUi.escapeHtml(row.wordTitle) + '</td>',
-                '<td style="min-width: 220px; white-space: normal; vertical-align: top;">',
-                row.matched ?
-                    this.composeTitleCell(row.title) :
-                    '<span class="label label-state word-compare-status-label label-warning">' +
-                    RecordUi.escapeHtml(this.translate('notFoundOnWebsite', 'labels', 'GeneratorPerioadeCursuriWordComparator')) +
-                    '</span>',
+                '<td class="word-compare-status-cell">',
+                '<span class="label label-state word-compare-row-status-label">' +
+                RecordUi.escapeHtml(this.translate(rowStatusKey, 'labels', 'GeneratorPerioadeCursuriWordComparator')) +
+                '</span>',
                 '</td>',
-                '<td style="min-width: 180px; vertical-align: top;">' + this.composeFieldCell(row.duration) + '</td>',
-                '<td style="min-width: 180px; vertical-align: top;">' + this.composeFieldCell(row.price) + '</td>',
+                course.word,
+                course.excel,
+                duration.word,
+                duration.excel,
+                price.word,
+                price.excel,
                 '</tr>'
             ].join('');
         }
@@ -154,72 +175,25 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-compara
             return ['title', 'duration', 'price'].some(field => row[field] && row[field].status !== 'same');
         }
 
-        composeTitleCell(field) {
+        composeValueCells(field) {
             if (!field) {
-                return '';
+                return {word: '<td></td>', excel: '<td></td>'};
             }
 
-            const text = RecordUi.escapeHtml(field.excel || '—');
+            const tintClass = field.status === 'same' ?
+                '' :
+                (field.status === 'different' ? 'word-compare-cell-diff' : 'word-compare-cell-missing');
+            const wordValue = field.word ?
+                RecordUi.escapeHtml(field.word) :
+                '<span class="text-muted">—</span>';
+            const excelValue = field.excel ?
+                RecordUi.escapeHtml(field.excel) :
+                '<span class="text-muted">—</span>';
 
-            if (field.status === 'same') {
-                return text;
-            }
-
-            return text + ' ' + this.composeStatusBadge(field.status);
-        }
-
-        composeFieldCell(field) {
-            if (!field) {
-                return '';
-            }
-
-            return [
-                '<div class="word-compare-value-pair">',
-                '<div><span class="text-muted">Word:</span> ' + RecordUi.escapeHtml(field.word || '—') + '</div>',
-                '<div><span class="text-muted">Site:</span> ' + RecordUi.escapeHtml(field.excel === null ? '—' : (field.excel || '—')) + '</div>',
-                '</div>',
-                this.composeStatusBadge(field.status)
-            ].join('');
-        }
-
-        composeStatusBadge(status) {
-            const statusClassMap = {
-                same: 'label-success',
-                different: 'label-danger',
-                missingWord: 'label-warning',
-                missingExcel: 'label-warning',
-                missingBoth: 'label-default'
+            return {
+                word: '<td class="' + tintClass + '">' + wordValue + '</td>',
+                excel: '<td class="' + tintClass + '">' + excelValue + '</td>'
             };
-            const statusClass = statusClassMap[status] || 'label-default';
-
-            return '<span class="label label-state word-compare-status-label ' + statusClass + '">' +
-                RecordUi.escapeHtml(this.translate(status, 'labels', 'GeneratorPerioadeCursuriWordComparator')) +
-                '</span>';
-        }
-
-        composeExcelOnlyTable(excelOnly) {
-            return [
-                '<div class="table-responsive">',
-                '<table class="table table-bordered table-striped" style="table-layout: auto;">',
-                '<thead>',
-                '<tr>',
-                '<th>' + RecordUi.escapeHtml(this.translate('websiteCourse', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
-                '<th>' + RecordUi.escapeHtml(this.translate('duration', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
-                '<th>' + RecordUi.escapeHtml(this.translate('price', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</th>',
-                '</tr>',
-                '</thead>',
-                '<tbody>',
-                excelOnly.map(row => [
-                    '<tr>',
-                    '<td style="white-space: normal;">' + RecordUi.escapeHtml(row.title) + '</td>',
-                    '<td>' + RecordUi.escapeHtml(row.duration || '—') + '</td>',
-                    '<td>' + RecordUi.escapeHtml(row.price || '—') + '</td>',
-                    '</tr>'
-                ].join('')).join(''),
-                '</tbody>',
-                '</table>',
-                '</div>'
-            ].join('');
         }
 
         getWordCompareErrorMessage(xhr) {

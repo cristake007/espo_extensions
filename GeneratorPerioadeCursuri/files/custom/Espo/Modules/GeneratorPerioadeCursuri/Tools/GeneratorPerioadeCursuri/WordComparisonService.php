@@ -18,9 +18,17 @@ class WordComparisonService
     private const MAX_WORD_BYTES = 20971520;
     private const MAX_SCHEDULE_ROWS = 5000;
     private const MAX_TEXT_LENGTH = 1000;
-    private const MIN_MATCH_SCORE = 88.0;
-    private const MIN_TOKEN_COVERAGE = 70.0;
-    private const MIN_MATCH_GAP = 8.0;
+
+    /**
+     * Below this score, two titles are treated as unrelated courses rather than a
+     * renamed/retyped version of the same course. Titles that share most of their
+     * wording but differ in a standard/code number (see
+     * {@see self::applyCodeMismatchPenalty()}) are pushed well below this floor, so
+     * it can sit close to typical "same course, retyped title" scores without
+     * pairing two genuinely different courses that happen to share a template
+     * sentence.
+     */
+    private const MATCH_FLOOR = 82.0;
 
     public function __construct(
         private EntityManager $entityManager,
@@ -69,84 +77,157 @@ class WordComparisonService
     }
 
     /**
+     * Every Word row is paired with its single best-scoring Excel row (and vice
+     * versa) using a global greedy assignment: all possible pairs are scored, the
+     * highest-scoring pairs are matched first, and a row is only left unmatched
+     * once no eligible counterpart remains above {@see self::MATCH_FLOOR}. This
+     * lets slightly retyped or renamed course titles (a changed standard year, an
+     * added/removed abbreviation) still line up in one row instead of being
+     * reported as two unrelated "missing" rows.
+     *
      * @param array<int, array{title: string, normalizedTitle: string, duration: string, price: string}> $wordRows
      * @param array<int, array{rowIndex: int, title: string, normalizedTitle: string, duration: string, price: string}> $excelRows
      * @return array<string, mixed>
      */
     private function buildComparison(array $wordRows, array $excelRows): array
     {
-        $matchedExcelIndexes = [];
-        $rows = [];
-        $differentCount = 0;
+        $pairs = [];
 
-        foreach ($wordRows as $wordRow) {
-            $scored = $this->scoreMatches($wordRow['normalizedTitle'], $excelRows);
-            $match = $this->confidentMatchFromScores($wordRow['normalizedTitle'], $scored);
-
-            if ($match === null) {
-                $rows[] = [
-                    'wordTitle' => $wordRow['title'],
-                    'excelTitle' => null,
-                    'matched' => false,
-                    'title' => $this->fieldDiff($wordRow['title'], null),
-                    'duration' => $this->fieldDiff($wordRow['duration'], null),
-                    'price' => $this->fieldDiff($wordRow['price'], null),
-                ];
-
+        foreach ($wordRows as $wordIndex => $wordRow) {
+            if ($wordRow['normalizedTitle'] === '') {
                 continue;
             }
 
-            $matchedExcelIndexes[$match['rowIndex']] = true;
+            foreach ($excelRows as $excelIndex => $excelRow) {
+                $score = $this->pairScore($wordRow['normalizedTitle'], $excelRow['normalizedTitle']);
 
-            $titleDiff = $this->fieldDiff($wordRow['title'], $match['title']);
-            $durationDiff = $this->fieldDiff($wordRow['duration'], $match['duration']);
-            $priceDiff = $this->fieldDiff($wordRow['price'], $match['price']);
+                if ($score <= 0.0) {
+                    continue;
+                }
 
-            if ($titleDiff['status'] !== 'same' || $durationDiff['status'] !== 'same' || $priceDiff['status'] !== 'same') {
+                $pairs[] = ['wordIndex' => $wordIndex, 'excelIndex' => $excelIndex, 'score' => $score];
+            }
+        }
+
+        usort($pairs, fn (array $a, array $b): int => $b['score'] <=> $a['score']);
+
+        $matches = [];
+        $matchedExcelIndexes = [];
+
+        foreach ($pairs as $pair) {
+            if ($pair['score'] < self::MATCH_FLOOR) {
+                break;
+            }
+
+            if (isset($matches[$pair['wordIndex']]) || isset($matchedExcelIndexes[$pair['excelIndex']])) {
+                continue;
+            }
+
+            $matches[$pair['wordIndex']] = $pair['excelIndex'];
+            $matchedExcelIndexes[$pair['excelIndex']] = true;
+        }
+
+        $rows = [];
+        $differentCount = 0;
+
+        foreach ($wordRows as $wordIndex => $wordRow) {
+            $excelRow = isset($matches[$wordIndex]) ? $excelRows[$matches[$wordIndex]] : null;
+
+            $titleDiff = $this->fieldDiff($wordRow['title'], $excelRow['title'] ?? null, false);
+            $durationDiff = $this->fieldDiff($wordRow['duration'], $excelRow['duration'] ?? null, true);
+            $priceDiff = $this->fieldDiff($wordRow['price'], $excelRow['price'] ?? null, true);
+
+            if ($excelRow !== null &&
+                ($titleDiff['status'] !== 'same' || $durationDiff['status'] !== 'same' || $priceDiff['status'] !== 'same')
+            ) {
                 $differentCount++;
             }
 
             $rows[] = [
                 'wordTitle' => $wordRow['title'],
-                'excelTitle' => $match['title'],
-                'matched' => true,
+                'excelTitle' => $excelRow['title'] ?? null,
+                'matched' => $excelRow !== null,
                 'title' => $titleDiff,
                 'duration' => $durationDiff,
                 'price' => $priceDiff,
             ];
         }
 
-        $excelOnly = [];
-
-        foreach ($excelRows as $excelRow) {
-            if (isset($matchedExcelIndexes[$excelRow['rowIndex']])) {
+        foreach ($excelRows as $excelIndex => $excelRow) {
+            if (isset($matchedExcelIndexes[$excelIndex])) {
                 continue;
             }
 
-            $excelOnly[] = [
-                'title' => $excelRow['title'],
-                'duration' => $excelRow['duration'],
-                'price' => $excelRow['price'],
+            $rows[] = [
+                'wordTitle' => null,
+                'excelTitle' => $excelRow['title'],
+                'matched' => false,
+                'title' => $this->fieldDiff('', $excelRow['title'], false),
+                'duration' => $this->fieldDiff('', $excelRow['duration'], true),
+                'price' => $this->fieldDiff('', $excelRow['price'], true),
             ];
         }
 
         return [
             'success' => true,
             'rows' => $rows,
-            'excelOnly' => $excelOnly,
             'wordCount' => count($wordRows),
             'excelCount' => count($excelRows),
-            'matchedCount' => count($matchedExcelIndexes),
+            'matchedCount' => count($matches),
             'differentCount' => $differentCount,
-            'wordOnlyCount' => count(array_filter($rows, fn (array $row): bool => !$row['matched'])),
-            'excelOnlyCount' => count($excelOnly),
+            'wordOnlyCount' => count($wordRows) - count($matches),
+            'excelOnlyCount' => count($excelRows) - count($matches),
         ];
+    }
+
+    private function pairScore(string $wordNormalized, string $excelNormalized): float
+    {
+        if ($wordNormalized === $excelNormalized) {
+            return 100.0;
+        }
+
+        return $this->applyCodeMismatchPenalty(
+            $this->combinedTitleScore($wordNormalized, $excelNormalized),
+            $wordNormalized,
+            $excelNormalized
+        );
+    }
+
+    /**
+     * Course titles in this catalog often embed a standard/code number (e.g. "ISO
+     * 9001"). Two titles can otherwise look very similar ("Auditor intern ISO
+     * 9001" vs "Auditor intern ISO 14001") while actually naming two different
+     * courses. When both titles contain a code-like number and none of them are
+     * shared, the similarity score is halved so an unrelated course with a
+     * similarly worded title does not outrank (or wrongly clear the floor for) the
+     * genuine match.
+     */
+    private function applyCodeMismatchPenalty(float $score, string $wordNormalized, string $excelNormalized): float
+    {
+        $wordCodes = $this->standardCodeTokens($wordNormalized);
+        $excelCodes = $this->standardCodeTokens($excelNormalized);
+
+        if ($wordCodes === [] || $excelCodes === [] || array_intersect($wordCodes, $excelCodes) !== []) {
+            return $score;
+        }
+
+        return $score * 0.5;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function standardCodeTokens(string $value): array
+    {
+        preg_match_all('/\b\d{4,5}\b/', $value, $matches);
+
+        return array_values(array_unique($matches[0] ?? []));
     }
 
     /**
      * @return array{status: string, word: ?string, excel: ?string}
      */
-    private function fieldDiff(string $wordValue, ?string $excelValue): array
+    private function fieldDiff(string $wordValue, ?string $excelValue, bool $numeric): array
     {
         $word = trim($wordValue);
         $excel = $excelValue === null ? null : trim($excelValue);
@@ -159,7 +240,7 @@ class WordComparisonService
             $status = 'missingWord';
         } elseif ($excel === '') {
             $status = 'missingExcel';
-        } elseif ($this->valuesMatch($word, $excel)) {
+        } elseif ($this->valuesMatch($word, $excel, $numeric)) {
             $status = 'same';
         } else {
             $status = 'different';
@@ -172,13 +253,23 @@ class WordComparisonService
         ];
     }
 
-    private function valuesMatch(string $a, string $b): bool
+    /**
+     * Duration and price are short numeric-with-suffix values ("5 zile", "1500,00
+     * lei"), so those two fields tolerate formatting differences by comparing the
+     * leading number. A course title is free text that legitimately contains
+     * numbers (a standard code, a revision year); reducing it to "the first number
+     * in the string" would ignore the very wording changes this comparison exists
+     * to surface, so titles are always compared as normalized text.
+     */
+    private function valuesMatch(string $a, string $b, bool $numeric): bool
     {
-        $numberA = $this->extractNumber($a);
-        $numberB = $this->extractNumber($b);
+        if ($numeric) {
+            $numberA = $this->extractNumber($a);
+            $numberB = $this->extractNumber($b);
 
-        if ($numberA !== null && $numberB !== null) {
-            return abs($numberA - $numberB) < 0.005;
+            if ($numberA !== null && $numberB !== null) {
+                return abs($numberA - $numberB) < 0.005;
+            }
         }
 
         return $this->normalizeForCompare($a) === $this->normalizeForCompare($b);
@@ -448,80 +539,6 @@ class WordComparisonService
         }
 
         return $excelRows;
-    }
-
-    /**
-     * @param array<int, array{rowIndex: int, title: string, normalizedTitle: string, duration: string, price: string}> $excelRows
-     * @return array<int, array{entry: array, score: float, wordCoverage: float, scheduleCoverage: float, exact: bool}>
-     */
-    private function scoreMatches(string $wordNormalized, array $excelRows): array
-    {
-        if ($wordNormalized === '') {
-            return [];
-        }
-
-        $exactMatches = array_values(array_filter(
-            $excelRows,
-            fn (array $row): bool => $row['normalizedTitle'] === $wordNormalized
-        ));
-
-        if (count($exactMatches) === 1) {
-            return [[
-                'entry' => $exactMatches[0],
-                'score' => 100.0,
-                'wordCoverage' => 100.0,
-                'scheduleCoverage' => 100.0,
-                'exact' => true,
-            ]];
-        }
-
-        $scored = [];
-
-        foreach ($excelRows as $row) {
-            $scored[] = [
-                'entry' => $row,
-                'score' => $this->combinedTitleScore($wordNormalized, $row['normalizedTitle']),
-                'wordCoverage' => $this->tokenCoverage($wordNormalized, $row['normalizedTitle']),
-                'scheduleCoverage' => $this->tokenCoverage($row['normalizedTitle'], $wordNormalized),
-                'exact' => false,
-            ];
-        }
-
-        usort($scored, fn (array $a, array $b): int => $b['score'] <=> $a['score']);
-
-        return $scored;
-    }
-
-    /**
-     * @param array<int, array{entry: array, score: float, wordCoverage: float, scheduleCoverage: float, exact: bool}> $scored
-     * @return ?array{rowIndex: int, title: string, normalizedTitle: string, duration: string, price: string}
-     */
-    private function confidentMatchFromScores(string $wordNormalized, array $scored): ?array
-    {
-        if ($scored === []) {
-            return null;
-        }
-
-        if (!empty($scored[0]['exact'])) {
-            return $scored[0]['entry'];
-        }
-
-        $best = $scored[0];
-        $second = $scored[1] ?? null;
-
-        $belowThreshold = $best['score'] < self::MIN_MATCH_SCORE ||
-            $best['wordCoverage'] < self::MIN_TOKEN_COVERAGE ||
-            $best['scheduleCoverage'] < self::MIN_TOKEN_COVERAGE;
-
-        if ($belowThreshold) {
-            return null;
-        }
-
-        if ($second && $best['score'] - $second['score'] < self::MIN_MATCH_GAP) {
-            return null;
-        }
-
-        return $best['entry'];
     }
 
     private function combinedTitleScore(string $wordTitle, string $scheduleTitle): float
