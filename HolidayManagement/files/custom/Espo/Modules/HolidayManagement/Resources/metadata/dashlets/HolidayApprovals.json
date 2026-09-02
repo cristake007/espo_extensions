@@ -1,0 +1,34 @@
+{
+    "view": "holiday-management:views/dashlets/holiday-approvals",
+    "aclScope": "HolidayRequest",
+    "accessDataList": [
+        {
+            "inPortalDisabled": true
+        }
+    ],
+    "options": {
+        "fields": {
+            "title": {
+                "type": "varchar",
+                "required": true
+            },
+            "autorefreshInterval": {
+                "type": "enumFloat",
+                "options": [0, 0.5, 1, 2, 5, 10]
+            }
+        },
+        "defaults": {
+            "autorefreshInterval": 5
+        },
+        "layout": [
+            {
+                "rows": [
+                    [
+                        {"name": "title"},
+                        {"name": "autorefreshInterval"}
+                    ]
+                ]
+            }
+        ]
+    }
+}

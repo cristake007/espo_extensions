@@ -8,5 +8,8 @@
     },
     "scopeNamesPlural": {
         "HolidayRequest": "Concedii"
+    },
+    "dashlets": {
+        "HolidayApprovals": "Aprobari concedii"
     }
 }

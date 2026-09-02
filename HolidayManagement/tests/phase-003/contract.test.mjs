@@ -365,6 +365,51 @@ test('self-service page fetches only the signed-in balance and presents bilingua
     }
 });
 
+test('dashboard exposes a bilingual approver queue dashlet with decision actions', async () => {
+    const dashlet = await readJson(
+        'Resources', 'metadata', 'dashlets', 'HolidayApprovals.json'
+    );
+    const source = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'dashlets', 'holiday-approvals.js'
+    ), 'utf8');
+    const style = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'css', 'calendar.css'
+    ), 'utf8');
+
+    assert.equal(
+        dashlet.view,
+        'holiday-management:views/dashlets/holiday-approvals'
+    );
+    assert.equal(dashlet.aclScope, 'HolidayRequest');
+    assert.deepEqual(dashlet.accessDataList, [{inPortalDisabled: true}]);
+    assert.equal(dashlet.options.defaults.autorefreshInterval, 5);
+    assert.match(source, /views\/dashlets\/abstract\/base/);
+    assert.match(source, /name = 'HolidayApprovals'/);
+    assert.match(source, /HolidayManagement\/approvalQueue/);
+    assert.match(source, /HolidayManagement\/requests\/\$\{item\.data\('id'\)\}\/decision/);
+    assert.match(source, /data-action="approve"/);
+    assert.match(source, /data-action="reject"/);
+    assert.match(source, /await this\.confirm\(\{/);
+    assert.match(source, /toDisplayDate/);
+    assert.match(source, /async actionRefresh\(\)/);
+    assert.doesNotMatch(source, /HolidayManagement\/myBalance/);
+    assert.match(style, /\.holiday-approvals-dashlet__item/);
+    assert.match(style, /var\(--tuvtk-secondary, var\(--brand-danger\)\)/);
+
+    for (const locale of ['en_US', 'ro_RO']) {
+        const global = await readJson('Resources', 'i18n', locale, 'Global.json');
+        const request = await readJson('Resources', 'i18n', locale, 'HolidayRequest.json');
+
+        assert.equal(typeof global.dashlets.HolidayApprovals, 'string');
+        assert.equal(typeof request.messages['Approval Queue Unavailable'], 'string');
+        assert.equal(typeof request.messages['No Pending Approvals'], 'string');
+    }
+});
+
 test('install and uninstall hooks safely register the request calendar entity and main tab', async () => {
     const afterInstall = await readFile(path.join(extensionRoot, 'scripts', 'AfterInstall.php'), 'utf8');
     const beforeUninstall = await readFile(path.join(extensionRoot, 'scripts', 'BeforeUninstall.php'), 'utf8');

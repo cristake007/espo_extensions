@@ -8,5 +8,8 @@
     },
     "scopeNamesPlural": {
         "HolidayRequest": "Time Off"
+    },
+    "dashlets": {
+        "HolidayApprovals": "Holiday Approvals"
     }
 }

@@ -12,7 +12,8 @@
         "Approve Holiday": "Aproba",
         "Reject Holiday": "Respinge",
         "Holiday Approvals": "Aprobari concedii",
-        "Requester": "Solicitant"
+        "Requester": "Solicitant",
+        "Pending Approvals": "Aprobari in asteptare"
     },
     "fields": {
         "name": "Denumire",
@@ -34,6 +35,7 @@
         "holidayApproved": "Cererea de concediu a fost aprobata.",
         "holidayRejected": "Cererea a fost respinsa, iar zilele rezervate au fost restituite.",
         "approvalDecisionFailed": "Decizia de aprobare nu a putut fi salvata. Reincarcati cererea si incercati din nou.",
+        "Approval Queue Unavailable": "Lista aprobarilor de concediu nu a putut fi incarcata.",
         "Not Holiday Approver": "Contul dumneavoastra nu este configurat ca aprobator de concedii.",
         "No Pending Approvals": "Nu exista cereri de concediu care asteapta aprobarea dumneavoastra."
     },

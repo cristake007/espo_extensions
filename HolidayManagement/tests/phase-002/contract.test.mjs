@@ -309,10 +309,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.5.1 package', async () => {
+test('accounting metadata remains bilingual in the 1.6.0 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.5.1');
+    assert.equal(manifest.version, '1.6.0');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');

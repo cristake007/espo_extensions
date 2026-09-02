@@ -12,7 +12,8 @@
         "Approve Holiday": "Approve",
         "Reject Holiday": "Reject",
         "Holiday Approvals": "Holiday Approvals",
-        "Requester": "Requester"
+        "Requester": "Requester",
+        "Pending Approvals": "Pending approvals"
     },
     "fields": {
         "name": "Name",
@@ -34,6 +35,7 @@
         "holidayApproved": "Holiday request approved.",
         "holidayRejected": "Holiday request rejected and reserved days refunded.",
         "approvalDecisionFailed": "The approval decision could not be saved. Refresh the request and try again.",
+        "Approval Queue Unavailable": "The holiday approval queue could not be loaded.",
         "Not Holiday Approver": "Your account is not configured as a holiday approver.",
         "No Pending Approvals": "There are no holiday requests awaiting your approval."
     },

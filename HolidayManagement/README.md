@@ -13,6 +13,7 @@ The extension includes settings, balance accounting, and self-service booking:
 - admin-only bulk initialization with entitlement, opening balance and reset date;
 - transactional, idempotent corrections and annual grants;
 - append-only balance ledger and automatic annual resets;
+- an optional approver dashboard dashlet with pending requests and decision actions;
 - a standard **Time Off / Concediu** main-navigation entry showing the
   signed-in user's remaining balance;
 - self-service holiday bookings from both that page and EspoCRM Calendar;
@@ -39,7 +40,7 @@ balance of -5 with a 21-day entitlement becomes 16.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.5.1 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.6.0 files scripts
 ```
 
 Run the phase contract tests:
