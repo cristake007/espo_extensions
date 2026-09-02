@@ -20,6 +20,11 @@
         "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostConvertWord"
     },
     {
+        "route": "/GeneratorPerioadeCursuriWordComparator/:id/compareWord",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostCompareWord"
+    },
+    {
         "route": "/GeneratorPerioadeCursuriXmlConverter/:id/generateXml",
         "method": "post",
         "actionClassName": "Espo\\Modules\\GeneratorPerioadeCursuri\\Tools\\GeneratorPerioadeCursuri\\Api\\PostGenerateXml"

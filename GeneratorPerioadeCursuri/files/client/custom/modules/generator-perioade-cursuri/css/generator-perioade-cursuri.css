@@ -1,14 +1,16 @@
 .generator-perioade-cursuri-page .record-grid.record-grid-wide,
 .generator-perioade-cursuri-create .record-grid.record-grid-wide,
 .generator-perioade-cursuri-wordpress-updater-page .record-grid.record-grid-wide,
-.generator-perioade-cursuri-word-matcher-page .record-grid.record-grid-wide {
+.generator-perioade-cursuri-word-matcher-page .record-grid.record-grid-wide,
+.generator-perioade-cursuri-word-comparator-page .record-grid.record-grid-wide {
     grid-template-columns: minmax(0, 1fr);
 }
 
 .generator-perioade-cursuri-page .record-grid > .side,
 .generator-perioade-cursuri-create .record-grid > .side,
 .generator-perioade-cursuri-wordpress-updater-page .record-grid > .side,
-.generator-perioade-cursuri-word-matcher-page .record-grid > .side {
+.generator-perioade-cursuri-word-matcher-page .record-grid > .side,
+.generator-perioade-cursuri-word-comparator-page .record-grid > .side {
     display: none;
 }
 
@@ -19,7 +21,9 @@
 .generator-perioade-cursuri-wordpress-updater-page .record-grid > .left,
 .generator-perioade-cursuri-wordpress-updater-page .record-grid .middle,
 .generator-perioade-cursuri-word-matcher-page .record-grid > .left,
-.generator-perioade-cursuri-word-matcher-page .record-grid .middle {
+.generator-perioade-cursuri-word-matcher-page .record-grid .middle,
+.generator-perioade-cursuri-word-comparator-page .record-grid > .left,
+.generator-perioade-cursuri-word-comparator-page .record-grid .middle {
     min-width: 0;
     width: 100%;
 }
@@ -211,6 +215,35 @@
     background: var(--state-info-bg-5) !important;
     border-color: var(--state-info-text) !important;
     color: var(--state-info-text-10) !important;
+}
+
+.word-compare-status-label.label.label-state.label-success {
+    background-color: var(--state-success-bg) !important;
+    color: var(--state-success-text) !important;
+}
+
+.word-compare-status-label.label.label-state.label-danger {
+    background-color: var(--state-danger-bg) !important;
+    color: var(--state-danger-text) !important;
+}
+
+.word-compare-status-label.label.label-state.label-warning {
+    background-color: var(--state-warning-bg) !important;
+    color: var(--state-warning-text) !important;
+}
+
+.word-compare-value-pair {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 4px;
+}
+
+tr.word-compare-row-different > td {
+    background-color: var(--state-warning-bg-5) !important;
+}
+
+tr.word-compare-row-missing > td {
+    background-color: var(--state-danger-bg-5) !important;
 }
 
 .wordpress-updater-workspace {

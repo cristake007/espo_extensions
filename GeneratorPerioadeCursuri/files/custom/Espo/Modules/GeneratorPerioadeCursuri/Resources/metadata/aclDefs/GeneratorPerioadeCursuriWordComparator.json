@@ -1,0 +1,6 @@
+{
+    "read": true,
+    "edit": true,
+    "delete": true,
+    "stream": true
+}

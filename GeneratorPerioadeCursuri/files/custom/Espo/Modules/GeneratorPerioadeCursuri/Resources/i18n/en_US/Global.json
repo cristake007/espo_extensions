@@ -2,12 +2,14 @@
     "scopeNames": {
         "GeneratorPerioadeCursuri": "Generator Perioade Cursuri",
         "GeneratorPerioadeCursuriWordMatcher": "Generator Perioade Cursuri Word Matcher",
+        "GeneratorPerioadeCursuriWordComparator": "Generator Perioade Cursuri Word Comparator",
         "GeneratorPerioadeCursuriXmlConverter": "Generator Perioade Cursuri XML Converter",
         "GeneratorPerioadeCursuriWordPressUpdater": "Generator Perioade Cursuri WordPress Updater"
     },
     "scopeNamesPlural": {
         "GeneratorPerioadeCursuri": "Generator Perioade Cursuri",
         "GeneratorPerioadeCursuriWordMatcher": "Generator Perioade Cursuri Word Matcher",
+        "GeneratorPerioadeCursuriWordComparator": "Generator Perioade Cursuri Word Comparator",
         "GeneratorPerioadeCursuriXmlConverter": "Generator Perioade Cursuri XML Converters",
         "GeneratorPerioadeCursuriWordPressUpdater": "Generator Perioade Cursuri WordPress Updaters"
     },

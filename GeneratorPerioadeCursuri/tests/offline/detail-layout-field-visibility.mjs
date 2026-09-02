@@ -44,6 +44,21 @@ const entityContracts = {
             'wordConvertedAt',
         ],
     },
+    GeneratorPerioadeCursuriWordComparator: {
+        hiddenDetailFields: [
+            'assignedUsers',
+            'teams',
+            'createdAt',
+            'createdBy',
+            'modifiedAt',
+            'modifiedBy',
+        ],
+        visibleDetailFields: [
+            'name',
+            'wordTemplateFile',
+            'wordScheduleFile',
+        ],
+    },
     GeneratorPerioadeCursuriXmlConverter: {
         hiddenDetailFields: [
             'assignedUsers',

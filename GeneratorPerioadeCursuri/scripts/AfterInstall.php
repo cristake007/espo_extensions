@@ -11,6 +11,7 @@ class AfterInstall
     private const MENU_GROUP_ITEMS = [
         'GeneratorPerioadeCursuri',
         'GeneratorPerioadeCursuriWordMatcher',
+        'GeneratorPerioadeCursuriWordComparator',
         'GeneratorPerioadeCursuriXmlConverter',
         'GeneratorPerioadeCursuriWordPressUpdater',
     ];
@@ -32,6 +33,7 @@ class AfterInstall
         $requiredPaths = [
             'custom/Espo/Modules/GeneratorPerioadeCursuri/Resources/metadata/scopes/GeneratorPerioadeCursuri.json',
             'custom/Espo/Modules/GeneratorPerioadeCursuri/Resources/metadata/scopes/GeneratorPerioadeCursuriWordMatcher.json',
+            'custom/Espo/Modules/GeneratorPerioadeCursuri/Resources/metadata/scopes/GeneratorPerioadeCursuriWordComparator.json',
             'custom/Espo/Modules/GeneratorPerioadeCursuri/Resources/metadata/scopes/GeneratorPerioadeCursuriXmlConverter.json',
             'custom/Espo/Modules/GeneratorPerioadeCursuri/Resources/metadata/scopes/GeneratorPerioadeCursuriWordPressUpdater.json',
         ];

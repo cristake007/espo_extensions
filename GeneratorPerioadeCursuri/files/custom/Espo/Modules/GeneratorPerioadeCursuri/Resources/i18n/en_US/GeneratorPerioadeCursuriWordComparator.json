@@ -1,0 +1,51 @@
+{
+    "labels": {
+        "Create GeneratorPerioadeCursuriWordComparator": "Create Word Comparison",
+        "Compare": "Compare",
+        "wordComparatorPanel": "Word Comparator",
+        "uploadWordTitle": "Upload Word document",
+        "uploadScheduleTitle": "Upload website Excel export",
+        "uploadSourceButton": "Choose file",
+        "uploadSourceAction": "or drag and drop it here",
+        "wordComparisonResult": "Word Comparison",
+        "wordComparisonResultWithCounts": "Word Comparison - {wordCount} Word courses, {excelCount} website courses",
+        "wordCourse": "Course in Word Document",
+        "websiteCourse": "Course on Website (Excel)",
+        "duration": "Duration",
+        "price": "Price",
+        "status": "Status",
+        "same": "Same",
+        "different": "Different",
+        "missingWord": "Missing in Word",
+        "missingExcel": "Missing on website",
+        "missingBoth": "Missing in both",
+        "notFoundOnWebsite": "Not found on website",
+        "onlyInWord": "Only in Word Document",
+        "onlyOnWebsite": "Only on Website"
+    },
+    "fields": {
+        "name": "Comparison Name",
+        "description": "Description",
+        "wordTemplateFile": "Word Document",
+        "wordScheduleFile": "Website Excel Export",
+        "assignedUsers": "Responsible Users",
+        "teams": "Teams",
+        "createdAt": "Created At",
+        "modifiedAt": "Modified At",
+        "createdBy": "Created By",
+        "modifiedBy": "Modified By"
+    },
+    "tooltips": {
+        "wordTemplateFile": "Upload the DOCX document whose course name, duration and price columns should be compared against the website export.",
+        "wordScheduleFile": "Upload the XLSX export with course name, Durata Curs and Investitie columns from the website."
+    },
+    "messages": {
+        "wordCompareUnavailable": "Upload the Word document and the website Excel export before comparing.",
+        "wordCompareFailed": "The comparison could not be completed.",
+        "wordCompareReady": "The comparison is ready.",
+        "wordCompareSummary": "{matched} matched, {different} different, {wordOnly} only in Word, {excelOnly} only on the website.",
+        "noWordRows": "No compatible Word rows.",
+        "noWordOnlyRows": "Every Word course was found on the website.",
+        "noExcelOnlyRows": "Every website course was found in the Word document."
+    }
+}

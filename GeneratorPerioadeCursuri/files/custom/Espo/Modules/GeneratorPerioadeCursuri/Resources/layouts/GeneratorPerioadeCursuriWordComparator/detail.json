@@ -1,0 +1,26 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                }
+            ],
+            [
+                {
+                    "name": "description"
+                }
+            ],
+            [
+                {
+                    "name": "wordTemplateFile"
+                },
+                {
+                    "name": "wordScheduleFile"
+                }
+            ]
+        ],
+        "style": "default",
+        "label": "wordComparatorPanel"
+    }
+]

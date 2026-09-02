@@ -1,0 +1,51 @@
+{
+    "labels": {
+        "Create GeneratorPerioadeCursuriWordComparator": "Creare comparatie Word",
+        "Compare": "Compara",
+        "wordComparatorPanel": "Comparator Word",
+        "uploadWordTitle": "Incarca documentul Word",
+        "uploadScheduleTitle": "Incarca exportul Excel de pe site",
+        "uploadSourceButton": "Alege fisierul",
+        "uploadSourceAction": "sau trage-l si plaseaza-l aici",
+        "wordComparisonResult": "Comparatie Word",
+        "wordComparisonResultWithCounts": "Comparatie Word - {wordCount} cursuri in Word, {excelCount} cursuri pe site",
+        "wordCourse": "Curs in documentul Word",
+        "websiteCourse": "Curs pe site (Excel)",
+        "duration": "Durata",
+        "price": "Pret",
+        "status": "Stare",
+        "same": "Identic",
+        "different": "Diferit",
+        "missingWord": "Lipseste in Word",
+        "missingExcel": "Lipseste pe site",
+        "missingBoth": "Lipseste in ambele",
+        "notFoundOnWebsite": "Negasit pe site",
+        "onlyInWord": "Doar in documentul Word",
+        "onlyOnWebsite": "Doar pe site"
+    },
+    "fields": {
+        "name": "Denumire comparatie",
+        "description": "Descriere",
+        "wordTemplateFile": "Document Word",
+        "wordScheduleFile": "Export Excel de pe site",
+        "assignedUsers": "Utilizatori responsabili",
+        "teams": "Echipe",
+        "createdAt": "Creat la",
+        "modifiedAt": "Modificat la",
+        "createdBy": "Creat de",
+        "modifiedBy": "Modificat de"
+    },
+    "tooltips": {
+        "wordTemplateFile": "Incarca documentul DOCX ale carui coloane cu numele cursului, durata si pretul trebuie comparate cu exportul de pe site.",
+        "wordScheduleFile": "Incarca exportul XLSX cu coloanele Nume curs, Durata Curs si Investitie de pe site."
+    },
+    "messages": {
+        "wordCompareUnavailable": "Incarca documentul Word si exportul Excel de pe site inainte de comparare.",
+        "wordCompareFailed": "Comparatia nu a putut fi finalizata.",
+        "wordCompareReady": "Comparatia este pregatita.",
+        "wordCompareSummary": "{matched} identificate, {different} diferite, {wordOnly} doar in Word, {excelOnly} doar pe site.",
+        "noWordRows": "Nu exista randuri Word compatibile.",
+        "noWordOnlyRows": "Toate cursurile din Word au fost gasite pe site.",
+        "noExcelOnlyRows": "Toate cursurile de pe site au fost gasite in documentul Word."
+    }
+}

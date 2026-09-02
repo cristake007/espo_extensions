@@ -122,6 +122,7 @@ namespace {
     $managedItems = [
         'GeneratorPerioadeCursuri',
         'GeneratorPerioadeCursuriWordMatcher',
+        'GeneratorPerioadeCursuriWordComparator',
         'GeneratorPerioadeCursuriXmlConverter',
         'GeneratorPerioadeCursuriWordPressUpdater',
     ];

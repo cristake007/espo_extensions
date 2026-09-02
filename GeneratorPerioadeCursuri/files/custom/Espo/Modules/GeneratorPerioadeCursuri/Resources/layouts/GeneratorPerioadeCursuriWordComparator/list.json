@@ -1,0 +1,15 @@
+[
+    {
+        "name": "name",
+        "link": true
+    },
+    {
+        "name": "assignedUsers"
+    },
+    {
+        "name": "teams"
+    },
+    {
+        "name": "createdAt"
+    }
+]

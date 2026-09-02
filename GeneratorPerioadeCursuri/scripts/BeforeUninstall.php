@@ -11,6 +11,7 @@ class BeforeUninstall
     private const MENU_GROUP_ITEMS = [
         'GeneratorPerioadeCursuri',
         'GeneratorPerioadeCursuriWordMatcher',
+        'GeneratorPerioadeCursuriWordComparator',
         'GeneratorPerioadeCursuriXmlConverter',
         'GeneratorPerioadeCursuriWordPressUpdater',
     ];
