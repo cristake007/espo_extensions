@@ -233,21 +233,45 @@ $assertSame(0, $distinctResult['matchedCount'], 'Courses naming two different IS
 $assertSame(1, $distinctResult['wordOnlyCount'], 'The Word-only ISO 9001 course must be reported on its own.');
 $assertSame(1, $distinctResult['excelOnlyCount'], 'The Excel-only ISO 14001 course must be reported on its own.');
 
+// --- Scenario 3: the Word title carries extra parenthetical detail the website
+// title does not ("(ISO 14064-1)"). The shorter title's tokens are fully
+// contained in the longer one, so this must still be recognized as the same
+// course rather than reported as two unrelated "missing" rows.
+
+$containmentWordBytes = $makeDocx([
+    ['Emisii GES - Cuantificare (ISO 14064-1)', '4 zile', '1200 lei', '', '', ''],
+]);
+$containmentExcelBytes = $makeXlsx(
+    ['title', 'Permalink', 'Durata Curs', 'Investitie', 'Ianuarie'],
+    [['Emisii GES - Cuantificare', '/curs/emisii-ges', '4 zile', '1200 lei', '10.01.2026']]
+);
+
+$setUpRecord('record-3', $containmentWordBytes, $containmentExcelBytes);
+$containmentResult = $service->compare('record-3');
+
+$assertSame(1, $containmentResult['matchedCount'], 'A Word title with an extra "(ISO 14064-1)" suffix must still match its shorter website title.');
+$containmentRow = $findRowByWordTitle($containmentResult['rows'], 'Emisii GES - Cuantificare (ISO 14064-1)');
+$assertSame(true, $containmentRow['matched'] ?? null, 'The contained title must be reported as matched.');
+$assertSame('Emisii GES - Cuantificare', $containmentRow['excelTitle'] ?? null, 'The matched row must carry the shorter website title.');
+$assertSame('different', $containmentRow['title']['status'], 'The titles differ in wording even though they were paired, so the title field must still show as different.');
+$assertSame('same', $containmentRow['duration']['status'], 'Matching duration text must be reported as the same.');
+$assertSame('same', $containmentRow['price']['status'], 'Matching price text must be reported as the same.');
+
 // --- Missing required Excel columns must fail with a clear message.
 
 $missingColumnsExcel = $makeXlsx(['title'], [['Curs fara coloane']]);
-$setUpRecord('record-3', $wordBytes, $missingColumnsExcel);
-$missingColumnsException = $captureException(fn () => $service->compare('record-3'));
+$setUpRecord('record-4', $wordBytes, $missingColumnsExcel);
+$missingColumnsException = $captureException(fn () => $service->compare('record-4'));
 $assertSame(true, $missingColumnsException instanceof BadRequest, 'A schedule Excel file missing Durata Curs must raise a BadRequest.');
 $assertContains('Durata Curs', $missingColumnsException?->getMessage() ?? '', 'The error must name the missing duration column.');
 
 // --- A record without an uploaded Word document must fail before any file is read.
 
-$entityManager->entities[$entityType . ':record-4'] = new Record('record-4', [
+$entityManager->entities[$entityType . ':record-5'] = new Record('record-5', [
     'wordTemplateFileId' => null,
     'wordScheduleFileId' => 'record-1-excel',
 ]);
-$missingWordException = $captureException(fn () => $service->compare('record-4'));
+$missingWordException = $captureException(fn () => $service->compare('record-5'));
 $assertSame(true, $missingWordException instanceof BadRequest, 'A record without a Word document must raise a BadRequest.');
 
 if ($failures !== []) {

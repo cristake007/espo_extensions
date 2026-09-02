@@ -186,11 +186,37 @@ class WordComparisonService
             return 100.0;
         }
 
-        return $this->applyCodeMismatchPenalty(
-            $this->combinedTitleScore($wordNormalized, $excelNormalized),
-            $wordNormalized,
-            $excelNormalized
-        );
+        $score = $this->combinedTitleScore($wordNormalized, $excelNormalized);
+
+        if ($this->isSignificantContainment($wordNormalized, $excelNormalized)) {
+            $score = max($score, 90.0);
+        }
+
+        return $this->applyCodeMismatchPenalty($score, $wordNormalized, $excelNormalized);
+    }
+
+    /**
+     * One title sometimes carries extra detail the other doesn't - a Word row
+     * spells out "(ISO 14064-1)" while the website keeps the short form, or the
+     * other way around. The raw blended score penalizes that length difference
+     * even though it is clearly the same course, so when the shorter title's
+     * tokens are (almost) entirely contained in the longer one - and there are
+     * enough of them to not be a coincidental generic phrase - the pair is scored
+     * as a strong match instead.
+     */
+    private function isSignificantContainment(string $wordNormalized, string $excelNormalized): bool
+    {
+        $wordTokens = array_values(array_filter(explode(' ', $wordNormalized)));
+        $excelTokens = array_values(array_filter(explode(' ', $excelNormalized)));
+
+        if (min(count($wordTokens), count($excelTokens)) < 3) {
+            return false;
+        }
+
+        $wordCoverage = $this->tokenCoverage($wordNormalized, $excelNormalized);
+        $scheduleCoverage = $this->tokenCoverage($excelNormalized, $wordNormalized);
+
+        return max($wordCoverage, $scheduleCoverage) >= 95.0;
     }
 
     /**
