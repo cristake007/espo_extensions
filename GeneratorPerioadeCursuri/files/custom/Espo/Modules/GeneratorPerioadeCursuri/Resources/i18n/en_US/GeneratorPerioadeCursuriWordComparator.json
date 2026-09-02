@@ -17,7 +17,8 @@
         "rowStatusSame": "No changes",
         "rowStatusChanged": "Changed",
         "rowStatusMissingWebsite": "Not on website",
-        "rowStatusMissingWord": "Not in Word"
+        "rowStatusMissingWord": "Not in Word",
+        "notOnWebsite": "— Not found on website —"
     },
     "fields": {
         "name": "Comparison Name",

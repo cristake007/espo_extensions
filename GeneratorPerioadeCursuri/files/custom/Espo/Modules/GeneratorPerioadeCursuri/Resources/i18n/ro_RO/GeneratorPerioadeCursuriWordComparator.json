@@ -17,7 +17,8 @@
         "rowStatusSame": "Fara modificari",
         "rowStatusChanged": "Modificat",
         "rowStatusMissingWebsite": "Lipseste pe site",
-        "rowStatusMissingWord": "Lipseste in Word"
+        "rowStatusMissingWord": "Lipseste in Word",
+        "notOnWebsite": "— Negasit pe site —"
     },
     "fields": {
         "name": "Denumire comparatie",

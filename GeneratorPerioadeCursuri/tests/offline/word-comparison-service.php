@@ -52,9 +52,9 @@ $captureException = static function (callable $callback): ?Throwable {
     return null;
 };
 
-$findRowByWordTitle = static function (array $rows, string $title): ?array {
-    foreach ($rows as $row) {
-        if ($row['wordTitle'] === $title) {
+$findWordRow = static function (array $wordRows, string $title): ?array {
+    foreach ($wordRows as $row) {
+        if ($row['title'] === $title) {
             return $row;
         }
     }
@@ -62,10 +62,14 @@ $findRowByWordTitle = static function (array $rows, string $title): ?array {
     return null;
 };
 
-$findRowByExcelTitle = static function (array $rows, string $title): ?array {
-    foreach ($rows as $row) {
-        if ($row['excelTitle'] === $title) {
-            return $row;
+$excelTitleAt = static function (array $excelOptions, ?int $excelIndex): ?string {
+    if ($excelIndex === null) {
+        return null;
+    }
+
+    foreach ($excelOptions as $option) {
+        if ($option['excelIndex'] === $excelIndex) {
+            return $option['title'];
         }
     }
 
@@ -162,6 +166,13 @@ $setUpRecord = static function (
     $fileStorageManager->contents[$recordId . '-excel'] = $excelBytes;
 };
 
+// The endpoint now returns a review payload (a suggested default plus candidates
+// per Word row, and the full website course list) instead of a fixed diff, so the
+// browser can render an editable dropdown and let the user correct a wrong or
+// missing guess. The client-side diff logic itself (same/different per field) is
+// covered by tests/offline/word-comparator-view-state.mjs, which exercises the
+// production rendering code directly.
+
 // --- Scenario 1: a course renamed in Word (SR EN ISO 9001:2015 -> ISO 9001:2026), a
 // course that only exists in Word, and a course that only exists on the website.
 
@@ -182,40 +193,49 @@ $setUpRecord('record-1', $wordBytes, $excelBytes);
 $result = $service->compare('record-1');
 
 $assertSame(true, $result['success'], 'A successful comparison must report success.');
-$assertSame(2, $result['wordCount'], 'Every compatible Word row must be counted.');
-$assertSame(2, $result['excelCount'], 'Every compatible Excel row must be counted.');
-$assertSame(1, $result['matchedCount'], 'The renamed course must still be paired across Word and the website.');
-$assertSame(1, $result['wordOnlyCount'], 'A Word row without a plausible Excel counterpart must be counted as Word-only.');
-$assertSame(1, $result['excelOnlyCount'], 'An Excel row never matched must be counted as Excel-only.');
-$assertSame(3, count($result['rows']), 'The unified row list must include the matched pair, the Word-only row, and the Excel-only row together (no separate tables).');
+$assertSame(2, count($result['wordRows']), 'Every compatible Word row must be included.');
+$assertSame(2, count($result['excelOptions']), 'Every compatible Excel row must be offered as a selectable option.');
 
-$renamedRow = $findRowByWordTitle($result['rows'], 'Indicatori de performanță bazat pe ISO 9001:2026');
-$assertSame(true, $renamedRow['matched'] ?? null, 'A retitled course (dropped "SR EN", changed year) must still be recognized as the same course.');
+$renamedRow = $findWordRow($result['wordRows'], 'Indicatori de performanță bazat pe ISO 9001:2026');
 $assertSame(
     'Indicatori de performanță bazat pe SR EN ISO 9001:2015',
-    $renamedRow['excelTitle'] ?? null,
-    'The matched row must carry the website title alongside the Word title.'
+    $excelTitleAt($result['excelOptions'], $renamedRow['selectedExcelIndex'] ?? null),
+    'A retitled course (dropped "SR EN", changed year) must still be suggested as the default selection.'
 );
-$assertSame('different', $renamedRow['title']['status'], 'A changed course name must be flagged as different even though the courses were paired.');
-$assertSame('different', $renamedRow['duration']['status'], '5 zile vs 6 zile must be reported as different.');
-$assertSame('5 zile', $renamedRow['duration']['word'], 'The Word duration text must be preserved.');
-$assertSame('6 zile', $renamedRow['duration']['excel'], 'The Excel duration text must be preserved.');
+$assertSame('5 zile', $renamedRow['duration'] ?? null, 'The Word duration text must be preserved for client-side diffing.');
+$assertSame('1500 lei', $renamedRow['price'] ?? null, 'The Word price text must be preserved for client-side diffing.');
+$candidateExcelIndexes = array_column($renamedRow['candidates'] ?? [], 'excelIndex');
 $assertSame(
-    'same',
-    $renamedRow['price']['status'],
-    '1500 lei and 1500,00 lei must compare equal once formatting is normalized.'
+    true,
+    in_array($renamedRow['selectedExcelIndex'], $candidateExcelIndexes, true),
+    'The suggested default must also appear among the offered candidates.'
 );
 
-$wordOnlyRow = $findRowByWordTitle($result['rows'], 'Managementul proiectelor europene');
-$assertSame(false, $wordOnlyRow['matched'] ?? null, 'A Word course with no plausible Excel counterpart must stay unmatched.');
-$assertSame(null, $wordOnlyRow['excelTitle'], 'An unmatched Word row must not carry an Excel title.');
+$wordOnlyRow = $findWordRow($result['wordRows'], 'Managementul proiectelor europene');
+$assertSame(null, $wordOnlyRow['selectedExcelIndex'], 'A Word course with no plausible Excel counterpart must have no default selection.');
 
-$excelOnlyRow = $findRowByExcelTitle($result['rows'], 'Expert achizitii publice');
-$assertSame(false, $excelOnlyRow['matched'] ?? null, 'An Excel course with no plausible Word counterpart must stay unmatched.');
-$assertSame(null, $excelOnlyRow['wordTitle'], 'An Excel-only row must not carry a Word title, and must live in the same rows list as everything else.');
+$excelOnlyOption = null;
+
+foreach ($result['excelOptions'] as $option) {
+    if ($option['title'] === 'Expert achizitii publice') {
+        $excelOnlyOption = $option;
+    }
+}
+
+$assertSame(
+    true,
+    $excelOnlyOption !== null,
+    'A website course with no plausible Word counterpart must still be offered as a selectable option.'
+);
+$assertSame(
+    false,
+    in_array($excelOnlyOption['excelIndex'], array_column($result['wordRows'], 'selectedExcelIndex'), true),
+    'A website course with no plausible Word counterpart must not be any row\'s default selection.'
+);
 
 // --- Scenario 2: two similarly worded but genuinely different courses (different ISO
 // standard numbers) must not be force-paired just because the surrounding words match.
+// The user can still pick either manually - this only governs the *default* guess.
 
 $distinctWordRows = [
     ['Auditor intern ISO 9001', '2 zile', '800 lei', '', '', ''],
@@ -229,14 +249,21 @@ $distinctExcelBytes = $makeXlsx(
 $setUpRecord('record-2', $distinctWordBytes, $distinctExcelBytes);
 $distinctResult = $service->compare('record-2');
 
-$assertSame(0, $distinctResult['matchedCount'], 'Courses naming two different ISO standards must not be paired despite similar wording.');
-$assertSame(1, $distinctResult['wordOnlyCount'], 'The Word-only ISO 9001 course must be reported on its own.');
-$assertSame(1, $distinctResult['excelOnlyCount'], 'The Excel-only ISO 14001 course must be reported on its own.');
+$assertSame(
+    null,
+    $distinctResult['wordRows'][0]['selectedExcelIndex'],
+    'Courses naming two different ISO standards must not be paired by default despite similar wording.'
+);
+$assertSame(
+    true,
+    in_array('Auditor intern ISO 14001', array_column($distinctResult['wordRows'][0]['candidates'] ?? [], 'title'), true),
+    'The differently-numbered course must still be offered as a manual candidate, even though it is not the default.'
+);
 
 // --- Scenario 3: the Word title carries extra parenthetical detail the website
 // title does not ("(ISO 14064-1)"). The shorter title's tokens are fully
-// contained in the longer one, so this must still be recognized as the same
-// course rather than reported as two unrelated "missing" rows.
+// contained in the longer one, so this must still be suggested as the default
+// pairing rather than left for the user to find manually.
 
 $containmentWordBytes = $makeDocx([
     ['Emisii GES - Cuantificare (ISO 14064-1)', '4 zile', '1200 lei', '', '', ''],
@@ -249,29 +276,60 @@ $containmentExcelBytes = $makeXlsx(
 $setUpRecord('record-3', $containmentWordBytes, $containmentExcelBytes);
 $containmentResult = $service->compare('record-3');
 
-$assertSame(1, $containmentResult['matchedCount'], 'A Word title with an extra "(ISO 14064-1)" suffix must still match its shorter website title.');
-$containmentRow = $findRowByWordTitle($containmentResult['rows'], 'Emisii GES - Cuantificare (ISO 14064-1)');
-$assertSame(true, $containmentRow['matched'] ?? null, 'The contained title must be reported as matched.');
-$assertSame('Emisii GES - Cuantificare', $containmentRow['excelTitle'] ?? null, 'The matched row must carry the shorter website title.');
-$assertSame('different', $containmentRow['title']['status'], 'The titles differ in wording even though they were paired, so the title field must still show as different.');
-$assertSame('same', $containmentRow['duration']['status'], 'Matching duration text must be reported as the same.');
-$assertSame('same', $containmentRow['price']['status'], 'Matching price text must be reported as the same.');
+$assertSame(
+    'Emisii GES - Cuantificare',
+    $excelTitleAt($containmentResult['excelOptions'], $containmentResult['wordRows'][0]['selectedExcelIndex'] ?? null),
+    'A Word title with an extra "(ISO 14064-1)" suffix must still be suggested as the default match for its shorter website title.'
+);
+
+// --- Scenario 4: the only difference between two titles is punctuation (an en
+// dash vs. a hyphen, an extra separator dash). Pairing must not be defeated by
+// that noise, since the matcher normalizes punctuation away before scoring.
+
+$punctuationWordBytes = $makeDocx([
+    ['Responsabil conformare PPWR – Ambalaje și deșeuri de ambalaje', '2 zile', '200 euro', '', '', ''],
+    ['Regulamentul REACH - Anexa XVII, intrarea 74-Diizocianați - Nivel Inițiere', '2 zile', '280 euro', '', '', ''],
+]);
+$punctuationExcelBytes = $makeXlsx(
+    ['title', 'Permalink', 'Durata Curs', 'Investitie', 'Ianuarie'],
+    [
+        ['Responsabil conformare PPWR - Ambalaje și deșeuri de ambalaje', '/curs/ppwr', '2 zile', '200 euro', '10.01.2026'],
+        ['Regulamentul REACH – Anexa XVII, intrarea 74-Diizocianați Nivel Inițiere', '/curs/reach', '2 zile', '280 euro', '10.01.2026'],
+    ]
+);
+
+$setUpRecord('record-4', $punctuationWordBytes, $punctuationExcelBytes);
+$punctuationResult = $service->compare('record-4');
+
+$ppwrRow = $findWordRow($punctuationResult['wordRows'], 'Responsabil conformare PPWR – Ambalaje și deșeuri de ambalaje');
+$assertSame(
+    'Responsabil conformare PPWR - Ambalaje și deșeuri de ambalaje',
+    $excelTitleAt($punctuationResult['excelOptions'], $ppwrRow['selectedExcelIndex'] ?? null),
+    'An en dash vs. a hyphen must not prevent the default pairing.'
+);
+
+$reachRow = $findWordRow($punctuationResult['wordRows'], 'Regulamentul REACH - Anexa XVII, intrarea 74-Diizocianați - Nivel Inițiere');
+$assertSame(
+    'Regulamentul REACH – Anexa XVII, intrarea 74-Diizocianați Nivel Inițiere',
+    $excelTitleAt($punctuationResult['excelOptions'], $reachRow['selectedExcelIndex'] ?? null),
+    'An extra separator dash must not prevent the default pairing.'
+);
 
 // --- Missing required Excel columns must fail with a clear message.
 
 $missingColumnsExcel = $makeXlsx(['title'], [['Curs fara coloane']]);
-$setUpRecord('record-4', $wordBytes, $missingColumnsExcel);
-$missingColumnsException = $captureException(fn () => $service->compare('record-4'));
+$setUpRecord('record-5', $wordBytes, $missingColumnsExcel);
+$missingColumnsException = $captureException(fn () => $service->compare('record-5'));
 $assertSame(true, $missingColumnsException instanceof BadRequest, 'A schedule Excel file missing Durata Curs must raise a BadRequest.');
 $assertContains('Durata Curs', $missingColumnsException?->getMessage() ?? '', 'The error must name the missing duration column.');
 
 // --- A record without an uploaded Word document must fail before any file is read.
 
-$entityManager->entities[$entityType . ':record-5'] = new Record('record-5', [
+$entityManager->entities[$entityType . ':record-6'] = new Record('record-6', [
     'wordTemplateFileId' => null,
     'wordScheduleFileId' => 'record-1-excel',
 ]);
-$missingWordException = $captureException(fn () => $service->compare('record-5'));
+$missingWordException = $captureException(fn () => $service->compare('record-6'));
 $assertSame(true, $missingWordException instanceof BadRequest, 'A record without a Word document must raise a BadRequest.');
 
 if ($failures !== []) {

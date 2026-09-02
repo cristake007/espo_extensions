@@ -30,6 +30,10 @@ class WordComparisonService
      */
     private const MATCH_FLOOR = 82.0;
 
+    /** Below this score a candidate is not worth offering as a manual quick-pick. */
+    private const CANDIDATE_FLOOR = 20.0;
+    private const MAX_CANDIDATES = 5;
+
     public function __construct(
         private EntityManager $entityManager,
         private FileStorageManager $fileStorageManager
@@ -73,23 +77,25 @@ class WordComparisonService
         $wordRows = $this->readWordRows($this->fileStorageManager->getContents($wordAttachment));
         $excelRows = $this->readExcelRows($this->fileStorageManager->getContents($scheduleAttachment));
 
-        return $this->buildComparison($wordRows, $excelRows);
+        return $this->buildReview($wordRows, $excelRows);
     }
 
     /**
-     * Every Word row is paired with its single best-scoring Excel row (and vice
-     * versa) using a global greedy assignment: all possible pairs are scored, the
-     * highest-scoring pairs are matched first, and a row is only left unmatched
-     * once no eligible counterpart remains above {@see self::MATCH_FLOOR}. This
-     * lets slightly retyped or renamed course titles (a changed standard year, an
-     * added/removed abbreviation) still line up in one row instead of being
-     * reported as two unrelated "missing" rows.
+     * The algorithm still proposes its single best-scoring Excel row per Word row
+     * (via the same global greedy assignment as before, gated by
+     * {@see self::MATCH_FLOOR}), but the pairing is no longer final: every Word
+     * row is sent with its suggested selection, a short list of alternate
+     * candidates, and the full Excel course list, so the browser can render an
+     * editable dropdown per row (mirroring the Word Matcher's review workflow).
+     * The actual duration/price/title diff is computed client-side from whichever
+     * Excel row is currently selected, so correcting a wrong guess never needs a
+     * second request.
      *
      * @param array<int, array{title: string, normalizedTitle: string, duration: string, price: string}> $wordRows
      * @param array<int, array{rowIndex: int, title: string, normalizedTitle: string, duration: string, price: string}> $excelRows
      * @return array<string, mixed>
      */
-    private function buildComparison(array $wordRows, array $excelRows): array
+    private function buildReview(array $wordRows, array $excelRows): array
     {
         $pairs = [];
 
@@ -127,56 +133,53 @@ class WordComparisonService
             $matchedExcelIndexes[$pair['excelIndex']] = true;
         }
 
-        $rows = [];
-        $differentCount = 0;
+        $candidatesByWord = [];
 
-        foreach ($wordRows as $wordIndex => $wordRow) {
-            $excelRow = isset($matches[$wordIndex]) ? $excelRows[$matches[$wordIndex]] : null;
-
-            $titleDiff = $this->fieldDiff($wordRow['title'], $excelRow['title'] ?? null, false);
-            $durationDiff = $this->fieldDiff($wordRow['duration'], $excelRow['duration'] ?? null, true);
-            $priceDiff = $this->fieldDiff($wordRow['price'], $excelRow['price'] ?? null, true);
-
-            if ($excelRow !== null &&
-                ($titleDiff['status'] !== 'same' || $durationDiff['status'] !== 'same' || $priceDiff['status'] !== 'same')
-            ) {
-                $differentCount++;
-            }
-
-            $rows[] = [
-                'wordTitle' => $wordRow['title'],
-                'excelTitle' => $excelRow['title'] ?? null,
-                'matched' => $excelRow !== null,
-                'title' => $titleDiff,
-                'duration' => $durationDiff,
-                'price' => $priceDiff,
-            ];
-        }
-
-        foreach ($excelRows as $excelIndex => $excelRow) {
-            if (isset($matchedExcelIndexes[$excelIndex])) {
+        foreach ($pairs as $pair) {
+            if ($pair['score'] < self::CANDIDATE_FLOOR) {
                 continue;
             }
 
-            $rows[] = [
-                'wordTitle' => null,
-                'excelTitle' => $excelRow['title'],
-                'matched' => false,
-                'title' => $this->fieldDiff('', $excelRow['title'], false),
-                'duration' => $this->fieldDiff('', $excelRow['duration'], true),
-                'price' => $this->fieldDiff('', $excelRow['price'], true),
+            $candidatesByWord[$pair['wordIndex']][] = $pair;
+        }
+
+        $wordRowsPayload = [];
+
+        foreach ($wordRows as $wordIndex => $wordRow) {
+            $candidates = array_slice($candidatesByWord[$wordIndex] ?? [], 0, self::MAX_CANDIDATES);
+
+            $wordRowsPayload[] = [
+                'wordIndex' => $wordIndex,
+                'title' => $wordRow['title'],
+                'duration' => $wordRow['duration'],
+                'price' => $wordRow['price'],
+                'selectedExcelIndex' => $matches[$wordIndex] ?? null,
+                'candidates' => array_map(
+                    fn (array $pair): array => [
+                        'excelIndex' => $pair['excelIndex'],
+                        'title' => $excelRows[$pair['excelIndex']]['title'],
+                        'score' => round($pair['score'], 1),
+                    ],
+                    $candidates
+                ),
+            ];
+        }
+
+        $excelOptionsPayload = [];
+
+        foreach ($excelRows as $excelIndex => $excelRow) {
+            $excelOptionsPayload[] = [
+                'excelIndex' => $excelIndex,
+                'title' => $excelRow['title'],
+                'duration' => $excelRow['duration'],
+                'price' => $excelRow['price'],
             ];
         }
 
         return [
             'success' => true,
-            'rows' => $rows,
-            'wordCount' => count($wordRows),
-            'excelCount' => count($excelRows),
-            'matchedCount' => count($matches),
-            'differentCount' => $differentCount,
-            'wordOnlyCount' => count($wordRows) - count($matches),
-            'excelOnlyCount' => count($excelRows) - count($matches),
+            'wordRows' => $wordRowsPayload,
+            'excelOptions' => $excelOptionsPayload,
         ];
     }
 
@@ -248,84 +251,6 @@ class WordComparisonService
         preg_match_all('/\b\d{4,5}\b/', $value, $matches);
 
         return array_values(array_unique($matches[0] ?? []));
-    }
-
-    /**
-     * @return array{status: string, word: ?string, excel: ?string}
-     */
-    private function fieldDiff(string $wordValue, ?string $excelValue, bool $numeric): array
-    {
-        $word = trim($wordValue);
-        $excel = $excelValue === null ? null : trim($excelValue);
-
-        if ($excel === null) {
-            $status = $word === '' ? 'missingBoth' : 'missingExcel';
-        } elseif ($word === '' && $excel === '') {
-            $status = 'missingBoth';
-        } elseif ($word === '') {
-            $status = 'missingWord';
-        } elseif ($excel === '') {
-            $status = 'missingExcel';
-        } elseif ($this->valuesMatch($word, $excel, $numeric)) {
-            $status = 'same';
-        } else {
-            $status = 'different';
-        }
-
-        return [
-            'status' => $status,
-            'word' => $word,
-            'excel' => $excel,
-        ];
-    }
-
-    /**
-     * Duration and price are short numeric-with-suffix values ("5 zile", "1500,00
-     * lei"), so those two fields tolerate formatting differences by comparing the
-     * leading number. A course title is free text that legitimately contains
-     * numbers (a standard code, a revision year); reducing it to "the first number
-     * in the string" would ignore the very wording changes this comparison exists
-     * to surface, so titles are always compared as normalized text.
-     */
-    private function valuesMatch(string $a, string $b, bool $numeric): bool
-    {
-        if ($numeric) {
-            $numberA = $this->extractNumber($a);
-            $numberB = $this->extractNumber($b);
-
-            if ($numberA !== null && $numberB !== null) {
-                return abs($numberA - $numberB) < 0.005;
-            }
-        }
-
-        return $this->normalizeForCompare($a) === $this->normalizeForCompare($b);
-    }
-
-    private function extractNumber(string $value): ?float
-    {
-        if (!preg_match('/-?\d[\d.,]*/', $value, $matches)) {
-            return null;
-        }
-
-        $digits = str_replace(' ', '', $matches[0]);
-
-        if (substr_count($digits, ',') > 0 && substr_count($digits, '.') > 0) {
-            $digits = str_replace('.', '', $digits);
-            $digits = str_replace(',', '.', $digits);
-        } elseif (substr_count($digits, ',') === 1 && substr_count($digits, '.') === 0) {
-            $digits = str_replace(',', '.', $digits);
-        } else {
-            $digits = str_replace(',', '', $digits);
-        }
-
-        return is_numeric($digits) ? (float) $digits : null;
-    }
-
-    private function normalizeForCompare(string $value): string
-    {
-        $text = mb_strtolower(trim($value));
-
-        return trim(preg_replace('/\s+/u', ' ', $text) ?? $text);
     }
 
     /**

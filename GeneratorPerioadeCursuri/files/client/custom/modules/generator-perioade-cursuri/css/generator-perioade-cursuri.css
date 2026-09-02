@@ -276,6 +276,20 @@ tr.word-compare-row-missing > td {
     background-color: rgba(127, 127, 127, 0.12) !important;
 }
 
+.word-compare-candidates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+}
+
+.word-compare-candidate-button.btn.btn-xs {
+    height: auto;
+    padding: 3px 6px;
+    text-align: left;
+    white-space: normal;
+}
+
 .wordpress-updater-workspace {
     color: var(--tuvtk-text);
     margin-top: 20px;

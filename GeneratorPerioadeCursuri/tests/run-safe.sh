@@ -21,6 +21,7 @@ php GeneratorPerioadeCursuri/tests/offline/mec-xml-builder.php
 php GeneratorPerioadeCursuri/tests/offline/menu-lifecycle.php
 node GeneratorPerioadeCursuri/tests/offline/error-message-quality.mjs
 node GeneratorPerioadeCursuri/tests/offline/word-matcher-view-state.mjs
+node GeneratorPerioadeCursuri/tests/offline/word-comparator-view-state.mjs
 node GeneratorPerioadeCursuri/tests/offline/detail-layout-field-visibility.mjs
 node GeneratorPerioadeCursuri/tests/offline/record-ui.mjs
 node GeneratorPerioadeCursuri/tests/offline/holiday-import.mjs
