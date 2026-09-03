@@ -332,6 +332,51 @@ $entityManager->entities[$entityType . ':record-6'] = new Record('record-6', [
 $missingWordException = $captureException(fn () => $service->compare('record-6'));
 $assertSame(true, $missingWordException instanceof BadRequest, 'A record without a Word document must raise a BadRequest.');
 
+// --- Scenario 7: the website export double-escapes "&" in course titles (a real
+// "&" round-trips through the site's export as "&amp;amp;", which the Xlsx
+// reader's XML parsing only unwraps by one level, leaving a literal "&amp;" in
+// the cell text). Multiple such entities per title must all be cleaned up, both
+// so the title matches its plain-"&" Word counterpart and so it displays
+// correctly in the review UI instead of showing "&amp;".
+
+$ampersandWordBytes = $makeDocx([
+    [
+        'Auditor ISO 9001:2015 & ISO 14001:2026 & ISO 45001:2023',
+        '5 zile',
+        '2000 lei',
+        '',
+        '',
+        '',
+    ],
+]);
+$ampersandExcelBytes = $makeXlsx(
+    ['title', 'Permalink', 'Durata Curs', 'Investitie', 'Ianuarie'],
+    [
+        [
+            'Auditor ISO 9001:2015 &amp;amp; ISO 14001:2026 &amp;amp; ISO 45001:2023',
+            '/curs/auditor-iso',
+            '5 zile',
+            '2000 lei',
+            '10.01.2026',
+        ],
+    ]
+);
+
+$setUpRecord('record-7', $ampersandWordBytes, $ampersandExcelBytes);
+$ampersandResult = $service->compare('record-7');
+
+$ampersandExcelOption = $ampersandResult['excelOptions'][0] ?? null;
+$assertSame(
+    'Auditor ISO 9001:2015 & ISO 14001:2026 & ISO 45001:2023',
+    $ampersandExcelOption['title'] ?? null,
+    'A double-escaped "&amp;amp;" in the Excel title must display as a plain "&", not "&amp;".'
+);
+$assertSame(
+    'Auditor ISO 9001:2015 & ISO 14001:2026 & ISO 45001:2023',
+    $excelTitleAt($ampersandResult['excelOptions'], $ampersandResult['wordRows'][0]['selectedExcelIndex'] ?? null),
+    'A double-escaped "&amp;amp;" in the Excel title must still be suggested as the default match for its plain-"&" Word counterpart.'
+);
+
 if ($failures !== []) {
     fwrite(STDERR, "Word comparison service: " . count($failures) . " failure(s) across {$checks} checks.\n" . implode("\n", $failures) . "\n");
     exit(1);

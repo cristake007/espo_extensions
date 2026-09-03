@@ -468,6 +468,8 @@ class WordComparisonService
                 throw $this->titleHeaderBadRequest($e);
             }
 
+            $title = $this->decodeHtmlEntities($title);
+
             if ($title === '') {
                 continue;
             }
@@ -552,9 +554,33 @@ class WordComparisonService
         ));
     }
 
+    /**
+     * The website export sometimes double-escapes titles (a literal "&" ends up
+     * stored as "&amp;amp;"), which XML parsing only unwraps by one level,
+     * leaving a literal "&amp;" in the value read back from the sheet. A single
+     * html_entity_decode() call only strips one layer, leaving stray "amp" text
+     * behind that pollutes matching and stays visible in the UI. Decoding
+     * repeatedly until the value stops changing resolves any depth of
+     * double-encoding while staying a no-op for already-clean titles.
+     */
+    private function decodeHtmlEntities(string $value): string
+    {
+        for ($i = 0; $i < 5; $i++) {
+            $decoded = html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+            if ($decoded === $value) {
+                break;
+            }
+
+            $value = $decoded;
+        }
+
+        return $value;
+    }
+
     private function normalizeTitle(string $value): string
     {
-        $text = html_entity_decode(str_replace("\xc2\xa0", ' ', $value), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = $this->decodeHtmlEntities(str_replace("\xc2\xa0", ' ', $value));
         $text = mb_strtolower(trim($text));
         $text = strtr($text, [
             'ă' => 'a',
