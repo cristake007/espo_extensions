@@ -357,7 +357,9 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-compara
         }
 
         composeCourseSelect(row, selected) {
-            const options = (this.wordComparisonData.excelOptions || []).map(option => {
+            const excelOptions = this.wordComparisonData.excelOptions || [];
+
+            const options = excelOptions.map(option => {
                 const isSelected = selected !== null && selected !== undefined && Number(selected) === option.excelIndex;
 
                 return '<option value="' + option.excelIndex + '"' + (isSelected ? ' selected' : '') + '>' +
@@ -365,12 +367,29 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-compara
                     '</option>';
             }).join('');
 
-            const candidateButtons = (row.candidates || []).map(candidate => [
+            const selectedOption = selected !== null && selected !== undefined ?
+                excelOptions.find(option => option.excelIndex === Number(selected)) :
+                null;
+
+            // The <select> and the candidate buttons below only expose their course
+            // title as a control label, which browsers do not let the user drag-select
+            // to copy. Mirror the title into plain text next to each one so it can be
+            // selected and copied without disturbing the pick controls.
+            const selectedText = selectedOption ?
+                '<div class="word-compare-selected-text">' + RecordUi.escapeHtml(selectedOption.title) + '</div>' :
+                '';
+
+            const candidateRows = (row.candidates || []).map(candidate => [
+                '<div class="word-compare-candidate-row">',
                 '<button type="button" class="btn btn-default btn-xs word-compare-candidate-button"',
                 ' data-word-row-index="' + row.wordIndex + '"',
-                ' data-candidate-excel-index="' + candidate.excelIndex + '">',
-                RecordUi.escapeHtml(candidate.title) + ' (' + RecordUi.escapeHtml(candidate.score) + ')',
-                '</button>'
+                ' data-candidate-excel-index="' + candidate.excelIndex + '"',
+                ' title="' + RecordUi.escapeHtml(this.translate('useCandidate', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '">',
+                RecordUi.escapeHtml(this.translate('useCandidate', 'labels', 'GeneratorPerioadeCursuriWordComparator')) +
+                ' (' + RecordUi.escapeHtml(candidate.score) + ')',
+                '</button>',
+                '<span class="word-compare-candidate-text">' + RecordUi.escapeHtml(candidate.title) + '</span>',
+                '</div>'
             ].join('')).join('');
 
             return [
@@ -378,7 +397,8 @@ define('generator-perioade-cursuri:views/generator-perioade-cursuri-word-compara
                 '<option value="">' + RecordUi.escapeHtml(this.translate('notOnWebsite', 'labels', 'GeneratorPerioadeCursuriWordComparator')) + '</option>',
                 options,
                 '</select>',
-                candidateButtons ? '<div class="word-compare-candidates">' + candidateButtons + '</div>' : ''
+                selectedText,
+                candidateRows ? '<div class="word-compare-candidates">' + candidateRows + '</div>' : ''
             ].join('');
         }
 

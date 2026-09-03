@@ -18,7 +18,8 @@
         "rowStatusChanged": "Modificat",
         "rowStatusMissingWebsite": "Lipseste pe site",
         "rowStatusMissingWord": "Lipseste in Word",
-        "notOnWebsite": "— Negasit pe site —"
+        "notOnWebsite": "— Negasit pe site —",
+        "useCandidate": "Alege"
     },
     "fields": {
         "name": "Denumire comparatie",

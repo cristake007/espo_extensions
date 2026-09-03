@@ -276,18 +276,39 @@ tr.word-compare-row-missing > td {
     background-color: rgba(127, 127, 127, 0.12) !important;
 }
 
+.word-compare-selected-text {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--tuvtk-text-muted, #767b91);
+    user-select: text;
+    -webkit-user-select: text;
+}
+
 .word-compare-candidates {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 4px;
     margin-top: 6px;
 }
 
+.word-compare-candidate-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
 .word-compare-candidate-button.btn.btn-xs {
+    flex: 0 0 auto;
     height: auto;
     padding: 3px 6px;
-    text-align: left;
-    white-space: normal;
+    white-space: nowrap;
+}
+
+.word-compare-candidate-text {
+    font-size: 12px;
+    color: var(--tuvtk-text-muted, #767b91);
+    user-select: text;
+    -webkit-user-select: text;
 }
 
 .wordpress-updater-workspace {

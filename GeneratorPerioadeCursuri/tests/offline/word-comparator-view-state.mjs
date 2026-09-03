@@ -133,6 +133,11 @@ function rowDetail(excelOptions) {
     assert.ok(!html.includes('word-compare-cell-diff'), 'an exact match must not highlight any cell as different');
     checks++;
     assert.ok(html.includes('<option value="0" selected>'), 'the matched website course must be pre-selected in the dropdown');
+    checks++;
+    assert.ok(
+        html.includes('<div class="word-compare-selected-text">Curs A</div>'),
+        'the selected website course title must also be exposed as plain, copyable text next to the dropdown'
+    );
 }
 
 // Regression: an en dash vs. a hyphen (and other punctuation-only differences)
@@ -195,6 +200,11 @@ function rowDetail(excelOptions) {
     assert.ok(
         html.includes('data-candidate-excel-index="9"'),
         'a low-confidence candidate must still be offered as a manual quick-pick'
+    );
+    checks++;
+    assert.ok(
+        html.includes('<span class="word-compare-candidate-text">Curs Aproape Identic</span>'),
+        'a candidate title must also be exposed as plain text outside the button, since button labels are not text-selectable'
     );
 }
 
