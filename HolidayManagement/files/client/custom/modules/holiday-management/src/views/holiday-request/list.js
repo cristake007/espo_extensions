@@ -1,5 +1,16 @@
 define(['views/list'], (ListView) => {
     return class extends ListView {
+        setup() {
+            super.setup();
+
+            const refreshBalance = () => this.loadHolidayBalance();
+
+            window.addEventListener('holiday-management:balance-refresh', refreshBalance);
+            this.once('remove', () => {
+                window.removeEventListener('holiday-management:balance-refresh', refreshBalance);
+            });
+        }
+
         afterRender() {
             super.afterRender();
             this.loadHolidayBalance();
@@ -142,6 +153,11 @@ define(['views/list'], (ListView) => {
                     'HolidayRequest'
                 ));
                 await this.loadApprovalQueue();
+                if (decision === 'Rejected') {
+                    window.dispatchEvent(new CustomEvent(
+                        'holiday-management:balance-refresh'
+                    ));
+                }
                 window.dispatchEvent(new CustomEvent('zile-sarbatoare:calendar-refresh'));
             } catch (error) {
                 row.find('button').prop('disabled', false);

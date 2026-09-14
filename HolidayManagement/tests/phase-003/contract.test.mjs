@@ -337,6 +337,10 @@ test('self-service page fetches only the signed-in balance and presents bilingua
     assert.match(client, /HolidayManagement\/myBalance/);
     assert.match(client, /balance\.balance/);
     assert.match(client, /annualEntitlement/);
+    assert.match(client, /addEventListener\('holiday-management:balance-refresh'/);
+    assert.match(client, /removeEventListener\('holiday-management:balance-refresh'/);
+    assert.match(client, /decision === 'Rejected'/);
+    assert.match(client, /dispatchEvent\(new CustomEvent\([\s\S]*holiday-management:balance-refresh/);
     assert.match(client, /holiday-balance-card__metric/);
     assert.doesNotMatch(client, /holiday-balance-card--\$\{state\}/);
     assert.match(client, /toDisplayDate/);
