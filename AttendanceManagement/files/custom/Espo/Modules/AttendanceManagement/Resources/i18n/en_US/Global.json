@@ -3,9 +3,11 @@
         "Attendance": "Attendance"
     },
     "scopeNames": {
+        "Attendance": "Attendance",
         "AttendanceRecord": "Attendance Record"
     },
     "scopeNamesPlural": {
+        "Attendance": "Attendance",
         "AttendanceRecord": "Attendance Records"
     }
 }

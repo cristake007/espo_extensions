@@ -1,4 +1,4 @@
-define(['view'], (View) => {
+define(['view', 'model'], (View, Model) => {
     return class extends View {
         templateContent = `
             <div class="header page-header">
@@ -20,10 +20,6 @@ define(['view'], (View) => {
                                 <span class="fas fa-car" aria-hidden="true"></span>
                                 {{translate 'BusinessTrip' category='options' scope='AttendanceRecord' field='status'}}
                             </button>
-                            <button class="btn btn-info btn-lg" data-status-indicator="Holiday" disabled>
-                                <span class="fas fa-umbrella-beach" aria-hidden="true"></span>
-                                {{translate 'Holiday' category='options' scope='AttendanceRecord' field='status'}}
-                            </button>
                         </div>
                         <div class="attendance-current-status text-muted"></div>
                     </div>
@@ -32,7 +28,12 @@ define(['view'], (View) => {
                 <div class="panel panel-default">
                     <div class="panel-heading attendance-month-heading">
                         <strong>{{translate 'Working Days' category='labels' scope='AttendanceRecord'}}</strong>
-                        <input class="form-control input-sm attendance-month-input" type="month">
+                        <div class="attendance-month-control">
+                            <div class="field attendance-month-field" data-month-field></div>
+                            <button class="btn btn-default btn-sm" data-action="open-month">
+                                {{translate 'Open Month' category='labels' scope='AttendanceRecord'}}
+                            </button>
+                        </div>
                     </div>
                     <div class="list-group attendance-day-list"></div>
                 </div>
@@ -41,11 +42,13 @@ define(['view'], (View) => {
 
         events = {
             'click [data-action="mark-attendance"]': 'actionMarkAttendance',
-            'change .attendance-month-input': 'actionChangeMonth',
+            'click [data-action="open-month"]': 'actionOpenMonth',
         }
 
         setup() {
             this.attendance = {days: []};
+            this.monthModel = new Model();
+            this.monthModel.entityType = 'AttendanceRecord';
             this.wait(this.loadAttendance());
         }
 
@@ -59,14 +62,13 @@ define(['view'], (View) => {
 
         afterRender() {
             this.renderAttendance();
+            this.renderMonthField();
         }
 
         renderAttendance() {
             const data = this.attendance;
-            const input = this.$el.find('.attendance-month-input');
 
-            input.val(data.month || '');
-            input.attr('max', data.currentMonth || '');
+            this.monthModel.set('monthDate', data.month ? `${data.month}-01` : null);
             this.$el.find('.attendance-today-date').text(this.displayDate(data.today));
             this.renderToday(data);
             this.renderDays(data.days || []);
@@ -80,9 +82,6 @@ define(['view'], (View) => {
                 .attr('data-date', data.today)
                 .prop('disabled', !data.todayCanMark)
                 .removeClass('attendance-state-active');
-            actions.find('[data-status-indicator="Holiday"]')
-                .toggleClass('attendance-state-active', status === 'Holiday');
-
             if (status && status !== 'Holiday') {
                 actions.find(`[data-status="${status}"]`).addClass('attendance-state-active');
             }
@@ -178,7 +177,7 @@ define(['view'], (View) => {
             try {
                 await Espo.Ajax.postRequest('AttendanceManagement/mark', {date, status});
                 Espo.Ui.success(this.translate('Attendance Saved', 'messages', 'AttendanceRecord'));
-                await this.loadAttendance(this.$el.find('.attendance-month-input').val());
+                await this.loadAttendance(this.attendance.month);
                 this.renderAttendance();
             } catch (error) {
                 Espo.Ui.error(this.translate('Attendance Save Failed', 'messages', 'AttendanceRecord'));
@@ -186,8 +185,10 @@ define(['view'], (View) => {
             }
         }
 
-        async actionChangeMonth(event) {
-            const month = String($(event.currentTarget).val() || '');
+        async actionOpenMonth() {
+            const field = this.getView('attendanceMonth');
+            const date = field ? field.fetch().monthDate : null;
+            const month = typeof date === 'string' ? date.slice(0, 7) : '';
 
             if (!month) {
                 return;
@@ -199,6 +200,22 @@ define(['view'], (View) => {
             } catch (error) {
                 Espo.Ui.error(this.translate('Attendance Load Failed', 'messages', 'AttendanceRecord'));
             }
+        }
+
+        async renderMonthField() {
+            const view = await this.createView(
+                'attendanceMonth',
+                'views/fields/date',
+                {
+                    selector: '[data-month-field]',
+                    mode: 'edit',
+                    model: this.monthModel,
+                    name: 'monthDate',
+                    readOnlyDisabled: true,
+                },
+            );
+
+            await view.render();
         }
 
         displayDate(value) {

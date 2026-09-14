@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.0.0');
+    assert.equal(manifest.version, '1.1.0');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -83,25 +83,50 @@ test('approved holidays are read without changing Holiday Management', async () 
     assert.match(service, /An approved holiday controls attendance for this date/);
 });
 
-test('personal page has three top states and two manual actions per working day', async () => {
+test('personal page is a side-navigation scope with two manual actions per working day', async () => {
     const controller = await readFile(
-        path.join(clientRoot, 'src', 'controllers', 'attendance-record.js'),
+        path.join(clientRoot, 'src', 'controllers', 'attendance.js'),
         'utf8'
     );
     const view = await readFile(
         path.join(clientRoot, 'src', 'views', 'attendance', 'my.js'),
         'utf8'
     );
-    const navbar = await readJson('Resources', 'metadata', 'app', 'clientNavbar.json');
+    const scope = await readJson('Resources', 'metadata', 'scopes', 'Attendance.json');
+    const clientDefs = await readJson('Resources', 'metadata', 'clientDefs', 'Attendance.json');
+    const afterInstall = await readFile(
+        path.join(extensionRoot, 'scripts', 'AfterInstall.php'),
+        'utf8'
+    );
 
-    assert.equal(navbar.menuItems.attendance.link, '#AttendanceRecord/attendance');
-    assert.match(controller, /actionAttendance\(\)/);
+    assert.equal(scope.entity, false);
+    assert.equal(scope.tab, true);
+    assert.equal(clientDefs.controller, 'attendance-management:controllers/attendance');
+    assert.match(controller, /actionIndex\(\)/);
+    assert.match(afterInstall, /NAVIGATION_SCOPE = 'Attendance'/);
+    assert.match(afterInstall, /\$tabList\[\] = self::NAVIGATION_SCOPE/);
     assert.match(view, /data-status="AtWork"/);
     assert.match(view, /data-status="BusinessTrip"/);
-    assert.match(view, /data-status-indicator="Holiday" disabled/);
+    assert.doesNotMatch(view, /data-status-indicator="Holiday"/);
     assert.match(view, /for \(const status of \['AtWork', 'BusinessTrip'\]\)/);
     assert.match(view, /prop\('disabled', !day.canMark\)/);
-    assert.match(view, /type="month"/);
+});
+
+test('page is full-width and uses an EspoCRM date field for month selection', async () => {
+    const defs = await readJson('Resources', 'metadata', 'entityDefs', 'AttendanceRecord.json');
+    const view = await readFile(
+        path.join(clientRoot, 'src', 'views', 'attendance', 'my.js'),
+        'utf8'
+    );
+    const css = await readFile(path.join(clientRoot, 'css', 'attendance.css'), 'utf8');
+
+    assert.equal(defs.fields.monthDate.type, 'date');
+    assert.equal(defs.fields.monthDate.utility, true);
+    assert.match(view, /'views\/fields\/date'/);
+    assert.match(view, /data-month-field/);
+    assert.doesNotMatch(view, /type="month"/);
+    assert.match(css, /\.attendance-page\s*\{\s*width: 100%;/);
+    assert.doesNotMatch(css, /max-width:\s*920px/);
 });
 
 test('attendance page and statuses are bilingual', async () => {

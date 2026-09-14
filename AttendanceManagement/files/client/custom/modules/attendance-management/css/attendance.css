@@ -1,12 +1,11 @@
 .attendance-page {
-    margin: 0 auto;
-    max-width: 920px;
+    width: 100%;
 }
 
 .attendance-state-actions {
     display: grid;
     gap: 12px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .attendance-state-actions .btn {
@@ -38,8 +37,14 @@
     justify-content: space-between;
 }
 
-.attendance-month-input {
-    max-width: 190px;
+.attendance-month-control {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+}
+
+.attendance-month-field {
+    min-width: 180px;
 }
 
 .attendance-day-date {

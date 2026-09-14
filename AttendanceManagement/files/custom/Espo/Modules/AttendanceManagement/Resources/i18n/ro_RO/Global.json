@@ -3,9 +3,11 @@
         "Attendance": "Condica de prezenta"
     },
     "scopeNames": {
+        "Attendance": "Condica de prezenta",
         "AttendanceRecord": "Prezenta"
     },
     "scopeNamesPlural": {
+        "Attendance": "Condica de prezenta",
         "AttendanceRecord": "Prezente"
     }
 }

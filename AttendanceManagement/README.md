@@ -12,7 +12,7 @@ holiday balances.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.0.0 files
+./build.sh --extension ./AttendanceManagement --zip 1.1.0 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

@@ -1,6 +1,7 @@
 {
     "fields": {
         "date": "Date",
+        "monthDate": "Month",
         "status": "Status",
         "source": "Source",
         "user": "User",
@@ -21,7 +22,8 @@
         "Today": "Today",
         "Working Days": "Working days",
         "Current Status": "Current status",
-        "Not Marked": "Not marked"
+        "Not Marked": "Not marked",
+        "Open Month": "Open month"
     },
     "messages": {
         "Attendance Saved": "Attendance was saved.",

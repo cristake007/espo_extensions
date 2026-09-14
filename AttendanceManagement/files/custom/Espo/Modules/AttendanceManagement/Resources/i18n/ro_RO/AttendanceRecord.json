@@ -1,6 +1,7 @@
 {
     "fields": {
         "date": "Data",
+        "monthDate": "Luna",
         "status": "Stare",
         "source": "Sursa",
         "user": "Utilizator",
@@ -21,7 +22,8 @@
         "Today": "Astazi",
         "Working Days": "Zile lucratoare",
         "Current Status": "Starea curenta",
-        "Not Marked": "Nemarcata"
+        "Not Marked": "Nemarcata",
+        "Open Month": "Deschide luna"
     },
     "messages": {
         "Attendance Saved": "Prezenta a fost salvata.",

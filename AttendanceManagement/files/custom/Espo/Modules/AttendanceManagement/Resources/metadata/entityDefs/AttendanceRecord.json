@@ -10,6 +10,10 @@
             "required": true,
             "readOnly": true
         },
+        "monthDate": {
+            "type": "date",
+            "utility": true
+        },
         "status": {
             "type": "enum",
             "options": ["AtWork", "Holiday", "BusinessTrip"],
