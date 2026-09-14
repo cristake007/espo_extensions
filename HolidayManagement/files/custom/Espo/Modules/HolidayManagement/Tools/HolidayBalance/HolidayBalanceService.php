@@ -55,18 +55,46 @@ final class HolidayBalanceService
                 'initialized' => false,
                 'profileId' => $profile?->getId(),
                 'balance' => null,
+                'availableDays' => null,
+                'pendingDays' => 0.0,
                 'annualEntitlement' => null,
                 'nextResetDate' => null,
             ];
         }
 
+        $balance = (float) $profile->get('balance');
+        $pendingDays = $this->getPendingDays((string) $this->user->getId());
+
         return [
             'initialized' => true,
             'profileId' => $profile->getId(),
-            'balance' => (float) $profile->get('balance'),
+            'balance' => $balance,
+            'availableDays' => $balance + $pendingDays,
+            'pendingDays' => $pendingDays,
             'annualEntitlement' => (float) $profile->get('annualEntitlement'),
             'nextResetDate' => $profile->get('nextResetDate'),
         ];
+    }
+
+    private function getPendingDays(string $userId): float
+    {
+        $pendingDays = 0.0;
+        $requests = $this->entityManager
+            ->getRDBRepository(self::REQUEST)
+            ->where([
+                'assignedUserId' => $userId,
+                'OR' => [
+                    ['status' => self::STATUS_PENDING],
+                    ['status' => null],
+                ],
+            ])
+            ->find();
+
+        foreach ($requests as $request) {
+            $pendingDays += max(0.0, (float) $request->get('days'));
+        }
+
+        return $pendingDays;
     }
 
     public function prepareHolidayForCreate(Entity $request): void

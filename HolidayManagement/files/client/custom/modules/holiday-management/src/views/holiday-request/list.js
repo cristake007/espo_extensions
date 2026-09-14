@@ -153,11 +153,9 @@ define(['views/list'], (ListView) => {
                     'HolidayRequest'
                 ));
                 await this.loadApprovalQueue();
-                if (decision === 'Rejected') {
-                    window.dispatchEvent(new CustomEvent(
-                        'holiday-management:balance-refresh'
-                    ));
-                }
+                window.dispatchEvent(new CustomEvent(
+                    'holiday-management:balance-refresh'
+                ));
                 window.dispatchEvent(new CustomEvent('zile-sarbatoare:calendar-refresh'));
             } catch (error) {
                 row.find('button').prop('disabled', false);
@@ -222,17 +220,35 @@ define(['views/list'], (ListView) => {
             const displayDate = balance.nextResetDate
                 ? this.getDateTime().toDisplayDate(String(balance.nextResetDate))
                 : this.translate('Not Set', 'labels', 'HolidayRequest');
+            const pendingDays = Number(balance.pendingDays || 0);
 
             body.append(
                 $('<div>').addClass('holiday-balance-card__metric').append(
                     $('<div>')
                         .addClass('holiday-balance-card__number')
-                        .text(String(balance.balance)),
+                        .text(String(balance.availableDays)),
                     $('<div>')
                         .addClass('holiday-balance-card__metric-label')
                         .text(this.translate('Days Available', 'labels', 'HolidayRequest')),
                 ),
                 $('<div>').addClass('holiday-balance-card__details').append(
+                    $('<div>').addClass('holiday-balance-card__detail').append(
+                        $('<span>')
+                            .addClass('fas fa-hourglass-half holiday-balance-card__detail-icon')
+                            .attr('aria-hidden', 'true'),
+                        $('<div>').append(
+                            $('<div>')
+                                .addClass('holiday-balance-card__detail-label')
+                                .text(this.translate(
+                                    'Pending Requests',
+                                    'labels',
+                                    'HolidayRequest'
+                                )),
+                            $('<div>')
+                                .addClass('holiday-balance-card__detail-value')
+                                .text(pendingDays > 0 ? `-${pendingDays}` : '0'),
+                        ),
+                    ),
                     $('<div>').addClass('holiday-balance-card__detail').append(
                         $('<span>')
                             .addClass('fas fa-calendar-check holiday-balance-card__detail-icon')

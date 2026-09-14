@@ -141,11 +141,9 @@ define(['views/dashlets/abstract/base'], (BaseDashletView) => {
                 ));
                 await this.loadQueue();
                 await this.reRender();
-                if (decision === 'Rejected') {
-                    window.dispatchEvent(new CustomEvent(
-                        'holiday-management:balance-refresh'
-                    ));
-                }
+                window.dispatchEvent(new CustomEvent(
+                    'holiday-management:balance-refresh'
+                ));
                 window.dispatchEvent(new CustomEvent('zile-sarbatoare:calendar-refresh'));
             } catch (error) {
                 item.find('button').prop('disabled', false);

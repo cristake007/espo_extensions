@@ -140,6 +140,10 @@ test('request lifecycle hooks reserve, adjust, and refund the profile balance', 
     assert.match(balanceSource, /\$isAdjustment \? 'change requires' : 'booking requires'/);
     assert.match(balanceSource, /max\(0\.0, \$currentBalance - \$limit\)/);
     assert.match(balanceSource, /max\(0\.0, \$daysToDeduct - \$availableDays\)/);
+    assert.match(balanceSource, /'availableDays'\s*=>\s*\$balance \+ \$pendingDays/);
+    assert.match(balanceSource, /'pendingDays'\s*=>\s*\$pendingDays/);
+    assert.match(balanceSource, /private function getPendingDays\(string \$userId\): float/);
+    assert.match(balanceSource, /\['status'\s*=>\s*self::STATUS_PENDING\]/);
     assert.doesNotMatch(balanceSource, /minimum allowed balance/);
 
     const repositoryHook = await readModuleSource('Hooks', 'HolidayRequest', 'Balance.php');
@@ -335,11 +339,12 @@ test('self-service page fetches only the signed-in balance and presents bilingua
     assert.match(action, /getMyBalance\(\)/);
     assert.doesNotMatch(action, /getParsedBody|getQueryParam/);
     assert.match(client, /HolidayManagement\/myBalance/);
-    assert.match(client, /balance\.balance/);
+    assert.doesNotMatch(client, /String\(balance\.balance\)/);
+    assert.match(client, /balance\.availableDays/);
+    assert.match(client, /balance\.pendingDays/);
     assert.match(client, /annualEntitlement/);
     assert.match(client, /addEventListener\('holiday-management:balance-refresh'/);
     assert.match(client, /removeEventListener\('holiday-management:balance-refresh'/);
-    assert.match(client, /decision === 'Rejected'/);
     assert.match(client, /dispatchEvent\(new CustomEvent\([\s\S]*holiday-management:balance-refresh/);
     assert.match(client, /holiday-balance-card__metric/);
     assert.doesNotMatch(client, /holiday-balance-card--\$\{state\}/);
@@ -359,6 +364,7 @@ test('self-service page fetches only the signed-in balance and presents bilingua
         assert.equal(typeof global.scopeNames.HolidayRequest, 'string');
         assert.equal(typeof request.messages.holidayBalanceSummary, 'string');
         assert.equal(typeof request.labels['Days Available'], 'string');
+        assert.equal(typeof request.labels['Pending Requests'], 'string');
         assert.equal(typeof request.labels['Annual Entitlement'], 'string');
         assert.equal(typeof request.labels['Next Reset'], 'string');
         assert.equal(typeof request.labels['Profile Not Ready'], 'string');

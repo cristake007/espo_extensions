@@ -29,11 +29,9 @@ define([], () => {
                 'messages',
                 'HolidayRequest',
             ));
-            if (decision === 'Rejected') {
-                window.dispatchEvent(new CustomEvent(
-                    'holiday-management:balance-refresh'
-                ));
-            }
+            window.dispatchEvent(new CustomEvent(
+                'holiday-management:balance-refresh'
+            ));
             window.dispatchEvent(new CustomEvent('zile-sarbatoare:calendar-refresh'));
             await view.reRender();
         } catch (error) {
