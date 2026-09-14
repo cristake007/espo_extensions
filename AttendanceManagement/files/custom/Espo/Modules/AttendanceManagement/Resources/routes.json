@@ -8,5 +8,25 @@
         "route": "/AttendanceManagement/mark",
         "method": "post",
         "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostMarkAttendance"
+    },
+    {
+        "route": "/AttendanceManagement/overview/access",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\GetOverviewAccess"
+    },
+    {
+        "route": "/AttendanceManagement/overview",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\GetAttendanceOverview"
+    },
+    {
+        "route": "/AttendanceManagement/overview/remind",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostAttendanceReminders"
+    },
+    {
+        "route": "/AttendanceManagement/overview/xlsx",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostAttendanceXlsx"
     }
 ]

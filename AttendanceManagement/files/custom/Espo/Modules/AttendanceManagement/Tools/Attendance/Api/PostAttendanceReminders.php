@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Espo\Modules\AttendanceManagement\Tools\Attendance\Api;
+
+use Espo\Core\Api\Action;
+use Espo\Core\Api\Request;
+use Espo\Core\Api\Response;
+use Espo\Core\Api\ResponseComposer;
+use Espo\Modules\AttendanceManagement\Tools\Attendance\AttendanceOverviewService;
+
+final class PostAttendanceReminders implements Action
+{
+    public function __construct(private AttendanceOverviewService $overviewService)
+    {}
+
+    public function process(Request $request): Response
+    {
+        $data = $request->getParsedBody() ?? (object) [];
+        $month = is_string($data->month ?? null) ? $data->month : null;
+
+        return ResponseComposer::json($this->overviewService->sendReminders($month));
+    }
+}

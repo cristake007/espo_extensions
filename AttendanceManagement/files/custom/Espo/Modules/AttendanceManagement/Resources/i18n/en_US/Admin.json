@@ -1,0 +1,11 @@
+{
+    "labels": {
+        "Attendance Management": "Attendance Management"
+    },
+    "descriptions": {
+        "attendanceManagementSettings": "Configure who can manage the attendance register."
+    },
+    "keywords": {
+        "Attendance Management": "attendance register managers reminders xlsx"
+    }
+}

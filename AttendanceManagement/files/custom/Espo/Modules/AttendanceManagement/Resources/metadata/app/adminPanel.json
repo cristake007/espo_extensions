@@ -1,0 +1,15 @@
+{
+    "attendanceManagement": {
+        "label": "Attendance Management",
+        "itemList": [
+            {
+                "url": "#Admin/attendanceManagementSettings",
+                "label": "Attendance Management",
+                "iconClass": "fas fa-clipboard-check",
+                "description": "attendanceManagementSettings",
+                "recordView": "modules/attendance-management/views/admin/settings"
+            }
+        ],
+        "order": 102
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "labels": {
+        "Attendance Management": "Condica de prezenta"
+    },
+    "descriptions": {
+        "attendanceManagementSettings": "Configureaza persoanele care pot administra condica de prezenta."
+    },
+    "keywords": {
+        "Attendance Management": "condica prezenta responsabili notificari xlsx"
+    }
+}

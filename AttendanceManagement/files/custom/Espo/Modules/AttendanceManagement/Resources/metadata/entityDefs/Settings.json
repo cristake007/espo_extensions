@@ -1,0 +1,12 @@
+{
+    "fields": {
+        "attendanceManagementManagers": {
+            "type": "linkMultiple",
+            "entity": "User",
+            "tooltip": true,
+            "validatorClassNameList": [
+                "Espo\\Modules\\AttendanceManagement\\FieldValidators\\Settings\\Managers\\Valid"
+            ]
+        }
+    }
+}

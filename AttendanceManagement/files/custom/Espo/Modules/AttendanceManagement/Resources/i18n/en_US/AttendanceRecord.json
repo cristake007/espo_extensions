@@ -23,13 +23,27 @@
         "Working Days": "Working days",
         "Current Status": "Current status",
         "Not Marked": "Not marked",
-        "Open Month": "Open month"
+        "Open Month": "Open month",
+        "Attendance Overview": "Attendance overview",
+        "Send Reminders": "Send reminders",
+        "Download XLSX": "Download XLSX",
+        "Signed Entries": "Signed entries",
+        "Missing Entries": "Missing entries",
+        "Future Entries": "Future entries",
+        "Employees Missing Signatures": "Employees with missing entries",
+        "Missing": "Missing"
     },
     "messages": {
         "Attendance Saved": "Attendance was saved.",
         "Attendance Save Failed": "Attendance could not be saved.",
         "Attendance Load Failed": "Attendance could not be loaded.",
         "Automatically Added Holiday": "Automatically read from an approved holiday.",
-        "No Working Days": "There are no working days in this month."
+        "No Working Days": "There are no working days in this month.",
+        "Download Not Ready": "The file becomes available after every employee completes all elapsed working days.",
+        "Nobody Missing": "Everyone is up to date.",
+        "Confirm Reminders": "Send an in-app notification to every employee with missing entries?",
+        "Reminders Sent": "Reminders sent to {count} employees.",
+        "Reminder Failed": "The reminders could not be sent.",
+        "Download Failed": "The XLSX file could not be generated."
     }
 }

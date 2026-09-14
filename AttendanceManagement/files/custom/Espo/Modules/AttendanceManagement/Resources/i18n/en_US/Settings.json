@@ -1,0 +1,8 @@
+{
+    "fields": {
+        "attendanceManagementManagers": "Attendance managers"
+    },
+    "tooltips": {
+        "attendanceManagementManagers": "Users allowed to open the attendance overview, send reminders, and download completed registers. Holiday Management approvers also receive access automatically."
+    }
+}

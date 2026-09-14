@@ -9,7 +9,7 @@ use Espo\Core\Utils\Config\ConfigWriter;
 
 class BeforeUninstall
 {
-    private const NAVIGATION_SCOPE = 'Attendance';
+    private const NAVIGATION_SCOPE_LIST = ['Attendance', 'AttendanceOverview'];
 
     public function run(Container $container): void
     {
@@ -22,7 +22,11 @@ class BeforeUninstall
 
         $filtered = array_values(array_filter(
             $tabList,
-            static fn (mixed $scope): bool => $scope !== self::NAVIGATION_SCOPE,
+            static fn (mixed $scope): bool => !in_array(
+                $scope,
+                self::NAVIGATION_SCOPE_LIST,
+                true,
+            ),
         ));
 
         if ($filtered === $tabList) {

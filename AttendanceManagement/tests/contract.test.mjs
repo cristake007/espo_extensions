@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.1.0');
+    assert.equal(manifest.version, '1.2.0');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -52,11 +52,11 @@ test('attendance records are private service-managed daily records', async () =>
     assert.match(recordDefs.beforeDeleteHookClassNameList[0], /AttendanceManagement/);
 });
 
-test('API is self-service only and rejects future or non-working dates', async () => {
+test('personal API is self-service only and rejects future or non-working dates', async () => {
     const routes = await readJson('Resources', 'routes.json');
     const service = await readSource('Tools', 'Attendance', 'AttendanceService.php');
 
-    assert.deepEqual(routes.map(item => [item.route, item.method]), [
+    assert.deepEqual(routes.slice(0, 2).map(item => [item.route, item.method]), [
         ['/AttendanceManagement/myAttendance', 'get'],
         ['/AttendanceManagement/mark', 'post'],
     ]);
@@ -67,6 +67,62 @@ test('API is self-service only and rejects future or non-working dates', async (
     assert.match(service, /\(int\) \$date->format\('N'\) <= 5/);
     assert.match(service, /nonWorkingDayProvider->getDates/);
     assert.match(service, /'todayCanMark' => \$todayState\['canMark'\]/);
+});
+
+test('manager API is protected and available to configured managers or holiday approvers', async () => {
+    const routes = await readJson('Resources', 'routes.json');
+    const checker = await readSource('Tools', 'Attendance', 'AttendanceAccessChecker.php');
+    const settings = await readJson('Resources', 'metadata', 'entityDefs', 'Settings.json');
+    const validator = await readSource('FieldValidators', 'Settings', 'Managers', 'Valid.php');
+
+    assert.deepEqual(routes.slice(2).map(item => [item.route, item.method]), [
+        ['/AttendanceManagement/overview/access', 'get'],
+        ['/AttendanceManagement/overview', 'get'],
+        ['/AttendanceManagement/overview/remind', 'post'],
+        ['/AttendanceManagement/overview/xlsx', 'post'],
+    ]);
+    assert.equal(settings.fields.attendanceManagementManagers.type, 'linkMultiple');
+    assert.equal(settings.fields.attendanceManagementManagers.entity, 'User');
+    assert.match(checker, /attendanceManagementManagersIds/);
+    assert.match(checker, /holidayManagementApproversIds/);
+    assert.match(checker, /assertManager/);
+    assert.match(validator, /User::TYPE_REGULAR, User::TYPE_ADMIN/);
+    assert.match(validator, /'isActive' => true/);
+});
+
+test('manager overview reports signed, missing and future cells and overlays holidays', async () => {
+    const service = await readSource('Tools', 'Attendance', 'AttendanceOverviewService.php');
+
+    assert.match(service, /accessChecker->assertManager/);
+    assert.match(service, /approvedHolidayProvider\s*->getDates/);
+    assert.match(service, /'isMissing' => \$isMissing/);
+    assert.match(service, /'isFuture' => \$isFuture/);
+    assert.match(service, /'missingUsers' => \$missingUsers/);
+    assert.match(service, /\$signedCount > 0/);
+    assert.match(service, /\$missingCount === 0/);
+    assert.doesNotMatch(service, /\$futureCount === 0,/);
+});
+
+test('manager reminders create native EspoCRM notifications only for missing users', async () => {
+    const service = await readSource('Tools', 'Attendance', 'AttendanceOverviewService.php');
+
+    assert.match(service, /foreach \(\$overview\['missingUsers'\] as \$missingUser\)/);
+    assert.match(service, /Notification::ENTITY_TYPE/);
+    assert.match(service, /Notification::TYPE_MESSAGE/);
+    assert.match(service, /'userId' => \$missingUser\['id'\]/);
+    assert.match(service, /'url' => '#Attendance'/);
+});
+
+test('completed overview exports a landscape XLSX without a signature field', async () => {
+    const generator = await readSource('Tools', 'Attendance', 'AttendanceXlsxGenerator.php');
+    const action = await readSource('Tools', 'Attendance', 'Api', 'PostAttendanceXlsx.php');
+
+    assert.match(generator, /PhpOffice\\PhpSpreadsheet\\Spreadsheet/);
+    assert.match(generator, /ORIENTATION_LANDSCAPE/);
+    assert.match(generator, /Condica de prezenta_%s %d\.xlsx/);
+    assert.doesNotMatch(generator, /Semnatura|Semnătură|Signature/);
+    assert.match(action, /if \(!\$overview\['downloadReady'\]\)/);
+    assert.match(action, /base64_encode/);
 });
 
 test('approved holidays are read without changing Holiday Management', async () => {
@@ -103,13 +159,36 @@ test('personal page is a side-navigation scope with two manual actions per worki
     assert.equal(scope.tab, true);
     assert.equal(clientDefs.controller, 'attendance-management:controllers/attendance');
     assert.match(controller, /actionIndex\(\)/);
-    assert.match(afterInstall, /NAVIGATION_SCOPE = 'Attendance'/);
-    assert.match(afterInstall, /\$tabList\[\] = self::NAVIGATION_SCOPE/);
+    assert.match(afterInstall, /NAVIGATION_SCOPE_LIST = \['Attendance', 'AttendanceOverview'\]/);
+    assert.match(afterInstall, /foreach \(self::NAVIGATION_SCOPE_LIST as \$scope\)/);
     assert.match(view, /data-status="AtWork"/);
     assert.match(view, /data-status="BusinessTrip"/);
     assert.doesNotMatch(view, /data-status-indicator="Holiday"/);
     assert.match(view, /for \(const status of \['AtWork', 'BusinessTrip'\]\)/);
     assert.match(view, /prop\('disabled', !day.canMark\)/);
+});
+
+test('manager page has conditional side navigation, matrix, reminders and XLSX download', async () => {
+    const overview = await readFile(
+        path.join(clientRoot, 'src', 'views', 'attendance', 'overview.js'),
+        'utf8'
+    );
+    const menu = await readFile(
+        path.join(clientRoot, 'js', 'manager-menu.js'),
+        'utf8'
+    );
+    const css = await readFile(path.join(clientRoot, 'css', 'attendance.css'), 'utf8');
+    const scope = await readJson('Resources', 'metadata', 'scopes', 'AttendanceOverview.json');
+
+    assert.equal(scope.tab, true);
+    assert.match(menu, /AttendanceManagement\/overview\/access/);
+    assert.match(menu, /attendance-management-manager/);
+    assert.match(overview, /attendance-overview-table/);
+    assert.match(overview, /send-reminders/);
+    assert.match(overview, /download-xlsx/);
+    assert.match(overview, /AttendanceManagement\/overview\/remind/);
+    assert.match(overview, /AttendanceManagement\/overview\/xlsx/);
+    assert.match(css, /#navbar a\[data-name="AttendanceOverview"\]/);
 });
 
 test('page is full-width and uses an EspoCRM date field for month selection', async () => {
@@ -135,9 +214,17 @@ test('attendance page and statuses are bilingual', async () => {
         const attendance = await readJson('Resources', 'i18n', locale, 'AttendanceRecord.json');
 
         assert.equal(typeof global.labels.Attendance, 'string');
+        assert.equal(typeof global.labels.AttendanceOverview, 'string');
         assert.equal(typeof attendance.options.status.AtWork, 'string');
         assert.equal(typeof attendance.options.status.Holiday, 'string');
         assert.equal(typeof attendance.options.status.BusinessTrip, 'string');
         assert.equal(typeof attendance.messages['Attendance Saved'], 'string');
+        assert.equal(typeof attendance.labels['Attendance Overview'], 'string');
+        assert.equal(typeof attendance.messages['Confirm Reminders'], 'string');
+
+        const settings = await readJson('Resources', 'i18n', locale, 'Settings.json');
+        const admin = await readJson('Resources', 'i18n', locale, 'Admin.json');
+        assert.equal(typeof settings.fields.attendanceManagementManagers, 'string');
+        assert.equal(typeof admin.descriptions.attendanceManagementSettings, 'string');
     }
 });

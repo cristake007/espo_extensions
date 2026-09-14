@@ -1,0 +1,9 @@
+{
+    "entity": false,
+    "object": false,
+    "acl": false,
+    "tab": true,
+    "disabled": false,
+    "module": "AttendanceManagement",
+    "languageIsGlobal": true
+}

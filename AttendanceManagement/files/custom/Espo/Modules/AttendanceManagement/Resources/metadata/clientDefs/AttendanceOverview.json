@@ -1,0 +1,4 @@
+{
+    "controller": "attendance-management:controllers/attendance-overview",
+    "iconClass": "fas fa-users"
+}

@@ -1,5 +1,124 @@
+#navbar a[data-name="AttendanceOverview"] {
+    display: none;
+}
+
+.attendance-management-manager #navbar a[data-name="AttendanceOverview"] {
+    display: block;
+}
+
 .attendance-page {
     width: 100%;
+}
+
+.attendance-overview-page {
+    width: 100%;
+}
+
+.attendance-overview-toolbar {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+}
+
+.attendance-overview-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.attendance-overview-summary {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.attendance-summary-card {
+    align-items: center;
+    border: 1px solid var(--panel-default-border);
+    border-left-width: 4px;
+    display: flex;
+    gap: 12px;
+    padding: 12px 14px;
+}
+
+.attendance-summary-card strong {
+    font-size: 24px;
+}
+
+.attendance-summary-card-success {
+    border-left-color: var(--brand-success);
+}
+
+.attendance-summary-card-danger {
+    border-left-color: var(--brand-danger);
+}
+
+.attendance-missing-users {
+    margin-top: 16px;
+}
+
+.attendance-overview-table-wrap {
+    max-height: calc(100vh - 330px);
+    overflow: auto;
+}
+
+.attendance-overview-table {
+    margin-bottom: 0;
+    min-width: max-content;
+}
+
+.attendance-overview-table th,
+.attendance-overview-table td {
+    min-width: 125px;
+    text-align: center;
+    vertical-align: middle !important;
+    white-space: nowrap;
+}
+
+.attendance-overview-table thead th {
+    background: var(--panel-default-heading-bg);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.attendance-overview-table .attendance-sticky-date {
+    background: var(--panel-bg);
+    left: 0;
+    min-width: 115px;
+    position: sticky;
+    z-index: 1;
+}
+
+.attendance-overview-table thead .attendance-sticky-date {
+    background: var(--panel-default-heading-bg);
+    z-index: 3;
+}
+
+.attendance-cell-AtWork {
+    background: var(--state-success-bg);
+    color: var(--state-success-text);
+}
+
+.attendance-cell-Holiday {
+    background: var(--state-info-bg);
+    color: var(--state-info-text);
+}
+
+.attendance-cell-BusinessTrip {
+    background: var(--state-warning-bg);
+    color: var(--state-warning-text);
+}
+
+.attendance-cell-missing {
+    background: var(--state-danger-bg);
+    color: var(--state-danger-text);
+    font-weight: 600;
+}
+
+.attendance-cell-future,
+.attendance-future-row {
+    color: var(--text-muted-color);
 }
 
 .attendance-state-actions {
@@ -78,5 +197,15 @@
 
     .attendance-day-actions .btn {
         flex: 1 1 0;
+    }
+
+    .attendance-overview-toolbar,
+    .attendance-overview-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .attendance-overview-summary {
+        grid-template-columns: 1fr;
     }
 }

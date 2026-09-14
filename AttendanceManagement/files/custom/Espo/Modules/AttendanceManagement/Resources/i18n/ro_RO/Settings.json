@@ -1,0 +1,8 @@
+{
+    "fields": {
+        "attendanceManagementManagers": "Responsabili condica"
+    },
+    "tooltips": {
+        "attendanceManagementManagers": "Utilizatorii care pot deschide centralizatorul, trimite notificari si descarca registrele completate. Aprobatorii din Holiday Management primesc acces automat."
+    }
+}

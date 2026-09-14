@@ -1,13 +1,16 @@
 {
     "labels": {
-        "Attendance": "Attendance"
+        "Attendance": "Attendance",
+        "AttendanceOverview": "Attendance Overview"
     },
     "scopeNames": {
         "Attendance": "Attendance",
-        "AttendanceRecord": "Attendance Record"
+        "AttendanceRecord": "Attendance Record",
+        "AttendanceOverview": "Attendance Overview"
     },
     "scopeNamesPlural": {
         "Attendance": "Attendance",
-        "AttendanceRecord": "Attendance Records"
+        "AttendanceRecord": "Attendance Records",
+        "AttendanceOverview": "Attendance Overviews"
     }
 }

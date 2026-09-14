@@ -1,13 +1,16 @@
 {
     "labels": {
-        "Attendance": "Condica de prezenta"
+        "Attendance": "Condica de prezenta",
+        "AttendanceOverview": "Centralizator prezenta"
     },
     "scopeNames": {
         "Attendance": "Condica de prezenta",
-        "AttendanceRecord": "Prezenta"
+        "AttendanceRecord": "Prezenta",
+        "AttendanceOverview": "Centralizator prezenta"
     },
     "scopeNamesPlural": {
         "Attendance": "Condica de prezenta",
-        "AttendanceRecord": "Prezente"
+        "AttendanceRecord": "Prezente",
+        "AttendanceOverview": "Centralizatoare prezenta"
     }
 }

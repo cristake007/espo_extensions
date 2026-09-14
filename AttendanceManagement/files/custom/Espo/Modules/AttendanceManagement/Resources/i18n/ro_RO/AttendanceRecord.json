@@ -23,13 +23,27 @@
         "Working Days": "Zile lucratoare",
         "Current Status": "Starea curenta",
         "Not Marked": "Nemarcata",
-        "Open Month": "Deschide luna"
+        "Open Month": "Deschide luna",
+        "Attendance Overview": "Centralizator prezenta",
+        "Send Reminders": "Trimite notificari",
+        "Download XLSX": "Descarca XLSX",
+        "Signed Entries": "Inregistrari completate",
+        "Missing Entries": "Inregistrari lipsa",
+        "Future Entries": "Inregistrari viitoare",
+        "Employees Missing Signatures": "Angajati cu inregistrari lipsa",
+        "Missing": "Lipsa"
     },
     "messages": {
         "Attendance Saved": "Prezenta a fost salvata.",
         "Attendance Save Failed": "Prezenta nu a putut fi salvata.",
         "Attendance Load Failed": "Condica nu a putut fi incarcata.",
         "Automatically Added Holiday": "Citit automat dintr-un concediu aprobat.",
-        "No Working Days": "Nu exista zile lucratoare in aceasta luna."
+        "No Working Days": "Nu exista zile lucratoare in aceasta luna.",
+        "Download Not Ready": "Fisierul devine disponibil dupa ce toti angajatii completeaza toate zilele lucratoare trecute.",
+        "Nobody Missing": "Toata lumea este la zi.",
+        "Confirm Reminders": "Trimiti o notificare in aplicatie fiecarui angajat care are inregistrari lipsa?",
+        "Reminders Sent": "Au fost trimise notificari catre {count} angajati.",
+        "Reminder Failed": "Notificarile nu au putut fi trimise.",
+        "Download Failed": "Fisierul XLSX nu a putut fi generat."
     }
 }
