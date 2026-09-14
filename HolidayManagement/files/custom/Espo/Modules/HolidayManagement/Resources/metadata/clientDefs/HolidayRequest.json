@@ -1,5 +1,6 @@
 {
     "controller": "holiday-management:controllers/holiday-request",
+    "acl": "holiday-management:acl/holiday-request",
     "iconClass": "fas fa-umbrella-beach",
     "views": {
         "list": "holiday-management:views/holiday-request/list"

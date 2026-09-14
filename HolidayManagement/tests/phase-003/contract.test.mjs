@@ -144,6 +144,7 @@ test('request lifecycle hooks reserve, adjust, and refund the profile balance', 
     assert.match(balanceSource, /'pendingDays'\s*=>\s*\$pendingDays/);
     assert.match(balanceSource, /private function getPendingDays\(string \$userId\): float/);
     assert.match(balanceSource, /\['status'\s*=>\s*self::STATUS_PENDING\]/);
+    assert.match(balanceSource, /if \(\$status === self::STATUS_APPROVED\) \{\s*throw new Conflict\('An approved holiday request cannot be deleted\.'/);
     assert.doesNotMatch(balanceSource, /minimum allowed balance/);
 
     const repositoryHook = await readModuleSource('Hooks', 'HolidayRequest', 'Balance.php');
@@ -207,6 +208,19 @@ test('either configured approver can make the single final decision', async () =
         requestClient.controller,
         'holiday-management:controllers/holiday-request'
     );
+    assert.equal(
+        requestClient.acl,
+        'holiday-management:acl/holiday-request'
+    );
+    const requestAcl = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'acl', 'holiday-request.js'
+    ), 'utf8');
+    assert.match(requestAcl, /checkModelDelete\(model, data, precise\)/);
+    assert.match(requestAcl, /status === 'Approved'/);
+    assert.match(requestAcl, /return false/);
+    assert.match(requestAcl, /super\.checkModelDelete\(model, data, precise\)/);
     assert.match(controller, /define\(\['controllers\/record'\]/);
     assert.match(controller, /extends RecordController/);
     assert.doesNotMatch(controller, /actionApprovals|Calendar\/show\/mode=timeline/);

@@ -237,8 +237,13 @@ final class HolidayBalanceService
     {
         $userId = (string) $request->get('assignedUserId');
         $this->assertRequestOwner($userId);
+        $status = (string) ($request->get('status') ?: self::STATUS_PENDING);
 
-        if ($request->get('status') === self::STATUS_REJECTED) {
+        if ($status === self::STATUS_APPROVED) {
+            throw new Conflict('An approved holiday request cannot be deleted.');
+        }
+
+        if ($status === self::STATUS_REJECTED) {
             return;
         }
 
