@@ -26,7 +26,8 @@
         "decidedAt": "Data deciziei",
         "description": "Nota",
         "assignedUser": "Utilizator",
-        "profile": "Profil de concediu"
+        "profile": "Profil de concediu",
+        "approvalDocuments": "Documente de concediu aprobate"
     },
     "messages": {
         "holidayBalanceSummary": "{remaining} zile ramase · {entitlement} zile drept anual",

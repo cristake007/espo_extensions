@@ -26,7 +26,8 @@
         "decidedAt": "Decision At",
         "description": "Note",
         "assignedUser": "User",
-        "profile": "Holiday Profile"
+        "profile": "Holiday Profile",
+        "approvalDocuments": "Approved vacation documents"
     },
     "messages": {
         "holidayBalanceSummary": "{remaining} days remaining · {entitlement} days annual entitlement",

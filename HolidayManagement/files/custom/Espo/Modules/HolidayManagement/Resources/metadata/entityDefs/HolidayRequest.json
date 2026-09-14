@@ -63,6 +63,12 @@
         "description": {
             "type": "text"
         },
+        "approvalDocuments": {
+            "type": "attachmentMultiple",
+            "readOnly": true,
+            "accept": [".docx"],
+            "maxCount": 13
+        },
         "assignedUser": {
             "type": "link",
             "entity": "User",

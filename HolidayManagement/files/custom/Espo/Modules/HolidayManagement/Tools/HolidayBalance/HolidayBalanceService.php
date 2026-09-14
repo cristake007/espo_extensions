@@ -13,6 +13,7 @@ use Espo\Core\Utils\DateTime as DateTimeUtil;
 use Espo\Core\Utils\Id\RecordIdGenerator;
 use Espo\Core\Utils\Config;
 use Espo\Entities\User;
+use Espo\Modules\HolidayManagement\Tools\HolidayDocument\HolidayApprovalDocumentService;
 use Espo\Modules\HolidayManagement\Tools\HolidayRequest\WorkingDayCalculator;
 use Espo\Modules\HolidayManagement\Tools\HolidayRequest\BookingDatePolicy;
 use Espo\Modules\HolidayManagement\Tools\HolidayRequest\NonWorkingDayProvider;
@@ -40,6 +41,7 @@ final class HolidayBalanceService
         private BookingDatePolicy $bookingDatePolicy,
         private DateTimeUtil $dateTime,
         private RecordIdGenerator $recordIdGenerator,
+        private HolidayApprovalDocumentService $approvalDocumentService,
     ) {}
 
     /** @return array<string, mixed> */
@@ -400,7 +402,9 @@ final class HolidayBalanceService
 
         $this->assertConfiguredApprover();
 
-        if ($statusAfter !== self::STATUS_REJECTED) {
+        if ($statusAfter === self::STATUS_APPROVED) {
+            $this->approvalDocumentService->generate($request);
+
             return;
         }
 

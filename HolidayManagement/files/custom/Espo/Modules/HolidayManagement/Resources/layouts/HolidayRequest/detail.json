@@ -6,7 +6,8 @@
             [{"name": "days"}, {"name": "status"}],
             [{"name": "assignedUser"}, {"name": "decidedBy"}],
             [{"name": "decidedAt"}, false],
-            [{"name": "description", "fullWidth": true}]
+            [{"name": "description", "fullWidth": true}],
+            [{"name": "approvalDocuments", "fullWidth": true}]
         ]
     }
 ]

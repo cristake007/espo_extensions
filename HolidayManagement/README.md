@@ -7,8 +7,8 @@ The extension includes settings, balance accounting, and self-service booking:
 - annual entitlement and reset-date defaults;
 - a maximum accumulated balance of 90 days and a negative-balance limit;
 - one or two directly selected active regular/admin holiday approvers;
-- exactly two printed approval title/name blocks. Blank configured names mean
-  that the later document phase must use the actual approver names.
+- exactly two printed approval title/name blocks. Blank configured names use
+  the actual deciding approver's name when the corresponding title is set;
 - one holiday profile per eligible internal user;
 - admin-only bulk initialization with entitlement, opening balance and reset date;
 - transactional, idempotent corrections and annual grants;
@@ -19,6 +19,8 @@ The extension includes settings, balance accounting, and self-service booking:
 - self-service holiday bookings from both that page and EspoCRM Calendar;
 - requester-visible pending, approved, and rejected states, with a final
   decision by either configured approver from the Calendar request detail;
+- approval-time DOCX generation using the bundled Romanian vacation-request
+  layout, with one downloadable document per covered calendar month;
 - weekday and Romanian `ZileLibere` calculation, overlap prevention, configured
   balance-limit enforcement, and automatic balance reservation,
   adjustment, and refund when a booking is created, edited, or deleted.
@@ -28,7 +30,7 @@ working-day total excludes weekends and Romanian dates already stored by the
 `ZileSarbatoare` extension as `ZileLibere`. Holiday Management only reads those
 records; it does not modify them. Rejected requests refund their reserved days
 exactly once and no longer appear in Calendar. The extension does not yet include
-approval notifications, public-holiday synchronization, or document generation.
+approval notifications or public-holiday synchronization.
 
 At each profile's reset date, the daily scheduled job grants that profile's
 annual entitlement without allowing the resulting accumulated balance to
@@ -40,7 +42,7 @@ balance of -5 with a 21-day entitlement becomes 16.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.6.3 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.7.0 files scripts
 ```
 
 Run the phase contract tests:
@@ -53,6 +55,8 @@ node --test HolidayManagement/tests/phase-003/contract.test.mjs
 php HolidayManagement/tests/phase-003/working-day-calculator.test.php
 php HolidayManagement/tests/phase-003/booking-date-policy.test.php
 php HolidayManagement/tests/phase-003/lifecycle.test.php
+node --test HolidayManagement/tests/phase-004/contract.test.mjs
+php HolidayManagement/tests/phase-004/document-generator.test.php
 ```
 
 After upgrading, run `bin/command rebuild`. Every active regular or

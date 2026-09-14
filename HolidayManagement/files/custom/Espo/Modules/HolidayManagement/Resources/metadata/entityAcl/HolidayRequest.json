@@ -5,6 +5,7 @@
         "status": {"readOnly": true},
         "decidedBy": {"readOnly": true},
         "decidedAt": {"readOnly": true},
+        "approvalDocuments": {"readOnly": true},
         "assignedUser": {"readOnly": true},
         "profile": {"readOnly": true},
         "accountingKey": {"readOnly": true},

@@ -24,6 +24,7 @@ define([], () => {
             );
 
             view.model.set(result);
+            await view.model.fetch();
             Espo.Ui.success(view.translate(
                 decision === 'Approved' ? 'holidayApproved' : 'holidayRejected',
                 'messages',
