@@ -1,0 +1,11 @@
+{
+    "labels": {
+        "Attendance": "Condica de prezenta"
+    },
+    "scopeNames": {
+        "AttendanceRecord": "Prezenta"
+    },
+    "scopeNamesPlural": {
+        "AttendanceRecord": "Prezente"
+    }
+}

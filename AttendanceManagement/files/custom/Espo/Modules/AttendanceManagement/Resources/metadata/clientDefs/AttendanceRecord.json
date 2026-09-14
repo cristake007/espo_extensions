@@ -1,0 +1,4 @@
+{
+    "controller": "attendance-management:controllers/attendance-record",
+    "iconClass": "fas fa-clipboard-check"
+}

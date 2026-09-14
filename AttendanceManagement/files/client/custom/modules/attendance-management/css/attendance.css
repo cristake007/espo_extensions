@@ -1,0 +1,77 @@
+.attendance-page {
+    margin: 0 auto;
+    max-width: 920px;
+}
+
+.attendance-state-actions {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.attendance-state-actions .btn {
+    align-items: center;
+    display: flex;
+    gap: 9px;
+    justify-content: center;
+    min-height: 58px;
+}
+
+.attendance-state-active {
+    box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.22);
+    font-weight: 700;
+}
+
+.attendance-current-status {
+    margin-top: 12px;
+    text-align: center;
+}
+
+.attendance-month-heading,
+.attendance-day-item {
+    align-items: center;
+    display: flex;
+    gap: 14px;
+}
+
+.attendance-month-heading {
+    justify-content: space-between;
+}
+
+.attendance-month-input {
+    max-width: 190px;
+}
+
+.attendance-day-date {
+    flex: 0 0 130px;
+    font-weight: 600;
+}
+
+.attendance-day-status {
+    flex: 1 1 auto;
+}
+
+.attendance-day-actions {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 8px;
+}
+
+@media (max-width: 767px) {
+    .attendance-state-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .attendance-day-item {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .attendance-day-date {
+        flex-basis: auto;
+    }
+
+    .attendance-day-actions .btn {
+        flex: 1 1 0;
+    }
+}

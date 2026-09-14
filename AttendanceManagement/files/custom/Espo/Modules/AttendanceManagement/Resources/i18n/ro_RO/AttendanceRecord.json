@@ -1,0 +1,33 @@
+{
+    "fields": {
+        "date": "Data",
+        "status": "Stare",
+        "source": "Sursa",
+        "user": "Utilizator",
+        "markedAt": "Marcat la"
+    },
+    "options": {
+        "status": {
+            "AtWork": "La serviciu",
+            "Holiday": "In concediu",
+            "BusinessTrip": "In deplasare"
+        },
+        "source": {
+            "Self": "Marcat de angajat"
+        }
+    },
+    "labels": {
+        "Attendance": "Condica de prezenta",
+        "Today": "Astazi",
+        "Working Days": "Zile lucratoare",
+        "Current Status": "Starea curenta",
+        "Not Marked": "Nemarcata"
+    },
+    "messages": {
+        "Attendance Saved": "Prezenta a fost salvata.",
+        "Attendance Save Failed": "Prezenta nu a putut fi salvata.",
+        "Attendance Load Failed": "Condica nu a putut fi incarcata.",
+        "Automatically Added Holiday": "Citit automat dintr-un concediu aprobat.",
+        "No Working Days": "Nu exista zile lucratoare in aceasta luna."
+    }
+}

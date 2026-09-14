@@ -1,0 +1,12 @@
+[
+    {
+        "route": "/AttendanceManagement/myAttendance",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\GetMyAttendance"
+    },
+    {
+        "route": "/AttendanceManagement/mark",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostMarkAttendance"
+    }
+]

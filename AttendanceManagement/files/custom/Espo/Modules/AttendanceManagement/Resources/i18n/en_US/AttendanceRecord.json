@@ -1,0 +1,33 @@
+{
+    "fields": {
+        "date": "Date",
+        "status": "Status",
+        "source": "Source",
+        "user": "User",
+        "markedAt": "Marked At"
+    },
+    "options": {
+        "status": {
+            "AtWork": "At work",
+            "Holiday": "In holiday",
+            "BusinessTrip": "In business trip"
+        },
+        "source": {
+            "Self": "Marked by employee"
+        }
+    },
+    "labels": {
+        "Attendance": "Attendance",
+        "Today": "Today",
+        "Working Days": "Working days",
+        "Current Status": "Current status",
+        "Not Marked": "Not marked"
+    },
+    "messages": {
+        "Attendance Saved": "Attendance was saved.",
+        "Attendance Save Failed": "Attendance could not be saved.",
+        "Attendance Load Failed": "Attendance could not be loaded.",
+        "Automatically Added Holiday": "Automatically read from an approved holiday.",
+        "No Working Days": "There are no working days in this month."
+    }
+}

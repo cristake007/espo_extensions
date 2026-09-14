@@ -1,0 +1,11 @@
+{
+    "menuItems": {
+        "attendance": {
+            "order": 34,
+            "groupIndex": 0,
+            "link": "#AttendanceRecord/attendance",
+            "labelTranslation": "Global.labels.Attendance",
+            "iconClass": "fas fa-clipboard-check"
+        }
+    }
+}

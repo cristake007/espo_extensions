@@ -1,0 +1,11 @@
+{
+    "labels": {
+        "Attendance": "Attendance"
+    },
+    "scopeNames": {
+        "AttendanceRecord": "Attendance Record"
+    },
+    "scopeNamesPlural": {
+        "AttendanceRecord": "Attendance Records"
+    }
+}

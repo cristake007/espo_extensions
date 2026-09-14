@@ -1,0 +1,118 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import path from 'node:path';
+import test from 'node:test';
+
+const extensionRoot = path.resolve(import.meta.dirname, '..');
+const moduleRoot = path.join(
+    extensionRoot,
+    'files', 'custom', 'Espo', 'Modules', 'AttendanceManagement'
+);
+const clientRoot = path.join(
+    extensionRoot,
+    'files', 'client', 'custom', 'modules', 'attendance-management'
+);
+
+async function readJson(...segments) {
+    return JSON.parse(await readFile(path.join(moduleRoot, ...segments), 'utf8'));
+}
+
+async function readSource(...segments) {
+    return readFile(path.join(moduleRoot, ...segments), 'utf8');
+}
+
+test('manifest packages a standalone EspoCRM 10 attendance module', async () => {
+    const manifest = JSON.parse(await readFile(
+        path.join(extensionRoot, 'manifest.json'),
+        'utf8'
+    ));
+    const module = await readJson('Resources', 'module.json');
+
+    assert.equal(manifest.name, 'Attendance Management');
+    assert.equal(manifest.version, '1.0.0');
+    assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
+    assert.equal(module.jsTranspiled, false);
+});
+
+test('attendance records are private service-managed daily records', async () => {
+    const defs = await readJson('Resources', 'metadata', 'entityDefs', 'AttendanceRecord.json');
+    const scope = await readJson('Resources', 'metadata', 'scopes', 'AttendanceRecord.json');
+    const acl = await readJson('Resources', 'metadata', 'aclDefs', 'AttendanceRecord.json');
+    const recordDefs = await readJson('Resources', 'metadata', 'recordDefs', 'AttendanceRecord.json');
+
+    assert.deepEqual(defs.fields.status.options, ['AtWork', 'Holiday', 'BusinessTrip']);
+    assert.deepEqual(defs.indexes.userDateUnique.columns, ['userId', 'date']);
+    assert.equal(defs.indexes.userDateUnique.unique, true);
+    assert.equal(scope.module, 'AttendanceManagement');
+    assert.equal(scope.tab, false);
+    assert.equal(scope.customizable, false);
+    assert.equal(acl.read, false);
+    assert.match(recordDefs.beforeCreateHookClassNameList[0], /AttendanceManagement/);
+    assert.match(recordDefs.beforeUpdateHookClassNameList[0], /AttendanceManagement/);
+    assert.match(recordDefs.beforeDeleteHookClassNameList[0], /AttendanceManagement/);
+});
+
+test('API is self-service only and rejects future or non-working dates', async () => {
+    const routes = await readJson('Resources', 'routes.json');
+    const service = await readSource('Tools', 'Attendance', 'AttendanceService.php');
+
+    assert.deepEqual(routes.map(item => [item.route, item.method]), [
+        ['/AttendanceManagement/myAttendance', 'get'],
+        ['/AttendanceManagement/mark', 'post'],
+    ]);
+    assert.match(service, /'userId' => \$this->user->getId\(\)/);
+    assert.match(service, /if \(\$date > \$today\)/);
+    assert.match(service, /Attendance cannot be marked for a future date/);
+    assert.match(service, /STATUS_AT_WORK, self::STATUS_BUSINESS_TRIP/);
+    assert.match(service, /\(int\) \$date->format\('N'\) <= 5/);
+    assert.match(service, /nonWorkingDayProvider->getDates/);
+    assert.match(service, /'todayCanMark' => \$todayState\['canMark'\]/);
+});
+
+test('approved holidays are read without changing Holiday Management', async () => {
+    const provider = await readSource('Tools', 'Attendance', 'ApprovedHolidayProvider.php');
+    const service = await readSource('Tools', 'Attendance', 'AttendanceService.php');
+
+    assert.match(provider, /ENTITY_TYPE = 'HolidayRequest'/);
+    assert.match(provider, /'status' => self::STATUS_APPROVED/);
+    assert.match(provider, /'assignedUserId' => \$userId/);
+    assert.match(provider, /'dateStartDate<=' => \$dateEnd/);
+    assert.match(provider, /'dateEndDate>=' => \$dateStart/);
+    assert.match(service, /SOURCE_APPROVED_HOLIDAY/);
+    assert.match(service, /isApprovedHoliday/);
+    assert.match(service, /An approved holiday controls attendance for this date/);
+});
+
+test('personal page has three top states and two manual actions per working day', async () => {
+    const controller = await readFile(
+        path.join(clientRoot, 'src', 'controllers', 'attendance-record.js'),
+        'utf8'
+    );
+    const view = await readFile(
+        path.join(clientRoot, 'src', 'views', 'attendance', 'my.js'),
+        'utf8'
+    );
+    const navbar = await readJson('Resources', 'metadata', 'app', 'clientNavbar.json');
+
+    assert.equal(navbar.menuItems.attendance.link, '#AttendanceRecord/attendance');
+    assert.match(controller, /actionAttendance\(\)/);
+    assert.match(view, /data-status="AtWork"/);
+    assert.match(view, /data-status="BusinessTrip"/);
+    assert.match(view, /data-status-indicator="Holiday" disabled/);
+    assert.match(view, /for \(const status of \['AtWork', 'BusinessTrip'\]\)/);
+    assert.match(view, /prop\('disabled', !day.canMark\)/);
+    assert.match(view, /type="month"/);
+});
+
+test('attendance page and statuses are bilingual', async () => {
+    for (const locale of ['en_US', 'ro_RO']) {
+        const global = await readJson('Resources', 'i18n', locale, 'Global.json');
+        const attendance = await readJson('Resources', 'i18n', locale, 'AttendanceRecord.json');
+
+        assert.equal(typeof global.labels.Attendance, 'string');
+        assert.equal(typeof attendance.options.status.AtWork, 'string');
+        assert.equal(typeof attendance.options.status.Holiday, 'string');
+        assert.equal(typeof attendance.options.status.BusinessTrip, 'string');
+        assert.equal(typeof attendance.messages['Attendance Saved'], 'string');
+    }
+});

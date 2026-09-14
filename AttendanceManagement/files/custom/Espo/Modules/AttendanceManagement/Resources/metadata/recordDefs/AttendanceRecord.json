@@ -1,0 +1,18 @@
+{
+    "beforeCreateHookClassNameList": [
+        "Espo\\Modules\\AttendanceManagement\\Classes\\Record\\Hooks\\AttendanceRecord\\BeforeCreate"
+    ],
+    "beforeUpdateHookClassNameList": [
+        "Espo\\Modules\\AttendanceManagement\\Classes\\Record\\Hooks\\AttendanceRecord\\BeforeUpdate"
+    ],
+    "beforeDeleteHookClassNameList": [
+        "Espo\\Modules\\AttendanceManagement\\Classes\\Record\\Hooks\\AttendanceRecord\\BeforeDelete"
+    ],
+    "massActions": {
+        "update": {"disabled": true},
+        "delete": {"disabled": true}
+    },
+    "actions": {
+        "merge": {"disabled": true}
+    }
+}
