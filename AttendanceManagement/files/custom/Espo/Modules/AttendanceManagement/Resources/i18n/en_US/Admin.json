@@ -1,9 +1,11 @@
 {
     "labels": {
-        "Attendance Management": "Attendance Management"
+        "Attendance Management": "Attendance Management",
+        "Access and Editing": "Access and editing",
+        "Employee Schedules": "Employee schedules"
     },
     "descriptions": {
-        "attendanceManagementSettings": "Configure who can manage the attendance register."
+        "attendanceManagementSettings": "Configure attendance managers, the editing window, and employee work schedules."
     },
     "keywords": {
         "Attendance Management": "attendance register managers reminders xlsx"

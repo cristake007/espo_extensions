@@ -1,9 +1,11 @@
 {
     "labels": {
-        "Attendance Management": "Condica de prezenta"
+        "Attendance Management": "Condica de prezenta",
+        "Access and Editing": "Acces si modificare",
+        "Employee Schedules": "Programe angajati"
     },
     "descriptions": {
-        "attendanceManagementSettings": "Configureaza persoanele care pot administra condica de prezenta."
+        "attendanceManagementSettings": "Configureaza responsabilii, perioada modificabila si programele de lucru ale angajatilor."
     },
     "keywords": {
         "Attendance Management": "condica prezenta responsabili notificari xlsx"

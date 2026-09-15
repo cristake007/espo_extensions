@@ -21,15 +21,18 @@ monthly employee-by-day preview, highlights missing entries, sends in-app
 reminders to employees with unsigned days, and exports the register as XLSX once
 all elapsed working days have been completed. An administrator sets each
 employee's default start and end time under **Administration > Attendance
-Management**. The interval applies to every month and can be changed there at any
-time. The overview displays it read-only below the employee name. The XLSX
+Management**. The responsive schedule editor uses theme-native 15-minute time
+selectors and saves each employee independently. Existing times outside a
+15-minute interval remain available and are not changed. The interval applies to
+every month and can be changed there at any time. The overview displays it
+read-only below the employee name. The XLSX
 includes entry time, exit time, and attendance status; no signature column is
 included.
 
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.6.1 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.7.0 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

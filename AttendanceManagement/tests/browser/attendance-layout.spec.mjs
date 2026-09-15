@@ -89,6 +89,34 @@ function fixture(contentWidth) {
         </main>`;
 }
 
+function adminFixture(contentWidth) {
+    const scheduleRow = name => `
+        <div class="attendance-schedule-row" data-user-id="1">
+            <div class="attendance-schedule-employee"><span class="fas fa-user-clock"></span><strong>${name}</strong></div>
+            <label class="attendance-schedule-control"><span>Intrare</span><select class="form-control input-sm"><option>09:00</option></select></label>
+            <label class="attendance-schedule-control"><span>Iesire</span><select class="form-control input-sm"><option>17:00</option></select></label>
+            <div class="attendance-schedule-actions"><button class="btn btn-default btn-sm">Salveaza programul</button></div>
+        </div>`;
+
+    return `
+        <main class="test-stage attendance-management-settings-page" style="width:${contentWidth}px;padding:16px;">
+            <div class="row">
+                <div class="cell col-sm-6" data-name="attendanceManagementScheduleEditor">
+                    <div class="attendance-schedule-editor">
+                        <div class="attendance-schedule-editor-intro">
+                            <span class="fas fa-business-time attendance-schedule-editor-icon"></span>
+                            <div><strong>Programe angajati</strong><div class="text-muted small">Alege ora normala de intrare si iesire pentru fiecare angajat.</div></div>
+                        </div>
+                        <div class="attendance-schedule-rows">
+                            ${scheduleRow('Burete D')}
+                            ${scheduleRow('Un nume de angajat suficient de lung pentru verificarea incadrarii')}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>`;
+}
+
 for (const viewport of viewportCases) {
     test(`attendance page has no outer or button overflow at ${viewport.name}`, async ({page}) => {
         await page.setViewportSize({width: viewport.width, height: 900});
@@ -183,3 +211,32 @@ test('locked-month notice fits beside the selector and stacks on narrow screens'
         expect(overflow).toBeLessThanOrEqual(1);
     }
 });
+
+for (const viewport of viewportCases) {
+    test(`schedule administration is full-width and contained at ${viewport.name}`, async ({page}) => {
+        await page.setViewportSize({width: viewport.width, height: 900});
+        await page.setContent(adminFixture(viewport.contentWidth));
+        await page.addStyleTag({path: themeCss});
+        await page.addStyleTag({path: attendanceCss});
+
+        const measurements = await page.evaluate(() => {
+            const stage = document.querySelector('.test-stage');
+            const cell = document.querySelector('[data-name="attendanceManagementScheduleEditor"]');
+            const row = cell.parentElement;
+
+            return {
+                overflow: stage.scrollWidth - stage.clientWidth,
+                cellWidth: cell.getBoundingClientRect().width,
+                rowWidth: row.getBoundingClientRect().width,
+                nativeTimeInputs: document.querySelectorAll('input[type="time"]').length,
+                selects: document.querySelectorAll('.attendance-schedule-control select').length,
+            };
+        });
+
+        expect(measurements.overflow).toBeLessThanOrEqual(1);
+        expect(Math.abs(measurements.cellWidth - measurements.rowWidth)).toBeLessThanOrEqual(1);
+        expect(measurements.nativeTimeInputs).toBe(0);
+        expect(measurements.selects).toBe(4);
+        await page.screenshot({path: `/tmp/attendance-admin-${viewport.name}.png`, fullPage: true});
+    });
+}

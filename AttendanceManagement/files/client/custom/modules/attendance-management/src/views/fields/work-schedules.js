@@ -1,23 +1,21 @@
 define(['views/fields/varchar'], (VarcharFieldView) => {
     return class extends VarcharFieldView {
         editTemplateContent = `
-            <div class="attendance-schedule-settings">
-                <div class="text-muted" data-role="schedule-loading">
+            <div class="attendance-schedule-editor">
+                <div class="attendance-schedule-editor-intro">
+                    <span class="fas fa-business-time attendance-schedule-editor-icon" aria-hidden="true"></span>
+                    <div>
+                        <strong>{{translate 'Employee Schedules' category='labels' scope='AttendanceRecord'}}</strong>
+                        <div class="text-muted small">
+                            {{translate 'Schedule Editor Guide' category='messages' scope='AttendanceRecord'}}
+                        </div>
+                    </div>
+                </div>
+                <div class="attendance-schedule-loading text-muted" data-role="schedule-loading">
+                    <span class="fas fa-spinner fa-spin" aria-hidden="true"></span>
                     {{translate 'Loading Schedules' category='messages' scope='AttendanceRecord'}}
                 </div>
-                <div class="table-responsive hidden" data-role="schedule-table-wrap">
-                    <table class="table table-bordered table-condensed attendance-schedule-settings-table">
-                        <thead>
-                            <tr>
-                                <th>{{translate 'Employee' category='labels' scope='AttendanceRecord'}}</th>
-                                <th>{{translate 'Start Time' category='labels' scope='AttendanceRecord'}}</th>
-                                <th>{{translate 'End Time' category='labels' scope='AttendanceRecord'}}</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody data-role="schedule-rows"></tbody>
-                    </table>
-                </div>
+                <div class="attendance-schedule-rows hidden" data-role="schedule-rows"></div>
             </div>
         `;
 
@@ -25,6 +23,8 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
             super.setup();
             this.addHandler('click', '[data-action="save-work-schedule"]',
                 (event, target) => this.saveSchedule(target));
+            this.addHandler('change', '[data-schedule-field]',
+                (event, target) => this.markDirty(target));
         }
 
         afterRender() {
@@ -42,7 +42,7 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
 
                 this.renderRows(data.users || []);
                 this.element.querySelector('[data-role="schedule-loading"]')?.classList.add('hidden');
-                this.element.querySelector('[data-role="schedule-table-wrap"]')?.classList.remove('hidden');
+                this.element.querySelector('[data-role="schedule-rows"]')?.classList.remove('hidden');
             } catch (error) {
                 Espo.Ui.error(this.translate(
                     'Schedule Load Failed',
@@ -57,23 +57,25 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
 
             users.forEach(user => {
                 const schedule = user.schedule || {};
-                const row = $('<tr>').attr('data-user-id', user.id || '');
-
-                row.append(
-                    $('<td>').text(user.name || ''),
-                    $('<td>').append($('<input>', {
-                        type: 'time',
-                        class: 'form-control input-sm',
-                        value: schedule.startTime || '',
-                        'data-schedule-field': 'startTime',
-                    })),
-                    $('<td>').append($('<input>', {
-                        type: 'time',
-                        class: 'form-control input-sm',
-                        value: schedule.endTime || '',
-                        'data-schedule-field': 'endTime',
-                    })),
-                    $('<td>').append($('<button>', {
+                const row = $('<div>')
+                    .addClass('attendance-schedule-row')
+                    .attr('data-user-id', user.id || '');
+                const employee = $('<div>').addClass('attendance-schedule-employee').append(
+                    $('<span>').addClass('fas fa-user-clock').attr('aria-hidden', 'true'),
+                    $('<strong>').text(user.name || '')
+                );
+                const startControl = this.createTimeControl(
+                    'Start Time',
+                    'startTime',
+                    schedule.startTime || ''
+                );
+                const endControl = this.createTimeControl(
+                    'End Time',
+                    'endTime',
+                    schedule.endTime || ''
+                );
+                const actions = $('<div>').addClass('attendance-schedule-actions').append(
+                    $('<button>', {
                         type: 'button',
                         class: 'btn btn-default btn-sm',
                         'data-action': 'save-work-schedule',
@@ -81,10 +83,55 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
                         $('<span>').addClass('fas fa-save').attr('aria-hidden', 'true'),
                         ' ',
                         this.translate('Save Schedule', 'labels', 'AttendanceRecord')
-                    ))
+                    )
                 );
+
+                row.append(employee, startControl, endControl, actions);
                 body.append(row);
             });
+        }
+
+        createTimeControl(labelKey, fieldName, value) {
+            const label = this.translate(labelKey, 'labels', 'AttendanceRecord');
+            const select = $('<select>')
+                .addClass('form-control input-sm')
+                .attr({
+                    'data-schedule-field': fieldName,
+                    'aria-label': label,
+                });
+            const values = [];
+
+            for (let minutes = 0; minutes < 24 * 60; minutes += 15) {
+                values.push(
+                    `${String(Math.floor(minutes / 60)).padStart(2, '0')}:` +
+                    String(minutes % 60).padStart(2, '0')
+                );
+            }
+
+            if (value && !values.includes(value)) {
+                values.push(value);
+                values.sort();
+            }
+
+            select.append($('<option>', {
+                value: '',
+                text: this.translate('Select Time', 'labels', 'AttendanceRecord'),
+            }));
+            values.forEach(time => select.append($('<option>', {value: time, text: time})));
+            select.val(value);
+
+            return $('<label>').addClass('attendance-schedule-control').append(
+                $('<span>').text(label),
+                select
+            );
+        }
+
+        markDirty(target) {
+            $(target).closest('[data-user-id]')
+                .addClass('attendance-schedule-row-dirty')
+                .find('[data-action="save-work-schedule"]')
+                .removeClass('btn-default')
+                .addClass('btn-primary');
         }
 
         async saveSchedule(target) {
@@ -116,6 +163,8 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
                     'messages',
                     'AttendanceRecord'
                 ));
+                row.removeClass('attendance-schedule-row-dirty');
+                button.removeClass('btn-primary').addClass('btn-default');
             } catch (error) {
                 Espo.Ui.error(this.translate(
                     'Schedule Save Failed',

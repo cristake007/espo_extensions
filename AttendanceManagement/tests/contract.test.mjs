@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.6.1');
+    assert.equal(manifest.version, '1.7.0');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -158,6 +158,12 @@ test('working schedules are persistent defaults edited from administration', asy
     assert.match(settingsView, /AttendanceManagement\/schedules/);
     assert.match(settingsView, /AttendanceManagement\/overview\/schedule/);
     assert.doesNotMatch(settingsView, /month:/);
+    assert.doesNotMatch(settingsView, /type:\s*'time'/);
+    assert.match(settingsView, /<select>/);
+    assert.match(settingsView, /minutes \+= 15/);
+    assert.match(settingsView, /!values\.includes\(value\)/);
+    assert.match(settingsView, /attendance-schedule-row-dirty/);
+    assert.match(settingsView, /data-action.*save-work-schedule/);
 });
 
 test('manager reminders create native EspoCRM notifications only for missing users', async () => {
@@ -310,6 +316,9 @@ test('attendance page and statuses are bilingual', async () => {
         assert.equal(typeof attendance.messages['Monthly Register Guide'], 'string');
         assert.equal(typeof attendance.labels['Today Attendance'], 'string');
         assert.equal(typeof attendance.labels['Choose Attendance'], 'string');
+        assert.equal(typeof attendance.labels['Employee Schedules'], 'string');
+        assert.equal(typeof attendance.labels['Select Time'], 'string');
+        assert.equal(typeof attendance.messages['Schedule Editor Guide'], 'string');
 
         const settings = await readJson('Resources', 'i18n', locale, 'Settings.json');
         const admin = await readJson('Resources', 'i18n', locale, 'Admin.json');
@@ -317,5 +326,7 @@ test('attendance page and statuses are bilingual', async () => {
         assert.equal(typeof settings.fields.attendanceManagementEditablePastMonths, 'string');
         assert.equal(typeof settings.fields.attendanceManagementScheduleEditor, 'string');
         assert.equal(typeof admin.descriptions.attendanceManagementSettings, 'string');
+        assert.equal(typeof admin.labels['Access and Editing'], 'string');
+        assert.equal(typeof admin.labels['Employee Schedules'], 'string');
     }
 });
