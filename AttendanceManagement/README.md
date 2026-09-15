@@ -25,7 +25,7 @@ included.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.5.0 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.5.1 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

@@ -92,7 +92,7 @@
 }
 
 .attendance-overview-table thead th {
-    background: var(--panel-default-heading-bg);
+    background: var(--default-heading-bg-color);
     position: sticky;
     top: 0;
     z-index: 2;
@@ -127,7 +127,7 @@
 }
 
 .attendance-overview-table thead .attendance-sticky-date {
-    background: var(--panel-default-heading-bg);
+    background: var(--default-heading-bg-color);
     z-index: 3;
 }
 
@@ -169,8 +169,11 @@
     gap: 13px;
     justify-content: flex-start;
     min-height: 76px;
+    min-width: 0;
+    overflow: hidden;
     padding: 12px 18px;
     text-align: left;
+    white-space: normal;
 }
 
 .attendance-action-icon {
@@ -183,6 +186,9 @@
     display: flex;
     flex-direction: column;
     line-height: 1.25;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
 }
 
 .attendance-action-copy small {
@@ -199,8 +205,8 @@
 
 .attendance-today-panel,
 .attendance-month-panel {
-    border-radius: 6px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--default-box-shadow);
     overflow: hidden;
 }
 
@@ -235,13 +241,15 @@
     align-items: center;
     display: grid;
     gap: 28px;
-    grid-template-columns: minmax(210px, 0.7fr) minmax(420px, 1.3fr);
-    padding: 22px;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    padding: var(--panel-padding);
 }
 
 .attendance-today-summary {
     border-right: 1px solid var(--panel-default-border);
     min-height: 88px;
+    min-width: 0;
+    overflow-wrap: anywhere;
     padding-right: 24px;
 }
 
@@ -261,8 +269,14 @@
 }
 
 .attendance-month-heading {
+    flex-wrap: wrap;
     justify-content: space-between;
     min-height: 70px;
+}
+
+.attendance-month-title,
+.attendance-month-title > div:last-child {
+    min-width: 0;
 }
 
 .attendance-month-control {
@@ -285,9 +299,9 @@
 
 .attendance-progress-item {
     align-items: center;
-    background: var(--panel-bg);
+    background: var(--panel-default-bg);
     border: 1px solid var(--panel-default-border);
-    border-radius: 16px;
+    border-radius: var(--badge-border-radius-value);
     display: flex;
     gap: 7px;
     padding: 6px 11px;
@@ -303,10 +317,11 @@
 
 .attendance-my-table {
     margin-bottom: 0;
+    max-width: 100%;
 }
 
 .attendance-my-table thead th {
-    background: var(--panel-default-heading-bg);
+    background: var(--default-heading-bg-color);
     border-bottom-width: 1px;
     color: var(--text-muted-color);
     font-size: 11px;
@@ -363,7 +378,7 @@
     padding: 30px !important;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
     .attendance-today-body {
         align-items: stretch;
         grid-template-columns: 1fr;
@@ -393,12 +408,53 @@
     }
 
     .attendance-day-actions {
+        flex-direction: column;
         justify-content: flex-start;
     }
 
     .attendance-day-actions .btn {
-        min-width: 115px;
+        min-width: 0;
+        width: 100%;
     }
+
+    .attendance-month-panel .table-responsive {
+        border: 0;
+        overflow: visible;
+    }
+
+    .attendance-my-table,
+    .attendance-my-table tbody,
+    .attendance-my-table tr,
+    .attendance-my-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .attendance-my-table thead {
+        display: none;
+    }
+
+    .attendance-my-table tbody tr {
+        border-top: 1px solid var(--panel-default-border);
+        padding: var(--panel-padding);
+    }
+
+    .attendance-my-table td {
+        border: 0 !important;
+        min-width: 0 !important;
+        padding: 5px 0 !important;
+    }
+
+    .attendance-my-table .attendance-day-status {
+        min-width: 0;
+    }
+
+    .attendance-day-future {
+        background: var(--table-bg-accent);
+    }
+}
+
+@media (max-width: 767px) {
 
     .attendance-overview-summary {
         grid-template-columns: 1fr;
