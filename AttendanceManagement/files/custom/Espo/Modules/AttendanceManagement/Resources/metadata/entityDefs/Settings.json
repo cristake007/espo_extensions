@@ -7,6 +7,12 @@
             "validatorClassNameList": [
                 "Espo\\Modules\\AttendanceManagement\\FieldValidators\\Settings\\Managers\\Valid"
             ]
+        },
+        "attendanceManagementScheduleEditor": {
+            "type": "varchar",
+            "notStorable": true,
+            "tooltip": true,
+            "view": "attendance-management:views/fields/work-schedules"
         }
     }
 }

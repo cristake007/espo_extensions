@@ -35,7 +35,9 @@
         "Missing": "Missing",
         "Start Time": "Start",
         "End Time": "End",
-        "Save Schedule": "Save schedule"
+        "Save Schedule": "Save schedule",
+        "Schedule Not Set": "Schedule not set",
+        "Employee": "Employee"
     },
     "messages": {
         "Attendance Saved": "Attendance was saved.",
@@ -50,8 +52,9 @@
         "Reminder Failed": "The reminders could not be sent.",
         "Download Failed": "The XLSX file could not be generated.",
         "Invalid Schedule": "Enter a valid start and end time. The end time must be after the start time.",
-        "Schedule Saved": "The working schedule was saved for the selected month.",
+        "Schedule Saved": "The employee's default working schedule was saved.",
         "Schedule Save Failed": "The working schedule could not be saved.",
-        "Inherited Schedule": "Inherited from the most recent earlier schedule. Saving creates a schedule starting with the selected month."
+        "Schedule Load Failed": "Employee schedules could not be loaded.",
+        "Loading Schedules": "Loading employee schedules..."
     }
 }

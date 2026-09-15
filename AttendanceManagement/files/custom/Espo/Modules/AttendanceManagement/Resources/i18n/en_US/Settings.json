@@ -1,8 +1,10 @@
 {
     "fields": {
-        "attendanceManagementManagers": "Attendance managers"
+        "attendanceManagementManagers": "Attendance managers",
+        "attendanceManagementScheduleEditor": "Default employee schedules"
     },
     "tooltips": {
-        "attendanceManagementManagers": "Users allowed to open the attendance overview, send reminders, and download completed registers. Holiday Management approvers also receive access automatically."
+        "attendanceManagementManagers": "Users allowed to open the attendance overview, send reminders, and download completed registers. Holiday Management approvers also receive access automatically.",
+        "attendanceManagementScheduleEditor": "Set the normal entry and exit time for each employee. Changes apply to every attendance month."
     }
 }

@@ -59,7 +59,7 @@ final class AttendanceOverviewService
             ];
         }
 
-        $scheduleMap = $this->getScheduleMap($userIds, $monthStart);
+        $scheduleMap = $this->getScheduleMap($userIds);
 
         foreach ($scheduleMap as $userId => $schedule) {
             $userRows[$userId]['schedule'] = $schedule;
@@ -153,13 +153,10 @@ final class AttendanceOverviewService
     /** @return array<string, mixed> */
     public function saveSchedule(
         string $userId,
-        string $month,
         string $startTime,
         string $endTime,
     ): array {
-        $this->accessChecker->assertManager();
-        $today = $this->dateTime->getToday()->toString();
-        $month = $this->normalizeMonth($month, $today);
+        $this->accessChecker->assertScheduleEditor();
         $startTime = trim($startTime);
         $endTime = trim($endTime);
 
@@ -181,13 +178,12 @@ final class AttendanceOverviewService
             throw new NotFound('Active internal employee not found.');
         }
 
-        $effectiveFrom = $month . '-01';
-
         return $this->entityManager->getTransactionManager()->run(
-            function () use ($user, $userId, $effectiveFrom, $startTime, $endTime): array {
+            function () use ($user, $userId, $startTime, $endTime): array {
                 $schedule = $this->entityManager
                     ->getRDBRepository(self::SCHEDULE_ENTITY_TYPE)
-                    ->where(['userId' => $userId, 'effectiveFrom' => $effectiveFrom])
+                    ->where(['userId' => $userId])
+                    ->order('effectiveFrom', 'DESC')
                     ->forUpdate()
                     ->findOne();
 
@@ -195,8 +191,14 @@ final class AttendanceOverviewService
                     $schedule = $this->entityManager->getNewEntity(self::SCHEDULE_ENTITY_TYPE);
                 }
 
+                $effectiveFrom = (string) $schedule->get('effectiveFrom');
+
+                if ($effectiveFrom === '') {
+                    $effectiveFrom = $this->dateTime->getToday()->toString();
+                }
+
                 $schedule->set([
-                    'name' => sprintf('%s - %s', $user->get('name'), substr($effectiveFrom, 0, 7)),
+                    'name' => sprintf('%s - default', $user->get('name')),
                     'userId' => $userId,
                     'userName' => $user->get('name'),
                     'startTime' => $startTime,
@@ -209,11 +211,41 @@ final class AttendanceOverviewService
                     'userId' => $userId,
                     'startTime' => $startTime,
                     'endTime' => $endTime,
-                    'effectiveFrom' => $effectiveFrom,
-                    'isInherited' => false,
                 ];
             },
         );
+    }
+
+    /** @return array{users: list<array<string, mixed>>} */
+    public function getScheduleSettings(): array
+    {
+        $this->accessChecker->assertScheduleEditor();
+        $users = $this->entityManager
+            ->getRDBRepositoryByClass(User::class)
+            ->where([
+                'type' => [User::TYPE_REGULAR, User::TYPE_ADMIN],
+                'isActive' => true,
+            ])
+            ->order('name')
+            ->find();
+        $userIds = [];
+        $rows = [];
+
+        foreach ($users as $user) {
+            $userId = (string) $user->getId();
+            $userIds[] = $userId;
+            $rows[$userId] = [
+                'id' => $userId,
+                'name' => (string) $user->get('name'),
+                'schedule' => null,
+            ];
+        }
+
+        foreach ($this->getScheduleMap($userIds) as $userId => $schedule) {
+            $rows[$userId]['schedule'] = $schedule;
+        }
+
+        return ['users' => array_values($rows)];
     }
 
     /** @return array{sent: int, users: list<array{id: string, name: string}>} */
@@ -275,9 +307,9 @@ final class AttendanceOverviewService
 
     /**
      * @param list<string> $userIds
-     * @return array<string, array{startTime: string, endTime: string, effectiveFrom: string, isInherited: bool}>
+     * @return array<string, array{startTime: string, endTime: string}>
      */
-    private function getScheduleMap(array $userIds, string $monthStart): array
+    private function getScheduleMap(array $userIds): array
     {
         if ($userIds === []) {
             return [];
@@ -287,7 +319,6 @@ final class AttendanceOverviewService
             ->getRDBRepository(self::SCHEDULE_ENTITY_TYPE)
             ->where([
                 'userId' => $userIds,
-                'effectiveFrom<=' => $monthStart,
             ])
             ->order('effectiveFrom', 'DESC')
             ->find();
@@ -300,12 +331,9 @@ final class AttendanceOverviewService
                 continue;
             }
 
-            $effectiveFrom = (string) $schedule->get('effectiveFrom');
             $map[$userId] = [
                 'startTime' => (string) $schedule->get('startTime'),
                 'endTime' => (string) $schedule->get('endTime'),
-                'effectiveFrom' => $effectiveFrom,
-                'isInherited' => $effectiveFrom !== $monthStart,
             ];
         }
 

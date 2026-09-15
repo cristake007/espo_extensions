@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.4.0');
+    assert.equal(manifest.version, '1.4.1');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -79,6 +79,7 @@ test('manager API is protected and available to configured managers or holiday a
         ['/AttendanceManagement/overview/access', 'get'],
         ['/AttendanceManagement/overview', 'get'],
         ['/AttendanceManagement/overview/remind', 'post'],
+        ['/AttendanceManagement/schedules', 'get'],
         ['/AttendanceManagement/overview/schedule', 'post'],
         ['/AttendanceManagement/overview/xlsx', 'post'],
     ]);
@@ -105,7 +106,7 @@ test('manager overview reports signed, missing and future cells and overlays hol
     assert.doesNotMatch(service, /\$futureCount === 0,/);
 });
 
-test('working schedules are effective-dated, manager-only records', async () => {
+test('working schedules are persistent defaults edited from administration', async () => {
     const routes = await readJson('Resources', 'routes.json');
     const defs = await readJson(
         'Resources', 'metadata', 'entityDefs', 'AttendanceWorkSchedule.json'
@@ -117,7 +118,16 @@ test('working schedules are effective-dated, manager-only records', async () => 
         'Resources', 'metadata', 'aclDefs', 'AttendanceWorkSchedule.json'
     );
     const service = await readSource('Tools', 'Attendance', 'AttendanceOverviewService.php');
+    const checker = await readSource('Tools', 'Attendance', 'AttendanceAccessChecker.php');
+    const settings = await readJson('Resources', 'metadata', 'entityDefs', 'Settings.json');
+    const settingsView = await readFile(
+        path.join(clientRoot, 'src', 'views', 'fields', 'work-schedules.js'),
+        'utf8'
+    );
 
+    assert.ok(routes.some(item =>
+        item.route === '/AttendanceManagement/schedules' && item.method === 'get'
+    ));
     assert.ok(routes.some(item =>
         item.route === '/AttendanceManagement/overview/schedule' && item.method === 'post'
     ));
@@ -129,11 +139,17 @@ test('working schedules are effective-dated, manager-only records', async () => 
     assert.equal(scope.tab, false);
     assert.equal(scope.customizable, false);
     assert.equal(acl.read, false);
-    assert.match(service, /accessChecker->assertManager/);
-    assert.match(service, /effectiveFrom<=/);
+    assert.match(service, /accessChecker->assertScheduleEditor/);
+    assert.match(checker, /user->isAdmin\(\)/);
+    assert.doesNotMatch(service, /effectiveFrom<=/);
     assert.match(service, /order\('effectiveFrom', 'DESC'\)/);
     assert.match(service, /Working schedule times must use the HH:MM format/);
     assert.match(service, /end time must be after the start time/);
+    assert.equal(settings.fields.attendanceManagementScheduleEditor.notStorable, true);
+    assert.match(settings.fields.attendanceManagementScheduleEditor.view, /work-schedules/);
+    assert.match(settingsView, /AttendanceManagement\/schedules/);
+    assert.match(settingsView, /AttendanceManagement\/overview\/schedule/);
+    assert.doesNotMatch(settingsView, /month:/);
 });
 
 test('manager reminders create native EspoCRM notifications only for missing users', async () => {
@@ -227,8 +243,8 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX d
     assert.match(overview, /download-xlsx/);
     assert.match(overview, /AttendanceManagement\/overview\/remind/);
     assert.match(overview, /AttendanceManagement\/overview\/xlsx/);
-    assert.match(overview, /AttendanceManagement\/overview\/schedule/);
-    assert.match(overview, /data-schedule-field/);
+    assert.match(overview, /attendance-schedule-value/);
+    assert.doesNotMatch(overview, /data-schedule-field/);
     assert.match(css, /#navbar a\[data-name="AttendanceOverview"\]/);
 });
 
@@ -267,6 +283,7 @@ test('attendance page and statuses are bilingual', async () => {
         const settings = await readJson('Resources', 'i18n', locale, 'Settings.json');
         const admin = await readJson('Resources', 'i18n', locale, 'Admin.json');
         assert.equal(typeof settings.fields.attendanceManagementManagers, 'string');
+        assert.equal(typeof settings.fields.attendanceManagementScheduleEditor, 'string');
         assert.equal(typeof admin.descriptions.attendanceManagementSettings, 'string');
     }
 });

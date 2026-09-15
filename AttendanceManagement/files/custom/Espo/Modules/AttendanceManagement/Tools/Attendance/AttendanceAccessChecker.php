@@ -42,4 +42,11 @@ final class AttendanceAccessChecker
             throw new Forbidden('Attendance overview access is restricted to configured managers.');
         }
     }
+
+    public function assertScheduleEditor(): void
+    {
+        if (!$this->user->isAdmin() && !$this->isManager()) {
+            throw new Forbidden('Working schedules can only be changed by an administrator or attendance manager.');
+        }
+    }
 }

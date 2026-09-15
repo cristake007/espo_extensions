@@ -91,30 +91,19 @@
     margin-bottom: 6px;
 }
 
-.attendance-schedule-controls {
-    align-items: flex-end;
-    display: flex;
-    gap: 4px;
-    justify-content: center;
-}
-
-.attendance-schedule-controls label {
+.attendance-schedule-value {
     color: var(--text-muted-color);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: normal;
-    margin: 0;
-    text-align: left;
 }
 
-.attendance-schedule-controls input {
-    min-width: 82px;
-    padding-left: 5px;
-    padding-right: 3px;
-    width: 82px;
+.attendance-schedule-settings-table th,
+.attendance-schedule-settings-table td {
+    vertical-align: middle !important;
 }
 
-.attendance-schedule-controls .btn {
-    margin-bottom: 1px;
+.attendance-schedule-settings-table input[type="time"] {
+    min-width: 120px;
 }
 
 .attendance-overview-table .attendance-sticky-date {

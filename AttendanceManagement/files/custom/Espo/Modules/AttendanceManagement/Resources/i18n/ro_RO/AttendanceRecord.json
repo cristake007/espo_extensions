@@ -35,7 +35,9 @@
         "Missing": "Lipsa",
         "Start Time": "Intrare",
         "End Time": "Iesire",
-        "Save Schedule": "Salveaza programul"
+        "Save Schedule": "Salveaza programul",
+        "Schedule Not Set": "Program neconfigurat",
+        "Employee": "Angajat"
     },
     "messages": {
         "Attendance Saved": "Prezenta a fost salvata.",
@@ -50,8 +52,9 @@
         "Reminder Failed": "Notificarile nu au putut fi trimise.",
         "Download Failed": "Fisierul XLSX nu a putut fi generat.",
         "Invalid Schedule": "Introdu o ora valida de intrare si iesire. Ora de iesire trebuie sa fie dupa ora de intrare.",
-        "Schedule Saved": "Programul de lucru a fost salvat pentru luna selectata.",
+        "Schedule Saved": "Programul de lucru implicit al angajatului a fost salvat.",
         "Schedule Save Failed": "Programul de lucru nu a putut fi salvat.",
-        "Inherited Schedule": "Program preluat din cea mai recenta perioada anterioara. Salvarea creeaza un program incepand cu luna selectata."
+        "Schedule Load Failed": "Programele angajatilor nu au putut fi incarcate.",
+        "Loading Schedules": "Se incarca programele angajatilor..."
     }
 }

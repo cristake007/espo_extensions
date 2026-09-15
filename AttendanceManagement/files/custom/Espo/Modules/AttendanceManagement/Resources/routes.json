@@ -25,6 +25,11 @@
         "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostAttendanceReminders"
     },
     {
+        "route": "/AttendanceManagement/schedules",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\GetAttendanceSchedules"
+    },
+    {
         "route": "/AttendanceManagement/overview/schedule",
         "method": "post",
         "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostAttendanceSchedule"

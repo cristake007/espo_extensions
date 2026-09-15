@@ -7,6 +7,10 @@ define(['views/settings/record/edit'], (SettingsEditView) => {
                         {name: 'attendanceManagementManagers'},
                         false,
                     ],
+                    [
+                        {name: 'attendanceManagementScheduleEditor'},
+                        false,
+                    ],
                 ],
             },
         ];
