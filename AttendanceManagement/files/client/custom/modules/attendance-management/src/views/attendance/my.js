@@ -1,41 +1,85 @@
 define(['view', 'model'], (View, Model) => {
     return class extends View {
         templateContent = `
-            <div class="header page-header">
-                <h3>{{translate 'Attendance' category='labels' scope='AttendanceRecord'}}</h3>
+            <div class="header page-header attendance-page-header">
+                <div>
+                    <h3>
+                        <span class="fas fa-clipboard-check" aria-hidden="true"></span>
+                        {{translate 'Attendance' category='labels' scope='AttendanceRecord'}}
+                    </h3>
+                    <p class="text-muted attendance-page-intro">
+                        {{translate 'Attendance Page Guide' category='messages' scope='AttendanceRecord'}}
+                    </p>
+                </div>
             </div>
             <div class="attendance-page">
                 <div class="panel panel-default attendance-today-panel">
-                    <div class="panel-heading">
-                        <strong>{{translate 'Today' category='labels' scope='AttendanceRecord'}}</strong>
-                        <span class="attendance-today-date text-muted"></span>
+                    <div class="panel-heading attendance-today-heading">
+                        <div class="attendance-section-icon attendance-section-icon-today">
+                            <span class="far fa-calendar-check" aria-hidden="true"></span>
+                        </div>
+                        <div>
+                            <strong>{{translate 'Today Attendance' category='labels' scope='AttendanceRecord'}}</strong>
+                            <div class="attendance-today-date text-muted"></div>
+                        </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body attendance-today-body">
+                        <div class="attendance-today-summary">
+                            <span class="text-muted">{{translate 'Current Status' category='labels' scope='AttendanceRecord'}}</span>
+                            <div class="attendance-current-status"></div>
+                            <p class="attendance-today-guidance text-muted"></p>
+                        </div>
                         <div class="attendance-state-actions">
                             <button class="btn btn-success btn-lg" data-action="mark-attendance" data-status="AtWork">
-                                <span class="fas fa-building" aria-hidden="true"></span>
-                                {{translate 'AtWork' category='options' scope='AttendanceRecord' field='status'}}
+                                <span class="attendance-action-icon fas fa-building" aria-hidden="true"></span>
+                                <span class="attendance-action-copy">
+                                    <strong>{{translate 'AtWork' category='options' scope='AttendanceRecord' field='status'}}</strong>
+                                    <small>{{translate 'At Work Help' category='messages' scope='AttendanceRecord'}}</small>
+                                </span>
                             </button>
                             <button class="btn btn-warning btn-lg" data-action="mark-attendance" data-status="BusinessTrip">
-                                <span class="fas fa-car" aria-hidden="true"></span>
-                                {{translate 'BusinessTrip' category='options' scope='AttendanceRecord' field='status'}}
+                                <span class="attendance-action-icon fas fa-car" aria-hidden="true"></span>
+                                <span class="attendance-action-copy">
+                                    <strong>{{translate 'BusinessTrip' category='options' scope='AttendanceRecord' field='status'}}</strong>
+                                    <small>{{translate 'Business Trip Help' category='messages' scope='AttendanceRecord'}}</small>
+                                </span>
                             </button>
                         </div>
-                        <div class="attendance-current-status text-muted"></div>
                     </div>
                 </div>
 
-                <div class="panel panel-default">
+                <div class="panel panel-default attendance-month-panel">
                     <div class="panel-heading attendance-month-heading">
-                        <strong>{{translate 'Working Days' category='labels' scope='AttendanceRecord'}}</strong>
+                        <div class="attendance-month-title">
+                            <div class="attendance-section-icon">
+                                <span class="far fa-calendar-alt" aria-hidden="true"></span>
+                            </div>
+                            <div>
+                                <strong>{{translate 'Monthly Register' category='labels' scope='AttendanceRecord'}}</strong>
+                                <div class="text-muted small">{{translate 'Monthly Register Guide' category='messages' scope='AttendanceRecord'}}</div>
+                            </div>
+                        </div>
                         <div class="attendance-month-control">
                             <div class="field attendance-month-field" data-month-field></div>
-                            <button class="btn btn-default btn-sm" data-action="open-month">
+                            <button class="btn btn-primary btn-sm" data-action="open-month">
+                                <span class="fas fa-search" aria-hidden="true"></span>
                                 {{translate 'Open Month' category='labels' scope='AttendanceRecord'}}
                             </button>
                         </div>
                     </div>
-                    <div class="list-group attendance-day-list"></div>
+                    <div class="panel-body attendance-month-summary"></div>
+                    <div class="table-responsive">
+                        <table class="table table-hover attendance-my-table">
+                            <thead>
+                                <tr>
+                                    <th>{{translate 'date' category='fields' scope='AttendanceRecord'}}</th>
+                                    <th>{{translate 'status' category='fields' scope='AttendanceRecord'}}</th>
+                                    <th>{{translate 'Choose Attendance' category='labels' scope='AttendanceRecord'}}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="attendance-day-list"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         `
@@ -71,7 +115,8 @@ define(['view', 'model'], (View, Model) => {
             this.monthModel.set('monthDate', data.month ? `${data.month}-01` : null);
             this.$el.find('.attendance-today-date').text(this.displayDate(data.today));
             this.renderToday(data);
-            this.renderDays(data.days || []);
+            this.renderMonthSummary(data.days || [], data.today);
+            this.renderDays(data.days || [], data.today);
         }
 
         renderToday(data) {
@@ -86,22 +131,47 @@ define(['view', 'model'], (View, Model) => {
                 actions.find(`[data-status="${status}"]`).addClass('attendance-state-active');
             }
 
-            this.$el.find('.attendance-current-status').text(
-                status
-                    ? this.translate('Current Status', 'labels', 'AttendanceRecord') + ': ' +
-                        this.translate(status, 'options', 'AttendanceRecord', 'status')
-                    : this.translate('Not Marked', 'labels', 'AttendanceRecord')
-            );
+            this.$el.find('.attendance-current-status')
+                .empty()
+                .append(this.createStatusBadge(status, data.todaySource, true));
+            this.$el.find('.attendance-today-guidance').text(this.translate(
+                data.todayCanMark
+                    ? 'Today Marking Guide'
+                    : (status === 'Holiday' ? 'Holiday Locked Guide' : 'Today Unavailable Guide'),
+                'messages',
+                'AttendanceRecord'
+            ));
         }
 
-        renderDays(days) {
+        renderMonthSummary(days, today) {
+            const completed = days.filter(day => day.date <= today && day.status).length;
+            const notMarked = days.filter(day => day.date <= today && !day.status).length;
+            const future = days.filter(day => day.date > today).length;
+            const container = this.$el.find('.attendance-month-summary').empty();
+
+            for (const item of [
+                ['Completed Days', completed, 'success', 'fa-check-circle'],
+                ['Not Marked Days', notMarked, 'danger', 'fa-exclamation-circle'],
+                ['Upcoming Days', future, 'default', 'fa-clock'],
+            ]) {
+                container.append(
+                    $('<div>').addClass(`attendance-progress-item attendance-progress-${item[2]}`).append(
+                        $('<span>').addClass(`fas ${item[3]}`).attr('aria-hidden', 'true'),
+                        $('<strong>').text(String(item[1])),
+                        $('<span>').text(this.translate(item[0], 'labels', 'AttendanceRecord'))
+                    )
+                );
+            }
+        }
+
+        renderDays(days, today) {
             const container = this.$el.find('.attendance-day-list').empty();
 
             if (!days.length) {
                 container.append(
-                    $('<div>').addClass('list-group-item text-muted').text(
-                        this.translate('No Working Days', 'messages', 'AttendanceRecord')
-                    )
+                    $('<tr>').append($('<td>', {colspan: 3})
+                        .addClass('text-muted text-center attendance-empty-row')
+                        .text(this.translate('No Working Days', 'messages', 'AttendanceRecord')))
                 );
 
                 return;
@@ -109,38 +179,59 @@ define(['view', 'model'], (View, Model) => {
 
             days.forEach(day => {
                 const actions = $('<div>').addClass('attendance-day-actions');
-                const item = $('<div>').addClass('list-group-item attendance-day-item').append(
-                    $('<div>').addClass('attendance-day-date').text(this.displayDate(day.date)),
-                    $('<div>').addClass('attendance-day-status').append(
-                        this.createStatusBadge(day.status, day.source)
+                const item = $('<tr>').toggleClass('attendance-day-future', day.date > today).append(
+                    $('<td>').addClass('attendance-day-date').append(
+                        $('<strong>').text(this.displayDate(day.date)),
+                        $('<span>').addClass('text-muted').text(this.displayWeekday(day.date))
                     ),
-                    actions,
+                    $('<td>').addClass('attendance-day-status').append(
+                        this.createStatusBadge(day.status, day.source)
+                    )
                 );
 
-                for (const status of ['AtWork', 'BusinessTrip']) {
-                    const button = $('<button>')
-                        .addClass(`btn btn-sm ${status === 'AtWork' ? 'btn-success' : 'btn-warning'}`)
-                        .attr({
-                            'data-action': 'mark-attendance',
-                            'data-date': day.date,
-                            'data-status': status,
-                        })
-                        .prop('disabled', !day.canMark)
-                        .toggleClass('attendance-state-active', day.status === status)
-                        .text(this.translate(status, 'options', 'AttendanceRecord', 'status'));
+                if (day.canMark) {
+                    for (const status of ['AtWork', 'BusinessTrip']) {
+                        const icon = status === 'AtWork' ? 'fa-building' : 'fa-car';
+                        const button = $('<button>')
+                            .addClass(`btn btn-sm ${status === 'AtWork' ? 'btn-success' : 'btn-warning'}`)
+                            .attr({
+                                'data-action': 'mark-attendance',
+                                'data-date': day.date,
+                                'data-status': status,
+                            })
+                            .toggleClass('attendance-state-active', day.status === status)
+                            .append(
+                                $('<span>').addClass(`fas ${icon}`).attr('aria-hidden', 'true'),
+                                ' ',
+                                this.translate(status, 'options', 'AttendanceRecord', 'status')
+                            );
 
-                    button.appendTo(actions);
+                        button.appendTo(actions);
+                    }
+                } else {
+                    actions.append(
+                        $('<span>').addClass('text-muted attendance-day-locked').append(
+                            $('<span>').addClass('fas fa-lock').attr('aria-hidden', 'true'),
+                            ' ',
+                            this.translate(
+                                day.status === 'Holiday' ? 'Managed Automatically' : 'Upcoming',
+                                'labels',
+                                'AttendanceRecord'
+                            )
+                        )
+                    );
                 }
 
+                item.append($('<td>').append(actions));
                 container.append(item);
             });
         }
 
-        createStatusBadge(status, source) {
+        createStatusBadge(status, source, large = false) {
             if (!status) {
-                return $('<span>').addClass('text-muted').text(
-                    this.translate('Not Marked', 'labels', 'AttendanceRecord')
-                );
+                return $('<span>')
+                    .addClass(`label label-default${large ? ' attendance-status-large' : ''}`)
+                    .text(this.translate('Not Marked', 'labels', 'AttendanceRecord'));
             }
 
             const style = {
@@ -149,7 +240,7 @@ define(['view', 'model'], (View, Model) => {
                 BusinessTrip: 'warning',
             }[status] || 'default';
             const badge = $('<span>')
-                .addClass(`label label-${style}`)
+                .addClass(`label label-${style}${large ? ' attendance-status-large' : ''}`)
                 .text(this.translate(status, 'options', 'AttendanceRecord', 'status'));
 
             if (source === 'ApprovedHoliday') {
@@ -220,6 +311,18 @@ define(['view', 'model'], (View, Model) => {
 
         displayDate(value) {
             return value ? this.getDateTime().toDisplayDate(String(value)) : '';
+        }
+
+        displayWeekday(value) {
+            if (!value) {
+                return '';
+            }
+
+            const language = this.getPreferences().get('language') ||
+                this.getConfig().get('language') || 'en_US';
+
+            return new Intl.DateTimeFormat(language.replace('_', '-'), {weekday: 'long'})
+                .format(new Date(`${value}T12:00:00`));
         }
     };
 });

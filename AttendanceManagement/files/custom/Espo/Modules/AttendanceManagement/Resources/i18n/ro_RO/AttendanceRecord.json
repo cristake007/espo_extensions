@@ -37,7 +37,15 @@
         "End Time": "Iesire",
         "Save Schedule": "Salveaza programul",
         "Schedule Not Set": "Program neconfigurat",
-        "Employee": "Angajat"
+        "Employee": "Angajat",
+        "Today Attendance": "Prezenta de astazi",
+        "Monthly Register": "Condica lunara",
+        "Choose Attendance": "Alege prezenta",
+        "Completed Days": "Completate",
+        "Not Marked Days": "Nemarcate",
+        "Upcoming Days": "Urmeaza",
+        "Managed Automatically": "Gestionata automat",
+        "Upcoming": "Urmeaza"
     },
     "messages": {
         "Attendance Saved": "Prezenta a fost salvata.",
@@ -55,6 +63,13 @@
         "Schedule Saved": "Programul de lucru implicit al angajatului a fost salvat.",
         "Schedule Save Failed": "Programul de lucru nu a putut fi salvat.",
         "Schedule Load Failed": "Programele angajatilor nu au putut fi incarcate.",
-        "Loading Schedules": "Se incarca programele angajatilor..."
+        "Loading Schedules": "Se incarca programele angajatilor...",
+        "Attendance Page Guide": "Marcheaza unde lucrezi astazi sau verifica si completeaza o zi lucratoare anterioara.",
+        "At Work Help": "Lucrez la locul normal de munca",
+        "Business Trip Help": "Lucrez in afara sediului, in deplasare",
+        "Today Marking Guide": "Alege o optiune. O poti schimba ulterior daca ai selectat gresit.",
+        "Holiday Locked Guide": "Concediul aprobat este adaugat automat si nu poate fi modificat aici.",
+        "Today Unavailable Guide": "Astazi nu este o zi lucratoare disponibila, deci nu trebuie sa faci nimic.",
+        "Monthly Register Guide": "Verifica zilele lucratoare si completeaza orice zi marcata ca nemarcata."
     }
 }

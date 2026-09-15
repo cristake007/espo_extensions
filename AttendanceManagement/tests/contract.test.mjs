@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.4.3');
+    assert.equal(manifest.version, '1.5.0');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -193,7 +193,7 @@ test('approved holidays are read without changing Holiday Management', async () 
     assert.match(service, /An approved holiday controls attendance for this date/);
 });
 
-test('personal page is a side-navigation scope with two manual actions per working day', async () => {
+test('personal page clearly separates today actions from the structured monthly register', async () => {
     const controller = await readFile(
         path.join(clientRoot, 'src', 'controllers', 'attendance.js'),
         'utf8'
@@ -221,7 +221,13 @@ test('personal page is a side-navigation scope with two manual actions per worki
     assert.match(view, /data-status="BusinessTrip"/);
     assert.doesNotMatch(view, /data-status-indicator="Holiday"/);
     assert.match(view, /for \(const status of \['AtWork', 'BusinessTrip'\]\)/);
-    assert.match(view, /prop\('disabled', !day.canMark\)/);
+    assert.match(view, /prop\('disabled', !data.todayCanMark\)/);
+    assert.match(view, /attendance-today-guidance/);
+    assert.match(view, /attendance-month-summary/);
+    assert.match(view, /attendance-my-table/);
+    assert.match(view, /if \(day.canMark\)/);
+    assert.match(view, /Managed Automatically/);
+    assert.match(view, /displayWeekday/);
     assert.match(controller, /month: options\.month \|\| null/);
     assert.match(view, /loadAttendance\(this\.options\.month \|\| null\)/);
 });
@@ -285,6 +291,11 @@ test('attendance page and statuses are bilingual', async () => {
         assert.equal(typeof attendance.messages['Attendance Saved'], 'string');
         assert.equal(typeof attendance.labels['Attendance Overview'], 'string');
         assert.equal(typeof attendance.messages['Confirm Reminders'], 'string');
+        assert.equal(typeof attendance.messages['Attendance Page Guide'], 'string');
+        assert.equal(typeof attendance.messages['Today Marking Guide'], 'string');
+        assert.equal(typeof attendance.messages['Monthly Register Guide'], 'string');
+        assert.equal(typeof attendance.labels['Today Attendance'], 'string');
+        assert.equal(typeof attendance.labels['Choose Attendance'], 'string');
 
         const settings = await readJson('Resources', 'i18n', locale, 'Settings.json');
         const admin = await readJson('Resources', 'i18n', locale, 'Admin.json');

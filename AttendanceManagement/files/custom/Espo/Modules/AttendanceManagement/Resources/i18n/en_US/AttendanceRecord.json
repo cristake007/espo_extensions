@@ -37,7 +37,15 @@
         "End Time": "End",
         "Save Schedule": "Save schedule",
         "Schedule Not Set": "Schedule not set",
-        "Employee": "Employee"
+        "Employee": "Employee",
+        "Today Attendance": "Today's attendance",
+        "Monthly Register": "Monthly register",
+        "Choose Attendance": "Choose attendance",
+        "Completed Days": "Completed",
+        "Not Marked Days": "Not marked",
+        "Upcoming Days": "Upcoming",
+        "Managed Automatically": "Managed automatically",
+        "Upcoming": "Upcoming"
     },
     "messages": {
         "Attendance Saved": "Attendance was saved.",
@@ -55,6 +63,13 @@
         "Schedule Saved": "The employee's default working schedule was saved.",
         "Schedule Save Failed": "The working schedule could not be saved.",
         "Schedule Load Failed": "Employee schedules could not be loaded.",
-        "Loading Schedules": "Loading employee schedules..."
+        "Loading Schedules": "Loading employee schedules...",
+        "Attendance Page Guide": "Mark where you are working today, or review and complete an earlier working day.",
+        "At Work Help": "Working at your normal workplace",
+        "Business Trip Help": "Working away on a business trip",
+        "Today Marking Guide": "Choose one option. You can change it later if you selected the wrong one.",
+        "Holiday Locked Guide": "Approved leave is added automatically and cannot be changed here.",
+        "Today Unavailable Guide": "Today is not an available working day, so no action is required.",
+        "Monthly Register Guide": "Review your working days and complete any day marked as not completed."
     }
 }

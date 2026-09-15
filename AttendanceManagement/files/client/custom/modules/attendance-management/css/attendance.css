@@ -10,6 +10,18 @@
     width: 100%;
 }
 
+.attendance-page-header h3 {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.attendance-page-intro {
+    margin: 0;
+    max-width: 760px;
+}
+
 .attendance-overview-page {
     width: 100%;
 }
@@ -154,9 +166,30 @@
 .attendance-state-actions .btn {
     align-items: center;
     display: flex;
-    gap: 9px;
-    justify-content: center;
-    min-height: 58px;
+    gap: 13px;
+    justify-content: flex-start;
+    min-height: 76px;
+    padding: 12px 18px;
+    text-align: left;
+}
+
+.attendance-action-icon {
+    font-size: 24px;
+    text-align: center;
+    width: 30px;
+}
+
+.attendance-action-copy {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+}
+
+.attendance-action-copy small {
+    font-size: 11px;
+    font-weight: normal;
+    margin-top: 4px;
+    opacity: 0.85;
 }
 
 .attendance-state-active {
@@ -164,20 +197,72 @@
     font-weight: 700;
 }
 
-.attendance-current-status {
-    margin-top: 12px;
-    text-align: center;
+.attendance-today-panel,
+.attendance-month-panel {
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
 }
 
+.attendance-today-heading,
 .attendance-month-heading,
-.attendance-day-item {
+.attendance-month-title {
     align-items: center;
     display: flex;
     gap: 14px;
 }
 
+.attendance-today-heading {
+    min-height: 66px;
+}
+
+.attendance-section-icon {
+    align-items: center;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-default-border);
+    border-radius: 50%;
+    display: flex;
+    flex: 0 0 38px;
+    height: 38px;
+    justify-content: center;
+}
+
+.attendance-section-icon-today {
+    color: var(--brand-success);
+}
+
+.attendance-today-body {
+    align-items: center;
+    display: grid;
+    gap: 28px;
+    grid-template-columns: minmax(210px, 0.7fr) minmax(420px, 1.3fr);
+    padding: 22px;
+}
+
+.attendance-today-summary {
+    border-right: 1px solid var(--panel-default-border);
+    min-height: 88px;
+    padding-right: 24px;
+}
+
+.attendance-current-status {
+    margin: 8px 0;
+}
+
+.attendance-status-large {
+    display: inline-block;
+    font-size: 14px;
+    padding: 7px 12px;
+}
+
+.attendance-today-guidance {
+    line-height: 1.45;
+    margin: 8px 0 0;
+}
+
 .attendance-month-heading {
     justify-content: space-between;
+    min-height: 70px;
 }
 
 .attendance-month-control {
@@ -190,43 +275,129 @@
     min-width: 180px;
 }
 
-.attendance-day-date {
-    flex: 0 0 130px;
-    font-weight: 600;
+.attendance-month-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 12px;
+    padding-top: 12px;
 }
 
-.attendance-day-status {
-    flex: 1 1 auto;
+.attendance-progress-item {
+    align-items: center;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-default-border);
+    border-radius: 16px;
+    display: flex;
+    gap: 7px;
+    padding: 6px 11px;
+}
+
+.attendance-progress-success .fas {
+    color: var(--brand-success);
+}
+
+.attendance-progress-danger .fas {
+    color: var(--brand-danger);
+}
+
+.attendance-my-table {
+    margin-bottom: 0;
+}
+
+.attendance-my-table thead th {
+    background: var(--panel-default-heading-bg);
+    border-bottom-width: 1px;
+    color: var(--text-muted-color);
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.attendance-my-table td,
+.attendance-my-table th {
+    padding: 11px 15px !important;
+    vertical-align: middle !important;
+}
+
+.attendance-my-table .attendance-day-status {
+    min-width: 145px;
+}
+
+.attendance-day-date {
+    min-width: 190px;
+}
+
+.attendance-day-date strong,
+.attendance-day-date span {
+    display: block;
+}
+
+.attendance-day-date span {
+    font-size: 11px;
+    margin-top: 2px;
+    text-transform: capitalize;
 }
 
 .attendance-day-actions {
     display: flex;
-    flex: 0 0 auto;
     gap: 8px;
+    justify-content: flex-end;
+}
+
+.attendance-day-actions .btn {
+    min-width: 125px;
+}
+
+.attendance-day-locked {
+    align-items: center;
+    display: inline-flex;
+    min-height: 30px;
+}
+
+.attendance-day-future {
+    opacity: 0.65;
+}
+
+.attendance-empty-row {
+    padding: 30px !important;
 }
 
 @media (max-width: 767px) {
+    .attendance-today-body {
+        align-items: stretch;
+        grid-template-columns: 1fr;
+    }
+
+    .attendance-today-summary {
+        border-bottom: 1px solid var(--panel-default-border);
+        border-right: 0;
+        padding-bottom: 18px;
+        padding-right: 0;
+    }
+
     .attendance-state-actions {
         grid-template-columns: 1fr;
     }
 
-    .attendance-day-item {
-        align-items: stretch;
-        flex-direction: column;
-    }
-
-    .attendance-day-date {
-        flex-basis: auto;
-    }
-
-    .attendance-day-actions .btn {
-        flex: 1 1 0;
-    }
-
+    .attendance-month-heading,
     .attendance-overview-toolbar,
     .attendance-overview-actions {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .attendance-month-control {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .attendance-day-actions {
+        justify-content: flex-start;
+    }
+
+    .attendance-day-actions .btn {
+        min-width: 115px;
     }
 
     .attendance-overview-summary {
