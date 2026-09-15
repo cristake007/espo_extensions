@@ -18,6 +18,7 @@ use RuntimeException;
 final class AttendanceXlsxGenerator
 {
     private const EMPLOYEES_PER_PRINT_PAGE = 7;
+    private const PRINT_BODY_ROW_HEIGHT = 25;
     private const MONTH_NAMES = [
         1 => 'Ianuarie',
         2 => 'Februarie',
@@ -152,6 +153,11 @@ final class AttendanceXlsxGenerator
 
         $sheet->getRowDimension(1)->setRowHeight(25);
         $sheet->getRowDimension(3)->setRowHeight(30);
+
+        for ($row = 5; $row <= $lastRow; $row++) {
+            $sheet->getRowDimension($row)->setRowHeight(self::PRINT_BODY_ROW_HEIGHT);
+        }
+
         $sheet->freezePane('C5');
         $sheet->getPageSetup()
             ->setOrientation(PageSetup::ORIENTATION_PORTRAIT)
@@ -163,13 +169,13 @@ final class AttendanceXlsxGenerator
         $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(3, 4);
         $sheet->getPageSetup()->setColumnsToRepeatAtLeftByStartAndEnd('A', 'B');
         $sheet->getPageMargins()
-            ->setTop(0.3)
+            ->setTop(0.65)
             ->setBottom(0.35)
             ->setLeft(0.2)
             ->setRight(0.2)
-            ->setHeader(0.15)
+            ->setHeader(0.25)
             ->setFooter(0.15);
-        $sheet->getHeaderFooter()->setOddHeader('&C&B' . $title);
+        $sheet->getHeaderFooter()->setOddHeader('&C&14&B' . $title);
         $sheet->getHeaderFooter()->setOddFooter('&RPagina &P din &N');
         $sheet->setShowGridlines(false);
         $sheet->setPrintGridlines(false);
