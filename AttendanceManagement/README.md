@@ -18,19 +18,19 @@ Management** side-navigation section. The manager overview is visible and
 available only to users selected under **Administration > Attendance
 Management**. It provides a
 monthly employee-by-day preview, highlights missing entries, sends in-app
-reminders to employees with unsigned days, and exports the register as XLSX once
-all elapsed working days have been completed. Its immediate selector shows the
+reminders to employees with unsigned days, and exports the register as XLSX or
+PDF once all elapsed working days have been completed. Its immediate selector shows the
 current month and two preceding months. Actionable cards show completion by
 employee, missing entries by employee, schedule coverage with missing names, and
-the exact XLSX readiness blockers. Reminders are disabled for months employees
+the exact export-readiness blockers. Reminders are disabled for months employees
 can no longer edit. An administrator sets each
 employee's default start and end time under **Administration > Attendance
 Management**. The responsive schedule editor uses theme-native 15-minute time
 selectors and saves each employee independently. Existing times outside a
 15-minute interval remain available and are not changed. The interval applies to
 every month and can be changed there at any time. The overview displays it
-read-only below the employee name. The XLSX
-includes entry time, exit time, and attendance status; no signature column is
+read-only below the employee name. Both exports include entry time, exit time,
+and attendance status; no signature column is
 included. Printing is preconfigured for A4 portrait with seven employees per
 page, repeated date/program columns and headings, explicit horizontal page
 breaks, page numbering, larger print text, and body rows sized to use the
@@ -38,10 +38,15 @@ printable page height in the same way as the original register. A single
 worksheet therefore prints all employee groups without selecting multiple
 sheets.
 
+Administrators can enable **Allow incomplete register exports** under
+**Administration > Attendance Management**. When enabled, managers may download
+both formats before every employee has completed the month; missing attendance
+or schedule values are left blank. The setting is disabled by default.
+
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.9.2 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.10.0 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

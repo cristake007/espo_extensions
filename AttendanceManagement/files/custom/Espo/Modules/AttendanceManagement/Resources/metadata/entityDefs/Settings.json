@@ -16,6 +16,11 @@
             "max": 120,
             "tooltip": true
         },
+        "attendanceManagementAllowIncompleteExports": {
+            "type": "bool",
+            "default": false,
+            "tooltip": true
+        },
         "attendanceManagementScheduleEditor": {
             "type": "varchar",
             "notStorable": true,

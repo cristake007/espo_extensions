@@ -38,5 +38,10 @@
         "route": "/AttendanceManagement/overview/xlsx",
         "method": "post",
         "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostAttendanceXlsx"
+    },
+    {
+        "route": "/AttendanceManagement/overview/pdf",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostAttendancePdf"
     }
 ]

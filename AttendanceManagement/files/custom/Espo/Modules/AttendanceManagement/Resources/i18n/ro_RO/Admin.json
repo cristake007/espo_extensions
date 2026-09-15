@@ -5,9 +5,9 @@
         "Employee Schedules": "Programe angajati"
     },
     "descriptions": {
-        "attendanceManagementSettings": "Configureaza responsabilii, perioada modificabila si programele de lucru ale angajatilor."
+        "attendanceManagementSettings": "Configureaza responsabilii, regulile de modificare si export si programele de lucru."
     },
     "keywords": {
-        "Attendance Management": "condica prezenta responsabili notificari xlsx"
+        "Attendance Management": "condica prezenta responsabili notificari xlsx pdf export"
     }
 }

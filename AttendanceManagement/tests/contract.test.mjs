@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.9.2');
+    assert.equal(manifest.version, '1.10.0');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -86,6 +86,7 @@ test('manager API is protected and available only to configured attendance manag
         ['/AttendanceManagement/schedules', 'get'],
         ['/AttendanceManagement/overview/schedule', 'post'],
         ['/AttendanceManagement/overview/xlsx', 'post'],
+        ['/AttendanceManagement/overview/pdf', 'post'],
     ]);
     assert.equal(settings.fields.attendanceManagementManagers.type, 'linkMultiple');
     assert.equal(settings.fields.attendanceManagementManagers.entity, 'User');
@@ -93,6 +94,8 @@ test('manager API is protected and available only to configured attendance manag
     assert.equal(settings.fields.attendanceManagementEditablePastMonths.default, 1);
     assert.equal(settings.fields.attendanceManagementEditablePastMonths.min, 0);
     assert.equal(settings.fields.attendanceManagementEditablePastMonths.max, 120);
+    assert.equal(settings.fields.attendanceManagementAllowIncompleteExports.type, 'bool');
+    assert.equal(settings.fields.attendanceManagementAllowIncompleteExports.default, false);
     assert.match(checker, /attendanceManagementManagersIds/);
     assert.doesNotMatch(checker, /holidayManagementApproversIds/);
     assert.match(checker, /assertManager/);
@@ -112,6 +115,10 @@ test('manager overview reports signed, missing and future cells and overlays hol
     assert.match(service, /\$missingCount === 0/);
     assert.match(service, /\$scheduleMissingCount === 0/);
     assert.match(service, /'monthEditable' => \$month >= \$editableFromMonth/);
+    assert.match(service, /attendanceManagementAllowIncompleteExports/);
+    assert.match(service, /'registerComplete' => \$registerComplete/);
+    assert.match(service, /'incompleteExportsAllowed' => \$incompleteExportsAllowed/);
+    assert.match(service, /\(\$registerComplete \|\| \$incompleteExportsAllowed\)/);
     assert.match(service, /Reminders cannot be sent for a locked attendance month/);
     assert.doesNotMatch(service, /\$futureCount === 0,/);
 });
@@ -179,9 +186,11 @@ test('manager reminders create native EspoCRM notifications only for missing use
     assert.match(service, /\$overview\['month'\]/);
 });
 
-test('completed overview exports a paginated A4 portrait XLSX with schedule and no signature field', async () => {
+test('overview exports paginated A4 XLSX and PDF registers with schedule and no signature field', async () => {
     const generator = await readSource('Tools', 'Attendance', 'AttendanceXlsxGenerator.php');
-    const action = await readSource('Tools', 'Attendance', 'Api', 'PostAttendanceXlsx.php');
+    const pdfGenerator = await readSource('Tools', 'Attendance', 'AttendancePdfGenerator.php');
+    const xlsxAction = await readSource('Tools', 'Attendance', 'Api', 'PostAttendanceXlsx.php');
+    const pdfAction = await readSource('Tools', 'Attendance', 'Api', 'PostAttendancePdf.php');
 
     assert.match(generator, /PhpOffice\\PhpSpreadsheet\\Spreadsheet/);
     assert.match(generator, /EMPLOYEES_PER_PRINT_PAGE = 7/);
@@ -204,8 +213,18 @@ test('completed overview exports a paginated A4 portrait XLSX with schedule and 
     assert.match(generator, /startTime/);
     assert.match(generator, /endTime/);
     assert.doesNotMatch(generator, /Semnatura|Semnătură|Signature/);
-    assert.match(action, /if \(!\$overview\['downloadReady'\]\)/);
-    assert.match(action, /base64_encode/);
+    assert.match(xlsxAction, /if \(!\$overview\['downloadReady'\]\)/);
+    assert.match(xlsxAction, /base64_encode/);
+    assert.match(pdfGenerator, /Dompdf\\Dompdf/);
+    assert.match(pdfGenerator, /EMPLOYEES_PER_PAGE = 7/);
+    assert.match(pdfGenerator, /setPaper\('A4', 'portrait'\)/);
+    assert.match(pdfGenerator, /array_chunk\(array_keys\(\$users\), self::EMPLOYEES_PER_PAGE\)/);
+    assert.match(pdfGenerator, /Pagina \{PAGE_NUM\} din \{PAGE_COUNT\}/);
+    assert.match(pdfGenerator, /%PDF-/);
+    assert.doesNotMatch(pdfGenerator, /Semnatura|Semnătură|Signature/);
+    assert.match(pdfAction, /if \(!\$overview\['downloadReady'\]\)/);
+    assert.match(pdfAction, /application\/pdf/);
+    assert.match(pdfAction, /base64_encode/);
 });
 
 test('approved holidays are read without changing Holiday Management', async () => {
@@ -266,7 +285,7 @@ test('personal page clearly separates today actions from the structured monthly 
     assert.match(view, /loadAttendance\(this\.options\.month \|\| null\)/);
 });
 
-test('manager page has conditional side navigation, matrix, reminders and XLSX download', async () => {
+test('manager page has conditional side navigation, matrix, reminders and XLSX/PDF downloads', async () => {
     const overview = await readFile(
         path.join(clientRoot, 'src', 'views', 'attendance', 'overview.js'),
         'utf8'
@@ -284,8 +303,12 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX d
     assert.match(overview, /attendance-overview-table/);
     assert.match(overview, /send-reminders/);
     assert.match(overview, /download-xlsx/);
+    assert.match(overview, /download-pdf/);
     assert.match(overview, /AttendanceManagement\/overview\/remind/);
-    assert.match(overview, /AttendanceManagement\/overview\/xlsx/);
+    assert.match(overview, /AttendanceManagement\/overview\/\$\{format\}/);
+    assert.match(overview, /actionDownloadPdf/);
+    assert.match(overview, /registerComplete/);
+    assert.match(overview, /Incomplete Export Detail/);
     assert.match(overview, /attendance-schedule-value/);
     assert.match(overview, /data-overview-month-select/);
     assert.match(overview, /change \[data-overview-month-select\]/);
@@ -344,6 +367,8 @@ test('attendance page and statuses are bilingual', async () => {
         assert.equal(typeof attendance.labels['Missing Attendance'], 'string');
         assert.equal(typeof attendance.labels['Schedule Coverage'], 'string');
         assert.equal(typeof attendance.labels['Register Readiness'], 'string');
+        assert.equal(typeof attendance.labels['Download PDF'], 'string');
+        assert.equal(typeof attendance.labels['Export Available'], 'string');
         assert.equal(typeof attendance.messages['Completion Detail'], 'string');
         assert.equal(typeof attendance.messages['Daily Matrix Guide'], 'string');
         assert.equal(typeof attendance.messages['Locked Month Reminder'], 'string');
@@ -356,6 +381,7 @@ test('attendance page and statuses are bilingual', async () => {
         const admin = await readJson('Resources', 'i18n', locale, 'Admin.json');
         assert.equal(typeof settings.fields.attendanceManagementManagers, 'string');
         assert.equal(typeof settings.fields.attendanceManagementEditablePastMonths, 'string');
+        assert.equal(typeof settings.fields.attendanceManagementAllowIncompleteExports, 'string');
         assert.equal(typeof settings.fields.attendanceManagementScheduleEditor, 'string');
         assert.equal(typeof admin.descriptions.attendanceManagementSettings, 'string');
         assert.equal(typeof admin.labels['Access and Editing'], 'string');

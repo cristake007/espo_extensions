@@ -133,7 +133,7 @@ function overviewFixture(contentWidth) {
             <div class="attendance-overview-page"><div class="panel panel-default">
                 <div class="panel-heading attendance-overview-toolbar">
                     <label class="attendance-overview-month-selector"><span>Luna</span><select class="form-control" data-overview-month-select><option>septembrie 2026</option><option>august 2026</option><option>iulie 2026</option></select></label>
-                    <div class="attendance-overview-actions"><button class="btn btn-warning">Trimite notificari</button><button class="btn btn-primary">Descarca XLSX</button></div>
+                    <div class="attendance-overview-actions"><button class="btn btn-warning">Trimite notificari</button><button class="btn btn-primary">Descarca XLSX</button><button class="btn btn-default">Descarca PDF</button></div>
                 </div>
                 <div class="panel-body attendance-overview-dashboard"><div class="attendance-overview-summary">
                     ${card('success', 'Grad de completare', '88%', '22 din 25 inregistrari sunt completate.', detail('Burete D', '10/11') + detail('Un nume foarte lung de angajat', '12/14'))}
@@ -188,6 +188,7 @@ for (const viewport of viewportCases) {
                 monthOptions: document.querySelectorAll('[data-overview-month-select] option').length,
                 cards: document.querySelectorAll('.attendance-summary-card').length,
                 detailRows: document.querySelectorAll('.attendance-summary-detail').length,
+                actionButtons: document.querySelectorAll('.attendance-overview-actions .btn').length,
             };
         });
 
@@ -195,6 +196,7 @@ for (const viewport of viewportCases) {
         expect(measurements.monthOptions).toBe(3);
         expect(measurements.cards).toBe(4);
         expect(measurements.detailRows).toBeGreaterThan(3);
+        expect(measurements.actionButtons).toBe(3);
         await page.screenshot({path: `/tmp/attendance-overview-${viewport.name}.png`, fullPage: true});
     });
 }

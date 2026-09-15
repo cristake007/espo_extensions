@@ -5,9 +5,9 @@
         "Employee Schedules": "Employee schedules"
     },
     "descriptions": {
-        "attendanceManagementSettings": "Configure attendance managers, the editing window, and employee work schedules."
+        "attendanceManagementSettings": "Configure attendance managers, editing and export rules, and employee work schedules."
     },
     "keywords": {
-        "Attendance Management": "attendance register managers reminders xlsx"
+        "Attendance Management": "attendance register managers reminders xlsx pdf export"
     }
 }

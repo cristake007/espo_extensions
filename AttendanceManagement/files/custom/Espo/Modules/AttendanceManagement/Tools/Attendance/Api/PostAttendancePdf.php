@@ -10,15 +10,15 @@ use Espo\Core\Api\Response;
 use Espo\Core\Api\ResponseComposer;
 use Espo\Core\Exceptions\Conflict;
 use Espo\Modules\AttendanceManagement\Tools\Attendance\AttendanceOverviewService;
-use Espo\Modules\AttendanceManagement\Tools\Attendance\AttendanceXlsxGenerator;
+use Espo\Modules\AttendanceManagement\Tools\Attendance\AttendancePdfGenerator;
 
-final class PostAttendanceXlsx implements Action
+final class PostAttendancePdf implements Action
 {
-    private const MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    private const MIME_TYPE = 'application/pdf';
 
     public function __construct(
         private AttendanceOverviewService $overviewService,
-        private AttendanceXlsxGenerator $xlsxGenerator,
+        private AttendancePdfGenerator $pdfGenerator,
     ) {}
 
     public function process(Request $request): Response
@@ -33,7 +33,7 @@ final class PostAttendanceXlsx implements Action
             );
         }
 
-        $file = $this->xlsxGenerator->generate($overview);
+        $file = $this->pdfGenerator->generate($overview);
 
         return ResponseComposer::json([
             'filename' => $file['filename'],

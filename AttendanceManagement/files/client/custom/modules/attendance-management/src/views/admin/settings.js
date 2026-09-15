@@ -9,6 +9,10 @@ define(['views/settings/record/edit'], (SettingsEditView) => {
                         {name: 'attendanceManagementManagers'},
                         {name: 'attendanceManagementEditablePastMonths'},
                     ],
+                    [
+                        {name: 'attendanceManagementAllowIncompleteExports'},
+                        false,
+                    ],
                 ],
             },
             {

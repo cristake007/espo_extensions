@@ -31,6 +31,10 @@ class AfterInstall
             $missingDefaults['attendanceManagementEditablePastMonths'] = 1;
         }
 
+        if (!$config->has('attendanceManagementAllowIncompleteExports')) {
+            $missingDefaults['attendanceManagementAllowIncompleteExports'] = false;
+        }
+
         if (!is_array($tabList)) {
             throw new RuntimeException('tabList must be an array.');
         }

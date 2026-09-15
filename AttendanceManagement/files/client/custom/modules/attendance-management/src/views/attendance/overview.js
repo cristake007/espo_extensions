@@ -23,6 +23,10 @@ define(['view'], (View) => {
                                 <span class="fas fa-file-excel" aria-hidden="true"></span>
                                 {{translate 'Download XLSX' category='labels' scope='AttendanceRecord'}}
                             </button>
+                            <button class="btn btn-default" data-action="download-pdf">
+                                <span class="fas fa-file-pdf" aria-hidden="true"></span>
+                                {{translate 'Download PDF' category='labels' scope='AttendanceRecord'}}
+                            </button>
                         </div>
                     </div>
                     <div class="panel-body attendance-overview-dashboard">
@@ -46,6 +50,7 @@ define(['view'], (View) => {
             'change [data-overview-month-select]': 'actionSelectMonth',
             'click [data-action="send-reminders"]': 'actionSendReminders',
             'click [data-action="download-xlsx"]': 'actionDownloadXlsx',
+            'click [data-action="download-pdf"]': 'actionDownloadPdf',
         }
 
         setup() {
@@ -78,7 +83,7 @@ define(['view'], (View) => {
                     'messages',
                     'AttendanceRecord'
                 ));
-            this.$el.find('[data-action="download-xlsx"]')
+            this.$el.find('[data-action="download-xlsx"], [data-action="download-pdf"]')
                 .prop('disabled', data.downloadReady !== true)
                 .attr('title', data.downloadReady === true ? '' : this.translate(
                     'Download Not Ready',
@@ -116,16 +121,12 @@ define(['view'], (View) => {
                     count: missingSchedules.length,
                 }));
             }
-            if (data.monthEditable !== true) {
-                readinessReasons.push(this.translate(
-                    'Readiness Month Locked',
-                    'messages',
-                    'AttendanceRecord'
-                ));
-            }
             if (!(data.rows || []).length || !users.length || signed === 0) {
                 readinessReasons.push(this.translate('Readiness No Data', 'messages', 'AttendanceRecord'));
             }
+
+            const registerComplete = data.registerComplete === true;
+            const incompleteExport = data.downloadReady === true && !registerComplete;
 
             summary.append(
                 this.createSummaryCard({
@@ -164,16 +165,19 @@ define(['view'], (View) => {
                     details: scheduleDetails,
                 }),
                 this.createSummaryCard({
-                    style: data.downloadReady === true ? 'success' : 'warning',
-                    icon: data.downloadReady === true ? 'fa-file-excel' : 'fa-lock',
+                    style: registerComplete ? 'success' : 'warning',
+                    icon: registerComplete ? 'fa-check-circle' :
+                        (incompleteExport ? 'fa-file-download' : 'fa-lock'),
                     title: 'Register Readiness',
                     value: this.translate(
-                        data.downloadReady === true ? 'Ready' : 'Needs Attention',
+                        registerComplete ? 'Ready' :
+                            (incompleteExport ? 'Export Available' : 'Needs Attention'),
                         'labels',
                         'AttendanceRecord'
                     ),
                     description: this.translate(
-                        data.downloadReady === true ? 'Register Ready Detail' : 'Register Blocked Detail',
+                        registerComplete ? 'Register Ready Detail' :
+                            (incompleteExport ? 'Incomplete Export Detail' : 'Register Blocked Detail'),
                         'messages',
                         'AttendanceRecord'
                     ),
@@ -322,16 +326,24 @@ define(['view'], (View) => {
         }
 
         async actionDownloadXlsx() {
+            await this.downloadFile('xlsx');
+        }
+
+        async actionDownloadPdf() {
+            await this.downloadFile('pdf');
+        }
+
+        async downloadFile(format) {
             if (this.overview.downloadReady !== true) {
                 return;
             }
 
-            const button = this.$el.find('[data-action="download-xlsx"]');
+            const button = this.$el.find(`[data-action="download-${format}"]`);
             button.prop('disabled', true);
 
             try {
                 const result = await Espo.Ajax.postRequest(
-                    'AttendanceManagement/overview/xlsx',
+                    `AttendanceManagement/overview/${format}`,
                     {month: this.overview.month}
                 );
                 const binary = atob(result.content || '');
@@ -340,7 +352,7 @@ define(['view'], (View) => {
                 const link = document.createElement('a');
 
                 link.href = url;
-                link.download = result.filename || 'condica-de-prezenta.xlsx';
+                link.download = result.filename || `condica-de-prezenta.${format}`;
                 document.body.appendChild(link);
                 link.click();
                 link.remove();

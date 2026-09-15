@@ -22,6 +22,7 @@ final class AttendanceOverviewService
     private const STATUS_HOLIDAY = 'Holiday';
     private const SOURCE_APPROVED_HOLIDAY = 'ApprovedHoliday';
     private const EDITABLE_PAST_MONTHS_CONFIG = 'attendanceManagementEditablePastMonths';
+    private const ALLOW_INCOMPLETE_EXPORTS_CONFIG = 'attendanceManagementAllowIncompleteExports';
 
     public function __construct(
         private EntityManager $entityManager,
@@ -138,6 +139,13 @@ final class AttendanceOverviewService
             ];
         }
 
+        $hasExportData = $rows !== [] && $userRows !== [];
+        $registerComplete = $hasExportData && $signedCount > 0 &&
+            $missingCount === 0 && $scheduleMissingCount === 0;
+        $incompleteExportsAllowed = (bool) $this->config->get(
+            self::ALLOW_INCOMPLETE_EXPORTS_CONFIG,
+        );
+
         return [
             'isManager' => true,
             'month' => $month,
@@ -151,8 +159,10 @@ final class AttendanceOverviewService
             'missingCount' => $missingCount,
             'futureCount' => $futureCount,
             'scheduleMissingCount' => $scheduleMissingCount,
-            'downloadReady' => $rows !== [] && $userRows !== [] && $signedCount > 0 &&
-                $missingCount === 0 && $scheduleMissingCount === 0,
+            'registerComplete' => $registerComplete,
+            'incompleteExportsAllowed' => $incompleteExportsAllowed,
+            'downloadReady' => $hasExportData &&
+                ($registerComplete || $incompleteExportsAllowed),
         ];
     }
 
