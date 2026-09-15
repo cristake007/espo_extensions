@@ -31,12 +31,15 @@ selectors and saves each employee independently. Existing times outside a
 every month and can be changed there at any time. The overview displays it
 read-only below the employee name. The XLSX
 includes entry time, exit time, and attendance status; no signature column is
-included.
+included. Printing is preconfigured for A4 portrait with seven employees per
+page, repeated date/program columns and headings, explicit horizontal page
+breaks, and page numbering. A single worksheet therefore prints all employee
+groups without selecting multiple sheets.
 
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.8.0 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.9.0 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

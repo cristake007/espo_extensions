@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.8.0');
+    assert.equal(manifest.version, '1.9.0');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -179,12 +179,21 @@ test('manager reminders create native EspoCRM notifications only for missing use
     assert.match(service, /\$overview\['month'\]/);
 });
 
-test('completed overview exports a landscape XLSX with schedule and no signature field', async () => {
+test('completed overview exports a paginated A4 portrait XLSX with schedule and no signature field', async () => {
     const generator = await readSource('Tools', 'Attendance', 'AttendanceXlsxGenerator.php');
     const action = await readSource('Tools', 'Attendance', 'Api', 'PostAttendanceXlsx.php');
 
     assert.match(generator, /PhpOffice\\PhpSpreadsheet\\Spreadsheet/);
-    assert.match(generator, /ORIENTATION_LANDSCAPE/);
+    assert.match(generator, /EMPLOYEES_PER_PRINT_PAGE = 7/);
+    assert.match(generator, /ORIENTATION_PORTRAIT/);
+    assert.match(generator, /setFitToWidth\(\$printPageCount\)/);
+    assert.match(generator, /setFitToHeight\(1\)/);
+    assert.match(generator, /setBreak\(\$breakColumn \. '1', Worksheet::BREAK_COLUMN\)/);
+    assert.match(generator, /setColumnsToRepeatAtLeftByStartAndEnd\('A', 'B'\)/);
+    assert.match(generator, /setRowsToRepeatAtTopByStartAndEnd\(3, 4\)/);
+    assert.match(generator, /setPrintArea/);
+    assert.match(generator, /Pagina &P din &N/);
+    assert.match(generator, /setOddHeader\('&C&B' \. \$title\)/);
     assert.match(generator, /Condica de prezenta_%s %d\.xlsx/);
     assert.match(generator, /Ora intrare/);
     assert.match(generator, /Ora iesire/);

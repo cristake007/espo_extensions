@@ -11,11 +11,13 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use RuntimeException;
 
 final class AttendanceXlsxGenerator
 {
+    private const EMPLOYEES_PER_PRINT_PAGE = 7;
     private const MONTH_NAMES = [
         1 => 'Ianuarie',
         2 => 'Februarie',
@@ -46,12 +48,16 @@ final class AttendanceXlsxGenerator
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Condica');
         $lastColumn = Coordinate::stringFromColumnIndex(max(2, count($users) * 2 + 2));
-        $sheet->mergeCells('A1:' . $lastColumn . '1');
-        $sheet->setCellValueExplicit(
-            'A1',
-            sprintf('Condica de prezenta %s %d', $monthName, $year),
-            DataType::TYPE_STRING,
-        );
+        $printPageCount = max(1, (int) ceil(count($users) / self::EMPLOYEES_PER_PRINT_PAGE));
+        $title = sprintf('Condica de prezenta %s %d', $monthName, $year);
+        $sheet->setCellValueExplicit('A1', $title, DataType::TYPE_STRING);
+
+        for ($pageIndex = 1; $pageIndex < $printPageCount; $pageIndex++) {
+            $breakColumn = Coordinate::stringFromColumnIndex(
+                $pageIndex * self::EMPLOYEES_PER_PRINT_PAGE * 2 + 3,
+            );
+            $sheet->setBreak($breakColumn . '1', Worksheet::BREAK_COLUMN);
+        }
         $sheet->setCellValue('A3', 'Data');
         $sheet->mergeCells('A3:A4');
         $sheet->setCellValue('B3', 'Program');
@@ -115,7 +121,7 @@ final class AttendanceXlsxGenerator
 
         $lastRow = count($rows) * 2 + 4;
         $tableRange = 'A3:' . $lastColumn . $lastRow;
-        $sheet->getStyle('A1:' . $lastColumn . '1')->applyFromArray([
+        $sheet->getStyle('A1')->applyFromArray([
             'font' => ['bold' => true, 'size' => 16],
             'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
         ]);
@@ -133,25 +139,40 @@ final class AttendanceXlsxGenerator
             ->getColor()->setARGB('FF777777');
         $sheet->getStyle('A5:' . $lastColumn . $lastRow)->getAlignment()
             ->setHorizontal(Alignment::HORIZONTAL_CENTER)
-            ->setVertical(Alignment::VERTICAL_CENTER);
-        $sheet->getColumnDimension('A')->setWidth(14);
-        $sheet->getColumnDimension('B')->setWidth(15);
+            ->setVertical(Alignment::VERTICAL_CENTER)
+            ->setWrapText(true);
+        $sheet->getStyle($tableRange)->getFont()->setSize(9);
+        $sheet->getColumnDimension('A')->setWidth(10);
+        $sheet->getColumnDimension('B')->setWidth(12);
 
         for ($column = 3; $column <= count($users) * 2 + 2; $column += 2) {
-            $sheet->getColumnDimensionByColumn($column)->setWidth(11);
-            $sheet->getColumnDimensionByColumn($column + 1)->setWidth(18);
+            $sheet->getColumnDimensionByColumn($column)->setWidth(7);
+            $sheet->getColumnDimensionByColumn($column + 1)->setWidth(11);
         }
 
         $sheet->getRowDimension(1)->setRowHeight(25);
-        $sheet->getRowDimension(3)->setRowHeight(34);
+        $sheet->getRowDimension(3)->setRowHeight(30);
         $sheet->freezePane('C5');
         $sheet->getPageSetup()
-            ->setOrientation(PageSetup::ORIENTATION_LANDSCAPE)
+            ->setOrientation(PageSetup::ORIENTATION_PORTRAIT)
             ->setPaperSize(PageSetup::PAPERSIZE_A4)
-            ->setFitToWidth(1)
-            ->setFitToHeight(0);
-        $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 4);
-        $sheet->getPageMargins()->setTop(0.4)->setBottom(0.4)->setLeft(0.25)->setRight(0.25);
+            ->setFitToWidth($printPageCount)
+            ->setFitToHeight(1)
+            ->setPrintArea('A3:' . $lastColumn . $lastRow)
+            ->setHorizontalCentered(true);
+        $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(3, 4);
+        $sheet->getPageSetup()->setColumnsToRepeatAtLeftByStartAndEnd('A', 'B');
+        $sheet->getPageMargins()
+            ->setTop(0.3)
+            ->setBottom(0.35)
+            ->setLeft(0.2)
+            ->setRight(0.2)
+            ->setHeader(0.15)
+            ->setFooter(0.15);
+        $sheet->getHeaderFooter()->setOddHeader('&C&B' . $title);
+        $sheet->getHeaderFooter()->setOddFooter('&RPagina &P din &N');
+        $sheet->setShowGridlines(false);
+        $sheet->setPrintGridlines(false);
 
         $writer = new Xlsx($spreadsheet);
         ob_start();
