@@ -9,6 +9,11 @@ const attendanceCss = path.join(
     'AttendanceManagement', 'files', 'client', 'custom', 'modules',
     'attendance-management', 'css', 'attendance.css'
 );
+const managerMenuScript = path.join(
+    repositoryRoot,
+    'AttendanceManagement', 'files', 'client', 'custom', 'modules',
+    'attendance-management', 'js', 'manager-menu.js'
+);
 
 const viewportCases = [
     {name: 'desktop', width: 1440, contentWidth: 1180},
@@ -27,6 +32,34 @@ test('every attendance CSS variable is supplied by the active TUVTK theme', asyn
     const missingTokens = [...new Set(usedTokens)].filter(token => !themeTokens.has(token));
 
     expect(missingTokens).toEqual([]);
+});
+
+test('manager menu access is rechecked when the authenticated user changes', async ({page}) => {
+    await page.setContent('<nav id="navbar"><li data-name="AttendanceOverview"></li></nav>');
+    await page.evaluate(() => {
+        window.attendanceManagerAccess = true;
+        window.Espo = {
+            Ajax: {
+                getRequest: async () => ({isManager: window.attendanceManagerAccess}),
+            },
+        };
+    });
+    await page.addScriptTag({path: managerMenuScript});
+
+    await expect(page.locator('body')).toHaveClass(/attendance-management-manager/);
+    await page.evaluate(() => {
+        window.attendanceManagerAccess = false;
+        window.dispatchEvent(new HashChangeEvent('hashchange'));
+    });
+    await expect(page.locator('body')).not.toHaveClass(/attendance-management-manager/);
+
+    await page.evaluate(() => {
+        window.attendanceManagerAccess = true;
+        window.dispatchEvent(new HashChangeEvent('hashchange'));
+    });
+    await expect(page.locator('body')).toHaveClass(/attendance-management-manager/);
+    await page.locator('[data-name="AttendanceOverview"]').evaluate(element => element.remove());
+    await expect(page.locator('body')).not.toHaveClass(/attendance-management-manager/);
 });
 
 function fixture(contentWidth) {

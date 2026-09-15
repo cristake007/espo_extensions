@@ -19,6 +19,7 @@
     },
     "labels": {
         "Attendance": "Attendance",
+        "Month": "Month",
         "Today": "Today",
         "Working Days": "Working days",
         "Current Status": "Current status",

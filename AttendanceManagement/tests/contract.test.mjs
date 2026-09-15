@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.0');
+    assert.equal(manifest.version, '1.10.1');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -276,6 +276,8 @@ test('personal page clearly separates today actions from the structured monthly 
     assert.match(view, /if \(day.canMark\)/);
     assert.match(view, /day.isLocked/);
     assert.match(view, /data-month-select/);
+    assert.match(view, /translate 'Month' category='labels'/);
+    assert.doesNotMatch(view, /translate 'monthDate'/);
     assert.match(view, /change \[data-month-select\]/);
     assert.match(view, /actionSelectMonth/);
     assert.doesNotMatch(view, /data-action="open-month"/);
@@ -300,6 +302,10 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX/P
     assert.equal(scope.tab, true);
     assert.match(menu, /AttendanceManagement\/overview\/access/);
     assert.match(menu, /attendance-management-manager/);
+    assert.match(menu, /hashchange/);
+    assert.match(menu, /requestSequence/);
+    assert.match(menu, /classList\.remove\(managerClass\)/);
+    assert.doesNotMatch(menu, /observer\.disconnect/);
     assert.match(overview, /attendance-overview-table/);
     assert.match(overview, /send-reminders/);
     assert.match(overview, /download-xlsx/);
@@ -311,6 +317,8 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX/P
     assert.match(overview, /Incomplete Export Detail/);
     assert.match(overview, /attendance-schedule-value/);
     assert.match(overview, /data-overview-month-select/);
+    assert.match(overview, /translate 'Month' category='labels'/);
+    assert.doesNotMatch(overview, /translate 'monthDate'/);
     assert.match(overview, /change \[data-overview-month-select\]/);
     assert.match(overview, /offset < 3/);
     assert.doesNotMatch(overview, /data-action="open-month"/);
@@ -357,6 +365,7 @@ test('attendance page and statuses are bilingual', async () => {
         assert.equal(typeof attendance.options.status.BusinessTrip, 'string');
         assert.equal(typeof attendance.messages['Attendance Saved'], 'string');
         assert.equal(typeof attendance.labels['Attendance Overview'], 'string');
+        assert.equal(typeof attendance.labels.Month, 'string');
         assert.equal(typeof attendance.messages['Confirm Reminders'], 'string');
         assert.equal(typeof attendance.messages['Attendance Page Guide'], 'string');
         assert.equal(typeof attendance.messages['Today Marking Guide'], 'string');

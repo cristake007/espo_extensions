@@ -62,7 +62,7 @@ define(['view'], (View) => {
                     </div>
                     <div class="panel-body attendance-month-browser">
                         <label class="attendance-month-selector">
-                            <span>{{translate 'monthDate' category='fields' scope='AttendanceRecord'}}</span>
+                            <span>{{translate 'Month' category='labels' scope='AttendanceRecord'}}</span>
                             <select class="form-control" data-month-select></select>
                         </label>
                         <div class="attendance-month-lock-message text-muted hidden">

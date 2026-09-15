@@ -19,6 +19,7 @@
     },
     "labels": {
         "Attendance": "Condica de prezenta",
+        "Month": "Luna",
         "Today": "Astazi",
         "Working Days": "Zile lucratoare",
         "Current Status": "Starea curenta",
