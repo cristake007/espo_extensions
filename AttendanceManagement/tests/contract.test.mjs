@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.6.0');
+    assert.equal(manifest.version, '1.6.1');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -284,7 +284,7 @@ test('page is full-width and uses an immediate month dropdown', async () => {
     assert.equal(defs.fields.monthDate.type, 'date');
     assert.equal(defs.fields.monthDate.utility, true);
     assert.match(view, /<select class="form-control" data-month-select>/);
-    assert.match(view, /offset < 60/);
+    assert.match(view, /offset < 4/);
     assert.match(view, /change \[data-month-select\]/);
     assert.doesNotMatch(view, /'views\/fields\/date'/);
     assert.match(css, /\.attendance-page\s*\{\s*width: 100%;/);

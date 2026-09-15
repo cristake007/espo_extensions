@@ -307,7 +307,7 @@ define(['view'], (View) => {
                 this.getConfig().get('language') || 'en_US').replace('_', '-');
             const options = new Map();
 
-            for (let offset = 0; offset < 60; offset++) {
+            for (let offset = 0; offset < 4; offset++) {
                 const date = new Date(Date.UTC(year, month - 1 - offset, 1, 12));
                 const value = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`;
                 options.set(value, new Intl.DateTimeFormat(language, {
