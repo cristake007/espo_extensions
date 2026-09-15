@@ -117,6 +117,36 @@ function adminFixture(contentWidth) {
         </main>`;
 }
 
+function overviewFixture(contentWidth) {
+    const detail = (name, value = '') => `<div class="attendance-summary-detail"><span>${name}</span>${value ? `<strong>${value}</strong>` : ''}</div>`;
+    const card = (style, title, value, description, details) => `
+        <section class="attendance-summary-card attendance-summary-card-${style}">
+            <div class="attendance-summary-card-heading"><span class="fas fa-chart-pie"></span><strong>${title}</strong></div>
+            <div class="attendance-summary-card-value">${value}</div>
+            <div class="attendance-summary-card-description text-muted">${description}</div>
+            <div class="attendance-summary-detail-list">${details}</div>
+        </section>`;
+
+    return `
+        <main class="test-stage" style="width:${contentWidth}px;padding:16px;">
+            <div class="header page-header attendance-page-header"><h3>Centralizator prezenta</h3><p class="text-muted attendance-page-intro">Selecteaza luna pentru a verifica situatia.</p></div>
+            <div class="attendance-overview-page"><div class="panel panel-default">
+                <div class="panel-heading attendance-overview-toolbar">
+                    <label class="attendance-overview-month-selector"><span>Luna</span><select class="form-control" data-overview-month-select><option>septembrie 2026</option><option>august 2026</option><option>iulie 2026</option></select></label>
+                    <div class="attendance-overview-actions"><button class="btn btn-warning">Trimite notificari</button><button class="btn btn-primary">Descarca XLSX</button></div>
+                </div>
+                <div class="panel-body attendance-overview-dashboard"><div class="attendance-overview-summary">
+                    ${card('success', 'Grad de completare', '88%', '22 din 25 inregistrari sunt completate.', detail('Burete D', '10/11') + detail('Un nume foarte lung de angajat', '12/14'))}
+                    ${card('danger', 'Prezente nemarcate', '3', '3 inregistrari lipsa pentru 2 angajati.', detail('Burete D', '1') + detail('Un nume foarte lung de angajat', '2'))}
+                    ${card('warning', 'Acoperire programe', '5/6', 'Sunt configurate 5 din 6 programe.', detail('Angajat fara program configurat'))}
+                    ${card('warning', 'Starea registrului', 'Necesita atentie', 'Registrul XLSX nu poate fi descarcat inca.', detail('Lipsesc 3 inregistrari de prezenta.') + detail('Lipseste programul pentru 1 angajat.'))}
+                </div></div>
+                <div class="panel-body attendance-overview-matrix-heading"><strong>Situatie zilnica</strong><span class="text-muted small">Fiecare rand este o zi lucratoare.</span></div>
+                <div class="table-responsive attendance-overview-table-wrap"><table class="table table-bordered attendance-overview-table"><thead><tr><th class="attendance-sticky-date">Data</th><th>Burete D</th><th>Popa Dorin</th></tr></thead><tbody><tr><th class="attendance-sticky-date">15.09.2026</th><td class="attendance-cell-AtWork">La serviciu</td><td class="attendance-cell-missing">Nemarcata</td></tr></tbody></table></div>
+            </div></div>
+        </main>`;
+}
+
 for (const viewport of viewportCases) {
     test(`attendance page has no outer or button overflow at ${viewport.name}`, async ({page}) => {
         await page.setViewportSize({width: viewport.width, height: 900});
@@ -140,6 +170,32 @@ for (const viewport of viewportCases) {
             path: `/tmp/attendance-${viewport.name}.png`,
             fullPage: true,
         });
+    });
+}
+
+for (const viewport of viewportCases) {
+    test(`manager overview cards are actionable and contained at ${viewport.name}`, async ({page}) => {
+        await page.setViewportSize({width: viewport.width, height: 1100});
+        await page.setContent(overviewFixture(viewport.contentWidth));
+        await page.addStyleTag({path: themeCss});
+        await page.addStyleTag({path: attendanceCss});
+
+        const measurements = await page.evaluate(() => {
+            const stage = document.querySelector('.test-stage');
+
+            return {
+                overflow: stage.scrollWidth - stage.clientWidth,
+                monthOptions: document.querySelectorAll('[data-overview-month-select] option').length,
+                cards: document.querySelectorAll('.attendance-summary-card').length,
+                detailRows: document.querySelectorAll('.attendance-summary-detail').length,
+            };
+        });
+
+        expect(measurements.overflow).toBeLessThanOrEqual(1);
+        expect(measurements.monthOptions).toBe(3);
+        expect(measurements.cards).toBe(4);
+        expect(measurements.detailRows).toBeGreaterThan(3);
+        await page.screenshot({path: `/tmp/attendance-overview-${viewport.name}.png`, fullPage: true});
     });
 }
 

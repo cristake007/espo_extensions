@@ -7,7 +7,9 @@ namespace Espo\Modules\AttendanceManagement\Tools\Attendance;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Espo\Core\Exceptions\BadRequest;
+use Espo\Core\Exceptions\Conflict;
 use Espo\Core\Exceptions\NotFound;
+use Espo\Core\Utils\Config;
 use Espo\Core\Utils\DateTime as DateTimeUtil;
 use Espo\Entities\Notification;
 use Espo\Entities\User;
@@ -19,10 +21,12 @@ final class AttendanceOverviewService
     private const SCHEDULE_ENTITY_TYPE = 'AttendanceWorkSchedule';
     private const STATUS_HOLIDAY = 'Holiday';
     private const SOURCE_APPROVED_HOLIDAY = 'ApprovedHoliday';
+    private const EDITABLE_PAST_MONTHS_CONFIG = 'attendanceManagementEditablePastMonths';
 
     public function __construct(
         private EntityManager $entityManager,
         private DateTimeUtil $dateTime,
+        private Config $config,
         private NonWorkingDayProvider $nonWorkingDayProvider,
         private ApprovedHolidayProvider $approvedHolidayProvider,
         private AttendanceAccessChecker $accessChecker,
@@ -34,6 +38,7 @@ final class AttendanceOverviewService
         $this->accessChecker->assertManager();
         $today = $this->dateTime->getToday()->toString();
         $month = $this->normalizeMonth($month, $today);
+        $editableFromMonth = $this->getEditableFromMonth($today);
         $monthStart = $month . '-01';
         $monthEnd = (new DateTimeImmutable($monthStart))->modify('last day of this month')->format('Y-m-d');
         $users = $this->entityManager
@@ -138,6 +143,7 @@ final class AttendanceOverviewService
             'month' => $month,
             'today' => $today,
             'currentMonth' => substr($today, 0, 7),
+            'monthEditable' => $month >= $editableFromMonth,
             'users' => array_values($userRows),
             'rows' => $rows,
             'missingUsers' => $missingUsers,
@@ -253,6 +259,10 @@ final class AttendanceOverviewService
     {
         $overview = $this->getOverview($month);
         $sentUsers = [];
+
+        if (!$overview['monthEditable']) {
+            throw new Conflict('Reminders cannot be sent for a locked attendance month.');
+        }
 
         foreach ($overview['missingUsers'] as $missingUser) {
             $dates = array_map(
@@ -389,5 +399,17 @@ final class AttendanceOverviewService
     private function isValidTime(string $value): bool
     {
         return preg_match('/^(?:[01]\\d|2[0-3]):[0-5]\\d$/', $value) === 1;
+    }
+
+    private function getEditableFromMonth(string $today): string
+    {
+        $value = $this->config->get(self::EDITABLE_PAST_MONTHS_CONFIG);
+        $editablePastMonths = is_int($value) || is_numeric($value)
+            ? max(0, min(120, (int) $value))
+            : 1;
+
+        return (new DateTimeImmutable(substr($today, 0, 7) . '-01'))
+            ->modify(sprintf('-%d months', $editablePastMonths))
+            ->format('Y-m');
     }
 }

@@ -19,7 +19,11 @@ available only to users selected under **Administration > Attendance
 Management**. It provides a
 monthly employee-by-day preview, highlights missing entries, sends in-app
 reminders to employees with unsigned days, and exports the register as XLSX once
-all elapsed working days have been completed. An administrator sets each
+all elapsed working days have been completed. Its immediate selector shows the
+current month and two preceding months. Actionable cards show completion by
+employee, missing entries by employee, schedule coverage with missing names, and
+the exact XLSX readiness blockers. Reminders are disabled for months employees
+can no longer edit. An administrator sets each
 employee's default start and end time under **Administration > Attendance
 Management**. The responsive schedule editor uses theme-native 15-minute time
 selectors and saves each employee independently. Existing times outside a
@@ -32,7 +36,7 @@ included.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.7.0 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.8.0 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

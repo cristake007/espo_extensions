@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.7.0');
+    assert.equal(manifest.version, '1.8.0');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -111,6 +111,8 @@ test('manager overview reports signed, missing and future cells and overlays hol
     assert.match(service, /\$signedCount > 0/);
     assert.match(service, /\$missingCount === 0/);
     assert.match(service, /\$scheduleMissingCount === 0/);
+    assert.match(service, /'monthEditable' => \$month >= \$editableFromMonth/);
+    assert.match(service, /Reminders cannot be sent for a locked attendance month/);
     assert.doesNotMatch(service, /\$futureCount === 0,/);
 });
 
@@ -272,6 +274,16 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX d
     assert.match(overview, /AttendanceManagement\/overview\/remind/);
     assert.match(overview, /AttendanceManagement\/overview\/xlsx/);
     assert.match(overview, /attendance-schedule-value/);
+    assert.match(overview, /data-overview-month-select/);
+    assert.match(overview, /change \[data-overview-month-select\]/);
+    assert.match(overview, /offset < 3/);
+    assert.doesNotMatch(overview, /data-action="open-month"/);
+    assert.doesNotMatch(overview, /'views\/fields\/date'/);
+    assert.match(overview, /completionDetails/);
+    assert.match(overview, /missingDetails/);
+    assert.match(overview, /scheduleDetails/);
+    assert.match(overview, /readinessReasons/);
+    assert.match(overview, /attendance-summary-detail/);
     assert.doesNotMatch(overview, /data-schedule-field/);
     assert.match(overview, /translate\('Not Marked', 'labels', 'AttendanceRecord'\)/);
     assert.match(menu, /#navbar li\[data-name="AttendanceOverview"\]/);
@@ -287,8 +299,7 @@ test('page is full-width and uses an immediate month dropdown', async () => {
     );
     const css = await readFile(path.join(clientRoot, 'css', 'attendance.css'), 'utf8');
 
-    assert.equal(defs.fields.monthDate.type, 'date');
-    assert.equal(defs.fields.monthDate.utility, true);
+    assert.equal(defs.fields.monthDate, undefined);
     assert.match(view, /<select class="form-control" data-month-select>/);
     assert.match(view, /offset < 4/);
     assert.match(view, /change \[data-month-select\]/);
@@ -316,6 +327,14 @@ test('attendance page and statuses are bilingual', async () => {
         assert.equal(typeof attendance.messages['Monthly Register Guide'], 'string');
         assert.equal(typeof attendance.labels['Today Attendance'], 'string');
         assert.equal(typeof attendance.labels['Choose Attendance'], 'string');
+        assert.equal(typeof attendance.labels.Completion, 'string');
+        assert.equal(typeof attendance.labels['Missing Attendance'], 'string');
+        assert.equal(typeof attendance.labels['Schedule Coverage'], 'string');
+        assert.equal(typeof attendance.labels['Register Readiness'], 'string');
+        assert.equal(typeof attendance.messages['Completion Detail'], 'string');
+        assert.equal(typeof attendance.messages['Daily Matrix Guide'], 'string');
+        assert.equal(typeof attendance.messages['Locked Month Reminder'], 'string');
+        assert.equal(typeof attendance.messages['Readiness Month Locked'], 'string');
         assert.equal(typeof attendance.labels['Employee Schedules'], 'string');
         assert.equal(typeof attendance.labels['Select Time'], 'string');
         assert.equal(typeof attendance.messages['Schedule Editor Guide'], 'string');

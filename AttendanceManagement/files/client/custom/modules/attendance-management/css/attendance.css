@@ -27,10 +27,33 @@
 }
 
 .attendance-overview-toolbar {
-    align-items: center;
+    align-items: flex-end;
     display: flex;
     gap: 16px;
     justify-content: space-between;
+    padding-bottom: var(--panel-padding);
+    padding-top: var(--panel-padding);
+}
+
+.attendance-overview-toolbar::before,
+.attendance-overview-toolbar::after,
+.attendance-overview-summary::before,
+.attendance-overview-summary::after {
+    display: none;
+}
+
+.attendance-overview-month-selector {
+    display: block;
+    margin: 0;
+    max-width: 300px;
+    min-width: 240px;
+}
+
+.attendance-overview-month-selector > span {
+    color: var(--text-muted-color);
+    display: block;
+    font-size: 11px;
+    margin-bottom: 6px;
 }
 
 .attendance-overview-actions {
@@ -40,37 +63,97 @@
 
 .attendance-overview-summary {
     display: grid;
-    gap: 12px;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .attendance-summary-card {
-    align-items: center;
+    background: var(--panel-default-bg);
     border: 1px solid var(--panel-default-border);
-    border-left-width: 4px;
-    display: flex;
-    gap: 12px;
-    padding: 12px 14px;
+    border-radius: var(--panel-border-radius);
+    border-top-width: 4px;
+    min-width: 0;
+    padding: 16px;
 }
 
-.attendance-summary-card strong {
-    font-size: 24px;
+.attendance-summary-card-heading {
+    align-items: center;
+    display: flex;
+    gap: 9px;
+}
+
+.attendance-summary-card-heading .fas {
+    color: var(--text-muted-color);
+}
+
+.attendance-summary-card-value {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-top: 12px;
+    overflow-wrap: anywhere;
+}
+
+.attendance-summary-card-description {
+    line-height: 1.4;
+    margin-top: 5px;
+}
+
+.attendance-summary-detail-list {
+    border-top: 1px solid var(--panel-default-border);
+    margin-top: 14px;
+    max-height: 150px;
+    overflow: auto;
+    padding-top: 10px;
+}
+
+.attendance-summary-detail-title {
+    font-size: 11px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.attendance-summary-detail {
+    align-items: baseline;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    min-width: 0;
+    padding: 4px 0;
+}
+
+.attendance-summary-detail span {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .attendance-summary-card-success {
-    border-left-color: var(--brand-success);
+    border-top-color: var(--brand-success);
 }
 
 .attendance-summary-card-danger {
-    border-left-color: var(--brand-danger);
+    border-top-color: var(--brand-danger);
 }
 
 .attendance-summary-card-warning {
-    border-left-color: var(--brand-warning);
+    border-top-color: var(--brand-warning);
 }
 
-.attendance-missing-users {
-    margin-top: 16px;
+.attendance-overview-dashboard {
+    padding: var(--panel-padding);
+}
+
+.attendance-overview-matrix-heading {
+    border-top: 1px solid var(--panel-default-border);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 14px var(--panel-padding);
+}
+
+.attendance-overview-matrix-heading::before,
+.attendance-overview-matrix-heading::after {
+    display: none;
 }
 
 .attendance-overview-table-wrap {
@@ -562,6 +645,16 @@
     .attendance-overview-actions {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .attendance-overview-month-selector {
+        max-width: none;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .attendance-overview-summary {
+        grid-template-columns: 1fr;
     }
 
     .attendance-month-control {

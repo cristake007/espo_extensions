@@ -1,18 +1,19 @@
-define(['view', 'model'], (View, Model) => {
+define(['view'], (View) => {
     return class extends View {
         templateContent = `
-            <div class="header page-header">
+            <div class="header page-header attendance-page-header">
                 <h3>{{translate 'Attendance Overview' category='labels' scope='AttendanceRecord'}}</h3>
+                <p class="text-muted attendance-page-intro">
+                    {{translate 'Overview Page Guide' category='messages' scope='AttendanceRecord'}}
+                </p>
             </div>
             <div class="attendance-overview-page">
                 <div class="panel panel-default">
                     <div class="panel-heading attendance-overview-toolbar">
-                        <div class="attendance-month-control">
-                            <div class="field attendance-month-field" data-month-field></div>
-                            <button class="btn btn-default btn-sm" data-action="open-month">
-                                {{translate 'Open Month' category='labels' scope='AttendanceRecord'}}
-                            </button>
-                        </div>
+                        <label class="attendance-overview-month-selector">
+                            <span>{{translate 'monthDate' category='fields' scope='AttendanceRecord'}}</span>
+                            <select class="form-control" data-overview-month-select></select>
+                        </label>
                         <div class="attendance-overview-actions">
                             <button class="btn btn-warning" data-action="send-reminders">
                                 <span class="fas fa-bell" aria-hidden="true"></span>
@@ -24,9 +25,12 @@ define(['view', 'model'], (View, Model) => {
                             </button>
                         </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body attendance-overview-dashboard">
                         <div class="attendance-overview-summary"></div>
-                        <div class="attendance-missing-users"></div>
+                    </div>
+                    <div class="panel-body attendance-overview-matrix-heading">
+                        <strong>{{translate 'Daily Matrix' category='labels' scope='AttendanceRecord'}}</strong>
+                        <span class="text-muted small">{{translate 'Daily Matrix Guide' category='messages' scope='AttendanceRecord'}}</span>
                     </div>
                     <div class="table-responsive attendance-overview-table-wrap">
                         <table class="table table-bordered table-condensed attendance-overview-table">
@@ -39,15 +43,13 @@ define(['view', 'model'], (View, Model) => {
         `
 
         events = {
-            'click [data-action="open-month"]': 'actionOpenMonth',
+            'change [data-overview-month-select]': 'actionSelectMonth',
             'click [data-action="send-reminders"]': 'actionSendReminders',
             'click [data-action="download-xlsx"]': 'actionDownloadXlsx',
         }
 
         setup() {
             this.overview = {users: [], rows: [], missingUsers: []};
-            this.monthModel = new Model();
-            this.monthModel.entityType = 'AttendanceRecord';
             this.wait(this.loadOverview());
         }
 
@@ -61,18 +63,21 @@ define(['view', 'model'], (View, Model) => {
 
         afterRender() {
             this.renderOverview();
-            this.renderMonthField();
         }
 
         renderOverview() {
             const data = this.overview;
 
-            this.monthModel.set('monthDate', data.month ? `${data.month}-01` : null);
+            this.renderMonthSelector(data);
             this.renderSummary(data);
-            this.renderMissingUsers(data.missingUsers || []);
             this.renderTable(data.users || [], data.rows || []);
             this.$el.find('[data-action="send-reminders"]')
-                .prop('disabled', !(data.missingUsers || []).length);
+                .prop('disabled', !(data.missingUsers || []).length || data.monthEditable !== true)
+                .attr('title', data.monthEditable === true ? '' : this.translate(
+                    'Locked Month Reminder',
+                    'messages',
+                    'AttendanceRecord'
+                ));
             this.$el.find('[data-action="download-xlsx"]')
                 .prop('disabled', data.downloadReady !== true)
                 .attr('title', data.downloadReady === true ? '' : this.translate(
@@ -84,51 +89,131 @@ define(['view', 'model'], (View, Model) => {
 
         renderSummary(data) {
             const summary = this.$el.find('.attendance-overview-summary').empty();
+            const users = data.users || [];
+            const missingUsers = data.missingUsers || [];
+            const signed = Number(data.signedCount || 0);
+            const missing = Number(data.missingCount || 0);
+            const elapsed = signed + missing;
+            const completion = elapsed ? Math.round((signed / elapsed) * 100) : 0;
+            const missingSchedules = users.filter(user => !user.schedule);
+            const configuredSchedules = users.length - missingSchedules.length;
+            const completionDetails = users.map(user => ({
+                name: user.name,
+                value: `${Number(user.signedDays || 0)}/${Number(user.signedDays || 0) + Number(user.missingDays || 0)}`,
+            }));
+            const missingDetails = missingUsers.map(user => ({
+                name: user.name,
+                value: String(user.missingDays || 0),
+            }));
+            const scheduleDetails = missingSchedules.map(user => ({name: user.name, value: ''}));
+            const readinessReasons = [];
 
-            for (const item of [
-                ['Signed Entries', data.signedCount || 0, 'success'],
-                ['Missing Entries', data.missingCount || 0, 'danger'],
-                ['Future Entries', data.futureCount || 0, 'default'],
-                ['Missing Schedules', data.scheduleMissingCount || 0, 'warning'],
-            ]) {
-                summary.append(
-                    $('<div>').addClass(`attendance-summary-card attendance-summary-card-${item[2]}`).append(
-                        $('<strong>').text(String(item[1])),
-                        $('<span>').text(this.translate(item[0], 'labels', 'AttendanceRecord')),
-                    )
-                );
+            if (missing > 0) {
+                readinessReasons.push(this.formatMessage('Readiness Missing Entries', {count: missing}));
             }
+            if (missingSchedules.length > 0) {
+                readinessReasons.push(this.formatMessage('Readiness Missing Schedules', {
+                    count: missingSchedules.length,
+                }));
+            }
+            if (data.monthEditable !== true) {
+                readinessReasons.push(this.translate(
+                    'Readiness Month Locked',
+                    'messages',
+                    'AttendanceRecord'
+                ));
+            }
+            if (!(data.rows || []).length || !users.length || signed === 0) {
+                readinessReasons.push(this.translate('Readiness No Data', 'messages', 'AttendanceRecord'));
+            }
+
+            summary.append(
+                this.createSummaryCard({
+                    style: 'success',
+                    icon: 'fa-chart-pie',
+                    title: 'Completion',
+                    value: `${completion}%`,
+                    description: this.formatMessage('Completion Detail', {signed, elapsed}),
+                    detailTitle: 'Employee Completion',
+                    details: completionDetails,
+                }),
+                this.createSummaryCard({
+                    style: missing ? 'danger' : 'success',
+                    icon: missing ? 'fa-exclamation-circle' : 'fa-check-circle',
+                    title: 'Missing Attendance',
+                    value: String(missing),
+                    description: missing
+                        ? this.formatMessage('Missing Attendance Detail', {
+                            entries: missing,
+                            employees: missingUsers.length,
+                        })
+                        : this.translate('Nobody Missing', 'messages', 'AttendanceRecord'),
+                    detailTitle: 'Affected Employees',
+                    details: missingDetails,
+                }),
+                this.createSummaryCard({
+                    style: missingSchedules.length ? 'warning' : 'success',
+                    icon: 'fa-business-time',
+                    title: 'Schedule Coverage',
+                    value: `${configuredSchedules}/${users.length}`,
+                    description: this.formatMessage('Schedule Coverage Detail', {
+                        configured: configuredSchedules,
+                        total: users.length,
+                    }),
+                    detailTitle: 'Employees Without Schedule',
+                    details: scheduleDetails,
+                }),
+                this.createSummaryCard({
+                    style: data.downloadReady === true ? 'success' : 'warning',
+                    icon: data.downloadReady === true ? 'fa-file-excel' : 'fa-lock',
+                    title: 'Register Readiness',
+                    value: this.translate(
+                        data.downloadReady === true ? 'Ready' : 'Needs Attention',
+                        'labels',
+                        'AttendanceRecord'
+                    ),
+                    description: this.translate(
+                        data.downloadReady === true ? 'Register Ready Detail' : 'Register Blocked Detail',
+                        'messages',
+                        'AttendanceRecord'
+                    ),
+                    details: readinessReasons.map(reason => ({name: reason, value: ''})),
+                })
+            );
         }
 
-        renderMissingUsers(users) {
-            const container = this.$el.find('.attendance-missing-users').empty();
-
-            if (!users.length) {
-                container.append(
-                    $('<span>').addClass('text-success').text(
-                        this.translate('Nobody Missing', 'messages', 'AttendanceRecord')
-                    )
+        createSummaryCard({style, icon, title, value, description, detailTitle = null, details = []}) {
+            const card = $('<section>')
+                .addClass(`attendance-summary-card attendance-summary-card-${style}`)
+                .append(
+                    $('<div>').addClass('attendance-summary-card-heading').append(
+                        $('<span>').addClass(`fas ${icon}`).attr('aria-hidden', 'true'),
+                        $('<strong>').text(this.translate(title, 'labels', 'AttendanceRecord'))
+                    ),
+                    $('<div>').addClass('attendance-summary-card-value').text(value),
+                    $('<div>').addClass('attendance-summary-card-description text-muted').text(description)
                 );
 
-                return;
+            if (details.length) {
+                const detailList = $('<div>').addClass('attendance-summary-detail-list');
+
+                if (detailTitle) {
+                    detailList.append(
+                        $('<div>').addClass('attendance-summary-detail-title text-muted').text(
+                            this.translate(detailTitle, 'labels', 'AttendanceRecord')
+                        )
+                    );
+                }
+                details.forEach(item => detailList.append(
+                    $('<div>').addClass('attendance-summary-detail').append(
+                        $('<span>').text(item.name || ''),
+                        item.value ? $('<strong>').text(item.value) : null
+                    )
+                ));
+                card.append(detailList);
             }
 
-            container.append(
-                $('<strong>').text(this.translate(
-                    'Employees Missing Signatures',
-                    'labels',
-                    'AttendanceRecord'
-                ) + ': ')
-            );
-            users.forEach((user, index) => {
-                if (index) {
-                    container.append(', ');
-                }
-
-                container.append(
-                    $('<span>').text(`${user.name} (${user.missingDays})`)
-                );
-            });
+            return card;
         }
 
         renderTable(users, rows) {
@@ -184,25 +269,27 @@ define(['view', 'model'], (View, Model) => {
                 .text(this.translate(status, 'options', 'AttendanceRecord', 'status'));
         }
 
-        async actionOpenMonth() {
-            const field = this.getView('attendanceOverviewMonth');
-            const date = field ? field.fetch().monthDate : null;
-            const month = typeof date === 'string' ? date.slice(0, 7) : '';
+        async actionSelectMonth(event) {
+            const select = $(event.currentTarget);
+            const month = String(select.val() || '');
 
             if (!month) {
                 return;
             }
+
+            select.prop('disabled', true);
 
             try {
                 await this.loadOverview(month);
                 this.renderOverview();
             } catch (error) {
                 Espo.Ui.error(this.translate('Attendance Load Failed', 'messages', 'AttendanceRecord'));
+                this.renderMonthSelector(this.overview);
             }
         }
 
         async actionSendReminders() {
-            if (!(this.overview.missingUsers || []).length) {
+            if (!(this.overview.missingUsers || []).length || this.overview.monthEditable !== true) {
                 return;
             }
 
@@ -227,7 +314,10 @@ define(['view', 'model'], (View, Model) => {
             } catch (error) {
                 Espo.Ui.error(this.translate('Reminder Failed', 'messages', 'AttendanceRecord'));
             } finally {
-                button.prop('disabled', !(this.overview.missingUsers || []).length);
+                button.prop(
+                    'disabled',
+                    !(this.overview.missingUsers || []).length || this.overview.monthEditable !== true
+                );
             }
         }
 
@@ -262,20 +352,36 @@ define(['view', 'model'], (View, Model) => {
             }
         }
 
-        async renderMonthField() {
-            const view = await this.createView(
-                'attendanceOverviewMonth',
-                'views/fields/date',
-                {
-                    selector: '[data-month-field]',
-                    mode: 'edit',
-                    model: this.monthModel,
-                    name: 'monthDate',
-                    readOnlyDisabled: true,
-                },
-            );
+        renderMonthSelector(data) {
+            const selectedMonth = String(data.month || data.currentMonth || '');
+            const [year, month] = String(data.currentMonth || selectedMonth).split('-').map(Number);
+            const language = (this.getPreferences().get('language') ||
+                this.getConfig().get('language') || 'en_US').replace('_', '-');
+            const select = this.$el.find('[data-overview-month-select]').empty();
 
-            await view.render();
+            for (let offset = 0; offset < 3; offset++) {
+                const date = new Date(Date.UTC(year, month - 1 - offset, 1, 12));
+                const value = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`;
+                const label = new Intl.DateTimeFormat(language, {
+                    month: 'long',
+                    year: 'numeric',
+                    timeZone: 'UTC',
+                }).format(date);
+
+                select.append($('<option>', {value, text: label}));
+            }
+
+            select.val(selectedMonth).prop('disabled', false);
+        }
+
+        formatMessage(key, replacements) {
+            let message = this.translate(key, 'messages', 'AttendanceRecord');
+
+            Object.entries(replacements).forEach(([name, value]) => {
+                message = message.replace(`{${name}}`, String(value));
+            });
+
+            return message;
         }
 
         displayDate(value) {
