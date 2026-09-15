@@ -10,5 +10,21 @@
         "attendanceManagementEditablePastMonths": "Numarul de luni calendaristice anterioare pe care angajatii le mai pot modifica. Valoarea implicita 1 permite luna curenta si luna imediat anterioara; lunile mai vechi sunt blocate.",
         "attendanceManagementAllowIncompleteExports": "Daca este activat, responsabilii pot descarca fisiere XLSX si PDF chiar daca lipsesc prezente sau programe. Informatiile lipsa raman necompletate. Optiunea este dezactivata implicit.",
         "attendanceManagementScheduleEditor": "Stabileste ora normala de intrare si iesire pentru fiecare angajat. Modificarile se aplica tuturor lunilor din condica."
+    },
+    "labels": {
+        "Access and Editing": "Acces si modificare",
+        "Employee Schedules": "Programe angajati",
+        "Start Time": "Intrare",
+        "End Time": "Iesire",
+        "Select Time": "Selecteaza ora",
+        "Save Schedule": "Salveaza programul"
+    },
+    "messages": {
+        "Schedule Editor Guide": "Alege ora normala de intrare si iesire pentru fiecare angajat. Fiecare rand se salveaza separat.",
+        "Loading Schedules": "Se incarca programele angajatilor...",
+        "Schedule Load Failed": "Programele angajatilor nu au putut fi incarcate.",
+        "Invalid Schedule": "Introdu o ora valida de intrare si iesire. Ora de iesire trebuie sa fie dupa ora de intrare.",
+        "Schedule Saved": "Programul de lucru implicit al angajatului a fost salvat.",
+        "Schedule Save Failed": "Programul de lucru nu a putut fi salvat."
     }
 }

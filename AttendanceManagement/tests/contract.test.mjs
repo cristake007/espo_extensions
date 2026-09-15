@@ -21,6 +21,16 @@ async function readSource(...segments) {
     return readFile(path.join(moduleRoot, ...segments), 'utf8');
 }
 
+function flattenTranslationKeys(value, prefix = '') {
+    return Object.entries(value).flatMap(([key, child]) => {
+        const path = prefix ? `${prefix}.${key}` : key;
+
+        return child && typeof child === 'object' && !Array.isArray(child)
+            ? flattenTranslationKeys(child, path)
+            : [path];
+    });
+}
+
 test('manifest packages a standalone EspoCRM 10 attendance module', async () => {
     const manifest = JSON.parse(await readFile(
         path.join(extensionRoot, 'manifest.json'),
@@ -29,7 +39,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.1');
+    assert.equal(manifest.version, '1.10.2');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -353,6 +363,13 @@ test('page is full-width and uses an immediate month dropdown', async () => {
 });
 
 test('attendance page and statuses are bilingual', async () => {
+    const settingsView = await readFile(
+        path.join(clientRoot, 'src', 'views', 'admin', 'settings.js'),
+        'utf8'
+    );
+    const tabLabels = [...settingsView.matchAll(/tabLabel:\s*'([^']+)'/g)]
+        .map(match => match[1]);
+
     for (const locale of ['en_US', 'ro_RO']) {
         const global = await readJson('Resources', 'i18n', locale, 'Global.json');
         const attendance = await readJson('Resources', 'i18n', locale, 'AttendanceRecord.json');
@@ -392,8 +409,41 @@ test('attendance page and statuses are bilingual', async () => {
         assert.equal(typeof settings.fields.attendanceManagementEditablePastMonths, 'string');
         assert.equal(typeof settings.fields.attendanceManagementAllowIncompleteExports, 'string');
         assert.equal(typeof settings.fields.attendanceManagementScheduleEditor, 'string');
+        tabLabels.forEach(label => assert.equal(typeof settings.labels[label], 'string'));
         assert.equal(typeof admin.descriptions.attendanceManagementSettings, 'string');
         assert.equal(typeof admin.labels['Access and Editing'], 'string');
         assert.equal(typeof admin.labels['Employee Schedules'], 'string');
+    }
+});
+
+test('Romanian locale covers every English attendance translation key', async () => {
+    for (const file of ['Admin.json', 'AttendanceRecord.json', 'Global.json', 'Settings.json']) {
+        const english = await readJson('Resources', 'i18n', 'en_US', file);
+        const romanian = await readJson('Resources', 'i18n', 'ro_RO', file);
+
+        assert.deepEqual(
+            flattenTranslationKeys(romanian).sort(),
+            flattenTranslationKeys(english).sort(),
+            `${file} has incomplete Romanian translation coverage`
+        );
+    }
+});
+
+test('global-language attendance pages expose every record translation', async () => {
+    for (const scopeName of ['Attendance', 'AttendanceOverview']) {
+        const scope = await readJson('Resources', 'metadata', 'scopes', `${scopeName}.json`);
+
+        assert.equal(scope.languageIsGlobal, true);
+    }
+
+    for (const locale of ['en_US', 'ro_RO']) {
+        const record = await readJson('Resources', 'i18n', locale, 'AttendanceRecord.json');
+        const global = await readJson('Resources', 'i18n', locale, 'Global.json');
+        const globalKeys = new Set(flattenTranslationKeys(global));
+
+        flattenTranslationKeys(record).forEach(key => assert.ok(
+            globalKeys.has(key),
+            `${locale} Global.json is missing ${key}`
+        ));
     }
 });

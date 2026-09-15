@@ -10,5 +10,21 @@
         "attendanceManagementEditablePastMonths": "Number of complete previous calendar months employees may still change. The default of 1 permits the current and immediately previous month; older months are locked.",
         "attendanceManagementAllowIncompleteExports": "When enabled, attendance managers can download XLSX and PDF files even when employees have missing entries or schedules. Missing information is left blank. Disabled by default.",
         "attendanceManagementScheduleEditor": "Set the normal entry and exit time for each employee. Changes apply to every attendance month."
+    },
+    "labels": {
+        "Access and Editing": "Access and editing",
+        "Employee Schedules": "Employee schedules",
+        "Start Time": "Start",
+        "End Time": "End",
+        "Select Time": "Select time",
+        "Save Schedule": "Save schedule"
+    },
+    "messages": {
+        "Schedule Editor Guide": "Choose the normal start and end time for each employee. Times are saved independently for each row.",
+        "Loading Schedules": "Loading employee schedules...",
+        "Schedule Load Failed": "Employee schedules could not be loaded.",
+        "Invalid Schedule": "Enter a valid start and end time. The end time must be after the start time.",
+        "Schedule Saved": "The employee's default working schedule was saved.",
+        "Schedule Save Failed": "The working schedule could not be saved."
     }
 }
