@@ -39,7 +39,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.2');
+    assert.equal(manifest.version, '1.10.3');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -277,6 +277,11 @@ test('personal page clearly separates today actions from the structured monthly 
     assert.match(afterInstall, /'itemList' => self::NAVIGATION_SCOPE_LIST/);
     assert.match(view, /data-status="AtWork"/);
     assert.match(view, /data-status="BusinessTrip"/);
+    assert.match(view, /translateOption 'AtWork' field='status' scope='AttendanceRecord'/);
+    assert.match(view, /translateOption 'BusinessTrip' field='status' scope='AttendanceRecord'/);
+    assert.match(view, /getLanguage\(\)\.translateOption\(status, 'status', 'AttendanceRecord'\)/);
+    assert.doesNotMatch(view, /translate 'AtWork' category='options'/);
+    assert.doesNotMatch(view, /this\.translate\(status, 'options'/);
     assert.doesNotMatch(view, /data-status-indicator="Holiday"/);
     assert.match(view, /for \(const status of \['AtWork', 'BusinessTrip'\]\)/);
     assert.match(view, /prop\('disabled', !data.todayCanMark\)/);
@@ -340,6 +345,8 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX/P
     assert.match(overview, /attendance-summary-detail/);
     assert.doesNotMatch(overview, /data-schedule-field/);
     assert.match(overview, /translate\('Not Marked', 'labels', 'AttendanceRecord'\)/);
+    assert.match(overview, /getLanguage\(\)\.translateOption\(status, 'status', 'AttendanceRecord'\)/);
+    assert.doesNotMatch(overview, /this\.translate\(status, 'options'/);
     assert.match(menu, /#navbar li\[data-name="AttendanceOverview"\]/);
     assert.match(css, /#navbar li\[data-name="AttendanceOverview"\]/);
     assert.doesNotMatch(css, /#navbar a\[data-name="AttendanceOverview"\]/);

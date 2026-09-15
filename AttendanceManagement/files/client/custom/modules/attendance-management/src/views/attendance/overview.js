@@ -270,7 +270,7 @@ define(['view'], (View) => {
 
             return $('<td>')
                 .addClass(`attendance-cell attendance-cell-${status}`)
-                .text(this.translate(status, 'options', 'AttendanceRecord', 'status'));
+                .text(this.getLanguage().translateOption(status, 'status', 'AttendanceRecord'));
         }
 
         async actionSelectMonth(event) {

@@ -33,14 +33,14 @@ define(['view'], (View) => {
                             <button class="btn btn-success btn-lg" data-action="mark-attendance" data-status="AtWork">
                                 <span class="attendance-action-icon fas fa-building" aria-hidden="true"></span>
                                 <span class="attendance-action-copy">
-                                    <strong>{{translate 'AtWork' category='options' scope='AttendanceRecord' field='status'}}</strong>
+                                    <strong>{{translateOption 'AtWork' field='status' scope='AttendanceRecord'}}</strong>
                                     <small>{{translate 'At Work Help' category='messages' scope='AttendanceRecord'}}</small>
                                 </span>
                             </button>
                             <button class="btn btn-warning btn-lg" data-action="mark-attendance" data-status="BusinessTrip">
                                 <span class="attendance-action-icon fas fa-car" aria-hidden="true"></span>
                                 <span class="attendance-action-copy">
-                                    <strong>{{translate 'BusinessTrip' category='options' scope='AttendanceRecord' field='status'}}</strong>
+                                    <strong>{{translateOption 'BusinessTrip' field='status' scope='AttendanceRecord'}}</strong>
                                     <small>{{translate 'Business Trip Help' category='messages' scope='AttendanceRecord'}}</small>
                                 </span>
                             </button>
@@ -203,7 +203,7 @@ define(['view'], (View) => {
                             .append(
                                 $('<span>').addClass(`fas ${icon}`).attr('aria-hidden', 'true'),
                                 ' ',
-                                this.translate(status, 'options', 'AttendanceRecord', 'status')
+                                this.getLanguage().translateOption(status, 'status', 'AttendanceRecord')
                             );
 
                         button.appendTo(actions);
@@ -244,7 +244,7 @@ define(['view'], (View) => {
             }[status] || 'default';
             const badge = $('<span>')
                 .addClass(`label label-${style}${large ? ' attendance-status-large' : ''}`)
-                .text(this.translate(status, 'options', 'AttendanceRecord', 'status'));
+                .text(this.getLanguage().translateOption(status, 'status', 'AttendanceRecord'));
 
             if (source === 'ApprovedHoliday') {
                 badge.attr('title', this.translate(
