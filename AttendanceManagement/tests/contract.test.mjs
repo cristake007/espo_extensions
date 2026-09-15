@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.3.0');
+    assert.equal(manifest.version, '1.4.0');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -79,6 +79,7 @@ test('manager API is protected and available to configured managers or holiday a
         ['/AttendanceManagement/overview/access', 'get'],
         ['/AttendanceManagement/overview', 'get'],
         ['/AttendanceManagement/overview/remind', 'post'],
+        ['/AttendanceManagement/overview/schedule', 'post'],
         ['/AttendanceManagement/overview/xlsx', 'post'],
     ]);
     assert.equal(settings.fields.attendanceManagementManagers.type, 'linkMultiple');
@@ -100,7 +101,39 @@ test('manager overview reports signed, missing and future cells and overlays hol
     assert.match(service, /'missingUsers' => \$missingUsers/);
     assert.match(service, /\$signedCount > 0/);
     assert.match(service, /\$missingCount === 0/);
+    assert.match(service, /\$scheduleMissingCount === 0/);
     assert.doesNotMatch(service, /\$futureCount === 0,/);
+});
+
+test('working schedules are effective-dated, manager-only records', async () => {
+    const routes = await readJson('Resources', 'routes.json');
+    const defs = await readJson(
+        'Resources', 'metadata', 'entityDefs', 'AttendanceWorkSchedule.json'
+    );
+    const scope = await readJson(
+        'Resources', 'metadata', 'scopes', 'AttendanceWorkSchedule.json'
+    );
+    const acl = await readJson(
+        'Resources', 'metadata', 'aclDefs', 'AttendanceWorkSchedule.json'
+    );
+    const service = await readSource('Tools', 'Attendance', 'AttendanceOverviewService.php');
+
+    assert.ok(routes.some(item =>
+        item.route === '/AttendanceManagement/overview/schedule' && item.method === 'post'
+    ));
+    assert.equal(defs.fields.startTime.maxLength, 5);
+    assert.equal(defs.fields.endTime.maxLength, 5);
+    assert.equal(defs.fields.effectiveFrom.type, 'date');
+    assert.equal(defs.indexes.userEffectiveFromUnique.unique, true);
+    assert.deepEqual(defs.indexes.userEffectiveFromUnique.columns, ['userId', 'effectiveFrom']);
+    assert.equal(scope.tab, false);
+    assert.equal(scope.customizable, false);
+    assert.equal(acl.read, false);
+    assert.match(service, /accessChecker->assertManager/);
+    assert.match(service, /effectiveFrom<=/);
+    assert.match(service, /order\('effectiveFrom', 'DESC'\)/);
+    assert.match(service, /Working schedule times must use the HH:MM format/);
+    assert.match(service, /end time must be after the start time/);
 });
 
 test('manager reminders create native EspoCRM notifications only for missing users', async () => {
@@ -113,13 +146,17 @@ test('manager reminders create native EspoCRM notifications only for missing use
     assert.match(service, /'url' => '#Attendance'/);
 });
 
-test('completed overview exports a landscape XLSX without a signature field', async () => {
+test('completed overview exports a landscape XLSX with schedule and no signature field', async () => {
     const generator = await readSource('Tools', 'Attendance', 'AttendanceXlsxGenerator.php');
     const action = await readSource('Tools', 'Attendance', 'Api', 'PostAttendanceXlsx.php');
 
     assert.match(generator, /PhpOffice\\PhpSpreadsheet\\Spreadsheet/);
     assert.match(generator, /ORIENTATION_LANDSCAPE/);
     assert.match(generator, /Condica de prezenta_%s %d\.xlsx/);
+    assert.match(generator, /Ora intrare/);
+    assert.match(generator, /Ora iesire/);
+    assert.match(generator, /startTime/);
+    assert.match(generator, /endTime/);
     assert.doesNotMatch(generator, /Semnatura|Semnătură|Signature/);
     assert.match(action, /if \(!\$overview\['downloadReady'\]\)/);
     assert.match(action, /base64_encode/);
@@ -190,6 +227,8 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX d
     assert.match(overview, /download-xlsx/);
     assert.match(overview, /AttendanceManagement\/overview\/remind/);
     assert.match(overview, /AttendanceManagement\/overview\/xlsx/);
+    assert.match(overview, /AttendanceManagement\/overview\/schedule/);
+    assert.match(overview, /data-schedule-field/);
     assert.match(css, /#navbar a\[data-name="AttendanceOverview"\]/);
 });
 

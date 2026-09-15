@@ -42,6 +42,7 @@ define(['view', 'model'], (View, Model) => {
             'click [data-action="open-month"]': 'actionOpenMonth',
             'click [data-action="send-reminders"]': 'actionSendReminders',
             'click [data-action="download-xlsx"]': 'actionDownloadXlsx',
+            'click [data-action="save-schedule"]': 'actionSaveSchedule',
         }
 
         setup() {
@@ -89,6 +90,7 @@ define(['view', 'model'], (View, Model) => {
                 ['Signed Entries', data.signedCount || 0, 'success'],
                 ['Missing Entries', data.missingCount || 0, 'danger'],
                 ['Future Entries', data.futureCount || 0, 'default'],
+                ['Missing Schedules', data.scheduleMissingCount || 0, 'warning'],
             ]) {
                 summary.append(
                     $('<div>').addClass(`attendance-summary-card attendance-summary-card-${item[2]}`).append(
@@ -139,7 +141,7 @@ define(['view', 'model'], (View, Model) => {
                 )
             );
 
-            users.forEach(user => header.append($('<th>').text(user.name || '')));
+            users.forEach(user => header.append(this.createUserHeader(user)));
             head.append(header);
 
             rows.forEach(row => {
@@ -151,6 +153,52 @@ define(['view', 'model'], (View, Model) => {
                 (row.cells || []).forEach(cell => tableRow.append(this.createOverviewCell(cell)));
                 body.append(tableRow);
             });
+        }
+
+        createUserHeader(user) {
+            const schedule = user.schedule || {};
+            const header = $('<th>').attr('data-user-id', user.id || '');
+            const controls = $('<div>').addClass('attendance-schedule-controls');
+
+            controls.append(
+                $('<label>').append(
+                    $('<span>').text(this.translate('Start Time', 'labels', 'AttendanceRecord')),
+                    $('<input>', {
+                        type: 'time',
+                        value: schedule.startTime || '',
+                        'data-schedule-field': 'startTime',
+                        class: 'form-control input-sm',
+                    })
+                ),
+                $('<label>').append(
+                    $('<span>').text(this.translate('End Time', 'labels', 'AttendanceRecord')),
+                    $('<input>', {
+                        type: 'time',
+                        value: schedule.endTime || '',
+                        'data-schedule-field': 'endTime',
+                        class: 'form-control input-sm',
+                    })
+                ),
+                $('<button>', {
+                    type: 'button',
+                    class: 'btn btn-default btn-xs',
+                    'data-action': 'save-schedule',
+                    title: this.translate('Save Schedule', 'labels', 'AttendanceRecord'),
+                }).append($('<span>').addClass('fas fa-save').attr('aria-hidden', 'true'))
+            );
+
+            if (schedule.isInherited) {
+                controls.attr('title', this.translate(
+                    'Inherited Schedule',
+                    'messages',
+                    'AttendanceRecord'
+                ));
+            }
+
+            return header.append(
+                $('<div>').addClass('attendance-employee-name').text(user.name || ''),
+                controls
+            );
         }
 
         createOverviewCell(cell) {
@@ -215,6 +263,48 @@ define(['view', 'model'], (View, Model) => {
                 Espo.Ui.error(this.translate('Reminder Failed', 'messages', 'AttendanceRecord'));
             } finally {
                 button.prop('disabled', !(this.overview.missingUsers || []).length);
+            }
+        }
+
+        async actionSaveSchedule(event) {
+            const button = $(event.currentTarget);
+            const header = button.closest('[data-user-id]');
+            const startTime = header.find('[data-schedule-field="startTime"]').val();
+            const endTime = header.find('[data-schedule-field="endTime"]').val();
+
+            if (!startTime || !endTime || startTime >= endTime) {
+                Espo.Ui.error(this.translate(
+                    'Invalid Schedule',
+                    'messages',
+                    'AttendanceRecord'
+                ));
+
+                return;
+            }
+
+            button.prop('disabled', true);
+
+            try {
+                await Espo.Ajax.postRequest('AttendanceManagement/overview/schedule', {
+                    userId: header.attr('data-user-id'),
+                    month: this.overview.month,
+                    startTime,
+                    endTime,
+                });
+                await this.loadOverview(this.overview.month);
+                this.renderOverview();
+                Espo.Ui.success(this.translate(
+                    'Schedule Saved',
+                    'messages',
+                    'AttendanceRecord'
+                ));
+            } catch (error) {
+                Espo.Ui.error(this.translate(
+                    'Schedule Save Failed',
+                    'messages',
+                    'AttendanceRecord'
+                ));
+                button.prop('disabled', false);
             }
         }
 

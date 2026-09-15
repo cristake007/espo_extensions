@@ -30,8 +30,12 @@
         "Signed Entries": "Inregistrari completate",
         "Missing Entries": "Inregistrari lipsa",
         "Future Entries": "Inregistrari viitoare",
+        "Missing Schedules": "Programe lipsa",
         "Employees Missing Signatures": "Angajati cu inregistrari lipsa",
-        "Missing": "Lipsa"
+        "Missing": "Lipsa",
+        "Start Time": "Intrare",
+        "End Time": "Iesire",
+        "Save Schedule": "Salveaza programul"
     },
     "messages": {
         "Attendance Saved": "Prezenta a fost salvata.",
@@ -39,11 +43,15 @@
         "Attendance Load Failed": "Condica nu a putut fi incarcata.",
         "Automatically Added Holiday": "Citit automat dintr-un concediu aprobat.",
         "No Working Days": "Nu exista zile lucratoare in aceasta luna.",
-        "Download Not Ready": "Fisierul devine disponibil dupa ce toti angajatii completeaza toate zilele lucratoare trecute.",
+        "Download Not Ready": "Fisierul devine disponibil dupa configurarea programului si completarea tuturor zilelor lucratoare trecute pentru fiecare angajat.",
         "Nobody Missing": "Toata lumea este la zi.",
         "Confirm Reminders": "Trimiti o notificare in aplicatie fiecarui angajat care are inregistrari lipsa?",
         "Reminders Sent": "Au fost trimise notificari catre {count} angajati.",
         "Reminder Failed": "Notificarile nu au putut fi trimise.",
-        "Download Failed": "Fisierul XLSX nu a putut fi generat."
+        "Download Failed": "Fisierul XLSX nu a putut fi generat.",
+        "Invalid Schedule": "Introdu o ora valida de intrare si iesire. Ora de iesire trebuie sa fie dupa ora de intrare.",
+        "Schedule Saved": "Programul de lucru a fost salvat pentru luna selectata.",
+        "Schedule Save Failed": "Programul de lucru nu a putut fi salvat.",
+        "Inherited Schedule": "Program preluat din cea mai recenta perioada anterioara. Salvarea creeaza un program incepand cu luna selectata."
     }
 }

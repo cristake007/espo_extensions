@@ -45,7 +45,7 @@ final class AttendanceXlsxGenerator
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Condica');
-        $lastColumn = Coordinate::stringFromColumnIndex(max(2, count($users) + 1));
+        $lastColumn = Coordinate::stringFromColumnIndex(max(2, count($users) * 2 + 2));
         $sheet->mergeCells('A1:' . $lastColumn . '1');
         $sheet->setCellValueExplicit(
             'A1',
@@ -53,40 +53,73 @@ final class AttendanceXlsxGenerator
             DataType::TYPE_STRING,
         );
         $sheet->setCellValue('A3', 'Data');
+        $sheet->mergeCells('A3:A4');
+        $sheet->setCellValue('B3', 'Program');
+        $sheet->mergeCells('B3:B4');
 
         foreach ($users as $index => $user) {
-            $coordinate = Coordinate::stringFromColumnIndex($index + 2) . '3';
-            $sheet->setCellValueExplicit($coordinate, (string) $user['name'], DataType::TYPE_STRING);
+            $timeColumn = $index * 2 + 3;
+            $statusColumn = $timeColumn + 1;
+            $timeColumnName = Coordinate::stringFromColumnIndex($timeColumn);
+            $statusColumnName = Coordinate::stringFromColumnIndex($statusColumn);
+            $sheet->mergeCells($timeColumnName . '3:' . $statusColumnName . '3');
+            $sheet->setCellValueExplicit(
+                $timeColumnName . '3',
+                (string) $user['name'],
+                DataType::TYPE_STRING,
+            );
+            $sheet->setCellValue($timeColumnName . '4', 'Ora');
+            $sheet->setCellValue($statusColumnName . '4', 'Prezenta');
         }
 
         foreach ($rows as $rowIndex => $row) {
-            $line = $rowIndex + 4;
+            $line = $rowIndex * 2 + 5;
+            $exitLine = $line + 1;
+            $sheet->mergeCells('A' . $line . ':A' . $exitLine);
             $sheet->setCellValueExplicit(
                 'A' . $line,
                 (new \DateTimeImmutable((string) $row['date']))->format('d.m.Y'),
                 DataType::TYPE_STRING,
             );
+            $sheet->setCellValue('B' . $line, 'Ora intrare');
+            $sheet->setCellValue('B' . $exitLine, 'Ora iesire');
 
             foreach ($row['cells'] as $cellIndex => $cell) {
-                $coordinate = Coordinate::stringFromColumnIndex($cellIndex + 2) . $line;
+                $user = $users[$cellIndex] ?? [];
+                $schedule = $user['schedule'] ?? [];
+                $timeColumnName = Coordinate::stringFromColumnIndex($cellIndex * 2 + 3);
+                $statusColumnName = Coordinate::stringFromColumnIndex($cellIndex * 2 + 4);
+                $statusCoordinate = $statusColumnName . $line;
+                $statusRange = $statusCoordinate . ':' . $statusColumnName . $exitLine;
                 $sheet->setCellValueExplicit(
-                    $coordinate,
+                    $timeColumnName . $line,
+                    (string) ($schedule['startTime'] ?? ''),
+                    DataType::TYPE_STRING,
+                );
+                $sheet->setCellValueExplicit(
+                    $timeColumnName . $exitLine,
+                    (string) ($schedule['endTime'] ?? ''),
+                    DataType::TYPE_STRING,
+                );
+                $sheet->mergeCells($statusRange);
+                $sheet->setCellValueExplicit(
+                    $statusCoordinate,
                     $this->statusLabel($cell['status']),
                     DataType::TYPE_STRING,
                 );
-                $sheet->getStyle($coordinate)->getFill()
+                $sheet->getStyle($statusRange)->getFill()
                     ->setFillType(Fill::FILL_SOLID)
                     ->getStartColor()->setARGB($this->statusColor($cell['status']));
             }
         }
 
-        $lastRow = count($rows) + 3;
+        $lastRow = count($rows) * 2 + 4;
         $tableRange = 'A3:' . $lastColumn . $lastRow;
         $sheet->getStyle('A1:' . $lastColumn . '1')->applyFromArray([
             'font' => ['bold' => true, 'size' => 16],
             'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
         ]);
-        $sheet->getStyle('A3:' . $lastColumn . '3')->applyFromArray([
+        $sheet->getStyle('A3:' . $lastColumn . '4')->applyFromArray([
             'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF']],
             'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FF326567']],
             'alignment' => [
@@ -98,25 +131,26 @@ final class AttendanceXlsxGenerator
         $sheet->getStyle($tableRange)->getBorders()->getAllBorders()
             ->setBorderStyle(Border::BORDER_THIN)
             ->getColor()->setARGB('FF777777');
-        $sheet->getStyle('A4:' . $lastColumn . $lastRow)->getAlignment()
+        $sheet->getStyle('A5:' . $lastColumn . $lastRow)->getAlignment()
             ->setHorizontal(Alignment::HORIZONTAL_CENTER)
             ->setVertical(Alignment::VERTICAL_CENTER);
         $sheet->getColumnDimension('A')->setWidth(14);
+        $sheet->getColumnDimension('B')->setWidth(15);
 
-        for ($column = 2; $column <= count($users) + 1; $column++) {
-            $sheet->getColumnDimensionByColumn($column)->setWidth(18);
+        for ($column = 3; $column <= count($users) * 2 + 2; $column += 2) {
+            $sheet->getColumnDimensionByColumn($column)->setWidth(11);
+            $sheet->getColumnDimensionByColumn($column + 1)->setWidth(18);
         }
 
         $sheet->getRowDimension(1)->setRowHeight(25);
         $sheet->getRowDimension(3)->setRowHeight(34);
-        $sheet->freezePane('B4');
-        $sheet->setAutoFilter($tableRange);
+        $sheet->freezePane('C5');
         $sheet->getPageSetup()
             ->setOrientation(PageSetup::ORIENTATION_LANDSCAPE)
             ->setPaperSize(PageSetup::PAPERSIZE_A4)
             ->setFitToWidth(1)
             ->setFitToHeight(0);
-        $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 3);
+        $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 4);
         $sheet->getPageMargins()->setTop(0.4)->setBottom(0.4)->setLeft(0.25)->setRight(0.25);
 
         $writer = new Xlsx($spreadsheet);

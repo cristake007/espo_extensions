@@ -1,0 +1,53 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "readOnly": true
+        },
+        "user": {
+            "type": "link",
+            "entity": "User",
+            "required": true,
+            "readOnly": true
+        },
+        "startTime": {
+            "type": "varchar",
+            "maxLength": 5,
+            "required": true,
+            "readOnly": true
+        },
+        "endTime": {
+            "type": "varchar",
+            "maxLength": 5,
+            "required": true,
+            "readOnly": true
+        },
+        "effectiveFrom": {
+            "type": "date",
+            "required": true,
+            "readOnly": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        }
+    },
+    "links": {
+        "user": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "indexes": {
+        "userEffectiveFromUnique": {
+            "unique": true,
+            "columns": ["userId", "effectiveFrom"]
+        }
+    },
+    "noDeletedAttribute": true
+}

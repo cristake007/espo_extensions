@@ -30,8 +30,12 @@
         "Signed Entries": "Signed entries",
         "Missing Entries": "Missing entries",
         "Future Entries": "Future entries",
+        "Missing Schedules": "Missing schedules",
         "Employees Missing Signatures": "Employees with missing entries",
-        "Missing": "Missing"
+        "Missing": "Missing",
+        "Start Time": "Start",
+        "End Time": "End",
+        "Save Schedule": "Save schedule"
     },
     "messages": {
         "Attendance Saved": "Attendance was saved.",
@@ -39,11 +43,15 @@
         "Attendance Load Failed": "Attendance could not be loaded.",
         "Automatically Added Holiday": "Automatically read from an approved holiday.",
         "No Working Days": "There are no working days in this month.",
-        "Download Not Ready": "The file becomes available after every employee completes all elapsed working days.",
+        "Download Not Ready": "The file becomes available after every employee has a working schedule and completes all elapsed working days.",
         "Nobody Missing": "Everyone is up to date.",
         "Confirm Reminders": "Send an in-app notification to every employee with missing entries?",
         "Reminders Sent": "Reminders sent to {count} employees.",
         "Reminder Failed": "The reminders could not be sent.",
-        "Download Failed": "The XLSX file could not be generated."
+        "Download Failed": "The XLSX file could not be generated.",
+        "Invalid Schedule": "Enter a valid start and end time. The end time must be after the start time.",
+        "Schedule Saved": "The working schedule was saved for the selected month.",
+        "Schedule Save Failed": "The working schedule could not be saved.",
+        "Inherited Schedule": "Inherited from the most recent earlier schedule. Saving creates a schedule starting with the selected month."
     }
 }

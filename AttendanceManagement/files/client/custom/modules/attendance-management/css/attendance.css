@@ -29,7 +29,7 @@
 .attendance-overview-summary {
     display: grid;
     gap: 12px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .attendance-summary-card {
@@ -51,6 +51,10 @@
 
 .attendance-summary-card-danger {
     border-left-color: var(--brand-danger);
+}
+
+.attendance-summary-card-warning {
+    border-left-color: var(--brand-warning);
 }
 
 .attendance-missing-users {
@@ -80,6 +84,37 @@
     position: sticky;
     top: 0;
     z-index: 2;
+}
+
+.attendance-employee-name {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.attendance-schedule-controls {
+    align-items: flex-end;
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+}
+
+.attendance-schedule-controls label {
+    color: var(--text-muted-color);
+    font-size: 10px;
+    font-weight: normal;
+    margin: 0;
+    text-align: left;
+}
+
+.attendance-schedule-controls input {
+    min-width: 82px;
+    padding-left: 5px;
+    padding-right: 3px;
+    width: 82px;
+}
+
+.attendance-schedule-controls .btn {
+    margin-bottom: 1px;
 }
 
 .attendance-overview-table .attendance-sticky-date {

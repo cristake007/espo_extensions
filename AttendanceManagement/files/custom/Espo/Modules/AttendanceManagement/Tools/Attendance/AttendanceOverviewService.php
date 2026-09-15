@@ -7,6 +7,7 @@ namespace Espo\Modules\AttendanceManagement\Tools\Attendance;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Espo\Core\Exceptions\BadRequest;
+use Espo\Core\Exceptions\NotFound;
 use Espo\Core\Utils\DateTime as DateTimeUtil;
 use Espo\Entities\Notification;
 use Espo\Entities\User;
@@ -15,6 +16,7 @@ use Espo\ORM\EntityManager;
 final class AttendanceOverviewService
 {
     private const ENTITY_TYPE = 'AttendanceRecord';
+    private const SCHEDULE_ENTITY_TYPE = 'AttendanceWorkSchedule';
     private const STATUS_HOLIDAY = 'Holiday';
     private const SOURCE_APPROVED_HOLIDAY = 'ApprovedHoliday';
 
@@ -53,7 +55,14 @@ final class AttendanceOverviewService
                 'name' => (string) $user->get('name'),
                 'signedDays' => 0,
                 'missingDays' => 0,
+                'schedule' => null,
             ];
+        }
+
+        $scheduleMap = $this->getScheduleMap($userIds, $monthStart);
+
+        foreach ($scheduleMap as $userId => $schedule) {
+            $userRows[$userId]['schedule'] = $schedule;
         }
 
         $recordMap = $this->getRecordMap($userIds, $monthStart, $monthEnd);
@@ -74,6 +83,10 @@ final class AttendanceOverviewService
         $missingCount = 0;
         $signedCount = 0;
         $futureCount = 0;
+        $scheduleMissingCount = count(array_filter(
+            $userRows,
+            static fn (array $userRow): bool => $userRow['schedule'] === null,
+        ));
 
         foreach ($dates as $date) {
             $isFuture = $date > $today;
@@ -131,8 +144,76 @@ final class AttendanceOverviewService
             'signedCount' => $signedCount,
             'missingCount' => $missingCount,
             'futureCount' => $futureCount,
-            'downloadReady' => $rows !== [] && $userRows !== [] && $signedCount > 0 && $missingCount === 0,
+            'scheduleMissingCount' => $scheduleMissingCount,
+            'downloadReady' => $rows !== [] && $userRows !== [] && $signedCount > 0 &&
+                $missingCount === 0 && $scheduleMissingCount === 0,
         ];
+    }
+
+    /** @return array<string, mixed> */
+    public function saveSchedule(
+        string $userId,
+        string $month,
+        string $startTime,
+        string $endTime,
+    ): array {
+        $this->accessChecker->assertManager();
+        $today = $this->dateTime->getToday()->toString();
+        $month = $this->normalizeMonth($month, $today);
+        $startTime = trim($startTime);
+        $endTime = trim($endTime);
+
+        if (!$this->isValidTime($startTime) || !$this->isValidTime($endTime)) {
+            throw new BadRequest('Working schedule times must use the HH:MM format.');
+        }
+
+        if ($startTime >= $endTime) {
+            throw new BadRequest('The working schedule end time must be after the start time.');
+        }
+
+        $user = $this->entityManager->getEntityById(User::ENTITY_TYPE, $userId);
+
+        if (
+            !$user ||
+            !(bool) $user->get('isActive') ||
+            !in_array($user->get('type'), [User::TYPE_REGULAR, User::TYPE_ADMIN], true)
+        ) {
+            throw new NotFound('Active internal employee not found.');
+        }
+
+        $effectiveFrom = $month . '-01';
+
+        return $this->entityManager->getTransactionManager()->run(
+            function () use ($user, $userId, $effectiveFrom, $startTime, $endTime): array {
+                $schedule = $this->entityManager
+                    ->getRDBRepository(self::SCHEDULE_ENTITY_TYPE)
+                    ->where(['userId' => $userId, 'effectiveFrom' => $effectiveFrom])
+                    ->forUpdate()
+                    ->findOne();
+
+                if (!$schedule) {
+                    $schedule = $this->entityManager->getNewEntity(self::SCHEDULE_ENTITY_TYPE);
+                }
+
+                $schedule->set([
+                    'name' => sprintf('%s - %s', $user->get('name'), substr($effectiveFrom, 0, 7)),
+                    'userId' => $userId,
+                    'userName' => $user->get('name'),
+                    'startTime' => $startTime,
+                    'endTime' => $endTime,
+                    'effectiveFrom' => $effectiveFrom,
+                ]);
+                $this->entityManager->saveEntity($schedule);
+
+                return [
+                    'userId' => $userId,
+                    'startTime' => $startTime,
+                    'endTime' => $endTime,
+                    'effectiveFrom' => $effectiveFrom,
+                    'isInherited' => false,
+                ];
+            },
+        );
     }
 
     /** @return array{sent: int, users: list<array{id: string, name: string}>} */
@@ -192,6 +273,45 @@ final class AttendanceOverviewService
         return $map;
     }
 
+    /**
+     * @param list<string> $userIds
+     * @return array<string, array{startTime: string, endTime: string, effectiveFrom: string, isInherited: bool}>
+     */
+    private function getScheduleMap(array $userIds, string $monthStart): array
+    {
+        if ($userIds === []) {
+            return [];
+        }
+
+        $schedules = $this->entityManager
+            ->getRDBRepository(self::SCHEDULE_ENTITY_TYPE)
+            ->where([
+                'userId' => $userIds,
+                'effectiveFrom<=' => $monthStart,
+            ])
+            ->order('effectiveFrom', 'DESC')
+            ->find();
+        $map = [];
+
+        foreach ($schedules as $schedule) {
+            $userId = (string) $schedule->get('userId');
+
+            if (isset($map[$userId])) {
+                continue;
+            }
+
+            $effectiveFrom = (string) $schedule->get('effectiveFrom');
+            $map[$userId] = [
+                'startTime' => (string) $schedule->get('startTime'),
+                'endTime' => (string) $schedule->get('endTime'),
+                'effectiveFrom' => $effectiveFrom,
+                'isInherited' => $effectiveFrom !== $monthStart,
+            ];
+        }
+
+        return $map;
+    }
+
     /** @param array<string, true> $nonWorkingDates @return list<string> */
     private function buildWorkingDates(string $dateStart, string $dateEnd, array $nonWorkingDates): array
     {
@@ -235,5 +355,10 @@ final class AttendanceOverviewService
         }
 
         return $month;
+    }
+
+    private function isValidTime(string $value): bool
+    {
+        return preg_match('/^(?:[01]\\d|2[0-3]):[0-5]\\d$/', $value) === 1;
     }
 }
