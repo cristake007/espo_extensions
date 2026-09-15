@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.9.1');
+    assert.equal(manifest.version, '1.9.2');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -186,7 +186,9 @@ test('completed overview exports a paginated A4 portrait XLSX with schedule and 
     assert.match(generator, /PhpOffice\\PhpSpreadsheet\\Spreadsheet/);
     assert.match(generator, /EMPLOYEES_PER_PRINT_PAGE = 7/);
     assert.match(generator, /PRINT_BODY_ROW_HEIGHT = 25/);
+    assert.match(generator, /PRINT_FONT_SIZE = 11/);
     assert.match(generator, /setRowHeight\(self::PRINT_BODY_ROW_HEIGHT\)/);
+    assert.match(generator, /setSize\(self::PRINT_FONT_SIZE\)/);
     assert.match(generator, /ORIENTATION_PORTRAIT/);
     assert.match(generator, /setFitToWidth\(\$printPageCount\)/);
     assert.match(generator, /setFitToHeight\(1\)/);

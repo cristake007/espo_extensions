@@ -33,14 +33,15 @@ read-only below the employee name. The XLSX
 includes entry time, exit time, and attendance status; no signature column is
 included. Printing is preconfigured for A4 portrait with seven employees per
 page, repeated date/program columns and headings, explicit horizontal page
-breaks, page numbering, and body rows sized to use the printable page height in
-the same way as the original register. A single worksheet therefore prints all
-employee groups without selecting multiple sheets.
+breaks, page numbering, larger print text, and body rows sized to use the
+printable page height in the same way as the original register. A single
+worksheet therefore prints all employee groups without selecting multiple
+sheets.
 
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.9.1 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.9.2 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

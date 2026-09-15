@@ -19,6 +19,7 @@ final class AttendanceXlsxGenerator
 {
     private const EMPLOYEES_PER_PRINT_PAGE = 7;
     private const PRINT_BODY_ROW_HEIGHT = 25;
+    private const PRINT_FONT_SIZE = 11;
     private const MONTH_NAMES = [
         1 => 'Ianuarie',
         2 => 'Februarie',
@@ -142,7 +143,7 @@ final class AttendanceXlsxGenerator
             ->setHorizontal(Alignment::HORIZONTAL_CENTER)
             ->setVertical(Alignment::VERTICAL_CENTER)
             ->setWrapText(true);
-        $sheet->getStyle($tableRange)->getFont()->setSize(9);
+        $sheet->getStyle($tableRange)->getFont()->setSize(self::PRINT_FONT_SIZE);
         $sheet->getColumnDimension('A')->setWidth(10);
         $sheet->getColumnDimension('B')->setWidth(12);
 
