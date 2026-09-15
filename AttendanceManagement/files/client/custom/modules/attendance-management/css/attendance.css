@@ -295,12 +295,54 @@
     min-width: 180px;
 }
 
+.attendance-month-browser {
+    align-items: flex-end;
+    background: var(--panel-default-bg);
+    border-bottom: 1px solid var(--panel-default-border);
+    display: flex;
+    gap: 24px;
+    justify-content: space-between;
+    padding: 18px var(--panel-padding);
+}
+
+.attendance-month-browser::before,
+.attendance-month-browser::after,
+.attendance-month-summary::before,
+.attendance-month-summary::after {
+    display: none;
+}
+
+.attendance-month-selector {
+    display: block;
+    margin: 0;
+    max-width: 320px;
+    min-width: 240px;
+}
+
+.attendance-month-selector > span {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 7px;
+}
+
+.attendance-month-lock-message {
+    align-items: center;
+    background: var(--state-warning-bg);
+    border: 1px solid var(--state-warning-border);
+    border-radius: var(--panel-border-radius);
+    color: var(--state-warning-text);
+    display: flex;
+    gap: 9px;
+    line-height: 1.4;
+    max-width: 620px;
+    padding: 9px 12px;
+}
+
 .attendance-month-summary {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    padding-bottom: 12px;
-    padding-top: 12px;
+    gap: 12px;
+    padding: 16px var(--panel-padding);
 }
 
 .attendance-progress-item {
@@ -337,7 +379,7 @@
 
 .attendance-my-table td,
 .attendance-my-table th {
-    padding: 11px 15px !important;
+    padding: 14px var(--panel-padding) !important;
     vertical-align: middle !important;
 }
 
@@ -411,6 +453,17 @@
     .attendance-month-control {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .attendance-month-browser {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .attendance-month-selector {
+        max-width: none;
+        min-width: 0;
+        width: 100%;
     }
 
     .attendance-day-actions {

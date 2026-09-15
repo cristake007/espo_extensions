@@ -5,7 +5,7 @@ define(['views/settings/record/edit'], (SettingsEditView) => {
                 rows: [
                     [
                         {name: 'attendanceManagementManagers'},
-                        false,
+                        {name: 'attendanceManagementEditablePastMonths'},
                     ],
                     [
                         {name: 'attendanceManagementScheduleEditor'},

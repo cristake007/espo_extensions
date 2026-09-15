@@ -27,6 +27,10 @@ class AfterInstall
             $missingDefaults['attendanceManagementManagersNames'] = (object) [];
         }
 
+        if (!$config->has('attendanceManagementEditablePastMonths')) {
+            $missingDefaults['attendanceManagementEditablePastMonths'] = 1;
+        }
+
         if (!is_array($tabList)) {
             throw new RuntimeException('tabList must be an array.');
         }

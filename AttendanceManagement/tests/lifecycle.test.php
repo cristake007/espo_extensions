@@ -141,6 +141,7 @@ namespace {
     );
     assertSameValue([], $config->get('attendanceManagementManagersIds'), 'Manager IDs default is missing.');
     assertSameValue([], (array) $config->get('attendanceManagementManagersNames'), 'Manager names default is missing.');
+    assertSameValue(1, $config->get('attendanceManagementEditablePastMonths'), 'Edit-lock default is missing.');
     assertSameValue(1, $writer->saveCount, 'Install must save all changes once.');
 
     $install->run($container, ['isUpgrade' => true]);

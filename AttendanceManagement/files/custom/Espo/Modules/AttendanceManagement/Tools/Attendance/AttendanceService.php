@@ -10,6 +10,7 @@ use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Conflict;
 use Espo\Core\Exceptions\Forbidden;
 use Espo\Core\Utils\DateTime as DateTimeUtil;
+use Espo\Core\Utils\Config;
 use Espo\Entities\User;
 use Espo\ORM\Entity;
 use Espo\ORM\EntityManager;
@@ -22,11 +23,14 @@ final class AttendanceService
     private const STATUS_BUSINESS_TRIP = 'BusinessTrip';
     private const SOURCE_SELF = 'Self';
     private const SOURCE_APPROVED_HOLIDAY = 'ApprovedHoliday';
+    private const EDITABLE_PAST_MONTHS_CONFIG = 'attendanceManagementEditablePastMonths';
+    private const DEFAULT_EDITABLE_PAST_MONTHS = 1;
 
     public function __construct(
         private EntityManager $entityManager,
         private User $user,
         private DateTimeUtil $dateTime,
+        private Config $config,
         private NonWorkingDayProvider $nonWorkingDayProvider,
         private ApprovedHolidayProvider $approvedHolidayProvider,
     ) {}
@@ -39,6 +43,10 @@ final class AttendanceService
         $month = $this->normalizeMonth($month, $today);
         $monthStart = $month . '-01';
         $monthEnd = (new DateTimeImmutable($monthStart))->modify('last day of this month')->format('Y-m-d');
+        $editablePastMonths = $this->getEditablePastMonths();
+        $editableFromMonth = (new DateTimeImmutable(substr($today, 0, 7) . '-01'))
+            ->modify(sprintf('-%d months', $editablePastMonths))
+            ->format('Y-m');
         $userId = (string) $this->user->getId();
         $recordMap = $this->getRecordMap($userId, $monthStart, $monthEnd);
         $approvedHolidayDates = $this->approvedHolidayProvider
@@ -57,12 +65,14 @@ final class AttendanceService
             if ($this->isWorkingDate($date, $nonWorkingDates)) {
                 $record = $recordMap[$dateValue] ?? null;
                 $isHoliday = isset($approvedHolidayDates[$dateValue]);
+                $isLocked = $dateValue <= $today && substr($dateValue, 0, 7) < $editableFromMonth;
                 $days[] = [
                     'date' => $dateValue,
                     'status' => $isHoliday ? self::STATUS_HOLIDAY : $record?->get('status'),
                     'source' => $isHoliday ? self::SOURCE_APPROVED_HOLIDAY : $record?->get('source'),
                     'markedAt' => $isHoliday ? null : $record?->get('markedAt'),
-                    'canMark' => $dateValue <= $today && !$isHoliday,
+                    'canMark' => $dateValue <= $today && !$isHoliday && !$isLocked,
+                    'isLocked' => $isLocked,
                 ];
             }
 
@@ -81,6 +91,9 @@ final class AttendanceService
             'month' => $month,
             'today' => $today,
             'currentMonth' => substr($today, 0, 7),
+            'editablePastMonths' => $editablePastMonths,
+            'editableFromMonth' => $editableFromMonth,
+            'monthLocked' => $month < $editableFromMonth,
             'todayStatus' => $todayState['status'],
             'todaySource' => $todayState['source'],
             'todayCanMark' => $todayState['canMark'],
@@ -103,6 +116,10 @@ final class AttendanceService
 
         if ($date > $today) {
             throw new BadRequest('Attendance cannot be marked for a future date.');
+        }
+
+        if (substr($date, 0, 7) < $this->getEditableFromMonth($today)) {
+            throw new Conflict('Attendance for this month is locked.');
         }
 
         $dateValue = new DateTimeImmutable($date);
@@ -242,6 +259,24 @@ final class AttendanceService
         if (!$value || $value->format('Y-m-d') !== $date) {
             throw new BadRequest('Attendance date must use the YYYY-MM-DD format.');
         }
+    }
+
+    private function getEditablePastMonths(): int
+    {
+        $value = $this->config->get(self::EDITABLE_PAST_MONTHS_CONFIG);
+
+        if (!is_int($value) && !is_numeric($value)) {
+            return self::DEFAULT_EDITABLE_PAST_MONTHS;
+        }
+
+        return max(0, min(120, (int) $value));
+    }
+
+    private function getEditableFromMonth(string $today): string
+    {
+        return (new DateTimeImmutable(substr($today, 0, 7) . '-01'))
+            ->modify(sprintf('-%d months', $this->getEditablePastMonths()))
+            ->format('Y-m');
     }
 
     /** @param array<string, true> $nonWorkingDates */

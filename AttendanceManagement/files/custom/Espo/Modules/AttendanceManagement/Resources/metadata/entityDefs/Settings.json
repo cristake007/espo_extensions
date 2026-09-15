@@ -8,6 +8,14 @@
                 "Espo\\Modules\\AttendanceManagement\\FieldValidators\\Settings\\Managers\\Valid"
             ]
         },
+        "attendanceManagementEditablePastMonths": {
+            "type": "int",
+            "default": 1,
+            "required": true,
+            "min": 0,
+            "max": 120,
+            "tooltip": true
+        },
         "attendanceManagementScheduleEditor": {
             "type": "varchar",
             "notStorable": true,

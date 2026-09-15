@@ -45,6 +45,7 @@
         "Not Marked Days": "Nemarcate",
         "Upcoming Days": "Urmeaza",
         "Managed Automatically": "Gestionata automat",
+        "Locked": "Blocata",
         "Upcoming": "Urmeaza"
     },
     "messages": {
@@ -70,6 +71,7 @@
         "Today Marking Guide": "Alege o optiune. O poti schimba ulterior daca ai selectat gresit.",
         "Holiday Locked Guide": "Concediul aprobat este adaugat automat si nu poate fi modificat aici.",
         "Today Unavailable Guide": "Astazi nu este o zi lucratoare disponibila, deci nu trebuie sa faci nimic.",
-        "Monthly Register Guide": "Verifica zilele lucratoare si completeaza orice zi marcata ca nemarcata."
+        "Monthly Register Guide": "Verifica zilele lucratoare si completeaza orice zi marcata ca nemarcata.",
+        "Month Locked Guide": "Aceasta luna poate fi doar consultata. Prezenta poate fi modificata numai in luna curenta si in lunile anterioare permise."
     }
 }

@@ -1,10 +1,12 @@
 {
     "fields": {
         "attendanceManagementManagers": "Attendance managers",
+        "attendanceManagementEditablePastMonths": "Editable previous months",
         "attendanceManagementScheduleEditor": "Default employee schedules"
     },
     "tooltips": {
         "attendanceManagementManagers": "The only users allowed to see and open the attendance overview, send reminders, and download completed registers.",
+        "attendanceManagementEditablePastMonths": "Number of complete previous calendar months employees may still change. The default of 1 permits the current and immediately previous month; older months are locked.",
         "attendanceManagementScheduleEditor": "Set the normal entry and exit time for each employee. Changes apply to every attendance month."
     }
 }

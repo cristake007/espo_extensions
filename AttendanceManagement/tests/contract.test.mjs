@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.5.2');
+    assert.equal(manifest.version, '1.6.0');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -67,6 +67,10 @@ test('personal API is self-service only and rejects future or non-working dates'
     assert.match(service, /\(int\) \$date->format\('N'\) <= 5/);
     assert.match(service, /nonWorkingDayProvider->getDates/);
     assert.match(service, /'todayCanMark' => \$todayState\['canMark'\]/);
+    assert.match(service, /attendanceManagementEditablePastMonths/);
+    assert.match(service, /'isLocked' => \$isLocked/);
+    assert.match(service, /Attendance for this month is locked/);
+    assert.match(service, /substr\(\$date, 0, 7\) < \$this->getEditableFromMonth\(\$today\)/);
 });
 
 test('manager API is protected and available only to configured attendance managers', async () => {
@@ -85,6 +89,10 @@ test('manager API is protected and available only to configured attendance manag
     ]);
     assert.equal(settings.fields.attendanceManagementManagers.type, 'linkMultiple');
     assert.equal(settings.fields.attendanceManagementManagers.entity, 'User');
+    assert.equal(settings.fields.attendanceManagementEditablePastMonths.type, 'int');
+    assert.equal(settings.fields.attendanceManagementEditablePastMonths.default, 1);
+    assert.equal(settings.fields.attendanceManagementEditablePastMonths.min, 0);
+    assert.equal(settings.fields.attendanceManagementEditablePastMonths.max, 120);
     assert.match(checker, /attendanceManagementManagersIds/);
     assert.doesNotMatch(checker, /holidayManagementApproversIds/);
     assert.match(checker, /assertManager/);
@@ -226,6 +234,11 @@ test('personal page clearly separates today actions from the structured monthly 
     assert.match(view, /attendance-month-summary/);
     assert.match(view, /attendance-my-table/);
     assert.match(view, /if \(day.canMark\)/);
+    assert.match(view, /day.isLocked/);
+    assert.match(view, /data-month-select/);
+    assert.match(view, /change \[data-month-select\]/);
+    assert.match(view, /actionSelectMonth/);
+    assert.doesNotMatch(view, /data-action="open-month"/);
     assert.match(view, /Managed Automatically/);
     assert.match(view, /displayWeekday/);
     assert.match(controller, /month: options\.month \|\| null/);
@@ -260,7 +273,7 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX d
     assert.doesNotMatch(css, /#navbar a\[data-name="AttendanceOverview"\]/);
 });
 
-test('page is full-width and uses an EspoCRM date field for month selection', async () => {
+test('page is full-width and uses an immediate month dropdown', async () => {
     const defs = await readJson('Resources', 'metadata', 'entityDefs', 'AttendanceRecord.json');
     const view = await readFile(
         path.join(clientRoot, 'src', 'views', 'attendance', 'my.js'),
@@ -270,9 +283,10 @@ test('page is full-width and uses an EspoCRM date field for month selection', as
 
     assert.equal(defs.fields.monthDate.type, 'date');
     assert.equal(defs.fields.monthDate.utility, true);
-    assert.match(view, /'views\/fields\/date'/);
-    assert.match(view, /data-month-field/);
-    assert.doesNotMatch(view, /type="month"/);
+    assert.match(view, /<select class="form-control" data-month-select>/);
+    assert.match(view, /offset < 60/);
+    assert.match(view, /change \[data-month-select\]/);
+    assert.doesNotMatch(view, /'views\/fields\/date'/);
     assert.match(css, /\.attendance-page\s*\{\s*width: 100%;/);
     assert.doesNotMatch(css, /max-width:\s*920px/);
 });
@@ -300,6 +314,7 @@ test('attendance page and statuses are bilingual', async () => {
         const settings = await readJson('Resources', 'i18n', locale, 'Settings.json');
         const admin = await readJson('Resources', 'i18n', locale, 'Admin.json');
         assert.equal(typeof settings.fields.attendanceManagementManagers, 'string');
+        assert.equal(typeof settings.fields.attendanceManagementEditablePastMonths, 'string');
         assert.equal(typeof settings.fields.attendanceManagementScheduleEditor, 'string');
         assert.equal(typeof admin.descriptions.attendanceManagementSettings, 'string');
     }

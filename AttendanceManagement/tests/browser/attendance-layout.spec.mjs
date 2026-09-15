@@ -68,7 +68,10 @@ function fixture(contentWidth) {
                 <div class="panel panel-default attendance-month-panel">
                     <div class="panel-heading attendance-month-heading">
                         <div class="attendance-month-title"><div class="attendance-section-icon">□</div><div><strong>Condica lunara</strong><div class="text-muted small">Verifica zilele lucratoare si completeaza orice zi marcata ca nemarcata.</div></div></div>
-                        <div class="attendance-month-control"><div class="attendance-month-field"><input class="form-control" value="15.09.2026"></div><button class="btn btn-primary btn-sm">Deschide luna</button></div>
+                    </div>
+                    <div class="panel-body attendance-month-browser">
+                        <label class="attendance-month-selector"><span>Luna</span><select class="form-control" data-month-select><option>septembrie 2026</option></select></label>
+                        <div class="attendance-month-lock-message text-muted hidden"><span class="fas fa-lock"></span><span>Aceasta luna poate fi doar consultata.</span></div>
                     </div>
                     <div class="panel-body attendance-month-summary">
                         <div class="attendance-progress-item attendance-progress-success"><span class="fas fa-check-circle"></span><strong>8</strong><span>Completate</span></div>
@@ -158,4 +161,25 @@ test('attendance components use the active theme radius and shadow tokens', asyn
 
     expect(values.actualRadius).toBe(values.expectedRadius);
     expect(values.actualShadow).toBe(values.expectedShadow);
+});
+
+test('locked-month notice fits beside the selector and stacks on narrow screens', async ({page}) => {
+    for (const viewport of [
+        {width: 1440, contentWidth: 1180},
+        {width: 390, contentWidth: 390},
+    ]) {
+        await page.setViewportSize({width: viewport.width, height: 900});
+        await page.setContent(fixture(viewport.contentWidth));
+        await page.addStyleTag({path: themeCss});
+        await page.addStyleTag({path: attendanceCss});
+        await page.locator('.attendance-month-lock-message').evaluate(element => {
+            element.classList.remove('hidden');
+        });
+
+        const overflow = await page.locator('.attendance-month-browser').evaluate(element =>
+            element.scrollWidth - element.clientWidth
+        );
+
+        expect(overflow).toBeLessThanOrEqual(1);
+    }
 });

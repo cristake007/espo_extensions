@@ -1,4 +1,4 @@
-define(['view', 'model'], (View, Model) => {
+define(['view'], (View) => {
     return class extends View {
         templateContent = `
             <div class="header page-header attendance-page-header">
@@ -59,12 +59,15 @@ define(['view', 'model'], (View, Model) => {
                                 <div class="text-muted small">{{translate 'Monthly Register Guide' category='messages' scope='AttendanceRecord'}}</div>
                             </div>
                         </div>
-                        <div class="attendance-month-control">
-                            <div class="field attendance-month-field" data-month-field></div>
-                            <button class="btn btn-primary btn-sm" data-action="open-month">
-                                <span class="fas fa-search" aria-hidden="true"></span>
-                                {{translate 'Open Month' category='labels' scope='AttendanceRecord'}}
-                            </button>
+                    </div>
+                    <div class="panel-body attendance-month-browser">
+                        <label class="attendance-month-selector">
+                            <span>{{translate 'monthDate' category='fields' scope='AttendanceRecord'}}</span>
+                            <select class="form-control" data-month-select></select>
+                        </label>
+                        <div class="attendance-month-lock-message text-muted hidden">
+                            <span class="fas fa-lock" aria-hidden="true"></span>
+                            <span data-role="month-lock-copy"></span>
                         </div>
                     </div>
                     <div class="panel-body attendance-month-summary"></div>
@@ -86,13 +89,11 @@ define(['view', 'model'], (View, Model) => {
 
         events = {
             'click [data-action="mark-attendance"]': 'actionMarkAttendance',
-            'click [data-action="open-month"]': 'actionOpenMonth',
+            'change [data-month-select]': 'actionSelectMonth',
         }
 
         setup() {
             this.attendance = {days: []};
-            this.monthModel = new Model();
-            this.monthModel.entityType = 'AttendanceRecord';
             this.wait(this.loadAttendance(this.options.month || null));
         }
 
@@ -106,13 +107,12 @@ define(['view', 'model'], (View, Model) => {
 
         afterRender() {
             this.renderAttendance();
-            this.renderMonthField();
         }
 
         renderAttendance() {
             const data = this.attendance;
 
-            this.monthModel.set('monthDate', data.month ? `${data.month}-01` : null);
+            this.renderMonthSelector(data);
             this.$el.find('.attendance-today-date').text(this.displayDate(data.today));
             this.renderToday(data);
             this.renderMonthSummary(data.days || [], data.today);
@@ -209,12 +209,15 @@ define(['view', 'model'], (View, Model) => {
                         button.appendTo(actions);
                     }
                 } else {
+                    const locked = Boolean(day.isLocked);
                     actions.append(
                         $('<span>').addClass('text-muted attendance-day-locked').append(
                             $('<span>').addClass('fas fa-lock').attr('aria-hidden', 'true'),
                             ' ',
                             this.translate(
-                                day.status === 'Holiday' ? 'Managed Automatically' : 'Upcoming',
+                                day.status === 'Holiday'
+                                    ? 'Managed Automatically'
+                                    : (locked ? 'Locked' : 'Upcoming'),
                                 'labels',
                                 'AttendanceRecord'
                             )
@@ -276,37 +279,63 @@ define(['view', 'model'], (View, Model) => {
             }
         }
 
-        async actionOpenMonth() {
-            const field = this.getView('attendanceMonth');
-            const date = field ? field.fetch().monthDate : null;
-            const month = typeof date === 'string' ? date.slice(0, 7) : '';
+        async actionSelectMonth(event) {
+            const select = $(event.currentTarget);
+            const month = String(select.val() || '');
 
             if (!month) {
                 return;
             }
+
+            select.prop('disabled', true);
 
             try {
                 await this.loadAttendance(month);
                 this.renderAttendance();
             } catch (error) {
                 Espo.Ui.error(this.translate('Attendance Load Failed', 'messages', 'AttendanceRecord'));
+                this.renderMonthSelector(this.attendance);
             }
         }
 
-        async renderMonthField() {
-            const view = await this.createView(
-                'attendanceMonth',
-                'views/fields/date',
-                {
-                    selector: '[data-month-field]',
-                    mode: 'edit',
-                    model: this.monthModel,
-                    name: 'monthDate',
-                    readOnlyDisabled: true,
-                },
-            );
+        renderMonthSelector(data) {
+            const selectedMonth = String(data.month || data.currentMonth || '');
+            const currentMonth = String(data.currentMonth || selectedMonth);
+            const select = this.$el.find('[data-month-select]').empty();
+            const [year, month] = currentMonth.split('-').map(Number);
+            const language = (this.getPreferences().get('language') ||
+                this.getConfig().get('language') || 'en_US').replace('_', '-');
+            const options = new Map();
 
-            await view.render();
+            for (let offset = 0; offset < 60; offset++) {
+                const date = new Date(Date.UTC(year, month - 1 - offset, 1, 12));
+                const value = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`;
+                options.set(value, new Intl.DateTimeFormat(language, {
+                    month: 'long',
+                    year: 'numeric',
+                    timeZone: 'UTC',
+                }).format(date));
+            }
+
+            if (selectedMonth && !options.has(selectedMonth)) {
+                const [selectedYear, selectedMonthNumber] = selectedMonth.split('-').map(Number);
+                const date = new Date(Date.UTC(selectedYear, selectedMonthNumber - 1, 1, 12));
+                options.set(selectedMonth, new Intl.DateTimeFormat(language, {
+                    month: 'long',
+                    year: 'numeric',
+                    timeZone: 'UTC',
+                }).format(date));
+            }
+
+            [...options.entries()]
+                .sort(([left], [right]) => right.localeCompare(left))
+                .forEach(([value, label]) => select.append($('<option>', {value, text: label})));
+
+            select.val(selectedMonth).prop('disabled', false);
+            this.$el.find('.attendance-month-lock-message')
+                .toggleClass('hidden', !data.monthLocked)
+                .find('[data-role="month-lock-copy"]')
+                .text(this.translate('Month Locked Guide', 'messages', 'AttendanceRecord'));
         }
 
         displayDate(value) {

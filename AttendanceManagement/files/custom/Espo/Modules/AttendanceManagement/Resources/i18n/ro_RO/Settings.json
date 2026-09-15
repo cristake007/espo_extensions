@@ -1,10 +1,12 @@
 {
     "fields": {
         "attendanceManagementManagers": "Responsabili condica",
+        "attendanceManagementEditablePastMonths": "Luni anterioare modificabile",
         "attendanceManagementScheduleEditor": "Program implicit angajati"
     },
     "tooltips": {
         "attendanceManagementManagers": "Singurii utilizatori care pot vedea si deschide centralizatorul, trimite notificari si descarca registrele completate.",
+        "attendanceManagementEditablePastMonths": "Numarul de luni calendaristice anterioare pe care angajatii le mai pot modifica. Valoarea implicita 1 permite luna curenta si luna imediat anterioara; lunile mai vechi sunt blocate.",
         "attendanceManagementScheduleEditor": "Stabileste ora normala de intrare si iesire pentru fiecare angajat. Modificarile se aplica tuturor lunilor din condica."
     }
 }
