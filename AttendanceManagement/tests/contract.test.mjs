@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.4.2');
+    assert.equal(manifest.version, '1.4.3');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -69,7 +69,7 @@ test('personal API is self-service only and rejects future or non-working dates'
     assert.match(service, /'todayCanMark' => \$todayState\['canMark'\]/);
 });
 
-test('manager API is protected and available to configured managers or holiday approvers', async () => {
+test('manager API is protected and available only to configured attendance managers', async () => {
     const routes = await readJson('Resources', 'routes.json');
     const checker = await readSource('Tools', 'Attendance', 'AttendanceAccessChecker.php');
     const settings = await readJson('Resources', 'metadata', 'entityDefs', 'Settings.json');
@@ -86,7 +86,7 @@ test('manager API is protected and available to configured managers or holiday a
     assert.equal(settings.fields.attendanceManagementManagers.type, 'linkMultiple');
     assert.equal(settings.fields.attendanceManagementManagers.entity, 'User');
     assert.match(checker, /attendanceManagementManagersIds/);
-    assert.match(checker, /holidayManagementApproversIds/);
+    assert.doesNotMatch(checker, /holidayManagementApproversIds/);
     assert.match(checker, /assertManager/);
     assert.match(validator, /User::TYPE_REGULAR, User::TYPE_ADMIN/);
     assert.match(validator, /'isActive' => true/);
@@ -249,7 +249,9 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX d
     assert.match(overview, /attendance-schedule-value/);
     assert.doesNotMatch(overview, /data-schedule-field/);
     assert.match(overview, /translate\('Not Marked', 'labels', 'AttendanceRecord'\)/);
-    assert.match(css, /#navbar a\[data-name="AttendanceOverview"\]/);
+    assert.match(menu, /#navbar li\[data-name="AttendanceOverview"\]/);
+    assert.match(css, /#navbar li\[data-name="AttendanceOverview"\]/);
+    assert.doesNotMatch(css, /#navbar a\[data-name="AttendanceOverview"\]/);
 });
 
 test('page is full-width and uses an EspoCRM date field for month selection', async () => {

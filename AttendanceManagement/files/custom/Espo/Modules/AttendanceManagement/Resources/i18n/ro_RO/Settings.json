@@ -4,7 +4,7 @@
         "attendanceManagementScheduleEditor": "Program implicit angajati"
     },
     "tooltips": {
-        "attendanceManagementManagers": "Utilizatorii care pot deschide centralizatorul, trimite notificari si descarca registrele completate. Aprobatorii din Holiday Management primesc acces automat.",
+        "attendanceManagementManagers": "Singurii utilizatori care pot vedea si deschide centralizatorul, trimite notificari si descarca registrele completate.",
         "attendanceManagementScheduleEditor": "Stabileste ora normala de intrare si iesire pentru fiecare angajat. Modificarile se aplica tuturor lunilor din condica."
     }
 }

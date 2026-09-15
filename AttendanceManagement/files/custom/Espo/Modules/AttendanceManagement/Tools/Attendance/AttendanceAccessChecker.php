@@ -26,14 +26,11 @@ final class AttendanceAccessChecker
 
         $userId = $this->user->getId();
         $managerIds = $this->config->get('attendanceManagementManagersIds') ?? [];
-        $approverIds = $this->config->get('holidayManagementApproversIds') ?? [];
 
         return
             is_string($userId) &&
-            (
-                (is_array($managerIds) && in_array($userId, $managerIds, true)) ||
-                (is_array($approverIds) && in_array($userId, $approverIds, true))
-            );
+            is_array($managerIds) &&
+            in_array($userId, $managerIds, true);
     }
 
     public function assertManager(): void

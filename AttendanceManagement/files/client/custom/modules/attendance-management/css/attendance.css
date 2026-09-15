@@ -1,9 +1,9 @@
-#navbar a[data-name="AttendanceOverview"] {
+#navbar li[data-name="AttendanceOverview"] {
     display: none;
 }
 
-.attendance-management-manager #navbar a[data-name="AttendanceOverview"] {
-    display: block;
+.attendance-management-manager #navbar li[data-name="AttendanceOverview"] {
+    display: list-item;
 }
 
 .attendance-page {

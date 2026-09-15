@@ -10,8 +10,9 @@ Approved `HolidayRequest` records are read dynamically and displayed as locked
 holiday balances.
 
 The employee page and manager overview are grouped under one **Attendance
-Management** side-navigation section. The manager overview is available to users selected under **Administration >
-Attendance Management** and to Holiday Management approvers. It provides a
+Management** side-navigation section. The manager overview is visible and
+available only to users selected under **Administration > Attendance
+Management**. It provides a
 monthly employee-by-day preview, highlights missing entries, sends in-app
 reminders to employees with unsigned days, and exports the register as XLSX once
 all elapsed working days have been completed. An administrator sets each
@@ -24,7 +25,7 @@ included.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.4.2 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.4.3 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

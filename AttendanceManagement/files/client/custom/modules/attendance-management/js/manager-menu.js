@@ -2,7 +2,7 @@
     'use strict';
 
     const managerClass = 'attendance-management-manager';
-    const menuSelector = '#navbar a[data-name="AttendanceOverview"]';
+    const menuSelector = '#navbar li[data-name="AttendanceOverview"]';
     let requestStarted = false;
 
     const updateVisibility = () => {
