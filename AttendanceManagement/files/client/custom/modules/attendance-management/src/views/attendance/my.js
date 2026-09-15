@@ -49,7 +49,7 @@ define(['view', 'model'], (View, Model) => {
             this.attendance = {days: []};
             this.monthModel = new Model();
             this.monthModel.entityType = 'AttendanceRecord';
-            this.wait(this.loadAttendance());
+            this.wait(this.loadAttendance(this.options.month || null));
         }
 
         async loadAttendance(month = null) {

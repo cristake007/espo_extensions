@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.4.1');
+    assert.equal(manifest.version, '1.4.2');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -159,7 +159,8 @@ test('manager reminders create native EspoCRM notifications only for missing use
     assert.match(service, /Notification::ENTITY_TYPE/);
     assert.match(service, /Notification::TYPE_MESSAGE/);
     assert.match(service, /'userId' => \$missingUser\['id'\]/);
-    assert.match(service, /'url' => '#Attendance'/);
+    assert.match(service, /\[Deschide condica de prezenta\]\(#Attendance\/index\/month=%s\)/);
+    assert.match(service, /\$overview\['month'\]/);
 });
 
 test('completed overview exports a landscape XLSX with schedule and no signature field', async () => {
@@ -211,7 +212,7 @@ test('personal page is a side-navigation scope with two manual actions per worki
     assert.equal(scope.entity, false);
     assert.equal(scope.tab, true);
     assert.equal(clientDefs.controller, 'attendance-management:controllers/attendance');
-    assert.match(controller, /actionIndex\(\)/);
+    assert.match(controller, /actionIndex\(options = \{\}\)/);
     assert.match(afterInstall, /NAVIGATION_SCOPE_LIST = \['Attendance', 'AttendanceOverview'\]/);
     assert.match(afterInstall, /'type' => 'group'/);
     assert.match(afterInstall, /'id' => self::NAVIGATION_GROUP_ID/);
@@ -221,6 +222,8 @@ test('personal page is a side-navigation scope with two manual actions per worki
     assert.doesNotMatch(view, /data-status-indicator="Holiday"/);
     assert.match(view, /for \(const status of \['AtWork', 'BusinessTrip'\]\)/);
     assert.match(view, /prop\('disabled', !day.canMark\)/);
+    assert.match(controller, /month: options\.month \|\| null/);
+    assert.match(view, /loadAttendance\(this\.options\.month \|\| null\)/);
 });
 
 test('manager page has conditional side navigation, matrix, reminders and XLSX download', async () => {
@@ -245,6 +248,7 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX d
     assert.match(overview, /AttendanceManagement\/overview\/xlsx/);
     assert.match(overview, /attendance-schedule-value/);
     assert.doesNotMatch(overview, /data-schedule-field/);
+    assert.match(overview, /translate\('Not Marked', 'labels', 'AttendanceRecord'\)/);
     assert.match(css, /#navbar a\[data-name="AttendanceOverview"\]/);
 });
 

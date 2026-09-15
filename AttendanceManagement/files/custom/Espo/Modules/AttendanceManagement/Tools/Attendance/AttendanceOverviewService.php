@@ -266,11 +266,12 @@ final class AttendanceOverviewService
                 'userId' => $missingUser['id'],
                 'read' => false,
                 'message' => sprintf(
-                    'Va rugam sa completati condica de prezenta pentru: %s.',
+                    "Va rugam sa completati condica de prezenta pentru: %s.\n\n" .
+                    '[Deschide condica de prezenta](#Attendance/index/month=%s)',
                     implode(', ', $dates),
+                    $overview['month'],
                 ),
                 'data' => [
-                    'url' => '#Attendance',
                     'month' => $overview['month'],
                 ],
             ]);

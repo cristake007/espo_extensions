@@ -173,7 +173,7 @@ define(['view', 'model'], (View, Model) => {
 
             if (cell.isMissing) {
                 return $('<td>').addClass('attendance-cell-missing').text(
-                    this.translate('Missing', 'labels', 'AttendanceRecord')
+                    this.translate('Not Marked', 'labels', 'AttendanceRecord')
                 );
             }
 
