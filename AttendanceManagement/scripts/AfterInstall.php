@@ -9,9 +9,11 @@ use Espo\Core\Utils\Config\ConfigWriter;
 
 class AfterInstall
 {
+    private const NAVIGATION_GROUP_ID = 'attendance-management';
     private const NAVIGATION_SCOPE_LIST = ['Attendance', 'AttendanceOverview'];
 
-    public function run(Container $container): void
+    /** @param array<string, mixed> $params */
+    public function run(Container $container, array $params = []): void
     {
         $config = $container->getByClass(Config::class);
         $tabList = $config->get('tabList') ?? [];
@@ -29,14 +31,8 @@ class AfterInstall
             throw new RuntimeException('tabList must be an array.');
         }
 
-        $navigationChanged = false;
-
-        foreach (self::NAVIGATION_SCOPE_LIST as $scope) {
-            if (!in_array($scope, $tabList, true)) {
-                $tabList[] = $scope;
-                $navigationChanged = true;
-            }
-        }
+        $normalizedTabList = $this->normalizeTabList($tabList);
+        $navigationChanged = $normalizedTabList !== $tabList;
 
         if ($missingDefaults === [] && !$navigationChanged) {
             return;
@@ -50,9 +46,64 @@ class AfterInstall
         }
 
         if ($navigationChanged) {
-            $configWriter->set('tabList', array_values($tabList));
+            $configWriter->set('tabList', $normalizedTabList);
         }
 
         $configWriter->save();
+    }
+
+    /**
+     * @param array<int, mixed> $tabList
+     * @return array<int, mixed>
+     */
+    private function normalizeTabList(array $tabList): array
+    {
+        $normalized = [];
+        $groupAdded = false;
+
+        foreach ($tabList as $item) {
+            if ($this->isManagedScope($item) || $this->isManagedGroup($item)) {
+                if (!$groupAdded) {
+                    $normalized[] = $this->buildNavigationGroup();
+                    $groupAdded = true;
+                }
+
+                continue;
+            }
+
+            $normalized[] = $item;
+        }
+
+        if (!$groupAdded) {
+            $normalized[] = $this->buildNavigationGroup();
+        }
+
+        return array_values($normalized);
+    }
+
+    private function isManagedScope(mixed $item): bool
+    {
+        return is_string($item) && in_array($item, self::NAVIGATION_SCOPE_LIST, true);
+    }
+
+    private function isManagedGroup(mixed $item): bool
+    {
+        if (is_object($item)) {
+            $item = (array) $item;
+        }
+
+        return is_array($item) && ($item['id'] ?? null) === self::NAVIGATION_GROUP_ID;
+    }
+
+    /** @return array<string, mixed> */
+    private function buildNavigationGroup(): array
+    {
+        return [
+            'type' => 'group',
+            'id' => self::NAVIGATION_GROUP_ID,
+            'text' => '$AttendanceManagement',
+            'iconClass' => 'fas fa-clipboard-check',
+            'itemList' => self::NAVIGATION_SCOPE_LIST,
+        ];
     }
 }

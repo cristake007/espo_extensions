@@ -1,7 +1,8 @@
 {
     "labels": {
         "Attendance": "Condica de prezenta",
-        "AttendanceOverview": "Centralizator prezenta"
+        "AttendanceOverview": "Centralizator prezenta",
+        "AttendanceManagement": "Condica de prezenta"
     },
     "scopeNames": {
         "Attendance": "Condica de prezenta",

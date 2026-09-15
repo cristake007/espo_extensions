@@ -1,7 +1,8 @@
 {
     "labels": {
         "Attendance": "Attendance",
-        "AttendanceOverview": "Attendance Overview"
+        "AttendanceOverview": "Attendance Overview",
+        "AttendanceManagement": "Attendance Management"
     },
     "scopeNames": {
         "Attendance": "Attendance",

@@ -29,7 +29,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.2.0');
+    assert.equal(manifest.version, '1.3.0');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -160,7 +160,9 @@ test('personal page is a side-navigation scope with two manual actions per worki
     assert.equal(clientDefs.controller, 'attendance-management:controllers/attendance');
     assert.match(controller, /actionIndex\(\)/);
     assert.match(afterInstall, /NAVIGATION_SCOPE_LIST = \['Attendance', 'AttendanceOverview'\]/);
-    assert.match(afterInstall, /foreach \(self::NAVIGATION_SCOPE_LIST as \$scope\)/);
+    assert.match(afterInstall, /'type' => 'group'/);
+    assert.match(afterInstall, /'id' => self::NAVIGATION_GROUP_ID/);
+    assert.match(afterInstall, /'itemList' => self::NAVIGATION_SCOPE_LIST/);
     assert.match(view, /data-status="AtWork"/);
     assert.match(view, /data-status="BusinessTrip"/);
     assert.doesNotMatch(view, /data-status-indicator="Holiday"/);
@@ -215,6 +217,7 @@ test('attendance page and statuses are bilingual', async () => {
 
         assert.equal(typeof global.labels.Attendance, 'string');
         assert.equal(typeof global.labels.AttendanceOverview, 'string');
+        assert.equal(typeof global.labels.AttendanceManagement, 'string');
         assert.equal(typeof attendance.options.status.AtWork, 'string');
         assert.equal(typeof attendance.options.status.Holiday, 'string');
         assert.equal(typeof attendance.options.status.BusinessTrip, 'string');
