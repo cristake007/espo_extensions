@@ -238,11 +238,17 @@
 }
 
 .attendance-today-body {
-    align-items: center;
+    align-items: start;
     display: grid;
     gap: 28px;
     grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
     padding: var(--panel-padding);
+}
+
+/* Bootstrap's panel-body clearfix pseudo-elements become grid items otherwise. */
+.attendance-today-body::before,
+.attendance-today-body::after {
+    display: none;
 }
 
 .attendance-today-summary {

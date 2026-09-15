@@ -112,6 +112,33 @@ for (const viewport of viewportCases) {
     });
 }
 
+for (const viewport of viewportCases.filter(item => item.width > 991)) {
+    test(`current status and attendance buttons share one aligned row at ${viewport.name}`, async ({page}) => {
+        await page.setViewportSize({width: viewport.width, height: 900});
+        await page.setContent(fixture(viewport.contentWidth));
+        await page.addStyleTag({path: themeCss});
+        await page.addStyleTag({path: attendanceCss});
+
+        const positions = await page.evaluate(() => {
+            const summary = document.querySelector('.attendance-today-summary').getBoundingClientRect();
+            const actions = document.querySelector('.attendance-state-actions').getBoundingClientRect();
+            const buttons = [...document.querySelectorAll('.attendance-state-actions .btn')]
+                .map(button => button.getBoundingClientRect());
+
+            return {
+                summaryTop: summary.top,
+                actionsTop: actions.top,
+                buttonTops: buttons.map(button => button.top),
+                buttonHeights: buttons.map(button => button.height),
+            };
+        });
+
+        expect(Math.abs(positions.summaryTop - positions.actionsTop)).toBeLessThanOrEqual(1);
+        expect(Math.max(...positions.buttonTops) - Math.min(...positions.buttonTops)).toBeLessThanOrEqual(1);
+        expect(Math.max(...positions.buttonHeights) - Math.min(...positions.buttonHeights)).toBeLessThanOrEqual(1);
+    });
+}
+
 test('attendance components use the active theme radius and shadow tokens', async ({page}) => {
     await page.setContent(fixture(1180));
     await page.addStyleTag({path: themeCss});
