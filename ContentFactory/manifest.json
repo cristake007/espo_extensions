@@ -1,0 +1,13 @@
+{
+    "name": "Content Factory",
+    "version": "1.2.1",
+    "acceptableVersions": [
+        ">=10.0.0"
+    ],
+    "php": [
+        ">=8.4"
+    ],
+    "releaseDate": "2026-09-24",
+    "author": "Cristian Popa",
+    "description": "Native EspoCRM social content generator, analytics preview, and content history. Package ID: content-factory."
+}

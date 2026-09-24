@@ -1,0 +1,9 @@
+{
+    "controller": "content-factory:controllers/content-factory-content",
+    "createDisabled": true,
+    "inlineEditDisabled": true,
+    "massUpdateDisabled": true,
+    "boolFilterList": ["onlyMy"],
+    "iconClass": "fas fa-history",
+    "kanbanViewMode": false
+}

@@ -1,0 +1,20 @@
+{
+    "titles": {
+        "ContentFactoryN8n": "Content Factory / n8n",
+        "ContentFactoryWordPress": "Content Factory / WordPress"
+    },
+    "fields": {
+        "enabled": "Enabled",
+        "webhookUrl": "Webhook URL",
+        "authenticationToken": "Authentication Token",
+        "connectTimeoutSeconds": "Connect Timeout",
+        "responseTimeoutSeconds": "Response Timeout",
+        "baseUrl": "WordPress URL",
+        "username": "WordPress Username",
+        "applicationPassword": "Application Password"
+    },
+    "help": {
+        "ContentFactoryN8n": "Configure the server-side connection between Content Factory and n8n. Timeouts are expressed in seconds. The token is treated as a password and is not returned by the API.",
+        "ContentFactoryWordPress": "Configure the server-side connection used for course search. The Application Password is stored as a password and is never sent to the browser."
+    }
+}

@@ -1,0 +1,8 @@
+[
+    {"name": "name", "link": true},
+    {"name": "platform", "width": 14},
+    {"name": "format", "width": 14},
+    {"name": "status", "width": 14},
+    {"name": "assignedUser", "width": 18},
+    {"name": "generatedAt", "width": 18}
+]

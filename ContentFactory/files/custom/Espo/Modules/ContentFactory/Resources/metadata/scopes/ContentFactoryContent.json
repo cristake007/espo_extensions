@@ -1,0 +1,19 @@
+{
+    "entity": true,
+    "object": true,
+    "acl": true,
+    "aclPortal": false,
+    "aclActionList": ["create", "read", "edit", "delete"],
+    "tab": true,
+    "layouts": true,
+    "customizable": false,
+    "importable": false,
+    "stream": false,
+    "disabled": false,
+    "type": "BasePlus",
+    "module": "ContentFactory",
+    "isCustom": false,
+    "statusField": "status",
+    "preserveAuditLog": true,
+    "assignedUsers": false
+}

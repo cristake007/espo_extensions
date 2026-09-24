@@ -1,0 +1,69 @@
+{
+    "generator": {
+        "schemaVersion": 1,
+        "platforms": [
+            {
+                "id": "linkedin",
+                "label": "LinkedIn",
+                "entityValue": "LinkedIn",
+                "defaultFormat": "post",
+                "formats": ["post", "video"]
+            },
+            {
+                "id": "facebook",
+                "label": "Facebook",
+                "entityValue": "Facebook",
+                "defaultFormat": "post",
+                "formats": ["post", "reel", "video", "post-reel"]
+            },
+            {
+                "id": "instagram",
+                "label": "Instagram",
+                "entityValue": "Instagram",
+                "defaultFormat": "post",
+                "formats": ["post", "reel", "carousel", "post-reel"]
+            },
+            {
+                "id": "youtube",
+                "label": "YouTube",
+                "entityValue": "YouTube",
+                "defaultFormat": "video",
+                "formats": ["video", "short", "video-short"]
+            }
+        ],
+        "formats": {
+            "post": {"label": "Post", "entityValue": "Post"},
+            "reel": {"label": "Reel", "entityValue": "Reel"},
+            "carousel": {"label": "Carousel", "entityValue": "Carousel"},
+            "video": {"label": "Video", "entityValue": "Video"},
+            "short": {"label": "Short", "entityValue": "Short"},
+            "post-reel": {"label": "PostReel", "entityValue": "PostReel"},
+            "video-short": {"label": "VideoShort", "entityValue": "VideoShort"}
+        },
+        "styles": [
+            {"id": "automatic", "label": "Automatic", "entityValue": "Automatic"},
+            {"id": "technical", "label": "Technical", "entityValue": "Technical"},
+            {"id": "commercial", "label": "Commercial", "entityValue": "Commercial"},
+            {"id": "shorter", "label": "Shorter", "entityValue": "Shorter"},
+            {"id": "custom", "label": "Custom", "entityValue": "Custom"}
+        ],
+        "mediaProfiles": {
+            "image": {"aspectRatio": "4:5", "width": 1080, "height": 1350},
+            "carousel": {"aspectRatio": "4:5", "width": 1080, "height": 1350},
+            "video": {
+                "facebook.reel": {"aspectRatio": "9:16", "width": 1080, "height": 1920},
+                "instagram.reel": {"aspectRatio": "9:16", "width": 1080, "height": 1920},
+                "youtube.short": {"aspectRatio": "9:16", "width": 1080, "height": 1920},
+                "linkedin.video": {"aspectRatio": "4:5", "width": 1080, "height": 1350},
+                "facebook.video": {"aspectRatio": "4:5", "width": 1080, "height": 1350},
+                "youtube.video": {"aspectRatio": "16:9", "width": 1920, "height": 1080}
+            }
+        },
+        "safeArea": {
+            "topPercent": 8,
+            "rightPercent": 8,
+            "bottomPercent": 8,
+            "leftPercent": 8
+        }
+    }
+}

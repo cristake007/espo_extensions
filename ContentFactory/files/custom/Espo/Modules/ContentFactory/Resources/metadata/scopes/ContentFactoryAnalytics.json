@@ -1,0 +1,10 @@
+{
+    "entity": false,
+    "object": false,
+    "acl": "boolean",
+    "aclPortal": false,
+    "tab": true,
+    "disabled": false,
+    "module": "ContentFactory",
+    "languageIsGlobal": true
+}

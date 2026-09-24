@@ -1,0 +1,11 @@
+[
+    {"name": "name"},
+    {"name": "platform"},
+    {"name": "format"},
+    {"name": "style"},
+    {"name": "status"},
+    {"name": "assignedUser"},
+    {"name": "teams"},
+    {"name": "generatedAt"},
+    {"name": "publishedAt"}
+]

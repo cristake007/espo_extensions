@@ -1,0 +1,154 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "maxLength": 190,
+            "required": true
+        },
+        "brief": {
+            "type": "text",
+            "required": true
+        },
+        "platform": {
+            "type": "enum",
+            "options": ["LinkedIn", "Facebook", "Instagram", "YouTube"],
+            "required": true,
+            "displayAsLabel": true
+        },
+        "format": {
+            "type": "enum",
+            "options": ["Post", "Reel", "Carousel", "Video", "Short", "PostReel", "VideoShort"],
+            "required": true,
+            "displayAsLabel": true
+        },
+        "style": {
+            "type": "enum",
+            "options": ["Automatic", "Technical", "Commercial", "Shorter", "Custom"],
+            "default": "Automatic",
+            "required": true,
+            "displayAsLabel": true
+        },
+        "customInstructions": {
+            "type": "text"
+        },
+        "contentType": {
+            "type": "enum",
+            "options": ["general", "course", "webinar", "top10", "service", "postEvent"],
+            "default": "general",
+            "required": true
+        },
+        "courseId": {
+            "type": "varchar",
+            "maxLength": 255
+        },
+        "courseName": {
+            "type": "varchar",
+            "maxLength": 500
+        },
+        "courseSlug": {
+            "type": "varchar",
+            "maxLength": 500
+        },
+        "courseUrl": {
+            "type": "url",
+            "maxLength": 2048
+        },
+        "generatedContent": {
+            "type": "text"
+        },
+        "status": {
+            "type": "enum",
+            "options": ["Draft", "Review", "Published"],
+            "default": "Draft",
+            "required": true,
+            "audited": true,
+            "displayAsLabel": true,
+            "style": {
+                "Draft": "default",
+                "Review": "warning",
+                "Published": "success"
+            }
+        },
+        "generatedAt": {
+            "type": "datetime"
+        },
+        "publishedAt": {
+            "type": "datetime"
+        },
+        "externalUrl": {
+            "type": "url",
+            "maxLength": 2048
+        },
+        "externalId": {
+            "type": "varchar",
+            "maxLength": 255
+        },
+        "assignedUser": {
+            "type": "link",
+            "required": false,
+            "view": "views/fields/assigned-user"
+        },
+        "teams": {
+            "type": "linkMultiple",
+            "view": "views/fields/teams"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        }
+    },
+    "links": {
+        "assignedUser": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "teams": {
+            "type": "hasMany",
+            "entity": "Team",
+            "relationName": "entityTeam",
+            "layoutRelationshipsDisabled": true
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "createdAt",
+        "order": "desc",
+        "textFilterFields": ["name", "brief", "courseName", "generatedContent", "externalId"],
+        "fullTextSearch": true,
+        "countDisabled": false
+    },
+    "indexes": {
+        "status": {"columns": ["status", "deleted"]},
+        "platform": {"columns": ["platform", "deleted"]},
+        "format": {"columns": ["format", "deleted"]},
+        "assignedUser": {"columns": ["assignedUserId", "deleted"]},
+        "generatedAt": {"columns": ["generatedAt", "deleted"]},
+        "externalId": {"columns": ["externalId", "deleted"]},
+        "createdAtId": {
+            "unique": true,
+            "columns": ["createdAt", "id"]
+        }
+    },
+    "optimisticConcurrencyControl": true
+}

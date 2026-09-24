@@ -1,0 +1,64 @@
+{
+    "labels": {
+        "Create ContentFactoryContent": "Creează conținut",
+        "ContentFactoryContent": "Conținut"
+    },
+    "fields": {
+        "name": "Titlu",
+        "brief": "Brief",
+        "platform": "Platformă",
+        "format": "Format",
+        "style": "Stil",
+        "customInstructions": "Instrucțiuni suplimentare",
+        "contentType": "Tip conținut",
+        "courseId": "ID curs",
+        "courseName": "Curs",
+        "courseSlug": "Slug curs",
+        "courseUrl": "URL curs",
+        "generatedContent": "Conținut generat",
+        "status": "Stare",
+        "generatedAt": "Generat la",
+        "publishedAt": "Publicat la",
+        "externalUrl": "URL extern",
+        "externalId": "ID extern",
+        "assignedUser": "Responsabil",
+        "teams": "Echipe"
+    },
+    "options": {
+        "platform": {
+            "LinkedIn": "LinkedIn",
+            "Facebook": "Facebook",
+            "Instagram": "Instagram",
+            "YouTube": "YouTube"
+        },
+        "format": {
+            "Post": "Postare",
+            "Reel": "Reel",
+            "Carousel": "Carusel",
+            "Video": "Video",
+            "Short": "Short",
+            "PostReel": "Postare + Reel",
+            "VideoShort": "Video + Short"
+        },
+        "style": {
+            "Automatic": "Recomandat automat",
+            "Technical": "Mai tehnic",
+            "Commercial": "Mai comercial",
+            "Shorter": "Mai scurt",
+            "Custom": "Personalizat"
+        },
+        "status": {
+            "Draft": "Ciornă",
+            "Review": "În verificare",
+            "Published": "Publicat"
+        },
+        "contentType": {
+            "general": "General",
+            "course": "Curs",
+            "webinar": "Webinar",
+            "top10": "Top 10",
+            "service": "Serviciu",
+            "postEvent": "Eveniment / Post-event"
+        }
+    }
+}

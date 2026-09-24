@@ -1,0 +1,12 @@
+[
+    {
+        "route": "/ContentFactory/generate",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ContentFactory\\Api\\PostGenerate"
+    },
+    {
+        "route": "/ContentFactory/subjects",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\ContentFactory\\Api\\GetSubjects"
+    }
+]

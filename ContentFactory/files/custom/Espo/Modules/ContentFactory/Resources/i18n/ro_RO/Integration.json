@@ -1,0 +1,20 @@
+{
+    "titles": {
+        "ContentFactoryN8n": "Content Factory / n8n",
+        "ContentFactoryWordPress": "Content Factory / WordPress"
+    },
+    "fields": {
+        "enabled": "Activ",
+        "webhookUrl": "URL webhook",
+        "authenticationToken": "Token autentificare",
+        "connectTimeoutSeconds": "Timeout conectare",
+        "responseTimeoutSeconds": "Timeout răspuns",
+        "baseUrl": "URL WordPress",
+        "username": "Utilizator WordPress",
+        "applicationPassword": "Application Password"
+    },
+    "help": {
+        "ContentFactoryN8n": "Configurează conexiunea server-side dintre Content Factory și n8n. Timeout-urile sunt exprimate în secunde. Tokenul este tratat ca parolă și nu este returnat de API.",
+        "ContentFactoryWordPress": "Configurează conexiunea server-side folosită pentru căutarea cursurilor. Application Password este stocată ca parolă și nu este trimisă către browser."
+    }
+}

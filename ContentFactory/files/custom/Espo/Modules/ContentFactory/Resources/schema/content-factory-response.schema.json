@@ -1,0 +1,302 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://local.invalid/content-factory-response.schema.json",
+    "title": "Content Factory n8n generation response",
+    "oneOf": [
+        {"$ref": "#/$defs/successResponse"},
+        {"$ref": "#/$defs/errorResponse"}
+    ],
+    "$defs": {
+        "nonEmptyText": {"type": "string", "minLength": 1},
+        "hashtags": {
+            "type": "array",
+            "maxItems": 30,
+            "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1, "maxLength": 100}
+        },
+        "safeArea": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["topPercent", "rightPercent", "bottomPercent", "leftPercent"],
+            "properties": {
+                "topPercent": {"const": 8},
+                "rightPercent": {"const": 8},
+                "bottomPercent": {"const": 8},
+                "leftPercent": {"const": 8}
+            }
+        },
+        "visualDirection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["stylePrompt", "continuityPrompt", "negativePrompt"],
+            "properties": {
+                "stylePrompt": {"type": "string", "minLength": 40, "maxLength": 4000},
+                "continuityPrompt": {"type": "string", "minLength": 20, "maxLength": 2000},
+                "negativePrompt": {"type": "string", "minLength": 10, "maxLength": 2000}
+            }
+        },
+        "image": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["aspectRatio", "width", "height", "safeArea", "visualPrompt", "headline", "supportingText"],
+            "properties": {
+                "aspectRatio": {"const": "4:5"},
+                "width": {"const": 1080},
+                "height": {"const": 1350},
+                "safeArea": {"$ref": "#/$defs/safeArea"},
+                "visualPrompt": {"type": "string", "minLength": 40, "maxLength": 4000},
+                "headline": {"type": "string", "minLength": 1, "maxLength": 80},
+                "supportingText": {"type": "string", "maxLength": 120},
+                "imageUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "pattern": "^https?://[^\\s]+$",
+                    "maxLength": 4096
+                },
+                "imageDataUrl": {
+                    "type": "string",
+                    "pattern": "^data:image/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/]+={0,2}$",
+                    "maxLength": 6291456
+                }
+            }
+        },
+        "post": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["headline", "text", "cta", "image"],
+            "properties": {
+                "headline": {"type": "string", "minLength": 1, "maxLength": 300},
+                "text": {"type": "string", "minLength": 1, "maxLength": 10000},
+                "cta": {"type": "string", "minLength": 1, "maxLength": 300},
+                "hashtags": {"$ref": "#/$defs/hashtags"},
+                "image": {"$ref": "#/$defs/image"}
+            }
+        },
+        "carouselSlide": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["order", "role", "title", "text", "visualPrompt"],
+            "properties": {
+                "order": {"type": "integer", "minimum": 1, "maximum": 10},
+                "role": {"enum": ["hook", "content", "cta"]},
+                "title": {"type": "string", "minLength": 1, "maxLength": 120},
+                "text": {"type": "string", "minLength": 1, "maxLength": 350},
+                "visualPrompt": {"type": "string", "minLength": 20, "maxLength": 4000}
+            }
+        },
+        "carousel": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["caption", "cta", "hashtags", "aspectRatio", "width", "height", "safeArea", "visualDirection", "slides"],
+            "properties": {
+                "caption": {"type": "string", "minLength": 1, "maxLength": 5000},
+                "cta": {"type": "string", "minLength": 1, "maxLength": 300},
+                "hashtags": {"$ref": "#/$defs/hashtags"},
+                "aspectRatio": {"const": "4:5"},
+                "width": {"const": 1080},
+                "height": {"const": 1350},
+                "safeArea": {"$ref": "#/$defs/safeArea"},
+                "visualDirection": {"$ref": "#/$defs/visualDirection"},
+                "slides": {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 10,
+                    "items": {"$ref": "#/$defs/carouselSlide"}
+                }
+            }
+        },
+        "videoScene": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["order", "durationSeconds", "visualPrompt", "voiceover", "onScreenText"],
+            "properties": {
+                "order": {"type": "integer", "minimum": 1, "maximum": 6},
+                "durationSeconds": {"type": "integer", "minimum": 3, "maximum": 8},
+                "visualPrompt": {"type": "string", "minLength": 20, "maxLength": 4000},
+                "voiceover": {"type": "string", "minLength": 1, "maxLength": 1000},
+                "onScreenText": {"type": "string", "minLength": 1, "maxLength": 120}
+            }
+        },
+        "socialVideo": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["hook", "durationSeconds", "aspectRatio", "width", "height", "caption", "cta", "hashtags", "visualDirection", "scenes"],
+            "properties": {
+                "hook": {"type": "string", "minLength": 1, "maxLength": 300},
+                "durationSeconds": {"type": "integer", "minimum": 15, "maximum": 30},
+                "aspectRatio": {"enum": ["9:16", "4:5", "16:9"]},
+                "width": {"type": "integer", "minimum": 1},
+                "height": {"type": "integer", "minimum": 1},
+                "caption": {"type": "string", "minLength": 1, "maxLength": 5000},
+                "cta": {"type": "string", "minLength": 1, "maxLength": 300},
+                "hashtags": {"$ref": "#/$defs/hashtags"},
+                "visualDirection": {"$ref": "#/$defs/visualDirection"},
+                "scenes": {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 6,
+                    "items": {"$ref": "#/$defs/videoScene"}
+                }
+            }
+        },
+        "verticalSocialVideo": {
+            "allOf": [
+                {"$ref": "#/$defs/socialVideo"},
+                {
+                    "properties": {
+                        "aspectRatio": {"const": "9:16"},
+                        "width": {"const": 1080},
+                        "height": {"const": 1920}
+                    }
+                }
+            ]
+        },
+        "portraitSocialVideo": {
+            "allOf": [
+                {"$ref": "#/$defs/socialVideo"},
+                {
+                    "properties": {
+                        "aspectRatio": {"const": "4:5"},
+                        "width": {"const": 1080},
+                        "height": {"const": 1350}
+                    }
+                }
+            ]
+        },
+        "landscapeSocialVideo": {
+            "allOf": [
+                {"$ref": "#/$defs/socialVideo"},
+                {
+                    "properties": {
+                        "aspectRatio": {"const": "16:9"},
+                        "width": {"const": 1920},
+                        "height": {"const": 1080}
+                    }
+                }
+            ]
+        },
+        "generatedImageAsset": {
+            "oneOf": [
+                {"type": "string", "minLength": 1, "maxLength": 6291456},
+                {
+                    "type": "object",
+                    "properties": {
+                        "imageUrl": {"type": "string"},
+                        "imageDataUrl": {"type": "string"},
+                        "url": {"type": "string"},
+                        "dataUrl": {"type": "string"},
+                        "dataBase64": {"type": "string"},
+                        "data": {"type": "string"},
+                        "base64": {"type": "string"},
+                        "mimeType": {"type": "string"},
+                        "contentType": {"type": "string"}
+                    },
+                    "anyOf": [
+                        {"required": ["imageUrl"]},
+                        {"required": ["imageDataUrl"]},
+                        {"required": ["url"]},
+                        {"required": ["dataUrl"]},
+                        {"required": ["dataBase64"]},
+                        {"required": ["data"]},
+                        {"required": ["base64"]}
+                    ]
+                }
+            ]
+        },
+        "generatedAssets": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["images"],
+            "properties": {
+                "images": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {"$ref": "#/$defs/generatedImageAsset"}
+                },
+                "videos": {
+                    "type": "array",
+                    "maxItems": 0
+                }
+            }
+        },
+        "successResponse": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["schemaVersion", "requestId", "success", "platform", "format", "locale", "content"],
+            "properties": {
+                "schemaVersion": {"const": 1},
+                "requestId": {"type": "string", "minLength": 1, "maxLength": 100},
+                "success": {"const": true},
+                "platform": {"enum": ["linkedin", "facebook", "instagram", "youtube"]},
+                "format": {"enum": ["post", "reel", "carousel", "video", "short", "post-reel", "video-short"]},
+                "locale": {"enum": ["ro", "en"]},
+                "content": {"type": "object"},
+                "assets": {"$ref": "#/$defs/generatedAssets"}
+            },
+            "allOf": [
+                {"if": {"properties": {"format": {"const": "post"}}}, "then": {"properties": {"content": {"type": "object", "additionalProperties": false, "required": ["post"], "properties": {"post": {"$ref": "#/$defs/post"}}}}}},
+                {"if": {"properties": {"format": {"const": "reel"}}}, "then": {"properties": {"platform": {"enum": ["facebook", "instagram"]}, "content": {"type": "object", "additionalProperties": false, "required": ["reel"], "properties": {"reel": {"$ref": "#/$defs/verticalSocialVideo"}}}}}},
+                {"if": {"properties": {"format": {"const": "video"}}}, "then": {"properties": {"platform": {"enum": ["linkedin", "facebook", "youtube"]}, "content": {"type": "object", "additionalProperties": false, "required": ["video"], "properties": {"video": {"$ref": "#/$defs/socialVideo"}}}}}},
+                {"if": {"properties": {"format": {"const": "short"}}}, "then": {"properties": {"platform": {"const": "youtube"}, "content": {"type": "object", "additionalProperties": false, "required": ["short"], "properties": {"short": {"$ref": "#/$defs/verticalSocialVideo"}}}}}},
+                {"if": {"properties": {"format": {"const": "carousel"}}}, "then": {"properties": {"platform": {"const": "instagram"}, "content": {"type": "object", "additionalProperties": false, "required": ["carousel"], "properties": {"carousel": {"$ref": "#/$defs/carousel"}}}}}},
+                {"if": {"properties": {"format": {"const": "post-reel"}}}, "then": {"properties": {"platform": {"enum": ["facebook", "instagram"]}, "content": {"type": "object", "additionalProperties": false, "required": ["post", "reel"], "properties": {"post": {"$ref": "#/$defs/post"}, "reel": {"$ref": "#/$defs/verticalSocialVideo"}}}}}},
+                {"if": {"properties": {"format": {"const": "video-short"}}}, "then": {"properties": {"platform": {"const": "youtube"}, "content": {"type": "object", "additionalProperties": false, "required": ["video", "short"], "properties": {"video": {"$ref": "#/$defs/landscapeSocialVideo"}, "short": {"$ref": "#/$defs/verticalSocialVideo"}}}}}},
+                {"if": {"properties": {"format": {"const": "post"}}}, "then": {"properties": {"platform": {"enum": ["linkedin", "facebook", "instagram"]}}}},
+                {
+                    "if": {
+                        "properties": {
+                            "format": {"const": "video"},
+                            "platform": {"enum": ["linkedin", "facebook"]}
+                        }
+                    },
+                    "then": {
+                        "properties": {
+                            "content": {
+                                "properties": {
+                                    "video": {"$ref": "#/$defs/portraitSocialVideo"}
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "format": {"const": "video"},
+                            "platform": {"const": "youtube"}
+                        }
+                    },
+                    "then": {
+                        "properties": {
+                            "content": {
+                                "properties": {
+                                    "video": {"$ref": "#/$defs/landscapeSocialVideo"}
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "errorResponse": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["schemaVersion", "requestId", "success", "error"],
+            "properties": {
+                "schemaVersion": {"const": 1},
+                "requestId": {"type": "string", "minLength": 1, "maxLength": 100},
+                "success": {"const": false},
+                "error": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["code", "message"],
+                    "properties": {
+                        "code": {"type": "string", "minLength": 1, "maxLength": 100},
+                        "message": {"type": "string", "minLength": 1, "maxLength": 1000}
+                    }
+                }
+            }
+        }
+    }
+}

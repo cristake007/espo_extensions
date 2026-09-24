@@ -1,0 +1,64 @@
+{
+    "labels": {
+        "Create ContentFactoryContent": "Create content",
+        "ContentFactoryContent": "Content"
+    },
+    "fields": {
+        "name": "Title",
+        "brief": "Brief",
+        "platform": "Platform",
+        "format": "Format",
+        "style": "Style",
+        "customInstructions": "Additional instructions",
+        "contentType": "Content type",
+        "courseId": "Course ID",
+        "courseName": "Course",
+        "courseSlug": "Course slug",
+        "courseUrl": "Course URL",
+        "generatedContent": "Generated content",
+        "status": "Status",
+        "generatedAt": "Generated at",
+        "publishedAt": "Published at",
+        "externalUrl": "External URL",
+        "externalId": "External ID",
+        "assignedUser": "Owner",
+        "teams": "Teams"
+    },
+    "options": {
+        "platform": {
+            "LinkedIn": "LinkedIn",
+            "Facebook": "Facebook",
+            "Instagram": "Instagram",
+            "YouTube": "YouTube"
+        },
+        "format": {
+            "Post": "Post",
+            "Reel": "Reel",
+            "Carousel": "Carousel",
+            "Video": "Video",
+            "Short": "Short",
+            "PostReel": "Post + Reel",
+            "VideoShort": "Video + Short"
+        },
+        "style": {
+            "Automatic": "Recommended automatically",
+            "Technical": "More technical",
+            "Commercial": "More commercial",
+            "Shorter": "Shorter",
+            "Custom": "Custom"
+        },
+        "status": {
+            "Draft": "Draft",
+            "Review": "In review",
+            "Published": "Published"
+        },
+        "contentType": {
+            "general": "General",
+            "course": "Course",
+            "webinar": "Webinar",
+            "top10": "Top 10",
+            "service": "Service",
+            "postEvent": "Event / Post-event"
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "fields": {
+        "webhookUrl": {
+            "type": "url",
+            "required": true,
+            "maxLength": 2048
+        },
+        "authenticationToken": {
+            "type": "password",
+            "maxLength": 255
+        },
+        "connectTimeoutSeconds": {
+            "type": "int",
+            "required": true,
+            "default": 5,
+            "min": 1,
+            "max": 30
+        },
+        "responseTimeoutSeconds": {
+            "type": "int",
+            "required": true,
+            "default": 90,
+            "min": 10,
+            "max": 180
+        }
+    },
+    "allowUserAccounts": false,
+    "view": "views/admin/integrations/edit"
+}

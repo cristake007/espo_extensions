@@ -1,0 +1,46 @@
+{
+    "fields": {
+        "customInstructions": {
+            "visible": {
+                "conditionGroup": [
+                    {
+                        "type": "equals",
+                        "attribute": "style",
+                        "value": "Custom"
+                    }
+                ]
+            }
+        },
+        "courseId": {
+            "visible": {
+                "conditionGroup": [{"type": "equals", "attribute": "contentType", "value": "course"}]
+            }
+        },
+        "courseName": {
+            "visible": {
+                "conditionGroup": [{"type": "equals", "attribute": "contentType", "value": "course"}]
+            }
+        },
+        "courseSlug": {
+            "visible": {
+                "conditionGroup": [{"type": "equals", "attribute": "contentType", "value": "course"}]
+            }
+        },
+        "courseUrl": {
+            "visible": {
+                "conditionGroup": [{"type": "equals", "attribute": "contentType", "value": "course"}]
+            }
+        },
+        "publishedAt": {
+            "visible": {
+                "conditionGroup": [
+                    {
+                        "type": "equals",
+                        "attribute": "status",
+                        "value": "Published"
+                    }
+                ]
+            }
+        }
+    }
+}

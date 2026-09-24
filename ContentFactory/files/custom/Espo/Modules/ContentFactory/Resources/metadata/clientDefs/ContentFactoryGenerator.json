@@ -1,0 +1,4 @@
+{
+    "controller": "content-factory:controllers/content-factory-generator",
+    "iconClass": "fas fa-magic"
+}
