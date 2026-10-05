@@ -45,7 +45,7 @@ final class AttendanceOverviewService
         $users = $this->entityManager
             ->getRDBRepositoryByClass(User::class)
             ->where([
-                'type' => [User::TYPE_REGULAR, User::TYPE_ADMIN],
+                'type' => User::TYPE_REGULAR,
                 'isActive' => true,
             ])
             ->order('name')
@@ -189,7 +189,7 @@ final class AttendanceOverviewService
         if (
             !$user ||
             !(bool) $user->get('isActive') ||
-            !in_array($user->get('type'), [User::TYPE_REGULAR, User::TYPE_ADMIN], true)
+            $user->get('type') !== User::TYPE_REGULAR
         ) {
             throw new NotFound('Active internal employee not found.');
         }
@@ -239,7 +239,7 @@ final class AttendanceOverviewService
         $users = $this->entityManager
             ->getRDBRepositoryByClass(User::class)
             ->where([
-                'type' => [User::TYPE_REGULAR, User::TYPE_ADMIN],
+                'type' => User::TYPE_REGULAR,
                 'isActive' => true,
             ])
             ->order('name')

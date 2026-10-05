@@ -39,7 +39,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.3');
+    assert.equal(manifest.version, '1.10.4');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -81,6 +81,8 @@ test('personal API is self-service only and rejects future or non-working dates'
     assert.match(service, /'isLocked' => \$isLocked/);
     assert.match(service, /Attendance for this month is locked/);
     assert.match(service, /substr\(\$date, 0, 7\) < \$this->getEditableFromMonth\(\$today\)/);
+    assert.match(service, /get\('type'\) !== User::TYPE_REGULAR/);
+    assert.doesNotMatch(service, /User::TYPE_ADMIN/);
 });
 
 test('manager API is protected and available only to configured attendance managers', async () => {
@@ -130,6 +132,8 @@ test('manager overview reports signed, missing and future cells and overlays hol
     assert.match(service, /'incompleteExportsAllowed' => \$incompleteExportsAllowed/);
     assert.match(service, /\(\$registerComplete \|\| \$incompleteExportsAllowed\)/);
     assert.match(service, /Reminders cannot be sent for a locked attendance month/);
+    assert.match(service, /'type' => User::TYPE_REGULAR/);
+    assert.doesNotMatch(service, /User::TYPE_ADMIN/);
     assert.doesNotMatch(service, /\$futureCount === 0,/);
 });
 

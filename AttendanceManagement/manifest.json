@@ -1,10 +1,10 @@
 {
     "name": "Attendance Management",
-    "version": "1.10.3",
+    "version": "1.10.4",
     "acceptableVersions": [
         ">=10.0.0"
     ],
-    "releaseDate": "2026-09-15",
+    "releaseDate": "2026-10-05",
     "author": "TUV Thuringen Karpat",
     "description": "Daily employee attendance register with Holiday Management integration.",
     "skipBackup": true
