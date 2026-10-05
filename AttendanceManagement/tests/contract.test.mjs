@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
+import vm from 'node:vm';
 
 const extensionRoot = path.resolve(import.meta.dirname, '..');
 const moduleRoot = path.join(
@@ -39,7 +40,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.4');
+    assert.equal(manifest.version, '1.10.5');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -81,8 +82,7 @@ test('personal API is self-service only and rejects future or non-working dates'
     assert.match(service, /'isLocked' => \$isLocked/);
     assert.match(service, /Attendance for this month is locked/);
     assert.match(service, /substr\(\$date, 0, 7\) < \$this->getEditableFromMonth\(\$today\)/);
-    assert.match(service, /get\('type'\) !== User::TYPE_REGULAR/);
-    assert.doesNotMatch(service, /User::TYPE_ADMIN/);
+    assert.match(service, /User::TYPE_REGULAR, User::TYPE_ADMIN/);
 });
 
 test('manager API is protected and available only to configured attendance managers', async () => {
@@ -354,6 +354,36 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX/P
     assert.match(menu, /#navbar li\[data-name="AttendanceOverview"\]/);
     assert.match(css, /#navbar li\[data-name="AttendanceOverview"\]/);
     assert.doesNotMatch(css, /#navbar a\[data-name="AttendanceOverview"\]/);
+});
+
+test('manager menu is safe when loaded before the document body exists', async () => {
+    const source = await readFile(
+        path.join(clientRoot, 'js', 'manager-menu.js'),
+        'utf8'
+    );
+    let observerCallback = null;
+    const document = {
+        body: null,
+        documentElement: {},
+        querySelector: () => null,
+    };
+
+    class MutationObserver {
+        constructor(callback) {
+            observerCallback = callback;
+        }
+
+        observe() {}
+    }
+
+    assert.doesNotThrow(() => vm.runInNewContext(source, {
+        document,
+        window: {addEventListener() {}},
+        MutationObserver,
+        Espo: {Ajax: {getRequest: () => Promise.resolve({isManager: false})}},
+    }));
+    assert.equal(typeof observerCallback, 'function');
+    assert.doesNotThrow(() => observerCallback());
 });
 
 test('page is full-width and uses an immediate month dropdown', async () => {

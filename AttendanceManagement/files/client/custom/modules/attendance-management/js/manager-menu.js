@@ -8,11 +8,13 @@
 
     const clearVisibility = () => {
         requestSequence++;
-        document.body.classList.remove(managerClass);
+        document.body?.classList.remove(managerClass);
     };
 
     const requestVisibility = () => {
-        if (!document.querySelector(menuSelector)) {
+        const body = document.body;
+
+        if (!body || !document.querySelector(menuSelector)) {
             clearVisibility();
 
             return;
@@ -21,7 +23,7 @@
         const sequence = ++requestSequence;
 
         // Default to private while a new or changed session is being checked.
-        document.body.classList.remove(managerClass);
+        body.classList.remove(managerClass);
 
         Espo.Ajax.getRequest('AttendanceManagement/overview/access')
             .then(response => {
@@ -29,20 +31,21 @@
                     return;
                 }
 
-                document.body.classList.toggle(managerClass, response.isManager === true);
+                document.body?.classList.toggle(managerClass, response.isManager === true);
             })
             .catch(() => {
                 if (sequence === requestSequence) {
-                    document.body.classList.remove(managerClass);
+                    document.body?.classList.remove(managerClass);
                 }
             });
     };
 
     const updateVisibility = () => {
+        const body = document.body;
         const menu = document.querySelector(menuSelector);
 
         if (!menu) {
-            if (currentMenu !== null || document.body.classList.contains(managerClass)) {
+            if (currentMenu !== null || body?.classList.contains(managerClass)) {
                 currentMenu = null;
                 clearVisibility();
             }

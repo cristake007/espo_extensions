@@ -303,9 +303,9 @@ final class AttendanceService
     {
         if (
             !(bool) $this->user->get('isActive') ||
-            $this->user->get('type') !== User::TYPE_REGULAR
+            !in_array($this->user->get('type'), [User::TYPE_REGULAR, User::TYPE_ADMIN], true)
         ) {
-            throw new Forbidden('Only active regular employees can mark attendance.');
+            throw new Forbidden('Only active internal users can mark attendance.');
         }
     }
 }

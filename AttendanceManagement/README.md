@@ -5,8 +5,9 @@ Employees can mark a current or past working day as **At work** or **In business
 trip**. Future dates, weekends, Romanian public holidays from `ZileLibere`, and
 days covered by an approved Holiday Management request cannot be marked.
 Only active regular users are treated as employees. Administrator accounts can
-manage the extension but are excluded from personal attendance, schedule lists,
-the manager overview, reminders, completion calculations, and XLSX/PDF exports.
+manage the extension but are excluded from schedule lists, the manager overview,
+reminders, completion calculations, and XLSX/PDF exports. Any historical or
+personal attendance data belonging to an administrator is ignored by the register.
 The monthly register uses an immediate month selector. By default, employees can
 change entries in the current and immediately previous calendar month; older
 months are read-only. Administrators can adjust this window under
@@ -49,7 +50,7 @@ or schedule values are left blank. The setting is disabled by default.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.10.4 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.10.5 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.
