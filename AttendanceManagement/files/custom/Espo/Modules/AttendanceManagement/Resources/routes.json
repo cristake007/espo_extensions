@@ -10,11 +10,6 @@
         "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostMarkAttendance"
     },
     {
-        "route": "/AttendanceManagement/overview/access",
-        "method": "get",
-        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\GetOverviewAccess"
-    },
-    {
         "route": "/AttendanceManagement/overview",
         "method": "get",
         "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\GetAttendanceOverview"
@@ -28,6 +23,21 @@
         "route": "/AttendanceManagement/schedules",
         "method": "get",
         "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\GetAttendanceSchedules"
+    },
+    {
+        "route": "/AttendanceManagement/settings",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\GetAttendanceSettings"
+    },
+    {
+        "route": "/AttendanceManagement/settings",
+        "method": "put",
+        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PutAttendanceSettings"
+    },
+    {
+        "route": "/AttendanceManagement/settings/initialize",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostInitializeAttendanceArchive"
     },
     {
         "route": "/AttendanceManagement/overview/schedule",

@@ -19,6 +19,9 @@ The extension includes settings, balance accounting, and self-service booking:
 - self-service holiday bookings from both that page and EspoCRM Calendar;
 - requester-visible pending, approved, and rejected states, with a final
   decision by either configured approver from the Calendar request detail;
+- audited cancellation requests for approved future leave, approver acceptance
+  or rejection, and direct reasoned cancellation by an approver for exceptional
+  cases, with an automatic one-time balance refund;
 - approval-time DOCX generation using the bundled Romanian vacation-request
   layout, with one downloadable document per covered calendar month;
 - weekday and Romanian `ZileLibere` calculation, overlap prevention, configured
@@ -42,7 +45,7 @@ balance of -5 with a 21-day entitlement becomes 16.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.7.0 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.8.0 files scripts
 ```
 
 Run the phase contract tests:

@@ -6,11 +6,11 @@ define(['views/settings/record/edit'], (SettingsEditView) => {
                 tabLabel: 'Access and Editing',
                 rows: [
                     [
-                        {name: 'attendanceManagementManagers'},
                         {name: 'attendanceManagementEditablePastMonths'},
+                        {name: 'attendanceManagementAllowIncompleteExports'},
                     ],
                     [
-                        {name: 'attendanceManagementAllowIncompleteExports'},
+                        {name: 'attendanceManagementArchiveInitializer'},
                         false,
                     ],
                 ],

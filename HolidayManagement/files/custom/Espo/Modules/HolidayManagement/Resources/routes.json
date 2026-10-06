@@ -35,6 +35,16 @@
         "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\PostDecision"
     },
     {
+        "route": "/HolidayManagement/requests/:id/cancellation-request",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\PostCancellationRequest"
+    },
+    {
+        "route": "/HolidayManagement/requests/:id/cancel",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\PostCancel"
+    },
+    {
         "route": "/HolidayManagement/approvalQueue",
         "method": "get",
         "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\GetApprovalQueue"

@@ -38,7 +38,7 @@
         },
         "status": {
             "type": "enum",
-            "options": ["Pending", "Approved", "Rejected"],
+            "options": ["Pending", "Approved", "Rejected", "CancellationPending", "Cancelled"],
             "default": "Pending",
             "required": true,
             "readOnly": true,
@@ -46,7 +46,9 @@
             "style": {
                 "Pending": "warning",
                 "Approved": "success",
-                "Rejected": "danger"
+                "Rejected": "danger",
+                "CancellationPending": "warning",
+                "Cancelled": "default"
             }
         },
         "decidedBy": {
@@ -56,6 +58,33 @@
             "audited": true
         },
         "decidedAt": {
+            "type": "datetime",
+            "readOnly": true,
+            "audited": true
+        },
+        "cancellationReason": {
+            "type": "text",
+            "readOnly": true,
+            "audited": true
+        },
+        "cancellationRequestedBy": {
+            "type": "link",
+            "entity": "User",
+            "readOnly": true,
+            "audited": true
+        },
+        "cancellationRequestedAt": {
+            "type": "datetime",
+            "readOnly": true,
+            "audited": true
+        },
+        "cancellationDecidedBy": {
+            "type": "link",
+            "entity": "User",
+            "readOnly": true,
+            "audited": true
+        },
+        "cancellationDecidedAt": {
             "type": "datetime",
             "readOnly": true,
             "audited": true
@@ -126,6 +155,14 @@
             "entity": "HolidayProfile"
         },
         "decidedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "cancellationRequestedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "cancellationDecidedBy": {
             "type": "belongsTo",
             "entity": "User"
         },

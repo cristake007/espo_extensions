@@ -40,7 +40,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.5');
+    assert.equal(manifest.version, '1.10.13');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -78,6 +78,10 @@ test('personal API is self-service only and rejects future or non-working dates'
     assert.match(service, /\(int\) \$date->format\('N'\) <= 5/);
     assert.match(service, /nonWorkingDayProvider->getDates/);
     assert.match(service, /'todayCanMark' => \$todayState\['canMark'\]/);
+    assert.match(service, /'availableFromMonth' => \$availableFromMonth/);
+    assert.match(service, /order\('date', 'ASC'\)/);
+    assert.match(service, /order\('effectiveFrom', 'ASC'\)/);
+    assert.match(service, /Attendance month predates the available archive/);
     assert.match(service, /attendanceManagementEditablePastMonths/);
     assert.match(service, /'isLocked' => \$isLocked/);
     assert.match(service, /Attendance for this month is locked/);
@@ -85,34 +89,41 @@ test('personal API is self-service only and rejects future or non-working dates'
     assert.match(service, /User::TYPE_REGULAR, User::TYPE_ADMIN/);
 });
 
-test('manager API is protected and available only to configured attendance managers', async () => {
+test('manager API is protected by the native EspoCRM role ACL', async () => {
     const routes = await readJson('Resources', 'routes.json');
     const checker = await readSource('Tools', 'Attendance', 'AttendanceAccessChecker.php');
     const settings = await readJson('Resources', 'metadata', 'entityDefs', 'Settings.json');
-    const validator = await readSource('FieldValidators', 'Settings', 'Managers', 'Valid.php');
+    const scope = await readJson('Resources', 'metadata', 'scopes', 'AttendanceOverview.json');
+    const clientNavbar = await readJson('Resources', 'metadata', 'app', 'clientNavbar.json');
 
     assert.deepEqual(routes.slice(2).map(item => [item.route, item.method]), [
-        ['/AttendanceManagement/overview/access', 'get'],
         ['/AttendanceManagement/overview', 'get'],
         ['/AttendanceManagement/overview/remind', 'post'],
         ['/AttendanceManagement/schedules', 'get'],
+        ['/AttendanceManagement/settings', 'get'],
+        ['/AttendanceManagement/settings', 'put'],
+        ['/AttendanceManagement/settings/initialize', 'post'],
         ['/AttendanceManagement/overview/schedule', 'post'],
         ['/AttendanceManagement/overview/xlsx', 'post'],
         ['/AttendanceManagement/overview/pdf', 'post'],
     ]);
-    assert.equal(settings.fields.attendanceManagementManagers.type, 'linkMultiple');
-    assert.equal(settings.fields.attendanceManagementManagers.entity, 'User');
+    assert.equal(settings.fields.attendanceManagementManagers, undefined);
     assert.equal(settings.fields.attendanceManagementEditablePastMonths.type, 'int');
     assert.equal(settings.fields.attendanceManagementEditablePastMonths.default, 1);
     assert.equal(settings.fields.attendanceManagementEditablePastMonths.min, 0);
     assert.equal(settings.fields.attendanceManagementEditablePastMonths.max, 120);
     assert.equal(settings.fields.attendanceManagementAllowIncompleteExports.type, 'bool');
     assert.equal(settings.fields.attendanceManagementAllowIncompleteExports.default, false);
-    assert.match(checker, /attendanceManagementManagersIds/);
+    assert.equal(settings.fields.attendanceManagementArchiveInitializer.notStorable, true);
+    assert.match(settings.fields.attendanceManagementArchiveInitializer.view, /archive-initializer/);
+    assert.equal(scope.acl, 'boolean');
+    assert.equal(clientNavbar.menuItems.admin.accessDataList[0].scope, 'AttendanceOverview');
+    assert.match(checker, /private Acl \$acl/);
+    assert.match(checker, /acl->check\('AttendanceOverview'\)/);
+    assert.doesNotMatch(checker, /attendanceManagementManagersIds/);
     assert.doesNotMatch(checker, /holidayManagementApproversIds/);
     assert.match(checker, /assertManager/);
-    assert.match(validator, /User::TYPE_REGULAR, User::TYPE_ADMIN/);
-    assert.match(validator, /'isActive' => true/);
+    assert.match(checker, /User::TYPE_REGULAR, User::TYPE_ADMIN/);
 });
 
 test('manager overview reports signed, missing and future cells and overlays holidays', async () => {
@@ -127,6 +138,9 @@ test('manager overview reports signed, missing and future cells and overlays hol
     assert.match(service, /\$missingCount === 0/);
     assert.match(service, /\$scheduleMissingCount === 0/);
     assert.match(service, /'monthEditable' => \$month >= \$editableFromMonth/);
+    assert.match(service, /'availableFromMonth' => \$availableFromMonth/);
+    assert.match(service, /order\('date', 'ASC'\)/);
+    assert.match(service, /order\('effectiveFrom', 'ASC'\)/);
     assert.match(service, /attendanceManagementAllowIncompleteExports/);
     assert.match(service, /'registerComplete' => \$registerComplete/);
     assert.match(service, /'incompleteExportsAllowed' => \$incompleteExportsAllowed/);
@@ -171,7 +185,7 @@ test('working schedules are persistent defaults edited from administration', asy
     assert.equal(scope.customizable, false);
     assert.equal(acl.read, false);
     assert.match(service, /accessChecker->assertScheduleEditor/);
-    assert.match(checker, /user->isAdmin\(\)/);
+    assert.match(checker, /assertManager\(\)/);
     assert.doesNotMatch(service, /effectiveFrom<=/);
     assert.match(service, /order\('effectiveFrom', 'DESC'\)/);
     assert.match(service, /Working schedule times must use the HH:MM format/);
@@ -187,6 +201,143 @@ test('working schedules are persistent defaults edited from administration', asy
     assert.match(settingsView, /!values\.includes\(value\)/);
     assert.match(settingsView, /attendance-schedule-row-dirty/);
     assert.match(settingsView, /data-action.*save-work-schedule/);
+});
+
+test('attendance role can manage only attendance-specific settings', async () => {
+    const routes = await readJson('Resources', 'routes.json');
+    const service = await readSource('Tools', 'Attendance', 'AttendanceSettingsService.php');
+    const view = await readFile(
+        path.join(clientRoot, 'src', 'views', 'attendance', 'schedules.js'),
+        'utf8'
+    );
+    const initializer = await readFile(
+        path.join(clientRoot, 'src', 'views', 'fields', 'archive-initializer.js'),
+        'utf8'
+    );
+
+    assert.ok(routes.some(item =>
+        item.route === '/AttendanceManagement/settings' && item.method === 'get'
+    ));
+    assert.ok(routes.some(item =>
+        item.route === '/AttendanceManagement/settings' && item.method === 'put'
+    ));
+    assert.ok(routes.some(item =>
+        item.route === '/AttendanceManagement/settings/initialize' && item.method === 'post'
+    ));
+    assert.match(service, /accessChecker->assertManager\(\)/);
+    assert.match(service, /attendanceManagementEditablePastMonths/);
+    assert.match(service, /attendanceManagementAllowIncompleteExports/);
+    assert.match(service, /editablePastMonths < 0/);
+    assert.match(service, /editablePastMonths > 120/);
+    assert.match(service, /!is_bool\(\$allowIncompleteExports\)/);
+    assert.match(service, /configWriter->setMultiple/);
+    assert.match(service, /initializeArchive/);
+    assert.match(service, /attendanceManagementArchiveStartMonth/);
+    assert.match(service, /dateTime->getToday/);
+    assert.doesNotMatch(service, /attendanceManagementManagers/);
+    assert.match(view, /AttendanceManagement\/settings/);
+    assert.match(view, /Ajax\.putRequest/);
+    assert.match(view, /editablePastMonths/);
+    assert.match(view, /allowIncompleteExports/);
+    assert.match(view, /settings\/initialize/);
+    assert.doesNotMatch(view, /type="month"/);
+    assert.match(view, /AttendanceManagement\/schedules/);
+    assert.match(initializer, /settings\/initialize/);
+    assert.match(initializer, /Confirm Initialize Attendance/);
+});
+
+test('attendance managers can open only employee schedules at the administration URL', async () => {
+    const clientRoutes = await readJson('Resources', 'metadata', 'app', 'clientRoutes.json');
+    const controller = await readFile(
+        path.join(clientRoot, 'src', 'controllers', 'schedule-settings.js'),
+        'utf8'
+    );
+    const schedules = await readFile(
+        path.join(clientRoot, 'src', 'views', 'attendance', 'schedules.js'),
+        'utf8'
+    );
+    const overview = await readFile(
+        path.join(clientRoot, 'src', 'views', 'attendance', 'overview.js'),
+        'utf8'
+    );
+    const managerIndex = await readFile(
+        path.join(clientRoot, 'src', 'views', 'admin', 'manager-index.js'),
+        'utf8'
+    );
+    const adminRoute = clientRoutes.Admin;
+    const route = clientRoutes['Admin/attendanceManagementSettings'];
+
+    assert.equal(adminRoute.params.action, 'index');
+    assert.ok(adminRoute.order < 1);
+    assert.equal(route.params.controller, 'attendance-management:controllers/schedule-settings');
+    assert.equal(route.params.action, 'open');
+    assert.ok(route.order < 1);
+    assert.match(controller, /dispatch\('Admin', 'index'\)/);
+    assert.doesNotMatch(controller, /dispatch\('Admin', 'page'/);
+    assert.match(controller, /getAcl\(\)\.check\('AttendanceOverview'\)/);
+    assert.doesNotMatch(controller, /AttendanceManagement\/overview\/access/);
+    assert.match(controller, /Exceptions\.AccessDenied/);
+    assert.match(controller, /views\/attendance\/schedules/);
+    assert.match(schedules, /AttendanceManagement\/schedules/);
+    assert.match(schedules, /AttendanceManagement\/overview\/schedule/);
+    assert.doesNotMatch(schedules, /attendanceManagementManagers/);
+    assert.match(overview, /#Admin\/attendanceManagementSettings/);
+    assert.match(managerIndex, /Attendance Management/);
+    assert.match(managerIndex, /Attendance Settings/);
+    assert.match(managerIndex, /#Admin\/attendanceManagementSettings/);
+
+    let ScheduleSettingsController;
+    let aclAllowed = true;
+    class Controller {}
+    class AccessDenied extends Error {}
+
+    vm.runInNewContext(controller, {
+        define: (dependencies, factory) => {
+            ScheduleSettingsController = factory(Controller);
+        },
+        Espo: {
+            Exceptions: {AccessDenied},
+        },
+    });
+
+    const adminDispatches = [];
+    const adminViews = [];
+    const adminController = new ScheduleSettingsController();
+    adminController.getUser = () => ({isAdmin: () => true});
+    adminController.getAcl = () => ({check: () => true});
+    adminController.main = (...args) => adminViews.push(args);
+    adminController.getRouter = () => ({
+        dispatch: (...args) => adminDispatches.push(args),
+    });
+    await adminController.actionOpen();
+    assert.equal(adminDispatches.length, 0);
+    assert.equal(
+        adminViews[0][0],
+        'attendance-management:views/attendance/schedules'
+    );
+    await adminController.actionIndex();
+    assert.equal(adminDispatches[0][0], 'Admin');
+    assert.equal(adminDispatches[0][1], 'index');
+
+    const managerViews = [];
+    const managerController = new ScheduleSettingsController();
+    managerController.getUser = () => ({isAdmin: () => false});
+    managerController.getAcl = () => ({check: () => aclAllowed});
+    managerController.main = (...args) => managerViews.push(args);
+    await managerController.actionOpen();
+    assert.equal(
+        managerViews[0][0],
+        'attendance-management:views/attendance/schedules'
+    );
+    managerViews.length = 0;
+    await managerController.actionIndex();
+    assert.equal(
+        managerViews[0][0],
+        'attendance-management:views/admin/manager-index'
+    );
+
+    aclAllowed = false;
+    await assert.rejects(() => managerController.actionOpen(), AccessDenied);
 });
 
 test('manager reminders create native EspoCRM notifications only for missing users', async () => {
@@ -306,25 +457,20 @@ test('personal page clearly separates today actions from the structured monthly 
     assert.match(view, /loadAttendance\(this\.options\.month \|\| null\)/);
 });
 
-test('manager page has conditional side navigation, matrix, reminders and XLSX/PDF downloads', async () => {
+test('manager page uses native ACL navigation and provides matrix, reminders and exports', async () => {
     const overview = await readFile(
         path.join(clientRoot, 'src', 'views', 'attendance', 'overview.js'),
         'utf8'
     );
-    const menu = await readFile(
-        path.join(clientRoot, 'js', 'manager-menu.js'),
-        'utf8'
-    );
     const css = await readFile(path.join(clientRoot, 'css', 'attendance.css'), 'utf8');
     const scope = await readJson('Resources', 'metadata', 'scopes', 'AttendanceOverview.json');
+    const client = await readJson('Resources', 'metadata', 'app', 'client.json');
+    const clientNavbar = await readJson('Resources', 'metadata', 'app', 'clientNavbar.json');
 
     assert.equal(scope.tab, true);
-    assert.match(menu, /AttendanceManagement\/overview\/access/);
-    assert.match(menu, /attendance-management-manager/);
-    assert.match(menu, /hashchange/);
-    assert.match(menu, /requestSequence/);
-    assert.match(menu, /classList\.remove\(managerClass\)/);
-    assert.doesNotMatch(menu, /observer\.disconnect/);
+    assert.equal(scope.acl, 'boolean');
+    assert.equal(clientNavbar.menuItems.admin.accessDataList[0].scope, 'AttendanceOverview');
+    assert.equal(client.scriptList, undefined);
     assert.match(overview, /attendance-overview-table/);
     assert.match(overview, /send-reminders/);
     assert.match(overview, /download-xlsx/);
@@ -339,7 +485,9 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX/P
     assert.match(overview, /translate 'Month' category='labels'/);
     assert.doesNotMatch(overview, /translate 'monthDate'/);
     assert.match(overview, /change \[data-overview-month-select\]/);
-    assert.match(overview, /offset < 3/);
+    assert.match(overview, /availableFromMonth/);
+    assert.match(overview, /while \(true\)/);
+    assert.doesNotMatch(overview, /offset < 3/);
     assert.doesNotMatch(overview, /data-action="open-month"/);
     assert.doesNotMatch(overview, /'views\/fields\/date'/);
     assert.match(overview, /completionDetails/);
@@ -351,39 +499,7 @@ test('manager page has conditional side navigation, matrix, reminders and XLSX/P
     assert.match(overview, /translate\('Not Marked', 'labels', 'AttendanceRecord'\)/);
     assert.match(overview, /getLanguage\(\)\.translateOption\(status, 'status', 'AttendanceRecord'\)/);
     assert.doesNotMatch(overview, /this\.translate\(status, 'options'/);
-    assert.match(menu, /#navbar li\[data-name="AttendanceOverview"\]/);
-    assert.match(css, /#navbar li\[data-name="AttendanceOverview"\]/);
-    assert.doesNotMatch(css, /#navbar a\[data-name="AttendanceOverview"\]/);
-});
-
-test('manager menu is safe when loaded before the document body exists', async () => {
-    const source = await readFile(
-        path.join(clientRoot, 'js', 'manager-menu.js'),
-        'utf8'
-    );
-    let observerCallback = null;
-    const document = {
-        body: null,
-        documentElement: {},
-        querySelector: () => null,
-    };
-
-    class MutationObserver {
-        constructor(callback) {
-            observerCallback = callback;
-        }
-
-        observe() {}
-    }
-
-    assert.doesNotThrow(() => vm.runInNewContext(source, {
-        document,
-        window: {addEventListener() {}},
-        MutationObserver,
-        Espo: {Ajax: {getRequest: () => Promise.resolve({isManager: false})}},
-    }));
-    assert.equal(typeof observerCallback, 'function');
-    assert.doesNotThrow(() => observerCallback());
+    assert.doesNotMatch(css, /attendance-management-manager/);
 });
 
 test('page is full-width and uses an immediate month dropdown', async () => {
@@ -396,7 +512,9 @@ test('page is full-width and uses an immediate month dropdown', async () => {
 
     assert.equal(defs.fields.monthDate, undefined);
     assert.match(view, /<select class="form-control" data-month-select>/);
-    assert.match(view, /offset < 4/);
+    assert.match(view, /availableFromMonth/);
+    assert.match(view, /while \(true\)/);
+    assert.doesNotMatch(view, /offset < 3/);
     assert.match(view, /change \[data-month-select\]/);
     assert.doesNotMatch(view, /'views\/fields\/date'/);
     assert.match(css, /\.attendance-page\s*\{\s*width: 100%;/);
@@ -441,19 +559,32 @@ test('attendance page and statuses are bilingual', async () => {
         assert.equal(typeof attendance.messages['Locked Month Reminder'], 'string');
         assert.equal(typeof attendance.messages['Readiness Month Locked'], 'string');
         assert.equal(typeof attendance.labels['Employee Schedules'], 'string');
+        assert.equal(typeof attendance.labels['Editable Previous Months'], 'string');
+        assert.equal(typeof attendance.labels['Allow Incomplete Exports'], 'string');
+        assert.equal(typeof attendance.labels['Save Settings'], 'string');
+        assert.equal(typeof attendance.labels['Initialize Attendance'], 'string');
         assert.equal(typeof attendance.labels['Select Time'], 'string');
         assert.equal(typeof attendance.messages['Schedule Editor Guide'], 'string');
+        assert.equal(typeof attendance.messages['Editable Previous Months Help'], 'string');
+        assert.equal(typeof attendance.messages['Allow Incomplete Exports Help'], 'string');
+        assert.equal(typeof attendance.messages['Settings Load Failed'], 'string');
+        assert.equal(typeof attendance.messages['Invalid Settings'], 'string');
+        assert.equal(typeof attendance.messages['Settings Saved'], 'string');
+        assert.equal(typeof attendance.messages['Settings Save Failed'], 'string');
+        assert.equal(typeof attendance.messages['Confirm Initialize Attendance'], 'string');
+        assert.equal(typeof attendance.messages['Attendance Initialized'], 'string');
 
         const settings = await readJson('Resources', 'i18n', locale, 'Settings.json');
         const admin = await readJson('Resources', 'i18n', locale, 'Admin.json');
-        assert.equal(typeof settings.fields.attendanceManagementManagers, 'string');
         assert.equal(typeof settings.fields.attendanceManagementEditablePastMonths, 'string');
         assert.equal(typeof settings.fields.attendanceManagementAllowIncompleteExports, 'string');
         assert.equal(typeof settings.fields.attendanceManagementScheduleEditor, 'string');
+        assert.equal(typeof settings.fields.attendanceManagementArchiveInitializer, 'string');
         tabLabels.forEach(label => assert.equal(typeof settings.labels[label], 'string'));
         assert.equal(typeof admin.descriptions.attendanceManagementSettings, 'string');
         assert.equal(typeof admin.labels['Access and Editing'], 'string');
         assert.equal(typeof admin.labels['Employee Schedules'], 'string');
+        assert.equal(typeof admin.labels['Attendance Settings'], 'string');
     }
 });
 

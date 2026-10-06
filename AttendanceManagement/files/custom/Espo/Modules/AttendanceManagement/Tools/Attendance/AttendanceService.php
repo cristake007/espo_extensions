@@ -18,12 +18,14 @@ use Espo\ORM\EntityManager;
 final class AttendanceService
 {
     private const ENTITY_TYPE = 'AttendanceRecord';
+    private const SCHEDULE_ENTITY_TYPE = 'AttendanceWorkSchedule';
     private const STATUS_AT_WORK = 'AtWork';
     private const STATUS_HOLIDAY = 'Holiday';
     private const STATUS_BUSINESS_TRIP = 'BusinessTrip';
     private const SOURCE_SELF = 'Self';
     private const SOURCE_APPROVED_HOLIDAY = 'ApprovedHoliday';
     private const EDITABLE_PAST_MONTHS_CONFIG = 'attendanceManagementEditablePastMonths';
+    private const ARCHIVE_START_MONTH_CONFIG = 'attendanceManagementArchiveStartMonth';
     private const DEFAULT_EDITABLE_PAST_MONTHS = 1;
 
     public function __construct(
@@ -40,14 +42,15 @@ final class AttendanceService
     {
         $this->assertInternalUser();
         $today = $this->dateTime->getToday()->toString();
-        $month = $this->normalizeMonth($month, $today);
+        $userId = (string) $this->user->getId();
+        $availableFromMonth = $this->getAvailableFromMonth($userId, $today);
+        $month = $this->normalizeMonth($month, $today, $availableFromMonth);
         $monthStart = $month . '-01';
         $monthEnd = (new DateTimeImmutable($monthStart))->modify('last day of this month')->format('Y-m-d');
         $editablePastMonths = $this->getEditablePastMonths();
         $editableFromMonth = (new DateTimeImmutable(substr($today, 0, 7) . '-01'))
             ->modify(sprintf('-%d months', $editablePastMonths))
             ->format('Y-m');
-        $userId = (string) $this->user->getId();
         $recordMap = $this->getRecordMap($userId, $monthStart, $monthEnd);
         $approvedHolidayDates = $this->approvedHolidayProvider
             ->getDates($userId, $monthStart, $monthEnd);
@@ -91,6 +94,7 @@ final class AttendanceService
             'month' => $month,
             'today' => $today,
             'currentMonth' => substr($today, 0, 7),
+            'availableFromMonth' => $availableFromMonth,
             'editablePastMonths' => $editablePastMonths,
             'editableFromMonth' => $editableFromMonth,
             'monthLocked' => $month < $editableFromMonth,
@@ -233,7 +237,11 @@ final class AttendanceService
         return isset($this->approvedHolidayProvider->getDates($userId, $date, $date)[$date]);
     }
 
-    private function normalizeMonth(?string $month, string $today): string
+    private function normalizeMonth(
+        ?string $month,
+        string $today,
+        string $availableFromMonth,
+    ): string
     {
         $month = trim((string) $month);
 
@@ -249,7 +257,48 @@ final class AttendanceService
             throw new BadRequest('A future attendance month cannot be opened.');
         }
 
+        if ($month < $availableFromMonth) {
+            throw new BadRequest('Attendance month predates the available archive.');
+        }
+
         return $month;
+    }
+
+    private function getAvailableFromMonth(string $userId, string $today): string
+    {
+        $configuredMonth = trim((string) $this->config->get(self::ARCHIVE_START_MONTH_CONFIG, ''));
+        $currentMonth = substr($today, 0, 7);
+
+        if (
+            preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', $configuredMonth) === 1 &&
+            $configuredMonth <= $currentMonth
+        ) {
+            return $configuredMonth;
+        }
+
+        $monthList = [$currentMonth];
+        $record = $this->entityManager
+            ->getRDBRepository(self::ENTITY_TYPE)
+            ->where(['userId' => $userId])
+            ->order('date', 'ASC')
+            ->findOne();
+        $schedule = $this->entityManager
+            ->getRDBRepository(self::SCHEDULE_ENTITY_TYPE)
+            ->where(['userId' => $userId])
+            ->order('effectiveFrom', 'ASC')
+            ->findOne();
+
+        if ($record && is_string($record->get('date'))) {
+            $monthList[] = substr((string) $record->get('date'), 0, 7);
+        }
+
+        if ($schedule && is_string($schedule->get('effectiveFrom'))) {
+            $monthList[] = substr((string) $schedule->get('effectiveFrom'), 0, 7);
+        }
+
+        sort($monthList);
+
+        return $monthList[0];
     }
 
     private function validateDate(string $date): void

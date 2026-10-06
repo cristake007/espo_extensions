@@ -1,24 +1,40 @@
 {
     "fields": {
+        "name": "Denumire",
         "profile": "Profil de concediu",
         "request": "Cerere de concediu",
         "user": "Utilizator",
-        "type": "Tip inregistrare",
-        "delta": "Diferenta",
+        "type": "Tip înregistrare",
+        "delta": "Diferență",
         "balanceBefore": "Sold anterior",
         "balanceAfter": "Sold ulterior",
         "entitlementBefore": "Drept anterior",
         "entitlementAfter": "Drept ulterior",
-        "resetDateBefore": "Data resetare anterioara",
-        "resetDateAfter": "Data resetare ulterioara",
+        "resetDateBefore": "Data resetării anterioare",
+        "resetDateAfter": "Data resetării ulterioare",
         "actor": "Autor",
         "reason": "Motiv",
-        "effectiveDate": "Data efectiva",
-        "idempotencyKey": "Cheie de idempotenta"
+        "effectiveDate": "Data efectivă",
+        "idempotencyKey": "Cheie de idempotență",
+        "createdAt": "Creat la"
     },
     "options": {
         "type": {
+            "initialization": "Inițializare",
+            "bulkUpdate": "Actualizare în masă",
+            "correction": "Corecție",
+            "annualGrant": "Alocare anuală",
+            "resetPending": "Resetare în așteptare",
+            "resetOverride": "Resetare forțată",
+            "automaticReset": "Resetare automată",
+            "holidayBooked": "Concediu rezervat",
+            "holidayAdjusted": "Concediu modificat",
+            "holidayCancelled": "Concediu anulat",
             "holidayRejected": "Concediu respins"
         }
+    },
+    "messages": {
+        "ledgerCreateForbidden": "Înregistrările din registrul de concedii pot fi create doar de serviciul de gestionare a soldului.",
+        "ledgerImmutable": "Înregistrările din registrul de concedii nu pot fi modificate sau șterse."
     }
 }

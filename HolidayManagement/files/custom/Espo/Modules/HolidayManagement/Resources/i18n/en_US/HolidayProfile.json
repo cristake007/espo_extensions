@@ -1,5 +1,6 @@
 {
     "fields": {
+        "name": "Name",
         "user": "User",
         "annualEntitlement": "Annual Entitlement",
         "balance": "Balance",
@@ -8,6 +9,17 @@
         "isInitialized": "Initialized",
         "resetPending": "Reset Pending",
         "pendingResetDate": "Pending Reset Date",
-        "pendingResetKey": "Pending Reset Key"
+        "pendingResetKey": "Pending Reset Key",
+        "createdAt": "Created At",
+        "modifiedAt": "Modified At"
+    },
+    "links": {
+        "ledgerEntries": "Ledger Entries",
+        "holidayRequests": "Holiday Requests"
+    },
+    "messages": {
+        "profileCreateForbidden": "Holiday profiles can only be created by the holiday balance service.",
+        "profileDeleteForbidden": "Holiday profiles cannot be deleted directly.",
+        "profileAccountingFieldsForbidden": "Holiday profile accounting fields can only be changed by the holiday balance service."
     }
 }

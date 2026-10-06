@@ -14,5 +14,15 @@
         "Next Reset Date": "Next Reset Date",
         "Initialized": "Initialized",
         "Not Initialized": "Not Initialized"
+    },
+    "messages": {
+        "profilesAccessForbidden": "Only administrators can manage holiday profiles.",
+        "correctionAccessForbidden": "Only administrators can correct holiday balances.",
+        "resetAccessForbidden": "Only administrators can process holiday resets.",
+        "itemsArrayRequired": "A list of profile items is required.",
+        "correctionPayloadRequired": "A profile ID and numeric adjustment are required.",
+        "profileIdRequired": "Profile ID is required.",
+        "holidayProfilesLoadFailed": "Holiday profiles could not be loaded.",
+        "holidayProfilesSaveFailed": "Holiday profiles could not be saved. Check the entered values and try again."
     }
 }

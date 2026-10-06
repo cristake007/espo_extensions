@@ -8,11 +8,17 @@ use Espo\Core\Exceptions\Forbidden;
 use Espo\Core\Record\DeleteParams;
 use Espo\Core\Record\Hook\DeleteHook;
 use Espo\ORM\Entity;
+use Espo\Core\Utils\Language;
 
 final class BeforeDelete implements DeleteHook
 {
+    public function __construct(private Language $language)
+    {}
+
     public function process(Entity $entity, DeleteParams $params): void
     {
-        throw new Forbidden('Holiday profiles cannot be deleted directly.');
+        throw new Forbidden($this->language->translateLabel(
+            'profileDeleteForbidden', 'messages', 'HolidayProfile'
+        ));
     }
 }

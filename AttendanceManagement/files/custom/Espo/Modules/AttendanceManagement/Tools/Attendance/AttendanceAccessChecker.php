@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Espo\Modules\AttendanceManagement\Tools\Attendance;
 
 use Espo\Core\Exceptions\Forbidden;
-use Espo\Core\Utils\Config;
+use Espo\Core\Acl;
 use Espo\Entities\User;
 
 final class AttendanceAccessChecker
 {
     public function __construct(
-        private Config $config,
+        private Acl $acl,
         private User $user,
     ) {}
 
@@ -24,13 +24,7 @@ final class AttendanceAccessChecker
             return false;
         }
 
-        $userId = $this->user->getId();
-        $managerIds = $this->config->get('attendanceManagementManagersIds') ?? [];
-
-        return
-            is_string($userId) &&
-            is_array($managerIds) &&
-            in_array($userId, $managerIds, true);
+        return $this->user->isAdmin() || $this->acl->check('AttendanceOverview');
     }
 
     public function assertManager(): void
@@ -42,8 +36,6 @@ final class AttendanceAccessChecker
 
     public function assertScheduleEditor(): void
     {
-        if (!$this->user->isAdmin() && !$this->isManager()) {
-            throw new Forbidden('Working schedules can only be changed by an administrator or attendance manager.');
-        }
+        $this->assertManager();
     }
 }

@@ -1,13 +1,13 @@
 {
     "fields": {
-        "attendanceManagementManagers": "Responsabili condica",
         "attendanceManagementEditablePastMonths": "Luni anterioare modificabile",
+        "attendanceManagementArchiveInitializer": "Initializare condica",
         "attendanceManagementAllowIncompleteExports": "Permite exportul registrelor incomplete",
         "attendanceManagementScheduleEditor": "Program implicit angajati"
     },
     "tooltips": {
-        "attendanceManagementManagers": "Singurii utilizatori care pot vedea si deschide centralizatorul, trimite notificari si descarca registrele.",
         "attendanceManagementEditablePastMonths": "Numarul de luni calendaristice anterioare pe care angajatii le mai pot modifica. Valoarea implicita 1 permite luna curenta si luna imediat anterioara; lunile mai vechi sunt blocate.",
+        "attendanceManagementArchiveInitializer": "Stabileste luna curenta ca prima luna vizibila in condica. Inregistrarile mai vechi nu sunt sterse, dar nu vor mai fi incluse in arhiva vizibila.",
         "attendanceManagementAllowIncompleteExports": "Daca este activat, responsabilii pot descarca fisiere XLSX si PDF chiar daca lipsesc prezente sau programe. Informatiile lipsa raman necompletate. Optiunea este dezactivata implicit.",
         "attendanceManagementScheduleEditor": "Stabileste ora normala de intrare si iesire pentru fiecare angajat. Modificarile se aplica tuturor lunilor din condica."
     },

@@ -6,6 +6,10 @@ define(['view'], (View) => {
                 <p class="text-muted attendance-page-intro">
                     {{translate 'Overview Page Guide' category='messages' scope='AttendanceRecord'}}
                 </p>
+                <a class="btn btn-default" href="#Admin/attendanceManagementSettings">
+                    <span class="fas fa-business-time" aria-hidden="true"></span>
+                    {{translate 'Employee Schedules' category='labels' scope='AttendanceRecord'}}
+                </a>
             </div>
             <div class="attendance-overview-page">
                 <div class="panel panel-default">
@@ -366,14 +370,22 @@ define(['view'], (View) => {
 
         renderMonthSelector(data) {
             const selectedMonth = String(data.month || data.currentMonth || '');
-            const [year, month] = String(data.currentMonth || selectedMonth).split('-').map(Number);
+            const currentMonth = String(data.currentMonth || selectedMonth);
+            const availableFromMonth = String(data.availableFromMonth || currentMonth);
+            const [year, month] = currentMonth.split('-').map(Number);
             const language = (this.getPreferences().get('language') ||
                 this.getConfig().get('language') || 'en_US').replace('_', '-');
             const select = this.$el.find('[data-overview-month-select]').empty();
 
-            for (let offset = 0; offset < 3; offset++) {
-                const date = new Date(Date.UTC(year, month - 1 - offset, 1, 12));
+            let date = new Date(Date.UTC(year, month - 1, 1, 12));
+
+            while (true) {
                 const value = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`;
+
+                if (value < availableFromMonth) {
+                    break;
+                }
+
                 const label = new Intl.DateTimeFormat(language, {
                     month: 'long',
                     year: 'numeric',
@@ -381,6 +393,12 @@ define(['view'], (View) => {
                 }).format(date);
 
                 select.append($('<option>', {value, text: label}));
+                date = new Date(Date.UTC(
+                    date.getUTCFullYear(),
+                    date.getUTCMonth() - 1,
+                    1,
+                    12
+                ));
             }
 
             select.val(selectedMonth).prop('disabled', false);

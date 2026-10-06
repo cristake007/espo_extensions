@@ -1,18 +1,28 @@
 {
     "keywords": {
-        "holidayManagement": "concediu,odihna,aprobari"
+        "holidayManagement": "concediu,odihnă,aprobări"
     },
     "descriptions": {
-        "holidayManagementSettings": "Configureaza valorile implicite pentru concedii, aprobatorii si blocurile tiparite de aprobare.",
-        "holidayManagementProfiles": "Initializati drepturile, soldurile initiale si datele de resetare ale angajatilor."
+        "holidayManagementSettings": "Configurează valorile implicite pentru concedii, aprobatorii și blocurile tipărite de aprobare.",
+        "holidayManagementProfiles": "Inițializați drepturile, soldurile inițiale și datele de resetare ale angajaților."
     },
     "labels": {
         "Holiday Management": "Gestionare concedii",
         "Holiday Profiles": "Profiluri de concediu",
         "Annual Entitlement": "Drept anual",
-        "Opening Balance": "Sold initial",
-        "Next Reset Date": "Urmatoarea data de resetare",
-        "Initialized": "Initializat",
-        "Not Initialized": "Neinitializat"
+        "Opening Balance": "Sold inițial",
+        "Next Reset Date": "Următoarea dată de resetare",
+        "Initialized": "Inițializat",
+        "Not Initialized": "Neinițializat"
+    },
+    "messages": {
+        "profilesAccessForbidden": "Doar administratorii pot gestiona profilurile de concediu.",
+        "correctionAccessForbidden": "Doar administratorii pot corecta soldurile de concediu.",
+        "resetAccessForbidden": "Doar administratorii pot procesa resetările concediilor.",
+        "itemsArrayRequired": "Este necesară o listă de profiluri.",
+        "correctionPayloadRequired": "Sunt necesare ID-ul profilului și o ajustare numerică.",
+        "profileIdRequired": "ID-ul profilului este obligatoriu.",
+        "holidayProfilesLoadFailed": "Profilurile de concediu nu au putut fi încărcate.",
+        "holidayProfilesSaveFailed": "Profilurile de concediu nu au putut fi salvate. Verificați valorile introduse și încercați din nou."
     }
 }

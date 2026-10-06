@@ -12,13 +12,12 @@ use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Utils\Language;
 use Espo\Modules\HolidayManagement\Tools\HolidayBalance\HolidayBalanceService;
 
-final class PostDecision implements Action
+final class PostCancellationRequest implements Action
 {
     public function __construct(
         private HolidayBalanceService $balanceService,
         private Language $language,
-    )
-    {}
+    ) {}
 
     public function process(Request $request): Response
     {
@@ -31,14 +30,14 @@ final class PostDecision implements Action
             ));
         }
 
-        if (!is_string($data->decision ?? null)) {
+        if (!is_string($data->reason ?? null) || trim($data->reason) === '') {
             throw new BadRequest($this->language->translateLabel(
-                'approvalDecisionRequired', 'messages', 'HolidayRequest'
+                'cancellationReasonRequired', 'messages', 'HolidayRequest'
             ));
         }
 
         return ResponseComposer::json(
-            $this->balanceService->decideHoliday($id, $data->decision),
+            $this->balanceService->requestCancellation($id, $data->reason),
         );
     }
 }

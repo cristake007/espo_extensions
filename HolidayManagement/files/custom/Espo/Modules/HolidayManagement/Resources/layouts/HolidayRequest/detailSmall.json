@@ -6,6 +6,9 @@
             [{"name": "days"}, {"name": "status"}],
             [{"name": "assignedUser"}, {"name": "decidedBy"}],
             [{"name": "decidedAt"}, false],
+            [{"name": "cancellationRequestedBy"}, {"name": "cancellationRequestedAt"}],
+            [{"name": "cancellationDecidedBy"}, {"name": "cancellationDecidedAt"}],
+            [{"name": "cancellationReason", "fullWidth": true}],
             [{"name": "description", "fullWidth": true}],
             [{"name": "approvalDocuments", "fullWidth": true}]
         ]

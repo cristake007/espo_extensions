@@ -48,7 +48,22 @@ define(['view', 'model'], (Dep, Model) => {
         }
 
         async loadProfiles() {
-            const response = await Espo.Ajax.getRequest('HolidayManagement/profiles');
+            let response;
+
+            try {
+                response = await Espo.Ajax.getRequest('HolidayManagement/profiles');
+            } catch (error) {
+                this.rows = [];
+                this.profileModels = [];
+                Espo.Ui.error(this.translate(
+                    'holidayProfilesLoadFailed',
+                    'messages',
+                    'Admin',
+                ));
+
+                return;
+            }
+
             this.rows = (response.list || []).map((row, rowIndex) => ({...row, rowIndex}));
             this.profileModels = this.rows.map(row => {
                 const model = new Model({
@@ -142,6 +157,12 @@ define(['view', 'model'], (Dep, Model) => {
                 Espo.Ui.success(this.translate('Saved'));
                 await this.loadProfiles();
                 await this.reRender();
+            } catch (error) {
+                Espo.Ui.error(this.translate(
+                    'holidayProfilesSaveFailed',
+                    'messages',
+                    'Admin',
+                ));
             } finally {
                 saveButton.prop('disabled', false);
             }

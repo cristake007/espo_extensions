@@ -1,9 +1,235 @@
-#navbar li[data-name="AttendanceOverview"] {
-    display: none;
+.attendance-manager-admin-page .admin-panel-link {
+    align-items: center;
+    display: flex;
+    font-size: 15px;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
-.attendance-management-manager #navbar li[data-name="AttendanceOverview"] {
-    display: list-item;
+.attendance-manager-admin-page .admin-panel-link .fas {
+    color: var(--brand-primary);
+    font-size: 20px;
+}
+
+.attendance-settings-page {
+    margin: 0 auto;
+    max-width: 1180px;
+    padding-bottom: 28px;
+    width: 100%;
+}
+
+.attendance-settings-header {
+    margin-bottom: 20px;
+}
+
+.attendance-settings-title {
+    align-items: center;
+    display: flex;
+    gap: 11px;
+}
+
+.attendance-settings-title > .fas {
+    color: var(--brand-primary);
+    font-size: 24px;
+}
+
+.attendance-settings-title h3 {
+    margin: 0;
+}
+
+.attendance-settings-section,
+.attendance-schedule-editor {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-default-border);
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--default-box-shadow);
+    overflow: hidden;
+    width: 100%;
+}
+
+.attendance-settings-section {
+    margin-bottom: 22px;
+}
+
+.attendance-settings-section-heading {
+    align-items: center;
+    background: var(--default-heading-bg-color);
+    border-bottom: 1px solid var(--panel-default-border);
+    display: flex;
+    gap: 12px;
+    padding: 16px var(--panel-padding);
+}
+
+.attendance-settings-section-icon {
+    color: var(--brand-primary);
+    flex: 0 0 auto;
+    font-size: 20px;
+}
+
+.attendance-settings-section-body {
+    padding: var(--panel-padding);
+}
+
+.attendance-settings-card-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.attendance-settings-card {
+    align-items: flex-start;
+    background: var(--panel-default-bg);
+    border: 1px solid var(--panel-default-border);
+    border-radius: var(--panel-border-radius);
+    display: flex;
+    gap: 14px;
+    margin: 0;
+    min-width: 0;
+    padding: 18px;
+}
+
+.attendance-settings-card-icon {
+    align-items: center;
+    background: var(--default-heading-bg-color);
+    border-radius: 50%;
+    color: var(--brand-primary);
+    display: flex;
+    flex: 0 0 38px;
+    height: 38px;
+    justify-content: center;
+    width: 38px;
+}
+
+.attendance-settings-card-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.attendance-settings-card-content > strong {
+    line-height: 1.35;
+}
+
+.attendance-settings-card-content > small {
+    display: block;
+    font-weight: normal;
+    line-height: 1.45;
+    margin-top: 5px;
+}
+
+.attendance-number-control {
+    align-items: center;
+    display: flex;
+    gap: 9px;
+    margin-top: 15px;
+}
+
+.attendance-number-control .form-control {
+    max-width: 90px;
+}
+
+.attendance-checkbox-control {
+    align-items: center;
+    display: flex;
+    gap: 9px;
+    margin-top: 17px;
+}
+
+.attendance-checkbox-control input {
+    margin: 0;
+}
+
+.attendance-archive-card {
+    align-items: center;
+    background: var(--state-info-bg);
+    border: 1px solid var(--state-info-border);
+    border-radius: var(--panel-border-radius);
+    display: flex;
+    gap: 14px;
+    margin-top: 16px;
+    padding: 18px;
+}
+
+.attendance-archive-card-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.attendance-archive-status {
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.attendance-archive-card-content small {
+    line-height: 1.45;
+    margin-top: 4px;
+}
+
+.attendance-archive-action {
+    flex: 0 0 auto;
+}
+
+.attendance-settings-actions {
+    border-top: 1px solid var(--panel-default-border);
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-top: 16px;
+}
+
+.attendance-archive-initializer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.attendance-archive-initializer > * {
+    align-self: flex-start;
+}
+
+.attendance-archive-initializer .btn {
+    margin-top: 3px;
+}
+
+.attendance-manager-setting-checkbox {
+    display: grid;
+    gap: 0 9px;
+    grid-template-columns: auto 1fr;
+    padding-top: 7px;
+}
+
+.attendance-manager-setting-checkbox input {
+    margin-top: 3px;
+}
+
+.attendance-manager-setting-checkbox small {
+    grid-column: 2;
+}
+
+.attendance-manager-settings-actions {
+    padding-top: 1px;
+}
+
+@media (max-width: 767px) {
+    .attendance-settings-card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .attendance-archive-card {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .attendance-archive-action {
+        margin-left: 52px;
+    }
+
+    .attendance-settings-actions .btn {
+        width: 100%;
+    }
 }
 
 .attendance-page {
@@ -198,13 +424,12 @@
     width: 100%;
 }
 
+.attendance-management-settings-page .cell[data-name="attendanceManagementArchiveInitializer"] {
+    min-width: 320px;
+}
+
 .attendance-schedule-editor {
-    background: var(--panel-bg);
-    border: 1px solid var(--panel-default-border);
-    border-radius: var(--panel-border-radius);
-    box-shadow: var(--default-box-shadow);
-    overflow: hidden;
-    width: 100%;
+    margin-top: 0;
 }
 
 .attendance-schedule-editor-intro {

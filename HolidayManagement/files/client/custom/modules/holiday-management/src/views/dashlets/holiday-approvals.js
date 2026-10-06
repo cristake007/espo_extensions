@@ -18,7 +18,7 @@ define(['views/dashlets/abstract/base'], (BaseDashletView) => {
                         {{#if hasRows}}
                             <div class="holiday-approvals-dashlet__list">
                                 {{#each rows}}
-                                    <article class="holiday-approvals-dashlet__item" data-id="{{id}}">
+                                    <article class="holiday-approvals-dashlet__item" data-id="{{id}}" data-cancellation="{{isCancellation}}">
                                         <div class="holiday-approvals-dashlet__summary">
                                             <strong>{{requesterName}}</strong>
                                             <span class="badge" title="{{translate 'days' category='fields' scope='HolidayRequest'}}">
@@ -34,12 +34,26 @@ define(['views/dashlets/abstract/base'], (BaseDashletView) => {
                                                 {{description}}
                                             </div>
                                         {{/if}}
+                                        {{#if isCancellation}}
+                                            <div class="holiday-approvals-dashlet__description text-warning">
+                                                <strong>{{translate 'Cancellation Reason' category='labels' scope='HolidayRequest'}}:</strong>
+                                                {{cancellationReason}}
+                                            </div>
+                                        {{/if}}
                                         <div class="holiday-approvals-dashlet__actions">
                                             <button class="btn btn-success btn-sm" data-action="approve">
-                                                {{translate 'Approve Holiday' category='labels' scope='HolidayRequest'}}
+                                                {{#if isCancellation}}
+                                                    {{translate 'Approve Cancellation' category='labels' scope='HolidayRequest'}}
+                                                {{else}}
+                                                    {{translate 'Approve Holiday' category='labels' scope='HolidayRequest'}}
+                                                {{/if}}
                                             </button>
                                             <button class="btn btn-danger btn-sm" data-action="reject">
-                                                {{translate 'Reject Holiday' category='labels' scope='HolidayRequest'}}
+                                                {{#if isCancellation}}
+                                                    {{translate 'Reject Cancellation' category='labels' scope='HolidayRequest'}}
+                                                {{else}}
+                                                    {{translate 'Reject Holiday' category='labels' scope='HolidayRequest'}}
+                                                {{/if}}
                                             </button>
                                         </div>
                                     </article>
@@ -100,28 +114,39 @@ define(['views/dashlets/abstract/base'], (BaseDashletView) => {
                 return {
                     ...item,
                     dateRange: start === end ? start : `${start} – ${end}`,
+                    isCancellation: item.status === 'CancellationPending',
                 };
             });
         }
 
         actionApprove(event) {
-            this.decide($(event.currentTarget), 'Approved');
+            const button = $(event.currentTarget);
+            const isCancellation = button.closest('[data-id]').data('cancellation') === true;
+
+            this.decide(button, isCancellation ? 'Cancelled' : 'Approved', isCancellation);
         }
 
         actionReject(event) {
-            this.decide($(event.currentTarget), 'Rejected');
+            const button = $(event.currentTarget);
+            const isCancellation = button.closest('[data-id]').data('cancellation') === true;
+
+            this.decide(button, isCancellation ? 'Approved' : 'Rejected', isCancellation);
         }
 
-        async decide(button, decision) {
+        async decide(button, decision, isCancellation) {
             const item = button.closest('[data-id]');
-            const messageKey = decision === 'Approved'
-                ? 'confirmApproveHoliday'
-                : 'confirmRejectHoliday';
+            const approved = decision === (isCancellation ? 'Cancelled' : 'Approved');
+            const messageKey = isCancellation ?
+                (approved ? 'confirmApproveCancellation' : 'confirmRejectCancellation') :
+                (approved ? 'confirmApproveHoliday' : 'confirmRejectHoliday');
+            const labelKey = isCancellation ?
+                (approved ? 'Approve Cancellation' : 'Reject Cancellation') :
+                (approved ? 'Approve Holiday' : 'Reject Holiday');
 
             await this.confirm({
                 message: this.translate(messageKey, 'messages', 'HolidayRequest'),
                 confirmText: this.translate(
-                    decision === 'Approved' ? 'Approve Holiday' : 'Reject Holiday',
+                    labelKey,
                     'labels',
                     'HolidayRequest',
                 ),
@@ -135,7 +160,9 @@ define(['views/dashlets/abstract/base'], (BaseDashletView) => {
                     {decision},
                 );
                 Espo.Ui.success(this.translate(
-                    decision === 'Approved' ? 'holidayApproved' : 'holidayRejected',
+                    isCancellation ?
+                        (approved ? 'cancellationApproved' : 'cancellationRejected') :
+                        (approved ? 'holidayApproved' : 'holidayRejected'),
                     'messages',
                     'HolidayRequest',
                 ));
@@ -148,7 +175,7 @@ define(['views/dashlets/abstract/base'], (BaseDashletView) => {
             } catch (error) {
                 item.find('button').prop('disabled', false);
                 Espo.Ui.error(this.translate(
-                    'approvalDecisionFailed',
+                    isCancellation ? 'cancellationActionFailed' : 'approvalDecisionFailed',
                     'messages',
                     'HolidayRequest',
                 ));

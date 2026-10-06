@@ -2,10 +2,12 @@
     "labels": {
         "Attendance Management": "Attendance Management",
         "Access and Editing": "Access and editing",
-        "Employee Schedules": "Employee schedules"
+        "Employee Schedules": "Employee schedules",
+        "Attendance Settings": "Attendance settings and employee schedules"
     },
     "descriptions": {
-        "attendanceManagementSettings": "Configure attendance managers, editing and export rules, and employee work schedules."
+        "attendanceManagementSettings": "Configure attendance managers, editing and export rules, and employee work schedules.",
+        "attendanceManagerSettings": "Configure the working schedule for each employee."
     },
     "keywords": {
         "Attendance Management": "attendance register managers reminders xlsx pdf export"

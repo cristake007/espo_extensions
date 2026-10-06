@@ -12,6 +12,7 @@ use Espo\Core\Exceptions\NotFound;
 use Espo\Core\Utils\DateTime as DateTimeUtil;
 use Espo\Core\Utils\Id\RecordIdGenerator;
 use Espo\Core\Utils\Config;
+use Espo\Core\Utils\Language;
 use Espo\Entities\User;
 use Espo\Modules\HolidayManagement\Tools\HolidayDocument\HolidayApprovalDocumentService;
 use Espo\Modules\HolidayManagement\Tools\HolidayRequest\WorkingDayCalculator;
@@ -30,6 +31,8 @@ final class HolidayBalanceService
     private const STATUS_PENDING = 'Pending';
     private const STATUS_APPROVED = 'Approved';
     private const STATUS_REJECTED = 'Rejected';
+    private const STATUS_CANCELLATION_PENDING = 'CancellationPending';
+    private const STATUS_CANCELLED = 'Cancelled';
     private const DEFAULT_CALENDAR_COLOR = '#4F8A8B';
 
     public function __construct(
@@ -42,6 +45,7 @@ final class HolidayBalanceService
         private DateTimeUtil $dateTime,
         private RecordIdGenerator $recordIdGenerator,
         private HolidayApprovalDocumentService $approvalDocumentService,
+        private Language $language,
     ) {}
 
     /** @return array<string, mixed> */
@@ -122,6 +126,13 @@ final class HolidayBalanceService
             'decidedById' => null,
             'decidedByName' => null,
             'decidedAt' => null,
+            'cancellationReason' => null,
+            'cancellationRequestedById' => null,
+            'cancellationRequestedByName' => null,
+            'cancellationRequestedAt' => null,
+            'cancellationDecidedById' => null,
+            'cancellationDecidedByName' => null,
+            'cancellationDecidedAt' => null,
             'assignedUserId' => $userId,
             'assignedUserName' => $this->user->get('name'),
             'profileId' => $profile->getId(),
@@ -168,7 +179,7 @@ final class HolidayBalanceService
         $status = (string) ($request->getFetched('status') ?: self::STATUS_PENDING);
 
         if ($status !== self::STATUS_PENDING) {
-            throw new Conflict('Only a pending holiday request can be edited.');
+            throw new Conflict($this->message('onlyPendingEditable'));
         }
 
         [$dateStart, $dateEnd] = $this->normalizeRequestDates($request);
@@ -241,8 +252,12 @@ final class HolidayBalanceService
         $this->assertRequestOwner($userId);
         $status = (string) ($request->get('status') ?: self::STATUS_PENDING);
 
-        if ($status === self::STATUS_APPROVED) {
-            throw new Conflict('An approved holiday request cannot be deleted.');
+        if (in_array($status, [
+            self::STATUS_APPROVED,
+            self::STATUS_CANCELLATION_PENDING,
+            self::STATUS_CANCELLED,
+        ], true)) {
+            throw new Conflict($this->message('finalizedCannotDelete'));
         }
 
         if ($status === self::STATUS_REJECTED) {
@@ -285,7 +300,7 @@ final class HolidayBalanceService
             ->findOne();
 
         if (!$request) {
-            throw new NotFound('Holiday request not found.');
+            throw new NotFound($this->message('requestNotFound'));
         }
 
         $status = (string) ($request->get('status') ?: self::STATUS_PENDING);
@@ -294,7 +309,17 @@ final class HolidayBalanceService
             'id' => $request->getId(),
             'status' => $status,
             'canDecide' =>
-                $status === self::STATUS_PENDING &&
+                in_array($status, [
+                    self::STATUS_PENDING,
+                    self::STATUS_CANCELLATION_PENDING,
+                ], true) &&
+                $this->isConfiguredApprover(),
+            'canRequestCancellation' =>
+                $status === self::STATUS_APPROVED &&
+                $request->get('assignedUserId') === $this->user->getId() &&
+                (string) $request->get('dateStartDate') > $this->dateTime->getToday()->toString(),
+            'canCancelDirectly' =>
+                $status === self::STATUS_APPROVED &&
                 $this->isConfiguredApprover(),
         ];
     }
@@ -314,7 +339,10 @@ final class HolidayBalanceService
 
         $requests = $this->entityManager
             ->getRDBRepository(self::REQUEST)
-            ->where(['status' => self::STATUS_PENDING])
+            ->where(['status' => [
+                self::STATUS_PENDING,
+                self::STATUS_CANCELLATION_PENDING,
+            ]])
             ->order('dateStartDate')
             ->find();
         $list = [];
@@ -328,7 +356,8 @@ final class HolidayBalanceService
                 'dateEnd' => $request->get('dateEndDate'),
                 'days' => $request->get('days'),
                 'description' => $request->get('description'),
-                'status' => self::STATUS_PENDING,
+                'cancellationReason' => $request->get('cancellationReason'),
+                'status' => $request->get('status') ?: self::STATUS_PENDING,
             ];
         }
 
@@ -342,8 +371,12 @@ final class HolidayBalanceService
     /** @return array<string, mixed> */
     public function decideHoliday(string $requestId, string $decision): array
     {
-        if (!in_array($decision, [self::STATUS_APPROVED, self::STATUS_REJECTED], true)) {
-            throw new BadRequest('Decision must be Approved or Rejected.');
+        if (!in_array($decision, [
+            self::STATUS_APPROVED,
+            self::STATUS_REJECTED,
+            self::STATUS_CANCELLED,
+        ], true)) {
+            throw new BadRequest($this->message('decisionInvalid'));
         }
 
         $this->assertConfiguredApprover();
@@ -357,24 +390,42 @@ final class HolidayBalanceService
                     ->findOne();
 
                 if (!$request) {
-                    throw new NotFound('Holiday request not found.');
+                    throw new NotFound($this->message('requestNotFound'));
                 }
 
                 $currentStatus = (string) ($request->get('status') ?: self::STATUS_PENDING);
 
-                if ($currentStatus !== self::STATUS_PENDING) {
-                    throw new Conflict(sprintf(
-                        'This holiday request has already been %s.',
-                        strtolower($currentStatus),
-                    ));
+                $allowedDecisions = $currentStatus === self::STATUS_PENDING ?
+                    [self::STATUS_APPROVED, self::STATUS_REJECTED] :
+                    [self::STATUS_CANCELLED, self::STATUS_APPROVED];
+
+                if (
+                    !in_array($currentStatus, [
+                        self::STATUS_PENDING,
+                        self::STATUS_CANCELLATION_PENDING,
+                    ], true) ||
+                    !in_array($decision, $allowedDecisions, true)
+                ) {
+                    throw new Conflict($this->message('requestDecisionUnavailable'));
                 }
 
-                $request->set([
-                    'status' => $decision,
-                    'decidedById' => $this->user->getId(),
-                    'decidedByName' => $this->user->get('name'),
-                    'decidedAt' => DateTimeUtil::getSystemNowString(),
-                ]);
+                $decisionData = ['status' => $decision];
+
+                if ($currentStatus === self::STATUS_CANCELLATION_PENDING) {
+                    $decisionData += [
+                        'cancellationDecidedById' => $this->user->getId(),
+                        'cancellationDecidedByName' => $this->user->get('name'),
+                        'cancellationDecidedAt' => DateTimeUtil::getSystemNowString(),
+                    ];
+                } else {
+                    $decisionData += [
+                        'decidedById' => $this->user->getId(),
+                        'decidedByName' => $this->user->get('name'),
+                        'decidedAt' => DateTimeUtil::getSystemNowString(),
+                    ];
+                }
+
+                $request->set($decisionData);
                 $this->entityManager->saveEntity($request);
 
                 return [
@@ -383,6 +434,9 @@ final class HolidayBalanceService
                     'decidedById' => $request->get('decidedById'),
                     'decidedByName' => $request->get('decidedByName'),
                     'decidedAt' => $request->get('decidedAt'),
+                    'cancellationDecidedById' => $request->get('cancellationDecidedById'),
+                    'cancellationDecidedByName' => $request->get('cancellationDecidedByName'),
+                    'cancellationDecidedAt' => $request->get('cancellationDecidedAt'),
                 ];
             },
         );
@@ -393,20 +447,58 @@ final class HolidayBalanceService
         $statusBefore = (string) ($request->getFetched('status') ?: self::STATUS_PENDING);
         $statusAfter = (string) $request->get('status');
 
-        if (
-            $statusBefore !== self::STATUS_PENDING ||
-            !in_array($statusAfter, [self::STATUS_APPROVED, self::STATUS_REJECTED], true)
-        ) {
-            throw new Conflict('A holiday approval decision can only be made once.');
+        $validTransition =
+            ($statusBefore === self::STATUS_PENDING && in_array(
+                $statusAfter,
+                [self::STATUS_APPROVED, self::STATUS_REJECTED],
+                true,
+            )) ||
+            ($statusBefore === self::STATUS_APPROVED && in_array(
+                $statusAfter,
+                [self::STATUS_CANCELLATION_PENDING, self::STATUS_CANCELLED],
+                true,
+            )) ||
+            ($statusBefore === self::STATUS_CANCELLATION_PENDING && in_array(
+                $statusAfter,
+                [self::STATUS_APPROVED, self::STATUS_CANCELLED],
+                true,
+            ));
+
+        if (!$validTransition) {
+            throw new Conflict($this->message('approvalDecisionOnce'));
         }
 
-        $this->assertConfiguredApprover();
+        if ($statusAfter !== self::STATUS_CANCELLATION_PENDING) {
+            $this->assertConfiguredApprover();
+        }
 
-        if ($statusAfter === self::STATUS_APPROVED) {
+        if ($statusBefore === self::STATUS_PENDING && $statusAfter === self::STATUS_APPROVED) {
             $this->approvalDocumentService->generate($request);
 
             return;
         }
+
+        if (
+            $statusAfter === self::STATUS_CANCELLATION_PENDING ||
+            ($statusBefore === self::STATUS_CANCELLATION_PENDING &&
+                $statusAfter === self::STATUS_APPROVED)
+        ) {
+            return;
+        }
+
+        $type = $statusAfter === self::STATUS_CANCELLED ?
+            'holidayCancelled' :
+            'holidayRejected';
+        $reason = $statusAfter === self::STATUS_CANCELLED ?
+            trim((string) $request->get('cancellationReason')) :
+            sprintf(
+                'Holiday rejected for %s through %s.',
+                $request->get('dateStartDate'),
+                $request->get('dateEndDate'),
+            );
+        $keyPrefix = $statusAfter === self::STATUS_CANCELLED ?
+            'approved-holiday-cancelled:' :
+            'holiday-rejected:';
 
         $profile = $this->lockProfileByUser((string) $request->get('assignedUserId'));
         $days = max(0, (int) $request->get('days'));
@@ -415,21 +507,93 @@ final class HolidayBalanceService
         $this->entityManager->saveEntity($profile);
         $this->createLedger(
             $profile,
-            'holidayRejected',
+            $type,
             $days,
             $before,
             $this->snapshot($profile),
+            $reason,
             sprintf(
-                'Holiday rejected for %s through %s.',
-                $request->get('dateStartDate'),
-                $request->get('dateEndDate'),
-            ),
-            sprintf(
-                'holiday-rejected:%s:%d',
+                '%s%s:%d',
+                $keyPrefix,
                 $request->get('accountingKey'),
                 $request->get('accountingRevision'),
             ),
             $request,
+        );
+    }
+
+    /** @return array<string, mixed> */
+    public function requestCancellation(string $requestId, string $reason): array
+    {
+        $reason = trim($reason);
+
+        if ($reason === '') {
+            throw new BadRequest($this->message('cancellationReasonRequired'));
+        }
+
+        return $this->entityManager->getTransactionManager()->run(
+            function () use ($requestId, $reason): array {
+                $request = $this->lockHolidayRequest($requestId);
+                $this->assertCancellationRequester($request);
+
+                if (($request->get('status') ?: self::STATUS_PENDING) !== self::STATUS_APPROVED) {
+                    throw new Conflict($this->message('onlyApprovedCanBeCancelled'));
+                }
+
+                if ((string) $request->get('dateStartDate') <= $this->dateTime->getToday()->toString()) {
+                    throw new Conflict($this->message('startedHolidayApproverOnly'));
+                }
+
+                $request->set([
+                    'status' => self::STATUS_CANCELLATION_PENDING,
+                    'cancellationReason' => $reason,
+                    'cancellationRequestedById' => $this->user->getId(),
+                    'cancellationRequestedByName' => $this->user->get('name'),
+                    'cancellationRequestedAt' => DateTimeUtil::getSystemNowString(),
+                    'cancellationDecidedById' => null,
+                    'cancellationDecidedByName' => null,
+                    'cancellationDecidedAt' => null,
+                ]);
+                $this->entityManager->saveEntity($request);
+
+                return $this->cancellationResult($request);
+            },
+        );
+    }
+
+    /** @return array<string, mixed> */
+    public function cancelApprovedHoliday(string $requestId, string $reason): array
+    {
+        $reason = trim($reason);
+
+        if ($reason === '') {
+            throw new BadRequest($this->message('cancellationReasonRequired'));
+        }
+
+        $this->assertConfiguredApprover();
+
+        return $this->entityManager->getTransactionManager()->run(
+            function () use ($requestId, $reason): array {
+                $request = $this->lockHolidayRequest($requestId);
+
+                if (($request->get('status') ?: self::STATUS_PENDING) !== self::STATUS_APPROVED) {
+                    throw new Conflict($this->message('onlyApprovedCanBeCancelled'));
+                }
+
+                $request->set([
+                    'status' => self::STATUS_CANCELLED,
+                    'cancellationReason' => $reason,
+                    'cancellationRequestedById' => $this->user->getId(),
+                    'cancellationRequestedByName' => $this->user->get('name'),
+                    'cancellationRequestedAt' => DateTimeUtil::getSystemNowString(),
+                    'cancellationDecidedById' => $this->user->getId(),
+                    'cancellationDecidedByName' => $this->user->get('name'),
+                    'cancellationDecidedAt' => DateTimeUtil::getSystemNowString(),
+                ]);
+                $this->entityManager->saveEntity($request);
+
+                return $this->cancellationResult($request);
+            },
         );
     }
 
@@ -479,7 +643,7 @@ final class HolidayBalanceService
     public function bulkInitialize(array $items): array
     {
         if ($items === []) {
-            throw new BadRequest('At least one profile item is required.');
+            throw new BadRequest($this->message('profileItemRequired'));
         }
 
         $result = [];
@@ -502,11 +666,11 @@ final class HolidayBalanceService
         $this->validateIdempotencyKey($idempotencyKey);
 
         if (trim($reason) === '') {
-            throw new BadRequest('Correction reason is required.');
+            throw new BadRequest($this->message('correctionReasonRequired'));
         }
 
         if (!is_finite($delta) || $delta === 0.0) {
-            throw new BadRequest('Correction delta must be a non-zero finite number.');
+            throw new BadRequest($this->message('correctionDeltaInvalid'));
         }
 
         return $this->entityManager->getTransactionManager()->run(function () use (
@@ -558,7 +722,7 @@ final class HolidayBalanceService
         $this->validateIdempotencyKey($idempotencyKey);
 
         if ($force && trim((string) $reason) === '') {
-            throw new BadRequest('Forced reset reason is required.');
+            throw new BadRequest($this->message('forcedResetReasonRequired'));
         }
 
         return $this->entityManager->getTransactionManager()->run(function () use (
@@ -599,13 +763,19 @@ final class HolidayBalanceService
         $userId = trim((string) ($item['userId'] ?? ''));
         $idempotencyKey = trim((string) ($item['idempotencyKey'] ?? ''));
         $nextResetDate = trim((string) ($item['nextResetDate'] ?? ''));
-        $annualEntitlement = $this->finiteNumber($item['annualEntitlement'] ?? null, 'Annual entitlement');
-        $openingBalance = $this->finiteNumber($item['openingBalance'] ?? null, 'Opening balance');
+        $annualEntitlement = $this->finiteNumber(
+            $item['annualEntitlement'] ?? null,
+            $this->message('annualEntitlementField'),
+        );
+        $openingBalance = $this->finiteNumber(
+            $item['openingBalance'] ?? null,
+            $this->message('openingBalanceField'),
+        );
         $calendarColor = array_key_exists('calendarColor', $item) ?
             $this->validateCalendarColor($item['calendarColor']) : null;
 
         if ($userId === '') {
-            throw new BadRequest('User ID is required.');
+            throw new BadRequest($this->message('userIdRequired'));
         }
 
         $this->validateDate($nextResetDate);
@@ -724,7 +894,7 @@ final class HolidayBalanceService
             ->findOne();
 
         if (!$eligibleUser) {
-            throw new BadRequest('User must be an active regular or administrator user.');
+            throw new BadRequest($this->message('eligibleUserRequired'));
         }
 
         return $eligibleUser;
@@ -733,7 +903,7 @@ final class HolidayBalanceService
     private function validateCalendarColor(mixed $value): string
     {
         if (!is_string($value) || !preg_match('/^#[0-9A-Fa-f]{6}$/', $value)) {
-            throw new BadRequest('Calendar color must be a six-digit hexadecimal color.');
+            throw new BadRequest($this->message('calendarColorInvalid'));
         }
 
         return strtoupper($value);
@@ -745,7 +915,7 @@ final class HolidayBalanceService
             !(bool) $this->user->get('isActive') ||
             !in_array($this->user->get('type'), [User::TYPE_REGULAR, User::TYPE_ADMIN], true)
         ) {
-            throw new Forbidden('Only active internal users can book holiday.');
+            throw new Forbidden($this->message('internalUserOnly'));
         }
     }
 
@@ -754,7 +924,16 @@ final class HolidayBalanceService
         $this->assertInternalUser();
 
         if (!$this->user->isAdmin() && $userId !== $this->user->getId()) {
-            throw new Forbidden('A holiday booking can only be changed by its owner.');
+            throw new Forbidden($this->message('ownerOnly'));
+        }
+    }
+
+    private function assertCancellationRequester(Entity $request): void
+    {
+        $this->assertInternalUser();
+
+        if ($request->get('assignedUserId') !== $this->user->getId()) {
+            throw new Forbidden($this->message('cancellationOwnerOnly'));
         }
     }
 
@@ -763,7 +942,7 @@ final class HolidayBalanceService
         $this->assertInternalUser();
 
         if (!$this->isConfiguredApprover()) {
-            throw new Forbidden('Only a configured holiday approver can make this decision.');
+            throw new Forbidden($this->message('approverOnly'));
         }
     }
 
@@ -786,10 +965,41 @@ final class HolidayBalanceService
             ->findOne();
 
         if (!$profile || !(bool) $profile->get('isInitialized')) {
-            throw new BadRequest('The holiday profile is not initialized.');
+            throw new BadRequest($this->message('profileNotInitialized'));
         }
 
         return $profile;
+    }
+
+    private function lockHolidayRequest(string $requestId): Entity
+    {
+        $request = $this->entityManager
+            ->getRDBRepository(self::REQUEST)
+            ->where(['id' => $requestId])
+            ->forUpdate()
+            ->findOne();
+
+        if (!$request) {
+            throw new NotFound($this->message('requestNotFound'));
+        }
+
+        return $request;
+    }
+
+    /** @return array<string, mixed> */
+    private function cancellationResult(Entity $request): array
+    {
+        return [
+            'id' => $request->getId(),
+            'status' => $request->get('status'),
+            'cancellationReason' => $request->get('cancellationReason'),
+            'cancellationRequestedById' => $request->get('cancellationRequestedById'),
+            'cancellationRequestedByName' => $request->get('cancellationRequestedByName'),
+            'cancellationRequestedAt' => $request->get('cancellationRequestedAt'),
+            'cancellationDecidedById' => $request->get('cancellationDecidedById'),
+            'cancellationDecidedByName' => $request->get('cancellationDecidedByName'),
+            'cancellationDecidedAt' => $request->get('cancellationDecidedAt'),
+        ];
     }
 
     private function findProfileByUser(string $userId): Entity
@@ -800,7 +1010,7 @@ final class HolidayBalanceService
             ->findOne();
 
         if (!$profile || !(bool) $profile->get('isInitialized')) {
-            throw new BadRequest('The holiday profile is not initialized.');
+            throw new BadRequest($this->message('profileNotInitialized'));
         }
 
         return $profile;
@@ -826,7 +1036,7 @@ final class HolidayBalanceService
         $dateTime = $request->get($dateTimeField);
 
         if (!is_string($dateTime) || strlen($dateTime) < 10) {
-            throw new BadRequest('Both the first and last holiday day are required.');
+            throw new BadRequest($this->message('holidayDatesRequired'));
         }
 
         return substr($dateTime, 0, 10);
@@ -841,7 +1051,7 @@ final class HolidayBalanceService
                 $this->nonWorkingDayProvider->getDates($dateStart, $dateEnd),
             );
         } catch (InvalidArgumentException $e) {
-            throw new BadRequest($e->getMessage());
+            throw new BadRequest($this->translateValidationMessage($e->getMessage()));
         }
     }
 
@@ -860,7 +1070,7 @@ final class HolidayBalanceService
                 $originalDateEnd,
             );
         } catch (InvalidArgumentException $e) {
-            throw new BadRequest($e->getMessage());
+            throw new BadRequest($this->translateValidationMessage($e->getMessage()));
         }
     }
 
@@ -890,7 +1100,7 @@ final class HolidayBalanceService
             ->findOne();
 
         if ($overlap) {
-            throw new Conflict('The selected dates overlap another holiday booking.');
+            throw new Conflict($this->message('datesOverlap'));
         }
     }
 
@@ -909,19 +1119,15 @@ final class HolidayBalanceService
 
         $availableDays = max(0.0, $currentBalance - $limit);
         $shortfallDays = max(0.0, $daysToDeduct - $availableDays);
-        $action = $isAdjustment ? 'change requires' : 'booking requires';
-        $kind = $isAdjustment ? 'additional holiday days' : 'holiday days';
-
-        throw new Conflict(sprintf(
-            'This %s %s %s, but only %s are available. Requested: %s days; available: %s days; shortfall: %s days.',
-            $action,
-            $this->formatDays($daysToDeduct),
-            $kind,
-            $this->formatDays($availableDays),
-            $this->formatDays($daysToDeduct),
-            $this->formatDays($availableDays),
-            $this->formatDays($shortfallDays),
-        ));
+        throw new Conflict($this->message('balanceLimitExceeded', [
+            'action' => $this->message($isAdjustment ? 'changeAction' : 'bookingAction'),
+            'requested' => $this->formatDays($daysToDeduct),
+            'kind' => $this->message(
+                $isAdjustment ? 'additionalHolidayDays' : 'holidayDays'
+            ),
+            'available' => $this->formatDays($availableDays),
+            'shortfall' => $this->formatDays($shortfallDays),
+        ]));
     }
 
     private function formatDays(float $value): string
@@ -938,11 +1144,11 @@ final class HolidayBalanceService
             ->findOne();
 
         if (!$profile) {
-            throw new NotFound('Holiday profile not found.');
+            throw new NotFound($this->message('profileNotFound'));
         }
 
         if (!(bool) $profile->get('isInitialized')) {
-            throw new BadRequest('Holiday profile is not initialized.');
+            throw new BadRequest($this->message('profileNotInitialized'));
         }
 
         return $profile;
@@ -1079,7 +1285,7 @@ final class HolidayBalanceService
             ->findOne();
 
         if (!$profile) {
-            throw new NotFound('Holiday profile for existing operation not found.');
+            throw new NotFound($this->message('operationProfileNotFound'));
         }
 
         return $this->mutationResult($profile, $ledger, true);
@@ -1123,7 +1329,7 @@ final class HolidayBalanceService
     private function validateIdempotencyKey(string $idempotencyKey): void
     {
         if (!preg_match('/^[A-Za-z0-9._:-]{1,190}$/', $idempotencyKey)) {
-            throw new BadRequest('A valid idempotency key is required.');
+            throw new BadRequest($this->message('idempotencyKeyInvalid'));
         }
     }
 
@@ -1132,18 +1338,18 @@ final class HolidayBalanceService
         $parsed = DateTimeImmutable::createFromFormat('!Y-m-d', $date);
 
         if (!$parsed || $parsed->format('Y-m-d') !== $date) {
-            throw new BadRequest('Reset date must use YYYY-MM-DD.');
+            throw new BadRequest($this->message('resetDateInvalid'));
         }
     }
 
     private function finiteNumber(mixed $value, string $label): float
     {
         if (!is_int($value) && !is_float($value) && !is_string($value)) {
-            throw new BadRequest($label . ' must be a number.');
+            throw new BadRequest($this->message('numberRequired', ['field' => $label]));
         }
 
         if (!is_numeric($value) || !is_finite((float) $value)) {
-            throw new BadRequest($label . ' must be a finite number.');
+            throw new BadRequest($this->message('finiteNumberRequired', ['field' => $label]));
         }
 
         return (float) $value;
@@ -1154,5 +1360,31 @@ final class HolidayBalanceService
         $this->validateDate($date);
 
         return (new DateTimeImmutable($date))->modify('+1 year')->format('Y-m-d');
+    }
+
+    /** @param array<string, string> $replacements */
+    private function message(string $key, array $replacements = []): string
+    {
+        $message = $this->language->translateLabel($key, 'messages', self::REQUEST);
+
+        foreach ($replacements as $name => $value) {
+            $message = str_replace('{' . $name . '}', $value, $message);
+        }
+
+        return $message;
+    }
+
+    private function translateValidationMessage(string $message): string
+    {
+        $key = match ($message) {
+            'The last day cannot be before the first day.' => 'lastDayBeforeFirst',
+            'A holiday booking cannot span more than 367 days.' => 'periodTooLong',
+            'The selected period contains no working days.' => 'noWorkingDays',
+            'Dates must use the YYYY-MM-DD format.' => 'dateFormatInvalid',
+            'Holiday requests cannot start before today.' => 'startDateInPast',
+            default => null,
+        };
+
+        return $key ? $this->message($key) : $message;
     }
 }

@@ -76,7 +76,9 @@ final class HolidayRequest extends Record
                     'dateStartDate<' => substr($to, 0, 10),
                     'dateEndDate>=' => substr($from, 0, 10),
                     'OR' => [
-                        ['status!=' => 'Rejected'],
+                        [
+                            'status!=' => ['Rejected', 'Cancelled'],
+                        ],
                         ['status' => null],
                     ],
                 ])

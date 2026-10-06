@@ -3,7 +3,7 @@ define(['acl'], (Acl) => {
         checkModelDelete(model, data, precise) {
             const status = model.get('status') || 'Pending';
 
-            if (status === 'Approved') {
+            if (['Approved', 'CancellationPending', 'Cancelled'].includes(status)) {
                 return false;
             }
 

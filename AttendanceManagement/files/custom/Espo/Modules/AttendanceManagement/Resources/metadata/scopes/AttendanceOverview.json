@@ -1,7 +1,7 @@
 {
     "entity": false,
     "object": false,
-    "acl": false,
+    "acl": "boolean",
     "tab": true,
     "disabled": false,
     "module": "AttendanceManagement",

@@ -36,11 +36,18 @@ test('HolidayRequest is an owner-scoped calendar event with derived accounting f
     assert.equal(defs.fields.color.link, 'profile');
     assert.equal(defs.fields.color.field, 'calendarColor');
     assert.equal(defs.fields.days.readOnly, true);
-    assert.deepEqual(defs.fields.status.options, ['Pending', 'Approved', 'Rejected']);
+    assert.deepEqual(defs.fields.status.options, [
+        'Pending', 'Approved', 'Rejected', 'CancellationPending', 'Cancelled',
+    ]);
     assert.equal(defs.fields.status.default, 'Pending');
     assert.equal(defs.fields.status.audited, true);
     assert.equal(defs.fields.decidedBy.audited, true);
     assert.equal(defs.fields.decidedAt.audited, true);
+    assert.equal(defs.fields.cancellationReason.audited, true);
+    assert.equal(defs.fields.cancellationRequestedBy.audited, true);
+    assert.equal(defs.fields.cancellationRequestedAt.audited, true);
+    assert.equal(defs.fields.cancellationDecidedBy.audited, true);
+    assert.equal(defs.fields.cancellationDecidedAt.audited, true);
     assert.equal(defs.fields.assignedUser.readOnly, true);
     assert.equal(defs.fields.profile.readOnly, true);
     assert.equal(defs.indexes.accountingKeyUnique.unique, true);
@@ -66,7 +73,9 @@ test('HolidayRequest is an owner-scoped calendar event with derived accounting f
 
     for (const field of [
         'name', 'days', 'status', 'decidedBy', 'decidedAt', 'assignedUser',
-        'profile', 'accountingKey', 'accountingRevision',
+        'profile', 'accountingKey', 'accountingRevision', 'cancellationReason',
+        'cancellationRequestedBy', 'cancellationRequestedAt',
+        'cancellationDecidedBy', 'cancellationDecidedAt',
     ]) {
         assert.equal(entityAcl.fields[field].readOnly, true, `${field} must be server-managed`);
     }
@@ -131,20 +140,20 @@ test('request lifecycle hooks reserve, adjust, and refund the profile balance', 
     assert.match(balanceSource, /holidayRejected/);
     assert.match(balanceSource, /holidayManagementApproversIds/);
     assert.doesNotMatch(balanceSource, /An approver cannot decide their own holiday request/);
-    assert.match(balanceSource, /currentStatus !== self::STATUS_PENDING/);
+    assert.match(balanceSource, /STATUS_CANCELLATION_PENDING/);
     assert.match(balanceSource, /getTransactionManager\(\)->run/);
+    assert.match(balanceSource, /message\('balanceLimitExceeded'/);
     assert.match(
         balanceSource,
-        /This %s %s %s, but only %s are available\. Requested: %s days; available: %s days; shortfall: %s days\./
+        /\$isAdjustment \? 'changeAction' : 'bookingAction'/
     );
-    assert.match(balanceSource, /\$isAdjustment \? 'change requires' : 'booking requires'/);
     assert.match(balanceSource, /max\(0\.0, \$currentBalance - \$limit\)/);
     assert.match(balanceSource, /max\(0\.0, \$daysToDeduct - \$availableDays\)/);
     assert.match(balanceSource, /'availableDays'\s*=>\s*\$balance \+ \$pendingDays/);
     assert.match(balanceSource, /'pendingDays'\s*=>\s*\$pendingDays/);
     assert.match(balanceSource, /private function getPendingDays\(string \$userId\): float/);
     assert.match(balanceSource, /\['status'\s*=>\s*self::STATUS_PENDING\]/);
-    assert.match(balanceSource, /if \(\$status === self::STATUS_APPROVED\) \{\s*throw new Conflict\('An approved holiday request cannot be deleted\.'/);
+    assert.match(balanceSource, /message\('finalizedCannotDelete'\)/);
     assert.doesNotMatch(balanceSource, /minimum allowed balance/);
 
     const repositoryHook = await readModuleSource('Hooks', 'HolidayRequest', 'Balance.php');
@@ -200,10 +209,6 @@ test('either configured approver can make the single final decision', async () =
     assert.match(postDecision, /decideHoliday\(\$id, \$data->decision\)/);
     assert.match(approvalQueue, /listPendingApprovals\(\)/);
     assert.doesNotMatch(balanceSource, /assignedUserId!='\s*=>\s*\$this->user->getId\(\)/);
-    assert.doesNotMatch(
-        balanceSource,
-        /get\('assignedUserId'\)\s*===\s*\$this->user->getId\(\)/
-    );
     assert.equal(
         requestClient.controller,
         'holiday-management:controllers/holiday-request'
@@ -218,7 +223,7 @@ test('either configured approver can make the single final decision', async () =
         'src', 'acl', 'holiday-request.js'
     ), 'utf8');
     assert.match(requestAcl, /checkModelDelete\(model, data, precise\)/);
-    assert.match(requestAcl, /status === 'Approved'/);
+    assert.match(requestAcl, /\['Approved', 'CancellationPending', 'Cancelled'\]\.includes\(status\)/);
     assert.match(requestAcl, /return false/);
     assert.match(requestAcl, /super\.checkModelDelete\(model, data, precise\)/);
     assert.match(controller, /define\(\['controllers\/record'\]/);
@@ -232,15 +237,67 @@ test('either configured approver can make the single final decision', async () =
     assert.match(personalList, /loadApprovalQueue\(\)/);
     assert.match(personalList, /holiday-approval-panel/);
     assert.doesNotMatch(personalList, /Calendar\/show\/mode=timeline/);
-    assert.match(personalList, /decideApproval\(row, 'Approved'\)/);
-    assert.match(personalList, /decideApproval\(row, 'Rejected'\)/);
+    assert.match(personalList, /isCancellation \? 'Cancelled' : 'Approved'/);
+    assert.match(personalList, /isCancellation \? 'Approved' : 'Rejected'/);
     assert.match(personalList, /await this\.confirm\(\{/);
     assert.doesNotMatch(personalList, /window\.confirm/);
-    assert.match(approvalActions, /decision === 'Approved'/);
-    assert.match(approvalActions, /decide\(view, 'Rejected'/);
+    assert.match(approvalActions, /isCancellation \? 'Cancelled' : 'Approved'/);
+    assert.match(approvalActions, /cancellationActionFailed/);
     assert.match(approvalActions, /state\.canDecide/);
     assert.match(approvalActions, /zile-sarbatoare:calendar-refresh/);
     assert.ok(ledger.fields.type.options.includes('holidayRejected'));
+});
+
+test('approved holidays use an audited cancellation workflow and refund once', async () => {
+    const routes = await readJson('Resources', 'routes.json');
+    const defs = await readJson('Resources', 'metadata', 'entityDefs', 'HolidayRequest.json');
+    const balanceSource = await readModuleSource(
+        'Tools', 'HolidayBalance', 'HolidayBalanceService.php'
+    );
+    const actions = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'holiday-request', 'record', 'approval-actions.js'
+    ), 'utf8');
+    const modal = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'modals', 'cancellation-reason.js'
+    ), 'utf8');
+
+    assert.ok(routes.some(item =>
+        item.route === '/HolidayManagement/requests/:id/cancellation-request' &&
+        item.method === 'post'
+    ));
+    assert.ok(routes.some(item =>
+        item.route === '/HolidayManagement/requests/:id/cancel' &&
+        item.method === 'post'
+    ));
+    assert.equal(defs.fields.cancellationReason.readOnly, true);
+    assert.equal(defs.fields.cancellationRequestedAt.audited, true);
+    assert.equal(defs.fields.cancellationDecidedAt.audited, true);
+    assert.match(balanceSource, /public function requestCancellation\(/);
+    assert.match(balanceSource, /public function cancelApprovedHoliday\(/);
+    assert.match(balanceSource, /STATUS_CANCELLATION_PENDING/);
+    assert.match(balanceSource, /STATUS_CANCELLED/);
+    assert.match(balanceSource, /approved-holiday-cancelled:/);
+    assert.match(balanceSource, /\$profile->set\('balance', \(float\) \$profile->get\('balance'\) \+ \$days\)/);
+    assert.match(balanceSource, /->forUpdate\(\)/);
+    assert.match(actions, /cancellation-request/);
+    assert.match(actions, /Cancel Holiday/);
+    assert.match(modal, /cancellationReasonEmpty/);
+
+    for (const locale of ['en_US', 'ro_RO']) {
+        const language = await readJson(
+            'Resources', 'i18n', locale, 'HolidayRequest.json'
+        );
+
+        assert.equal(typeof language.options.status.CancellationPending, 'string');
+        assert.equal(typeof language.options.status.Cancelled, 'string');
+        assert.equal(typeof language.messages.cancellationRequested, 'string');
+        assert.equal(typeof language.messages.cancellationApproved, 'string');
+        assert.equal(typeof language.messages.cancellationRejected, 'string');
+    }
 });
 
 test('calendar query shows all users and supports multi-day overlap', async () => {
@@ -283,7 +340,7 @@ test('calendar query shows all users and supports multi-day overlap', async () =
     assert.match(source, /additionalAttributeList/);
     assert.match(source, /\['profile\.calendarColor', 'color'\]/);
     assert.match(source, /leftJoin\('profile'\)/);
-    assert.match(source, /\['status!='\s*=>\s*'Rejected'\]/);
+    assert.match(source, /'status!='\s*=>\s*\['Rejected', 'Cancelled'\]/);
     assert.match(source, /\['status'\s*=>\s*null\]/);
     assert.equal(calendar.colors.HolidayRequest, '#4F8A8B');
     assert.equal(

@@ -1,0 +1,16 @@
+{
+    "Admin": {
+        "params": {
+            "controller": "attendance-management:controllers/schedule-settings",
+            "action": "index"
+        },
+        "order": -100
+    },
+    "Admin/attendanceManagementSettings": {
+        "params": {
+            "controller": "attendance-management:controllers/schedule-settings",
+            "action": "open"
+        },
+        "order": -100
+    }
+}

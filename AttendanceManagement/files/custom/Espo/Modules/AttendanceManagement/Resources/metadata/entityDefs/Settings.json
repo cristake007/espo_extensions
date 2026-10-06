@@ -1,13 +1,5 @@
 {
     "fields": {
-        "attendanceManagementManagers": {
-            "type": "linkMultiple",
-            "entity": "User",
-            "tooltip": true,
-            "validatorClassNameList": [
-                "Espo\\Modules\\AttendanceManagement\\FieldValidators\\Settings\\Managers\\Valid"
-            ]
-        },
         "attendanceManagementEditablePastMonths": {
             "type": "int",
             "default": 1,
@@ -15,6 +7,12 @@
             "min": 0,
             "max": 120,
             "tooltip": true
+        },
+        "attendanceManagementArchiveInitializer": {
+            "type": "varchar",
+            "notStorable": true,
+            "tooltip": true,
+            "view": "attendance-management:views/fields/archive-initializer"
         },
         "attendanceManagementAllowIncompleteExports": {
             "type": "bool",

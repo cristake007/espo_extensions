@@ -8,11 +8,17 @@ use Espo\Core\Exceptions\Forbidden;
 use Espo\Core\Record\CreateParams;
 use Espo\Core\Record\Hook\CreateHook;
 use Espo\ORM\Entity;
+use Espo\Core\Utils\Language;
 
 final class BeforeCreate implements CreateHook
 {
+    public function __construct(private Language $language)
+    {}
+
     public function process(Entity $entity, CreateParams $params): void
     {
-        throw new Forbidden('Holiday ledger entries can only be created by HolidayBalanceService.');
+        throw new Forbidden($this->language->translateLabel(
+            'ledgerCreateForbidden', 'messages', 'HolidayLedger'
+        ));
     }
 }

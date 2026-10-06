@@ -1,0 +1,11 @@
+{
+    "menuItems": {
+        "admin": {
+            "accessDataList": [
+                {
+                    "scope": "AttendanceOverview"
+                }
+            ]
+        }
+    }
+}

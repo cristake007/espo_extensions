@@ -139,8 +139,6 @@ namespace {
         $config->get('tabList'),
         'Install must migrate loose attendance links into one navigation group.',
     );
-    assertSameValue([], $config->get('attendanceManagementManagersIds'), 'Manager IDs default is missing.');
-    assertSameValue([], (array) $config->get('attendanceManagementManagersNames'), 'Manager names default is missing.');
     assertSameValue(1, $config->get('attendanceManagementEditablePastMonths'), 'Edit-lock default is missing.');
     assertSameValue(
         false,

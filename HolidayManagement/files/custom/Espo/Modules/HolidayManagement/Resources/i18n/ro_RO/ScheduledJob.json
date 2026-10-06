@@ -1,7 +1,7 @@
 {
     "options": {
         "job": {
-            "ProcessHolidayResets": "Proceseaza resetarile anuale de concediu"
+            "ProcessHolidayResets": "Procesează resetările anuale de concediu"
         }
     }
 }

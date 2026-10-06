@@ -4,10 +4,14 @@
         "Holiday Approvals": "Holiday Approvals"
     },
     "scopeNames": {
-        "HolidayRequest": "Time Off"
+        "HolidayRequest": "Time Off",
+        "HolidayProfile": "Holiday Profile",
+        "HolidayLedger": "Holiday Ledger"
     },
     "scopeNamesPlural": {
-        "HolidayRequest": "Time Off"
+        "HolidayRequest": "Time Off",
+        "HolidayProfile": "Holiday Profiles",
+        "HolidayLedger": "Holiday Ledger Entries"
     },
     "dashlets": {
         "HolidayApprovals": "Holiday Approvals"

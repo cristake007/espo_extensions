@@ -183,7 +183,7 @@ test('service audits complete before and after state for initialization and corr
     assert.match(source, /initialization/);
     assert.match(source, /bulkUpdate/);
     assert.match(source, /correction/);
-    assert.match(source, /Correction reason is required/);
+    assert.match(source, /message\('correctionReasonRequired'\)/);
 });
 
 test('annual resets cap positive carry-over and retain negative balances', async () => {
@@ -197,7 +197,7 @@ test('annual resets cap positive carry-over and retain negative balances', async
     assert.match(source, /nextResetDate<=/);
     assert.match(source, /scheduled-reset:/);
     assert.match(source, /resetOverride/);
-    assert.match(source, /Forced reset reason is required/);
+    assert.match(source, /message\('forcedResetReasonRequired'\)/);
     assert.doesNotMatch(source, /holidayManagementResetCeilingDays/);
 });
 
@@ -252,6 +252,16 @@ test('module exposes balance, self-service, and approval routes', async () => {
             route: '/HolidayManagement/requests/:id/decision',
             method: 'post',
             actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\PostDecision',
+        },
+        {
+            route: '/HolidayManagement/requests/:id/cancellation-request',
+            method: 'post',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\PostCancellationRequest',
+        },
+        {
+            route: '/HolidayManagement/requests/:id/cancel',
+            method: 'post',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\PostCancel',
         },
         {
             route: '/HolidayManagement/approvalQueue',
@@ -309,10 +319,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.7.0 package', async () => {
+test('accounting metadata remains bilingual in the 1.8.0 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.7.0');
+    assert.equal(manifest.version, '1.8.0');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');

@@ -23,6 +23,7 @@ final class AttendanceOverviewService
     private const SOURCE_APPROVED_HOLIDAY = 'ApprovedHoliday';
     private const EDITABLE_PAST_MONTHS_CONFIG = 'attendanceManagementEditablePastMonths';
     private const ALLOW_INCOMPLETE_EXPORTS_CONFIG = 'attendanceManagementAllowIncompleteExports';
+    private const ARCHIVE_START_MONTH_CONFIG = 'attendanceManagementArchiveStartMonth';
 
     public function __construct(
         private EntityManager $entityManager,
@@ -38,7 +39,8 @@ final class AttendanceOverviewService
     {
         $this->accessChecker->assertManager();
         $today = $this->dateTime->getToday()->toString();
-        $month = $this->normalizeMonth($month, $today);
+        $availableFromMonth = $this->getAvailableFromMonth($today);
+        $month = $this->normalizeMonth($month, $today, $availableFromMonth);
         $editableFromMonth = $this->getEditableFromMonth($today);
         $monthStart = $month . '-01';
         $monthEnd = (new DateTimeImmutable($monthStart))->modify('last day of this month')->format('Y-m-d');
@@ -151,6 +153,7 @@ final class AttendanceOverviewService
             'month' => $month,
             'today' => $today,
             'currentMonth' => substr($today, 0, 7),
+            'availableFromMonth' => $availableFromMonth,
             'monthEditable' => $month >= $editableFromMonth,
             'users' => array_values($userRows),
             'rows' => $rows,
@@ -387,7 +390,11 @@ final class AttendanceOverviewService
         return (int) $date->format('N') <= 5 && !isset($nonWorkingDates[$date->format('Y-m-d')]);
     }
 
-    private function normalizeMonth(?string $month, string $today): string
+    private function normalizeMonth(
+        ?string $month,
+        string $today,
+        string $availableFromMonth,
+    ): string
     {
         $month = trim((string) $month);
 
@@ -403,7 +410,46 @@ final class AttendanceOverviewService
             throw new BadRequest('A future attendance month cannot be opened.');
         }
 
+        if ($month < $availableFromMonth) {
+            throw new BadRequest('Attendance month predates the available archive.');
+        }
+
         return $month;
+    }
+
+    private function getAvailableFromMonth(string $today): string
+    {
+        $configuredMonth = trim((string) $this->config->get(self::ARCHIVE_START_MONTH_CONFIG, ''));
+        $currentMonth = substr($today, 0, 7);
+
+        if (
+            preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', $configuredMonth) === 1 &&
+            $configuredMonth <= $currentMonth
+        ) {
+            return $configuredMonth;
+        }
+
+        $monthList = [$currentMonth];
+        $record = $this->entityManager
+            ->getRDBRepository(self::ENTITY_TYPE)
+            ->order('date', 'ASC')
+            ->findOne();
+        $schedule = $this->entityManager
+            ->getRDBRepository(self::SCHEDULE_ENTITY_TYPE)
+            ->order('effectiveFrom', 'ASC')
+            ->findOne();
+
+        if ($record && is_string($record->get('date'))) {
+            $monthList[] = substr((string) $record->get('date'), 0, 7);
+        }
+
+        if ($schedule && is_string($schedule->get('effectiveFrom'))) {
+            $monthList[] = substr((string) $schedule->get('effectiveFrom'), 0, 7);
+        }
+
+        sort($monthList);
+
+        return $monthList[0];
     }
 
     private function isValidTime(string $value): bool

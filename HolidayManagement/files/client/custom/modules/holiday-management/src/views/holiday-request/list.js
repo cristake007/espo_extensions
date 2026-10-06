@@ -60,9 +60,27 @@ define(['views/list'], (ListView) => {
                 const tableBody = $('<tbody>');
 
                 rows.forEach(item => {
+                    const isCancellation = item.status === 'CancellationPending';
                     const actionCell = $('<td>').addClass('text-right text-nowrap');
-                    const row = $('<tr>').attr('data-id', item.id).append(
-                        $('<td>').text(item.requesterName || ''),
+                    const requesterCell = $('<td>').text(item.requesterName || '');
+
+                    if (isCancellation) {
+                        requesterCell.append(
+                            $('<div>')
+                                .addClass('text-warning small')
+                                .text(`${this.translate(
+                                    'Cancellation Reason',
+                                    'labels',
+                                    'HolidayRequest'
+                                )}: ${item.cancellationReason || ''}`),
+                        );
+                    }
+
+                    const row = $('<tr>')
+                        .attr('data-id', item.id)
+                        .attr('data-cancellation', isCancellation ? 'true' : 'false')
+                        .append(
+                        requesterCell,
                         $('<td>').text(item.dateStart || ''),
                         $('<td>').text(item.dateEnd || ''),
                         $('<td>').text(String(item.days ?? '')),
@@ -71,14 +89,30 @@ define(['views/list'], (ListView) => {
 
                     $('<button>')
                         .addClass('btn btn-success btn-sm')
-                        .text(this.translate('Approve Holiday', 'labels', 'HolidayRequest'))
-                        .on('click', () => this.decideApproval(row, 'Approved'))
+                        .text(this.translate(
+                            isCancellation ? 'Approve Cancellation' : 'Approve Holiday',
+                            'labels',
+                            'HolidayRequest'
+                        ))
+                        .on('click', () => this.decideApproval(
+                            row,
+                            isCancellation ? 'Cancelled' : 'Approved',
+                            isCancellation
+                        ))
                         .appendTo(actionCell);
                     actionCell.append(' ');
                     $('<button>')
                         .addClass('btn btn-danger btn-sm')
-                        .text(this.translate('Reject Holiday', 'labels', 'HolidayRequest'))
-                        .on('click', () => this.decideApproval(row, 'Rejected'))
+                        .text(this.translate(
+                            isCancellation ? 'Reject Cancellation' : 'Reject Holiday',
+                            'labels',
+                            'HolidayRequest'
+                        ))
+                        .on('click', () => this.decideApproval(
+                            row,
+                            isCancellation ? 'Approved' : 'Rejected',
+                            isCancellation
+                        ))
                         .appendTo(actionCell);
                     tableBody.append(row);
                 });
@@ -126,15 +160,20 @@ define(['views/list'], (ListView) => {
             }
         }
 
-        async decideApproval(row, decision) {
-            const message = decision === 'Approved'
-                ? this.translate('confirmApproveHoliday', 'messages', 'HolidayRequest')
-                : this.translate('confirmRejectHoliday', 'messages', 'HolidayRequest');
+        async decideApproval(row, decision, isCancellation = false) {
+            const approved = decision === (isCancellation ? 'Cancelled' : 'Approved');
+            const messageKey = isCancellation ?
+                (approved ? 'confirmApproveCancellation' : 'confirmRejectCancellation') :
+                (approved ? 'confirmApproveHoliday' : 'confirmRejectHoliday');
+            const labelKey = isCancellation ?
+                (approved ? 'Approve Cancellation' : 'Reject Cancellation') :
+                (approved ? 'Approve Holiday' : 'Reject Holiday');
+            const message = this.translate(messageKey, 'messages', 'HolidayRequest');
 
             await this.confirm({
                 message,
                 confirmText: this.translate(
-                    decision === 'Approved' ? 'Approve Holiday' : 'Reject Holiday',
+                    labelKey,
                     'labels',
                     'HolidayRequest',
                 ),
@@ -148,7 +187,9 @@ define(['views/list'], (ListView) => {
                     {decision}
                 );
                 Espo.Ui.success(this.translate(
-                    decision === 'Approved' ? 'holidayApproved' : 'holidayRejected',
+                    isCancellation ?
+                        (approved ? 'cancellationApproved' : 'cancellationRejected') :
+                        (approved ? 'holidayApproved' : 'holidayRejected'),
                     'messages',
                     'HolidayRequest'
                 ));
@@ -160,7 +201,7 @@ define(['views/list'], (ListView) => {
             } catch (error) {
                 row.find('button').prop('disabled', false);
                 Espo.Ui.error(this.translate(
-                    'approvalDecisionFailed',
+                    isCancellation ? 'cancellationActionFailed' : 'approvalDecisionFailed',
                     'messages',
                     'HolidayRequest'
                 ));

@@ -19,14 +19,6 @@ class AfterInstall
         $tabList = $config->get('tabList') ?? [];
         $missingDefaults = [];
 
-        if (!$config->has('attendanceManagementManagersIds')) {
-            $missingDefaults['attendanceManagementManagersIds'] = [];
-        }
-
-        if (!$config->has('attendanceManagementManagersNames')) {
-            $missingDefaults['attendanceManagementManagersNames'] = (object) [];
-        }
-
         if (!$config->has('attendanceManagementEditablePastMonths')) {
             $missingDefaults['attendanceManagementEditablePastMonths'] = 1;
         }

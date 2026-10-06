@@ -1,5 +1,6 @@
 {
     "fields": {
+        "name": "Name",
         "profile": "Holiday Profile",
         "request": "Holiday Request",
         "user": "User",
@@ -14,11 +15,26 @@
         "actor": "Actor",
         "reason": "Reason",
         "effectiveDate": "Effective Date",
-        "idempotencyKey": "Idempotency Key"
+        "idempotencyKey": "Idempotency Key",
+        "createdAt": "Created At"
     },
     "options": {
         "type": {
+            "initialization": "Initialization",
+            "bulkUpdate": "Bulk Update",
+            "correction": "Correction",
+            "annualGrant": "Annual Grant",
+            "resetPending": "Pending Reset",
+            "resetOverride": "Forced Reset",
+            "automaticReset": "Automatic Reset",
+            "holidayBooked": "Holiday Booked",
+            "holidayAdjusted": "Holiday Adjusted",
+            "holidayCancelled": "Holiday Cancelled",
             "holidayRejected": "Holiday Rejected"
         }
+    },
+    "messages": {
+        "ledgerCreateForbidden": "Holiday ledger entries can only be created by the holiday balance service.",
+        "ledgerImmutable": "Holiday ledger entries cannot be changed or deleted."
     }
 }

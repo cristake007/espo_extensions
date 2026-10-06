@@ -1,13 +1,13 @@
 {
     "fields": {
-        "attendanceManagementManagers": "Attendance managers",
         "attendanceManagementEditablePastMonths": "Editable previous months",
+        "attendanceManagementArchiveInitializer": "Attendance initialization",
         "attendanceManagementAllowIncompleteExports": "Allow incomplete register exports",
         "attendanceManagementScheduleEditor": "Default employee schedules"
     },
     "tooltips": {
-        "attendanceManagementManagers": "The only users allowed to see and open the attendance overview, send reminders, and download registers.",
         "attendanceManagementEditablePastMonths": "Number of complete previous calendar months employees may still change. The default of 1 permits the current and immediately previous month; older months are locked.",
+        "attendanceManagementArchiveInitializer": "Set the current month as the first visible attendance month. Older records are not deleted, but they are excluded from the visible archive.",
         "attendanceManagementAllowIncompleteExports": "When enabled, attendance managers can download XLSX and PDF files even when employees have missing entries or schedules. Missing information is left blank. Disabled by default.",
         "attendanceManagementScheduleEditor": "Set the normal entry and exit time for each employee. Changes apply to every attendance month."
     },
