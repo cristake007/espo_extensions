@@ -60,7 +60,7 @@ define(['views/modal', 'model'], (ModalView, Model) => {
                 description: '',
             });
             this.formModel.entityType = 'HolidayRequest';
-            this.eligibleUserIds = [];
+            this.eligibleUsers = [];
             this.wait(this.loadUsers());
         }
 
@@ -68,7 +68,7 @@ define(['views/modal', 'model'], (ModalView, Model) => {
             const response = await Espo.Ajax.getRequest(
                 'HolidayManagement/managedBookingUsers'
             );
-            this.eligibleUserIds = (response.list || []).map(user => user.id);
+            this.eligibleUsers = response.list || [];
         }
 
         async afterRender() {
@@ -81,9 +81,10 @@ define(['views/modal', 'model'], (ModalView, Model) => {
                         mode: 'edit',
                         model: this.formModel,
                         name: 'assignedUser',
+                        foreignScope: 'User',
                         readOnlyDisabled: true,
                         createDisabled: true,
-                        eligibleUserIds: this.eligibleUserIds,
+                        eligibleUsers: this.eligibleUsers,
                     },
                 ).then(view => view.render()),
                 this.createView(

@@ -133,7 +133,8 @@
         "managedBookingHelp": "Cererea este creată în așteptare și urmează fluxul normal de aprobare. Datele retroactive sunt limitate la luna curentă.",
         "managedBookingPanelHelp": "Creați o cerere de concediu pentru un coleg care nu poate utiliza platforma.",
         "managedBookingSaved": "Cererea angajatului a fost creată și trimisă spre aprobare.",
-        "managedBookingFailed": "Cererea angajatului nu a putut fi creată. Verificați perioada, suprapunerile și soldul disponibil."
+        "managedBookingFailed": "Cererea angajatului nu a putut fi creată. Verificați perioada, suprapunerile și soldul disponibil.",
+        "No Eligible Employees": "Nu există angajați eligibili cu profilul de concediu inițializat."
     },
     "options": {
         "status": {

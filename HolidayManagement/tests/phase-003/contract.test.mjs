@@ -480,6 +480,11 @@ test('role-controlled time-off managers can create pending requests for employee
         'files', 'client', 'custom', 'modules', 'holiday-management',
         'src', 'views', 'holiday-request', 'fields', 'managed-employee.js'
     ), 'utf8');
+    const employeeSelectModal = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'modals', 'managed-employee-select.js'
+    ), 'utf8');
 
     assert.equal(scope.acl, 'boolean');
     assert.equal(scope.tab, false);
@@ -507,20 +512,27 @@ test('role-controlled time-off managers can create pending requests for employee
     assert.match(modal, /HolidayManagement\/managedBookings/);
     assert.match(modal, /holiday-management:views\/holiday-request\/fields\/start-date/);
     assert.match(modal, /holiday-management:views\/holiday-request\/fields\/managed-employee/);
+    assert.match(modal, /eligibleUsers:\s*this\.eligibleUsers/);
     assert.match(modal, /'views\/fields\/date'/);
     assert.match(modal, /'views\/fields\/text'/);
     assert.match(modal, /getView\('managedBookingStartDate'\)\?\.fetch\(\)\.dateStartDate/);
     assert.match(modal, /getView\('managedBookingEndDate'\)\?\.fetch\(\)\.dateEndDate/);
     assert.match(modal, /getView\('managedBookingEmployee'\)\?\.fetch\(\)\.assignedUserId/);
+    assert.match(modal, /foreignScope:\s*'User'/);
     assert.doesNotMatch(modal, /type="date"/);
     assert.doesNotMatch(modal, /<select/);
     assert.match(employeeField, /views\/fields\/link/);
-    assert.match(employeeField, /getSelectPrimaryFilterName/);
-    assert.match(employeeField, /getSelectFilters/);
-    assert.match(employeeField, /type:\s*'in'/);
-    assert.match(employeeField, /eligibleUserIds/);
+    assert.match(employeeField, /foreignScope\s*=\s*'User'/);
+    assert.match(employeeField, /autocompleteDisabled\s*=\s*true/);
+    assert.match(employeeField, /managed-employee-select/);
+    assert.doesNotMatch(employeeField, /getSelectFilters|eligibleUserIds|attribute:\s*'id'/);
+    assert.match(employeeSelectModal, /Days Available/);
+    assert.match(employeeSelectModal, /selectEmployee/);
+    assert.match(employeeSelectModal, /user\.balance/);
+    assert.doesNotMatch(employeeSelectModal, /getSelectFilters|equals|attribute/);
     assert.match(list, /getAcl\(\)\.check\('HolidayProfileManagement'\)/);
     assert.match(list, /#Admin\/holidayManagementProfiles/);
+    assert.match(list, /if \(this\.getUser\(\)\.isAdmin\(\)\)/);
 
     for (const locale of ['en_US', 'ro_RO']) {
         const global = await readJson('Resources', 'i18n', locale, 'Global.json');

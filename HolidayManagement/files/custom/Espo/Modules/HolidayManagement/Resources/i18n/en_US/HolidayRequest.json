@@ -133,7 +133,8 @@
         "managedBookingHelp": "The request is created as pending and follows the normal approval process. Retroactive dates are limited to the current month.",
         "managedBookingPanelHelp": "Create a pending time-off request for a colleague who cannot use the platform.",
         "managedBookingSaved": "The employee time-off request was created and sent for approval.",
-        "managedBookingFailed": "The employee time-off request could not be created. Check the dates, overlap and available balance."
+        "managedBookingFailed": "The employee time-off request could not be created. Check the dates, overlap and available balance.",
+        "No Eligible Employees": "There are no eligible employees with an initialized holiday profile."
     },
     "options": {
         "status": {

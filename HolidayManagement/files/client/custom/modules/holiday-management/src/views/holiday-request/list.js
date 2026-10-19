@@ -292,6 +292,12 @@ define(['views/list'], (ListView) => {
         }
 
         async loadHolidayBalance() {
+            if (this.getUser().isAdmin()) {
+                this.$el.find('.holiday-balance-panel').remove();
+
+                return;
+            }
+
             const panel = $('<div>')
                 .addClass('panel panel-default holiday-balance-panel holiday-balance-card margin-bottom')
                 .append(
