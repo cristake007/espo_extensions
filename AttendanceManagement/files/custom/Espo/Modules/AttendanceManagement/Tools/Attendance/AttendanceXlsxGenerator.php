@@ -108,7 +108,7 @@ final class AttendanceXlsxGenerator
                 $statusRange = $statusCoordinate . ':' . $statusColumnName . $exitLine;
                 $statusLabel = $this->statusLabel($cell['status']);
 
-                if (($schedule['remote'] ?? false) === true) {
+                if (($schedule['remote'] ?? false) === true && $cell['status'] === 'AtWork') {
                     $statusLabel .= "\n(Remote)";
                 }
 

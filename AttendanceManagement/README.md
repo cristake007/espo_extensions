@@ -44,7 +44,7 @@ selectors and saves each employee independently. Existing times outside a
 every month and can be changed there at any time. The overview displays it
 below the employee name. A **Remote** checkbox can be configured for each
 employee; the marker appears below the employee name and for every day in both
-exports. Managers can also fill or correct an employee's attendance directly in
+exports where attendance is marked **At work**. Managers can also fill or correct an employee's attendance directly in
 the overview matrix. Manual entries are stored with the `Manager` source and
 are protected by the same **Attendance Overview** role permission. Both exports
 include entry time, exit time, and attendance status; no signature column is
@@ -74,7 +74,7 @@ or schedule values are left blank. The setting is disabled by default.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.10.17 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.10.18 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

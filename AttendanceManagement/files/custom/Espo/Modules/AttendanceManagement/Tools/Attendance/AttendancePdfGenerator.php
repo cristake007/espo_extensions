@@ -122,7 +122,7 @@ final class AttendancePdfGenerator
                 $schedule = $user['schedule'] ?? [];
                 $cell = $row['cells'][$userIndex] ?? [];
                 $status = (string) ($cell['status'] ?? '');
-                $remoteLabel = ($schedule['remote'] ?? false) === true
+                $remoteLabel = ($schedule['remote'] ?? false) === true && $status === 'AtWork'
                     ? '<br><span class="remote-label">(Remote)</span>'
                     : '';
                 $entryCells .= '<td>' . $this->escape((string) ($schedule['startTime'] ?? '')) .
