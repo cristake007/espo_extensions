@@ -720,6 +720,45 @@ final class HolidayBalanceService
         return $result;
     }
 
+    /** @return array<int, array<string, mixed>> */
+    public function listCorrections(string $profileId): array
+    {
+        $profile = $this->entityManager
+            ->getRDBRepository(self::PROFILE)
+            ->where(['id' => $profileId])
+            ->findOne();
+
+        if (!$profile) {
+            throw new NotFound($this->message('profileNotFound'));
+        }
+
+        $this->assertProfileForActiveRegularUser($profile);
+        $result = [];
+        $entries = $this->entityManager
+            ->getRDBRepository(self::LEDGER)
+            ->where([
+                'profileId' => $profileId,
+                'type' => 'correction',
+            ])
+            ->order('createdAt', 'DESC')
+            ->find();
+
+        foreach ($entries as $entry) {
+            $result[] = [
+                'id' => $entry->getId(),
+                'delta' => (float) $entry->get('delta'),
+                'balanceBefore' => (float) $entry->get('balanceBefore'),
+                'balanceAfter' => (float) $entry->get('balanceAfter'),
+                'actorName' => (string) ($entry->get('actorName') ?? ''),
+                'reason' => (string) ($entry->get('reason') ?? ''),
+                'effectiveDate' => $entry->get('effectiveDate'),
+                'createdAt' => $entry->get('createdAt'),
+            ];
+        }
+
+        return $result;
+    }
+
     /**
      * @param array<int, array<string, mixed>|stdClass> $items
      * @return array<int, array<string, mixed>>

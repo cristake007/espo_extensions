@@ -30,6 +30,13 @@ define(['view', 'model'], (Dep, Model) => {
                                         {{translate 'Correct Balance' category='labels' scope='Admin'}}
                                     </button>
                                     {{/if}}
+                                    {{#if canViewHistory}}
+                                    <button type="button" class="btn btn-default btn-xs"
+                                        data-action="viewCorrectionHistory" data-row-index="{{rowIndex}}">
+                                        <span class="fas fa-history" aria-hidden="true"></span>
+                                        {{translate 'Correction History' category='labels' scope='Admin'}}
+                                    </button>
+                                    {{/if}}
                                 </div></td>
                                 <td><div class="field" data-reset-date-field="{{rowIndex}}"></div></td>
                                 <td><div class="field holiday-profile-color-field" data-calendar-color-field="{{rowIndex}}"></div></td>
@@ -45,6 +52,7 @@ define(['view', 'model'], (Dep, Model) => {
         events = {
             'click [data-action="save"]': 'actionSave',
             'click [data-action="correctBalance"]': 'actionCorrectBalance',
+            'click [data-action="viewCorrectionHistory"]': 'actionViewCorrectionHistory',
         }
 
         setup() {
@@ -79,6 +87,7 @@ define(['view', 'model'], (Dep, Model) => {
                 ...row,
                 rowIndex,
                 canCorrect: Boolean(row.isInitialized && canCorrectBalance),
+                canViewHistory: Boolean(row.isInitialized && row.profileId),
             }));
             this.profileModels = this.rows.map(row => {
                 const model = new Model({
@@ -124,7 +133,7 @@ define(['view', 'model'], (Dep, Model) => {
                         mode: row.isInitialized ? 'detail' : 'edit',
                         model,
                         name: 'balance',
-                        readOnlyDisabled: true,
+                        readOnlyDisabled: !row.isInitialized,
                     },
                 ).then(view => view.render()));
 
@@ -252,6 +261,24 @@ define(['view', 'model'], (Dep, Model) => {
                 });
                 modal.render();
             });
+        }
+
+        actionViewCorrectionHistory(event) {
+            const rowIndex = Number($(event.currentTarget).data('row-index'));
+            const row = this.rows[rowIndex];
+
+            if (!row?.isInitialized || !row.profileId) {
+                return;
+            }
+
+            this.createView(
+                `holidayCorrectionHistory-${Date.now()}`,
+                'holiday-management:views/modals/correction-history',
+                {
+                    profileId: row.profileId,
+                    userName: row.userName,
+                },
+            ).then(modal => modal.render());
         }
     }
 });

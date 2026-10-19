@@ -231,6 +231,11 @@ test('module exposes balance, self-service, and approval routes', async () => {
             actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\GetProfiles',
         },
         {
+            route: '/HolidayManagement/profiles/:id/corrections',
+            method: 'get',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\GetCorrectionHistory',
+        },
+        {
             route: '/HolidayManagement/bulkInitialize',
             method: 'post',
             actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostBulkInitialize',
@@ -291,6 +296,7 @@ test('module exposes balance, self-service, and approval routes', async () => {
 test('profile setup and balance corrections are role-controlled while resets remain admin-only', async () => {
     const delegatedCases = [
         ['GetProfiles', 'listProfiles'],
+        ['GetCorrectionHistory', 'listCorrections'],
         ['PostBulkInitialize', 'bulkInitialize'],
     ];
     const adminCases = [['PostReset', 'reset']];
@@ -362,6 +368,11 @@ test('Administration exposes a bulk profile setup view using the service endpoin
         'files', 'client', 'custom', 'modules', 'holiday-management',
         'src', 'views', 'modals', 'balance-correction.js'
     ), 'utf8');
+    const correctionHistoryModal = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'modals', 'correction-history.js'
+    ), 'utf8');
     const controller = await readFile(path.join(
         extensionRoot,
         'files', 'client', 'custom', 'modules', 'holiday-management',
@@ -399,8 +410,11 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.match(source, /annualEntitlement/);
     assert.match(source, /openingBalance/);
     assert.match(source, /HolidayBalanceCorrection/);
+    assert.match(source, /mode: row\.isInitialized \? 'detail' : 'edit'/);
+    assert.match(source, /readOnlyDisabled: !row\.isInitialized/);
     assert.match(source, /views\/fields\/float/);
     assert.match(source, /views\/modals\/balance-correction/);
+    assert.match(source, /views\/modals\/correction-history/);
     assert.doesNotMatch(source, /type="number"/);
     assert.match(correctionModal, /HolidayManagement\/correct/);
     assert.match(correctionModal, /views\/fields\/float/);
@@ -408,6 +422,11 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.match(correctionModal, /idempotencyKey/);
     assert.match(correctionModal, /reason/);
     assert.doesNotMatch(correctionModal, /<input|<textarea/);
+    assert.match(correctionHistoryModal, /profiles\/\$\{encodeURIComponent\(this\.profileId\)\}\/corrections/);
+    assert.match(correctionHistoryModal, /balanceBefore/);
+    assert.match(correctionHistoryModal, /balanceAfter/);
+    assert.match(correctionHistoryModal, /actorName/);
+    assert.match(correctionHistoryModal, /reason/);
     assert.match(source, /nextResetDate/);
     assert.match(source, /calendarColor/);
     assert.match(source, /views\/fields\/date/);
@@ -418,10 +437,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.8.7 package', async () => {
+test('accounting metadata remains bilingual in the 1.8.8 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.8.7');
+    assert.equal(manifest.version, '1.8.8');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');
@@ -430,6 +449,9 @@ test('accounting metadata remains bilingual in the 1.8.7 package', async () => {
         const global = await readModuleJson('Resources', 'i18n', locale, 'Global.json');
 
         assert.equal(typeof admin.labels['Holiday Profiles'], 'string');
+        assert.equal(typeof admin.labels['Correction History'], 'string');
+        assert.equal(typeof admin.messages['No Corrections'], 'string');
+        assert.equal(typeof admin.messages.correctionHistoryLoadFailed, 'string');
         assert.equal(typeof admin.descriptions.holidayManagementProfiles, 'string');
         assert.equal(typeof global.scopeNames.HolidayProfileManagement, 'string');
         assert.equal(typeof global.scopeNamesPlural.HolidayProfileManagement, 'string');

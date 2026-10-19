@@ -16,6 +16,7 @@
         "Correct Balance": "Corectează soldul",
         "New Balance": "Sold nou",
         "Correction Reason": "Motivul corecției",
+        "Correction History": "Istoric corecții",
         "Next Reset Date": "Următoarea dată de resetare",
         "Initialized": "Inițializat",
         "Not Initialized": "Neinițializat"
@@ -31,6 +32,8 @@
         "correctionBalanceUnchanged": "Soldul nou trebuie să fie diferit de soldul curent.",
         "correctionSaveFailed": "Corecția soldului de concediu nu a putut fi salvată.",
         "correctionSaved": "Corecția soldului a fost salvată și adăugată în registru.",
+        "No Corrections": "Nu există corecții pentru acest profil.",
+        "correctionHistoryLoadFailed": "Istoricul corecțiilor nu a putut fi încărcat.",
         "profileIdRequired": "ID-ul profilului este obligatoriu.",
         "holidayProfilesLoadFailed": "Profilurile de concediu nu au putut fi încărcate.",
         "holidayProfilesSaveFailed": "Profilurile de concediu nu au putut fi salvate. Verificați valorile introduse și încercați din nou."

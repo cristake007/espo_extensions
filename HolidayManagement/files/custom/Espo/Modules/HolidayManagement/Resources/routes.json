@@ -5,6 +5,11 @@
         "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\GetProfiles"
     },
     {
+        "route": "/HolidayManagement/profiles/:id/corrections",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\GetCorrectionHistory"
+    },
+    {
         "route": "/HolidayManagement/bulkInitialize",
         "method": "post",
         "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostBulkInitialize"

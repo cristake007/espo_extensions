@@ -45,7 +45,7 @@ balance of -5 with a 21-day entitlement becomes 16.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.8.2 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.8.8 files scripts
 ```
 
 Run the phase contract tests:
@@ -77,7 +77,9 @@ holiday settings, forced resets, or direct accounting-record writes. Opening bal
 first initialization. To permit later balance changes, also enable the separate
 **Holiday Balance Correction** role permission. Each correction requires a new
 balance and a reason and creates an immutable Holiday Ledger entry containing
-the delta, before/after balances, actor, reason, and timestamp.
+the delta, before/after balances, actor, reason, and timestamp. Initialized
+balances are read-only in the profile table; use **Correct Balance** to change
+them. **Correction History** displays every correction and its recorded reason.
 
 To let a responsible user register time off for colleagues who cannot use the
 platform, enable **Time Off Manager** in an EspoCRM role. The Time Off page then

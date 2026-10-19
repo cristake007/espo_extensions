@@ -16,6 +16,7 @@
         "Correct Balance": "Correct Balance",
         "New Balance": "New Balance",
         "Correction Reason": "Correction Reason",
+        "Correction History": "Correction History",
         "Next Reset Date": "Next Reset Date",
         "Initialized": "Initialized",
         "Not Initialized": "Not Initialized"
@@ -31,6 +32,8 @@
         "correctionBalanceUnchanged": "The new balance must differ from the current balance.",
         "correctionSaveFailed": "The holiday balance correction could not be saved.",
         "correctionSaved": "The holiday balance correction was saved and added to the ledger.",
+        "No Corrections": "There are no corrections for this profile.",
+        "correctionHistoryLoadFailed": "The correction history could not be loaded.",
         "profileIdRequired": "Profile ID is required.",
         "holidayProfilesLoadFailed": "Holiday profiles could not be loaded.",
         "holidayProfilesSaveFailed": "Holiday profiles could not be saved. Check the entered values and try again."
