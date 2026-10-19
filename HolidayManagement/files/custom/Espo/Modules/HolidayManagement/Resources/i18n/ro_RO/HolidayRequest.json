@@ -135,7 +135,9 @@
         "managedBookingPanelHelp": "Creați o cerere de concediu pentru un coleg care nu poate utiliza platforma.",
         "managedBookingSaved": "Cererea angajatului a fost creată și trimisă spre aprobare.",
         "managedBookingFailed": "Cererea angajatului nu a putut fi creată. Verificați perioada, suprapunerile și soldul disponibil.",
-        "No Eligible Employees": "Nu există angajați eligibili cu profilul de concediu inițializat."
+        "No Eligible Employees": "Nu există angajați eligibili cu profilul de concediu inițializat.",
+        "balanceWarningEmployeeNotification": "Soldul dumneavoastră de concediu este acum de {balance} zile și depășește pragul de avertizare configurat de {threshold} zile. Nu a fost eliminată nicio zi.\n\n[Deschide Concediu](#HolidayRequest)",
+        "balanceWarningApproverNotification": "Soldul de concediu al angajatului {employee} este acum de {balance} zile și depășește pragul de avertizare configurat de {threshold} zile. Nu a fost eliminată nicio zi.\n\n[Deschide Profiluri concediu](#Admin/holidayManagementProfiles)"
     },
     "options": {
         "status": {

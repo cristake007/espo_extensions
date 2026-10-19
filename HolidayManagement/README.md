@@ -5,7 +5,7 @@ EspoCRM 10 extension for employee holiday balances and self-service booking.
 The extension includes settings, balance accounting, and self-service booking:
 
 - annual entitlement and reset-date defaults;
-- a maximum accumulated balance of 90 days and a negative-balance limit;
+- a configurable accumulated-balance warning threshold and a negative-balance limit;
 - one or two directly selected active regular/admin holiday approvers;
 - exactly two printed approval title/name blocks. Blank configured names use
   the actual deciding approver's name when the corresponding title is set;
@@ -37,27 +37,30 @@ approval notifications or public-holiday synchronization.
 
 When **Enable Automatic Annual Grants** is explicitly enabled, at each profile's
 reset date the daily scheduled job grants that profile's
-annual entitlement without allowing the resulting accumulated balance to
-exceed the configured cap (90 days by default). A balance already at 90 stays
-at 90 across future resets. Carried days do not expire based on their age. A
-negative balance is carried in full and reduces the grant; for example, a
-balance of -5 with a 21-day entitlement becomes 16.
+annual entitlement in full. Existing days are never removed during the reset.
+When the resulting accumulated balance exceeds the configured warning threshold
+(90 days by default), EspoCRM notifies the employee and the configured holiday
+approvers. A negative balance is carried in full and reduces the resulting
+balance; for example, a balance of -5 with a 21-day entitlement becomes 16.
 
 Automatic annual grants are disabled by default. The scheduled job exits without
 changing balances until an administrator enables them after reviewing profile
-balances and next-reset dates.
+balances and next-reset dates. The extension registers its active daily job
+automatically during installation and upgrades; EspoCRM's normal scheduled-job
+runner executes it.
 
-Administrators can use **Holiday Management > Test Data** to preview and reset
+Administrators can use **Holiday Management > RESET** to preview and reset
 extension test data before go-live. The guarded reset requires the exact phrase
 `RESET HOLIDAY DATA`, refuses to run while automatic annual grants are enabled,
-removes holiday requests, generated approval documents and ledger entries, and
-returns holiday profiles to the uninitialized state. Users, roles, Holiday
-Management settings and public-holiday records are preserved.
+removes holiday requests, generated approval documents, ledger entries and
+balance-warning notifications, and returns holiday profiles to the uninitialized
+state. Users, roles, Holiday Management settings and public-holiday records are
+preserved.
 
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.8.13 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.8.18 files scripts
 ```
 
 Run the phase contract tests:

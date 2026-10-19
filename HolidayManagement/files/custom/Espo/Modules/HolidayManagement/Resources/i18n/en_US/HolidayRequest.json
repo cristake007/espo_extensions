@@ -135,7 +135,9 @@
         "managedBookingPanelHelp": "Create a pending time-off request for a colleague who cannot use the platform.",
         "managedBookingSaved": "The employee time-off request was created and sent for approval.",
         "managedBookingFailed": "The employee time-off request could not be created. Check the dates, overlap and available balance.",
-        "No Eligible Employees": "There are no eligible employees with an initialized holiday profile."
+        "No Eligible Employees": "There are no eligible employees with an initialized holiday profile.",
+        "balanceWarningEmployeeNotification": "Your holiday balance is now {balance} days and exceeds the configured warning threshold of {threshold} days. No days were removed.\n\n[Open Time Off](#HolidayRequest)",
+        "balanceWarningApproverNotification": "The holiday balance of {employee} is now {balance} days and exceeds the configured warning threshold of {threshold} days. No days were removed.\n\n[Open Holiday Profiles](#Admin/holidayManagementProfiles)"
     },
     "options": {
         "status": {

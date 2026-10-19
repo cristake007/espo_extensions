@@ -20,7 +20,22 @@ namespace Espo\Core {
 
         public function create(string $className): object
         {
+            if ($className === \Espo\Core\Utils\ScheduledJob\Populator::class) {
+                return new \Espo\Core\Utils\ScheduledJob\Populator();
+            }
+
             return $this->instance;
+        }
+    }
+}
+
+namespace Espo\Core\Utils\ScheduledJob {
+    final class Populator
+    {
+        /** @return list<string> */
+        public function populate(): array
+        {
+            return [];
         }
     }
 }

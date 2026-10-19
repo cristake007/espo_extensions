@@ -119,6 +119,8 @@ test('install script persists missing defaults without overwriting existing valu
 
     assert.match(source, /->has\(\$name\)/);
     assert.match(source, /setMultiple\(\$missingDefaults\)/);
+    assert.match(source, /ScheduledJob\\Populator/);
+    assert.match(source, /->populate\(\)/);
     assert.match(source, /'holidayManagementApproversIds'\s*=>\s*\[\]/);
     assert.match(source, /\$missingDefaults\['holidayManagementApproversNames'\]\s*=\s*\(object\) \[\]/);
     assert.doesNotMatch(source, /holidayManagementApproverRole/);
@@ -196,6 +198,20 @@ test('settings view declares four explicit EspoCRM tabs', async () => {
 
     assert.equal((source.match(/tabBreak:\s*true/g) ?? []).length, 4);
     assert.equal((source.match(/tabLabel:/g) ?? []).length, 4);
+    assert.match(source, /tabLabel:\s*'RESET'/);
+});
+
+test('settings view quietly handles Save when no setting was changed', async () => {
+    const source = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'admin', 'settings.js'
+    ), 'utf8');
+
+    assert.match(source, /async actionSave\(data\)/);
+    assert.match(source, /await super\.actionSave\(data\)/);
+    assert.match(source, /lastSaveCancelReason === 'notModified'/);
+    assert.match(source, /throw reason/);
 });
 
 test('reset-date setting uses the native EspoCRM date field', async () => {

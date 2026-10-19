@@ -13,11 +13,14 @@ function assertSameValue(mixed $expected, mixed $actual, string $message): void
     }
 }
 
-assertSameValue(31.0, BalanceMath::calculateResetBalance(10.0, 21.0, 90.0), 'Positive carry-over failed.');
-assertSameValue(90.0, BalanceMath::calculateResetBalance(80.0, 21.0, 90.0), 'Reset balance cap failed.');
-assertSameValue(90.0, BalanceMath::calculateResetBalance(90.0, 21.0, 90.0), 'Balance at cap must remain capped.');
-assertSameValue(90.0, BalanceMath::calculateResetBalance(100.0, 21.0, 90.0), 'Balance above cap must return to the cap.');
-assertSameValue(16.0, BalanceMath::calculateResetBalance(-5.0, 21.0, 90.0), 'Deficit deduction failed.');
-assertSameValue(-9.0, BalanceMath::calculateResetBalance(-30.0, 21.0, 90.0), 'Large deficit deduction failed.');
+assertSameValue(31.0, BalanceMath::calculateResetBalance(10.0, 21.0), 'Positive carry-over failed.');
+assertSameValue(101.0, BalanceMath::calculateResetBalance(80.0, 21.0), 'Entitlement was capped at the warning threshold.');
+assertSameValue(111.0, BalanceMath::calculateResetBalance(90.0, 21.0), 'Balance at the warning threshold lost entitlement.');
+assertSameValue(121.0, BalanceMath::calculateResetBalance(100.0, 21.0), 'Balance above the warning threshold lost days.');
+assertSameValue(16.0, BalanceMath::calculateResetBalance(-5.0, 21.0), 'Deficit deduction failed.');
+assertSameValue(-9.0, BalanceMath::calculateResetBalance(-30.0, 21.0), 'Large deficit deduction failed.');
+assertSameValue(false, BalanceMath::exceedsWarningThreshold(90.0, 90.0), 'Threshold equality must not warn.');
+assertSameValue(true, BalanceMath::exceedsWarningThreshold(90.01, 90.0), 'Threshold excess must warn.');
+assertSameValue(true, BalanceMath::exceedsWarningThreshold(1.0, 0.0), 'Zero threshold must warn without capping.');
 
 echo "PHASE-002 balance math tests passed.\n";

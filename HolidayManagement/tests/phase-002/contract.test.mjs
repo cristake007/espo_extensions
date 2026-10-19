@@ -193,13 +193,18 @@ test('service audits complete before and after state for initialization and corr
     assert.match(source, /\$balance\s*=\s*\$requiresOpeningBalance\s*\?\s*\$openingBalance/);
 });
 
-test('annual resets cap positive carry-over and retain negative balances', async () => {
+test('annual resets grant all days and warn without capping the balance', async () => {
     const source = await readModuleSource(
         'Tools', 'HolidayBalance', 'HolidayBalanceService.php'
     );
 
     assert.match(source, /BalanceMath::calculateResetBalance\(/);
     assert.match(source, /holidayManagementCarryOverLimitDays/);
+    assert.match(source, /BalanceMath::exceedsWarningThreshold\(/);
+    assert.match(source, /Notification::TYPE_MESSAGE/);
+    assert.match(source, /balanceWarningEmployeeNotification/);
+    assert.match(source, /balanceWarningApproverNotification/);
+    assert.match(source, /holidayManagementApproversIds/);
     assert.match(source, /processDueResets/);
     assert.match(source, /holidayManagementAutomaticAnnualGrantEnabled/);
     assert.match(source, /nextResetDate<=/);
@@ -431,6 +436,8 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.match(source, /HolidayManagement\/bulkInitialize/);
     assert.match(source, /actionInitializeProfile/);
     assert.match(source, /actionCompleteInitialSetup/);
+    assert.match(source, /fetchedAnnualEntitlement\s*\?\?\s*row\.annualEntitlement/);
+    assert.match(source, /fetchedNextResetDate\s*\|\|\s*row\.nextResetDate/);
     assert.match(source, /if \(!profileRow\.isInitialized\)/);
     assert.match(source, /annualEntitlement/);
     assert.match(source, /openingBalance/);
@@ -490,27 +497,33 @@ test('Administration exposes an admin-only guarded test-data reset', async () =>
     assert.match(resetService, /skipHooks/);
     assert.match(resetService, /fileStorageManager->unlink/);
     assert.match(resetService, /'isInitialized'\s*=>\s*false/);
+    assert.match(resetService, /balanceWarningNotifications/);
+    assert.match(resetService, /'relatedType'\s*=>\s*self::PROFILE/);
     assert.match(resetField, /HolidayManagement\/testDataResetPreview/);
     assert.match(resetField, /HolidayManagement\/testDataReset/);
     assert.match(resetField, /RESET HOLIDAY DATA/);
+    assert.match(resetField, /Balance Warning Notifications/);
 });
 
-test('accounting metadata remains bilingual in the 1.8.13 package', async () => {
+test('accounting metadata remains bilingual in the 1.8.18 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.8.13');
+    assert.equal(manifest.version, '1.8.18');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');
         const profile = await readModuleJson('Resources', 'i18n', locale, 'HolidayProfile.json');
         const ledger = await readModuleJson('Resources', 'i18n', locale, 'HolidayLedger.json');
         const global = await readModuleJson('Resources', 'i18n', locale, 'Global.json');
+        const request = await readModuleJson('Resources', 'i18n', locale, 'HolidayRequest.json');
 
         assert.equal(typeof admin.labels['Holiday Profiles'], 'string');
         assert.equal(typeof admin.labels['Correction History'], 'string');
         assert.equal(typeof admin.messages['No Corrections'], 'string');
         assert.equal(typeof admin.messages.correctionHistoryLoadFailed, 'string');
         assert.equal(typeof admin.descriptions.holidayManagementProfiles, 'string');
+        assert.equal(typeof request.messages.balanceWarningEmployeeNotification, 'string');
+        assert.equal(typeof request.messages.balanceWarningApproverNotification, 'string');
         assert.equal(typeof global.scopeNames.HolidayProfileManagement, 'string');
         assert.equal(typeof global.scopeNamesPlural.HolidayProfileManagement, 'string');
         assert.equal(typeof global.scopeNames.HolidayRequestManagement, 'string');
@@ -544,8 +557,8 @@ test('Docker harness covers PHASE-001 upgrade, accounting, idempotency, and conc
     assert.match(source, /HolidayManagement\/reset/);
     assert.match(source, /idempotencyKey/);
     assert.match(source, /Start-Process/);
-    assert.match(source, /80\.0/);
-    assert.match(source, /69\.0/);
+    assert.match(source, /101\.0/);
+    assert.match(source, /warning threshold/i);
     assert.match(source, /resetPending/);
     assert.match(source, /HolidayLedger/);
 });

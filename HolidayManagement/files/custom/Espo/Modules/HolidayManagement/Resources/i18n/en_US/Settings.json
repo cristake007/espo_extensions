@@ -4,7 +4,7 @@
         "holidayManagementResetDate": "Default Reset Date",
         "holidayManagementAutomaticAnnualGrantEnabled": "Enable Automatic Annual Grants",
         "holidayManagementTestDataReset": "Test Data Reset",
-        "holidayManagementCarryOverLimitDays": "Carry-over Balance Cap (days)",
+        "holidayManagementCarryOverLimitDays": "Balance Warning Threshold (days)",
         "holidayManagementNegativeBalanceLimitDays": "Negative Balance Limit (days)",
         "holidayManagementApprovers": "Holiday Approvers",
         "holidayManagementApprovalBlock1Title": "Approval Block 1 Title",
@@ -16,7 +16,7 @@
         "holidayManagementAnnualEntitlementDays": "Annual days granted by default when a holiday profile is initialized.",
         "holidayManagementResetDate": "Select the annual reset date with the EspoCRM date picker. The year is ignored; MM-DD input such as 01-01 is also accepted.",
         "holidayManagementAutomaticAnnualGrantEnabled": "Disabled by default. When enabled, the daily job automatically adds annual entitlement to profiles that reached their reset date. Verify balances and dates before enabling it.",
-        "holidayManagementCarryOverLimitDays": "Maximum accumulated balance after an annual reset, measured in days. Carried days do not expire based on age. Entitlement is added only up to this cap; a balance already at the cap stays there. Negative balances reduce the new entitlement.",
+        "holidayManagementCarryOverLimitDays": "Warning threshold for the accumulated balance after an annual reset. Annual entitlement is always granted in full and no days are removed. When the resulting balance exceeds this value, the employee and configured approvers receive a notification.",
         "holidayManagementNegativeBalanceLimitDays": "The lowest permitted balance. Set this to zero to prevent a negative balance.",
         "holidayManagementApprovers": "Select one or two active internal users who can approve holiday requests.",
         "holidayManagementApprovalBlock1Title": "Printed title for the first approval block.",
@@ -26,7 +26,7 @@
     },
     "labels": {
         "Defaults": "Defaults",
-        "Test Data": "Test Data",
+        "RESET": "RESET",
         "Approval": "Approval",
         "Printed Approval Blocks": "Printed Approval Blocks"
     }

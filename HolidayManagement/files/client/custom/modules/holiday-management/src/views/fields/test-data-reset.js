@@ -1,4 +1,6 @@
-define(['views/fields/varchar'], (VarcharFieldView) => {
+define('holiday-management:views/fields/test-data-reset', [
+    'views/fields/varchar',
+], (VarcharFieldView) => {
     return class extends VarcharFieldView {
         editTemplateContent = `
             <div class="holiday-test-data-reset">
@@ -56,6 +58,7 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
                     this.previewRow('Holiday Requests', this.preview.requests),
                     this.previewRow('Holiday Ledger Entries', this.preview.ledgerEntries),
                     this.previewRow('Generated Documents', this.preview.documents),
+                    this.previewRow('Balance Warning Notifications', this.preview.notifications),
                     this.previewRow('Automatic Annual Grants', automaticStatus),
                 );
 
@@ -136,6 +139,7 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
                     requests: 0,
                     ledgerEntries: 0,
                     documents: 0,
+                    notifications: 0,
                 };
                 this.resetInProgress = false;
                 await this.loadPreview();

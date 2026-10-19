@@ -255,21 +255,44 @@ define(['view', 'model'], (Dep, Model) => {
                 return;
             }
 
-            const annualEntitlement = this.getView(`annualEntitlement-${rowIndex}`)
+            const fetchedAnnualEntitlement = this.getView(`annualEntitlement-${rowIndex}`)
                 .fetch().annualEntitlement;
             const openingBalance = this.getView(`balance-${rowIndex}`).fetch().balance;
-            const nextResetDate = this.getView(`nextResetDate-${rowIndex}`)
+            const fetchedNextResetDate = this.getView(`nextResetDate-${rowIndex}`)
                 .fetch().nextResetDate;
-            const calendarColor = this.getView(`calendarColor-${rowIndex}`)
+            const fetchedCalendarColor = this.getView(`calendarColor-${rowIndex}`)
                 .fetch().calendarColor;
+            const annualEntitlement = fetchedAnnualEntitlement ?? row.annualEntitlement;
+            const nextResetDate = fetchedNextResetDate || row.nextResetDate;
+            const calendarColor = fetchedCalendarColor || row.calendarColor;
 
             if (
                 annualEntitlement === null || annualEntitlement === undefined ||
-                annualEntitlement === '' || openingBalance === null ||
-                openingBalance === undefined || openingBalance === '' || !nextResetDate
+                annualEntitlement === '' || !Number.isFinite(Number(annualEntitlement))
             ) {
                 Espo.Ui.warning(this.translate(
-                    'initializationFieldsRequired',
+                    'annualEntitlementRequired',
+                    'messages',
+                    'Admin',
+                ));
+                return;
+            }
+
+            if (
+                openingBalance === null || openingBalance === undefined ||
+                openingBalance === '' || !Number.isFinite(Number(openingBalance))
+            ) {
+                Espo.Ui.warning(this.translate(
+                    'openingBalanceRequired',
+                    'messages',
+                    'Admin',
+                ));
+                return;
+            }
+
+            if (!nextResetDate) {
+                Espo.Ui.warning(this.translate(
+                    'resetDateRequired',
                     'messages',
                     'Admin',
                 ));

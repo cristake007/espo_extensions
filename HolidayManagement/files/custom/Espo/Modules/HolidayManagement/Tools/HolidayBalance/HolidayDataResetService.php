@@ -16,6 +16,7 @@ final class HolidayDataResetService
     private const PROFILE = 'HolidayProfile';
     private const LEDGER = 'HolidayLedger';
     private const REQUEST = 'HolidayRequest';
+    private const NOTIFICATION = 'Notification';
     private const APPROVAL_DOCUMENT_FIELD = 'approvalDocuments';
     private const SKIP_PROCESSING = [
         'skipHooks' => true,
@@ -38,6 +39,7 @@ final class HolidayDataResetService
             'requests' => $this->count($this->holidayRequests()),
             'ledgerEntries' => $this->count($this->ledgerEntries()),
             'documents' => $this->count($this->approvalDocuments()),
+            'notifications' => $this->count($this->balanceWarningNotifications()),
         ];
     }
 
@@ -69,6 +71,10 @@ final class HolidayDataResetService
 
                 foreach ($this->ledgerEntries() as $entry) {
                     $this->entityManager->removeEntity($entry, self::SKIP_PROCESSING);
+                }
+
+                foreach ($this->balanceWarningNotifications() as $notification) {
+                    $this->entityManager->removeEntity($notification, self::SKIP_PROCESSING);
                 }
 
                 foreach ($this->allProfiles() as $profile) {
@@ -111,6 +117,15 @@ final class HolidayDataResetService
     private function ledgerEntries(): iterable
     {
         return $this->entityManager->getRDBRepository(self::LEDGER)->find();
+    }
+
+    /** @return iterable<Entity> */
+    private function balanceWarningNotifications(): iterable
+    {
+        return $this->entityManager
+            ->getRDBRepository(self::NOTIFICATION)
+            ->where(['relatedType' => self::PROFILE])
+            ->find();
     }
 
     /** @return iterable<Attachment> */

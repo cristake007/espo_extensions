@@ -9,9 +9,13 @@ final class BalanceMath
     public static function calculateResetBalance(
         float $balance,
         float $entitlement,
-        float $balanceCap,
     ): float
     {
-        return min($balance + $entitlement, max(0.0, $balanceCap));
+        return $balance + $entitlement;
+    }
+
+    public static function exceedsWarningThreshold(float $balance, float $threshold): bool
+    {
+        return $balance > max(0.0, $threshold);
     }
 }

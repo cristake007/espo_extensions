@@ -4,6 +4,7 @@ use Espo\Core\Container;
 use Espo\Core\InjectableFactory;
 use Espo\Core\Utils\Config;
 use Espo\Core\Utils\Config\ConfigWriter;
+use Espo\Core\Utils\ScheduledJob\Populator;
 
 class AfterInstall
 {
@@ -26,6 +27,9 @@ class AfterInstall
 
     public function run(Container $container): void
     {
+        $injectableFactory = $container->getByClass(InjectableFactory::class);
+        $injectableFactory->create(Populator::class)->populate();
+
         $config = $container->getByClass(Config::class);
         $missingDefaults = [];
 
@@ -68,8 +72,7 @@ class AfterInstall
             return;
         }
 
-        $configWriter = $container->getByClass(InjectableFactory::class)
-            ->create(ConfigWriter::class);
+        $configWriter = $injectableFactory->create(ConfigWriter::class);
 
         if ($missingDefaults !== []) {
             $configWriter->setMultiple($missingDefaults);

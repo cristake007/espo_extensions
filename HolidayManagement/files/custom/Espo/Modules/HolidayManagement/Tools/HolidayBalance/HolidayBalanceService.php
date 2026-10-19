@@ -13,6 +13,7 @@ use Espo\Core\Utils\DateTime as DateTimeUtil;
 use Espo\Core\Utils\Id\RecordIdGenerator;
 use Espo\Core\Utils\Config;
 use Espo\Core\Utils\Language;
+use Espo\Entities\Notification;
 use Espo\Entities\User;
 use Espo\Modules\HolidayManagement\Tools\HolidayDocument\HolidayApprovalDocumentService;
 use Espo\Modules\HolidayManagement\Tools\HolidayRequest\WorkingDayCalculator;
@@ -1468,11 +1469,10 @@ final class HolidayBalanceService
     ): Entity {
         $entitlement = (float) $profile->get('annualEntitlement');
         $balanceBefore = (float) $profile->get('balance');
-        $carryOverLimit = $this->getCarryOverLimit();
+        $warningThreshold = $this->getBalanceWarningThreshold();
         $balanceAfter = BalanceMath::calculateResetBalance(
             $balanceBefore,
             $entitlement,
-            $carryOverLimit,
         );
         $profile->set([
             'balance' => $balanceAfter,
@@ -1483,20 +1483,99 @@ final class HolidayBalanceService
         ]);
         $this->entityManager->saveEntity($profile);
 
-        return $this->createLedger(
+        $ledger = $this->createLedger(
             $profile,
             $type,
             $balanceAfter - $balanceBefore,
             $before,
             $this->snapshot($profile),
             $reason ?? sprintf(
-                'Annual entitlement %s days; resulting balance %s days (cap %s days).',
+                'Annual entitlement %s days; resulting balance %s days (warning threshold %s days).',
                 $this->formatDays($entitlement),
                 $this->formatDays($balanceAfter),
-                $this->formatDays($carryOverLimit),
+                $this->formatDays($warningThreshold),
             ),
             $idempotencyKey,
         );
+
+        if (BalanceMath::exceedsWarningThreshold($balanceAfter, $warningThreshold)) {
+            $this->notifyBalanceWarning($profile, $balanceAfter, $warningThreshold);
+        }
+
+        return $ledger;
+    }
+
+    private function notifyBalanceWarning(
+        Entity $profile,
+        float $balance,
+        float $threshold,
+    ): void {
+        $employeeId = $profile->get('userId');
+        $employeeName = (string) ($profile->get('userName') ?: $profile->get('name'));
+        $balanceText = $this->formatDays($balance);
+        $thresholdText = $this->formatDays($threshold);
+
+        if (is_string($employeeId) && $employeeId !== '') {
+            $this->createBalanceWarningNotification(
+                $employeeId,
+                $profile,
+                $this->message('balanceWarningEmployeeNotification', [
+                    'balance' => $balanceText,
+                    'threshold' => $thresholdText,
+                ]),
+                $balance,
+                $threshold,
+            );
+        }
+
+        $approverIds = $this->config->get('holidayManagementApproversIds') ?? [];
+
+        if (!is_array($approverIds)) {
+            return;
+        }
+
+        foreach (array_unique($approverIds) as $approverId) {
+            if (!is_string($approverId) || $approverId === '' || $approverId === $employeeId) {
+                continue;
+            }
+
+            $this->createBalanceWarningNotification(
+                $approverId,
+                $profile,
+                $this->message('balanceWarningApproverNotification', [
+                    'employee' => $employeeName,
+                    'balance' => $balanceText,
+                    'threshold' => $thresholdText,
+                ]),
+                $balance,
+                $threshold,
+            );
+        }
+    }
+
+    private function createBalanceWarningNotification(
+        string $recipientId,
+        Entity $profile,
+        string $message,
+        float $balance,
+        float $threshold,
+    ): void {
+        $notification = $this->entityManager->getNewEntity(Notification::ENTITY_TYPE);
+        $notification->set([
+            'type' => Notification::TYPE_MESSAGE,
+            'userId' => $recipientId,
+            'read' => false,
+            'message' => $message,
+            'relatedType' => self::PROFILE,
+            'relatedId' => $profile->getId(),
+            'data' => [
+                'holidayManagementType' => 'balanceWarning',
+                'holidayProfileId' => $profile->getId(),
+                'balance' => $balance,
+                'warningThreshold' => $threshold,
+            ],
+        ]);
+        $this->entityManager->saveEntity($notification);
     }
 
     /**
@@ -1617,7 +1696,7 @@ final class HolidayBalanceService
         return null;
     }
 
-    private function getCarryOverLimit(): float
+    private function getBalanceWarningThreshold(): float
     {
         return max(0.0, (float) ($this->config->get('holidayManagementCarryOverLimitDays') ?? 90.0));
     }

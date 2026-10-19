@@ -1,5 +1,17 @@
 define(['views/settings/record/edit'], (Dep) => {
     return class extends Dep {
+        async actionSave(data) {
+            try {
+                await super.actionSave(data);
+            } catch (reason) {
+                if (reason === 'notModified' || this.lastSaveCancelReason === 'notModified') {
+                    return;
+                }
+
+                throw reason;
+            }
+        }
+
         detailLayout = [
             {
                 tabBreak: true,
@@ -45,7 +57,7 @@ define(['views/settings/record/edit'], (Dep) => {
             },
             {
                 tabBreak: true,
-                tabLabel: 'Test Data',
+                tabLabel: 'RESET',
                 rows: [
                     [
                         {name: 'holidayManagementTestDataReset', fullWidth: true},

@@ -116,33 +116,36 @@ try {
     } | ConvertTo-Json -Compress)
     Assert-Equal $grant.balance 31.0 'Positive carry-over reset failed.'
 
-    Invoke-BulkValue -UserId $employee.id -OpeningBalance -5.0 -Key 'phase2:init:deficit' -ResetDate '2028-01-01' | Out-Null
+    $toDeficit = @{
+        profileId = $profileId
+        delta = -36.0
+        reason = 'Prepare negative-balance annual grant test'
+        idempotencyKey = 'phase2:correction:to-minus-5'
+    } | ConvertTo-Json -Compress
+    Invoke-EspoApi -Method POST -Path 'HolidayManagement/correct' -Body $toDeficit | Out-Null
     $deficit = Invoke-EspoApi -Method POST -Path 'HolidayManagement/reset' -Body (@{
         profileId = $profileId
         idempotencyKey = 'phase2:reset:deficit'
     } | ConvertTo-Json -Compress)
     Assert-Equal $deficit.balance 16.0 'Deficit carry-over reset failed.'
 
-    Invoke-BulkValue -UserId $employee.id -OpeningBalance 80.0 -Key 'phase2:init:pending' -ResetDate '2029-01-01' | Out-Null
-    $pending = Invoke-EspoApi -Method POST -Path 'HolidayManagement/reset' -Body (@{
+    $toWarningThreshold = @{
         profileId = $profileId
-        idempotencyKey = 'phase2:reset:pending'
-    } | ConvertTo-Json -Compress)
-    Assert-Equal $pending.balance 80.0 'Ineligible reset changed the balance.'
-    Assert-Equal $pending.resetPending $true '80 + 21 must remain resetPending.'
-
-    $correctionBody = @{
-        profileId = $profileId
-        delta = -11.0
-        reason = 'Reach the approved automatic-reset threshold'
-        idempotencyKey = 'phase2:correction:to-69'
+        delta = 64.0
+        reason = 'Prepare balance-warning annual grant test'
+        idempotencyKey = 'phase2:correction:to-80'
     } | ConvertTo-Json -Compress
-    $automatic = Invoke-EspoApi -Method POST -Path 'HolidayManagement/correct' -Body $correctionBody
-    Assert-Equal $automatic.balance 90.0 '69.0 + 21 did not auto-apply the pending reset.'
-    Assert-Equal $automatic.resetPending $false 'Applied reset remained pending.'
+    Invoke-EspoApi -Method POST -Path 'HolidayManagement/correct' -Body $toWarningThreshold | Out-Null
+    $warningGrantBody = @{
+        profileId = $profileId
+        idempotencyKey = 'phase2:reset:warning'
+    } | ConvertTo-Json -Compress
+    $warningGrant = Invoke-EspoApi -Method POST -Path 'HolidayManagement/reset' -Body $warningGrantBody
+    Assert-Equal $warningGrant.balance 101.0 'Warning threshold incorrectly capped the annual grant.'
+    Assert-Equal $warningGrant.resetPending $false 'Completed reset remained pending.'
 
-    $duplicate = Invoke-EspoApi -Method POST -Path 'HolidayManagement/correct' -Body $correctionBody
-    Assert-Equal $duplicate.balance 90.0 'Duplicate correction changed the balance.'
+    $duplicate = Invoke-EspoApi -Method POST -Path 'HolidayManagement/reset' -Body $warningGrantBody
+    Assert-Equal $duplicate.balance 101.0 'Duplicate reset changed the balance.'
     Assert-Equal $duplicate.duplicate $true 'Duplicate idempotency key was not reported.'
 
     foreach ($number in 1..2) {
@@ -170,7 +173,7 @@ try {
 
     $profiles = Invoke-EspoApi -Method GET -Path 'HolidayManagement/profiles'
     $profile = $profiles.list | Where-Object { $_.profileId -eq $profileId }
-    Assert-Equal $profile.balance 92.0 'Concurrent corrections lost or duplicated an update.'
+    Assert-Equal $profile.balance 103.0 'Concurrent corrections lost or duplicated an update.'
 
     $forced = Invoke-EspoApi -Method POST -Path 'HolidayManagement/reset' -Body (@{
         profileId = $profileId
@@ -178,11 +181,11 @@ try {
         force = $true
         reason = 'Approved administrator exception'
     } | ConvertTo-Json -Compress)
-    Assert-Equal $forced.balance 113.0 'Reasoned forced reset failed.'
+    Assert-Equal $forced.balance 124.0 'Reasoned forced reset failed.'
 
     $ledger = Invoke-EspoApi -Method GET -Path 'HolidayLedger?maxSize=100'
     $keys = @($ledger.list | ForEach-Object { $_.idempotencyKey })
-    foreach ($key in @('phase2:init:10', 'phase2:reset:pending', 'phase2:correction:to-69', 'phase2:concurrent:1', 'phase2:concurrent:2', 'phase2:reset:forced')) {
+    foreach ($key in @('phase2:init:10', 'phase2:correction:to-minus-5', 'phase2:reset:deficit', 'phase2:correction:to-80', 'phase2:reset:warning', 'phase2:concurrent:1', 'phase2:concurrent:2', 'phase2:reset:forced')) {
         if ($keys -notcontains $key) { throw "HolidayLedger is missing audited operation $key." }
     }
 
