@@ -410,7 +410,8 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.match(source, /annualEntitlement/);
     assert.match(source, /openingBalance/);
     assert.match(source, /HolidayBalanceCorrection/);
-    assert.match(source, /mode: row\.isInitialized \? 'detail' : 'edit'/);
+    assert.match(source, /mode: row\.isInitialized \? 'list' : 'edit'/);
+    assert.doesNotMatch(source, /mode: row\.isInitialized \? 'detail' : 'edit'/);
     assert.match(source, /readOnlyDisabled: !row\.isInitialized/);
     assert.match(source, /views\/fields\/float/);
     assert.match(source, /views\/modals\/balance-correction/);
@@ -437,10 +438,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.8.8 package', async () => {
+test('accounting metadata remains bilingual in the 1.8.9 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.8.8');
+    assert.equal(manifest.version, '1.8.9');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');

@@ -130,7 +130,7 @@ define(['view', 'model'], (Dep, Model) => {
                     'views/fields/float',
                     {
                         selector: `[data-balance-field="${row.rowIndex}"]`,
-                        mode: row.isInitialized ? 'detail' : 'edit',
+                        mode: row.isInitialized ? 'list' : 'edit',
                         model,
                         name: 'balance',
                         readOnlyDisabled: !row.isInitialized,
