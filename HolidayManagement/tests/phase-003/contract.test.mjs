@@ -408,6 +408,8 @@ test('self-service page fetches only the signed-in balance and presents bilingua
         actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\GetMyBalance',
     });
     assert.match(action, /getMyBalance\(\)/);
+    assert.match(action, /User::TYPE_REGULAR/);
+    assert.doesNotMatch(action, /User::TYPE_ADMIN/);
     assert.doesNotMatch(action, /getParsedBody|getQueryParam/);
     assert.match(client, /HolidayManagement\/myBalance/);
     assert.doesNotMatch(client, /String\(balance\.balance\)/);

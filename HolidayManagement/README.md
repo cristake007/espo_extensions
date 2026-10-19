@@ -62,10 +62,11 @@ node --test HolidayManagement/tests/phase-004/contract.test.mjs
 php HolidayManagement/tests/phase-004/document-generator.test.php
 ```
 
-After upgrading, run `bin/command rebuild`. Every active regular or
-administrator user can then select **Time Off / Concediu** when creating an
-entry in Calendar. New bookings and date changes cannot start before the
-current date. A user's holiday profile must be initialized in
+After upgrading, run `bin/command rebuild`. Every active regular user can then
+select **Time Off / Concediu** when creating an entry in Calendar.
+Administrators can manage the extension but do not receive holiday profiles or
+holiday balances. New bookings and date changes cannot start before the current
+date. A user's holiday profile must be initialized in
 **Administration > Holiday Profiles** before their first booking.
 
 To delegate profile setup, enable **Holiday Profile Management** in a native

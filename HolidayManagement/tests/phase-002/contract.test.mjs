@@ -163,8 +163,14 @@ test('HolidayBalanceService serializes and de-duplicates every profile mutation'
     );
     assert.match(source, /idempotencyKey/);
     assert.match(source, /User::TYPE_REGULAR/);
-    assert.match(source, /User::TYPE_ADMIN/);
+    assert.equal(
+        (source.match(/User::TYPE_ADMIN/g) ?? []).length,
+        1,
+        'admins may operate internal workflows but must not receive holiday profiles'
+    );
     assert.match(source, /'isActive'\s*=>\s*true/);
+    assert.match(source, /isProfileForActiveRegularUser/);
+    assert.match(source, /assertProfileForActiveRegularUser/);
 });
 
 test('service audits complete before and after state for initialization and corrections', async () => {
@@ -382,10 +388,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.8.4 package', async () => {
+test('accounting metadata remains bilingual in the 1.8.5 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.8.4');
+    assert.equal(manifest.version, '1.8.5');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');

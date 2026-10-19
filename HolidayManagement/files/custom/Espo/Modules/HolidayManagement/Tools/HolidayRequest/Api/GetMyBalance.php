@@ -25,7 +25,7 @@ final class GetMyBalance implements Action
     {
         if (
             !(bool) $this->user->get('isActive') ||
-            !in_array($this->user->get('type'), [User::TYPE_REGULAR, User::TYPE_ADMIN], true)
+            $this->user->get('type') !== User::TYPE_REGULAR
         ) {
             throw new Forbidden($this->language->translateLabel(
                 'balanceAccessForbidden', 'messages', 'HolidayRequest'

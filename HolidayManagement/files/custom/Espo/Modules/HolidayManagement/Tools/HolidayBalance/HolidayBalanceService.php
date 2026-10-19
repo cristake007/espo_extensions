@@ -697,7 +697,7 @@ final class HolidayBalanceService
             ->getRDBRepository(User::ENTITY_TYPE)
             ->where([
                 'isActive' => true,
-                'type' => [User::TYPE_REGULAR, User::TYPE_ADMIN],
+                'type' => User::TYPE_REGULAR,
             ])
             ->order('name')
             ->find();
@@ -951,6 +951,10 @@ final class HolidayBalanceService
         $processed = 0;
 
         foreach ($profiles as $profile) {
+            if (!$this->isProfileForActiveRegularUser($profile)) {
+                continue;
+            }
+
             $nextResetDate = (string) $profile->get('nextResetDate');
             $iteration = 0;
 
@@ -973,7 +977,7 @@ final class HolidayBalanceService
             ->where([
                 'id' => $userId,
                 'isActive' => true,
-                'type' => [User::TYPE_REGULAR, User::TYPE_ADMIN],
+                'type' => User::TYPE_REGULAR,
             ])
             ->findOne();
 
@@ -1073,6 +1077,8 @@ final class HolidayBalanceService
         if (!$profile || !(bool) $profile->get('isInitialized')) {
             throw new BadRequest($this->message('profileNotInitialized'));
         }
+
+        $this->assertProfileForActiveRegularUser($profile);
 
         return $profile;
     }
@@ -1267,7 +1273,34 @@ final class HolidayBalanceService
             throw new BadRequest($this->message('profileNotInitialized'));
         }
 
+        $this->assertProfileForActiveRegularUser($profile);
+
         return $profile;
+    }
+
+    private function assertProfileForActiveRegularUser(Entity $profile): void
+    {
+        if (!$this->isProfileForActiveRegularUser($profile)) {
+            throw new BadRequest($this->message('eligibleUserRequired'));
+        }
+    }
+
+    private function isProfileForActiveRegularUser(Entity $profile): bool
+    {
+        $userId = $profile->get('userId');
+
+        if (!is_string($userId) || $userId === '') {
+            return false;
+        }
+
+        return (bool) $this->entityManager
+            ->getRDBRepositoryByClass(User::class)
+            ->where([
+                'id' => $userId,
+                'isActive' => true,
+                'type' => User::TYPE_REGULAR,
+            ])
+            ->findOne();
     }
 
     private function findLedgerByKey(string $idempotencyKey): ?Entity
