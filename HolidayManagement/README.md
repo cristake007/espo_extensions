@@ -74,6 +74,13 @@ team. The user receives a **Holiday Profiles** navigation entry and can use the
 profile workspace without access to global holiday settings, manual balance
 corrections, forced resets, or direct accounting-record writes.
 
+To let a responsible user register time off for colleagues who cannot use the
+platform, enable **Time Off Manager** in an EspoCRM role. The Time Off page then
+shows a **Book for employee** action. Delegated requests are created as pending,
+reserve the selected employee's balance, and follow the normal approval flow.
+Past start dates are accepted only within the current calendar month; overlap,
+working-day and balance checks remain enforced.
+
 Calendar displays every user's time off to internal users. Each marker includes
 the umbrella icon and the booking user's name. The **Time Off / Concediu** page
 lists only the signed-in user's requests. Users can still edit or delete only

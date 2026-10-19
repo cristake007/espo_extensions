@@ -244,6 +244,16 @@ test('module exposes balance, self-service, and approval routes', async () => {
             actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\GetMyBalance',
         },
         {
+            route: '/HolidayManagement/managedBookingUsers',
+            method: 'get',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\GetManagedBookingUsers',
+        },
+        {
+            route: '/HolidayManagement/managedBookings',
+            method: 'post',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\PostManagedBooking',
+        },
+        {
             route: '/HolidayManagement/requests/:id/approval',
             method: 'get',
             actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\GetApproval',
@@ -372,10 +382,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.8.2 package', async () => {
+test('accounting metadata remains bilingual in the 1.8.4 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.8.2');
+    assert.equal(manifest.version, '1.8.4');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');
@@ -387,6 +397,8 @@ test('accounting metadata remains bilingual in the 1.8.2 package', async () => {
         assert.equal(typeof admin.descriptions.holidayManagementProfiles, 'string');
         assert.equal(typeof global.scopeNames.HolidayProfileManagement, 'string');
         assert.equal(typeof global.scopeNamesPlural.HolidayProfileManagement, 'string');
+        assert.equal(typeof global.scopeNames.HolidayRequestManagement, 'string');
+        assert.equal(typeof global.scopeNamesPlural.HolidayRequestManagement, 'string');
 
         for (const field of [
             'user', 'annualEntitlement', 'balance', 'nextResetDate', 'calendarColor',

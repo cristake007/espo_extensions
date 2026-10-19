@@ -21,7 +21,13 @@
         "Reject Cancellation": "Respinge anularea",
         "Cancellation Request": "Cerere de anulare",
         "Cancellation Reason": "Motivul anulării",
-        "Cancellation Actions": "Acțiuni de anulare"
+        "Cancellation Actions": "Acțiuni de anulare",
+        "Managed Booking": "Concediu pentru angajat",
+        "Book for Employee": "Înregistrează pentru angajat",
+        "Create Pending Request": "Creează cererea",
+        "Employee": "Angajat",
+        "Select Employee": "Selectează angajatul",
+        "Available Balance": "Sold disponibil"
     },
     "fields": {
         "name": "Denumire",
@@ -118,7 +124,15 @@
         "confirmApproveCancellation": "Aprobați anularea și restituiți zilele rezervate?",
         "confirmRejectCancellation": "Respingeți cererea de anulare? Concediul va rămâne aprobat.",
         "cancellationReasonHelp": "Introduceți motivul anulării acestui concediu.",
-        "cancellationReasonEmpty": "Introduceți motivul anulării înainte de a continua."
+        "cancellationReasonEmpty": "Introduceți motivul anulării înainte de a continua.",
+        "managedBookingForbidden": "Doar un utilizator cu permisiunea de rol Responsabil concedii poate înregistra concedii pentru angajați.",
+        "managedBookingFieldsRequired": "Angajatul, prima zi și ultima zi sunt obligatorii.",
+        "managedBookingEmployeeRequired": "Selectați un angajat activ obișnuit.",
+        "managedBookingCurrentMonthOnly": "Concediul retroactiv al unui angajat poate începe doar în luna curentă.",
+        "managedBookingHelp": "Cererea este creată în așteptare și urmează fluxul normal de aprobare. Datele retroactive sunt limitate la luna curentă.",
+        "managedBookingPanelHelp": "Creați o cerere de concediu pentru un coleg care nu poate utiliza platforma.",
+        "managedBookingSaved": "Cererea angajatului a fost creată și trimisă spre aprobare.",
+        "managedBookingFailed": "Cererea angajatului nu a putut fi creată. Verificați perioada, suprapunerile și soldul disponibil."
     },
     "options": {
         "status": {

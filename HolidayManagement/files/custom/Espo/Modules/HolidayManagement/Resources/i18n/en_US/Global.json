@@ -2,19 +2,22 @@
     "labels": {
         "My Holiday": "My Time Off",
         "Holiday Approvals": "Holiday Approvals",
-        "HolidayProfileManagement": "Holiday Profile Management"
+        "HolidayProfileManagement": "Holiday Profile Management",
+        "HolidayRequestManagement": "Time Off Manager"
     },
     "scopeNames": {
         "HolidayRequest": "Time Off",
         "HolidayProfile": "Holiday Profile",
         "HolidayLedger": "Holiday Ledger",
-        "HolidayProfileManagement": "Holiday Profile Management"
+        "HolidayProfileManagement": "Holiday Profile Management",
+        "HolidayRequestManagement": "Time Off Manager"
     },
     "scopeNamesPlural": {
         "HolidayRequest": "Time Off",
         "HolidayProfile": "Holiday Profiles",
         "HolidayLedger": "Holiday Ledger Entries",
-        "HolidayProfileManagement": "Holiday Profile Management"
+        "HolidayProfileManagement": "Holiday Profile Management",
+        "HolidayRequestManagement": "Time Off Manager"
     },
     "dashlets": {
         "HolidayApprovals": "Holiday Approvals"

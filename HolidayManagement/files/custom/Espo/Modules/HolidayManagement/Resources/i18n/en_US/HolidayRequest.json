@@ -21,7 +21,13 @@
         "Reject Cancellation": "Reject cancellation",
         "Cancellation Request": "Cancellation request",
         "Cancellation Reason": "Cancellation reason",
-        "Cancellation Actions": "Cancellation actions"
+        "Cancellation Actions": "Cancellation actions",
+        "Managed Booking": "Employee time off",
+        "Book for Employee": "Book for employee",
+        "Create Pending Request": "Create pending request",
+        "Employee": "Employee",
+        "Select Employee": "Select employee",
+        "Available Balance": "Available balance"
     },
     "fields": {
         "name": "Name",
@@ -118,7 +124,15 @@
         "confirmApproveCancellation": "Approve this cancellation request and refund the reserved days?",
         "confirmRejectCancellation": "Reject this cancellation request? The time off will remain approved.",
         "cancellationReasonHelp": "Enter the reason for cancelling this time off.",
-        "cancellationReasonEmpty": "Enter a cancellation reason before continuing."
+        "cancellationReasonEmpty": "Enter a cancellation reason before continuing.",
+        "managedBookingForbidden": "Only a user with the Time Off Manager role permission can book time off for employees.",
+        "managedBookingFieldsRequired": "Employee, first day and last day are required.",
+        "managedBookingEmployeeRequired": "Select an active regular employee.",
+        "managedBookingCurrentMonthOnly": "Retroactive employee time off can only start in the current month.",
+        "managedBookingHelp": "The request is created as pending and follows the normal approval process. Retroactive dates are limited to the current month.",
+        "managedBookingPanelHelp": "Create a pending time-off request for a colleague who cannot use the platform.",
+        "managedBookingSaved": "The employee time-off request was created and sent for approval.",
+        "managedBookingFailed": "The employee time-off request could not be created. Check the dates, overlap and available balance."
     },
     "options": {
         "status": {

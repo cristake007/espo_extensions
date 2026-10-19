@@ -446,6 +446,75 @@ test('self-service page fetches only the signed-in balance and presents bilingua
     }
 });
 
+test('role-controlled time-off managers can create pending requests for employees', async () => {
+    const routes = await readJson('Resources', 'routes.json');
+    const scope = await readJson(
+        'Resources', 'metadata', 'scopes', 'HolidayRequestManagement.json'
+    );
+    const service = await readModuleSource(
+        'Tools', 'HolidayBalance', 'HolidayBalanceService.php'
+    );
+    const checker = await readModuleSource(
+        'Tools', 'HolidayRequest', 'HolidayRequestManagerAccessChecker.php'
+    );
+    const usersAction = await readModuleSource(
+        'Tools', 'HolidayRequest', 'Api', 'GetManagedBookingUsers.php'
+    );
+    const createAction = await readModuleSource(
+        'Tools', 'HolidayRequest', 'Api', 'PostManagedBooking.php'
+    );
+    const list = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'holiday-request', 'list.js'
+    ), 'utf8');
+    const modal = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'modals', 'managed-booking.js'
+    ), 'utf8');
+
+    assert.equal(scope.acl, 'boolean');
+    assert.equal(scope.tab, false);
+    assert.ok(routes.some(item =>
+        item.route === '/HolidayManagement/managedBookingUsers' && item.method === 'get'
+    ));
+    assert.ok(routes.some(item =>
+        item.route === '/HolidayManagement/managedBookings' && item.method === 'post'
+    ));
+    assert.match(checker, /SCOPE = 'HolidayRequestManagement'/);
+    assert.match(checker, /acl->check\(self::SCOPE\)/);
+    assert.match(usersAction, /accessChecker->assertManager\(\)/);
+    assert.match(createAction, /accessChecker->assertManager\(\)/);
+    assert.match(createAction, /createManagedBooking/);
+    assert.match(service, /function createManagedBooking/);
+    assert.match(service, /STATUS_PENDING/);
+    assert.match(service, /findManagedEmployee/);
+    assert.match(service, /assertManagedBookingDatesAllowed/);
+    assert.match(service, /substr\(\$today, 0, 7\) \. '-01'/);
+    assert.match(service, /assertNoRequestOverlap/);
+    assert.match(service, /assertBalanceLimit/);
+    assert.match(list, /getAcl\(\)\.check\('HolidayRequestManagement'\)/);
+    assert.match(list, /views\/modals\/managed-booking/);
+    assert.match(modal, /HolidayManagement\/managedBookingUsers/);
+    assert.match(modal, /HolidayManagement\/managedBookings/);
+    assert.match(modal, /holiday-management:views\/holiday-request\/fields\/start-date/);
+    assert.match(modal, /'views\/fields\/date'/);
+    assert.match(modal, /getView\('managedBookingStartDate'\)\?\.fetch\(\)\.dateStartDate/);
+    assert.match(modal, /getView\('managedBookingEndDate'\)\?\.fetch\(\)\.dateEndDate/);
+    assert.doesNotMatch(modal, /type="date"/);
+
+    for (const locale of ['en_US', 'ro_RO']) {
+        const global = await readJson('Resources', 'i18n', locale, 'Global.json');
+        const request = await readJson('Resources', 'i18n', locale, 'HolidayRequest.json');
+
+        assert.equal(typeof global.scopeNames.HolidayRequestManagement, 'string');
+        assert.equal(typeof request.labels['Book for Employee'], 'string');
+        assert.equal(typeof request.messages.managedBookingHelp, 'string');
+        assert.equal(typeof request.messages.managedBookingSaved, 'string');
+    }
+});
+
 test('dashboard exposes a bilingual approver queue dashlet with decision actions', async () => {
     const dashlet = await readJson(
         'Resources', 'metadata', 'dashlets', 'HolidayApprovals.json'

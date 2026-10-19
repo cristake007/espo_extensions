@@ -17,6 +17,7 @@ use Espo\Entities\User;
 use Espo\Modules\HolidayManagement\Tools\HolidayDocument\HolidayApprovalDocumentService;
 use Espo\Modules\HolidayManagement\Tools\HolidayRequest\WorkingDayCalculator;
 use Espo\Modules\HolidayManagement\Tools\HolidayRequest\BookingDatePolicy;
+use Espo\Modules\HolidayManagement\Tools\HolidayRequest\HolidayRequestManagerAccessChecker;
 use Espo\Modules\HolidayManagement\Tools\HolidayRequest\NonWorkingDayProvider;
 use Espo\ORM\Entity;
 use Espo\ORM\EntityManager;
@@ -46,6 +47,7 @@ final class HolidayBalanceService
         private RecordIdGenerator $recordIdGenerator,
         private HolidayApprovalDocumentService $approvalDocumentService,
         private Language $language,
+        private HolidayRequestManagerAccessChecker $requestManagerAccessChecker,
     ) {}
 
     /** @return array<string, mixed> */
@@ -106,9 +108,91 @@ final class HolidayBalanceService
     public function prepareHolidayForCreate(Entity $request): void
     {
         $this->assertInternalUser();
+        $targetUser = $this->findEligibleUser((string) $this->user->getId());
+        $this->prepareHolidayForUser($request, $targetUser, false);
+    }
+
+    /** @return list<array{id: string, name: string, balance: float}> */
+    public function listManagedBookingUsers(): array
+    {
+        $this->requestManagerAccessChecker->assertManager();
+        $profiles = $this->entityManager
+            ->getRDBRepository(self::PROFILE)
+            ->where(['isInitialized' => true])
+            ->order('userName')
+            ->find();
+        $result = [];
+
+        foreach ($profiles as $profile) {
+            $user = $this->entityManager->getEntityById(
+                User::ENTITY_TYPE,
+                (string) $profile->get('userId'),
+            );
+
+            if (
+                !$user ||
+                !(bool) $user->get('isActive') ||
+                $user->get('type') !== User::TYPE_REGULAR
+            ) {
+                continue;
+            }
+
+            $result[] = [
+                'id' => (string) $user->getId(),
+                'name' => (string) $user->get('name'),
+                'balance' => (float) $profile->get('balance'),
+            ];
+        }
+
+        return $result;
+    }
+
+    /** @return array<string, mixed> */
+    public function createManagedBooking(
+        string $userId,
+        string $dateStart,
+        string $dateEnd,
+        string $description,
+    ): array {
+        $this->requestManagerAccessChecker->assertManager();
+        $targetUser = $this->findManagedEmployee($userId);
+
+        return $this->entityManager->getTransactionManager()->run(
+            function () use ($targetUser, $dateStart, $dateEnd, $description): array {
+                $request = $this->entityManager->getNewEntity(self::REQUEST);
+                $request->set([
+                    'dateStartDate' => trim($dateStart),
+                    'dateEndDate' => trim($dateEnd),
+                    'description' => trim($description),
+                ]);
+                $this->prepareHolidayForUser($request, $targetUser, true);
+                $this->entityManager->saveEntity($request);
+
+                return [
+                    'id' => (string) $request->getId(),
+                    'assignedUserId' => (string) $request->get('assignedUserId'),
+                    'assignedUserName' => (string) $request->get('assignedUserName'),
+                    'dateStart' => (string) $request->get('dateStartDate'),
+                    'dateEnd' => (string) $request->get('dateEndDate'),
+                    'days' => (int) $request->get('days'),
+                    'status' => (string) $request->get('status'),
+                ];
+            },
+        );
+    }
+
+    private function prepareHolidayForUser(
+        Entity $request,
+        User $targetUser,
+        bool $managedBooking,
+    ): void {
         [$dateStart, $dateEnd] = $this->normalizeRequestDates($request);
-        $this->assertBookingDatesAllowed($dateStart, $dateEnd);
-        $userId = (string) $this->user->getId();
+        if ($managedBooking) {
+            $this->assertManagedBookingDatesAllowed($dateStart);
+        } else {
+            $this->assertBookingDatesAllowed($dateStart, $dateEnd);
+        }
+        $userId = (string) $targetUser->getId();
         $profile = $this->findProfileByUser($userId);
         $days = $this->countWorkingDays($dateStart, $dateEnd);
 
@@ -116,7 +200,7 @@ final class HolidayBalanceService
         $accountingKey = hash('sha256', $requestId . ':' . $userId);
         $request->set([
             'id' => $requestId,
-            'name' => 'Holiday - ' . $this->user->get('name'),
+            'name' => 'Holiday - ' . $targetUser->get('name'),
             'dateStart' => null,
             'dateEnd' => null,
             'dateStartDate' => $dateStart,
@@ -134,7 +218,7 @@ final class HolidayBalanceService
             'cancellationDecidedByName' => null,
             'cancellationDecidedAt' => null,
             'assignedUserId' => $userId,
-            'assignedUserName' => $this->user->get('name'),
+            'assignedUserName' => $targetUser->get('name'),
             'profileId' => $profile->getId(),
             'profileName' => $profile->get('name'),
             'accountingKey' => $accountingKey,
@@ -923,9 +1007,31 @@ final class HolidayBalanceService
     {
         $this->assertInternalUser();
 
-        if (!$this->user->isAdmin() && $userId !== $this->user->getId()) {
+        if (
+            !$this->user->isAdmin() &&
+            $userId !== $this->user->getId() &&
+            !$this->requestManagerAccessChecker->isManager()
+        ) {
             throw new Forbidden($this->message('ownerOnly'));
         }
+    }
+
+    private function findManagedEmployee(string $userId): User
+    {
+        $employee = $this->entityManager
+            ->getRDBRepositoryByClass(User::class)
+            ->where([
+                'id' => $userId,
+                'isActive' => true,
+                'type' => User::TYPE_REGULAR,
+            ])
+            ->findOne();
+
+        if (!$employee) {
+            throw new BadRequest($this->message('managedBookingEmployeeRequired'));
+        }
+
+        return $employee;
     }
 
     private function assertCancellationRequester(Entity $request): void
@@ -1071,6 +1177,16 @@ final class HolidayBalanceService
             );
         } catch (InvalidArgumentException $e) {
             throw new BadRequest($this->translateValidationMessage($e->getMessage()));
+        }
+    }
+
+    private function assertManagedBookingDatesAllowed(string $dateStart): void
+    {
+        $today = $this->dateTime->getToday()->toString();
+        $currentMonthStart = substr($today, 0, 7) . '-01';
+
+        if ($dateStart < $currentMonthStart) {
+            throw new BadRequest($this->message('managedBookingCurrentMonthOnly'));
         }
     }
 

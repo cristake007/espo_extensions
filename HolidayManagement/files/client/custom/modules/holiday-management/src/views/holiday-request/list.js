@@ -13,8 +13,78 @@ define(['views/list'], (ListView) => {
 
         afterRender() {
             super.afterRender();
+            this.renderManagedBookingAction();
             this.loadHolidayBalance();
             this.loadApprovalQueue();
+        }
+
+        renderManagedBookingAction() {
+            this.$el.find('.holiday-managed-booking-panel').remove();
+
+            if (!this.getAcl().check('HolidayRequestManagement')) {
+                return;
+            }
+
+            const panel = $('<div>')
+                .addClass('panel panel-default holiday-managed-booking-panel margin-bottom')
+                .append(
+                    $('<div>').addClass('panel-body').append(
+                        $('<div>').addClass('pull-left').append(
+                            $('<strong>').text(this.translate(
+                                'Managed Booking',
+                                'labels',
+                                'HolidayRequest'
+                            )),
+                            $('<div>').addClass('text-muted small').text(this.translate(
+                                'managedBookingPanelHelp',
+                                'messages',
+                                'HolidayRequest'
+                            )),
+                        ),
+                        $('<button>', {type: 'button'})
+                            .addClass('btn btn-primary pull-right')
+                            .append(
+                                $('<span>').addClass('fas fa-user-plus').attr('aria-hidden', 'true'),
+                                ' ',
+                                this.translate(
+                                    'Book for Employee',
+                                    'labels',
+                                    'HolidayRequest'
+                                )
+                            )
+                            .on('click', () => this.openManagedBookingModal()),
+                        $('<div>').addClass('clearfix'),
+                    ),
+                );
+
+            this.$el.find('.page-header').after(panel);
+        }
+
+        openManagedBookingModal() {
+            const viewName = `holidayManagedBooking-${Date.now()}`;
+
+            this.createView(
+                viewName,
+                'holiday-management:views/modals/managed-booking',
+                {},
+            ).then(modal => {
+                this.listenToOnce(modal, 'saved', async () => {
+                    Espo.Ui.success(this.translate(
+                        'managedBookingSaved',
+                        'messages',
+                        'HolidayRequest'
+                    ));
+                    await this.collection.fetch();
+                    this.loadApprovalQueue();
+                    window.dispatchEvent(new CustomEvent(
+                        'holiday-management:balance-refresh'
+                    ));
+                    window.dispatchEvent(new CustomEvent(
+                        'zile-sarbatoare:calendar-refresh'
+                    ));
+                });
+                modal.render();
+            });
         }
 
         async loadApprovalQueue() {
