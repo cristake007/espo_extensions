@@ -1,6 +1,6 @@
 {
     "name": "Holiday Management",
-    "version": "1.8.5",
+    "version": "1.8.6",
     "acceptableVersions": [
         ">=10.0.0"
     ],

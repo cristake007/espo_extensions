@@ -1,4 +1,7 @@
 {
+    "labels": {
+        "Correct Balance": "Correct Balance"
+    },
     "fields": {
         "name": "Name",
         "user": "User",

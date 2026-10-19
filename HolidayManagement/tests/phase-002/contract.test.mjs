@@ -190,6 +190,7 @@ test('service audits complete before and after state for initialization and corr
     assert.match(source, /bulkUpdate/);
     assert.match(source, /correction/);
     assert.match(source, /message\('correctionReasonRequired'\)/);
+    assert.match(source, /\$balance\s*=\s*\$isNew\s*\?\s*\$openingBalance/);
 });
 
 test('annual resets cap positive carry-over and retain negative balances', async () => {
@@ -287,15 +288,12 @@ test('module exposes balance, self-service, and approval routes', async () => {
     ]);
 });
 
-test('profile setup is role-controlled while corrections and resets remain admin-only', async () => {
+test('profile setup and balance corrections are role-controlled while resets remain admin-only', async () => {
     const delegatedCases = [
         ['GetProfiles', 'listProfiles'],
         ['PostBulkInitialize', 'bulkInitialize'],
     ];
-    const adminCases = [
-        ['PostCorrection', 'correct'],
-        ['PostReset', 'reset'],
-    ];
+    const adminCases = [['PostReset', 'reset']];
 
     for (const [className, serviceMethod] of delegatedCases) {
         const source = await readModuleSource(
@@ -308,6 +306,21 @@ test('profile setup is role-controlled while corrections and resets remain admin
         assert.doesNotMatch(source, /->isAdmin\(\)/);
         assert.match(source, new RegExp(`->${serviceMethod}\\(`));
     }
+
+    const correctionAction = await readModuleSource(
+        'Tools', 'HolidayBalance', 'Api', 'PostCorrection.php'
+    );
+    const correctionAccessChecker = await readModuleSource(
+        'Tools', 'HolidayBalance', 'HolidayBalanceCorrectionAccessChecker.php'
+    );
+
+    assert.match(correctionAction, /HolidayBalanceCorrectionAccessChecker/);
+    assert.match(correctionAction, /accessChecker->assertManager\(\)/);
+    assert.doesNotMatch(correctionAction, /->isAdmin\(\)/);
+    assert.match(correctionAction, /->correct\(/);
+    assert.match(correctionAccessChecker, /HolidayBalanceCorrection/);
+    assert.match(correctionAccessChecker, /acl->check\(self::SCOPE\)/);
+    assert.match(correctionAccessChecker, /user->isAdmin\(\)/);
 
     for (const [className, serviceMethod] of adminCases) {
         const source = await readModuleSource(
@@ -328,6 +341,9 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     const managementScope = await readModuleJson(
         'Resources', 'metadata', 'scopes', 'HolidayProfileManagement.json'
     );
+    const correctionScope = await readModuleJson(
+        'Resources', 'metadata', 'scopes', 'HolidayBalanceCorrection.json'
+    );
     const item = adminPanel.holidayManagement.itemList.find(
         candidate => candidate.url === '#Admin/holidayManagementProfiles'
     );
@@ -335,6 +351,11 @@ test('Administration exposes a bulk profile setup view using the service endpoin
         extensionRoot,
         'files', 'client', 'custom', 'modules', 'holiday-management',
         'src', 'views', 'admin', 'profiles.js'
+    ), 'utf8');
+    const correctionModal = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'modals', 'balance-correction.js'
     ), 'utf8');
     const controller = await readFile(path.join(
         extensionRoot,
@@ -351,6 +372,8 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.equal(item.accessDataList[0].scope, 'HolidayProfileManagement');
     assert.equal(managementScope.acl, 'boolean');
     assert.equal(managementScope.tab, false);
+    assert.equal(correctionScope.acl, 'boolean');
+    assert.equal(correctionScope.tab, false);
     assert.equal(
         clientNavbar.menuItems.holidayProfiles.link,
         '#Admin/holidayManagementProfiles'
@@ -378,6 +401,16 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.match(source, /HolidayManagement\/bulkInitialize/);
     assert.match(source, /annualEntitlement/);
     assert.match(source, /openingBalance/);
+    assert.match(source, /HolidayBalanceCorrection/);
+    assert.match(source, /views\/fields\/float/);
+    assert.match(source, /views\/modals\/balance-correction/);
+    assert.doesNotMatch(source, /type="number"/);
+    assert.match(correctionModal, /HolidayManagement\/correct/);
+    assert.match(correctionModal, /views\/fields\/float/);
+    assert.match(correctionModal, /views\/fields\/text/);
+    assert.match(correctionModal, /idempotencyKey/);
+    assert.match(correctionModal, /reason/);
+    assert.doesNotMatch(correctionModal, /<input|<textarea/);
     assert.match(source, /nextResetDate/);
     assert.match(source, /calendarColor/);
     assert.match(source, /views\/fields\/date/);
@@ -388,10 +421,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.8.5 package', async () => {
+test('accounting metadata remains bilingual in the 1.8.6 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.8.5');
+    assert.equal(manifest.version, '1.8.6');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');
@@ -405,6 +438,8 @@ test('accounting metadata remains bilingual in the 1.8.5 package', async () => {
         assert.equal(typeof global.scopeNamesPlural.HolidayProfileManagement, 'string');
         assert.equal(typeof global.scopeNames.HolidayRequestManagement, 'string');
         assert.equal(typeof global.scopeNamesPlural.HolidayRequestManagement, 'string');
+        assert.equal(typeof global.scopeNames.HolidayBalanceCorrection, 'string');
+        assert.equal(typeof global.scopeNamesPlural.HolidayBalanceCorrection, 'string');
 
         for (const field of [
             'user', 'annualEntitlement', 'balance', 'nextResetDate', 'calendarColor',

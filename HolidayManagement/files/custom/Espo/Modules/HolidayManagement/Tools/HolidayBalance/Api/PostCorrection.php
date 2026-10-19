@@ -9,26 +9,21 @@ use Espo\Core\Api\Request;
 use Espo\Core\Api\Response;
 use Espo\Core\Api\ResponseComposer;
 use Espo\Core\Exceptions\BadRequest;
-use Espo\Core\Exceptions\Forbidden;
-use Espo\Entities\User;
 use Espo\Core\Utils\Language;
+use Espo\Modules\HolidayManagement\Tools\HolidayBalance\HolidayBalanceCorrectionAccessChecker;
 use Espo\Modules\HolidayManagement\Tools\HolidayBalance\HolidayBalanceService;
 
 final class PostCorrection implements Action
 {
     public function __construct(
         private HolidayBalanceService $service,
-        private User $user,
+        private HolidayBalanceCorrectionAccessChecker $accessChecker,
         private Language $language,
     ) {}
 
     public function process(Request $request): Response
     {
-        if (!$this->user->isAdmin()) {
-            throw new Forbidden($this->language->translateLabel(
-                'correctionAccessForbidden', 'messages', 'Admin'
-            ));
-        }
+        $this->accessChecker->assertManager();
 
         $data = $request->getParsedBody() ?? (object) [];
 

@@ -851,10 +851,11 @@ final class HolidayBalanceService
             $item['annualEntitlement'] ?? null,
             $this->message('annualEntitlementField'),
         );
-        $openingBalance = $this->finiteNumber(
-            $item['openingBalance'] ?? null,
-            $this->message('openingBalanceField'),
-        );
+        $openingBalance = array_key_exists('openingBalance', $item) ?
+            $this->finiteNumber(
+                $item['openingBalance'],
+                $this->message('openingBalanceField'),
+            ) : null;
         $calendarColor = array_key_exists('calendarColor', $item) ?
             $this->validateCalendarColor($item['calendarColor']) : null;
 
@@ -894,6 +895,10 @@ final class HolidayBalanceService
             $isNew = !$profile;
 
             if (!$profile) {
+                if ($openingBalance === null) {
+                    throw new BadRequest($this->message('openingBalanceField'));
+                }
+
                 $profile = $this->entityManager->getNewEntity(self::PROFILE);
                 $profile->set([
                     'name' => (string) $eligibleUser->get('name'),
@@ -909,10 +914,11 @@ final class HolidayBalanceService
             }
 
             $before = $this->snapshot($profile);
-            $delta = $openingBalance - (float) ($profile->get('balance') ?? 0.0);
+            $balance = $isNew ? $openingBalance : (float) $profile->get('balance');
+            $delta = $balance - (float) ($profile->get('balance') ?? 0.0);
             $profile->set([
                 'annualEntitlement' => $annualEntitlement,
-                'balance' => $openingBalance,
+                'balance' => $balance,
                 'nextResetDate' => $nextResetDate,
                 'isInitialized' => true,
             ]);

@@ -1,4 +1,7 @@
 {
+    "labels": {
+        "Correct Balance": "Corectează soldul"
+    },
     "fields": {
         "name": "Denumire",
         "user": "Utilizator",
