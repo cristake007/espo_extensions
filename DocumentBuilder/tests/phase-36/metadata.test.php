@@ -57,6 +57,11 @@ foreach (['status', 'template', 'templateVersion', 'sourceRecord', 'pdfAttachmen
 Assert::isFalse(isset($entityAcl['fields']['description']), 'User notes should remain editable under normal record ACL.');
 
 Assert::same('controllers/record', $client['controller'] ?? null, 'Generated documents must use native record views.');
+Assert::same(
+    'document-builder:views/document-builder-document/record/list',
+    $client['recordViews']['list'] ?? null,
+    'Generated documents must use the empty-state-aware record list view.',
+);
 Assert::same(['onlyMy'], $client['boolFilterList'] ?? null, 'Ownership filter changed.');
 Assert::same([
     'Espo\\Modules\\DocumentBuilder\\Classes\\Record\\OutputFilters\\DocumentBuilderDocument\\Snapshot',
@@ -85,6 +90,9 @@ foreach (['en_US', 'ro_RO'] as $locale) {
     $language = $loader->json("i18n/$locale/DocumentBuilderDocument.json");
     $global = $loader->json("i18n/$locale/Global.json");
     Assert::isTrue(isset($language['fields']['pdfAttachment']), "$locale PDF field translation is missing.");
+    Assert::isTrue(isset($language['messages']['generatedDocumentsEmptyTitle']), "$locale empty-state title is missing.");
+    Assert::isTrue(isset($language['messages']['generatedDocumentsEmptyText']), "$locale empty-state text is missing.");
+    Assert::isTrue(isset($language['labels']['createTemplate']), "$locale empty-state action is missing.");
     Assert::isTrue(isset($language['options']['status']['Completed with Warnings']), "$locale warning status translation is missing.");
     Assert::isTrue(isset($global['scopeNames']['DocumentBuilderDocument']), "$locale generated-document scope name is missing.");
 }

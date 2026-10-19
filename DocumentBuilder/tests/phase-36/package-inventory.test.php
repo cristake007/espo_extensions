@@ -12,6 +12,8 @@ foreach ([
     'files/custom/Espo/Modules/DocumentBuilder/Tools/DocumentBuilder/GenerationHistory/DocumentHistoryPolicy.php',
     'files/custom/Espo/Modules/DocumentBuilder/Classes/Acl/DocumentBuilderDocumentAccessChecker.php',
     'files/custom/Espo/Modules/DocumentBuilder/Classes/Record/OutputFilters/DocumentBuilderDocument/Snapshot.php',
+    'files/custom/Espo/Modules/DocumentBuilder/Controllers/DocumentBuilderDocument.php',
+    'files/client/custom/modules/document-builder/src/views/document-builder-document/record/list.js',
 ] as $entry) {
     if ($zip->locateName($entry) === false) throw new RuntimeException("Phase 36 package entry missing: $entry");
 }

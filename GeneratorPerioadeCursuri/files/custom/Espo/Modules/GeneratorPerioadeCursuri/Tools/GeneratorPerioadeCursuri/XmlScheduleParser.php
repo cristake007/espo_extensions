@@ -11,6 +11,7 @@ class XmlScheduleParser
     private const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
     private const MAX_COURSE_ROWS = 5000;
     private const MAX_COLUMNS = 50;
+    private const UNAVAILABLE_PERIOD_PLACEHOLDER = 'not enough working days in month';
 
     private const ROMANIAN_MONTHS = [
         'ianuarie',
@@ -220,7 +221,7 @@ class XmlScheduleParser
             foreach ($monthColumns as $monthIndex) {
                 $dateRange = $this->cell($row, $monthIndex);
 
-                if ($dateRange === '' || mb_strtolower($dateRange) === 'nan') {
+                if ($this->isEmptyPeriod($dateRange)) {
                     continue;
                 }
 
@@ -239,6 +240,15 @@ class XmlScheduleParser
         }
 
         return $events;
+    }
+
+    private function isEmptyPeriod(string $value): bool
+    {
+        $normalized = mb_strtolower(trim($value));
+
+        return $normalized === '' ||
+            $normalized === 'nan' ||
+            $normalized === self::UNAVAILABLE_PERIOD_PLACEHOLDER;
     }
 
     private function titleHeaderBadRequest(CourseTitleHeaderException $exception): BadRequest

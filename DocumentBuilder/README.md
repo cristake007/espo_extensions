@@ -44,7 +44,7 @@ files/custom/Espo/Custom/Resources/
 From the repository root, build the installable ZIP with:
 
 ```bash
-./build.sh --extension ./DocumentBuilder --zip 1.0.0 files scripts
+./build.sh --extension ./DocumentBuilder --zip 1.0.1 files scripts
 ```
 
-The version argument must match `manifest.json`. The generated package is written to `dist/document-builder-1.0.0.zip`.
+The version argument must match `manifest.json`. The generated package is written to `dist/document-builder-1.0.1.zip`.

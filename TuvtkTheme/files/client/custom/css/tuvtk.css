@@ -28418,3 +28418,40 @@ body:not([data-navbar="side"]):has(> .container.content > .container-centering >
     top: auto;
   }
 }
+
+/* =========================================================
+   Calendar non-working days: Saturday and Sunday
+   ========================================================= */
+.calendar-container .fc {
+  --tuvtk-non-working-bg: rgba(212, 17, 49, 0.045);
+  --tuvtk-non-working-stripe: rgba(212, 17, 49, 0.075);
+  --tuvtk-non-working-text: #8b6570;
+}
+
+/* A soft red hatch keeps weekends recognizable without competing with events. */
+.calendar-container .fc .fc-day-sat.fc-daygrid-day,
+.calendar-container .fc .fc-day-sun.fc-daygrid-day,
+.calendar-container .fc .fc-day-sat.fc-timegrid-col,
+.calendar-container .fc .fc-day-sun.fc-timegrid-col {
+  background-color: var(--tuvtk-non-working-bg) !important;
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0,
+    transparent 8px,
+    var(--tuvtk-non-working-stripe) 8px,
+    var(--tuvtk-non-working-stripe) 9px
+  ) !important;
+}
+
+/* Carry the off-day cue into the column heading, but keep it understated. */
+.calendar-container .fc .fc-col-header-cell.fc-day-sat,
+.calendar-container .fc .fc-col-header-cell.fc-day-sun {
+  background: rgba(212, 17, 49, 0.065);
+}
+
+.calendar-container .fc .fc-col-header-cell.fc-day-sat .fc-col-header-cell-cushion,
+.calendar-container .fc .fc-col-header-cell.fc-day-sun .fc-col-header-cell-cushion,
+.calendar-container .fc .fc-day-sat .fc-daygrid-day-number,
+.calendar-container .fc .fc-day-sun .fc-daygrid-day-number {
+  color: var(--tuvtk-non-working-text) !important;
+}

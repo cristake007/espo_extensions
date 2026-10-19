@@ -1,4 +1,11 @@
 {
+    "labels": {
+        "createTemplate": "Creează un șablon"
+    },
+    "messages": {
+        "generatedDocumentsEmptyTitle": "Documentele generate vor apărea aici",
+        "generatedDocumentsEmptyText": "Nu a fost generat încă niciun document. Creați acum un șablon pentru a-l pregăti pentru generarea documentelor."
+    },
     "fields": {
         "name": "Nume",
         "status": "Stare",
