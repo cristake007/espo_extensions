@@ -190,7 +190,7 @@ test('service audits complete before and after state for initialization and corr
     assert.match(source, /bulkUpdate/);
     assert.match(source, /correction/);
     assert.match(source, /message\('correctionReasonRequired'\)/);
-    assert.match(source, /\$balance\s*=\s*\$isNew\s*\?\s*\$openingBalance/);
+    assert.match(source, /\$balance\s*=\s*\$requiresOpeningBalance\s*\?\s*\$openingBalance/);
 });
 
 test('annual resets cap positive carry-over and retain negative balances', async () => {
@@ -201,6 +201,7 @@ test('annual resets cap positive carry-over and retain negative balances', async
     assert.match(source, /BalanceMath::calculateResetBalance\(/);
     assert.match(source, /holidayManagementCarryOverLimitDays/);
     assert.match(source, /processDueResets/);
+    assert.match(source, /holidayManagementAutomaticAnnualGrantEnabled/);
     assert.match(source, /nextResetDate<=/);
     assert.match(source, /scheduled-reset:/);
     assert.match(source, /resetOverride/);
@@ -239,6 +240,21 @@ test('module exposes balance, self-service, and approval routes', async () => {
             route: '/HolidayManagement/bulkInitialize',
             method: 'post',
             actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostBulkInitialize',
+        },
+        {
+            route: '/HolidayManagement/completeInitialSetup',
+            method: 'post',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostCompleteInitialSetup',
+        },
+        {
+            route: '/HolidayManagement/testDataResetPreview',
+            method: 'get',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\GetTestDataResetPreview',
+        },
+        {
+            route: '/HolidayManagement/testDataReset',
+            method: 'post',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostTestDataReset',
         },
         {
             route: '/HolidayManagement/correct',
@@ -298,6 +314,7 @@ test('profile setup and balance corrections are role-controlled while resets rem
         ['GetProfiles', 'listProfiles'],
         ['GetCorrectionHistory', 'listCorrections'],
         ['PostBulkInitialize', 'bulkInitialize'],
+        ['PostCompleteInitialSetup', 'completeInitialSetup'],
     ];
     const adminCases = [['PostReset', 'reset']];
 
@@ -373,6 +390,11 @@ test('Administration exposes a bulk profile setup view using the service endpoin
         'files', 'client', 'custom', 'modules', 'holiday-management',
         'src', 'views', 'modals', 'correction-history.js'
     ), 'utf8');
+    const initialSetupModal = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'modals', 'complete-initial-setup.js'
+    ), 'utf8');
     const controller = await readFile(path.join(
         extensionRoot,
         'files', 'client', 'custom', 'modules', 'holiday-management',
@@ -407,6 +429,9 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.match(accessChecker, /profilesAccessForbidden/);
     assert.match(source, /HolidayManagement\/profiles/);
     assert.match(source, /HolidayManagement\/bulkInitialize/);
+    assert.match(source, /actionInitializeProfile/);
+    assert.match(source, /actionCompleteInitialSetup/);
+    assert.match(source, /if \(!profileRow\.isInitialized\)/);
     assert.match(source, /annualEntitlement/);
     assert.match(source, /openingBalance/);
     assert.match(source, /HolidayBalanceCorrection/);
@@ -428,6 +453,8 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.match(correctionHistoryModal, /balanceAfter/);
     assert.match(correctionHistoryModal, /actorName/);
     assert.match(correctionHistoryModal, /reason/);
+    assert.match(initialSetupModal, /HolidayManagement\/completeInitialSetup/);
+    assert.match(initialSetupModal, /openingBalance/);
     assert.match(source, /nextResetDate/);
     assert.match(source, /calendarColor/);
     assert.match(source, /views\/fields\/date/);
@@ -438,10 +465,40 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.8.11 package', async () => {
+test('Administration exposes an admin-only guarded test-data reset', async () => {
+    const settings = await readModuleJson('Resources', 'metadata', 'entityDefs', 'Settings.json');
+    const resetService = await readModuleSource(
+        'Tools', 'HolidayBalance', 'HolidayDataResetService.php'
+    );
+    const previewAction = await readModuleSource(
+        'Tools', 'HolidayBalance', 'Api', 'GetTestDataResetPreview.php'
+    );
+    const resetAction = await readModuleSource(
+        'Tools', 'HolidayBalance', 'Api', 'PostTestDataReset.php'
+    );
+    const resetField = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'fields', 'test-data-reset.js'
+    ), 'utf8');
+
+    assert.equal(settings.fields.holidayManagementTestDataReset.notStorable, true);
+    assert.match(previewAction, /user->isAdmin\(\)/);
+    assert.match(resetAction, /user->isAdmin\(\)/);
+    assert.match(resetAction, /RESET HOLIDAY DATA/);
+    assert.match(resetService, /holidayManagementAutomaticAnnualGrantEnabled/);
+    assert.match(resetService, /skipHooks/);
+    assert.match(resetService, /fileStorageManager->unlink/);
+    assert.match(resetService, /'isInitialized'\s*=>\s*false/);
+    assert.match(resetField, /HolidayManagement\/testDataResetPreview/);
+    assert.match(resetField, /HolidayManagement\/testDataReset/);
+    assert.match(resetField, /RESET HOLIDAY DATA/);
+});
+
+test('accounting metadata remains bilingual in the 1.8.13 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.8.11');
+    assert.equal(manifest.version, '1.8.13');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');

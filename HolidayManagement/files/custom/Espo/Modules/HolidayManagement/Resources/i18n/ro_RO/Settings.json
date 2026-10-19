@@ -2,6 +2,8 @@
     "fields": {
         "holidayManagementAnnualEntitlementDays": "Drept anual implicit (zile)",
         "holidayManagementResetDate": "Data implicită de resetare",
+        "holidayManagementAutomaticAnnualGrantEnabled": "Activează acordarea anuală automată",
+        "holidayManagementTestDataReset": "Resetare date de test",
         "holidayManagementCarryOverLimitDays": "Plafon sold reportat (zile)",
         "holidayManagementNegativeBalanceLimitDays": "Limita soldului negativ (zile)",
         "holidayManagementApprovers": "Aprobatori concedii",
@@ -13,6 +15,7 @@
     "tooltips": {
         "holidayManagementAnnualEntitlementDays": "Numărul anual de zile acordat implicit la inițializarea profilului de concediu.",
         "holidayManagementResetDate": "Selectați data resetării anuale cu selectorul de dată EspoCRM. Anul este ignorat; este acceptat și formatul LL-ZZ, de exemplu 01-01.",
+        "holidayManagementAutomaticAnnualGrantEnabled": "Dezactivată implicit. Dacă este activată, jobul zilnic adaugă automat dreptul anual profilurilor ajunse la data de resetare. Verificați soldurile și datele înainte de activare.",
         "holidayManagementCarryOverLimitDays": "Soldul maxim acumulat după resetarea anuală, măsurat în zile. Zilele reportate nu expiră în funcție de vechime. Dreptul anual se adaugă numai până la acest plafon; un sold deja la plafon rămâne neschimbat. Soldurile negative reduc noul drept anual.",
         "holidayManagementNegativeBalanceLimitDays": "Cel mai mic sold permis. Setați zero pentru a interzice soldul negativ.",
         "holidayManagementApprovers": "Selectați unul sau doi utilizatori interni activi care pot aproba cererile de concediu.",
@@ -23,6 +26,7 @@
     },
     "labels": {
         "Defaults": "Valori implicite",
+        "Test Data": "Date de test",
         "Approval": "Aprobare",
         "Printed Approval Blocks": "Blocuri tiparite de aprobare"
     }

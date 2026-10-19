@@ -6,6 +6,9 @@
         "holidayManagementResetDate": {
             "level": "admin"
         },
+        "holidayManagementAutomaticAnnualGrantEnabled": {
+            "level": "admin"
+        },
         "holidayManagementCarryOverLimitDays": {
             "level": "admin"
         },

@@ -35,17 +35,29 @@ records; it does not modify them. Rejected requests refund their reserved days
 exactly once and no longer appear in Calendar. The extension does not yet include
 approval notifications or public-holiday synchronization.
 
-At each profile's reset date, the daily scheduled job grants that profile's
+When **Enable Automatic Annual Grants** is explicitly enabled, at each profile's
+reset date the daily scheduled job grants that profile's
 annual entitlement without allowing the resulting accumulated balance to
 exceed the configured cap (90 days by default). A balance already at 90 stays
 at 90 across future resets. Carried days do not expire based on their age. A
 negative balance is carried in full and reduces the grant; for example, a
 balance of -5 with a 21-day entitlement becomes 16.
 
+Automatic annual grants are disabled by default. The scheduled job exits without
+changing balances until an administrator enables them after reviewing profile
+balances and next-reset dates.
+
+Administrators can use **Holiday Management > Test Data** to preview and reset
+extension test data before go-live. The guarded reset requires the exact phrase
+`RESET HOLIDAY DATA`, refuses to run while automatic annual grants are enabled,
+removes holiday requests, generated approval documents and ledger entries, and
+returns holiday profiles to the uninitialized state. Users, roles, Holiday
+Management settings and public-holiday records are preserved.
+
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.8.11 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.8.13 files scripts
 ```
 
 Run the phase contract tests:

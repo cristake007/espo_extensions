@@ -16,6 +16,7 @@ const moduleRoot = path.join(
 const settingDefaults = {
     holidayManagementAnnualEntitlementDays: null,
     holidayManagementResetDate: null,
+    holidayManagementAutomaticAnnualGrantEnabled: false,
     holidayManagementCarryOverLimitDays: 90,
     holidayManagementNegativeBalanceLimitDays: -21,
     holidayManagementApprovalBlock1Title: '',
@@ -186,15 +187,15 @@ test('Windows packaging preserves portable forward-slash ZIP entry names', async
     assert.doesNotMatch(packageScript, /Compress-Archive/);
 });
 
-test('settings view declares three explicit EspoCRM tabs', async () => {
+test('settings view declares four explicit EspoCRM tabs', async () => {
     const source = await readFile(path.join(
         extensionRoot,
         'files', 'client', 'custom', 'modules', 'holiday-management',
         'src', 'views', 'admin', 'settings.js'
     ), 'utf8');
 
-    assert.equal((source.match(/tabBreak:\s*true/g) ?? []).length, 3);
-    assert.equal((source.match(/tabLabel:/g) ?? []).length, 3);
+    assert.equal((source.match(/tabBreak:\s*true/g) ?? []).length, 4);
+    assert.equal((source.match(/tabLabel:/g) ?? []).length, 4);
 });
 
 test('reset-date setting uses the native EspoCRM date field', async () => {

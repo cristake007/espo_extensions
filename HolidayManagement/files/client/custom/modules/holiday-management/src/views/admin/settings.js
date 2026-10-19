@@ -10,6 +10,10 @@ define(['views/settings/record/edit'], (Dep) => {
                         {name: 'holidayManagementResetDate'},
                     ],
                     [
+                        {name: 'holidayManagementAutomaticAnnualGrantEnabled'},
+                        false,
+                    ],
+                    [
                         {name: 'holidayManagementCarryOverLimitDays'},
                         {name: 'holidayManagementNegativeBalanceLimitDays'},
                     ],
@@ -36,6 +40,15 @@ define(['views/settings/record/edit'], (Dep) => {
                     [
                         {name: 'holidayManagementApprovalBlock2Title'},
                         {name: 'holidayManagementApprovalBlock2Name'},
+                    ],
+                ],
+            },
+            {
+                tabBreak: true,
+                tabLabel: 'Test Data',
+                rows: [
+                    [
+                        {name: 'holidayManagementTestDataReset', fullWidth: true},
                     ],
                 ],
             },

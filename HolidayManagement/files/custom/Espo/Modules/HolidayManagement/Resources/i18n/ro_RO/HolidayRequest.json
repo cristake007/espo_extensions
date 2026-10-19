@@ -109,6 +109,7 @@
         "finiteNumberRequired": "{field} trebuie să fie un număr finit.",
         "annualEntitlementField": "Dreptul anual",
         "openingBalanceField": "Soldul inițial",
+        "initialSetupNotAvailable": "Configurarea inițială nu mai este disponibilă deoarece profilul are deja activitate contabilă.",
         "requestIdRequired": "ID-ul cererii de concediu este obligatoriu.",
         "approvalDecisionRequired": "Decizia de aprobare este obligatorie.",
         "balanceAccessForbidden": "Doar angajații activi de tip utilizator obișnuit pot vedea soldul de concediu.",

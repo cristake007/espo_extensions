@@ -14,6 +14,17 @@
             "view": "holiday-management:views/fields/annual-reset-date",
             "tooltip": true
         },
+        "holidayManagementAutomaticAnnualGrantEnabled": {
+            "type": "bool",
+            "default": false,
+            "required": true,
+            "tooltip": true
+        },
+        "holidayManagementTestDataReset": {
+            "type": "varchar",
+            "notStorable": true,
+            "view": "holiday-management:views/fields/test-data-reset"
+        },
         "holidayManagementCarryOverLimitDays": {
             "type": "int",
             "default": 90,

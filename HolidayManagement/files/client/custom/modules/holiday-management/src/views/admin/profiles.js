@@ -40,7 +40,22 @@ define(['view', 'model'], (Dep, Model) => {
                                 </div></td>
                                 <td><div class="field" data-reset-date-field="{{rowIndex}}"></div></td>
                                 <td><div class="field holiday-profile-color-field" data-calendar-color-field="{{rowIndex}}"></div></td>
-                                <td>{{#if isInitialized}}{{translate 'Initialized' category='labels' scope='Admin'}}{{else}}{{translate 'Not Initialized' category='labels' scope='Admin'}}{{/if}}</td>
+                                <td>
+                                    {{#if isInitialized}}
+                                        <span>{{translate 'Initialized' category='labels' scope='Admin'}}</span>
+                                        {{#if canCompleteInitialSetup}}
+                                        <button type="button" class="btn btn-warning btn-xs"
+                                            data-action="completeInitialSetup" data-row-index="{{rowIndex}}">
+                                            {{translate 'Complete Initial Setup' category='labels' scope='Admin'}}
+                                        </button>
+                                        {{/if}}
+                                    {{else}}
+                                        <button type="button" class="btn btn-primary btn-xs"
+                                            data-action="initializeProfile" data-row-index="{{rowIndex}}">
+                                            {{translate 'Initialize Profile' category='labels' scope='Admin'}}
+                                        </button>
+                                    {{/if}}
+                                </td>
                             </tr>
                         {{/each}}
                         </tbody>
@@ -51,6 +66,8 @@ define(['view', 'model'], (Dep, Model) => {
 
         events = {
             'click [data-action="save"]': 'actionSave',
+            'click [data-action="initializeProfile"]': 'actionInitializeProfile',
+            'click [data-action="completeInitialSetup"]': 'actionCompleteInitialSetup',
             'click [data-action="correctBalance"]': 'actionCorrectBalance',
             'click [data-action="viewCorrectionHistory"]': 'actionViewCorrectionHistory',
         }
@@ -176,18 +193,22 @@ define(['view', 'model'], (Dep, Model) => {
                 const annualEntitlement = this.getView(`annualEntitlement-${rowIndex}`)
                     .fetch().annualEntitlement;
                 const profileRow = this.rows[rowIndex];
-                const openingBalance = profileRow.isInitialized ? undefined :
-                    this.getView(`balance-${rowIndex}`).fetch().balance;
                 const nextResetDate = this.getView(`nextResetDate-${rowIndex}`)
                     .fetch().nextResetDate;
                 const calendarColor = this.getView(`calendarColor-${rowIndex}`)
                     .fetch().calendarColor;
 
-                if (
-                    (annualEntitlement === null || annualEntitlement === undefined) &&
-                    (openingBalance === null || openingBalance === undefined) &&
-                    !nextResetDate
-                ) {
+                if (!profileRow.isInitialized) {
+                    return;
+                }
+
+                const unchanged =
+                    Number(annualEntitlement) === Number(profileRow.annualEntitlement) &&
+                    String(nextResetDate || '') === String(profileRow.nextResetDate || '') &&
+                    String(calendarColor || '').toUpperCase() ===
+                        String(profileRow.calendarColor || '').toUpperCase();
+
+                if (unchanged) {
                     return;
                 }
 
@@ -198,10 +219,6 @@ define(['view', 'model'], (Dep, Model) => {
                     calendarColor,
                     idempotencyKey: `bulk:${operation}:${row.data('user-id')}`,
                 };
-
-                if (!profileRow.isInitialized) {
-                    item.openingBalance = Number(openingBalance);
-                }
 
                 items.push(item);
             });
@@ -228,6 +245,95 @@ define(['view', 'model'], (Dep, Model) => {
             } finally {
                 saveButton.prop('disabled', false);
             }
+        }
+
+        async actionInitializeProfile(event) {
+            const rowIndex = Number($(event.currentTarget).data('row-index'));
+            const row = this.rows[rowIndex];
+
+            if (!row || row.isInitialized) {
+                return;
+            }
+
+            const annualEntitlement = this.getView(`annualEntitlement-${rowIndex}`)
+                .fetch().annualEntitlement;
+            const openingBalance = this.getView(`balance-${rowIndex}`).fetch().balance;
+            const nextResetDate = this.getView(`nextResetDate-${rowIndex}`)
+                .fetch().nextResetDate;
+            const calendarColor = this.getView(`calendarColor-${rowIndex}`)
+                .fetch().calendarColor;
+
+            if (
+                annualEntitlement === null || annualEntitlement === undefined ||
+                annualEntitlement === '' || openingBalance === null ||
+                openingBalance === undefined || openingBalance === '' || !nextResetDate
+            ) {
+                Espo.Ui.warning(this.translate(
+                    'initializationFieldsRequired',
+                    'messages',
+                    'Admin',
+                ));
+                return;
+            }
+
+            const button = $(event.currentTarget);
+            button.prop('disabled', true);
+
+            try {
+                await Espo.Ajax.postRequest('HolidayManagement/bulkInitialize', {
+                    items: [{
+                        userId: row.userId,
+                        annualEntitlement: Number(annualEntitlement),
+                        openingBalance: Number(openingBalance),
+                        nextResetDate,
+                        calendarColor,
+                        idempotencyKey: `initialize:${Date.now()}:${row.userId}`,
+                    }],
+                });
+                Espo.Ui.success(this.translate(
+                    'profileInitialized',
+                    'messages',
+                    'Admin',
+                ));
+                await this.loadProfiles();
+                await this.reRender();
+            } catch (error) {
+                button.prop('disabled', false);
+                Espo.Ui.error(this.translate(
+                    'profileInitializationFailed',
+                    'messages',
+                    'Admin',
+                ));
+            }
+        }
+
+        actionCompleteInitialSetup(event) {
+            const rowIndex = Number($(event.currentTarget).data('row-index'));
+            const row = this.rows[rowIndex];
+
+            if (!row?.isInitialized || !row?.canCompleteInitialSetup || !row.profileId) {
+                return;
+            }
+
+            this.createView(
+                `completeInitialSetup-${Date.now()}`,
+                'holiday-management:views/modals/complete-initial-setup',
+                {
+                    profileId: row.profileId,
+                    userName: row.userName,
+                },
+            ).then(modal => {
+                this.listenToOnce(modal, 'saved', async () => {
+                    Espo.Ui.success(this.translate(
+                        'initialSetupCompleted',
+                        'messages',
+                        'Admin',
+                    ));
+                    await this.loadProfiles();
+                    await this.reRender();
+                });
+                modal.render();
+            });
         }
 
         actionCorrectBalance(event) {

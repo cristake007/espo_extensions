@@ -109,6 +109,7 @@
         "finiteNumberRequired": "{field} must be a finite number.",
         "annualEntitlementField": "Annual entitlement",
         "openingBalanceField": "Opening balance",
+        "initialSetupNotAvailable": "Initial setup is no longer available because the profile already has accounting activity.",
         "requestIdRequired": "Holiday request ID is required.",
         "approvalDecisionRequired": "An approval decision is required.",
         "balanceAccessForbidden": "Only active regular employees can view a holiday balance.",

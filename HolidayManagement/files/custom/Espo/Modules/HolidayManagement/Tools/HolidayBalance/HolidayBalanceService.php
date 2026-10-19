@@ -704,16 +704,21 @@ final class HolidayBalanceService
 
         foreach ($users as $eligibleUser) {
             $profile = $profilesByUser[$eligibleUser->getId()] ?? null;
+            $isInitialized = (bool) ($profile?->get('isInitialized') ?? false);
             $result[] = [
                 'userId' => $eligibleUser->getId(),
                 'userName' => $eligibleUser->get('name'),
                 'profileId' => $profile?->getId(),
-                'annualEntitlement' => $profile?->get('annualEntitlement') ?? $defaultEntitlement,
-                'balance' => $profile?->get('balance'),
-                'nextResetDate' => $profile?->get('nextResetDate') ?? $defaultResetDate,
+                'annualEntitlement' => $isInitialized ?
+                    $profile?->get('annualEntitlement') : $defaultEntitlement,
+                'balance' => $isInitialized ? $profile?->get('balance') : null,
+                'nextResetDate' => $isInitialized ?
+                    $profile?->get('nextResetDate') : $defaultResetDate,
                 'calendarColor' => $profile?->get('calendarColor') ?: self::DEFAULT_CALENDAR_COLOR,
-                'isInitialized' => (bool) ($profile?->get('isInitialized') ?? false),
+                'isInitialized' => $isInitialized,
                 'resetPending' => (bool) ($profile?->get('resetPending') ?? false),
+                'canCompleteInitialSetup' => $profile ?
+                    $this->canCompleteInitialSetup($profile) : false,
             ];
         }
 
@@ -836,6 +841,57 @@ final class HolidayBalanceService
     }
 
     /** @return array<string, mixed> */
+    public function completeInitialSetup(
+        string $profileId,
+        float $openingBalance,
+        string $idempotencyKey,
+    ): array {
+        $this->validateIdempotencyKey($idempotencyKey);
+
+        if (!is_finite($openingBalance)) {
+            throw new BadRequest($this->message('openingBalanceField'));
+        }
+
+        return $this->entityManager->getTransactionManager()->run(function () use (
+            $profileId,
+            $openingBalance,
+            $idempotencyKey,
+        ): array {
+            $existing = $this->findLedgerByKey($idempotencyKey);
+
+            if ($existing) {
+                return $this->duplicateResult($existing);
+            }
+
+            $profile = $this->lockProfile($profileId);
+            $existingAfterLock = $this->findLedgerByKey($idempotencyKey);
+
+            if ($existingAfterLock) {
+                return $this->mutationResult($profile, $existingAfterLock, true);
+            }
+
+            if (!$this->canCompleteInitialSetup($profile)) {
+                throw new Conflict($this->message('initialSetupNotAvailable'));
+            }
+
+            $before = $this->snapshot($profile);
+            $profile->set('balance', $openingBalance);
+            $this->entityManager->saveEntity($profile);
+            $ledger = $this->createLedger(
+                $profile,
+                'openingBalanceSetup',
+                $openingBalance - (float) $before['balance'],
+                $before,
+                $this->snapshot($profile),
+                'Opening balance completed after profile initialization.',
+                $idempotencyKey,
+            );
+
+            return $this->mutationResult($profile, $ledger);
+        });
+    }
+
+    /** @return array<string, mixed> */
     public function reset(
         string $profileId,
         string $idempotencyKey,
@@ -931,13 +987,9 @@ final class HolidayBalanceService
                 return $this->duplicateResult($existingAfterLock);
             }
 
-            $isNew = !$profile;
+            $requiresOpeningBalance = !$profile || !(bool) $profile->get('isInitialized');
 
             if (!$profile) {
-                if ($openingBalance === null) {
-                    throw new BadRequest($this->message('openingBalanceField'));
-                }
-
                 $profile = $this->entityManager->getNewEntity(self::PROFILE);
                 $profile->set([
                     'name' => (string) $eligibleUser->get('name'),
@@ -952,8 +1004,12 @@ final class HolidayBalanceService
                 ]);
             }
 
+            if ($requiresOpeningBalance && $openingBalance === null) {
+                throw new BadRequest($this->message('openingBalanceField'));
+            }
+
             $before = $this->snapshot($profile);
-            $balance = $isNew ? $openingBalance : (float) $profile->get('balance');
+            $balance = $requiresOpeningBalance ? $openingBalance : (float) $profile->get('balance');
             $delta = $balance - (float) ($profile->get('balance') ?? 0.0);
             $profile->set([
                 'annualEntitlement' => $annualEntitlement,
@@ -970,11 +1026,11 @@ final class HolidayBalanceService
 
             $ledger = $this->createLedger(
                 $profile,
-                $isNew ? 'initialization' : 'bulkUpdate',
+                $requiresOpeningBalance ? 'initialization' : 'bulkUpdate',
                 $delta,
                 $before,
                 $this->snapshot($profile),
-                $isNew ? 'Bulk profile initialization' : 'Bulk profile update',
+                $requiresOpeningBalance ? 'Profile initialization' : 'Bulk profile update',
                 $idempotencyKey,
             );
 
@@ -984,6 +1040,10 @@ final class HolidayBalanceService
 
     public function processDueResets(): int
     {
+        if ($this->config->get('holidayManagementAutomaticAnnualGrantEnabled') !== true) {
+            return 0;
+        }
+
         $today = $this->dateTime->getToday()->toString();
         $profiles = $this->entityManager
             ->getRDBRepository(self::PROFILE)
@@ -1031,6 +1091,48 @@ final class HolidayBalanceService
         }
 
         return $eligibleUser;
+    }
+
+    private function canCompleteInitialSetup(Entity $profile): bool
+    {
+        if (
+            !(bool) $profile->get('isInitialized') ||
+            (float) $profile->get('balance') !== 0.0
+        ) {
+            return false;
+        }
+
+        $request = $this->entityManager
+            ->getRDBRepository(self::REQUEST)
+            ->where(['profileId' => $profile->getId()])
+            ->findOne();
+
+        if ($request) {
+            return false;
+        }
+
+        $hasInitialization = false;
+        $entries = $this->entityManager
+            ->getRDBRepository(self::LEDGER)
+            ->where(['profileId' => $profile->getId()])
+            ->find();
+
+        foreach ($entries as $entry) {
+            $type = (string) $entry->get('type');
+
+            if ($type === 'initialization') {
+                $hasInitialization = true;
+            }
+
+            if (
+                !in_array($type, ['initialization', 'bulkUpdate'], true) ||
+                (float) $entry->get('delta') !== 0.0
+            ) {
+                return false;
+            }
+        }
+
+        return $hasInitialization;
     }
 
     private function validateCalendarColor(mixed $value): string

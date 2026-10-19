@@ -21,6 +21,7 @@
     "options": {
         "type": {
             "initialization": "Inițializare",
+            "openingBalanceSetup": "Configurare sold inițial",
             "bulkUpdate": "Actualizare în masă",
             "correction": "Corecție",
             "annualGrant": "Alocare anuală",

@@ -17,6 +17,16 @@
         "New Balance": "New Balance",
         "Correction Reason": "Correction Reason",
         "Correction History": "Correction History",
+        "Initialize Profile": "Initialize Profile",
+        "Complete Initial Setup": "Complete Initial Setup",
+        "Reset Holiday Test Data": "Reset Holiday Management Test Data",
+        "Reset Confirmation": "Reset Confirmation",
+        "Holiday Requests": "Holiday Requests",
+        "Holiday Ledger Entries": "Holiday Ledger Entries",
+        "Generated Documents": "Generated Documents",
+        "Automatic Annual Grants": "Automatic Annual Grants",
+        "Enabled": "Enabled",
+        "Disabled": "Disabled",
         "Next Reset Date": "Next Reset Date",
         "Initialized": "Initialized",
         "Not Initialized": "Not Initialized"
@@ -36,6 +46,20 @@
         "correctionHistoryLoadFailed": "The correction history could not be loaded.",
         "profileIdRequired": "Profile ID is required.",
         "holidayProfilesLoadFailed": "Holiday profiles could not be loaded.",
-        "holidayProfilesSaveFailed": "Holiday profiles could not be saved. Check the entered values and try again."
+        "holidayProfilesSaveFailed": "Holiday profiles could not be saved. Check the entered values and try again.",
+        "initializationFieldsRequired": "Enter the annual entitlement, opening balance and next reset date.",
+        "profileInitialized": "The holiday profile was initialized.",
+        "profileInitializationFailed": "The holiday profile could not be initialized.",
+        "initialSetupExplanation": "This one-time operation is available only for an accidentally initialized profile with no accounting activity. Enter the actual opening balance.",
+        "openingBalanceRequired": "Enter a valid opening balance.",
+        "initialSetupPayloadRequired": "A profile ID and opening balance are required.",
+        "initialSetupCompleted": "The opening balance setup was completed.",
+        "initialSetupSaveFailed": "The opening balance could not be saved. The profile may no longer be eligible.",
+        "testDataResetWarning": "Permanently deletes all Holiday Management requests, documents and ledger history, and returns profiles to Not Initialized. Users, roles, settings and public holidays are preserved.",
+        "testDataResetDisableAutomaticGrant": "Disable automatic annual grants and save the settings first.",
+        "testDataResetPreviewFailed": "The test-data preview could not be loaded.",
+        "confirmTestDataReset": "Permanently delete all Holiday Management test data? This operation cannot be undone.",
+        "testDataResetCompleted": "Holiday Management test data was reset.",
+        "testDataResetFailed": "The reset could not be completed. Do not use the data until the application log has been reviewed."
     }
 }

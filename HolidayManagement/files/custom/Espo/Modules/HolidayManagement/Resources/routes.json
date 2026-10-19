@@ -15,6 +15,21 @@
         "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostBulkInitialize"
     },
     {
+        "route": "/HolidayManagement/completeInitialSetup",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostCompleteInitialSetup"
+    },
+    {
+        "route": "/HolidayManagement/testDataResetPreview",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\GetTestDataResetPreview"
+    },
+    {
+        "route": "/HolidayManagement/testDataReset",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostTestDataReset"
+    },
+    {
         "route": "/HolidayManagement/correct",
         "method": "post",
         "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\PostCorrection"
