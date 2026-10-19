@@ -12,14 +12,15 @@
         },
         "status": {
             "type": "enum",
-            "options": ["AtWork", "Holiday", "BusinessTrip", "MedicalLeave"],
+            "options": ["AtWork", "Holiday", "BusinessTrip", "MedicalLeave", "ChildCareLeave"],
             "required": true,
             "readOnly": true,
             "style": {
                 "AtWork": "success",
                 "Holiday": "info",
                 "BusinessTrip": "warning",
-                "MedicalLeave": "danger"
+                "MedicalLeave": "danger",
+                "ChildCareLeave": "info"
             }
         },
         "source": {

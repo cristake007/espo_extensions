@@ -28,6 +28,19 @@
             "default": false,
             "readOnly": true
         },
+        "cic": {
+            "type": "bool",
+            "default": false,
+            "readOnly": true
+        },
+        "cicStartDate": {
+            "type": "date",
+            "readOnly": true
+        },
+        "cicEndDate": {
+            "type": "date",
+            "readOnly": true
+        },
         "effectiveFrom": {
             "type": "date",
             "required": true,

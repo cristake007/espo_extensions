@@ -101,7 +101,7 @@ test('all internal users can read shared requests but mutate only their own', as
         '#HolidayRequest'
     );
     assert.match(afterInstall, /tabList/);
-    assert.match(afterInstall, /NAVIGATION_ENTITY\s*=\s*'HolidayRequest'/);
+    assert.match(afterInstall, /NAVIGATION_ENTITY_LIST\s*=\s*\['HolidayRequest', 'HolidayOverview'\]/);
 });
 
 test('request lifecycle hooks reserve, adjust, and refund the profile balance', async () => {
@@ -314,6 +314,11 @@ test('calendar query shows all users and supports multi-day overlap', async () =
         'files', 'client', 'custom', 'modules', 'holiday-management',
         'src', 'views', 'calendar', 'calendar.js'
     ), 'utf8');
+    const adminMenu = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'js', 'admin-menu.js'
+    ), 'utf8');
     const calendarCss = await readFile(path.join(
         extensionRoot,
         'files', 'client', 'custom', 'modules', 'holiday-management',
@@ -366,11 +371,15 @@ test('calendar query shows all users and supports multi-day overlap', async () =
     assert.deepEqual(client.scriptList, [
         '__APPEND__',
         'client/custom/modules/holiday-management/js/approver-menu.js',
+        'client/custom/modules/holiday-management/js/admin-menu.js',
     ]);
     assert.match(calendarCss, /a\[data-name="holidayApprovals"\]/);
     assert.match(calendarCss, /body\.holiday-management-approver/);
     assert.match(approverMenu, /HolidayManagement\/approvalQueue/);
     assert.match(approverMenu, /response\.isApprover === true/);
+    assert.match(adminMenu, /data-name="holidayAdministration"/);
+    assert.match(adminMenu, /data-name="admin"/);
+    assert.match(adminMenu, /closest\('li'\)/);
     assert.equal(
         requestClient.recordViews.detail,
         'holiday-management:views/holiday-request/record/detail'

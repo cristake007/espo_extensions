@@ -230,3 +230,163 @@ body.holiday-management-approver #navbar a[data-name="holidayApprovals"] {
     flex: 0 0 auto;
     white-space: nowrap;
 }
+
+.holiday-overview-header,
+.holiday-overview-toolbar {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+}
+
+.holiday-overview-toolbar::before,
+.holiday-overview-toolbar::after,
+.holiday-overview-summary::before,
+.holiday-overview-summary::after {
+    display: none;
+}
+
+.holiday-overview-header h3,
+.holiday-overview-header p {
+    margin-bottom: 4px;
+}
+
+.holiday-overview-month-control {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    margin: 0;
+}
+
+.holiday-overview-month-select {
+    min-width: 210px;
+}
+
+.holiday-overview-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.holiday-overview-summary {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+
+.holiday-summary-card {
+    --holiday-summary-accent: var(--tuvtk-primary, var(--brand-primary));
+    align-items: center;
+    background: var(--tuvtk-surface, var(--panel-bg));
+    border: 1px solid var(--tuvtk-border, var(--panel-default-border));
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    min-height: 82px;
+    padding: 12px 14px;
+}
+
+.holiday-summary-card > .fas {
+    align-items: center;
+    background: var(--tuvtk-hover, var(--state-primary-bg));
+    border-radius: 50%;
+    color: var(--holiday-summary-accent);
+    display: flex;
+    font-size: 17px;
+    grid-row: 1 / 3;
+    height: 36px;
+    justify-content: center;
+    width: 36px;
+}
+
+.holiday-summary-card > strong {
+    color: var(--tuvtk-text, var(--text-color));
+    font-size: 25px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+}
+
+.holiday-summary-card > div {
+    color: var(--tuvtk-muted, var(--text-muted-color));
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.holiday-summary-primary { --holiday-summary-accent: var(--tuvtk-primary, var(--brand-primary)); }
+.holiday-summary-success { --holiday-summary-accent: var(--brand-success); }
+.holiday-summary-warning { --holiday-summary-accent: var(--brand-warning); }
+.holiday-summary-danger { --holiday-summary-accent: var(--tuvtk-secondary, var(--brand-danger)); }
+
+.holiday-overview-table-wrap {
+    max-height: calc(100vh - 320px);
+}
+
+.holiday-overview-table {
+    margin-bottom: 0;
+    min-width: max-content;
+}
+
+.holiday-overview-table thead th {
+    background: var(--panel-bg);
+    min-width: 42px;
+    position: sticky;
+    text-align: center;
+    top: 0;
+    z-index: 2;
+}
+
+.holiday-overview-table .holiday-sticky-employee {
+    background: var(--panel-bg);
+    left: 0;
+    min-width: 210px;
+    position: sticky;
+    z-index: 3;
+}
+
+.holiday-overview-table thead .holiday-sticky-employee {
+    z-index: 4;
+}
+
+.holiday-day-heading {
+    font-variant-numeric: tabular-nums;
+    width: 42px;
+}
+
+.holiday-overview-cell {
+    height: 34px;
+    min-width: 42px;
+    text-align: center;
+    vertical-align: middle !important;
+    width: 42px;
+}
+
+.holiday-overview-cell .label {
+    display: inline-block;
+    min-width: 24px;
+}
+
+.holiday-overview-table .holiday-non-working-column {
+    background-color: rgba(127, 127, 127, .08);
+}
+
+.holiday-overview-table .holiday-today-column {
+    box-shadow: inset 1px 0 var(--brand-primary), inset -1px 0 var(--brand-primary);
+}
+
+.holiday-employee-name {
+    white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+    .holiday-overview-header,
+    .holiday-overview-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .holiday-overview-summary {
+        grid-template-columns: 1fr;
+    }
+}

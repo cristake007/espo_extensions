@@ -99,6 +99,11 @@ function adminFixture(contentWidth) {
             <label class="attendance-schedule-control"><span>Intrare</span><select class="form-control input-sm"><option>09:00</option></select></label>
             <label class="attendance-schedule-control"><span>Iesire</span><select class="form-control input-sm"><option>17:00</option></select></label>
             <label class="attendance-schedule-control attendance-schedule-remote"><span>Remote</span><span class="attendance-schedule-checkbox"><input type="checkbox"> Remote</span></label>
+            <label class="attendance-schedule-control attendance-schedule-cic"><span>CIC</span><span class="attendance-schedule-checkbox"><input type="checkbox" data-schedule-field="cic"> CIC</span></label>
+            <div class="attendance-schedule-cic-dates">
+                <label class="attendance-schedule-control"><span>Data inceput CIC</span><div class="field"><input class="form-control input-sm" type="text" value="01.09.2026"></div></label>
+                <label class="attendance-schedule-control"><span>Data sfarsit CIC</span><div class="field"><input class="form-control input-sm" type="text" value="30.09.2026"></div></label>
+            </div>
             <div class="attendance-schedule-actions"><button class="btn btn-default btn-sm">Salveaza programul</button></div>
         </div>`;
 
@@ -292,6 +297,8 @@ for (const viewport of viewportCases) {
                 rowWidth: row.getBoundingClientRect().width,
                 nativeTimeInputs: document.querySelectorAll('input[type="time"]').length,
                 selects: document.querySelectorAll('.attendance-schedule-control select').length,
+                cicCheckboxes: document.querySelectorAll('[data-schedule-field="cic"]').length,
+                cicDateFields: document.querySelectorAll('.attendance-schedule-cic-dates input').length,
             };
         });
 
@@ -299,6 +306,8 @@ for (const viewport of viewportCases) {
         expect(Math.abs(measurements.cellWidth - measurements.rowWidth)).toBeLessThanOrEqual(1);
         expect(measurements.nativeTimeInputs).toBe(0);
         expect(measurements.selects).toBe(4);
+        expect(measurements.cicCheckboxes).toBe(2);
+        expect(measurements.cicDateFields).toBe(4);
         await page.screenshot({path: `/tmp/attendance-admin-${viewport.name}.png`, fullPage: true});
     });
 }

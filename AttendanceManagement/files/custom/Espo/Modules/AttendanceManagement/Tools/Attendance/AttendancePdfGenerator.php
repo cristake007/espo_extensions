@@ -225,6 +225,7 @@ final class AttendancePdfGenerator
             'Holiday' => 'CO',
             'BusinessTrip' => 'In deplasare',
             'MedicalLeave' => 'CM',
+            'ChildCareLeave' => 'CIC',
             default => '',
         };
     }
@@ -236,6 +237,7 @@ final class AttendancePdfGenerator
             'Holiday' => '#bdd7ee',
             'BusinessTrip' => '#ffeb9c',
             'MedicalLeave' => '#f4cccc',
+            'ChildCareLeave' => '#d9eaf7',
             default => '#ffffff',
         };
     }

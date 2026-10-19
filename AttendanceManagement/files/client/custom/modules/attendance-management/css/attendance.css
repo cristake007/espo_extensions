@@ -471,7 +471,7 @@
     border-bottom: 1px solid var(--panel-default-border);
     display: grid;
     gap: 18px;
-    grid-template-columns: minmax(180px, 1.5fr) minmax(120px, 0.8fr) minmax(120px, 0.8fr) minmax(90px, 0.5fr) minmax(145px, auto);
+    grid-template-columns: minmax(150px, 1.3fr) minmax(105px, 0.7fr) minmax(105px, 0.7fr) minmax(70px, 0.45fr) minmax(60px, 0.4fr) minmax(135px, auto);
     min-width: 0;
     padding: 16px var(--panel-padding);
     transition: background-color 0.15s ease;
@@ -533,7 +533,20 @@
     margin: 0;
 }
 
+.attendance-schedule-cic-dates {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(115px, 1fr));
+    grid-column: 2 / 4;
+    min-width: 0;
+}
+
+.attendance-schedule-cic-dates.hidden {
+    display: none;
+}
+
 .attendance-schedule-actions {
+    grid-column: 6;
     min-width: 0;
 }
 
@@ -573,6 +586,11 @@
 .attendance-cell-MedicalLeave {
     background: var(--state-danger-bg);
     color: var(--state-danger-text);
+}
+
+.attendance-cell-ChildCareLeave {
+    background: var(--state-info-bg);
+    color: var(--state-info-text);
 }
 
 .attendance-cell-missing {
@@ -861,7 +879,11 @@
 
 @media (max-width: 991px) {
     .attendance-schedule-row {
-        grid-template-columns: minmax(0, 1fr) minmax(120px, 0.7fr) minmax(120px, 0.7fr) minmax(90px, 0.5fr);
+        grid-template-columns: minmax(0, 1fr) minmax(120px, 0.7fr) minmax(120px, 0.7fr) minmax(80px, 0.5fr) minmax(70px, 0.45fr);
+    }
+
+    .attendance-schedule-cic-dates {
+        grid-column: 1 / -1;
     }
 
     .attendance-schedule-actions {
@@ -983,6 +1005,11 @@
     .attendance-schedule-employee,
     .attendance-schedule-actions {
         grid-column: auto;
+    }
+
+    .attendance-schedule-cic-dates {
+        grid-column: auto;
+        grid-template-columns: 1fr;
     }
 
     .attendance-schedule-actions .btn {

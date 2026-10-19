@@ -1,4 +1,18 @@
 {
+    "Admin": {
+        "params": {
+            "controller": "holiday-management:controllers/holiday-settings",
+            "action": "index"
+        },
+        "order": -110
+    },
+    "Admin/holidayManagementSettings": {
+        "params": {
+            "controller": "holiday-management:controllers/holiday-settings",
+            "action": "open"
+        },
+        "order": -110
+    },
     "Admin/holidayManagementProfiles": {
         "params": {
             "controller": "holiday-management:controllers/holiday-profiles",

@@ -12,11 +12,13 @@
             "AtWork": "At work",
             "Holiday": "In holiday",
             "BusinessTrip": "In business trip",
-            "MedicalLeave": "Medical leave"
+            "MedicalLeave": "Medical leave",
+            "ChildCareLeave": "CIC"
         },
         "source": {
             "Self": "Marked by employee",
-            "Manager": "Marked by attendance manager"
+            "Manager": "Marked by attendance manager",
+            "CicPeriod": "Added automatically from the CIC period"
         }
     },
     "labels": {
@@ -51,6 +53,9 @@
         "Start Time": "Start",
         "End Time": "End",
         "Remote": "Remote",
+        "CIC": "CIC",
+        "CIC Start Date": "CIC start date",
+        "CIC End Date": "CIC end date",
         "Manual Attendance": "Manual attendance",
         "Employee Schedules": "Employee schedules",
         "Attendance Configuration": "Attendance configuration",
@@ -80,6 +85,7 @@
         "Attendance Save Failed": "Attendance could not be saved.",
         "Attendance Load Failed": "Attendance could not be loaded.",
         "Automatically Added Holiday": "Automatically read from an approved holiday.",
+        "Automatically Added CIC": "Automatically added from the CIC interval configured by the attendance manager.",
         "No Working Days": "There are no working days in this month.",
         "Download Not Ready": "Exports become available after every employee has a working schedule and completes all elapsed working days, unless incomplete exports are enabled by an administrator.",
         "Nobody Missing": "Everyone is up to date.",
@@ -109,7 +115,8 @@
         "Loading Schedules": "Loading employee schedules...",
         "Settings Page Guide": "Configure attendance rules, initialize the visible archive, and set each employee's working schedule.",
         "Attendance Configuration Help": "These settings control which months employees may edit and when incomplete registers can be exported.",
-        "Schedule Editor Guide": "Choose the schedule and Remote option for each employee. Each row is saved independently.",
+        "Schedule Editor Guide": "Choose the schedule, Remote option, and optional CIC interval for each employee. Each row is saved independently.",
+        "Invalid CIC Period": "Select a valid CIC start and end date. The end date must be on or after the start date.",
         "Editable Previous Months Help": "The number of previous calendar months in which employees may still change their attendance.",
         "Allow Incomplete Exports Help": "Allow the register to be downloaded even when attendance entries or schedules are missing.",
         "Settings Load Failed": "Attendance settings could not be loaded.",
@@ -128,6 +135,7 @@
         "Medical Leave Help": "Absent on certified medical leave",
         "Today Marking Guide": "Choose one option. You can change it later if you selected the wrong one.",
         "Holiday Locked Guide": "Approved leave is added automatically and cannot be changed here.",
+        "CIC Locked Guide": "CIC is added automatically for the configured interval and cannot be changed here.",
         "Today Unavailable Guide": "Today is not an available working day, so no action is required.",
         "Monthly Register Guide": "Review your working days and complete any day marked as not completed.",
         "Month Locked Guide": "This month is read-only. Attendance can only be changed in the current and permitted previous months."

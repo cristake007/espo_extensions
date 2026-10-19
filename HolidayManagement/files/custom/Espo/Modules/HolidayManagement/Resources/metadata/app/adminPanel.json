@@ -7,7 +7,12 @@
                 "label": "Holiday Management",
                 "iconClass": "fas fa-umbrella-beach",
                 "description": "holidayManagementSettings",
-                "recordView": "modules/holiday-management/views/admin/settings"
+                "recordView": "modules/holiday-management/views/admin/settings",
+                "accessDataList": [
+                    {
+                        "scope": "HolidayManagementSettings"
+                    }
+                ]
             },
             {
                 "url": "#Admin/holidayManagementProfiles",

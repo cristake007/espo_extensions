@@ -9,7 +9,7 @@ use Espo\Core\Utils\ScheduledJob\Populator;
 class AfterInstall
 {
     private const CALENDAR_ENTITY = 'HolidayRequest';
-    private const NAVIGATION_ENTITY = 'HolidayRequest';
+    private const NAVIGATION_ENTITY_LIST = ['HolidayRequest', 'HolidayOverview'];
 
     /** @var array<string, mixed> */
     private const DEFAULTS = [
@@ -62,10 +62,15 @@ class AfterInstall
             $calendarEntityList[] = self::CALENDAR_ENTITY;
         }
 
-        $navigationChanged = !in_array(self::NAVIGATION_ENTITY, $tabList, true);
+        $navigationChanged = false;
 
-        if ($navigationChanged) {
-            $tabList[] = self::NAVIGATION_ENTITY;
+        foreach (self::NAVIGATION_ENTITY_LIST as $navigationEntity) {
+            if (in_array($navigationEntity, $tabList, true)) {
+                continue;
+            }
+
+            $tabList[] = $navigationEntity;
+            $navigationChanged = true;
         }
 
         if ($missingDefaults === [] && !$calendarChanged && !$navigationChanged) {

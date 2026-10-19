@@ -232,6 +232,21 @@ test('module exposes balance, self-service, and approval routes', async () => {
 
     assert.deepEqual(routes, [
         {
+            route: '/HolidayManagement/settings',
+            method: 'get',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayAdministration\\Api\\GetSettings',
+        },
+        {
+            route: '/HolidayManagement/settings',
+            method: 'put',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayAdministration\\Api\\PutSettings',
+        },
+        {
+            route: '/HolidayManagement/overview',
+            method: 'get',
+            actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayOverview\\Api\\GetOverview',
+        },
+        {
             route: '/HolidayManagement/profiles',
             method: 'get',
             actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\GetProfiles',
@@ -312,6 +327,90 @@ test('module exposes balance, self-service, and approval routes', async () => {
             actionClassName: 'Espo\\Modules\\HolidayManagement\\Tools\\HolidayRequest\\Api\\GetApprovalQueue',
         },
     ]);
+});
+
+test('holiday settings and overview use native boolean role permissions', async () => {
+    const settingsScope = await readModuleJson(
+        'Resources', 'metadata', 'scopes', 'HolidayManagementSettings.json'
+    );
+    const overviewScope = await readModuleJson(
+        'Resources', 'metadata', 'scopes', 'HolidayOverview.json'
+    );
+    const adminPanel = await readModuleJson(
+        'Resources', 'metadata', 'app', 'adminPanel.json'
+    );
+    const clientRoutes = await readModuleJson(
+        'Resources', 'metadata', 'app', 'clientRoutes.json'
+    );
+    const clientNavbar = await readModuleJson(
+        'Resources', 'metadata', 'app', 'clientNavbar.json'
+    );
+    const checker = await readModuleSource(
+        'Tools', 'HolidayAdministration', 'HolidayManagementAccessChecker.php'
+    );
+    const settingsService = await readModuleSource(
+        'Tools', 'HolidayAdministration', 'HolidaySettingsService.php'
+    );
+    const overviewService = await readModuleSource(
+        'Tools', 'HolidayOverview', 'HolidayOverviewService.php'
+    );
+    const overviewView = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'holiday-overview', 'index.js'
+    ), 'utf8');
+    const settingsController = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'controllers', 'holiday-settings.js'
+    ), 'utf8');
+    const nativeAdminView = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'admin', 'index.js'
+    ), 'utf8');
+    const nativeSettingsView = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'admin', 'settings.js'
+    ), 'utf8');
+
+    assert.equal(settingsScope.acl, 'boolean');
+    assert.equal(settingsScope.tab, false);
+    assert.equal(overviewScope.acl, 'boolean');
+    assert.equal(overviewScope.tab, true);
+    assert.deepEqual(
+        adminPanel.holidayManagement.itemList[0].accessDataList,
+        [{scope: 'HolidayManagementSettings'}]
+    );
+    assert.equal(clientNavbar.menuItems.holidayAdministration.link, '#Admin');
+    assert.deepEqual(
+        clientNavbar.menuItems.holidayAdministration.accessDataList,
+        [{scope: 'HolidayManagementSettings'}]
+    );
+    assert.equal(
+        clientRoutes['Admin/holidayManagementSettings'].params.controller,
+        'holiday-management:controllers/holiday-settings'
+    );
+    assert.match(checker, /acl->check\(\$scope\)/);
+    assert.match(checker, /HolidayManagementSettings/);
+    assert.match(checker, /HolidayOverview/);
+    assert.doesNotMatch(checker, /Approver|holidayManagementApproversIds/);
+    assert.match(settingsService, /assertSettings\(\)/);
+    assert.match(overviewService, /assertOverview\(\)/);
+    assert.match(overviewService, /CancellationPending/);
+    assert.match(overviewService, /NonWorkingDayProvider/);
+    assert.match(overviewView, /data-overview-month-select/);
+    assert.match(overviewView, /Intl\.DateTimeFormat/);
+    assert.doesNotMatch(overviewView, /type="month"/);
+    assert.doesNotMatch(overviewView, /views\/fields\/date/);
+    assert.match(settingsController, /'views\/settings\/edit'/);
+    assert.match(settingsController, /holiday-management:views\/admin\/settings/);
+    assert.match(settingsController, /HolidayManagement\/settings/);
+    assert.doesNotMatch(settingsController, /settings-workspace|manager-index/);
+    assert.match(nativeAdminView, /\['views\/admin\/index'\]/);
+    assert.match(nativeAdminView, /checkAccessDataList/);
+    assert.match(nativeSettingsView, /panel\.tabLabel !== 'RESET'/);
 });
 
 test('profile setup and balance corrections are role-controlled while resets remain admin-only', async () => {
@@ -505,10 +604,10 @@ test('Administration exposes an admin-only guarded test-data reset', async () =>
     assert.match(resetField, /Balance Warning Notifications/);
 });
 
-test('accounting metadata remains bilingual in the 1.8.18 package', async () => {
+test('accounting metadata remains bilingual in the 1.9.4 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.8.18');
+    assert.equal(manifest.version, '1.9.4');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');

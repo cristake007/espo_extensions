@@ -40,7 +40,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.25');
+    assert.equal(manifest.version, '1.11.0');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -56,6 +56,7 @@ test('attendance records are private service-managed daily records', async () =>
         'Holiday',
         'BusinessTrip',
         'MedicalLeave',
+        'ChildCareLeave',
     ]);
     assert.deepEqual(defs.fields.source.options, ['Self', 'Manager']);
     assert.deepEqual(defs.indexes.userDateUnique.columns, ['userId', 'date']);
@@ -188,6 +189,10 @@ test('working schedules are persistent defaults edited from administration', asy
     assert.equal(defs.fields.endTime.maxLength, 5);
     assert.equal(defs.fields.remote.type, 'bool');
     assert.equal(defs.fields.remote.default, false);
+    assert.equal(defs.fields.cic.type, 'bool');
+    assert.equal(defs.fields.cic.default, false);
+    assert.equal(defs.fields.cicStartDate.type, 'date');
+    assert.equal(defs.fields.cicEndDate.type, 'date');
     assert.equal(defs.fields.effectiveFrom.type, 'date');
     assert.equal(defs.indexes.userEffectiveFromUnique.unique, true);
     assert.deepEqual(defs.indexes.userEffectiveFromUnique.columns, ['userId', 'effectiveFrom']);
@@ -214,6 +219,60 @@ test('working schedules are persistent defaults edited from administration', asy
     assert.match(settingsView, /data-schedule-field.*remote/);
     assert.match(settingsView, /schedule\.remote === true/);
     assert.match(settingsView, /remote,/);
+});
+
+test('CIC periods use native date fields and control all attendance outputs', async () => {
+    const service = await readSource('Tools', 'Attendance', 'AttendanceService.php');
+    const overviewService = await readSource(
+        'Tools', 'Attendance', 'AttendanceOverviewService.php'
+    );
+    const action = await readSource(
+        'Tools', 'Attendance', 'Api', 'PostAttendanceSchedule.php'
+    );
+    const schedules = await readFile(
+        path.join(clientRoot, 'src', 'views', 'attendance', 'schedules.js'),
+        'utf8'
+    );
+    const workSchedules = await readFile(
+        path.join(clientRoot, 'src', 'views', 'fields', 'work-schedules.js'),
+        'utf8'
+    );
+    const mine = await readFile(
+        path.join(clientRoot, 'src', 'views', 'attendance', 'my.js'),
+        'utf8'
+    );
+    const overview = await readFile(
+        path.join(clientRoot, 'src', 'views', 'attendance', 'overview.js'),
+        'utf8'
+    );
+    const xlsx = await readSource('Tools', 'Attendance', 'AttendanceXlsxGenerator.php');
+    const pdf = await readSource('Tools', 'Attendance', 'AttendancePdfGenerator.php');
+
+    assert.match(action, /\$data->cic/);
+    assert.match(action, /\$data->cicStartDate/);
+    assert.match(action, /\$data->cicEndDate/);
+    assert.match(overviewService, /CIC start and end dates are required/);
+    assert.match(overviewService, /CIC end date must be on or after the start date/);
+    assert.match(overviewService, /STATUS_CHILD_CARE_LEAVE = 'ChildCareLeave'/);
+    assert.match(overviewService, /SOURCE_CIC_PERIOD = 'CicPeriod'/);
+    assert.match(overviewService, /isCicDate/);
+    assert.match(overviewService, /employee CIC period controls attendance/);
+    assert.match(service, /STATUS_CHILD_CARE_LEAVE = 'ChildCareLeave'/);
+    assert.match(service, /configured CIC period controls attendance/);
+
+    for (const view of [schedules, workSchedules]) {
+        assert.match(view, /data-schedule-field.*cic/);
+        assert.match(view, /views\/fields\/date/);
+        assert.match(view, /cicStartDate/);
+        assert.match(view, /cicEndDate/);
+        assert.match(view, /Invalid CIC Period/);
+    }
+
+    assert.match(mine, /ChildCareLeave/);
+    assert.match(mine, /CicPeriod/);
+    assert.match(overview, /CicPeriod/);
+    assert.match(xlsx, /'ChildCareLeave' => 'CIC'/);
+    assert.match(pdf, /'ChildCareLeave' => 'CIC'/);
 });
 
 test('attendance managers can complete employee attendance through the protected overview', async () => {
@@ -699,8 +758,13 @@ test('attendance page and statuses are bilingual', async () => {
         assert.equal(typeof attendance.options.status.Holiday, 'string');
         assert.equal(typeof attendance.options.status.BusinessTrip, 'string');
         assert.equal(typeof attendance.options.status.MedicalLeave, 'string');
+        assert.equal(typeof attendance.options.status.ChildCareLeave, 'string');
         assert.equal(typeof attendance.options.source.Manager, 'string');
         assert.equal(typeof attendance.labels.Remote, 'string');
+        assert.equal(typeof attendance.labels.CIC, 'string');
+        assert.equal(typeof attendance.labels['CIC Start Date'], 'string');
+        assert.equal(typeof attendance.labels['CIC End Date'], 'string');
+        assert.equal(typeof attendance.messages['Invalid CIC Period'], 'string');
         assert.equal(typeof attendance.labels['Manual Attendance'], 'string');
         assert.equal(typeof attendance.messages['Medical Leave Help'], 'string');
         assert.equal(typeof attendance.messages['Manual Attendance Saved'], 'string');

@@ -142,8 +142,8 @@ namespace {
         throw new RuntimeException('Install did not append HolidayRequest while preserving Calendar entries.');
     }
 
-    if ($writer->changes['tabList'] !== ['Home', 'Calendar', 'HolidayRequest']) {
-        throw new RuntimeException('Install did not append HolidayRequest to the main navigation.');
+    if ($writer->changes['tabList'] !== ['Home', 'Calendar', 'HolidayRequest', 'HolidayOverview']) {
+        throw new RuntimeException('Install did not append HolidayRequest and HolidayOverview to the main navigation.');
     }
 
     if (!array_key_exists('holidayManagementAnnualEntitlementDays', $writer->changes)) {
@@ -157,14 +157,14 @@ namespace {
     $writer = new ConfigWriter();
     (new BeforeUninstall())->run(container([
         'calendarEntityList' => ['Meeting', 'HolidayRequest', 'Call', 'HolidayRequest'],
-        'tabList' => ['Home', 'HolidayRequest', 'Calendar', 'HolidayRequest'],
+        'tabList' => ['Home', 'HolidayRequest', 'HolidayOverview', 'Calendar', 'HolidayRequest'],
     ], $writer));
 
     if ($writer->changes !== [
         'calendarEntityList' => ['Meeting', 'Call'],
         'tabList' => ['Home', 'Calendar'],
     ]) {
-        throw new RuntimeException('Uninstall did not remove only HolidayRequest navigation entries.');
+        throw new RuntimeException('Uninstall did not remove only Holiday Management navigation entries.');
     }
 
     if ($writer->saveCount !== 1) {

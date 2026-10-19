@@ -12,7 +12,7 @@ use Espo\ORM\EntityManager;
 class BeforeUninstall
 {
     private const CALENDAR_ENTITY = 'HolidayRequest';
-    private const NAVIGATION_ENTITY = 'HolidayRequest';
+    private const NAVIGATION_ENTITY_LIST = ['HolidayRequest', 'HolidayOverview'];
     private const SCHEDULED_JOB = 'ProcessHolidayResets';
 
     public function run(Container $container): void
@@ -38,7 +38,8 @@ class BeforeUninstall
 
         $filteredTabs = array_values(array_filter(
             $tabList,
-            static fn (mixed $entityType): bool => $entityType !== self::NAVIGATION_ENTITY,
+            static fn (mixed $entityType): bool =>
+                !in_array($entityType, self::NAVIGATION_ENTITY_LIST, true),
         ));
 
         if ($filtered === $calendarEntityList && $filteredTabs === $tabList) {

@@ -36,6 +36,7 @@
         "profilesAccessForbidden": "Este necesară permisiunea de administrare a profilurilor de concediu.",
         "correctionAccessForbidden": "Este necesară permisiunea pentru corectarea soldurilor de concediu.",
         "resetAccessForbidden": "Doar administratorii pot procesa resetările concediilor.",
+        "holidaySettingsSaveFailed": "Setările Holiday Management nu au putut fi salvate. Verificați valorile introduse și încercați din nou.",
         "itemsArrayRequired": "Este necesară o listă de profiluri.",
         "correctionPayloadRequired": "Sunt necesare ID-ul profilului și o ajustare numerică.",
         "correctionReasonRequired": "Motivul corecției este obligatoriu.",

@@ -217,6 +217,7 @@ final class AttendanceXlsxGenerator
             'Holiday' => 'CO',
             'BusinessTrip' => 'In deplasare',
             'MedicalLeave' => 'CM',
+            'ChildCareLeave' => 'CIC',
             default => '',
         };
     }
@@ -228,6 +229,7 @@ final class AttendanceXlsxGenerator
             'Holiday' => 'FFBDD7EE',
             'BusinessTrip' => 'FFFFEB9C',
             'MedicalLeave' => 'FFF4CCCC',
+            'ChildCareLeave' => 'FFD9EAF7',
             default => 'FFFFFFFF',
         };
     }

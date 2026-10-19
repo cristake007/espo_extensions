@@ -261,7 +261,7 @@ define(['view'], (View) => {
         }
 
         createOverviewCell(cell) {
-            if (cell.isFuture) {
+            if (cell.isFuture && !cell.status) {
                 return $('<td>').addClass('attendance-cell-future').text('—');
             }
 
@@ -270,7 +270,7 @@ define(['view'], (View) => {
                 status ? `attendance-cell attendance-cell-${status}` : 'attendance-cell-missing'
             );
 
-            if (cell.source === 'ApprovedHoliday') {
+            if (['ApprovedHoliday', 'CicPeriod'].includes(cell.source)) {
                 return cellElement.text(
                     this.getLanguage().translateOption(status, 'status', 'AttendanceRecord')
                 );

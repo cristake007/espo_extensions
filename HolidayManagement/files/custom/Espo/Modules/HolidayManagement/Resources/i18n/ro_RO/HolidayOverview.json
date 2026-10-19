@@ -1,0 +1,18 @@
+{
+    "labels": {
+        "Holiday Overview": "Situație concedii",
+        "Holiday Settings": "Setări concedii",
+        "Month": "Luna",
+        "Date": "Data",
+        "Employee": "Angajat",
+        "Employees": "Angajați",
+        "Away Today": "Absenți astăzi",
+        "Pending Requests": "Cereri în așteptare",
+        "Missing Profiles": "Profiluri lipsă",
+        "Profile Missing": "Profil neinițializat"
+    },
+    "messages": {
+        "Overview Guide": "Situație lunară angajat × zi pentru concedii în așteptare, aprobate și cu anulare în curs.",
+        "Balance Detail": "Sold: {balance} · în așteptare: {pending}"
+    }
+}

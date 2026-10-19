@@ -12,11 +12,13 @@
             "AtWork": "La serviciu",
             "Holiday": "In concediu",
             "BusinessTrip": "In deplasare",
-            "MedicalLeave": "CM"
+            "MedicalLeave": "CM",
+            "ChildCareLeave": "CIC"
         },
         "source": {
             "Self": "Marcat de angajat",
-            "Manager": "Marcat de responsabilul de prezenta"
+            "Manager": "Marcat de responsabilul de prezenta",
+            "CicPeriod": "Adaugat automat din perioada CIC"
         }
     },
     "labels": {
@@ -51,6 +53,9 @@
         "Start Time": "Intrare",
         "End Time": "Iesire",
         "Remote": "Remote",
+        "CIC": "CIC",
+        "CIC Start Date": "Data inceput CIC",
+        "CIC End Date": "Data sfarsit CIC",
         "Manual Attendance": "Prezenta completata manual",
         "Employee Schedules": "Programe angajati",
         "Attendance Configuration": "Configurare condica",
@@ -80,6 +85,7 @@
         "Attendance Save Failed": "Prezenta nu a putut fi salvata.",
         "Attendance Load Failed": "Condica nu a putut fi incarcata.",
         "Automatically Added Holiday": "Citit automat dintr-un concediu aprobat.",
+        "Automatically Added CIC": "Adaugat automat din intervalul CIC configurat de responsabilul de prezenta.",
         "No Working Days": "Nu exista zile lucratoare in aceasta luna.",
         "Download Not Ready": "Exporturile devin disponibile dupa configurarea programului si completarea tuturor zilelor lucratoare trecute, daca administratorul nu permite exporturile incomplete.",
         "Nobody Missing": "Toata lumea este la zi.",
@@ -109,7 +115,8 @@
         "Loading Schedules": "Se incarca programele angajatilor...",
         "Settings Page Guide": "Configureaza regulile condicii, initializeaza arhiva vizibila si stabileste programul de lucru al fiecarui angajat.",
         "Attendance Configuration Help": "Aceste setari stabilesc lunile pe care angajatii le pot modifica si cand poate fi exportat un centralizator incomplet.",
-        "Schedule Editor Guide": "Alege programul si marcheaza optiunea Remote pentru fiecare angajat. Fiecare rand se salveaza separat.",
+        "Schedule Editor Guide": "Alege programul, optiunea Remote si intervalul CIC optional pentru fiecare angajat. Fiecare rand se salveaza separat.",
+        "Invalid CIC Period": "Selecteaza date valide de inceput si sfarsit pentru CIC. Data de sfarsit trebuie sa fie egala sau ulterioara datei de inceput.",
         "Editable Previous Months Help": "Numarul de luni calendaristice anterioare in care angajatii isi mai pot modifica prezenta.",
         "Allow Incomplete Exports Help": "Permite descarcarea centralizatorului chiar daca lipsesc prezente sau programe.",
         "Settings Load Failed": "Setarile condicii nu au putut fi incarcate.",
@@ -128,6 +135,7 @@
         "Medical Leave Help": "Concediu medical",
         "Today Marking Guide": "Alege o optiune. O poti schimba ulterior daca ai selectat gresit.",
         "Holiday Locked Guide": "Concediul aprobat este adaugat automat si nu poate fi modificat aici.",
+        "CIC Locked Guide": "CIC este adaugat automat in intervalul configurat si nu poate fi modificat aici.",
         "Today Unavailable Guide": "Astazi nu este o zi lucratoare disponibila, deci nu trebuie sa faci nimic.",
         "Monthly Register Guide": "Verifica zilele lucratoare si completeaza orice zi marcata ca nemarcata.",
         "Month Locked Guide": "Aceasta luna poate fi doar consultata. Prezenta poate fi modificata numai in luna curenta si in lunile anterioare permise."

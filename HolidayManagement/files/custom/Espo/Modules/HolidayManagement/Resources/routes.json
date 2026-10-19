@@ -1,5 +1,20 @@
 [
     {
+        "route": "/HolidayManagement/settings",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayAdministration\\Api\\GetSettings"
+    },
+    {
+        "route": "/HolidayManagement/settings",
+        "method": "put",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayAdministration\\Api\\PutSettings"
+    },
+    {
+        "route": "/HolidayManagement/overview",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayOverview\\Api\\GetOverview"
+    },
+    {
         "route": "/HolidayManagement/profiles",
         "method": "get",
         "actionClassName": "Espo\\Modules\\HolidayManagement\\Tools\\HolidayBalance\\Api\\GetProfiles"

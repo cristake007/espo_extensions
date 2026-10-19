@@ -23,8 +23,10 @@ final class AttendanceService
     private const STATUS_HOLIDAY = 'Holiday';
     private const STATUS_BUSINESS_TRIP = 'BusinessTrip';
     private const STATUS_MEDICAL_LEAVE = 'MedicalLeave';
+    private const STATUS_CHILD_CARE_LEAVE = 'ChildCareLeave';
     private const SOURCE_SELF = 'Self';
     private const SOURCE_APPROVED_HOLIDAY = 'ApprovedHoliday';
+    private const SOURCE_CIC_PERIOD = 'CicPeriod';
     private const EDITABLE_PAST_MONTHS_CONFIG = 'attendanceManagementEditablePastMonths';
     private const ARCHIVE_START_MONTH_CONFIG = 'attendanceManagementArchiveStartMonth';
     private const DEFAULT_EDITABLE_PAST_MONTHS = 1;
@@ -53,6 +55,7 @@ final class AttendanceService
             ->modify(sprintf('-%d months', $editablePastMonths))
             ->format('Y-m');
         $recordMap = $this->getRecordMap($userId, $monthStart, $monthEnd);
+        $schedule = $this->getSchedule($userId);
         $approvedHolidayDates = $this->approvedHolidayProvider
             ->getDates($userId, $monthStart, $monthEnd);
         $nonWorkingDates = array_fill_keys(
@@ -69,13 +72,18 @@ final class AttendanceService
             if ($this->isWorkingDate($date, $nonWorkingDates)) {
                 $record = $recordMap[$dateValue] ?? null;
                 $isHoliday = isset($approvedHolidayDates[$dateValue]);
+                $isCic = $this->isCicDate($schedule, $dateValue);
                 $isLocked = $dateValue <= $today && substr($dateValue, 0, 7) < $editableFromMonth;
                 $days[] = [
                     'date' => $dateValue,
-                    'status' => $isHoliday ? self::STATUS_HOLIDAY : $record?->get('status'),
-                    'source' => $isHoliday ? self::SOURCE_APPROVED_HOLIDAY : $record?->get('source'),
-                    'markedAt' => $isHoliday ? null : $record?->get('markedAt'),
-                    'canMark' => $dateValue <= $today && !$isHoliday && !$isLocked,
+                    'status' => $isHoliday
+                        ? self::STATUS_HOLIDAY
+                        : ($isCic ? self::STATUS_CHILD_CARE_LEAVE : $record?->get('status')),
+                    'source' => $isHoliday
+                        ? self::SOURCE_APPROVED_HOLIDAY
+                        : ($isCic ? self::SOURCE_CIC_PERIOD : $record?->get('source')),
+                    'markedAt' => $isHoliday || $isCic ? null : $record?->get('markedAt'),
+                    'canMark' => $dateValue <= $today && !$isHoliday && !$isCic && !$isLocked,
                     'isLocked' => $isLocked,
                 ];
             }
@@ -89,6 +97,7 @@ final class AttendanceService
             $recordMap,
             $approvedHolidayDates,
             $nonWorkingDates,
+            $schedule,
         );
 
         return [
@@ -143,6 +152,10 @@ final class AttendanceService
 
         if ($this->isApprovedHoliday((string) $this->user->getId(), $date)) {
             throw new Conflict('An approved holiday controls attendance for this date.');
+        }
+
+        if ($this->isCicDate($this->getSchedule((string) $this->user->getId()), $date)) {
+            throw new Conflict('The configured CIC period controls attendance for this date.');
         }
 
         return $this->entityManager->getTransactionManager()->run(
@@ -200,6 +213,7 @@ final class AttendanceService
      * @param array<string, Entity> $recordMap
      * @param array<string, true> $approvedHolidayDates
      * @param array<string, true> $nonWorkingDates
+     * @param array<string, mixed>|null $schedule
      * @return array{status: mixed, source: mixed, canMark: bool}
      */
     private function getTodayState(
@@ -208,12 +222,14 @@ final class AttendanceService
         array $recordMap,
         array $approvedHolidayDates,
         array $nonWorkingDates,
+        ?array $schedule,
     ): array {
         $userId = (string) $this->user->getId();
 
         if (substr($today, 0, 7) === $month) {
             $record = $recordMap[$today] ?? null;
             $isHoliday = isset($approvedHolidayDates[$today]);
+            $isCic = $this->isCicDate($schedule, $today);
             $todayNonWorkingDates = $nonWorkingDates;
         } else {
             $record = $this->entityManager
@@ -221,6 +237,7 @@ final class AttendanceService
                 ->where(['userId' => $userId, 'date' => $today])
                 ->findOne();
             $isHoliday = $this->isApprovedHoliday($userId, $today);
+            $isCic = $this->isCicDate($schedule, $today);
             $todayNonWorkingDates = array_fill_keys(
                 $this->nonWorkingDayProvider->getDates($today, $today),
                 true,
@@ -228,12 +245,16 @@ final class AttendanceService
         }
 
         return [
-            'status' => $isHoliday ? self::STATUS_HOLIDAY : $record?->get('status'),
-            'source' => $isHoliday ? self::SOURCE_APPROVED_HOLIDAY : $record?->get('source'),
+            'status' => $isHoliday
+                ? self::STATUS_HOLIDAY
+                : ($isCic ? self::STATUS_CHILD_CARE_LEAVE : $record?->get('status')),
+            'source' => $isHoliday
+                ? self::SOURCE_APPROVED_HOLIDAY
+                : ($isCic ? self::SOURCE_CIC_PERIOD : $record?->get('source')),
             'canMark' => $this->isWorkingDate(
                 new DateTimeImmutable($today),
                 $todayNonWorkingDates,
-            ) && !$isHoliday,
+            ) && !$isHoliday && !$isCic,
         ];
     }
 
@@ -292,6 +313,14 @@ final class AttendanceService
             ->where(['userId' => $userId])
             ->order('effectiveFrom', 'ASC')
             ->findOne();
+        $cicSchedule = $this->entityManager
+            ->getRDBRepository(self::SCHEDULE_ENTITY_TYPE)
+            ->where([
+                'userId' => $userId,
+                'cic' => true,
+            ])
+            ->order('cicStartDate', 'ASC')
+            ->findOne();
 
         if ($record && is_string($record->get('date'))) {
             $monthList[] = substr((string) $record->get('date'), 0, 7);
@@ -299,6 +328,10 @@ final class AttendanceService
 
         if ($schedule && is_string($schedule->get('effectiveFrom'))) {
             $monthList[] = substr((string) $schedule->get('effectiveFrom'), 0, 7);
+        }
+
+        if ($cicSchedule && is_string($cicSchedule->get('cicStartDate'))) {
+            $monthList[] = substr((string) $cicSchedule->get('cicStartDate'), 0, 7);
         }
 
         sort($monthList);
@@ -313,6 +346,39 @@ final class AttendanceService
         if (!$value || $value->format('Y-m-d') !== $date) {
             throw new BadRequest('Attendance date must use the YYYY-MM-DD format.');
         }
+    }
+
+    /** @return array{cic: bool, cicStartDate: ?string, cicEndDate: ?string}|null */
+    private function getSchedule(string $userId): ?array
+    {
+        $schedule = $this->entityManager
+            ->getRDBRepository(self::SCHEDULE_ENTITY_TYPE)
+            ->where(['userId' => $userId])
+            ->order('effectiveFrom', 'DESC')
+            ->findOne();
+
+        if (!$schedule) {
+            return null;
+        }
+
+        $startDate = $schedule->get('cicStartDate');
+        $endDate = $schedule->get('cicEndDate');
+
+        return [
+            'cic' => (bool) $schedule->get('cic'),
+            'cicStartDate' => is_string($startDate) && $startDate !== '' ? $startDate : null,
+            'cicEndDate' => is_string($endDate) && $endDate !== '' ? $endDate : null,
+        ];
+    }
+
+    /** @param array<string, mixed>|null $schedule */
+    private function isCicDate(?array $schedule, string $date): bool
+    {
+        return ($schedule['cic'] ?? false) === true &&
+            is_string($schedule['cicStartDate'] ?? null) &&
+            is_string($schedule['cicEndDate'] ?? null) &&
+            $date >= $schedule['cicStartDate'] &&
+            $date <= $schedule['cicEndDate'];
     }
 
     private function getEditablePastMonths(): int

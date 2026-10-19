@@ -24,9 +24,12 @@ final class PostAttendanceSchedule implements Action
             !is_string($data->userId ?? null) ||
             !is_string($data->startTime ?? null) ||
             !is_string($data->endTime ?? null) ||
-            !is_bool($data->remote ?? null)
+            !is_bool($data->remote ?? null) ||
+            !is_bool($data->cic ?? null) ||
+            !(is_string($data->cicStartDate ?? null) || ($data->cicStartDate ?? null) === null) ||
+            !(is_string($data->cicEndDate ?? null) || ($data->cicEndDate ?? null) === null)
         ) {
-            throw new BadRequest('Employee, start time, end time and remote option are required.');
+            throw new BadRequest('Employee, schedule, Remote and CIC settings are required.');
         }
 
         return ResponseComposer::json($this->overviewService->saveSchedule(
@@ -34,6 +37,9 @@ final class PostAttendanceSchedule implements Action
             $data->startTime,
             $data->endTime,
             $data->remote,
+            $data->cic,
+            $data->cicStartDate,
+            $data->cicEndDate,
         ));
     }
 }

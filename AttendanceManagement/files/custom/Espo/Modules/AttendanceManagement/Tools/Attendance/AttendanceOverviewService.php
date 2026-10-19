@@ -23,8 +23,10 @@ final class AttendanceOverviewService
     private const STATUS_HOLIDAY = 'Holiday';
     private const STATUS_BUSINESS_TRIP = 'BusinessTrip';
     private const STATUS_MEDICAL_LEAVE = 'MedicalLeave';
+    private const STATUS_CHILD_CARE_LEAVE = 'ChildCareLeave';
     private const SOURCE_MANAGER = 'Manager';
     private const SOURCE_APPROVED_HOLIDAY = 'ApprovedHoliday';
+    private const SOURCE_CIC_PERIOD = 'CicPeriod';
     private const EDITABLE_PAST_MONTHS_CONFIG = 'attendanceManagementEditablePastMonths';
     private const ALLOW_INCOMPLETE_EXPORTS_CONFIG = 'attendanceManagementAllowIncompleteExports';
     private const ARCHIVE_START_MONTH_CONFIG = 'attendanceManagementArchiveStartMonth';
@@ -107,8 +109,13 @@ final class AttendanceOverviewService
             foreach ($userIds as $userId) {
                 $record = $recordMap[$userId][$date] ?? null;
                 $isHoliday = isset($holidayMap[$userId][$date]);
-                $status = $isHoliday ? self::STATUS_HOLIDAY : $record?->get('status');
-                $source = $isHoliday ? self::SOURCE_APPROVED_HOLIDAY : $record?->get('source');
+                $isCic = $this->isCicDate($scheduleMap[$userId] ?? null, $date);
+                $status = $isHoliday
+                    ? self::STATUS_HOLIDAY
+                    : ($isCic ? self::STATUS_CHILD_CARE_LEAVE : $record?->get('status'));
+                $source = $isHoliday
+                    ? self::SOURCE_APPROVED_HOLIDAY
+                    : ($isCic ? self::SOURCE_CIC_PERIOD : $record?->get('source'));
                 $isMissing = !$isFuture && !$status;
 
                 if ($isFuture) {
@@ -180,6 +187,9 @@ final class AttendanceOverviewService
         string $startTime,
         string $endTime,
         bool $remote,
+        bool $cic,
+        ?string $cicStartDate,
+        ?string $cicEndDate,
     ): array {
         $this->accessChecker->assertScheduleEditor();
         $startTime = trim($startTime);
@@ -193,6 +203,22 @@ final class AttendanceOverviewService
             throw new BadRequest('The working schedule end time must be after the start time.');
         }
 
+        $cicStartDate = $this->normalizeOptionalDate($cicStartDate);
+        $cicEndDate = $this->normalizeOptionalDate($cicEndDate);
+
+        if ($cic && ($cicStartDate === null || $cicEndDate === null)) {
+            throw new BadRequest('CIC start and end dates are required when CIC is enabled.');
+        }
+
+        if ($cic && $cicStartDate > $cicEndDate) {
+            throw new BadRequest('The CIC end date must be on or after the start date.');
+        }
+
+        if (!$cic) {
+            $cicStartDate = null;
+            $cicEndDate = null;
+        }
+
         $user = $this->entityManager->getEntityById(User::ENTITY_TYPE, $userId);
 
         if (
@@ -204,7 +230,16 @@ final class AttendanceOverviewService
         }
 
         return $this->entityManager->getTransactionManager()->run(
-            function () use ($user, $userId, $startTime, $endTime, $remote): array {
+            function () use (
+                $user,
+                $userId,
+                $startTime,
+                $endTime,
+                $remote,
+                $cic,
+                $cicStartDate,
+                $cicEndDate,
+            ): array {
                 $schedule = $this->entityManager
                     ->getRDBRepository(self::SCHEDULE_ENTITY_TYPE)
                     ->where(['userId' => $userId])
@@ -229,6 +264,9 @@ final class AttendanceOverviewService
                     'startTime' => $startTime,
                     'endTime' => $endTime,
                     'remote' => $remote,
+                    'cic' => $cic,
+                    'cicStartDate' => $cicStartDate,
+                    'cicEndDate' => $cicEndDate,
                     'effectiveFrom' => $effectiveFrom,
                 ]);
                 $this->entityManager->saveEntity($schedule);
@@ -238,6 +276,9 @@ final class AttendanceOverviewService
                     'startTime' => $startTime,
                     'endTime' => $endTime,
                     'remote' => $remote,
+                    'cic' => $cic,
+                    'cicStartDate' => $cicStartDate,
+                    'cicEndDate' => $cicEndDate,
                 ];
             },
         );
@@ -293,6 +334,12 @@ final class AttendanceOverviewService
 
         if ($this->approvedHolidayProvider->getDates($userId, $date, $date) !== []) {
             throw new Conflict('An approved holiday controls attendance for this date.');
+        }
+
+        $scheduleMap = $this->getScheduleMap([$userId]);
+
+        if ($this->isCicDate($scheduleMap[$userId] ?? null, $date)) {
+            throw new Conflict('The employee CIC period controls attendance for this date.');
         }
 
         return $this->entityManager->getTransactionManager()->run(
@@ -424,7 +471,7 @@ final class AttendanceOverviewService
 
     /**
      * @param list<string> $userIds
-     * @return array<string, array{startTime: string, endTime: string, remote: bool}>
+     * @return array<string, array{startTime: string, endTime: string, remote: bool, cic: bool, cicStartDate: ?string, cicEndDate: ?string}>
      */
     private function getScheduleMap(array $userIds): array
     {
@@ -452,6 +499,9 @@ final class AttendanceOverviewService
                 'startTime' => (string) $schedule->get('startTime'),
                 'endTime' => (string) $schedule->get('endTime'),
                 'remote' => (bool) $schedule->get('remote'),
+                'cic' => (bool) $schedule->get('cic'),
+                'cicStartDate' => $this->stringOrNull($schedule->get('cicStartDate')),
+                'cicEndDate' => $this->stringOrNull($schedule->get('cicEndDate')),
             ];
         }
 
@@ -532,6 +582,11 @@ final class AttendanceOverviewService
             ->getRDBRepository(self::SCHEDULE_ENTITY_TYPE)
             ->order('effectiveFrom', 'ASC')
             ->findOne();
+        $cicSchedule = $this->entityManager
+            ->getRDBRepository(self::SCHEDULE_ENTITY_TYPE)
+            ->where(['cic' => true])
+            ->order('cicStartDate', 'ASC')
+            ->findOne();
 
         if ($record && is_string($record->get('date'))) {
             $monthList[] = substr((string) $record->get('date'), 0, 7);
@@ -539,6 +594,10 @@ final class AttendanceOverviewService
 
         if ($schedule && is_string($schedule->get('effectiveFrom'))) {
             $monthList[] = substr((string) $schedule->get('effectiveFrom'), 0, 7);
+        }
+
+        if ($cicSchedule && is_string($cicSchedule->get('cicStartDate'))) {
+            $monthList[] = substr((string) $cicSchedule->get('cicStartDate'), 0, 7);
         }
 
         sort($monthList);
@@ -549,6 +608,38 @@ final class AttendanceOverviewService
     private function isValidTime(string $value): bool
     {
         return preg_match('/^(?:[01]\\d|2[0-3]):[0-5]\\d$/', $value) === 1;
+    }
+
+    private function normalizeOptionalDate(?string $value): ?string
+    {
+        $value = trim((string) $value);
+
+        if ($value === '') {
+            return null;
+        }
+
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $value);
+
+        if (!$date || $date->format('Y-m-d') !== $value) {
+            throw new BadRequest('CIC dates must use the YYYY-MM-DD format.');
+        }
+
+        return $value;
+    }
+
+    /** @param array<string, mixed>|null $schedule */
+    private function isCicDate(?array $schedule, string $date): bool
+    {
+        return ($schedule['cic'] ?? false) === true &&
+            is_string($schedule['cicStartDate'] ?? null) &&
+            is_string($schedule['cicEndDate'] ?? null) &&
+            $date >= $schedule['cicStartDate'] &&
+            $date <= $schedule['cicEndDate'];
+    }
+
+    private function stringOrNull(mixed $value): ?string
+    {
+        return is_string($value) && $value !== '' ? $value : null;
     }
 
     private function getEditableFromMonth(string $today): string

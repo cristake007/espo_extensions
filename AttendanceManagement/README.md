@@ -55,6 +55,14 @@ printable page height in the same way as the original register. A single
 worksheet therefore prints all employee groups without selecting multiple
 sheets.
 
+An administrator or attendance manager can also enable **CIC** for an employee
+and select an inclusive start and end date with native EspoCRM date fields. Every
+working day in that interval is shown automatically as **CIC**, is locked against
+self-service and manager edits, and is included with the same status in the XLSX
+and PDF registers. Approved Holiday Management leave retains priority if the two
+intervals overlap. Disabling or changing CIC updates the calculated attendance
+without deleting historical attendance records.
+
 Users with the role permission receive the standard **Administration** entry in
 the flyout menu through EspoCRM's native `clientNavbar.accessDataList` check.
 Their restricted administration page contains only **Attendance Management >
@@ -74,7 +82,7 @@ or schedule values are left blank. The setting is disabled by default.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.10.25 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.11.0 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

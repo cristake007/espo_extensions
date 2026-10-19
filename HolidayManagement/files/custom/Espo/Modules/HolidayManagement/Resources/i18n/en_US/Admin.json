@@ -36,6 +36,7 @@
         "profilesAccessForbidden": "Holiday profile management permission is required.",
         "correctionAccessForbidden": "Holiday balance correction permission is required.",
         "resetAccessForbidden": "Only administrators can process holiday resets.",
+        "holidaySettingsSaveFailed": "Holiday Management settings could not be saved. Check the entered values and try again.",
         "itemsArrayRequired": "A list of profile items is required.",
         "correctionPayloadRequired": "A profile ID and numeric adjustment are required.",
         "correctionReasonRequired": "A correction reason is required.",

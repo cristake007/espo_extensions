@@ -1,7 +1,8 @@
 {
     "scriptList": [
         "__APPEND__",
-        "client/custom/modules/holiday-management/js/approver-menu.js"
+        "client/custom/modules/holiday-management/js/approver-menu.js",
+        "client/custom/modules/holiday-management/js/admin-menu.js"
     ],
     "cssList": [
         "__APPEND__",

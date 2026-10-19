@@ -4,7 +4,9 @@
         "Holiday Approvals": "Holiday Approvals",
         "HolidayProfileManagement": "Holiday Profile Management",
         "HolidayRequestManagement": "Time Off Manager",
-        "HolidayBalanceCorrection": "Holiday Balance Correction"
+        "HolidayBalanceCorrection": "Holiday Balance Correction",
+        "HolidayManagementSettings": "Holiday Management Settings",
+        "HolidayOverview": "Holiday Overview"
     },
     "scopeNames": {
         "HolidayRequest": "Time Off",
@@ -12,7 +14,9 @@
         "HolidayLedger": "Holiday Ledger",
         "HolidayProfileManagement": "Holiday Profile Management",
         "HolidayRequestManagement": "Time Off Manager",
-        "HolidayBalanceCorrection": "Holiday Balance Correction"
+        "HolidayBalanceCorrection": "Holiday Balance Correction",
+        "HolidayManagementSettings": "Holiday Management Settings",
+        "HolidayOverview": "Holiday Overview"
     },
     "scopeNamesPlural": {
         "HolidayRequest": "Time Off",
@@ -20,7 +24,9 @@
         "HolidayLedger": "Holiday Ledger Entries",
         "HolidayProfileManagement": "Holiday Profile Management",
         "HolidayRequestManagement": "Time Off Manager",
-        "HolidayBalanceCorrection": "Holiday Balance Correction"
+        "HolidayBalanceCorrection": "Holiday Balance Correction",
+        "HolidayManagementSettings": "Holiday Management Settings",
+        "HolidayOverview": "Holiday Overview"
     },
     "dashlets": {
         "HolidayApprovals": "Holiday Approvals"

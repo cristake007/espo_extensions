@@ -134,7 +134,7 @@ define(['view'], (View) => {
                 .attr('data-date', data.today)
                 .prop('disabled', !data.todayCanMark)
                 .removeClass('attendance-state-active');
-            if (status && status !== 'Holiday') {
+            if (status && !['Holiday', 'ChildCareLeave'].includes(status)) {
                 actions.find(`[data-status="${status}"]`).addClass('attendance-state-active');
             }
 
@@ -144,7 +144,11 @@ define(['view'], (View) => {
             this.$el.find('.attendance-today-guidance').text(this.translate(
                 data.todayCanMark
                     ? 'Today Marking Guide'
-                    : (status === 'Holiday' ? 'Holiday Locked Guide' : 'Today Unavailable Guide'),
+                    : (status === 'Holiday'
+                        ? 'Holiday Locked Guide'
+                        : (status === 'ChildCareLeave'
+                            ? 'CIC Locked Guide'
+                            : 'Today Unavailable Guide')),
                 'messages',
                 'AttendanceRecord'
             ));
@@ -226,7 +230,7 @@ define(['view'], (View) => {
                             $('<span>').addClass('fas fa-lock').attr('aria-hidden', 'true'),
                             ' ',
                             this.translate(
-                                day.status === 'Holiday'
+                                ['Holiday', 'ChildCareLeave'].includes(day.status)
                                     ? 'Managed Automatically'
                                     : (locked ? 'Locked' : 'Upcoming'),
                                 'labels',
@@ -253,6 +257,7 @@ define(['view'], (View) => {
                 Holiday: 'info',
                 BusinessTrip: 'warning',
                 MedicalLeave: 'danger',
+                ChildCareLeave: 'info',
             }[status] || 'default';
             const badge = $('<span>')
                 .addClass(`label label-${style}${large ? ' attendance-status-large' : ''}`)
@@ -261,6 +266,14 @@ define(['view'], (View) => {
             if (source === 'ApprovedHoliday') {
                 badge.attr('title', this.translate(
                     'Automatically Added Holiday',
+                    'messages',
+                    'AttendanceRecord'
+                ));
+            }
+
+            if (source === 'CicPeriod') {
+                badge.attr('title', this.translate(
+                    'Automatically Added CIC',
                     'messages',
                     'AttendanceRecord'
                 ));

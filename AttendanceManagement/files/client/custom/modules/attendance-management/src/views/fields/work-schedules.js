@@ -1,4 +1,4 @@
-define(['views/fields/varchar'], (VarcharFieldView) => {
+define(['views/fields/varchar', 'model'], (VarcharFieldView, Model) => {
     return class extends VarcharFieldView {
         editTemplateContent = `
             <div class="attendance-schedule-editor">
@@ -25,6 +25,10 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
                 (event, target) => this.saveSchedule(target));
             this.addHandler('change', '[data-schedule-field]',
                 (event, target) => this.markDirty(target));
+            this.addHandler('change', '[data-schedule-field="cic"]',
+                (event, target) => this.toggleCicControls($(target).closest('[data-user-id]')));
+            this.scheduleModels = new Map();
+            this.scheduleIndexes = new Map();
         }
 
         afterRender() {
@@ -55,11 +59,14 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
         renderRows(users) {
             const body = this.$el.find('[data-role="schedule-rows"]').empty();
 
-            users.forEach(user => {
+            this.scheduleModels = new Map();
+            this.scheduleIndexes = new Map();
+
+            users.forEach((user, index) => {
                 const schedule = user.schedule || {};
                 const row = $('<div>')
                     .addClass('attendance-schedule-row')
-                    .attr('data-user-id', user.id || '');
+                    .attr({'data-user-id': user.id || '', 'data-row-index': index});
                 const employee = $('<div>').addClass('attendance-schedule-employee').append(
                     $('<span>').addClass('fas fa-user-clock').attr('aria-hidden', 'true'),
                     $('<strong>').text(user.name || '')
@@ -75,6 +82,8 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
                     schedule.endTime || ''
                 );
                 const remoteControl = this.createRemoteControl(schedule.remote === true);
+                const cicControl = this.createCicControl(schedule.cic === true);
+                const cicDates = this.createCicDateControls(index, schedule.cic === true);
                 const actions = $('<div>').addClass('attendance-schedule-actions').append(
                     $('<button>', {
                         type: 'button',
@@ -87,8 +96,36 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
                     )
                 );
 
-                row.append(employee, startControl, endControl, remoteControl, actions);
+                const model = new Model({
+                    cicStartDate: schedule.cicStartDate || null,
+                    cicEndDate: schedule.cicEndDate || null,
+                });
+                model.entityType = 'AttendanceWorkSchedule';
+                model.on('change:cicStartDate change:cicEndDate', () => this.markDirty(row));
+                this.scheduleModels.set(String(user.id || ''), model);
+                this.scheduleIndexes.set(String(user.id || ''), index);
+
+                row.append(
+                    employee,
+                    startControl,
+                    endControl,
+                    remoteControl,
+                    cicControl,
+                    cicDates,
+                    actions
+                );
                 body.append(row);
+            });
+
+            body.find('[data-action="save-work-schedule"]').prop('disabled', true);
+            this.renderCicDateFields(users).then(() => {
+                body.find('[data-action="save-work-schedule"]').prop('disabled', false);
+            }).catch(() => {
+                Espo.Ui.error(this.translate(
+                    'Schedule Load Failed',
+                    'messages',
+                    'AttendanceRecord'
+                ));
             });
         }
 
@@ -144,6 +181,77 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
                 );
         }
 
+        createCicControl(checked) {
+            const label = this.translate('CIC', 'labels', 'AttendanceRecord');
+            const checkbox = $('<input>', {type: 'checkbox'})
+                .attr({
+                    'data-schedule-field': 'cic',
+                    'aria-label': label,
+                })
+                .prop('checked', checked);
+
+            return $('<label>')
+                .addClass('attendance-schedule-control attendance-schedule-cic')
+                .append(
+                    $('<span>').text(label),
+                    $('<span>').addClass('attendance-schedule-checkbox').append(checkbox, ' ', label)
+                );
+        }
+
+        createCicDateControls(index, enabled) {
+            return $('<div>')
+                .addClass('attendance-schedule-cic-dates')
+                .toggleClass('hidden', !enabled)
+                .append(
+                    $('<div>').addClass('attendance-schedule-control').append(
+                        $('<span>').text(this.translate(
+                            'CIC Start Date', 'labels', 'AttendanceRecord'
+                        )),
+                        $('<div>').addClass('field').attr('data-cic-start-field', index)
+                    ),
+                    $('<div>').addClass('attendance-schedule-control').append(
+                        $('<span>').text(this.translate(
+                            'CIC End Date', 'labels', 'AttendanceRecord'
+                        )),
+                        $('<div>').addClass('field').attr('data-cic-end-field', index)
+                    )
+                );
+        }
+
+        renderCicDateFields(users) {
+            const promises = [];
+
+            users.forEach((user, index) => {
+                const model = this.scheduleModels.get(String(user.id || ''));
+
+                if (!model) {
+                    return;
+                }
+
+                promises.push(this.createView(`cicStartDate-${index}`, 'views/fields/date', {
+                    selector: `[data-cic-start-field="${index}"]`,
+                    mode: 'edit',
+                    model,
+                    name: 'cicStartDate',
+                    readOnlyDisabled: true,
+                }).then(view => view.render()));
+                promises.push(this.createView(`cicEndDate-${index}`, 'views/fields/date', {
+                    selector: `[data-cic-end-field="${index}"]`,
+                    mode: 'edit',
+                    model,
+                    name: 'cicEndDate',
+                    readOnlyDisabled: true,
+                }).then(view => view.render()));
+            });
+
+            return Promise.all(promises);
+        }
+
+        toggleCicControls(row) {
+            const enabled = row.find('[data-schedule-field="cic"]').prop('checked') === true;
+            row.find('.attendance-schedule-cic-dates').toggleClass('hidden', !enabled);
+        }
+
         markDirty(target) {
             $(target).closest('[data-user-id]')
                 .addClass('attendance-schedule-row-dirty')
@@ -158,6 +266,15 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
             const startTime = row.find('[data-schedule-field="startTime"]').val();
             const endTime = row.find('[data-schedule-field="endTime"]').val();
             const remote = row.find('[data-schedule-field="remote"]').prop('checked') === true;
+            const cic = row.find('[data-schedule-field="cic"]').prop('checked') === true;
+            const userId = String(row.attr('data-user-id') || '');
+            const index = this.scheduleIndexes.get(userId);
+            const cicStartDate = index === undefined
+                ? null
+                : (this.getView(`cicStartDate-${index}`)?.fetch().cicStartDate || null);
+            const cicEndDate = index === undefined
+                ? null
+                : (this.getView(`cicEndDate-${index}`)?.fetch().cicEndDate || null);
 
             if (!startTime || !endTime || startTime >= endTime) {
                 Espo.Ui.error(this.translate(
@@ -169,14 +286,27 @@ define(['views/fields/varchar'], (VarcharFieldView) => {
                 return;
             }
 
+            if (cic && (!cicStartDate || !cicEndDate || cicStartDate > cicEndDate)) {
+                Espo.Ui.error(this.translate(
+                    'Invalid CIC Period',
+                    'messages',
+                    'AttendanceRecord'
+                ));
+
+                return;
+            }
+
             button.prop('disabled', true);
 
             try {
                 await Espo.Ajax.postRequest('AttendanceManagement/overview/schedule', {
-                    userId: row.attr('data-user-id'),
+                    userId,
                     startTime,
                     endTime,
                     remote,
+                    cic,
+                    cicStartDate: cic ? cicStartDate : null,
+                    cicEndDate: cic ? cicEndDate : null,
                 });
                 Espo.Ui.success(this.translate(
                     'Schedule Saved',

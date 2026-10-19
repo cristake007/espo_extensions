@@ -4,7 +4,9 @@
         "Holiday Approvals": "Aprobări concedii",
         "HolidayProfileManagement": "Administrare profiluri de concediu",
         "HolidayRequestManagement": "Responsabil concedii",
-        "HolidayBalanceCorrection": "Corectare sold concediu"
+        "HolidayBalanceCorrection": "Corectare sold concediu",
+        "HolidayManagementSettings": "Setări administrare concedii",
+        "HolidayOverview": "Situație concedii"
     },
     "scopeNames": {
         "HolidayRequest": "Concediu",
@@ -12,7 +14,9 @@
         "HolidayLedger": "Registru de concedii",
         "HolidayProfileManagement": "Administrare profiluri de concediu",
         "HolidayRequestManagement": "Responsabil concedii",
-        "HolidayBalanceCorrection": "Corectare sold concediu"
+        "HolidayBalanceCorrection": "Corectare sold concediu",
+        "HolidayManagementSettings": "Setări administrare concedii",
+        "HolidayOverview": "Situație concedii"
     },
     "scopeNamesPlural": {
         "HolidayRequest": "Concedii",
@@ -20,7 +24,9 @@
         "HolidayLedger": "Înregistrări în registrul de concedii",
         "HolidayProfileManagement": "Administrare profiluri de concediu",
         "HolidayRequestManagement": "Responsabil concedii",
-        "HolidayBalanceCorrection": "Corectare sold concediu"
+        "HolidayBalanceCorrection": "Corectare sold concediu",
+        "HolidayManagementSettings": "Setări administrare concedii",
+        "HolidayOverview": "Situație concedii"
     },
     "dashlets": {
         "HolidayApprovals": "Aprobări concedii"

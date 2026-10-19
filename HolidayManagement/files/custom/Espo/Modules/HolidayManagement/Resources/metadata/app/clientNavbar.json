@@ -1,5 +1,17 @@
 {
     "menuItems": {
+        "holidayAdministration": {
+            "order": 0,
+            "groupIndex": 1,
+            "link": "#Admin",
+            "labelTranslation": "Global.labels.Administration",
+            "accessDataList": [
+                {
+                    "scope": "HolidayManagementSettings"
+                }
+            ],
+            "iconClass": "fas fa-gear"
+        },
         "holidayApprovals": {
             "order": 35,
             "groupIndex": 0,

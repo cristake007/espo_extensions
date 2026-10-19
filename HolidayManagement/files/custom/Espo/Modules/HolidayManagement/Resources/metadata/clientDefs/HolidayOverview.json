@@ -1,0 +1,4 @@
+{
+    "controller": "holiday-management:controllers/holiday-overview",
+    "iconClass": "fas fa-calendar-alt"
+}

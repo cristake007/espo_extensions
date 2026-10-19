@@ -14,6 +14,8 @@ The extension includes settings, balance accounting, and self-service booking:
 - transactional, idempotent corrections and annual grants;
 - append-only balance ledger and automatic annual resets;
 - an optional approver dashboard dashlet with pending requests and decision actions;
+- a role-controlled monthly overview with an employee-by-day matrix, request
+  statuses, balances, and operational summary cards;
 - a standard **Time Off / Concediu** main-navigation entry showing the
   signed-in user's remaining balance;
 - self-service holiday bookings from both that page and EspoCRM Calendar;
@@ -60,7 +62,7 @@ preserved.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.8.18 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.9.4 files scripts
 ```
 
 Run the phase contract tests:
@@ -83,6 +85,11 @@ Administrators can manage the extension but do not receive holiday profiles or
 holiday balances. New bookings and date changes cannot start before the current
 date. A user's holiday profile must be initialized in
 **Administration > Holiday Profiles** before their first booking.
+
+Holiday settings and the monthly overview use native EspoCRM boolean role
+permissions. Enable **Holiday Management Settings** and/or **Holiday Overview**
+in a role, then assign the role to the responsible users or teams. The test-data
+RESET action remains visible and executable only for administrators.
 
 To delegate profile setup, enable **Holiday Profile Management** in a native
 EspoCRM role and assign that role to the responsible active internal user or

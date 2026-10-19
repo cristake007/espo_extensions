@@ -1,5 +1,15 @@
 define(['views/settings/record/edit'], (Dep) => {
     return class extends Dep {
+        setup() {
+            if (!this.getUser().isAdmin()) {
+                this.detailLayout = this.detailLayout.filter(
+                    panel => panel.tabLabel !== 'RESET',
+                );
+            }
+
+            super.setup();
+        }
+
         async actionSave(data) {
             try {
                 await super.actionSave(data);
