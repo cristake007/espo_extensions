@@ -74,7 +74,7 @@ or schedule values are left blank. The setting is disabled by default.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.10.16 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.10.17 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

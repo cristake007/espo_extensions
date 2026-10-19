@@ -262,6 +262,7 @@ define(['view'], (View) => {
                     'endTime',
                     schedule.endTime || ''
                 );
+                const remoteControl = this.createRemoteControl(schedule.remote === true);
                 const actions = $('<div>').addClass('attendance-schedule-actions').append(
                     $('<button>', {
                         type: 'button',
@@ -274,7 +275,7 @@ define(['view'], (View) => {
                     )
                 );
 
-                row.append(employee, startControl, endControl, actions);
+                row.append(employee, startControl, endControl, remoteControl, actions);
                 body.append(row);
             });
         }
@@ -314,6 +315,23 @@ define(['view'], (View) => {
             );
         }
 
+        createRemoteControl(checked) {
+            const label = this.translate('Remote', 'labels', 'AttendanceRecord');
+            const checkbox = $('<input>', {type: 'checkbox'})
+                .attr({
+                    'data-schedule-field': 'remote',
+                    'aria-label': label,
+                })
+                .prop('checked', checked);
+
+            return $('<label>')
+                .addClass('attendance-schedule-control attendance-schedule-remote')
+                .append(
+                    $('<span>').text(label),
+                    $('<span>').addClass('attendance-schedule-checkbox').append(checkbox, ' ', label)
+                );
+        }
+
         markDirty(target) {
             $(target).closest('[data-user-id]')
                 .addClass('attendance-schedule-row-dirty')
@@ -327,6 +345,7 @@ define(['view'], (View) => {
             const row = button.closest('[data-user-id]');
             const startTime = row.find('[data-schedule-field="startTime"]').val();
             const endTime = row.find('[data-schedule-field="endTime"]').val();
+            const remote = row.find('[data-schedule-field="remote"]').prop('checked') === true;
 
             if (!startTime || !endTime || startTime >= endTime) {
                 Espo.Ui.error(this.translate(
@@ -345,6 +364,7 @@ define(['view'], (View) => {
                     userId: row.attr('data-user-id'),
                     startTime,
                     endTime,
+                    remote,
                 });
                 Espo.Ui.success(this.translate(
                     'Schedule Saved',

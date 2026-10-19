@@ -40,7 +40,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.16');
+    assert.equal(manifest.version, '1.10.17');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -318,6 +318,9 @@ test('attendance managers can open only employee schedules at the administration
     assert.match(controller, /views\/attendance\/schedules/);
     assert.match(schedules, /AttendanceManagement\/schedules/);
     assert.match(schedules, /AttendanceManagement\/overview\/schedule/);
+    assert.match(schedules, /data-schedule-field.*remote/);
+    assert.match(schedules, /schedule\.remote === true/);
+    assert.match(schedules, /remote,/);
     assert.doesNotMatch(schedules, /attendanceManagementManagers/);
     assert.match(overview, /#Admin\/attendanceManagementSettings/);
     assert.match(managerIndex, /Attendance Management/);
