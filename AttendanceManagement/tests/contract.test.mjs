@@ -40,7 +40,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.24');
+    assert.equal(manifest.version, '1.10.25');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -627,6 +627,11 @@ test('manager page uses native ACL navigation and provides matrix, reminders and
     assert.match(overview, /send-reminders/);
     assert.match(overview, /download-xlsx/);
     assert.match(overview, /download-pdf/);
+    assert.match(
+        overview,
+        /attendance-overview-actions[\s\S]*#Admin\/attendanceManagementSettings[\s\S]*Employee Schedules/
+    );
+    assert.match(css, /\.attendance-overview-actions\s*\{[^}]*flex-wrap:\s*wrap;/s);
     assert.match(overview, /AttendanceManagement\/overview\/remind/);
     assert.match(overview, /AttendanceManagement\/overview\/\$\{format\}/);
     assert.match(overview, /actionDownloadPdf/);

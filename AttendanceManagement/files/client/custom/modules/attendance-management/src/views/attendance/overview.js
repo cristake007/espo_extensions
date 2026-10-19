@@ -6,10 +6,6 @@ define(['view'], (View) => {
                 <p class="text-muted attendance-page-intro">
                     {{translate 'Overview Page Guide' category='messages' scope='AttendanceRecord'}}
                 </p>
-                <a class="btn btn-default" href="#Admin/attendanceManagementSettings">
-                    <span class="fas fa-business-time" aria-hidden="true"></span>
-                    {{translate 'Employee Schedules' category='labels' scope='AttendanceRecord'}}
-                </a>
             </div>
             <div class="attendance-overview-page">
                 <div class="panel panel-default">
@@ -19,6 +15,10 @@ define(['view'], (View) => {
                             <select class="form-control" data-overview-month-select></select>
                         </label>
                         <div class="attendance-overview-actions">
+                            <a class="btn btn-default" href="#Admin/attendanceManagementSettings">
+                                <span class="fas fa-business-time" aria-hidden="true"></span>
+                                {{translate 'Employee Schedules' category='labels' scope='AttendanceRecord'}}
+                            </a>
                             <button class="btn btn-warning" data-action="send-reminders">
                                 <span class="fas fa-bell" aria-hidden="true"></span>
                                 {{translate 'Send Reminders' category='labels' scope='AttendanceRecord'}}

@@ -284,7 +284,9 @@
 
 .attendance-overview-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
+    justify-content: flex-end;
 }
 
 .attendance-overview-summary {
@@ -891,6 +893,10 @@
     .attendance-overview-actions {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .attendance-overview-actions {
+        flex-wrap: nowrap;
     }
 
     .attendance-overview-month-selector {
