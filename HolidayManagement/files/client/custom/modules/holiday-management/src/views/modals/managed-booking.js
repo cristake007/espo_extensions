@@ -6,10 +6,10 @@ define(['views/modal', 'model'], (ModalView, Model) => {
 
         templateContent = `
             <div class="form-group">
-                <label class="control-label" for="managed-holiday-user">
+                <label class="control-label">
                     {{translate 'Employee' category='labels' scope='HolidayRequest'}}
                 </label>
-                <select id="managed-holiday-user" class="form-control" data-name="userId"></select>
+                <div class="field" data-name="employeeField"></div>
             </div>
             <div class="row">
                 <div class="col-sm-6 form-group">
@@ -29,8 +29,7 @@ define(['views/modal', 'model'], (ModalView, Model) => {
                 <label class="control-label" for="managed-holiday-description">
                     {{translate 'description' category='fields' scope='HolidayRequest'}}
                 </label>
-                <textarea id="managed-holiday-description" class="form-control"
-                    data-name="description" rows="3" maxlength="2000"></textarea>
+                <div class="field" data-name="descriptionField"></div>
             </div>
             <p class="help-block">
                 {{translate 'managedBookingHelp' category='messages' scope='HolidayRequest'}}
@@ -52,13 +51,16 @@ define(['views/modal', 'model'], (ModalView, Model) => {
                 },
                 {name: 'cancel', label: 'Cancel'},
             ];
-            this.users = [];
             const today = this.getDateTime().getToday();
-            this.dateModel = new Model({
+            this.formModel = new Model({
+                assignedUserId: null,
+                assignedUserName: null,
                 dateStartDate: today,
                 dateEndDate: today,
+                description: '',
             });
-            this.dateModel.entityType = 'HolidayRequest';
+            this.formModel.entityType = 'HolidayRequest';
+            this.eligibleUserIds = [];
             this.wait(this.loadUsers());
         }
 
@@ -66,33 +68,31 @@ define(['views/modal', 'model'], (ModalView, Model) => {
             const response = await Espo.Ajax.getRequest(
                 'HolidayManagement/managedBookingUsers'
             );
-            this.users = response.list || [];
+            this.eligibleUserIds = (response.list || []).map(user => user.id);
         }
 
         async afterRender() {
-            const select = this.$el.find('[data-name="userId"]').empty();
-
-            select.append($('<option>', {
-                value: '',
-                text: this.translate('Select Employee', 'labels', 'HolidayRequest'),
-            }));
-            this.users.forEach(user => select.append($('<option>', {
-                value: user.id,
-                text: `${user.name} (${this.translate(
-                    'Available Balance',
-                    'labels',
-                    'HolidayRequest'
-                )}: ${user.balance})`,
-            })));
-
             await Promise.all([
+                this.createView(
+                    'managedBookingEmployee',
+                    'holiday-management:views/holiday-request/fields/managed-employee',
+                    {
+                        selector: '[data-name="employeeField"]',
+                        mode: 'edit',
+                        model: this.formModel,
+                        name: 'assignedUser',
+                        readOnlyDisabled: true,
+                        createDisabled: true,
+                        eligibleUserIds: this.eligibleUserIds,
+                    },
+                ).then(view => view.render()),
                 this.createView(
                     'managedBookingStartDate',
                     'holiday-management:views/holiday-request/fields/start-date',
                     {
                         selector: '[data-name="dateStartField"]',
                         mode: 'edit',
-                        model: this.dateModel,
+                        model: this.formModel,
                         name: 'dateStartDate',
                         readOnlyDisabled: true,
                     },
@@ -103,8 +103,19 @@ define(['views/modal', 'model'], (ModalView, Model) => {
                     {
                         selector: '[data-name="dateEndField"]',
                         mode: 'edit',
-                        model: this.dateModel,
+                        model: this.formModel,
                         name: 'dateEndDate',
+                        readOnlyDisabled: true,
+                    },
+                ).then(view => view.render()),
+                this.createView(
+                    'managedBookingDescription',
+                    'views/fields/text',
+                    {
+                        selector: '[data-name="descriptionField"]',
+                        mode: 'edit',
+                        model: this.formModel,
+                        name: 'description',
                         readOnlyDisabled: true,
                     },
                 ).then(view => view.render()),
@@ -112,7 +123,9 @@ define(['views/modal', 'model'], (ModalView, Model) => {
         }
 
         async submit() {
-            const userId = String(this.$el.find('[data-name="userId"]').val() || '');
+            const userId = String(
+                this.getView('managedBookingEmployee')?.fetch().assignedUserId || ''
+            );
             const dateStart = String(
                 this.getView('managedBookingStartDate')?.fetch().dateStartDate || ''
             );
@@ -120,7 +133,7 @@ define(['views/modal', 'model'], (ModalView, Model) => {
                 this.getView('managedBookingEndDate')?.fetch().dateEndDate || ''
             );
             const description = String(
-                this.$el.find('[data-name="description"]').val() || ''
+                this.getView('managedBookingDescription')?.fetch().description || ''
             ).trim();
 
             if (!userId || !dateStart || !dateEnd) {

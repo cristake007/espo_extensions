@@ -212,3 +212,21 @@ body.holiday-management-approver #navbar a[data-name="holidayApprovals"] {
         flex: 1 1 0;
     }
 }
+
+.holiday-profile-balance-control {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    min-width: 16rem;
+}
+
+.holiday-profile-balance-control .holiday-profile-balance-value {
+    flex: 1 1 auto;
+    margin-bottom: 0;
+    min-width: 5rem;
+}
+
+.holiday-profile-balance-control [data-action="correctBalance"] {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}

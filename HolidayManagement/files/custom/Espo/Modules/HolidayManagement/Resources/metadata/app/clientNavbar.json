@@ -1,17 +1,5 @@
 {
     "menuItems": {
-        "holidayProfiles": {
-            "order": 34,
-            "groupIndex": 0,
-            "link": "#Admin/holidayManagementProfiles",
-            "labelTranslation": "Global.labels.HolidayProfileManagement",
-            "iconClass": "fas fa-users-cog",
-            "accessDataList": [
-                {
-                    "scope": "HolidayProfileManagement"
-                }
-            ]
-        },
         "holidayApprovals": {
             "order": 35,
             "groupIndex": 0,

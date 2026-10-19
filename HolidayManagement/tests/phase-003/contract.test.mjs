@@ -475,6 +475,11 @@ test('role-controlled time-off managers can create pending requests for employee
         'files', 'client', 'custom', 'modules', 'holiday-management',
         'src', 'views', 'modals', 'managed-booking.js'
     ), 'utf8');
+    const employeeField = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'holiday-request', 'fields', 'managed-employee.js'
+    ), 'utf8');
 
     assert.equal(scope.acl, 'boolean');
     assert.equal(scope.tab, false);
@@ -501,10 +506,21 @@ test('role-controlled time-off managers can create pending requests for employee
     assert.match(modal, /HolidayManagement\/managedBookingUsers/);
     assert.match(modal, /HolidayManagement\/managedBookings/);
     assert.match(modal, /holiday-management:views\/holiday-request\/fields\/start-date/);
+    assert.match(modal, /holiday-management:views\/holiday-request\/fields\/managed-employee/);
     assert.match(modal, /'views\/fields\/date'/);
+    assert.match(modal, /'views\/fields\/text'/);
     assert.match(modal, /getView\('managedBookingStartDate'\)\?\.fetch\(\)\.dateStartDate/);
     assert.match(modal, /getView\('managedBookingEndDate'\)\?\.fetch\(\)\.dateEndDate/);
+    assert.match(modal, /getView\('managedBookingEmployee'\)\?\.fetch\(\)\.assignedUserId/);
     assert.doesNotMatch(modal, /type="date"/);
+    assert.doesNotMatch(modal, /<select/);
+    assert.match(employeeField, /views\/fields\/link/);
+    assert.match(employeeField, /getSelectPrimaryFilterName/);
+    assert.match(employeeField, /getSelectFilters/);
+    assert.match(employeeField, /type:\s*'in'/);
+    assert.match(employeeField, /eligibleUserIds/);
+    assert.match(list, /getAcl\(\)\.check\('HolidayProfileManagement'\)/);
+    assert.match(list, /#Admin\/holidayManagementProfiles/);
 
     for (const locale of ['en_US', 'ro_RO']) {
         const global = await readJson('Resources', 'i18n', locale, 'Global.json');
@@ -514,6 +530,7 @@ test('role-controlled time-off managers can create pending requests for employee
         assert.equal(typeof request.labels['Book for Employee'], 'string');
         assert.equal(typeof request.messages.managedBookingHelp, 'string');
         assert.equal(typeof request.messages.managedBookingSaved, 'string');
+        assert.equal(typeof request.labels['Manage Holiday Profiles'], 'string');
     }
 });
 

@@ -352,6 +352,11 @@ test('Administration exposes a bulk profile setup view using the service endpoin
         'files', 'client', 'custom', 'modules', 'holiday-management',
         'src', 'views', 'admin', 'profiles.js'
     ), 'utf8');
+    const requestList = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'views', 'holiday-request', 'list.js'
+    ), 'utf8');
     const correctionModal = await readFile(path.join(
         extensionRoot,
         'files', 'client', 'custom', 'modules', 'holiday-management',
@@ -374,18 +379,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.equal(managementScope.tab, false);
     assert.equal(correctionScope.acl, 'boolean');
     assert.equal(correctionScope.tab, false);
-    assert.equal(
-        clientNavbar.menuItems.holidayProfiles.link,
-        '#Admin/holidayManagementProfiles'
-    );
-    assert.equal(
-        clientNavbar.menuItems.holidayProfiles.labelTranslation,
-        'Global.labels.HolidayProfileManagement'
-    );
-    assert.equal(
-        clientNavbar.menuItems.holidayProfiles.accessDataList[0].scope,
-        'HolidayProfileManagement'
-    );
+    assert.equal('holidayProfiles' in clientNavbar.menuItems, false);
+    assert.match(requestList, /getAcl\(\)\.check\('HolidayProfileManagement'\)/);
+    assert.match(requestList, /#Admin\/holidayManagementProfiles/);
+    assert.match(requestList, /addMenuItem\('buttons'/);
     assert.equal(
         clientRoutes['Admin/holidayManagementProfiles'].params.controller,
         'holiday-management:controllers/holiday-profiles'
@@ -421,10 +418,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.8.6 package', async () => {
+test('accounting metadata remains bilingual in the 1.8.7 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.8.6');
+    assert.equal(manifest.version, '1.8.7');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');

@@ -3,6 +3,19 @@ define(['views/list'], (ListView) => {
         setup() {
             super.setup();
 
+            if (this.getAcl().check('HolidayProfileManagement')) {
+                this.addMenuItem('buttons', {
+                    link: '#Admin/holidayManagementProfiles',
+                    iconHtml: '<span class="fas fa-users-cog fa-sm"></span>',
+                    text: this.translate(
+                        'Manage Holiday Profiles',
+                        'labels',
+                        'HolidayRequest'
+                    ),
+                    style: 'default',
+                }, true);
+            }
+
             const refreshBalance = () => this.loadHolidayBalance();
 
             window.addEventListener('holiday-management:balance-refresh', refreshBalance);

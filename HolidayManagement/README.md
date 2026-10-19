@@ -71,9 +71,9 @@ date. A user's holiday profile must be initialized in
 
 To delegate profile setup, enable **Holiday Profile Management** in a native
 EspoCRM role and assign that role to the responsible active internal user or
-team. The user receives a **Holiday Profiles** navigation entry and can use the
-profile workspace without access to global holiday settings, forced resets, or
-direct accounting-record writes. Opening balance is accepted only during the
+team. The user receives a **Manage holiday profiles** button next to the normal
+Time Off page actions and can use the profile workspace without access to global
+holiday settings, forced resets, or direct accounting-record writes. Opening balance is accepted only during the
 first initialization. To permit later balance changes, also enable the separate
 **Holiday Balance Correction** role permission. Each correction requires a new
 balance and a reason and creates an immutable Holiday Ledger entry containing

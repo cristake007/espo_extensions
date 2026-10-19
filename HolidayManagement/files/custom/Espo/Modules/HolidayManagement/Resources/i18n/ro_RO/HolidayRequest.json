@@ -27,7 +27,8 @@
         "Create Pending Request": "Creează cererea",
         "Employee": "Angajat",
         "Select Employee": "Selectează angajatul",
-        "Available Balance": "Sold disponibil"
+        "Available Balance": "Sold disponibil",
+        "Manage Holiday Profiles": "Administrează profilurile"
     },
     "fields": {
         "name": "Denumire",

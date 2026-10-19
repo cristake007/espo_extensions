@@ -27,7 +27,8 @@
         "Create Pending Request": "Create pending request",
         "Employee": "Employee",
         "Select Employee": "Select employee",
-        "Available Balance": "Available balance"
+        "Available Balance": "Available balance",
+        "Manage Holiday Profiles": "Manage holiday profiles"
     },
     "fields": {
         "name": "Name",

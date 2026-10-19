@@ -21,16 +21,16 @@ define(['view', 'model'], (Dep, Model) => {
                             <tr data-user-id="{{userId}}" data-row-index="{{rowIndex}}">
                                 <td>{{userName}}</td>
                                 <td><div class="field" data-annual-entitlement-field="{{rowIndex}}"></div></td>
-                                <td>
-                                    <div class="field" data-balance-field="{{rowIndex}}"></div>
+                                <td><div class="holiday-profile-balance-control">
+                                    <div class="field holiday-profile-balance-value" data-balance-field="{{rowIndex}}"></div>
                                     {{#if canCorrect}}
-                                    <button type="button" class="btn btn-default btn-xs margin-top"
+                                    <button type="button" class="btn btn-default btn-xs"
                                         data-action="correctBalance" data-row-index="{{rowIndex}}">
                                         <span class="fas fa-pen" aria-hidden="true"></span>
                                         {{translate 'Correct Balance' category='labels' scope='Admin'}}
                                     </button>
                                     {{/if}}
-                                </td>
+                                </div></td>
                                 <td><div class="field" data-reset-date-field="{{rowIndex}}"></div></td>
                                 <td><div class="field holiday-profile-color-field" data-calendar-color-field="{{rowIndex}}"></div></td>
                                 <td>{{#if isInitialized}}{{translate 'Initialized' category='labels' scope='Admin'}}{{else}}{{translate 'Not Initialized' category='labels' scope='Admin'}}{{/if}}</td>
