@@ -27,7 +27,8 @@ Management** side-navigation section. The manager overview is visible and
 available only to users granted **Attendance Overview** access through a native
 EspoCRM role. Create a role such as **Attendance Manager**, enable its
 **Attendance Overview** permission, and assign the role to the responsible user
-or team. It provides a
+or team. Both the personal attendance page and the manager overview remain
+available in EspoCRM's navbar editor, including inside navigation groups. It provides a
 monthly employee-by-day preview, highlights missing entries, sends in-app
 reminders to employees with unsigned days, and exports the register as XLSX or
 PDF once all elapsed working days have been completed. Its selector shows the
@@ -68,7 +69,7 @@ or schedule values are left blank. The setting is disabled by default.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.10.13 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.10.14 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

@@ -1,5 +1,8 @@
 {
     "fields": {
+        "tabList": {
+            "view": "attendance-management:views/settings/fields/tab-list"
+        },
         "attendanceManagementEditablePastMonths": {
             "type": "int",
             "default": 1,

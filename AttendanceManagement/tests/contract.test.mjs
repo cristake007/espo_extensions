@@ -40,7 +40,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.13');
+    assert.equal(manifest.version, '1.10.14');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -455,6 +455,90 @@ test('personal page clearly separates today actions from the structured monthly 
     assert.match(view, /displayWeekday/);
     assert.match(controller, /month: options\.month \|\| null/);
     assert.match(view, /loadAttendance\(this\.options\.month \|\| null\)/);
+});
+
+test('navbar editor exposes the personal attendance tab at top level and inside groups', async () => {
+    const settings = await readJson('Resources', 'metadata', 'entityDefs', 'Settings.json');
+    const scope = await readJson('Resources', 'metadata', 'scopes', 'Attendance.json');
+    const tabList = await readFile(
+        path.join(clientRoot, 'src', 'views', 'settings', 'fields', 'tab-list.js'),
+        'utf8'
+    );
+    const groupTabList = await readFile(
+        path.join(clientRoot, 'src', 'views', 'settings', 'fields', 'group-tab-list.js'),
+        'utf8'
+    );
+
+    assert.equal(scope.acl, false);
+    assert.equal(scope.tab, true);
+    assert.equal(
+        settings.fields.tabList.view,
+        'attendance-management:views/settings/fields/tab-list'
+    );
+    assert.match(tabList, /const scope = 'Attendance'/);
+    assert.match(tabList, /scopeDefs\.disabled/);
+    assert.match(tabList, /!scopeDefs\.tab/);
+    assert.match(
+        tabList,
+        /attendance-management:views\/settings\/fields\/group-tab-list/
+    );
+    assert.match(groupTabList, /this\.noGroups = true/);
+    assert.match(groupTabList, /this\.noDelimiters = true/);
+
+    let AttendanceTabList;
+    class CoreTabList {
+        setup() {
+            this.setupOptions();
+        }
+
+        setupOptions() {
+            this.params = {
+                options: ['AttendanceOverview', '_delimiter_', '_delimiter-ext_'],
+            };
+            this.translatedOptions = {
+                AttendanceOverview: 'Centralizatoare prezenta',
+            };
+        }
+
+        getMetadata() {
+            return {
+                get: key => key === 'scopes.Attendance' ?
+                    {acl: false, disabled: false, tab: true} : null,
+            };
+        }
+
+        translate(value) {
+            return value === 'Attendance' ? 'Condici de prezenta' : value;
+        }
+    }
+
+    vm.runInNewContext(tabList, {
+        define: (dependencies, factory) => {
+            AttendanceTabList = factory(CoreTabList);
+        },
+        Espo: {Utils: {cloneDeep: structuredClone}},
+    });
+
+    const topLevelView = new AttendanceTabList();
+    topLevelView.setupOptions();
+    assert.ok(topLevelView.params.options.includes('Attendance'));
+    assert.deepEqual(
+        Array.from(topLevelView.params.options.slice(-2)),
+        ['_delimiter_', '_delimiter-ext_']
+    );
+
+    let AttendanceGroupTabList;
+    vm.runInNewContext(groupTabList, {
+        define: (dependencies, factory) => {
+            AttendanceGroupTabList = factory(AttendanceTabList);
+        },
+    });
+
+    const groupView = new AttendanceGroupTabList();
+    groupView.setup();
+    assert.equal(groupView.noGroups, true);
+    assert.equal(groupView.noDelimiters, true);
+    assert.ok(groupView.params.options.includes('Attendance'));
 });
 
 test('manager page uses native ACL navigation and provides matrix, reminders and exports', async () => {
