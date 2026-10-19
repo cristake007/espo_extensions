@@ -23,8 +23,8 @@ Approved `HolidayRequest` records are read dynamically and displayed as locked
 **In holiday** days. Attendance Management never changes holiday requests or
 holiday balances.
 
-The employee page and manager overview are grouped under one **Attendance
-Management** side-navigation section. The manager overview is visible and
+The employee page and manager overview are installed as separate side-navigation
+entries. The manager overview is visible and
 available only to users granted **Attendance Overview** access through a native
 EspoCRM role. Create a role such as **Attendance Manager**, enable its
 **Attendance Overview** permission, and assign the role to the responsible user
@@ -74,7 +74,7 @@ or schedule values are left blank. The setting is disabled by default.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.10.21 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.10.24 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

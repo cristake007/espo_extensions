@@ -59,13 +59,24 @@ class AfterInstall
     private function normalizeTabList(array $tabList): array
     {
         $normalized = [];
-        $groupAdded = false;
+        $addedScopes = [];
 
         foreach ($tabList as $item) {
-            if ($this->isManagedScope($item) || $this->isManagedGroup($item)) {
-                if (!$groupAdded) {
-                    $normalized[] = $this->buildNavigationGroup();
-                    $groupAdded = true;
+            if ($this->isManagedGroup($item)) {
+                foreach (self::NAVIGATION_SCOPE_LIST as $scope) {
+                    if (!isset($addedScopes[$scope])) {
+                        $normalized[] = $scope;
+                        $addedScopes[$scope] = true;
+                    }
+                }
+
+                continue;
+            }
+
+            if ($this->isManagedScope($item)) {
+                if (!isset($addedScopes[$item])) {
+                    $normalized[] = $item;
+                    $addedScopes[$item] = true;
                 }
 
                 continue;
@@ -74,8 +85,10 @@ class AfterInstall
             $normalized[] = $item;
         }
 
-        if (!$groupAdded) {
-            $normalized[] = $this->buildNavigationGroup();
+        foreach (self::NAVIGATION_SCOPE_LIST as $scope) {
+            if (!isset($addedScopes[$scope])) {
+                $normalized[] = $scope;
+            }
         }
 
         return array_values($normalized);
@@ -95,15 +108,4 @@ class AfterInstall
         return is_array($item) && ($item['id'] ?? null) === self::NAVIGATION_GROUP_ID;
     }
 
-    /** @return array<string, mixed> */
-    private function buildNavigationGroup(): array
-    {
-        return [
-            'type' => 'group',
-            'id' => self::NAVIGATION_GROUP_ID,
-            'text' => '$AttendanceManagement',
-            'iconClass' => 'fas fa-clipboard-check',
-            'itemList' => self::NAVIGATION_SCOPE_LIST,
-        ];
-    }
 }

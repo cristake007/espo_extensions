@@ -87,10 +87,9 @@ final class AttendancePdfGenerator
         array $rows,
         array $userIndexes,
     ): string {
-        $columnWidth = 82.0 / max(1, count($userIndexes));
-        $timeWidth = $columnWidth * 0.30;
-        $statusWidth = $columnWidth * 0.70;
-        $columns = '<col style="width:8%"><col style="width:10%">';
+        $columnWidth = 80.0 / max(1, count($userIndexes));
+        $timeWidth = $columnWidth * 0.28;
+        $statusWidth = $columnWidth * 0.72;
         $employeeHeaders = '';
         $subHeaders = '';
 
@@ -100,15 +99,18 @@ final class AttendancePdfGenerator
             $remoteLabel = ($schedule['remote'] ?? false) === true
                 ? '<br><span class="remote-label">(Remote)</span>'
                 : '';
-            $columns .= sprintf(
-                '<col style="width:%.3F%%"><col style="width:%.3F%%">',
-                $timeWidth,
-                $statusWidth,
-            );
             $employeeHeaders .= '<th colspan="2">' .
                 $this->escape((string) ($user['name'] ?? '')) . $remoteLabel . '</th>';
-            $subHeaders .= '<th class="fixed-label">Ora</th>' .
-                '<th class="fixed-label">Prezenta</th>';
+            $subHeaders .= sprintf(
+                '<th class="fixed-label header-label time-cell" width="%.3F%%" ' .
+                'style="width:%.3F%%">Ora</th>' .
+                '<th class="fixed-label header-label status-header" width="%.3F%%" ' .
+                'style="width:%.3F%%">Prezenta</th>',
+                $timeWidth,
+                $timeWidth,
+                $statusWidth,
+                $statusWidth,
+            );
         }
 
         $body = '';
@@ -126,22 +128,38 @@ final class AttendancePdfGenerator
                 $remoteLabel = ($schedule['remote'] ?? false) === true && $status === 'AtWork'
                     ? '<br><span class="remote-label">(Remote)</span>'
                     : '';
-                $entryCells .= '<td>' . $this->escape((string) ($schedule['startTime'] ?? '')) .
-                    '</td><td class="status" rowspan="2" style="background:' .
-                    $this->statusColor($status) . '">' . $this->escape($this->statusLabel($status)) .
-                    $remoteLabel . '</td>';
-                $exitCells .= '<td>' . $this->escape((string) ($schedule['endTime'] ?? '')) . '</td>';
+                $entryCells .= sprintf(
+                    '<td class="time-cell" width="%.3F%%" style="width:%.3F%%">',
+                    $timeWidth,
+                    $timeWidth,
+                ) . $this->escape((string) ($schedule['startTime'] ?? '')) .
+                    '</td>' . sprintf(
+                        '<td class="status-value" rowspan="2" width="%.3F%%" ' .
+                        'style="width:%.3F%%; background:%s">',
+                        $statusWidth,
+                        $statusWidth,
+                        $this->statusColor($status),
+                    ) . $this->escape($this->statusLabel($status)) . $remoteLabel . '</td>';
+                $exitCells .= sprintf(
+                    '<td class="time-cell" width="%.3F%%" style="width:%.3F%%">',
+                    $timeWidth,
+                    $timeWidth,
+                ) . $this->escape((string) ($schedule['endTime'] ?? '')) . '</td>';
             }
 
-            $body .= '<tr><td class="fixed-label" rowspan="2">' . $date .
-                '</td><td class="fixed-label">Ora intrare</td>' . $entryCells .
-                '</tr><tr><td class="fixed-label">Ora iesire</td>' . $exitCells . '</tr>';
+            $body .= '<tr><td class="fixed-label date-cell" rowspan="2" width="10%" ' .
+                'style="width:10%">' . $date .
+                '</td><td class="fixed-label program-cell" width="10%" style="width:10%">' .
+                'Ora intrare</td>' . $entryCells .
+                '</tr><tr><td class="fixed-label program-cell" width="10%" style="width:10%">' .
+                'Ora iesire</td>' . $exitCells . '</tr>';
         }
 
         return '<section class="register-page"><h1>' . $this->escape($title) .
-            '</h1><table><colgroup>' . $columns . '</colgroup><thead><tr>' .
-            '<th class="fixed-label" rowspan="2">Data</th>' .
-            '<th class="fixed-label" rowspan="2">Program</th>' . $employeeHeaders .
+            '</h1><table><thead><tr>' .
+            '<th class="fixed-label date-cell" rowspan="2" width="10%" style="width:10%">Data</th>' .
+            '<th class="fixed-label program-cell" rowspan="2" width="10%" ' .
+            'style="width:10%">Program</th>' . $employeeHeaders .
             '</tr><tr>' . $subHeaders . '</tr></thead><tbody>' . $body .
             '</tbody></table></section>';
     }
@@ -155,7 +173,7 @@ final class AttendancePdfGenerator
             .register-page { page-break-after: always; }
             .register-page:last-child { page-break-after: auto; }
             h1 { font-size: 14pt; line-height: 1; margin: 0 0 4mm; text-align: center; }
-            table { border-collapse: collapse; table-layout: fixed; width: 100%; }
+            table { border-collapse: collapse; table-layout: auto; width: 100%; }
             th, td {
                 border: 0.2mm solid #777;
                 font-size: 6.5pt;
@@ -174,6 +192,9 @@ final class AttendancePdfGenerator
             }
             tbody td { white-space: nowrap; }
             .fixed-label { overflow-wrap: normal; white-space: nowrap; }
+            .header-label { font-size: 7pt; }
+            .status-value { font-size: 6.1pt; padding-left: 0.1mm; padding-right: 0.1mm; white-space: nowrap; }
+            .time-cell { padding-left: 0.1mm; padding-right: 0.1mm; white-space: nowrap; }
             .remote-label { font-size: 5.8pt; font-weight: normal; }
         CSS;
     }

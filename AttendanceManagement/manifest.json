@@ -1,6 +1,6 @@
 {
     "name": "Attendance Management",
-    "version": "1.10.21",
+    "version": "1.10.24",
     "acceptableVersions": [
         ">=10.0.0"
     ],

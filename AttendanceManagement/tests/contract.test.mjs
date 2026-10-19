@@ -40,7 +40,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.21');
+    assert.equal(manifest.version, '1.10.24');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -431,11 +431,18 @@ test('overview exports paginated A4 XLSX and PDF registers with schedule and no 
     assert.match(pdfGenerator, /EMPLOYEES_PER_PAGE = 7/);
     assert.match(pdfGenerator, /setPaper\('A4', 'portrait'\)/);
     assert.match(pdfGenerator, /array_chunk\(array_keys\(\$users\), self::EMPLOYEES_PER_PAGE\)/);
-    assert.match(pdfGenerator, /\$columnWidth = 82\.0 \/ max/);
-    assert.match(pdfGenerator, /\$timeWidth = \$columnWidth \* 0\.30/);
-    assert.match(pdfGenerator, /\$statusWidth = \$columnWidth \* 0\.70/);
-    assert.match(pdfGenerator, /<col style="width:8%"><col style="width:10%">/);
+    assert.match(pdfGenerator, /\$columnWidth = 80\.0 \/ max/);
+    assert.match(pdfGenerator, /\$timeWidth = \$columnWidth \* 0\.28/);
+    assert.match(pdfGenerator, /\$statusWidth = \$columnWidth \* 0\.72/);
+    assert.doesNotMatch(pdfGenerator, /<colgroup>|<col /);
+    assert.match(pdfGenerator, /table-layout: auto/);
+    assert.doesNotMatch(pdfGenerator, /table-layout: fixed/);
+    assert.match(pdfGenerator, /class="fixed-label header-label time-cell" width="%\.3F%%"/);
+    assert.match(pdfGenerator, /class="fixed-label header-label status-header" width="%\.3F%%"/);
+    assert.match(pdfGenerator, /class="status-value" rowspan="2" width="%\.3F%%"/);
+    assert.match(pdfGenerator, /class="fixed-label date-cell" rowspan="2" width="10%"/);
     assert.match(pdfGenerator, /\.fixed-label \{ overflow-wrap: normal; white-space: nowrap; \}/);
+    assert.match(pdfGenerator, /\.header-label \{ font-size: 7pt; \}/);
     assert.match(pdfGenerator, /Pagina \{PAGE_NUM\} din \{PAGE_COUNT\}/);
     assert.match(pdfGenerator, /%PDF-/);
     assert.match(pdfGenerator, /\(Remote\)/);
@@ -485,9 +492,9 @@ test('personal page clearly separates today actions from the structured monthly 
     assert.equal(clientDefs.controller, 'attendance-management:controllers/attendance');
     assert.match(controller, /actionIndex\(options = \{\}\)/);
     assert.match(afterInstall, /NAVIGATION_SCOPE_LIST = \['Attendance', 'AttendanceOverview'\]/);
-    assert.match(afterInstall, /'type' => 'group'/);
-    assert.match(afterInstall, /'id' => self::NAVIGATION_GROUP_ID/);
-    assert.match(afterInstall, /'itemList' => self::NAVIGATION_SCOPE_LIST/);
+    assert.doesNotMatch(afterInstall, /buildNavigationGroup/);
+    assert.match(afterInstall, /\$normalized\[\] = \$scope/);
+    assert.match(afterInstall, /\$normalized\[\] = \$item/);
     assert.match(view, /data-status="AtWork"/);
     assert.match(view, /data-status="BusinessTrip"/);
     assert.match(view, /data-status="MedicalLeave"/);

@@ -135,9 +135,9 @@ namespace {
 
     $install->run($container);
     assertSameValue(
-        ['Home', $group, 'Account'],
+        ['Home', 'Attendance', 'Account', 'AttendanceOverview'],
         $config->get('tabList'),
-        'Install must migrate loose attendance links into one navigation group.',
+        'Install must keep attendance links as separate side-navigation entries.',
     );
     assertSameValue(1, $config->get('attendanceManagementEditablePastMonths'), 'Edit-lock default is missing.');
     assertSameValue(
@@ -154,7 +154,7 @@ namespace {
     assertSameValue(
         ['Home', 'Account'],
         $config->get('tabList'),
-        'Uninstall must remove only the attendance navigation group.',
+        'Uninstall must remove only the attendance navigation entries.',
     );
 
     $unrelatedGroup = (object) [
@@ -179,9 +179,9 @@ namespace {
 
     $install->run($duplicateContainer);
     assertSameValue(
-        [$unrelatedGroup, $group, 'Account'],
+        [$unrelatedGroup, 'Attendance', 'AttendanceOverview', 'Account'],
         $duplicateConfig->get('tabList'),
-        'Install must canonicalize stale and duplicate owned navigation entries.',
+        'Install must expand legacy groups and remove duplicate navigation entries.',
     );
 
     echo "Attendance lifecycle tests passed.\n";
