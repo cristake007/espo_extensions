@@ -40,7 +40,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.18');
+    assert.equal(manifest.version, '1.10.19');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -422,6 +422,7 @@ test('overview exports paginated A4 XLSX and PDF registers with schedule and no 
     assert.match(generator, /schedule\['remote'\]/);
     assert.match(generator, /\$cell\['status'\] === 'AtWork'/);
     assert.match(generator, /'MedicalLeave' => 'CM'/);
+    assert.match(generator, /'Holiday' => 'CO'/);
     assert.match(generator, /'MedicalLeave' => 'FFF4CCCC'/);
     assert.doesNotMatch(generator, /Semnatura|Semnătură|Signature/);
     assert.match(xlsxAction, /if \(!\$overview\['downloadReady'\]\)/);
@@ -436,6 +437,7 @@ test('overview exports paginated A4 XLSX and PDF registers with schedule and no 
     assert.match(pdfGenerator, /schedule\['remote'\]/);
     assert.match(pdfGenerator, /\$status === 'AtWork'/);
     assert.match(pdfGenerator, /'MedicalLeave' => 'CM'/);
+    assert.match(pdfGenerator, /'Holiday' => 'CO'/);
     assert.match(pdfGenerator, /'MedicalLeave' => '#f4cccc'/);
     assert.doesNotMatch(pdfGenerator, /Semnatura|Semnătură|Signature/);
     assert.match(pdfAction, /if \(!\$overview\['downloadReady'\]\)/);

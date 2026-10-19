@@ -214,7 +214,7 @@ final class AttendanceXlsxGenerator
     {
         return match ($status) {
             'AtWork' => 'La serviciu',
-            'Holiday' => 'In concediu',
+            'Holiday' => 'CO',
             'BusinessTrip' => 'In deplasare',
             'MedicalLeave' => 'CM',
             default => '',
