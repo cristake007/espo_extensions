@@ -271,15 +271,29 @@ test('module exposes balance, self-service, and approval routes', async () => {
     ]);
 });
 
-test('balance API actions are thin and explicitly admin-only', async () => {
-    const cases = [
+test('profile setup is role-controlled while corrections and resets remain admin-only', async () => {
+    const delegatedCases = [
         ['GetProfiles', 'listProfiles'],
         ['PostBulkInitialize', 'bulkInitialize'],
+    ];
+    const adminCases = [
         ['PostCorrection', 'correct'],
         ['PostReset', 'reset'],
     ];
 
-    for (const [className, serviceMethod] of cases) {
+    for (const [className, serviceMethod] of delegatedCases) {
+        const source = await readModuleSource(
+            'Tools', 'HolidayBalance', 'Api', `${className}.php`
+        );
+
+        assert.match(source, /implements Action/);
+        assert.match(source, /HolidayProfileAccessChecker/);
+        assert.match(source, /accessChecker->assertManager\(\)/);
+        assert.doesNotMatch(source, /->isAdmin\(\)/);
+        assert.match(source, new RegExp(`->${serviceMethod}\\(`));
+    }
+
+    for (const [className, serviceMethod] of adminCases) {
         const source = await readModuleSource(
             'Tools', 'HolidayBalance', 'Api', `${className}.php`
         );
@@ -293,6 +307,11 @@ test('balance API actions are thin and explicitly admin-only', async () => {
 
 test('Administration exposes a bulk profile setup view using the service endpoints', async () => {
     const adminPanel = await readModuleJson('Resources', 'metadata', 'app', 'adminPanel.json');
+    const clientNavbar = await readModuleJson('Resources', 'metadata', 'app', 'clientNavbar.json');
+    const clientRoutes = await readModuleJson('Resources', 'metadata', 'app', 'clientRoutes.json');
+    const managementScope = await readModuleJson(
+        'Resources', 'metadata', 'scopes', 'HolidayProfileManagement.json'
+    );
     const item = adminPanel.holidayManagement.itemList.find(
         candidate => candidate.url === '#Admin/holidayManagementProfiles'
     );
@@ -301,10 +320,40 @@ test('Administration exposes a bulk profile setup view using the service endpoin
         'files', 'client', 'custom', 'modules', 'holiday-management',
         'src', 'views', 'admin', 'profiles.js'
     ), 'utf8');
+    const controller = await readFile(path.join(
+        extensionRoot,
+        'files', 'client', 'custom', 'modules', 'holiday-management',
+        'src', 'controllers', 'holiday-profiles.js'
+    ), 'utf8');
+    const accessChecker = await readModuleSource(
+        'Tools', 'HolidayBalance', 'HolidayProfileAccessChecker.php'
+    );
 
     assert.ok(item, 'missing Holiday Profiles Administration item');
     assert.equal(item.view, 'modules/holiday-management/views/admin/profiles');
     assert.equal('recordView' in item, false);
+    assert.equal(item.accessDataList[0].scope, 'HolidayProfileManagement');
+    assert.equal(managementScope.acl, 'boolean');
+    assert.equal(managementScope.tab, false);
+    assert.equal(
+        clientNavbar.menuItems.holidayProfiles.link,
+        '#Admin/holidayManagementProfiles'
+    );
+    assert.equal(
+        clientNavbar.menuItems.holidayProfiles.accessDataList[0].scope,
+        'HolidayProfileManagement'
+    );
+    assert.equal(
+        clientRoutes['Admin/holidayManagementProfiles'].params.controller,
+        'holiday-management:controllers/holiday-profiles'
+    );
+    assert.match(controller, /getAcl\(\)\.check\('HolidayProfileManagement'\)/);
+    assert.match(controller, /Espo\.Exceptions\.AccessDenied/);
+    assert.match(controller, /holiday-management:views\/admin\/profiles/);
+    assert.match(accessChecker, /User::TYPE_REGULAR, User::TYPE_ADMIN/);
+    assert.match(accessChecker, /user->isAdmin\(\)/);
+    assert.match(accessChecker, /acl->check\(self::SCOPE\)/);
+    assert.match(accessChecker, /profilesAccessForbidden/);
     assert.match(source, /HolidayManagement\/profiles/);
     assert.match(source, /HolidayManagement\/bulkInitialize/);
     assert.match(source, /annualEntitlement/);
@@ -319,18 +368,21 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.8.0 package', async () => {
+test('accounting metadata remains bilingual in the 1.8.1 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.8.0');
+    assert.equal(manifest.version, '1.8.1');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');
         const profile = await readModuleJson('Resources', 'i18n', locale, 'HolidayProfile.json');
         const ledger = await readModuleJson('Resources', 'i18n', locale, 'HolidayLedger.json');
+        const global = await readModuleJson('Resources', 'i18n', locale, 'Global.json');
 
         assert.equal(typeof admin.labels['Holiday Profiles'], 'string');
         assert.equal(typeof admin.descriptions.holidayManagementProfiles, 'string');
+        assert.equal(typeof global.scopeNames.HolidayProfileManagement, 'string');
+        assert.equal(typeof global.scopeNamesPlural.HolidayProfileManagement, 'string');
 
         for (const field of [
             'user', 'annualEntitlement', 'balance', 'nextResetDate', 'calendarColor',

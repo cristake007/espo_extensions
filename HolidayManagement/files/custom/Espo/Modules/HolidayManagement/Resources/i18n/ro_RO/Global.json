@@ -1,17 +1,20 @@
 {
     "labels": {
         "My Holiday": "Concediul meu",
-        "Holiday Approvals": "Aprobări concedii"
+        "Holiday Approvals": "Aprobări concedii",
+        "HolidayProfileManagement": "Administrare profiluri de concediu"
     },
     "scopeNames": {
         "HolidayRequest": "Concediu",
         "HolidayProfile": "Profil de concediu",
-        "HolidayLedger": "Registru de concedii"
+        "HolidayLedger": "Registru de concedii",
+        "HolidayProfileManagement": "Administrare profiluri de concediu"
     },
     "scopeNamesPlural": {
         "HolidayRequest": "Concedii",
         "HolidayProfile": "Profiluri de concediu",
-        "HolidayLedger": "Înregistrări în registrul de concedii"
+        "HolidayLedger": "Înregistrări în registrul de concedii",
+        "HolidayProfileManagement": "Administrare profiluri de concediu"
     },
     "dashlets": {
         "HolidayApprovals": "Aprobări concedii"

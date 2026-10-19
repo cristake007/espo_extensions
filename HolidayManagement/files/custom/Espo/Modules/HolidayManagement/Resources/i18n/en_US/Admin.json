@@ -16,7 +16,7 @@
         "Not Initialized": "Not Initialized"
     },
     "messages": {
-        "profilesAccessForbidden": "Only administrators can manage holiday profiles.",
+        "profilesAccessForbidden": "Holiday profile management permission is required.",
         "correctionAccessForbidden": "Only administrators can correct holiday balances.",
         "resetAccessForbidden": "Only administrators can process holiday resets.",
         "itemsArrayRequired": "A list of profile items is required.",

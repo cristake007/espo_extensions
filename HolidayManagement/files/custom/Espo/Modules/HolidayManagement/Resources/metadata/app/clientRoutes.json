@@ -1,0 +1,9 @@
+{
+    "Admin/holidayManagementProfiles": {
+        "params": {
+            "controller": "holiday-management:controllers/holiday-profiles",
+            "action": "open"
+        },
+        "order": -100
+    }
+}

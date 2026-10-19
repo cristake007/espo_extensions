@@ -10,7 +10,7 @@ The extension includes settings, balance accounting, and self-service booking:
 - exactly two printed approval title/name blocks. Blank configured names use
   the actual deciding approver's name when the corresponding title is set;
 - one holiday profile per eligible internal user;
-- admin-only bulk initialization with entitlement, opening balance and reset date;
+- role-controlled profile initialization with entitlement, opening balance and reset date;
 - transactional, idempotent corrections and annual grants;
 - append-only balance ledger and automatic annual resets;
 - an optional approver dashboard dashlet with pending requests and decision actions;
@@ -45,7 +45,7 @@ balance of -5 with a 21-day entitlement becomes 16.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./HolidayManagement --zip 1.8.0 files scripts
+./build.sh --extension ./HolidayManagement --zip 1.8.1 files scripts
 ```
 
 Run the phase contract tests:
@@ -67,6 +67,12 @@ administrator user can then select **Time Off / Concediu** when creating an
 entry in Calendar. New bookings and date changes cannot start before the
 current date. A user's holiday profile must be initialized in
 **Administration > Holiday Profiles** before their first booking.
+
+To delegate profile setup, enable **Holiday Profile Management** in a native
+EspoCRM role and assign that role to the responsible active internal user or
+team. The user receives a **Holiday Profiles** navigation entry and can use the
+profile workspace without access to global holiday settings, manual balance
+corrections, forced resets, or direct accounting-record writes.
 
 Calendar displays every user's time off to internal users. Each marker includes
 the umbrella icon and the booking user's name. The **Time Off / Concediu** page

@@ -14,7 +14,12 @@
                 "label": "Holiday Profiles",
                 "iconClass": "fas fa-users-cog",
                 "description": "holidayManagementProfiles",
-                "view": "modules/holiday-management/views/admin/profiles"
+                "view": "modules/holiday-management/views/admin/profiles",
+                "accessDataList": [
+                    {
+                        "scope": "HolidayProfileManagement"
+                    }
+                ]
             }
         ],
         "order": 101

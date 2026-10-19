@@ -16,7 +16,7 @@
         "Not Initialized": "Neinițializat"
     },
     "messages": {
-        "profilesAccessForbidden": "Doar administratorii pot gestiona profilurile de concediu.",
+        "profilesAccessForbidden": "Este necesară permisiunea de administrare a profilurilor de concediu.",
         "correctionAccessForbidden": "Doar administratorii pot corecta soldurile de concediu.",
         "resetAccessForbidden": "Doar administratorii pot procesa resetările concediilor.",
         "itemsArrayRequired": "Este necesară o listă de profiluri.",
