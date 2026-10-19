@@ -23,15 +23,17 @@ final class PostAttendanceSchedule implements Action
         if (
             !is_string($data->userId ?? null) ||
             !is_string($data->startTime ?? null) ||
-            !is_string($data->endTime ?? null)
+            !is_string($data->endTime ?? null) ||
+            !is_bool($data->remote ?? null)
         ) {
-            throw new BadRequest('Employee, start time and end time are required.');
+            throw new BadRequest('Employee, start time, end time and remote option are required.');
         }
 
         return ResponseComposer::json($this->overviewService->saveSchedule(
             $data->userId,
             $data->startTime,
             $data->endTime,
+            $data->remote,
         ));
     }
 }

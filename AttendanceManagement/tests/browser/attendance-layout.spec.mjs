@@ -98,6 +98,7 @@ function adminFixture(contentWidth) {
             <div class="attendance-schedule-employee"><span class="fas fa-user-clock"></span><strong>${name}</strong></div>
             <label class="attendance-schedule-control"><span>Intrare</span><select class="form-control input-sm"><option>09:00</option></select></label>
             <label class="attendance-schedule-control"><span>Iesire</span><select class="form-control input-sm"><option>17:00</option></select></label>
+            <label class="attendance-schedule-control attendance-schedule-remote"><span>Remote</span><span class="attendance-schedule-checkbox"><input type="checkbox"> Remote</span></label>
             <div class="attendance-schedule-actions"><button class="btn btn-default btn-sm">Salveaza programul</button></div>
         </div>`;
 

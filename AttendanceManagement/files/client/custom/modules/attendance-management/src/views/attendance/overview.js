@@ -55,6 +55,7 @@ define(['view'], (View) => {
             'click [data-action="send-reminders"]': 'actionSendReminders',
             'click [data-action="download-xlsx"]': 'actionDownloadXlsx',
             'click [data-action="download-pdf"]': 'actionDownloadPdf',
+            'change [data-action="manager-mark-attendance"]': 'actionManagerMarkAttendance',
         }
 
         setup() {
@@ -250,7 +251,7 @@ define(['view'], (View) => {
         createUserHeader(user) {
             const schedule = user.schedule || {};
             const scheduleLabel = schedule.startTime && schedule.endTime
-                ? `${schedule.startTime}–${schedule.endTime}`
+                ? `${schedule.startTime}–${schedule.endTime}${schedule.remote === true ? ' (Remote)' : ''}`
                 : this.translate('Schedule Not Set', 'labels', 'AttendanceRecord');
 
             return $('<th>').append(
@@ -264,17 +265,83 @@ define(['view'], (View) => {
                 return $('<td>').addClass('attendance-cell-future').text('—');
             }
 
-            if (cell.isMissing) {
-                return $('<td>').addClass('attendance-cell-missing').text(
-                    this.translate('Not Marked', 'labels', 'AttendanceRecord')
+            const status = cell.status || '';
+            const cellElement = $('<td>').addClass(
+                status ? `attendance-cell attendance-cell-${status}` : 'attendance-cell-missing'
+            );
+
+            if (cell.source === 'ApprovedHoliday') {
+                return cellElement.text(
+                    this.getLanguage().translateOption(status, 'status', 'AttendanceRecord')
                 );
             }
 
-            const status = cell.status || '';
+            const select = $('<select>')
+                .addClass('form-control input-sm attendance-manager-status-select')
+                .attr({
+                    'data-action': 'manager-mark-attendance',
+                    'data-user-id': cell.userId || '',
+                    'data-date': cell.date || '',
+                    'aria-label': this.translate(
+                        'Manual Attendance',
+                        'labels',
+                        'AttendanceRecord'
+                    ),
+                });
 
-            return $('<td>')
-                .addClass(`attendance-cell attendance-cell-${status}`)
-                .text(this.getLanguage().translateOption(status, 'status', 'AttendanceRecord'));
+            select.append($('<option>', {
+                value: '',
+                text: this.translate('Not Marked', 'labels', 'AttendanceRecord'),
+                disabled: true,
+            }));
+            ['AtWork', 'BusinessTrip', 'MedicalLeave'].forEach(option => select.append(
+                $('<option>', {
+                    value: option,
+                    text: this.getLanguage().translateOption(
+                        option,
+                        'status',
+                        'AttendanceRecord'
+                    ),
+                })
+            ));
+            select.val(status);
+
+            return cellElement.append(select);
+        }
+
+        async actionManagerMarkAttendance(event) {
+            const select = $(event.currentTarget);
+            const status = String(select.val() || '');
+            const userId = String(select.attr('data-user-id') || '');
+            const date = String(select.attr('data-date') || '');
+
+            if (!status || !userId || !date) {
+                return;
+            }
+
+            select.prop('disabled', true);
+
+            try {
+                await Espo.Ajax.postRequest('AttendanceManagement/overview/mark', {
+                    userId,
+                    date,
+                    status,
+                });
+                Espo.Ui.success(this.translate(
+                    'Manual Attendance Saved',
+                    'messages',
+                    'AttendanceRecord'
+                ));
+                await this.loadOverview(this.overview.month);
+                this.renderOverview();
+            } catch (error) {
+                Espo.Ui.error(this.translate(
+                    'Manual Attendance Save Failed',
+                    'messages',
+                    'AttendanceRecord'
+                ));
+                this.renderOverview();
+            }
         }
 
         async actionSelectMonth(event) {

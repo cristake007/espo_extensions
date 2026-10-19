@@ -45,6 +45,11 @@
         "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostAttendanceSchedule"
     },
     {
+        "route": "/AttendanceManagement/overview/mark",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostManagerAttendance"
+    },
+    {
         "route": "/AttendanceManagement/overview/xlsx",
         "method": "post",
         "actionClassName": "Espo\\Modules\\AttendanceManagement\\Tools\\Attendance\\Api\\PostAttendanceXlsx"

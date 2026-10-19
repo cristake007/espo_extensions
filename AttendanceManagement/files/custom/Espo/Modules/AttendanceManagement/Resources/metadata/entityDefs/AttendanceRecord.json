@@ -24,7 +24,7 @@
         },
         "source": {
             "type": "enum",
-            "options": ["Self"],
+            "options": ["Self", "Manager"],
             "required": true,
             "readOnly": true
         },

@@ -95,13 +95,18 @@ final class AttendancePdfGenerator
         $subHeaders = '';
 
         foreach ($userIndexes as $userIndex) {
+            $user = $users[$userIndex] ?? [];
+            $schedule = $user['schedule'] ?? [];
+            $remoteLabel = ($schedule['remote'] ?? false) === true
+                ? '<br><span class="remote-label">(Remote)</span>'
+                : '';
             $columns .= sprintf(
                 '<col style="width:%.3F%%"><col style="width:%.3F%%">',
                 $timeWidth,
                 $statusWidth,
             );
             $employeeHeaders .= '<th colspan="2">' .
-                $this->escape((string) ($users[$userIndex]['name'] ?? '')) . '</th>';
+                $this->escape((string) ($user['name'] ?? '')) . $remoteLabel . '</th>';
             $subHeaders .= '<th>Ora</th><th>Prezenta</th>';
         }
 
@@ -117,10 +122,13 @@ final class AttendancePdfGenerator
                 $schedule = $user['schedule'] ?? [];
                 $cell = $row['cells'][$userIndex] ?? [];
                 $status = (string) ($cell['status'] ?? '');
+                $remoteLabel = ($schedule['remote'] ?? false) === true
+                    ? '<br><span class="remote-label">(Remote)</span>'
+                    : '';
                 $entryCells .= '<td>' . $this->escape((string) ($schedule['startTime'] ?? '')) .
                     '</td><td class="status" rowspan="2" style="background:' .
                     $this->statusColor($status) . '">' . $this->escape($this->statusLabel($status)) .
-                    '</td>';
+                    $remoteLabel . '</td>';
                 $exitCells .= '<td>' . $this->escape((string) ($schedule['endTime'] ?? '')) . '</td>';
             }
 
@@ -162,6 +170,7 @@ final class AttendancePdfGenerator
                 overflow-wrap: break-word;
             }
             tbody td { white-space: nowrap; }
+            .remote-label { font-size: 5.8pt; font-weight: normal; }
         CSS;
     }
 

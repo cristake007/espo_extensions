@@ -15,7 +15,8 @@
             "MedicalLeave": "Medical leave"
         },
         "source": {
-            "Self": "Marked by employee"
+            "Self": "Marked by employee",
+            "Manager": "Marked by attendance manager"
         }
     },
     "labels": {
@@ -49,6 +50,8 @@
         "Missing": "Missing",
         "Start Time": "Start",
         "End Time": "End",
+        "Remote": "Remote",
+        "Manual Attendance": "Manual attendance",
         "Employee Schedules": "Employee schedules",
         "Attendance Configuration": "Attendance configuration",
         "Attendance Archive": "Attendance archive",
@@ -92,7 +95,7 @@
         "Readiness No Data": "There are no completed attendance entries for this month.",
         "Readiness Month Locked": "The selected month is read-only for employees.",
         "Locked Month Reminder": "Reminders cannot be sent because employees can no longer edit this month.",
-        "Daily Matrix Guide": "Each row is a working day and each column is an employee. Missing entries are highlighted.",
+        "Daily Matrix Guide": "Each row is a working day and each column is an employee. Select a status to fill or correct attendance manually.",
         "Confirm Reminders": "Send an in-app notification to every employee with missing entries?",
         "Reminders Sent": "Reminders sent to {count} employees.",
         "Reminder Failed": "The reminders could not be sent.",
@@ -100,11 +103,13 @@
         "Invalid Schedule": "Enter a valid start and end time. The end time must be after the start time.",
         "Schedule Saved": "The employee's default working schedule was saved.",
         "Schedule Save Failed": "The working schedule could not be saved.",
+        "Manual Attendance Saved": "The employee attendance was saved.",
+        "Manual Attendance Save Failed": "The employee attendance could not be saved.",
         "Schedule Load Failed": "Employee schedules could not be loaded.",
         "Loading Schedules": "Loading employee schedules...",
         "Settings Page Guide": "Configure attendance rules, initialize the visible archive, and set each employee's working schedule.",
         "Attendance Configuration Help": "These settings control which months employees may edit and when incomplete registers can be exported.",
-        "Schedule Editor Guide": "Choose the normal start and end time for each employee. Times are saved independently for each row.",
+        "Schedule Editor Guide": "Choose the schedule and Remote option for each employee. Each row is saved independently.",
         "Editable Previous Months Help": "The number of previous calendar months in which employees may still change their attendance.",
         "Allow Incomplete Exports Help": "Allow the register to be downloaded even when attendance entries or schedules are missing.",
         "Settings Load Failed": "Attendance settings could not be loaded.",

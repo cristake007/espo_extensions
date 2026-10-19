@@ -66,6 +66,13 @@ final class AttendanceXlsxGenerator
         $sheet->mergeCells('B3:B4');
 
         foreach ($users as $index => $user) {
+            $schedule = $user['schedule'] ?? [];
+            $employeeName = (string) $user['name'];
+
+            if (($schedule['remote'] ?? false) === true) {
+                $employeeName .= "\n(Remote)";
+            }
+
             $timeColumn = $index * 2 + 3;
             $statusColumn = $timeColumn + 1;
             $timeColumnName = Coordinate::stringFromColumnIndex($timeColumn);
@@ -73,7 +80,7 @@ final class AttendanceXlsxGenerator
             $sheet->mergeCells($timeColumnName . '3:' . $statusColumnName . '3');
             $sheet->setCellValueExplicit(
                 $timeColumnName . '3',
-                (string) $user['name'],
+                $employeeName,
                 DataType::TYPE_STRING,
             );
             $sheet->setCellValue($timeColumnName . '4', 'Ora');
@@ -99,6 +106,12 @@ final class AttendanceXlsxGenerator
                 $statusColumnName = Coordinate::stringFromColumnIndex($cellIndex * 2 + 4);
                 $statusCoordinate = $statusColumnName . $line;
                 $statusRange = $statusCoordinate . ':' . $statusColumnName . $exitLine;
+                $statusLabel = $this->statusLabel($cell['status']);
+
+                if (($schedule['remote'] ?? false) === true) {
+                    $statusLabel .= "\n(Remote)";
+                }
+
                 $sheet->setCellValueExplicit(
                     $timeColumnName . $line,
                     (string) ($schedule['startTime'] ?? ''),
@@ -112,7 +125,7 @@ final class AttendanceXlsxGenerator
                 $sheet->mergeCells($statusRange);
                 $sheet->setCellValueExplicit(
                     $statusCoordinate,
-                    $this->statusLabel($cell['status']),
+                    $statusLabel,
                     DataType::TYPE_STRING,
                 );
                 $sheet->getStyle($statusRange)->getFill()

@@ -42,8 +42,12 @@ Management**. The responsive schedule editor uses theme-native 15-minute time
 selectors and saves each employee independently. Existing times outside a
 15-minute interval remain available and are not changed. The interval applies to
 every month and can be changed there at any time. The overview displays it
-read-only below the employee name. Both exports include entry time, exit time,
-and attendance status; no signature column is
+below the employee name. A **Remote** checkbox can be configured for each
+employee; the marker appears below the employee name and for every day in both
+exports. Managers can also fill or correct an employee's attendance directly in
+the overview matrix. Manual entries are stored with the `Manager` source and
+are protected by the same **Attendance Overview** role permission. Both exports
+include entry time, exit time, and attendance status; no signature column is
 included. Printing is preconfigured for A4 portrait with seven employees per
 page, repeated date/program columns and headings, explicit horizontal page
 breaks, page numbering, larger print text, and body rows sized to use the
@@ -70,7 +74,7 @@ or schedule values are left blank. The setting is disabled by default.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.10.15 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.10.16 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.

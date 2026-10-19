@@ -23,6 +23,11 @@
             "required": true,
             "readOnly": true
         },
+        "remote": {
+            "type": "bool",
+            "default": false,
+            "readOnly": true
+        },
         "effectiveFrom": {
             "type": "date",
             "required": true,

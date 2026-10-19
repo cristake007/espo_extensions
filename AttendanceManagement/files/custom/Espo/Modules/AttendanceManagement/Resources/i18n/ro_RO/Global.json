@@ -32,6 +32,8 @@
         "Missing": "Lipsa",
         "Start Time": "Intrare",
         "End Time": "Iesire",
+        "Remote": "Remote",
+        "Manual Attendance": "Prezenta completata manual",
         "Employee Schedules": "Programe angajati",
         "Attendance Configuration": "Configurare condica",
         "Attendance Archive": "Arhiva condicii",
@@ -81,7 +83,8 @@
             "MedicalLeave": "CM"
         },
         "source": {
-            "Self": "Marcat de angajat"
+            "Self": "Marcat de angajat",
+            "Manager": "Marcat de responsabilul de prezenta"
         }
     },
     "messages": {
@@ -104,7 +107,7 @@
         "Readiness No Data": "Nu exista inregistrari de prezenta completate pentru aceasta luna.",
         "Readiness Month Locked": "Luna selectata poate fi doar consultata de angajati.",
         "Locked Month Reminder": "Notificarile nu pot fi trimise deoarece angajatii nu mai pot modifica aceasta luna.",
-        "Daily Matrix Guide": "Fiecare rand este o zi lucratoare, iar fiecare coloana este un angajat. Inregistrarile lipsa sunt evidentiate.",
+        "Daily Matrix Guide": "Fiecare rand este o zi lucratoare, iar fiecare coloana este un angajat. Selecteaza o stare pentru a completa sau corecta manual prezenta.",
         "Confirm Reminders": "Trimiti o notificare in aplicatie fiecarui angajat care are inregistrari lipsa?",
         "Reminders Sent": "Au fost trimise notificari catre {count} angajati.",
         "Reminder Failed": "Notificarile nu au putut fi trimise.",
@@ -112,11 +115,13 @@
         "Invalid Schedule": "Introdu o ora valida de intrare si iesire. Ora de iesire trebuie sa fie dupa ora de intrare.",
         "Schedule Saved": "Programul de lucru implicit al angajatului a fost salvat.",
         "Schedule Save Failed": "Programul de lucru nu a putut fi salvat.",
+        "Manual Attendance Saved": "Prezenta angajatului a fost salvata.",
+        "Manual Attendance Save Failed": "Prezenta angajatului nu a putut fi salvata.",
         "Schedule Load Failed": "Programele angajatilor nu au putut fi incarcate.",
         "Loading Schedules": "Se incarca programele angajatilor...",
         "Settings Page Guide": "Configureaza regulile condicii, initializeaza arhiva vizibila si stabileste programul de lucru al fiecarui angajat.",
         "Attendance Configuration Help": "Aceste setari stabilesc lunile pe care angajatii le pot modifica si cand poate fi exportat un centralizator incomplet.",
-        "Schedule Editor Guide": "Alege ora normala de intrare si iesire pentru fiecare angajat. Fiecare rand se salveaza separat.",
+        "Schedule Editor Guide": "Alege programul si marcheaza optiunea Remote pentru fiecare angajat. Fiecare rand se salveaza separat.",
         "Editable Previous Months Help": "Numarul de luni calendaristice anterioare in care angajatii isi mai pot modifica prezenta.",
         "Allow Incomplete Exports Help": "Permite descarcarea centralizatorului chiar daca lipsesc prezente sau programe.",
         "Settings Load Failed": "Setarile condicii nu au putut fi incarcate.",

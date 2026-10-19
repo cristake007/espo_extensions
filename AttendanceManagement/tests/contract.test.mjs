@@ -40,7 +40,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.15');
+    assert.equal(manifest.version, '1.10.16');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -57,6 +57,7 @@ test('attendance records are private service-managed daily records', async () =>
         'BusinessTrip',
         'MedicalLeave',
     ]);
+    assert.deepEqual(defs.fields.source.options, ['Self', 'Manager']);
     assert.deepEqual(defs.indexes.userDateUnique.columns, ['userId', 'date']);
     assert.equal(defs.indexes.userDateUnique.unique, true);
     assert.equal(scope.module, 'AttendanceManagement');
@@ -110,6 +111,7 @@ test('manager API is protected by the native EspoCRM role ACL', async () => {
         ['/AttendanceManagement/settings', 'put'],
         ['/AttendanceManagement/settings/initialize', 'post'],
         ['/AttendanceManagement/overview/schedule', 'post'],
+        ['/AttendanceManagement/overview/mark', 'post'],
         ['/AttendanceManagement/overview/xlsx', 'post'],
         ['/AttendanceManagement/overview/pdf', 'post'],
     ]);
@@ -184,6 +186,8 @@ test('working schedules are persistent defaults edited from administration', asy
     ));
     assert.equal(defs.fields.startTime.maxLength, 5);
     assert.equal(defs.fields.endTime.maxLength, 5);
+    assert.equal(defs.fields.remote.type, 'bool');
+    assert.equal(defs.fields.remote.default, false);
     assert.equal(defs.fields.effectiveFrom.type, 'date');
     assert.equal(defs.indexes.userEffectiveFromUnique.unique, true);
     assert.deepEqual(defs.indexes.userEffectiveFromUnique.columns, ['userId', 'effectiveFrom']);
@@ -207,6 +211,34 @@ test('working schedules are persistent defaults edited from administration', asy
     assert.match(settingsView, /!values\.includes\(value\)/);
     assert.match(settingsView, /attendance-schedule-row-dirty/);
     assert.match(settingsView, /data-action.*save-work-schedule/);
+    assert.match(settingsView, /data-schedule-field.*remote/);
+    assert.match(settingsView, /schedule\.remote === true/);
+    assert.match(settingsView, /remote,/);
+});
+
+test('attendance managers can complete employee attendance through the protected overview', async () => {
+    const routes = await readJson('Resources', 'routes.json');
+    const service = await readSource('Tools', 'Attendance', 'AttendanceOverviewService.php');
+    const action = await readSource('Tools', 'Attendance', 'Api', 'PostManagerAttendance.php');
+    const overview = await readFile(
+        path.join(clientRoot, 'src', 'views', 'attendance', 'overview.js'),
+        'utf8'
+    );
+
+    assert.ok(routes.some(item =>
+        item.route === '/AttendanceManagement/overview/mark' && item.method === 'post'
+    ));
+    assert.match(action, /overviewService->markForUser/);
+    assert.match(service, /function markForUser/);
+    assert.match(service, /accessChecker->assertManager\(\)/);
+    assert.match(service, /SOURCE_MANAGER = 'Manager'/);
+    assert.match(service, /Attendance cannot be marked for a future date/);
+    assert.match(service, /Attendance can only be marked for a working day/);
+    assert.match(service, /An approved holiday controls attendance for this date/);
+    assert.match(service, /forUpdate\(\)/);
+    assert.match(overview, /manager-mark-attendance/);
+    assert.match(overview, /AttendanceManagement\/overview\/mark/);
+    assert.match(overview, /ApprovedHoliday/);
 });
 
 test('attendance role can manage only attendance-specific settings', async () => {
@@ -383,6 +415,8 @@ test('overview exports paginated A4 XLSX and PDF registers with schedule and no 
     assert.match(generator, /Ora iesire/);
     assert.match(generator, /startTime/);
     assert.match(generator, /endTime/);
+    assert.match(generator, /\(Remote\)/);
+    assert.match(generator, /schedule\['remote'\]/);
     assert.match(generator, /'MedicalLeave' => 'CM'/);
     assert.match(generator, /'MedicalLeave' => 'FFF4CCCC'/);
     assert.doesNotMatch(generator, /Semnatura|Semnătură|Signature/);
@@ -394,6 +428,8 @@ test('overview exports paginated A4 XLSX and PDF registers with schedule and no 
     assert.match(pdfGenerator, /array_chunk\(array_keys\(\$users\), self::EMPLOYEES_PER_PAGE\)/);
     assert.match(pdfGenerator, /Pagina \{PAGE_NUM\} din \{PAGE_COUNT\}/);
     assert.match(pdfGenerator, /%PDF-/);
+    assert.match(pdfGenerator, /\(Remote\)/);
+    assert.match(pdfGenerator, /schedule\['remote'\]/);
     assert.match(pdfGenerator, /'MedicalLeave' => 'CM'/);
     assert.match(pdfGenerator, /'MedicalLeave' => '#f4cccc'/);
     assert.doesNotMatch(pdfGenerator, /Semnatura|Semnătură|Signature/);
@@ -578,6 +614,8 @@ test('manager page uses native ACL navigation and provides matrix, reminders and
     assert.match(overview, /registerComplete/);
     assert.match(overview, /Incomplete Export Detail/);
     assert.match(overview, /attendance-schedule-value/);
+    assert.match(overview, /schedule\.remote === true/);
+    assert.match(overview, /manager-mark-attendance/);
     assert.match(overview, /data-overview-month-select/);
     assert.match(overview, /translate 'Month' category='labels'/);
     assert.doesNotMatch(overview, /translate 'monthDate'/);
@@ -637,7 +675,12 @@ test('attendance page and statuses are bilingual', async () => {
         assert.equal(typeof attendance.options.status.Holiday, 'string');
         assert.equal(typeof attendance.options.status.BusinessTrip, 'string');
         assert.equal(typeof attendance.options.status.MedicalLeave, 'string');
+        assert.equal(typeof attendance.options.source.Manager, 'string');
+        assert.equal(typeof attendance.labels.Remote, 'string');
+        assert.equal(typeof attendance.labels['Manual Attendance'], 'string');
         assert.equal(typeof attendance.messages['Medical Leave Help'], 'string');
+        assert.equal(typeof attendance.messages['Manual Attendance Saved'], 'string');
+        assert.equal(typeof attendance.messages['Manual Attendance Save Failed'], 'string');
         assert.equal(typeof attendance.messages['Attendance Saved'], 'string');
         assert.equal(typeof attendance.labels['Attendance Overview'], 'string');
         assert.equal(typeof attendance.labels.Month, 'string');

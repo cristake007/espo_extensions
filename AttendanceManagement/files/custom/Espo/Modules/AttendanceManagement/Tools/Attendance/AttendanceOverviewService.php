@@ -19,7 +19,11 @@ final class AttendanceOverviewService
 {
     private const ENTITY_TYPE = 'AttendanceRecord';
     private const SCHEDULE_ENTITY_TYPE = 'AttendanceWorkSchedule';
+    private const STATUS_AT_WORK = 'AtWork';
     private const STATUS_HOLIDAY = 'Holiday';
+    private const STATUS_BUSINESS_TRIP = 'BusinessTrip';
+    private const STATUS_MEDICAL_LEAVE = 'MedicalLeave';
+    private const SOURCE_MANAGER = 'Manager';
     private const SOURCE_APPROVED_HOLIDAY = 'ApprovedHoliday';
     private const EDITABLE_PAST_MONTHS_CONFIG = 'attendanceManagementEditablePastMonths';
     private const ALLOW_INCOMPLETE_EXPORTS_CONFIG = 'attendanceManagementAllowIncompleteExports';
@@ -120,6 +124,7 @@ final class AttendanceOverviewService
 
                 $cells[] = [
                     'userId' => $userId,
+                    'date' => $date,
                     'status' => $status,
                     'source' => $source,
                     'isMissing' => $isMissing,
@@ -174,6 +179,7 @@ final class AttendanceOverviewService
         string $userId,
         string $startTime,
         string $endTime,
+        bool $remote,
     ): array {
         $this->accessChecker->assertScheduleEditor();
         $startTime = trim($startTime);
@@ -198,7 +204,7 @@ final class AttendanceOverviewService
         }
 
         return $this->entityManager->getTransactionManager()->run(
-            function () use ($user, $userId, $startTime, $endTime): array {
+            function () use ($user, $userId, $startTime, $endTime, $remote): array {
                 $schedule = $this->entityManager
                     ->getRDBRepository(self::SCHEDULE_ENTITY_TYPE)
                     ->where(['userId' => $userId])
@@ -222,6 +228,7 @@ final class AttendanceOverviewService
                     'userName' => $user->get('name'),
                     'startTime' => $startTime,
                     'endTime' => $endTime,
+                    'remote' => $remote,
                     'effectiveFrom' => $effectiveFrom,
                 ]);
                 $this->entityManager->saveEntity($schedule);
@@ -230,6 +237,92 @@ final class AttendanceOverviewService
                     'userId' => $userId,
                     'startTime' => $startTime,
                     'endTime' => $endTime,
+                    'remote' => $remote,
+                ];
+            },
+        );
+    }
+
+    /** @return array<string, mixed> */
+    public function markForUser(string $userId, string $date, string $status): array
+    {
+        $this->accessChecker->assertManager();
+
+        if (!in_array($status, [
+            self::STATUS_AT_WORK,
+            self::STATUS_BUSINESS_TRIP,
+            self::STATUS_MEDICAL_LEAVE,
+        ], true)) {
+            throw new BadRequest('Unsupported attendance status.');
+        }
+
+        $parsedDate = DateTimeImmutable::createFromFormat('!Y-m-d', $date);
+
+        if (!$parsedDate || $parsedDate->format('Y-m-d') !== $date) {
+            throw new BadRequest('Attendance date must use the YYYY-MM-DD format.');
+        }
+
+        $today = $this->dateTime->getToday()->toString();
+
+        if ($date > $today) {
+            throw new BadRequest('Attendance cannot be marked for a future date.');
+        }
+
+        if (substr($date, 0, 7) < $this->getAvailableFromMonth($today)) {
+            throw new BadRequest('Attendance date predates the available archive.');
+        }
+
+        $nonWorkingDates = array_fill_keys(
+            $this->nonWorkingDayProvider->getDates($date, $date),
+            true,
+        );
+
+        if (!$this->isWorkingDate($parsedDate, $nonWorkingDates)) {
+            throw new BadRequest('Attendance can only be marked for a working day.');
+        }
+
+        $user = $this->entityManager->getEntityById(User::ENTITY_TYPE, $userId);
+
+        if (
+            !$user ||
+            !(bool) $user->get('isActive') ||
+            $user->get('type') !== User::TYPE_REGULAR
+        ) {
+            throw new NotFound('Active internal employee not found.');
+        }
+
+        if ($this->approvedHolidayProvider->getDates($userId, $date, $date) !== []) {
+            throw new Conflict('An approved holiday controls attendance for this date.');
+        }
+
+        return $this->entityManager->getTransactionManager()->run(
+            function () use ($user, $userId, $date, $status): array {
+                $record = $this->entityManager
+                    ->getRDBRepository(self::ENTITY_TYPE)
+                    ->where(['userId' => $userId, 'date' => $date])
+                    ->forUpdate()
+                    ->findOne();
+
+                if (!$record) {
+                    $record = $this->entityManager->getNewEntity(self::ENTITY_TYPE);
+                }
+
+                $record->set([
+                    'name' => sprintf('%s - %s', $user->get('name'), $date),
+                    'date' => $date,
+                    'status' => $status,
+                    'source' => self::SOURCE_MANAGER,
+                    'userId' => $userId,
+                    'userName' => $user->get('name'),
+                    'markedAt' => DateTimeUtil::getSystemNowString(),
+                ]);
+                $this->entityManager->saveEntity($record);
+
+                return [
+                    'userId' => $userId,
+                    'date' => $date,
+                    'status' => $status,
+                    'source' => self::SOURCE_MANAGER,
                 ];
             },
         );
@@ -331,7 +424,7 @@ final class AttendanceOverviewService
 
     /**
      * @param list<string> $userIds
-     * @return array<string, array{startTime: string, endTime: string}>
+     * @return array<string, array{startTime: string, endTime: string, remote: bool}>
      */
     private function getScheduleMap(array $userIds): array
     {
@@ -358,6 +451,7 @@ final class AttendanceOverviewService
             $map[$userId] = [
                 'startTime' => (string) $schedule->get('startTime'),
                 'endTime' => (string) $schedule->get('endTime'),
+                'remote' => (bool) $schedule->get('remote'),
             ];
         }
 
