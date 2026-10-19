@@ -40,7 +40,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.14');
+    assert.equal(manifest.version, '1.10.15');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -51,7 +51,12 @@ test('attendance records are private service-managed daily records', async () =>
     const acl = await readJson('Resources', 'metadata', 'aclDefs', 'AttendanceRecord.json');
     const recordDefs = await readJson('Resources', 'metadata', 'recordDefs', 'AttendanceRecord.json');
 
-    assert.deepEqual(defs.fields.status.options, ['AtWork', 'Holiday', 'BusinessTrip']);
+    assert.deepEqual(defs.fields.status.options, [
+        'AtWork',
+        'Holiday',
+        'BusinessTrip',
+        'MedicalLeave',
+    ]);
     assert.deepEqual(defs.indexes.userDateUnique.columns, ['userId', 'date']);
     assert.equal(defs.indexes.userDateUnique.unique, true);
     assert.equal(scope.module, 'AttendanceManagement');
@@ -74,7 +79,8 @@ test('personal API is self-service only and rejects future or non-working dates'
     assert.match(service, /'userId' => \$this->user->getId\(\)/);
     assert.match(service, /if \(\$date > \$today\)/);
     assert.match(service, /Attendance cannot be marked for a future date/);
-    assert.match(service, /STATUS_AT_WORK, self::STATUS_BUSINESS_TRIP/);
+    assert.match(service, /STATUS_MEDICAL_LEAVE = 'MedicalLeave'/);
+    assert.match(service, /self::STATUS_AT_WORK,[\s\S]*self::STATUS_BUSINESS_TRIP,[\s\S]*self::STATUS_MEDICAL_LEAVE/);
     assert.match(service, /\(int\) \$date->format\('N'\) <= 5/);
     assert.match(service, /nonWorkingDayProvider->getDates/);
     assert.match(service, /'todayCanMark' => \$todayState\['canMark'\]/);
@@ -377,6 +383,8 @@ test('overview exports paginated A4 XLSX and PDF registers with schedule and no 
     assert.match(generator, /Ora iesire/);
     assert.match(generator, /startTime/);
     assert.match(generator, /endTime/);
+    assert.match(generator, /'MedicalLeave' => 'CM'/);
+    assert.match(generator, /'MedicalLeave' => 'FFF4CCCC'/);
     assert.doesNotMatch(generator, /Semnatura|Semnătură|Signature/);
     assert.match(xlsxAction, /if \(!\$overview\['downloadReady'\]\)/);
     assert.match(xlsxAction, /base64_encode/);
@@ -386,6 +394,8 @@ test('overview exports paginated A4 XLSX and PDF registers with schedule and no 
     assert.match(pdfGenerator, /array_chunk\(array_keys\(\$users\), self::EMPLOYEES_PER_PAGE\)/);
     assert.match(pdfGenerator, /Pagina \{PAGE_NUM\} din \{PAGE_COUNT\}/);
     assert.match(pdfGenerator, /%PDF-/);
+    assert.match(pdfGenerator, /'MedicalLeave' => 'CM'/);
+    assert.match(pdfGenerator, /'MedicalLeave' => '#f4cccc'/);
     assert.doesNotMatch(pdfGenerator, /Semnatura|Semnătură|Signature/);
     assert.match(pdfAction, /if \(!\$overview\['downloadReady'\]\)/);
     assert.match(pdfAction, /application\/pdf/);
@@ -432,13 +442,16 @@ test('personal page clearly separates today actions from the structured monthly 
     assert.match(afterInstall, /'itemList' => self::NAVIGATION_SCOPE_LIST/);
     assert.match(view, /data-status="AtWork"/);
     assert.match(view, /data-status="BusinessTrip"/);
+    assert.match(view, /data-status="MedicalLeave"/);
     assert.match(view, /translateOption 'AtWork' field='status' scope='AttendanceRecord'/);
     assert.match(view, /translateOption 'BusinessTrip' field='status' scope='AttendanceRecord'/);
+    assert.match(view, /translateOption 'MedicalLeave' field='status' scope='AttendanceRecord'/);
+    assert.match(view, /Medical Leave Help/);
     assert.match(view, /getLanguage\(\)\.translateOption\(status, 'status', 'AttendanceRecord'\)/);
     assert.doesNotMatch(view, /translate 'AtWork' category='options'/);
     assert.doesNotMatch(view, /this\.translate\(status, 'options'/);
     assert.doesNotMatch(view, /data-status-indicator="Holiday"/);
-    assert.match(view, /for \(const status of \['AtWork', 'BusinessTrip'\]\)/);
+    assert.match(view, /for \(const status of \['AtWork', 'BusinessTrip', 'MedicalLeave'\]\)/);
     assert.match(view, /prop\('disabled', !data.todayCanMark\)/);
     assert.match(view, /attendance-today-guidance/);
     assert.match(view, /attendance-month-summary/);
@@ -623,6 +636,8 @@ test('attendance page and statuses are bilingual', async () => {
         assert.equal(typeof attendance.options.status.AtWork, 'string');
         assert.equal(typeof attendance.options.status.Holiday, 'string');
         assert.equal(typeof attendance.options.status.BusinessTrip, 'string');
+        assert.equal(typeof attendance.options.status.MedicalLeave, 'string');
+        assert.equal(typeof attendance.messages['Medical Leave Help'], 'string');
         assert.equal(typeof attendance.messages['Attendance Saved'], 'string');
         assert.equal(typeof attendance.labels['Attendance Overview'], 'string');
         assert.equal(typeof attendance.labels.Month, 'string');

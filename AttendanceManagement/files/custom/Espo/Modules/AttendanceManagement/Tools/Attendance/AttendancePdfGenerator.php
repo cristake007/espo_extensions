@@ -190,6 +190,7 @@ final class AttendancePdfGenerator
             'AtWork' => 'La serviciu',
             'Holiday' => 'In concediu',
             'BusinessTrip' => 'In deplasare',
+            'MedicalLeave' => 'CM',
             default => '',
         };
     }
@@ -200,6 +201,7 @@ final class AttendancePdfGenerator
             'AtWork' => '#c6efce',
             'Holiday' => '#bdd7ee',
             'BusinessTrip' => '#ffeb9c',
+            'MedicalLeave' => '#f4cccc',
             default => '#ffffff',
         };
     }

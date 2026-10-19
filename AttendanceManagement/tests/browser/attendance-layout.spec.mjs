@@ -61,6 +61,10 @@ function fixture(contentWidth) {
                                 <span class="attendance-action-icon fas fa-car"></span>
                                 <span class="attendance-action-copy"><strong>In deplasare</strong><small>Lucrez in afara sediului, in deplasare</small></span>
                             </button>
+                            <button class="btn btn-danger btn-lg">
+                                <span class="attendance-action-icon fas fa-briefcase-medical"></span>
+                                <span class="attendance-action-copy"><strong>CM</strong><small>Concediu medical</small></span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -80,7 +84,7 @@ function fixture(contentWidth) {
                     <div class="table-responsive">
                         <table class="table table-hover attendance-my-table">
                             <thead><tr><th>Data</th><th>Stare</th><th>Alege prezenta</th></tr></thead>
-                            <tbody><tr><td class="attendance-day-date"><strong>15.09.2026</strong><span class="text-muted">marti</span></td><td class="attendance-day-status"><span class="label label-default">Nemarcata</span></td><td><div class="attendance-day-actions"><button class="btn btn-sm btn-success">La serviciu</button><button class="btn btn-sm btn-warning">In deplasare</button></div></td></tr></tbody>
+                            <tbody><tr><td class="attendance-day-date"><strong>15.09.2026</strong><span class="text-muted">marti</span></td><td class="attendance-day-status"><span class="label label-default">Nemarcata</span></td><td><div class="attendance-day-actions"><button class="btn btn-sm btn-success">La serviciu</button><button class="btn btn-sm btn-warning">In deplasare</button><button class="btn btn-sm btn-danger">CM</button></div></td></tr></tbody>
                         </table>
                     </div>
                 </div>

@@ -556,6 +556,11 @@
     color: var(--state-warning-text);
 }
 
+.attendance-cell-MedicalLeave {
+    background: var(--state-danger-bg);
+    color: var(--state-danger-text);
+}
+
 .attendance-cell-missing {
     background: var(--state-danger-bg);
     color: var(--state-danger-text);
@@ -570,7 +575,7 @@
 .attendance-state-actions {
     display: grid;
     gap: 12px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .attendance-state-actions .btn {

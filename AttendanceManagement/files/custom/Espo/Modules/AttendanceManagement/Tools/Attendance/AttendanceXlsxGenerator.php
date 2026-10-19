@@ -203,6 +203,7 @@ final class AttendanceXlsxGenerator
             'AtWork' => 'La serviciu',
             'Holiday' => 'In concediu',
             'BusinessTrip' => 'In deplasare',
+            'MedicalLeave' => 'CM',
             default => '',
         };
     }
@@ -213,6 +214,7 @@ final class AttendanceXlsxGenerator
             'AtWork' => 'FFC6EFCE',
             'Holiday' => 'FFBDD7EE',
             'BusinessTrip' => 'FFFFEB9C',
+            'MedicalLeave' => 'FFF4CCCC',
             default => 'FFFFFFFF',
         };
     }

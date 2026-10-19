@@ -22,6 +22,7 @@ final class AttendanceService
     private const STATUS_AT_WORK = 'AtWork';
     private const STATUS_HOLIDAY = 'Holiday';
     private const STATUS_BUSINESS_TRIP = 'BusinessTrip';
+    private const STATUS_MEDICAL_LEAVE = 'MedicalLeave';
     private const SOURCE_SELF = 'Self';
     private const SOURCE_APPROVED_HOLIDAY = 'ApprovedHoliday';
     private const EDITABLE_PAST_MONTHS_CONFIG = 'attendanceManagementEditablePastMonths';
@@ -112,8 +113,12 @@ final class AttendanceService
         $this->assertInternalUser();
         $this->validateDate($date);
 
-        if (!in_array($status, [self::STATUS_AT_WORK, self::STATUS_BUSINESS_TRIP], true)) {
-            throw new BadRequest('Attendance status must be AtWork or BusinessTrip.');
+        if (!in_array($status, [
+            self::STATUS_AT_WORK,
+            self::STATUS_BUSINESS_TRIP,
+            self::STATUS_MEDICAL_LEAVE,
+        ], true)) {
+            throw new BadRequest('Attendance status must be AtWork, BusinessTrip or MedicalLeave.');
         }
 
         $today = $this->dateTime->getToday()->toString();

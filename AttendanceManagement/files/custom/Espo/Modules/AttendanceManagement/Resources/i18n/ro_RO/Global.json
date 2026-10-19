@@ -77,7 +77,8 @@
         "status": {
             "AtWork": "La serviciu",
             "Holiday": "In concediu",
-            "BusinessTrip": "In deplasare"
+            "BusinessTrip": "In deplasare",
+            "MedicalLeave": "CM"
         },
         "source": {
             "Self": "Marcat de angajat"
@@ -131,6 +132,7 @@
         "Attendance Page Guide": "Marcheaza unde lucrezi astazi sau verifica si completeaza o zi lucratoare anterioara.",
         "At Work Help": "Lucrez la locul normal de munca",
         "Business Trip Help": "Lucrez in afara sediului, in deplasare",
+        "Medical Leave Help": "Concediu medical",
         "Today Marking Guide": "Alege o optiune. O poti schimba ulterior daca ai selectat gresit.",
         "Holiday Locked Guide": "Concediul aprobat este adaugat automat si nu poate fi modificat aici.",
         "Today Unavailable Guide": "Astazi nu este o zi lucratoare disponibila, deci nu trebuie sa faci nimic.",

@@ -77,7 +77,8 @@
         "status": {
             "AtWork": "At work",
             "Holiday": "In holiday",
-            "BusinessTrip": "In business trip"
+            "BusinessTrip": "In business trip",
+            "MedicalLeave": "Medical leave"
         },
         "source": {
             "Self": "Marked by employee"
@@ -131,6 +132,7 @@
         "Attendance Page Guide": "Mark where you are working today, or review and complete an earlier working day.",
         "At Work Help": "Working at your normal workplace",
         "Business Trip Help": "Working away on a business trip",
+        "Medical Leave Help": "Absent on certified medical leave",
         "Today Marking Guide": "Choose one option. You can change it later if you selected the wrong one.",
         "Holiday Locked Guide": "Approved leave is added automatically and cannot be changed here.",
         "Today Unavailable Guide": "Today is not an available working day, so no action is required.",

@@ -44,6 +44,13 @@ define(['view'], (View) => {
                                     <small>{{translate 'Business Trip Help' category='messages' scope='AttendanceRecord'}}</small>
                                 </span>
                             </button>
+                            <button class="btn btn-danger btn-lg" data-action="mark-attendance" data-status="MedicalLeave">
+                                <span class="attendance-action-icon fas fa-briefcase-medical" aria-hidden="true"></span>
+                                <span class="attendance-action-copy">
+                                    <strong>{{translateOption 'MedicalLeave' field='status' scope='AttendanceRecord'}}</strong>
+                                    <small>{{translate 'Medical Leave Help' category='messages' scope='AttendanceRecord'}}</small>
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -190,10 +197,14 @@ define(['view'], (View) => {
                 );
 
                 if (day.canMark) {
-                    for (const status of ['AtWork', 'BusinessTrip']) {
-                        const icon = status === 'AtWork' ? 'fa-building' : 'fa-car';
+                    for (const status of ['AtWork', 'BusinessTrip', 'MedicalLeave']) {
+                        const buttonDefs = {
+                            AtWork: {icon: 'fa-building', style: 'btn-success'},
+                            BusinessTrip: {icon: 'fa-car', style: 'btn-warning'},
+                            MedicalLeave: {icon: 'fa-briefcase-medical', style: 'btn-danger'},
+                        }[status];
                         const button = $('<button>')
-                            .addClass(`btn btn-sm ${status === 'AtWork' ? 'btn-success' : 'btn-warning'}`)
+                            .addClass(`btn btn-sm ${buttonDefs.style}`)
                             .attr({
                                 'data-action': 'mark-attendance',
                                 'data-date': day.date,
@@ -201,7 +212,7 @@ define(['view'], (View) => {
                             })
                             .toggleClass('attendance-state-active', day.status === status)
                             .append(
-                                $('<span>').addClass(`fas ${icon}`).attr('aria-hidden', 'true'),
+                                $('<span>').addClass(`fas ${buttonDefs.icon}`).attr('aria-hidden', 'true'),
                                 ' ',
                                 this.getLanguage().translateOption(status, 'status', 'AttendanceRecord')
                             );
@@ -241,6 +252,7 @@ define(['view'], (View) => {
                 AtWork: 'success',
                 Holiday: 'info',
                 BusinessTrip: 'warning',
+                MedicalLeave: 'danger',
             }[status] || 'default';
             const badge = $('<span>')
                 .addClass(`label label-${style}${large ? ' attendance-status-large' : ''}`)

@@ -12,13 +12,14 @@
         },
         "status": {
             "type": "enum",
-            "options": ["AtWork", "Holiday", "BusinessTrip"],
+            "options": ["AtWork", "Holiday", "BusinessTrip", "MedicalLeave"],
             "required": true,
             "readOnly": true,
             "style": {
                 "AtWork": "success",
                 "Holiday": "info",
-                "BusinessTrip": "warning"
+                "BusinessTrip": "warning",
+                "MedicalLeave": "danger"
             }
         },
         "source": {

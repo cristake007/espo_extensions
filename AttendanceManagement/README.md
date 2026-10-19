@@ -1,9 +1,10 @@
 # Attendance Management
 
 Attendance Management provides a personal attendance register for EspoCRM 10.
-Employees can mark a current or past working day as **At work** or **In business
-trip**. Future dates, weekends, Romanian public holidays from `ZileLibere`, and
-days covered by an approved Holiday Management request cannot be marked.
+Employees can mark a current or past working day as **At work**, **In business
+trip**, or **CM (medical leave)**. Future dates, weekends, Romanian public
+holidays from `ZileLibere`, and days covered by an approved Holiday Management
+request cannot be marked.
 Only active regular users are treated as employees. Administrator accounts can
 manage the extension but are excluded from schedule lists, the manager overview,
 reminders, completion calculations, and XLSX/PDF exports. Any historical or
@@ -69,7 +70,7 @@ or schedule values are left blank. The setting is disabled by default.
 Build from the repository root:
 
 ```bash
-./build.sh --extension ./AttendanceManagement --zip 1.10.14 files scripts
+./build.sh --extension ./AttendanceManagement --zip 1.10.15 files scripts
 ```
 
 After installation or upgrade, run `bin/command rebuild`.
