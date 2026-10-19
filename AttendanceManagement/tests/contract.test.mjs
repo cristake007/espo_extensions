@@ -40,7 +40,7 @@ test('manifest packages a standalone EspoCRM 10 attendance module', async () => 
     const module = await readJson('Resources', 'module.json');
 
     assert.equal(manifest.name, 'Attendance Management');
-    assert.equal(manifest.version, '1.10.20');
+    assert.equal(manifest.version, '1.10.21');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.equal(module.jsTranspiled, false);
 });
@@ -431,6 +431,11 @@ test('overview exports paginated A4 XLSX and PDF registers with schedule and no 
     assert.match(pdfGenerator, /EMPLOYEES_PER_PAGE = 7/);
     assert.match(pdfGenerator, /setPaper\('A4', 'portrait'\)/);
     assert.match(pdfGenerator, /array_chunk\(array_keys\(\$users\), self::EMPLOYEES_PER_PAGE\)/);
+    assert.match(pdfGenerator, /\$columnWidth = 82\.0 \/ max/);
+    assert.match(pdfGenerator, /\$timeWidth = \$columnWidth \* 0\.30/);
+    assert.match(pdfGenerator, /\$statusWidth = \$columnWidth \* 0\.70/);
+    assert.match(pdfGenerator, /<col style="width:8%"><col style="width:10%">/);
+    assert.match(pdfGenerator, /\.fixed-label \{ overflow-wrap: normal; white-space: nowrap; \}/);
     assert.match(pdfGenerator, /Pagina \{PAGE_NUM\} din \{PAGE_COUNT\}/);
     assert.match(pdfGenerator, /%PDF-/);
     assert.match(pdfGenerator, /\(Remote\)/);

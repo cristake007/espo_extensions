@@ -87,10 +87,10 @@ final class AttendancePdfGenerator
         array $rows,
         array $userIndexes,
     ): string {
-        $columnWidth = 84.5 / max(1, count($userIndexes));
-        $timeWidth = $columnWidth * 0.39;
-        $statusWidth = $columnWidth * 0.61;
-        $columns = '<col style="width:7%"><col style="width:8.5%">';
+        $columnWidth = 82.0 / max(1, count($userIndexes));
+        $timeWidth = $columnWidth * 0.30;
+        $statusWidth = $columnWidth * 0.70;
+        $columns = '<col style="width:8%"><col style="width:10%">';
         $employeeHeaders = '';
         $subHeaders = '';
 
@@ -107,7 +107,8 @@ final class AttendancePdfGenerator
             );
             $employeeHeaders .= '<th colspan="2">' .
                 $this->escape((string) ($user['name'] ?? '')) . $remoteLabel . '</th>';
-            $subHeaders .= '<th>Ora</th><th>Prezenta</th>';
+            $subHeaders .= '<th class="fixed-label">Ora</th>' .
+                '<th class="fixed-label">Prezenta</th>';
         }
 
         $body = '';
@@ -132,13 +133,15 @@ final class AttendancePdfGenerator
                 $exitCells .= '<td>' . $this->escape((string) ($schedule['endTime'] ?? '')) . '</td>';
             }
 
-            $body .= '<tr><td rowspan="2">' . $date . '</td><td>Ora intrare</td>' .
-                $entryCells . '</tr><tr><td>Ora iesire</td>' . $exitCells . '</tr>';
+            $body .= '<tr><td class="fixed-label" rowspan="2">' . $date .
+                '</td><td class="fixed-label">Ora intrare</td>' . $entryCells .
+                '</tr><tr><td class="fixed-label">Ora iesire</td>' . $exitCells . '</tr>';
         }
 
         return '<section class="register-page"><h1>' . $this->escape($title) .
             '</h1><table><colgroup>' . $columns . '</colgroup><thead><tr>' .
-            '<th rowspan="2">Data</th><th rowspan="2">Program</th>' . $employeeHeaders .
+            '<th class="fixed-label" rowspan="2">Data</th>' .
+            '<th class="fixed-label" rowspan="2">Program</th>' . $employeeHeaders .
             '</tr><tr>' . $subHeaders . '</tr></thead><tbody>' . $body .
             '</tbody></table></section>';
     }
@@ -170,6 +173,7 @@ final class AttendancePdfGenerator
                 overflow-wrap: break-word;
             }
             tbody td { white-space: nowrap; }
+            .fixed-label { overflow-wrap: normal; white-space: nowrap; }
             .remote-label { font-size: 5.8pt; font-weight: normal; }
         CSS;
     }
