@@ -4,7 +4,7 @@
             "order": 34,
             "groupIndex": 0,
             "link": "#Admin/holidayManagementProfiles",
-            "labelTranslation": "Admin.labels.Holiday Profiles",
+            "labelTranslation": "Global.labels.HolidayProfileManagement",
             "iconClass": "fas fa-users-cog",
             "accessDataList": [
                 {

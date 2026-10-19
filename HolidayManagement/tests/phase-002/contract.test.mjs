@@ -340,6 +340,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
         '#Admin/holidayManagementProfiles'
     );
     assert.equal(
+        clientNavbar.menuItems.holidayProfiles.labelTranslation,
+        'Global.labels.HolidayProfileManagement'
+    );
+    assert.equal(
         clientNavbar.menuItems.holidayProfiles.accessDataList[0].scope,
         'HolidayProfileManagement'
     );
@@ -368,10 +372,10 @@ test('Administration exposes a bulk profile setup view using the service endpoin
     assert.doesNotMatch(source, /disableButton|enableButton/);
 });
 
-test('accounting metadata remains bilingual in the 1.8.1 package', async () => {
+test('accounting metadata remains bilingual in the 1.8.2 package', async () => {
     const manifest = await readJson('manifest.json');
 
-    assert.equal(manifest.version, '1.8.1');
+    assert.equal(manifest.version, '1.8.2');
 
     for (const locale of ['en_US', 'ro_RO']) {
         const admin = await readModuleJson('Resources', 'i18n', locale, 'Admin.json');
