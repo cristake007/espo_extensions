@@ -31,7 +31,8 @@ final class HolidayRequestService
         private HolidayProfileService $profiles, private Acl $acl, private FileStorageManager $fileStorage,
         private \Espo\Modules\EmployeeManagement\Tools\HolidayDocument\HolidayApprovalService $approvals,
         private \Espo\Modules\EmployeeManagement\Tools\HolidayAdministration\HolidayApproverProvider $approvers,
-        private HolidayDecisionNotifier $decisionNotifier) {}
+        private HolidayDecisionNotifier $decisionNotifier,
+        private HolidaySubmissionNotifier $submissionNotifier) {}
     public function assertActor(): void
     {
         if (!$this->user->isRegular() || !$this->user->isActive() || !$this->acl->checkScope('EmployeeManagement')) {
@@ -197,6 +198,8 @@ final class HolidayRequestService
             // One accounting owner. No legacy ORM Balance hook is installed in this module.
             $this->reserveHoliday($request);
             $this->entityManager->saveEntity($request);
+            // Native Email outbox + Jobs share this transaction; SMTP runs only in workers.
+            $this->submissionNotifier->queue($request);
             return $this->result($request) + ['duplicate' => false];
         });
     }

@@ -1,0 +1,22 @@
+{
+  "environment": "employee-feasibility-20261020",
+  "espocrm": "10.0.1",
+  "php": "8.4.23",
+  "transport": "native Email + EmailSender + system InboundEmail outbound account + controlled SMTP sink",
+  "assertions": 28,
+  "failures": 0,
+  "smtpMessages": 2,
+  "directRoleRecipient": true,
+  "teamRoleRecipient": true,
+  "unauthorizedRecipient": false,
+  "inactiveRecipient": false,
+  "invalidAddressRecipient": false,
+  "duplicateCreateMessages": 0,
+  "duplicateGroupedDispatchMessages": 0,
+  "failureAttempts": 3,
+  "attemptFourCreated": false,
+  "smtpFailureChangedRequest": false,
+  "smtpFailureChangedBalance": false,
+  "smtpFailureChangedLedger": false,
+  "decisionNotificationRegression": "PASS"
+}

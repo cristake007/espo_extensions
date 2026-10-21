@@ -58,6 +58,8 @@ final class AttendanceOverviewService
         $month = $this->normalizeMonth($month, $today, $availableFromMonth);
         $editableFromMonth = $this->getEditableFromMonth($today);
         $monthState = $this->months->get($month);
+        $routineMarkingAllowed = $month >= $editableFromMonth && !$monthState->get('frozen');
+        $canManageAttendance = $routineMarkingAllowed && $this->accessChecker->isManager();
         $monthStart = $month . '-01';
         $monthEnd = (new DateTimeImmutable($monthStart))->modify('last day of this month')->format('Y-m-d');
         $users = $this->entityManager
@@ -168,7 +170,7 @@ final class AttendanceOverviewService
                     'cicActive' => $working && $this->isCicDate($scheduleMap[$userId]??null,$date),
                     'normHours' => $normMap[$userId]['days'][$date] ?? 0,
                     'schedule' => ['startTime'=>implode(' / ',array_column($dailyRanges,0)), 'endTime'=>implode(' / ',array_column($dailyRanges,1)), 'remote'=>(bool)($scheduleMap[$userId]['remote']??false)],
-                    'canManage' => $working && !$isFuture && !$isHoliday && $this->accessChecker->isManager(),
+                    'canManage' => $working && !$isFuture && !$isHoliday && $canManageAttendance,
                     'isMissing' => $isMissing,
                     'isFuture' => $isFuture,
                 ];
@@ -195,6 +197,15 @@ final class AttendanceOverviewService
             $monthState->set(['frozen'=>true,'frozenAt'=>DateTimeUtil::getSystemNowString(),
                 'frozenById'=>$this->user->getId(),'policies'=>(object)$scheduleMap]);
             $this->entityManager->saveEntity($monthState);
+        }
+        if ($monthState->get('frozen')) {
+            foreach ($rows as &$row) {
+                foreach ($row['cells'] as &$cell) {
+                    $cell['canManage'] = false;
+                }
+                unset($cell);
+            }
+            unset($row);
         }
         $incompleteExportsAllowed = (bool) $this->config->get(
             self::ALLOW_INCOMPLETE_EXPORTS_CONFIG,
@@ -263,16 +274,23 @@ final class AttendanceOverviewService
     public function markForUser(string $userId, string $date, string $status, string $reason = '', ?int $expectedRevision = null): array
     {
         $this->accessChecker->assertManager();
-        return $this->markEmployee($userId,$date,$status,true,$reason,$expectedRevision);
+        return $this->markEmployee($userId,$date,$status,true,$reason,$expectedRevision,false);
+    }
+
+    /** @return array<string, mixed> */
+    public function markForUserRoutine(string $userId, string $date, string $status, ?int $expectedRevision = null): array
+    {
+        $this->accessChecker->assertManager();
+        return $this->markEmployee($userId,$date,$status,true,null,$expectedRevision,true);
     }
 
     public function markOwn(string $date,string $status,?int $expectedRevision=null): array
     {
         $this->accessChecker->assertSelf();
-        return $this->markEmployee((string)$this->user->getId(),$date,$status,false,'',$expectedRevision);
+        return $this->markEmployee((string)$this->user->getId(),$date,$status,false,null,$expectedRevision,false);
     }
 
-    private function markEmployee(string $userId,string $date,string $status,bool $manager,string $reason,?int $expectedRevision): array
+    private function markEmployee(string $userId,string $date,string $status,bool $manager,?string $reason,?int $expectedRevision,bool $routineManagerMark): array
     {
         $this->accessChecker->assertRecordWrite();
         if(!in_array($status,[self::STATUS_AT_WORK,self::STATUS_BUSINESS_TRIP,self::STATUS_MEDICAL_LEAVE],true)){throw new BadRequest('Unsupported attendance status.');}
@@ -282,12 +300,12 @@ final class AttendanceOverviewService
         $today=$this->dateTime->getToday()->toString();$month=substr($date,0,7);
         if($date>$today){throw new BadRequest('Attendance cannot be marked for a future date.');}
         if($month<$this->getAvailableFromMonth($today)){throw new BadRequest('Attendance date predates the available archive.');}
-        if($manager && trim($reason)===''){throw new BadRequest('A reason is required for managerial attendance corrections.');}
-        return $this->entityManager->getTransactionManager()->run(function()use($userId,$date,$status,$manager,$reason,$expectedRevision,$month,$today):array{
+        if($manager && !$routineManagerMark && trim((string)$reason)===''){throw new BadRequest('A reason is required for managerial attendance corrections.');}
+        return $this->entityManager->getTransactionManager()->run(function()use($userId,$date,$status,$manager,$reason,$expectedRevision,$routineManagerMark,$month,$today):array{
             $employee=$this->entityManager->getRDBRepositoryByClass(User::class)->where(['id'=>$userId,'type'=>User::TYPE_REGULAR,'isActive'=>true])->select(['id','name','type','isActive','firstName','lastName','workingTimeCalendarId'])->forUpdate()->findOne();
             if(!$employee){throw new NotFound('Active regular employee not found.');}
             $state=$this->months->get($month);
-            if(!$manager && ($state->get('frozen') || $month<$this->getEditableFromMonth($today))){throw new Conflict('Attendance for this month is locked.');}
+            if((!$manager || $routineManagerMark) && ($state->get('frozen') || $month<$this->getEditableFromMonth($today))){throw new Conflict('Attendance for this month is locked.');}
             $norm=$this->months->norm($state,$userId);
             if(!$norm || !isset($norm['days'][$date])){throw new BadRequest('An assigned WTC working day is required; no fallback schedule.');}
             if($this->approvedHolidayProvider->getDates($userId,$date,$date)!==[]){throw new Conflict('An active approved holiday controls attendance for this date.');}
@@ -296,10 +314,13 @@ final class AttendanceOverviewService
             $record=$this->entityManager->getRDBRepository(self::ENTITY_TYPE)->where(['assignedUserId'=>$userId,'date'=>$date])->select(['id','name','assignedUserId','date','status','source','markedAt','revision','correctionReason','createdById','modifiedById'])->forUpdate()->findOne();
             $revision=(int)($record?->get('revision')??0);
             if($expectedRevision!==null && $expectedRevision!==$revision){throw new Conflict('Stale attendance revision. Reload the month.');}
+            if($routineManagerMark && $record && $record->get('status')===$status){
+                return ['userId'=>$userId,'date'=>$date,'status'=>$status,'source'=>$record->get('source'),'revision'=>$revision];
+            }
             if(!$record){$record=$this->entityManager->getNewEntity(self::ENTITY_TYPE);}
             $record->set(['name'=>sprintf('%s - %s',$employee->get('name'),$date),'date'=>$date,'status'=>$status,
                 'source'=>$manager?self::SOURCE_MANAGER:'Self','assignedUserId'=>$userId,'markedAt'=>DateTimeUtil::getSystemNowString(),
-                'correctionReason'=>$manager?trim($reason):null,'revision'=>$revision+1]);
+                'correctionReason'=>$manager && !$routineManagerMark?trim((string)$reason):null,'revision'=>$revision+1]);
             $this->entityManager->saveEntity($record);
             $state->set('revision',(int)$state->get('revision')+1);$this->entityManager->saveEntity($state);
             $this->buildOverview($month);

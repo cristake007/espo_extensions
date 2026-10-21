@@ -110,11 +110,12 @@ define(['view'], (View) => {
             'click [data-action="send-reminders"]': 'actionSendReminders',
             'click [data-action="download-xlsx"]': 'actionDownloadXlsx',
             'click [data-action="download-pdf"]': 'actionDownloadPdf',
-            'change [data-action="manager-mark-attendance"]': 'actionManagerMarkAttendance',
+            'click [data-action="manager-mark-attendance"]': 'actionManagerMarkAttendance',
         }
 
         setup() {
             this.overview = {users: [], rows: [], missingUsers: []};
+            this.managerMarkPending = new Set();
             this.wait(this.loadOverview());
         }
 
@@ -369,38 +370,57 @@ define(['view'], (View) => {
                 );
             }
 
-            const select = $('<select>')
-                .addClass('form-control input-sm attendance-manager-status-select')
+            const pendingKey = this.getManagerMarkKey(cell.userId, cell.date);
+            const isPending = this.managerMarkPending.has(pendingKey);
+            const buttons = $('<div>')
+                .addClass('attendance-manager-status-actions')
                 .attr({
-                    'data-action': 'manager-mark-attendance',
-                    'data-user-id': cell.userId || '',
-                    'data-date': cell.date || '',
-                    'data-revision': cell.revision || 0,
+                    role: 'group',
                     'aria-label': this.translate(
                         'Manual Attendance',
                         'labels',
                         'EmployeeAttendanceRecord'
                     ),
                 });
+            const options = [
+                {status: 'AtWork', shortLabel: 'P', style: 'work'},
+                {status: 'BusinessTrip', shortLabel: 'D', style: 'trip'},
+                {status: 'MedicalLeave', shortLabel: 'CM', style: 'medical'},
+            ].filter(option => !cell.cicActive || option.status === 'MedicalLeave');
 
-            select.append($('<option>', {
-                value: '',
-                text: this.translate('Not Marked', 'labels', 'EmployeeAttendanceRecord'),
-                disabled: true,
-            }));
-            ['AtWork', 'BusinessTrip', 'MedicalLeave'].filter(s => !cell.cicActive || s === 'MedicalLeave').forEach(option => select.append(
-                $('<option>', {
-                    value: option,
-                    text: this.getLanguage().translateOption(
-                        option,
+            options.forEach(option => {
+                const label = option.status === 'MedicalLeave'
+                    ? this.translate('Medical Leave Help', 'messages', 'EmployeeAttendanceRecord')
+                    : this.getLanguage().translateOption(
+                        option.status,
                         'status',
                         'EmployeeAttendanceRecord'
-                    ),
-                })
-            ));
-            select.val(status);
+                    );
+                const active = status === option.status;
 
-            return cellElement.append(select);
+                buttons.append(
+                    $('<button>')
+                        .addClass(
+                            `btn btn-xs attendance-manager-status-button attendance-manager-status-${option.style}` +
+                            (active ? ' active' : '')
+                        )
+                        .attr({
+                            type: 'button',
+                            title: label,
+                            'aria-label': label,
+                            'aria-pressed': active ? 'true' : 'false',
+                            'data-action': 'manager-mark-attendance',
+                            'data-user-id': cell.userId || '',
+                            'data-date': cell.date || '',
+                            'data-status': option.status,
+                            'data-revision': cell.revision || 0,
+                        })
+                        .prop('disabled', isPending)
+                        .text(option.shortLabel)
+                );
+            });
+
+            return cellElement.append(buttons);
         }
 
         renderMonthState(data) {
@@ -423,40 +443,139 @@ define(['view'], (View) => {
         }
 
         async actionManagerMarkAttendance(event) {
-            const select = $(event.currentTarget);
-            const status = String(select.val() || '');
-            const userId = String(select.attr('data-user-id') || '');
-            const date = String(select.attr('data-date') || '');
+            const button = $(event.currentTarget);
+            const status = String(button.attr('data-status') || '');
+            const userId = String(button.attr('data-user-id') || '');
+            const date = String(button.attr('data-date') || '');
+            const cell = button.closest('td');
+            const previousCellStatus = String(cell.attr('data-status') || '');
+            const previousStatus = previousCellStatus === 'Missing' ? '' : previousCellStatus;
+            const pendingKey = this.getManagerMarkKey(userId, date);
 
-            if (!status || !userId || !date) {
+            if (!status || !userId || !date || status === previousStatus || this.managerMarkPending.has(pendingKey)) {
                 return;
             }
 
-            select.prop('disabled', true);
-            const reason = await new Promise(resolve => this.createView('attendanceReason', 'employee-management:views/modals/attendance-correction', {}).then(modal => {
-                this.listenToOnce(modal, 'submit', resolve); this.listenToOnce(modal, 'close', () => resolve(null)); modal.render();
-            }));
-            if (!reason) { select.prop('disabled', false); return; }
+            this.managerMarkPending.add(pendingKey);
+            this.setManagerCellStatus(cell, status);
+            this.setManagerCellPending(cell, true);
+
             try {
-                await Espo.Ajax.postRequest('EmployeeManagement/attendance/managerMark', {
+                const result = await Espo.Ajax.postRequest('EmployeeManagement/attendance/managerMarkRoutine', {
                     userId,
                     date,
-                    status, reason, revision:Number(select.attr('data-revision')),
+                    status,
+                    revision: Number(button.attr('data-revision')),
                 });
+                this.updateOverviewCell(result);
+                this.managerMarkPending.delete(pendingKey);
+                this.renderOverview();
                 Espo.Ui.success(this.translate(
                     'Manual Attendance Saved',
                     'messages',
                     'EmployeeAttendanceRecord'
                 ));
-                await this.loadOverview(this.overview.month);
-                this.renderOverview();
             } catch (error) {
+                this.managerMarkPending.delete(pendingKey);
+                this.setManagerCellStatus(cell, previousStatus);
+                this.setManagerCellPending(cell, false);
                 Espo.Ui.error(this.translate(
                     'Manual Attendance Save Failed',
                     'messages',
                     'EmployeeAttendanceRecord'
                 ));
-                this.renderOverview();
+            }
+        }
+
+        getManagerMarkKey(userId, date) {
+            return `${String(userId || '')}:${String(date || '')}`;
+        }
+
+        setManagerCellPending(cell, pending) {
+            cell.find('[data-action="manager-mark-attendance"]').prop('disabled', pending);
+            cell.toggleClass('attendance-manager-status-pending', pending);
+        }
+
+        setManagerCellStatus(cell, status, revision = null) {
+            const statusClasses = [
+                'attendance-cell-AtWork',
+                'attendance-cell-BusinessTrip',
+                'attendance-cell-MedicalLeave',
+                'attendance-cell-ChildCareLeave',
+                'attendance-cell-Holiday',
+                'attendance-cell-missing',
+            ];
+
+            cell.removeClass(statusClasses.join(' '))
+                .addClass(status ? `attendance-cell attendance-cell-${status}` : 'attendance-cell-missing')
+                .attr('data-status', status || 'Missing');
+            cell.find('[data-action="manager-mark-attendance"]').each((index, element) => {
+                const option = $(element);
+                const active = String(option.attr('data-status') || '') === status;
+
+                option.toggleClass('active', active)
+                    .attr('aria-pressed', active ? 'true' : 'false');
+                if (revision !== null) {
+                    option.attr('data-revision', revision);
+                }
+            });
+        }
+
+        updateOverviewCell(result) {
+            if (!result || !result.userId || !result.date) {
+                return;
+            }
+
+            for (const row of this.overview.rows || []) {
+                const cell = (row.cells || []).find(item =>
+                    item.userId === result.userId && item.date === result.date
+                );
+
+                if (cell) {
+                    const wasMissing = !cell.status;
+                    cell.status = result.status;
+                    cell.source = result.source;
+                    cell.revision = result.revision;
+                    cell.isMissing = false;
+
+                    if (wasMissing) {
+                        this.overview.missingCount = Math.max(0, Number(this.overview.missingCount || 0) - 1);
+                        this.overview.signedCount = Number(this.overview.signedCount || 0) + 1;
+                        const user = (this.overview.users || []).find(item => item.id === result.userId);
+                        if (user) {
+                            user.missingDays = Math.max(0, Number(user.missingDays || 0) - 1);
+                            user.signedDays = Number(user.signedDays || 0) + 1;
+                        }
+                        const missingUser = (this.overview.missingUsers || []).find(item => item.id === result.userId);
+                        if (missingUser) {
+                            missingUser.missingDates = (missingUser.missingDates || []).filter(date => date !== result.date);
+                            missingUser.missingDays = missingUser.missingDates.length;
+                            if (!missingUser.missingDays) {
+                                this.overview.missingUsers = this.overview.missingUsers.filter(item => item.id !== result.userId);
+                            }
+                        }
+                    }
+                    const hasExportData = (this.overview.rows || []).length > 0 &&
+                        (this.overview.users || []).length > 0;
+                    this.overview.registerComplete = hasExportData &&
+                        Number(this.overview.signedCount || 0) > 0 &&
+                        Number(this.overview.missingCount || 0) === 0 &&
+                        Number(this.overview.scheduleMissingCount || 0) === 0 &&
+                        Number(this.overview.futureCount || 0) === 0;
+                    this.overview.downloadReady = hasExportData &&
+                        (this.overview.registerComplete || this.overview.incompleteExportsAllowed === true);
+
+                    if (this.overview.registerComplete) {
+                        this.overview.frozen = true;
+                        this.overview.monthEditable = false;
+                        for (const overviewRow of this.overview.rows || []) {
+                            for (const overviewCell of overviewRow.cells || []) {
+                                overviewCell.canManage = false;
+                            }
+                        }
+                    }
+                    return;
+                }
             }
         }
 

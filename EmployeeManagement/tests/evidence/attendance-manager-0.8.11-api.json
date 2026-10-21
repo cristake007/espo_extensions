@@ -1,0 +1,116 @@
+{
+    "version": "0.8.11",
+    "results": [
+        {
+            "test": "unauthorized-manager-routine-rejected",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "routine-command-rejects-reason-field",
+            "status": "PASS",
+            "observed": 400
+        },
+        {
+            "test": "manager-routine-mark-without-reason",
+            "status": "PASS",
+            "observed": {
+                "status": 200,
+                "body": {
+                    "userId": "6ad6f495d5c755a30",
+                    "date": "2026-10-01",
+                    "status": "AtWork",
+                    "source": "Manager",
+                    "revision": 3
+                },
+                "raw": "{\"userId\":\"6ad6f495d5c755a30\",\"date\":\"2026-10-01\",\"status\":\"AtWork\",\"source\":\"Manager\",\"revision\":3}"
+            }
+        },
+        {
+            "test": "manager-can-correct-ordinary-status-with-another-button",
+            "status": "PASS",
+            "observed": {
+                "status": 200,
+                "body": {
+                    "userId": "6ad6f495d5c755a30",
+                    "date": "2026-10-01",
+                    "status": "BusinessTrip",
+                    "source": "Manager",
+                    "revision": 4
+                },
+                "raw": "{\"userId\":\"6ad6f495d5c755a30\",\"date\":\"2026-10-01\",\"status\":\"BusinessTrip\",\"source\":\"Manager\",\"revision\":4}"
+            }
+        },
+        {
+            "test": "same-status-is-idempotent-server-side",
+            "status": "PASS",
+            "observed": [
+                200,
+                4,
+                3,
+                3,
+                9,
+                9
+            ]
+        },
+        {
+            "test": "stale-routine-revision-rejected",
+            "status": "PASS",
+            "observed": 409
+        },
+        {
+            "test": "routine-audit-preserves-actor-time-status-and-empty-reason",
+            "status": "PASS",
+            "observed": [
+                "BusinessTrip",
+                "Manager",
+                "6ad6f495d470e4a89",
+                "2026-10-21 12:35:13",
+                null,
+                3
+            ]
+        },
+        {
+            "test": "routine-mark-cannot-overwrite-frozen-month",
+            "status": "PASS",
+            "observed": 409
+        },
+        {
+            "test": "exceptional-correction-still-requires-reason",
+            "status": "PASS",
+            "observed": 400
+        },
+        {
+            "test": "cic-fixture-configured-through-authorized-command",
+            "status": "PASS",
+            "observed": 200
+        },
+        {
+            "test": "cic-routine-blocks-at-work",
+            "status": "PASS",
+            "observed": 409
+        },
+        {
+            "test": "cic-routine-permits-medical-leave",
+            "status": "PASS",
+            "observed": {
+                "status": 200,
+                "body": {
+                    "userId": "6ad6f495d7ec319f5",
+                    "date": "2026-10-02",
+                    "status": "MedicalLeave",
+                    "source": "Manager",
+                    "revision": 1
+                },
+                "raw": "{\"userId\":\"6ad6f495d7ec319f5\",\"date\":\"2026-10-02\",\"status\":\"MedicalLeave\",\"source\":\"Manager\",\"revision\":1}"
+            }
+        },
+        {
+            "test": "approved-holiday-date-cannot-be-overwritten",
+            "status": "PASS",
+            "observed": 409
+        }
+    ],
+    "assertions": 13,
+    "failures": 0
+}

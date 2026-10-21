@@ -1,0 +1,21 @@
+{
+  "environment": "employee-feasibility-20261020",
+  "fromVersion": "0.8.11",
+  "toVersion": "0.8.12",
+  "status": "PASS",
+  "differences": [],
+  "counts": {
+    "EmployeeAttendanceRecord": 4488,
+    "EmployeeAttendanceWorkSchedule": 29,
+    "EmployeeAttendanceMonth": 10,
+    "EmployeeHolidayRequest": 312,
+    "EmployeeHolidayProfile": 344,
+    "EmployeeHolidayLedger": 895,
+    "EmployeeAbsence": 66,
+    "approvalDocuments": 108
+  },
+  "finalPackageReplacement": {
+    "status": "PASS",
+    "differences": []
+  }
+}

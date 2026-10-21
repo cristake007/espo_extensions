@@ -1,5 +1,5 @@
 {
-  "stage": "0.8.10",
+  "stage": "0.8.12",
   "originalVersions": {
     "AttendanceManagement": "1.11.0",
     "HolidayManagement": "1.9.4"
@@ -113,7 +113,7 @@
       "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
       "adaptations": "Extracted getMyBalance/getPendingDays, managed-user listing, prepare/reserve/adjust, original dates/overlap/negative-limit helpers. Existing cancellation/rejection refund formulas and validation conditions adapted into explicit transactional commands. Native Roles, regular-only, User→Profile→Request locks, revision guards, idempotent receipts; positive active overlap states (P3/P5). No synchronous approval transferred (D7).",
       "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
-      "destinationSha256": "95060db1e6c0259356a652bfe29d72347ddf7ca1ce177849ca16def5d87ee289",
+      "destinationSha256": "5604d41c2c4583a53e374f369ec4a1f2bac3f4f335ede5e2487872a6d73f198c",
       "preFunctionalFixesSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
       "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
     },
@@ -223,9 +223,9 @@
       "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
       "sourceSha256": "ce9e0259c2e4d3a76cf1e4cb37a5a04a058b2c1400a24f94e90f7522bafb95c6",
       "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
-      "adaptations": "Original matrix assembly, counters, missing-user lists, metadata validation, schedule map, reminders and date policies retained/adapted. WTC monthly norms replace fixed weekdays/times; shared aggregate supplies own view/exports/freeze. One atomic write path with User→Month→Record locks, current revision, manager reason/audit. CO > CIC except MedicalLeave; CancellationPending effective. Native read/write/export scopes are distinct.",
+      "adaptations": "Original matrix assembly, counters, missing-user lists, metadata validation, schedule map, reminders and date policies retained/adapted. WTC monthly norms replace fixed weekdays/times; shared aggregate supplies own view/exports/freeze. One atomic write path with User→Month→Record locks, current revision and native audit. The 0.8.11 routine manager command omits a correction reason only for editable months; exceptional managerMark retains its required reason and frozen-month semantics. CO > CIC except MedicalLeave; CancellationPending effective. Native read/write/export scopes are distinct.",
       "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceOverviewService.php",
-      "destinationSha256": "91ba024d1e2a0486f3f2bd6487e576710355924f3c8f1c67a5eea84b2af985a1",
+      "destinationSha256": "36ce2f5ec78cf899d144f116b8dd0f496b88e3a42f21edebd70bfb30d2f65df2",
       "preNavigationHotfixSha256": "2f347b4ea10faf5345a4f20e44fea7819e9991e954baa5f6479c4fcef7a4242a",
       "navigationHotfix": "See NAVIGATION-HOTFIX-RESULTS.md: delegated route, native tabs and ACL intersection.",
       "preFunctionalFixesSha256": "e75afc751fb473764f715edafae5ce8ffa96557673178092f3fbcfa0cf8bffdc",
@@ -309,9 +309,9 @@
       "source": "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/overview.js",
       "sourceSha256": "6f0464772e30be4608d6824c5be47e16109f20b090e9bd06db3f041ec93837b9",
       "destination": "files/client/custom/modules/employee-management/src/views/attendance/overview.js",
-      "adaptations": "Original page/table/actions/fields retained; own routes, backend capabilities, revision/reason commands, CIC MedicalLeave control, frozen state and native Roles. The 0.8.2 team overview uses the same 1180px workspace as the personal pages, moves period selection into the hero, keeps commands compact, presents four monthly metrics in one row with expandable full details, and retains the complete sticky matrix, legend, counts and empty state. In 0.8.3 the matrix heading is explicitly horizontal and left-aligned, with a readable non-pill count at the right; status cells expose the same semantic colors as the complete legend, including CIC and missing entries. Reminder, correction and export commands are unchanged. Schedules remains operational Remote/CIC only; technical WTC time editor omitted under approved D6. Existing global policies/archive are in delegated administration, not duplicated here.",
+      "adaptations": "Original page/table/actions/fields retained; own routes, backend capabilities, revision commands, CIC MedicalLeave control, frozen state and native Roles. The 0.8.2–0.8.3 team overview retains the complete sticky matrix, legend, counts and semantic status colors. In 0.8.11 editable cells replace the reason modal/dropdown with compact accessible P/D/CM buttons backed by the dedicated routine command; active, pending, success and rollback states stay local to the cell. Reminder, exceptional correction and export backend commands are retained. Schedules remains operational Remote/CIC only; technical WTC time editor omitted under approved D6. Existing global policies/archive are in delegated administration, not duplicated here.",
       "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/attendance/overview.js",
-      "destinationSha256": "47c5422d439eea0fc06b4d60c6209a0bba514867b91559b349abc7f22481e969",
+      "destinationSha256": "bc4d8f81d76dd83c22b2f84e3e4d1b420da0cf9c7bb257ee80c61ee20114b136",
       "preNavigationHotfixSha256": "ae1d8b06ea9e240df09ee6ce66f348e4216e294e5b569be87eab7a20a6d9947c",
       "navigationHotfix": "See NAVIGATION-HOTFIX-RESULTS.md: delegated route, native tabs and ACL intersection.",
       "preFunctionalFixesSha256": "71fa1a179c7d48c17347961f71fa4a2a8e2502749cb7b3f5125361f036b3fded",
@@ -347,9 +347,9 @@
       "source": "pending/Attendance/files/client/custom/modules/employee-management/css/attendance.css",
       "sourceSha256": "bbde119b3baf694a3d8b49fac989cbc28d3c0c77e7d050f821aab8aa96b534a5",
       "destination": "files/client/custom/modules/employee-management/css/attendance.css",
-      "adaptations": "Original CSS remains loaded through native app.client.cssList with no core/theme overwrite. The personal page, team overview and 0.8.4 Remote/CIC administration workspace are independently scoped, aligned to the shared 1180px width and responsive breakpoints. They consume TUVTK tokens with native Espo fallbacks. The metadata page additions only restyle its own employee rows, controls, native date fields, save state and empty state.",
+      "adaptations": "Original CSS remains loaded through native app.client.cssList with no core/theme overwrite. The personal page, team overview and 0.8.4 Remote/CIC administration workspace are independently scoped, aligned to the shared 1180px width and responsive breakpoints. They consume TUVTK tokens with native Espo fallbacks. The 0.8.11 P/D/CM controls use a compact inline group within the existing cell width and existing semantic status colors. The metadata page additions only restyle its own employee rows, controls, native date fields, save state and empty state.",
       "original": "AttendanceManagement/files/client/custom/modules/attendance-management/css/attendance.css",
-      "destinationSha256": "30db5f834e8473c422acc29b67cb2356c9e803d32f56d956ae470869134a2301"
+      "destinationSha256": "0d8451893d678273bfcb34e4a379e512bcbeb22eaea629ac8377277e331b1a7e"
     },
     {
       "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAttendanceWorkSchedule.json",
@@ -391,7 +391,7 @@
       "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
       "adaptations": "Continue the existing 0.3/0.4 extracted request, reservation, adjustment, refund, ledger, revision and receipt implementation. Add the shared daily-record conflict guard to reserve/adjust/approval, including description-only edits. Lock affected normative months in ascending order and touch month revisions for effective cancellation transitions. Normalize command key order at the service boundary for API/internal caller retry interoperability. No second accounting owner, no synchronous or provisional approval.",
       "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
-      "destinationSha256": "95060db1e6c0259356a652bfe29d72347ddf7ca1ce177849ca16def5d87ee289",
+      "destinationSha256": "5604d41c2c4583a53e374f369ec4a1f2bac3f4f335ede5e2487872a6d73f198c",
       "preFunctionalFixesSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
       "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
     },
@@ -401,7 +401,7 @@
       "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
       "adaptations": "Continue original matrix, CIC/CCC precedence, completion, freeze, reminders and export aggregate. Remove locking record reads from the read-only aggregate so record and Holiday reads use one DB snapshot behind the month lock. Retain authoritative locking reads on the write path. Keep reminder selection and native Notification persistence in the same native transaction/month lock as cancellation. Fix demonstrated delivery defect: native Notification.setUserId instead of nonexistent assignedUserId.",
       "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceOverviewService.php",
-      "destinationSha256": "91ba024d1e2a0486f3f2bd6487e576710355924f3c8f1c67a5eea84b2af985a1",
+      "destinationSha256": "36ce2f5ec78cf899d144f116b8dd0f496b88e3a42f21edebd70bfb30d2f65df2",
       "preNavigationHotfixSha256": "2f347b4ea10faf5345a4f20e44fea7819e9991e954baa5f6479c4fcef7a4242a",
       "navigationHotfix": "See NAVIGATION-HOTFIX-RESULTS.md: delegated route, native tabs and ACL intersection.",
       "preFunctionalFixesSha256": "e75afc751fb473764f715edafae5ce8ffa96557673178092f3fbcfa0cf8bffdc",
@@ -433,7 +433,7 @@
       "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
       "adaptations": "Continue reused request/accounting implementation. Native grouped Job creation and immutable decision snapshot replace the old synchronous generate call; native retry command reuses the same reservation/receipts. Existing cancellation/refund/revision logic retained. Explicit locking projection excludes foreign author/decider joins after a real MariaDB deadlock; result exposes only natively authorized published documents/state.",
       "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
-      "destinationSha256": "95060db1e6c0259356a652bfe29d72347ddf7ca1ce177849ca16def5d87ee289",
+      "destinationSha256": "5604d41c2c4583a53e374f369ec4a1f2bac3f4f335ede5e2487872a6d73f198c",
       "preFunctionalFixesSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
       "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
     },
@@ -453,7 +453,7 @@
       "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
       "adaptations": "Attendance behavior/UI/exports/CIC/freeze unchanged. Restrict locking User, metadata and daily-record reads to required attributes, avoiding foreign author User joins during concurrent approval jobs. Non-locking aggregate remains unchanged.",
       "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceOverviewService.php",
-      "destinationSha256": "91ba024d1e2a0486f3f2bd6487e576710355924f3c8f1c67a5eea84b2af985a1",
+      "destinationSha256": "36ce2f5ec78cf899d144f116b8dd0f496b88e3a42f21edebd70bfb30d2f65df2",
       "preNavigationHotfixSha256": "2f347b4ea10faf5345a4f20e44fea7819e9991e954baa5f6479c4fcef7a4242a",
       "navigationHotfix": "See NAVIGATION-HOTFIX-RESULTS.md: delegated route, native tabs and ACL intersection.",
       "preFunctionalFixesSha256": "e75afc751fb473764f715edafae5ce8ffa96557673178092f3fbcfa0cf8bffdc",
@@ -549,7 +549,7 @@
       "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
       "adaptations": "No request/approval/accounting rule change. Shared profile locking projection omits the redundant assignedUserName join; beneficiary is already locked. Existing Stage6 native Jobs/snapshots/receipts and Stage5 conflict guards retained.",
       "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
-      "destinationSha256": "95060db1e6c0259356a652bfe29d72347ddf7ca1ce177849ca16def5d87ee289",
+      "destinationSha256": "5604d41c2c4583a53e374f369ec4a1f2bac3f4f335ede5e2487872a6d73f198c",
       "preFunctionalFixesSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
       "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
     },
@@ -2211,5 +2211,15 @@
       "reason": "Native Record controller; existing record hooks, native entityAcl and strict defaults protect generic APIs."
     }
   ],
-  "releaseVersion": "0.8.10"
+  "newIntegrationComponentsVersion0812": [
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidaySubmissionNotifier.php",
+      "reason": "Native Email outbox and bounded grouped-Job delivery for one Pending-created event per authorized request-recipient pair; no custom SMTP client or accounting ownership."
+    },
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Jobs/SendHolidayApprovalNotification.php",
+      "reason": "Thin Espo Core Job entrypoint for permission-revalidated native EmailSender delivery; no alternate queue or worker."
+    }
+  ],
+  "releaseVersion": "0.8.12"
 }

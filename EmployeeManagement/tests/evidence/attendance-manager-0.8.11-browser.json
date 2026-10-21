@@ -1,0 +1,119 @@
+{
+  "version": "0.8.11",
+  "results": [
+    {
+      "test": "editable-cell-renders-three-buttons",
+      "status": "PASS",
+      "observed": [
+        "P",
+        "D",
+        "CM"
+      ]
+    },
+    {
+      "test": "buttons-use-compact-P-D-CM-labels",
+      "status": "PASS",
+      "observed": [
+        "P",
+        "D",
+        "CM"
+      ]
+    },
+    {
+      "test": "buttons-have-full-accessible-labels",
+      "status": "PASS",
+      "observed": [
+        {
+          "label": "At work",
+          "title": "At work",
+          "shortLabel": "P"
+        },
+        {
+          "label": "In business trip",
+          "title": "In business trip",
+          "shortLabel": "D"
+        },
+        {
+          "label": "Absent on certified medical leave",
+          "title": "Absent on certified medical leave",
+          "shortLabel": "CM"
+        }
+      ]
+    },
+    {
+      "test": "button-group-remains-compact",
+      "status": "PASS",
+      "observed": {
+        "x": 77539,
+        "y": 834.984375,
+        "width": 88,
+        "height": 24
+      }
+    },
+    {
+      "test": "current-business-trip-is-highlighted",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "clicking-active-status-does-not-write",
+      "status": "PASS",
+      "observed": 0
+    },
+    {
+      "test": "single-click-saves-without-reason",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "payload": {
+          "userId": "6ad6f495d5c755a30",
+          "date": "2026-10-01",
+          "status": "AtWork",
+          "revision": 8
+        }
+      }
+    },
+    {
+      "test": "normal-marking-opens-no-modal",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "manager-can-correct-a-mistake-with-another-button",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "rapid-click-request-succeeds",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "rapid-clicks-produce-one-write",
+      "status": "PASS",
+      "observed": 1
+    },
+    {
+      "test": "failed-request-restores-previous-button",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "cic-cell-exposes-only-permitted-medical-button",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "frozen-month-has-no-routine-buttons",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "no-browser-javascript-errors",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 15,
+  "failures": 0
+}

@@ -604,8 +604,49 @@
     color: var(--text-muted-color);
 }
 
-.attendance-manager-status-select {
-    min-width: 120px;
+.attendance-manager-status-actions {
+    align-items: center;
+    display: inline-flex;
+    gap: 3px;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.attendance-manager-status-button {
+    background: var(--panel-bg);
+    border-width: 1px;
+    font-size: 11px;
+    font-weight: 700;
+    height: 24px;
+    line-height: 18px;
+    min-width: 25px;
+    padding: 2px 5px;
+}
+
+.attendance-manager-status-work {
+    border-color: var(--state-success-text);
+    color: var(--state-success-text);
+}
+
+.attendance-manager-status-trip {
+    border-color: var(--state-warning-text);
+    color: var(--state-warning-text);
+}
+
+.attendance-manager-status-medical {
+    border-color: var(--state-danger-text);
+    color: var(--state-danger-text);
+    min-width: 31px;
+}
+
+.attendance-manager-status-button.active,
+.attendance-manager-status-button.active:hover,
+.attendance-manager-status-button.active:focus {
+    box-shadow: inset 0 0 0 2px currentColor;
+}
+
+.attendance-manager-status-pending .attendance-manager-status-actions {
+    opacity: .65;
 }
 
 .attendance-state-actions {

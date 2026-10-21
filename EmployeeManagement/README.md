@@ -1,6 +1,21 @@
-# Employee Management 0.8.10
+# Employee Management 0.8.12
 
-Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.10 clarifică spațiile de lucru principale și administrative, închid ruta alternativă care mai putea produce `No create access`, păstrează navigația administrată nativ, furnizează iconul nativ pentru tabul Holiday Requests și includ resetări explicite pentru datele Holiday și Attendance de test. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
+Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.12 clarifică spațiile de lucru principale și administrative, păstrează navigația administrată nativ și adaugă notificarea prin email a aprobatorilor pentru cererile noi. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
+
+## Notificarea aprobatorilor Holiday — 0.8.12
+
+- O cerere nouă salvată cu status `Pending` creează atomic câte un email nativ și câte un Job nativ pentru fiecare aprobator eligibil. Transportul SMTP se execută exclusiv în worker, prin `EmailSender` și contul outbound configurat în EspoCRM.
+- Destinatarii provin din `HolidayApproverProvider`: utilizatori regular activi cu permisiunile efective `EmployeeManagement` și `EmployeeHolidayApproval`, inclusiv din roluri moștenite prin Teams, plus read-all/FLS și acces la cererea din coada de aprobare. Adresa primară trebuie să fie utilizabilă.
+- Permisiunile, starea `Pending` și adresa curentă sunt reverificate imediat înainte de expediere. Emailul include numai angajatul, perioada, numărul de zile lucrătoare, statusul și linkul construit din `siteUrl`.
+- Identitatea logică este derivată din eveniment, cerere și destinatar. Emailurile native păstrează stările Draft/Sending/Sent/Failed; joburile sunt grupate pe identitate, iar erorile au cel mult două retry-uri explicite, după 1 și 5 minute.
+- Retry-ul aceleiași comenzi create nu programează emailuri noi. Upgrade-ul nu scanează cererile Pending existente și nu trimite retroactiv. Nu există buton manual de retrimitere în această versiune.
+
+## Marcarea rapidă Attendance pentru manager — 0.8.11
+
+- Celulele editabile din `#EmployeeAttendanceOverview` afișează direct butoanele compacte P (Prezent), D (Delegație) și CM (Concediu medical), cu statusul curent evidențiat și etichete accesibile complete.
+- Marcarea uzuală se salvează cu un singur click, fără dialog și fără motiv inventat; click-ul pe statusul deja activ și click-urile repetate cât timp cererea este în curs nu scriu din nou.
+- Operația dedicată `managerMarkRoutine` păstrează ACL-ul, validarea WTC, protecțiile Holiday/CIC, blocarea lunii și revizia optimistă. Corecția managerială excepțională `managerMark` rămâne separată și continuă să ceară motiv.
+- Upgrade-ul nu conține migrare de schemă și nu modifică date Attendance/Holiday. Lifecycle-urile existente nu apelează servicii de resetare.
 
 ## Actualizare eficientă Holiday — 0.8.10
 
@@ -185,20 +200,21 @@ Holiday: GET `EmployeeManagement/holiday/{balance|requests|queue|employees}`; PO
 
 Corecții: POST `EmployeeManagement/administration/profiles/correct` cu profileId/delta/reason/idempotencyKey și opțional expectedBalance; POST `.../profiles/corrections` cu profileId pentru istoricul original. Nu sunt endpoint-uri CRUD generale.
 
-Attendance: GET `EmployeeManagement/attendance/{myAttendance|overview}` cu month=YYYY-MM, GET `.../schedules`; POST `.../{mark|managerMark|schedule|remind|xlsx|pdf|initialize}`. Mark primește date/status și opțional revision; managerMark adaugă userId/reason obligatoriu. Schedule acceptă numai userId/remote/cic/cicStartDate/cicEndDate, niciodată ore, WTC sau assignedUser impus pentru o pontare proprie. Exporturile păstrează răspunsul original filename/mediaType/content base64. Initialize păstrează datele, schimbând numai începutul arhivei vizibile la luna curentă.
+Attendance: GET `EmployeeManagement/attendance/{myAttendance|overview}` cu month=YYYY-MM, GET `.../schedules`; POST `.../{mark|managerMarkRoutine|managerMark|schedule|remind|xlsx|pdf|initialize}`. Mark primește date/status și opțional revision; managerMarkRoutine adaugă userId și este limitat la lunile editabile, fără reason; managerMark păstrează corecția excepțională cu userId/reason obligatoriu. Schedule acceptă numai userId/remote/cic/cicStartDate/cicEndDate, niciodată ore, WTC sau assignedUser impus pentru o pontare proprie. Exporturile păstrează răspunsul original filename/mediaType/content base64. Initialize păstrează datele, schimbând numai începutul arhivei vizibile la luna curentă.
 
 ```bash
-bash ./build.sh --extension ./EmployeeManagement --zip 0.8.10 files scripts
+bash ./build.sh --extension ./EmployeeManagement --zip 0.8.12 files scripts
 python3 EmployeeManagement/tests/contract.py
 node EmployeeManagement/tests/regression/reset-date-field.test.mjs
 ```
 
-ZIP: **dist/employee-management-0.8.10.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile native de lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
+ZIP: **dist/employee-management-0.8.12.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile native de lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
 
 Installer-ul nu șterge date, nu migrează originalele și nu modifică Roles/WTC. Coexistența cu originalele este un scenariu controlat de laborator, nu recomandare de producție.
 
 ## Trasabilitate și teste
 
+- [Notificări email Holiday 0.8.12](HOLIDAY-APPROVAL-EMAIL-0.8.12-RESULTS.md): mecanism nativ, probe SMTP controlate, retry și conservarea datelor la upgrade.
 - [Inventar funcțional și modificări](MIGRATION-INVENTORY.md).
 - REUSE-MAP.json: importul inițial și hash-urile surselor.
 - STAGE-2-REUSE.json: componentele activate și adaptările.

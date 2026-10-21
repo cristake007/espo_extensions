@@ -1,0 +1,217 @@
+{
+    "status": "PASS",
+    "phase": "verify",
+    "fromVersion": "0.8.10",
+    "toVersion": "0.8.11",
+    "differences": [],
+    "before": {
+        "counts": {
+            "EmployeeAttendanceRecord": 4486,
+            "EmployeeAttendanceWorkSchedule": 29,
+            "EmployeeAttendanceMonth": 10,
+            "EmployeeHolidayRequest": 311,
+            "EmployeeHolidayProfile": 344,
+            "EmployeeHolidayLedger": 895,
+            "EmployeeAbsence": 65,
+            "approvalDocuments": 108
+        },
+        "hashes": {
+            "EmployeeAttendanceRecord": "a239aa421a2571ab1ffc0c2d65d323e3045f25015d6b65ef263f26de3f978448",
+            "EmployeeAttendanceWorkSchedule": "b77f1fbb90b53111c9762844239398aa93d09d9f1feb56bb4a966074712c609a",
+            "EmployeeAttendanceMonth": "e05be4a7223b825cdc7e46d92327e206c7f7e262b1a062affe8caf27b620835c",
+            "EmployeeHolidayRequest": "e7be6de67ebf739880a8c3cc747445099752794e0fb0d2659b7913f590e2813f",
+            "EmployeeHolidayProfile": "80afca10949353326f5fb64a68c593b962815dbf641f37df2e8f6d16de05d3b2",
+            "EmployeeHolidayLedger": "91e56bd0a7e4314453af2b0c017f5268f1bd52c51711b38f75a72d9156b87f13",
+            "EmployeeAbsence": "d2b002e2e1f3685b3e7fa06d53eb5c46ef93bdf1f843bb6656c260fa22c1367e",
+            "approvalDocuments": "96444713ff2246fa8e79ba8500eeca74e16982b9920e3fb82c5f343e2638e445"
+        },
+        "config": {
+            "employeeAttendanceArchiveStartMonth": "2026-09",
+            "employeeAttendanceEditablePastMonths": 2,
+            "employeeAttendanceAllowIncompleteExports": true,
+            "employeeHolidayAutomaticAnnualGrantEnabled": false,
+            "calendarEntityList": [
+                "Meeting",
+                "Call",
+                "Task",
+                "ZileLibere",
+                "HolidayRequest",
+                "FeasibilityAbsence",
+                "EmployeeAbsence",
+                "EmployeeHolidayRequest"
+            ],
+            "tabList": [
+                {
+                    "type": "divider",
+                    "id": "342567",
+                    "text": "$CRM"
+                },
+                "Account",
+                "Contact",
+                "Lead",
+                "Opportunity",
+                {
+                    "type": "divider",
+                    "text": "$Activities",
+                    "id": "219419"
+                },
+                "Email",
+                "Meeting",
+                "Call",
+                "Task",
+                "Calendar",
+                {
+                    "type": "divider",
+                    "id": "655187",
+                    "text": "$Support"
+                },
+                "Case",
+                "KnowledgeBaseArticle",
+                {
+                    "type": "divider",
+                    "text": null,
+                    "id": "137994"
+                },
+                "_delimiter_",
+                {
+                    "type": "divider",
+                    "text": "$Marketing",
+                    "id": "463280"
+                },
+                "Campaign",
+                "TargetList",
+                {
+                    "type": "divider",
+                    "text": "$Business",
+                    "id": "518202"
+                },
+                "Document",
+                {
+                    "type": "divider",
+                    "text": "$Organization",
+                    "id": "566592"
+                },
+                "User",
+                "Team",
+                "WorkingTimeCalendar",
+                {
+                    "type": "divider",
+                    "text": null,
+                    "id": "898671"
+                },
+                "EmailTemplate",
+                "Template",
+                "Import",
+                "HolidayRequest",
+                "HolidayOverview",
+                "Attendance",
+                "AttendanceOverview"
+            ]
+        }
+    },
+    "after": {
+        "counts": {
+            "EmployeeAttendanceRecord": 4486,
+            "EmployeeAttendanceWorkSchedule": 29,
+            "EmployeeAttendanceMonth": 10,
+            "EmployeeHolidayRequest": 311,
+            "EmployeeHolidayProfile": 344,
+            "EmployeeHolidayLedger": 895,
+            "EmployeeAbsence": 65,
+            "approvalDocuments": 108
+        },
+        "hashes": {
+            "EmployeeAttendanceRecord": "a239aa421a2571ab1ffc0c2d65d323e3045f25015d6b65ef263f26de3f978448",
+            "EmployeeAttendanceWorkSchedule": "b77f1fbb90b53111c9762844239398aa93d09d9f1feb56bb4a966074712c609a",
+            "EmployeeAttendanceMonth": "e05be4a7223b825cdc7e46d92327e206c7f7e262b1a062affe8caf27b620835c",
+            "EmployeeHolidayRequest": "e7be6de67ebf739880a8c3cc747445099752794e0fb0d2659b7913f590e2813f",
+            "EmployeeHolidayProfile": "80afca10949353326f5fb64a68c593b962815dbf641f37df2e8f6d16de05d3b2",
+            "EmployeeHolidayLedger": "91e56bd0a7e4314453af2b0c017f5268f1bd52c51711b38f75a72d9156b87f13",
+            "EmployeeAbsence": "d2b002e2e1f3685b3e7fa06d53eb5c46ef93bdf1f843bb6656c260fa22c1367e",
+            "approvalDocuments": "96444713ff2246fa8e79ba8500eeca74e16982b9920e3fb82c5f343e2638e445"
+        },
+        "config": {
+            "employeeAttendanceArchiveStartMonth": "2026-09",
+            "employeeAttendanceEditablePastMonths": 2,
+            "employeeAttendanceAllowIncompleteExports": true,
+            "employeeHolidayAutomaticAnnualGrantEnabled": false,
+            "calendarEntityList": [
+                "Meeting",
+                "Call",
+                "Task",
+                "ZileLibere",
+                "HolidayRequest",
+                "FeasibilityAbsence",
+                "EmployeeAbsence",
+                "EmployeeHolidayRequest"
+            ],
+            "tabList": [
+                {
+                    "type": "divider",
+                    "id": "342567",
+                    "text": "$CRM"
+                },
+                "Account",
+                "Contact",
+                "Lead",
+                "Opportunity",
+                {
+                    "type": "divider",
+                    "text": "$Activities",
+                    "id": "219419"
+                },
+                "Email",
+                "Meeting",
+                "Call",
+                "Task",
+                "Calendar",
+                {
+                    "type": "divider",
+                    "id": "655187",
+                    "text": "$Support"
+                },
+                "Case",
+                "KnowledgeBaseArticle",
+                {
+                    "type": "divider",
+                    "text": null,
+                    "id": "137994"
+                },
+                "_delimiter_",
+                {
+                    "type": "divider",
+                    "text": "$Marketing",
+                    "id": "463280"
+                },
+                "Campaign",
+                "TargetList",
+                {
+                    "type": "divider",
+                    "text": "$Business",
+                    "id": "518202"
+                },
+                "Document",
+                {
+                    "type": "divider",
+                    "text": "$Organization",
+                    "id": "566592"
+                },
+                "User",
+                "Team",
+                "WorkingTimeCalendar",
+                {
+                    "type": "divider",
+                    "text": null,
+                    "id": "898671"
+                },
+                "EmailTemplate",
+                "Template",
+                "Import",
+                "HolidayRequest",
+                "HolidayOverview",
+                "Attendance",
+                "AttendanceOverview"
+            ]
+        }
+    }
+}

@@ -94,7 +94,7 @@ for item in stage3:
     assert hashlib.sha256((root/item['source']).read_bytes()).hexdigest()==item['sourceSha256'],item['source']
 for item in inventory['integratedStage3']:
     assert hashlib.sha256((root/item['destination']).read_bytes()).hexdigest()==item['destinationSha256'],item['destination']
-assert manifest['version']=='0.8.10'
+assert manifest['version']=='0.8.12'
 status = (modules[0]/'Tools/Workspace/Api/GetStatus.php').read_text()
 assert "'version' => '" + manifest['version'] + "'" in status
 assert not (modules[0]/'Hooks/EmployeeHolidayRequest/Balance.php').exists(), 'Commands exclusively own request accounting.'
@@ -157,6 +157,8 @@ for item in inventory['integratedStage7']:
     assert hashlib.sha256((root/item['destination']).read_bytes()).hexdigest()==item['destinationSha256'],item['destination']
 for item in inventory['newIntegrationComponentsStage7']:
     assert (root/item['file']).is_file() and item['reason']
+for item in inventory['newIntegrationComponentsVersion0812']:
+    assert (root/item['file']).is_file() and item['reason']
 absence=json.loads((metadata/'entityDefs/EmployeeAbsence.json').read_text())
 assert set(absence['fields'])=={'name','dateStart','dateEnd','assignedUser','sourceId','createdAt','color'}
 assert absence['fields']['color']['notStorable'] is True
@@ -185,7 +187,20 @@ for scope in ['EmployeeManagement','EmployeeAdministration','EmployeeAttendance'
 overview=(root/'files/client/custom/modules/employee-management/src/views/attendance/overview.js').read_text()
 assert '#EmployeeAdministration/attendanceMetadata' in overview
 assert '{{#if canManageSchedules}}' in overview
+for token in ["shortLabel: 'P'", "shortLabel: 'D'", "shortLabel: 'CM'",
+              "attendance-manager-status-button", "managerMarkRoutine", "aria-pressed"]:
+    assert token in overview
+assert 'attendance-correction' not in overview
+assert "reason, revision" not in overview
+attendance_api=(modules[0]/'Tools/Attendance/Api/Attendance.php').read_text()
+attendance_overview=(modules[0]/'Tools/Attendance/AttendanceOverviewService.php').read_text()
+assert "'managerMarkRoutine'=>['userId','date','status','revision']" in attendance_api
+assert 'markForUserRoutine' in attendance_overview
+assert "!$routineManagerMark && trim((string)$reason)===''" in attendance_overview
+assert "($state->get('frozen') || $month<$this->getEditableFromMonth($today))" in attendance_overview
 after_install=(root/'scripts/AfterInstall.php').read_text()
+for forbidden in ['AttendanceDataResetService', 'HolidayDataResetService', 'testDataReset', 'resetAttendance']:
+    assert forbidden not in after_install
 tab_list=(modules[0]/'Tools/Navigation/TabList.php').read_text()
 assert 'tabList' not in after_install and 'TabList::' not in after_install
 assert 'public static function remove' in tab_list and 'array_splice' not in tab_list
@@ -234,6 +249,21 @@ for token in ['Notification::TYPE_MESSAGE', "'employeeHolidayType' => 'decision'
     assert token in decision_notifier
 assert "$this->decisionNotifier->notify($request, 'Rejected')" in service
 assert "$this->decisionNotifier->notify($request, 'Approved')" in approval
+submission_notifier=(modules[0]/'Tools/HolidayBalance/HolidaySubmissionNotifier.php').read_text()
+submission_job=(modules[0]/'Jobs/SendHolidayApprovalNotification.php').read_text()
+approver_provider=(modules[0]/'Tools/HolidayAdministration/HolidayApproverProvider.php').read_text()
+for token in ['EmailSender', 'JobSchedulerFactory', 'Email::STATUS_DRAFT', 'Email::STATUS_SENDING',
+              'Email::STATUS_SENT', 'Email::STATUS_FAILED', "private const MAX_ATTEMPTS = 3",
+              "2 => 'PT1M'", "3 => 'PT5M'", "self::EVENT, $requestId, $recipientId",
+              "get('siteUrl')", '/#EmployeeHolidayRequest']:
+    assert token in submission_notifier
+assert '$this->submissionNotifier->queue($request)' in service
+assert '$this->notifier->deliver(' in submission_job
+assert 'canReadApprovalRequest' in approver_provider
+assert "getLevel(self::REQUEST, 'read') === 'all'" in approver_provider
+assert 'getScopeForbiddenAttributeList' in approver_provider
+assert 'SendHolidayApprovalNotification' not in after_install
+assert "'assignedUserId' => $recipient->getId()" not in submission_notifier
 assert "get('dateStartDate') < $this->dateTime->getToday()->toString()" in service
 client_css=json.loads((metadata/'app/client.json').read_text())['cssList']
 assert 'client/custom/modules/employee-management/css/holiday.css' in client_css
