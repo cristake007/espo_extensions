@@ -1,0 +1,209 @@
+{
+  "results": [
+    {
+      "test": "employee-personal-page-has-no-manager-workspace",
+      "status": "PASS"
+    },
+    {
+      "test": "employee-personal-balance-and-requests-remain-visible",
+      "status": "PASS"
+    },
+    {
+      "test": "personal-request-action-reuses-existing-booking-form",
+      "status": "PASS"
+    },
+    {
+      "test": "personal-edit-remains-available-for-pending-request",
+      "status": "PASS"
+    },
+    {
+      "test": "employee-manager-api-remains-denied",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "employee-direct-manager-route-is-denied",
+      "status": "PASS"
+    },
+    {
+      "test": "employee-no-javascript-errors",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "manager-personal-page-is-still-exclusively-personal",
+      "status": "PASS"
+    },
+    {
+      "test": "manager-landing-has-five-persistent-options",
+      "status": "PASS"
+    },
+    {
+      "test": "manager-landing-selects-approvals",
+      "status": "PASS"
+    },
+    {
+      "test": "romanian-language-preference-saves",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "romanian-manager-translation-renders",
+      "status": "PASS"
+    },
+    {
+      "test": "english-language-preference-saves",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "english-manager-translation-renders",
+      "status": "PASS"
+    },
+    {
+      "test": "native-sidebar-entry-is-visible",
+      "status": "PASS"
+    },
+    {
+      "test": "native-sidebar-entry-uses-icon-class",
+      "status": "PASS"
+    },
+    {
+      "test": "approvals-filter-matches-existing-queue",
+      "status": "PASS",
+      "observed": {
+        "expectedApprovals": 99,
+        "rendered": 99
+      }
+    },
+    {
+      "test": "approval-processing-is-not-relabeled-as-pending",
+      "status": "PASS"
+    },
+    {
+      "test": "pending-approval-actions-remain-available",
+      "status": "PASS"
+    },
+    {
+      "test": "cancellations-are-separated-from-new-approvals",
+      "status": "PASS",
+      "observed": {
+        "expectedCancellations": 21,
+        "rendered": 21
+      }
+    },
+    {
+      "test": "cancellation-decision-actions-remain-available",
+      "status": "PASS"
+    },
+    {
+      "test": "all-manager-options-remain-visible-on-cancellations",
+      "status": "PASS"
+    },
+    {
+      "test": "browser-back-restores-selected-manager-section",
+      "status": "PASS"
+    },
+    {
+      "test": "browser-forward-restores-selected-manager-section",
+      "status": "PASS"
+    },
+    {
+      "test": "approved-section-reuses-approved-endpoint",
+      "status": "PASS",
+      "observed": {
+        "expected": 28,
+        "rendered": 28
+      }
+    },
+    {
+      "test": "approved-manager-cancellation-action-remains-available",
+      "status": "PASS"
+    },
+    {
+      "test": "approved-cancellation-still-requires-reason-modal",
+      "status": "PASS"
+    },
+    {
+      "test": "verification-option-opens-existing-verification-page",
+      "status": "PASS"
+    },
+    {
+      "test": "mobile-manager-page-has-no-horizontal-overflow",
+      "status": "PASS",
+      "observed": {
+        "scrollWidth": 350,
+        "clientWidth": 350
+      }
+    },
+    {
+      "test": "mobile-manager-options-remain-visible",
+      "status": "PASS"
+    },
+    {
+      "test": "manager-no-javascript-errors",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "approver-only-sees-approval-functions",
+      "status": "PASS"
+    },
+    {
+      "test": "approver-only-does-not-gain-managed-booking",
+      "status": "PASS"
+    },
+    {
+      "test": "approver-only-no-javascript-errors",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "booking-only-opens-native-managed-booking-section",
+      "status": "PASS"
+    },
+    {
+      "test": "booking-only-does-not-gain-approval-or-verification",
+      "status": "PASS"
+    },
+    {
+      "test": "booking-only-cannot-read-approval-queue",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "book-option-reuses-original-managed-booking-modal",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "count": 1,
+        "employeeField": 1,
+        "calculation": 1,
+        "errors": []
+      }
+    },
+    {
+      "test": "booking-only-no-javascript-errors",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 39,
+  "failures": 0,
+  "screenshots": [
+    "/work/tests/evidence/holiday-workspaces-employee-personal-desktop.png",
+    "/work/tests/evidence/holiday-workspaces-manager-personal-desktop.png",
+    "/work/tests/evidence/holiday-workspaces-manager-landing-desktop.png",
+    "/work/tests/evidence/holiday-workspaces-manager-landing-ro-desktop.png",
+    "/work/tests/evidence/holiday-workspaces-sidebar-icon.png",
+    "/work/tests/evidence/holiday-workspaces-manager-approvals-desktop.png",
+    "/work/tests/evidence/holiday-workspaces-manager-cancellations-desktop.png",
+    "/work/tests/evidence/holiday-workspaces-manager-approved-desktop.png",
+    "/work/tests/evidence/holiday-workspaces-manager-mobile.png"
+  ],
+  "queue": {
+    "total": 120,
+    "approvals": 99,
+    "cancellations": 21
+  }
+}

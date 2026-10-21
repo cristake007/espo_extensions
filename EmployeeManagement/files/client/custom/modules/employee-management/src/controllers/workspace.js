@@ -10,6 +10,39 @@ define(['controller', 'ajax'], (Controller, Ajax) => class extends Controller {
         return this.main('employee-management:views/holiday-request/index');
     }
 
+    actionHolidayManagement(options = {}) {
+        if (!this.getUser().isRegular() || !this.getUser().get('isActive') ||
+            !this.getAcl().checkScope('EmployeeManagement') ||
+            this.getAcl().getLevel('EmployeeHolidayRequest', 'read') !== 'all') {
+            this.baseController.error403(); return;
+        }
+
+        const canManagedBooking = this.getAcl().checkScope('EmployeeHolidayBooking') &&
+            this.getAcl().checkScope('EmployeeHolidayRequestManagement') &&
+            this.getAcl().getLevel('EmployeeHolidayProfile', 'read') === 'all';
+        const canApprove = this.getAcl().checkScope('EmployeeHolidayApproval');
+
+        if (!canManagedBooking && !canApprove) {
+            this.baseController.error403(); return;
+        }
+
+        let section = options.section || (canApprove ? 'approvals' : 'book');
+        const approvalSections = ['approvals', 'cancellations', 'approved'];
+
+        if (!['approvals', 'cancellations', 'approved', 'book'].includes(section) ||
+            (approvalSections.includes(section) && !canApprove) ||
+            (section === 'book' && !canManagedBooking)) {
+            this.baseController.error403(); return;
+        }
+
+        return this.main('employee-management:views/holiday-management/index', {
+            section,
+            canManagedBooking,
+            canApprove,
+            canVerify:canApprove,
+        });
+    }
+
     actionVerifyHolidayDocument() {
         if (!this.getUser().isRegular() || !this.getUser().get('isActive') ||
             !this.getAcl().checkScope('EmployeeManagement') ||

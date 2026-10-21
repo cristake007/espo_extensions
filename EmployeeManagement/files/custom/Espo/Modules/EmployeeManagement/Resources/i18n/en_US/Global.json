@@ -12,6 +12,7 @@
         "EmployeeAdministration": "Employee Management administration",
         "EmployeeHolidayBooking": "Holiday — Book own requests",
         "EmployeeHolidayRequestManagement": "Holiday — Manage employee requests",
+        "EmployeeHolidayManagement": "Holiday Management — navigation",
         "EmployeeHolidayBalanceCorrection": "Holiday — Balance corrections",
         "EmployeeAttendance": "Attendance — Own entries",
         "EmployeeAttendanceOverview": "Attendance — Overview",
@@ -29,7 +30,8 @@
         "EmployeeManagement": "Employee Management",
         "EmployeeAdministration": "Employee administration",
         "EmployeeAttendance": "My attendance",
-        "EmployeeAttendanceOverview": "Attendance overview"
+        "EmployeeAttendanceOverview": "Attendance overview",
+        "EmployeeHolidayManagement": "Holiday Management"
     },
     "labels": {
         "EmployeeManagement": "Employee Management",

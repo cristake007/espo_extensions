@@ -37,12 +37,6 @@ assert(Number.isFinite(normalObservationMs) && normalObservationMs >= 0);
         document.dispatchEvent(new Event('visibilitychange'));
     }, hidden);
 
-    await page.goto(base + '#EmployeeManagement/holiday');
-    await page.locator('[name="username"]').fill(username);
-    await page.locator('[name="password"]').fill(password);
-    await page.locator('#btn-login').click();
-    await page.locator('[data-name="holiday-balance"]').waitFor();
-
     let emptyQueue = true;
     await page.route(`**${queueUrl}`, async route => {
         if (emptyQueue) {
@@ -57,7 +51,10 @@ assert(Number.isFinite(normalObservationMs) && normalObservationMs >= 0);
         await route.continue();
     });
 
-    await page.locator('[data-action="queue"]').click();
+    await page.goto(base + '#EmployeeHolidayManagement/approvals');
+    await page.locator('[name="username"]').fill(username);
+    await page.locator('[name="password"]').fill(password);
+    await page.locator('#btn-login').click();
     await page.locator('[data-name="empty-list"]').waitFor();
     const visibleQueue = page.waitForResponse(response => response.url().endsWith(queueUrl));
     await setHidden(true);
@@ -90,7 +87,7 @@ assert(Number.isFinite(normalObservationMs) && normalObservationMs >= 0);
     await page.waitForResponse(response => response.url().endsWith(queueUrl), {timeout:7000});
 
     const approvedLoad = page.waitForResponse(response => response.url().endsWith(approvedUrl));
-    await page.locator('[data-action="approved"]').click();
+    await page.locator('[data-section="approved"]').click();
     await approvedLoad;
     assert.ok(await page.locator('[data-name="approval-document"]').count() > 0,
         'Published approval documents must remain visible.');
@@ -103,7 +100,7 @@ assert(Number.isFinite(normalObservationMs) && normalObservationMs >= 0);
     );
 
     const queueLoad = page.waitForResponse(response => response.url().endsWith(queueUrl));
-    await page.locator('[data-action="queue"]').click();
+    await page.locator('[data-section="approvals"]').click();
     await queueLoad;
     queueResponses.length = 0;
     await page.goto(base + '#EmployeeManagement');

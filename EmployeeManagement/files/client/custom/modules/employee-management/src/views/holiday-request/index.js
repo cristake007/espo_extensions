@@ -84,25 +84,6 @@ define(['view'], View => class extends View {
             </div>
         </section>
 
-        {{#if hasManagerActions}}
-        <section class="employee-holiday-manager" data-name="manager-actions">
-            <div class="employee-holiday-manager-copy">
-                <div class="employee-holiday-manager-icon"><span class="fas fa-user-shield" aria-hidden="true"></span></div>
-                <div>
-                    <h4>{{translate 'Manager Actions' category='labels' scope='EmployeeHolidayRequest'}}</h4>
-                    <p>{{translate 'managerHolidayToolsHelp' category='messages' scope='EmployeeHolidayRequest'}}</p>
-                </div>
-            </div>
-            <div class="employee-holiday-manager-actions">
-                {{#if canManage}}<button class="btn btn-default" data-action="managed"><span class="fas fa-user-plus" aria-hidden="true"></span> {{translate 'Book for Employee' category='labels' scope='EmployeeHolidayRequest'}}</button>{{/if}}
-                {{#if canQueue}}{{#unless queueMode}}<button class="btn btn-default" data-action="queue"><span class="fas fa-clipboard-check" aria-hidden="true"></span> {{translate 'Holiday Approvals' category='labels' scope='EmployeeHolidayRequest'}}</button>{{/unless}}{{/if}}
-                {{#if canQueue}}{{#unless approvedMode}}<button class="btn btn-default" data-action="approved"><span class="fas fa-calendar-check" aria-hidden="true"></span> {{translate 'Approved Holidays' category='labels' scope='EmployeeHolidayRequest'}}</button>{{/unless}}{{/if}}
-                {{#if canQueue}}<a class="btn btn-default" href="#EmployeeHolidayDocumentVerification"><span class="fas fa-shield-alt" aria-hidden="true"></span> {{translate 'Verify Holiday Document' category='labels' scope='EmployeeHolidayRequest'}}</a>{{/if}}
-                {{#if managerMode}}<button class="btn btn-default" data-action="own"><span class="fas fa-user" aria-hidden="true"></span> {{translate 'My Holiday Requests' category='labels' scope='EmployeeHolidayRequest'}}</button>{{/if}}
-            </div>
-        </section>
-        {{/if}}
-
         <section class="employee-holiday-requests">
             <div class="employee-holiday-list-heading">
                 <div>
@@ -173,16 +154,12 @@ define(['view'], View => class extends View {
 
     events = {
         'click [data-action="create"]': function () { this.openForm(false); },
-        'click [data-action="managed"]': function () { this.openForm(true); },
-        'click [data-action="queue"]': function () { this.switchListMode('queue'); },
-        'click [data-action="approved"]': function () { this.switchListMode('approved'); },
-        'click [data-action="own"]': function () { this.switchListMode('own'); },
         'click article [data-action]': 'act',
     };
 
     setup() {
         this.rows = [];
-        this.listMode = 'own';
+        this.listMode = this.initialListMode || 'own';
         this.listModeVersion = 0;
         this.balanceInfo = null;
         this.balanceLoadFailed = false;
@@ -218,12 +195,6 @@ define(['view'], View => class extends View {
             annualEntitlement:this.formatDays(balance.annualEntitlement),
             nextResetDate:balance.nextResetDate ? this.getDateTime().toDisplayDate(balance.nextResetDate) : this.translate('Not Set', 'labels', 'EmployeeHolidayRequest'),
             canBook:this.canBook,
-            canManage:this.canManage,
-            canQueue:this.canQueue,
-            hasManagerActions:this.canManage || this.canQueue,
-            managerMode:this.listMode !== 'own',
-            queueMode:this.listMode === 'queue',
-            approvedMode:this.listMode === 'approved',
             showApprovalInfo:this.listMode === 'queue' && this.canQueue,
             showApprovedInfo:this.listMode === 'approved' && this.canQueue,
             canCreateFromEmpty:this.canBook && this.listMode === 'own',
@@ -256,12 +227,16 @@ define(['view'], View => class extends View {
             return false;
         }
 
-        let balanceInfo = null;
-        let balanceLoadFailed = false;
-        try {
-            balanceInfo = await Espo.Ajax.getRequest('EmployeeManagement/holiday/balance');
-        } catch (e) {
-            balanceLoadFailed = true;
+        let balanceInfo = this.balanceInfo;
+        let balanceLoadFailed = this.balanceLoadFailed;
+        if (this.loadBalanceEnabled !== false) {
+            balanceInfo = null;
+            balanceLoadFailed = false;
+            try {
+                balanceInfo = await Espo.Ajax.getRequest('EmployeeManagement/holiday/balance');
+            } catch (e) {
+                balanceLoadFailed = true;
+            }
         }
 
         if (!this.isCurrentListContext(mode, modeVersion)) {
@@ -269,7 +244,9 @@ define(['view'], View => class extends View {
         }
 
         const canQueue = response.canDecide === true;
-        const rows = (response.list || []).map(row => {
+        const managerList = mode !== 'own';
+        const responseRows = this.filterResponseRows(response.list || [], mode);
+        const rows = responseRows.map(row => {
             const documents = (row.documents || []).map(document => ({
                 ...document,
                 url:`${this.getBasePath()}?entryPoint=download&id=${encodeURIComponent(document.id)}`,
@@ -281,17 +258,17 @@ define(['view'], View => class extends View {
                 statusLabel:this.getLanguage().translateOption(row.status, 'status', 'EmployeeHolidayRequest'),
                 statusClass:this.statusClass(row.status),
                 statusIcon:this.statusIcon(row.status),
-                showAssignee:mode !== 'own',
-                editable:row.status === 'Pending' && (row.assignedUserId === this.getUser().id || canManage) && canBook,
-                rejectable:canQueue && row.status === 'Pending',
-                approvable:canQueue && response.approvalEnabled && row.status === 'Pending',
+                showAssignee:managerList,
+                editable:row.status === 'Pending' && canBook && (managerList ? canManage : row.assignedUserId === this.getUser().id),
+                rejectable:managerList && canQueue && row.status === 'Pending',
+                approvable:managerList && canQueue && response.approvalEnabled && row.status === 'Pending',
                 processing:row.status === 'ApprovalProcessing',
-                retryable:canQueue && row.status === 'ApprovalProcessing' && row.approvalRetryAvailable,
+                retryable:managerList && canQueue && row.status === 'ApprovalProcessing' && row.approvalRetryAvailable,
                 documents,
                 hasDocuments:documents.length > 0,
                 requestCancellation:row.status === 'Approved' && row.assignedUserId === this.getUser().id && row.dateStartDate >= this.getDateTime().getToday(),
-                cancellable:canQueue && row.status === 'Approved',
-                cancellationPending:canQueue && row.status === 'CancellationPending',
+                cancellable:managerList && canQueue && row.status === 'Approved',
+                cancellationPending:managerList && canQueue && row.status === 'CancellationPending',
             };
         });
 
@@ -301,9 +278,12 @@ define(['view'], View => class extends View {
         this.balanceInfo = balanceInfo;
         this.balanceLoadFailed = balanceLoadFailed;
         this.rows = rows;
-        this.requestSignature = this.makeRequestSignature(response.list || []);
+        this.requestSignature = this.makeRequestSignature(responseRows);
 
         return true;
+    }
+    filterResponseRows(rows) {
+        return rows;
     }
     async requestList(mode) {
         while (this.listRequestPromise) {
@@ -372,7 +352,7 @@ define(['view'], View => class extends View {
                 return true;
             }
 
-            const signature = this.makeRequestSignature(response.list || []);
+            const signature = this.makeRequestSignature(this.filterResponseRows(response.list || [], mode));
 
             if (signature === this.requestSignature && !this.balanceLoadFailed) {
                 return true;

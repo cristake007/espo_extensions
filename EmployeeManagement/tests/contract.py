@@ -53,7 +53,7 @@ assert set(scheduled)=={'ProcessEmployeeHolidayResets'}
 assert scheduled['ProcessEmployeeHolidayResets']['scheduling']=='5 0 * * *'
 assert not (metadata / 'app/adminPanel.json').exists()
 routes = json.loads((metadata / 'app/clientRoutes.json').read_text())
-assert set(routes) == {'EmployeeManagement', 'EmployeeAdministration', 'EmployeeAdministration/:section', 'EmployeeManagement/holiday', 'EmployeeHolidayDocumentVerification', 'EmployeeAttendance', 'EmployeeAttendanceOverview', 'EmployeeAttendance/month/:month', 'EmployeeHolidayRequest', 'EmployeeHolidayRequest/create'}
+assert set(routes) == {'EmployeeManagement', 'EmployeeAdministration', 'EmployeeAdministration/:section', 'EmployeeManagement/holiday', 'EmployeeHolidayManagement', 'EmployeeHolidayManagement/:section', 'EmployeeHolidayDocumentVerification', 'EmployeeAttendance', 'EmployeeAttendanceOverview', 'EmployeeAttendance/month/:month', 'EmployeeHolidayRequest', 'EmployeeHolidayRequest/create'}
 acl = json.loads((metadata / 'app/acl.json').read_text())
 assert 'mandatory' not in acl
 assert all(value is False for value in acl['strictDefault']['scopeLevel'].values())
@@ -102,7 +102,7 @@ for item in stage3:
 for item in inventory['integratedStage3']:
     if item['destination'] not in focused_release_adaptations:
         assert hashlib.sha256((root/item['destination']).read_bytes()).hexdigest()==item['destinationSha256'],item['destination']
-assert manifest['version']=='0.8.14'
+assert manifest['version']=='0.8.15'
 status = (modules[0]/'Tools/Workspace/Api/GetStatus.php').read_text()
 assert "'version' => '" + manifest['version'] + "'" in status
 
@@ -231,7 +231,7 @@ print(f'PASS: Stage 7 provenance ({len(stage7)} adaptations), minimal native Cal
 for path in (root/'files/client/custom/modules/employee-management').rglob('*'):
     if path.is_file() and path.suffix in {'.js','.tpl'}:
         assert '#Admin' not in path.read_text(), path
-for scope in ['EmployeeManagement','EmployeeAdministration','EmployeeAttendance','EmployeeAttendanceOverview']:
+for scope in ['EmployeeManagement','EmployeeAdministration','EmployeeAttendance','EmployeeAttendanceOverview','EmployeeHolidayManagement']:
     assert json.loads((metadata/f'scopes/{scope}.json').read_text())['tab'] is True
     for locale in ['en_US','ro_RO']:
         assert json.loads((modules[0]/f'Resources/i18n/{locale}/Global.json').read_text())['scopeNamesPlural'][scope]
@@ -270,13 +270,31 @@ for key in ['balance.availableDays','balance.pendingDays','balance.annualEntitle
 for token in ['employee-holiday-balance-grid', 'employee-holiday-request-list',
               'data-action="create"', 'statusClass(row.status)', 'hasDocuments:documents.length > 0']:
     assert token in holiday_page
-for token in ['data-action="approved"', "this.switchListMode('approved')", "const endpoint = mode === 'own' ? 'requests' : mode",
-              "row.dateStartDate >= this.getDateTime().getToday()"]:
+for token in ["const endpoint = mode === 'own' ? 'requests' : mode",
+              "row.dateStartDate >= this.getDateTime().getToday()",
+              "managerList && canQueue && row.status === 'Pending'"]:
     assert token in holiday_page
-for token in ['pollForUpdates()', 'makeRequestSignature(response.list || [])', 'getPollingDelay()',
+for token in ['pollForUpdates()', 'makeRequestSignature(this.filterResponseRows(response.list || [], mode))', 'getPollingDelay()',
               'document.addEventListener', 'document.removeEventListener', 'recordPollingFailure()',
               "row.status === 'Approved'", "row.status === 'Rejected'"]:
     assert token in holiday_page
+assert 'data-name="manager-actions"' not in holiday_page
+assert 'data-action="managed"' not in holiday_page
+assert 'data-action="queue"' not in holiday_page
+assert 'EmployeeHolidayDocumentVerification' not in holiday_page
+management_page=(root/'files/client/custom/modules/employee-management/src/views/holiday-management/index.js').read_text()
+for token in ['employee-holiday-management-options', '#EmployeeHolidayManagement/approvals',
+              '#EmployeeHolidayManagement/cancellations', '#EmployeeHolidayManagement/approved',
+              '#EmployeeHolidayManagement/book', '#EmployeeHolidayDocumentVerification',
+              "['Pending', 'ApprovalProcessing'].includes(row.status)",
+              "row.status === 'CancellationPending'", "{managed:true}"]:
+    assert token in management_page
+management_scope=json.loads((metadata/'scopes/EmployeeHolidayManagement.json').read_text())
+management_client=json.loads((metadata/'clientDefs/EmployeeHolidayManagement.json').read_text())
+assert management_scope['tab'] is True and management_scope['acl']=='boolean'
+assert management_client['iconClass']=='fas fa-user-shield'
+assert routes['EmployeeHolidayManagement']['params']=={'controller':'employee-management:controllers/workspace','action':'holidayManagement'}
+assert routes['EmployeeHolidayManagement/:section']['params']=={'controller':'employee-management:controllers/workspace','action':'holidayManagement'}
 assert 'setInterval' not in holiday_page
 assert "this.listMode !== 'own' && !this.rows.some" not in holiday_page
 assert 'baseDelay = this.rows.some(row => row.processing) ? 5000 : 30000' in holiday_page

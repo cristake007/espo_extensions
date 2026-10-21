@@ -127,7 +127,7 @@ Aceasta este o actualizare a extensiei din spațiul `custom`, nu un patch al fi�
 ## Pachet
 
 - Arhivă: `dist/employee-management-0.8.14.zip`
-- SHA-256: `7286532624f8a5459e495b29627d06721db775f177392f9da37dfb3c7ed1ea13`
+- SHA-256 al pachetului 0.8.14: `7286532624f8a5459e495b29627d06721db775f177392f9da37dfb3c7ed1ea13`
 - Validarea DOCX, Attendance și polling din versiunile anterioare rămâne inclusă în regresii.
 
 Laboratorul izolat a fost folosit pentru instalare, API și Chromium. Producția nu a fost accesată.

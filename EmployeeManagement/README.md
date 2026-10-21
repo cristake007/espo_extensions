@@ -1,6 +1,14 @@
-# Employee Management 0.8.14
+# Employee Management 0.8.15
 
-Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.14 clarifică spațiile de lucru principale și administrative, păstrează navigația administrată nativ, notifică aprobatorii, verifică documentele Holiday și oferă un registru Holiday nativ mai ușor de urmărit. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
+Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.15 clarifică spațiile de lucru principale și administrative, păstrează navigația administrată nativ, notifică aprobatorii, verifică documentele Holiday și oferă un registru Holiday nativ mai ușor de urmărit. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
+
+## Spații Holiday personale și manageriale separate — 0.8.15
+
+- `#EmployeeHolidayRequest` și ruta compatibilă `#EmployeeManagement/holiday` sunt exclusiv personale, inclusiv pentru manageri: sold, drept anual, rezervări, cereri proprii, documente și operațiile personale permise. Nu mai afișează aprobări, rezervări pentru colegi, anulări manageriale sau verificarea documentelor.
+- Noul workspace nativ `#EmployeeHolidayManagement` păstrează permanent opțiunile autorizate pentru aprobări, cereri de anulare, concedii aprobate, rezervare pentru angajat și verificare DOCX. Secțiunile folosesc rute native proprii, astfel încât Back/Forward păstrează selecția.
+- Aprobările și anulările sunt două prezentări ale aceluiași răspuns existent `GET EmployeeManagement/holiday/queue`; `ApprovalProcessing` rămâne vizibil ca procesare. Concediile aprobate folosesc endpoint-ul existent `approved`, iar formularul pentru colegi și pagina de verificare sunt reutilizate fără implementări paralele.
+- Scope-ul nativ `EmployeeHolidayManagement` controlează numai disponibilitatea tabului și iconului `fas fa-user-shield`. Administratorul îl acordă manual Rolurilor manageriale și adaugă tabul prin editorul nativ de navigație; extensia nu rescrie `tabList` și nu schimbă preferințele utilizatorilor.
+- Accesul operațional nu este acordat de noul scope. Aprobările cer în continuare `EmployeeHolidayApproval` și `EmployeeHolidayRequest.read=all`; rezervarea managerială cere `EmployeeHolidayBooking`, `EmployeeHolidayRequestManagement`, Request read-all și Profile read-all. Backend-ul și ACL/FLS rămân autoritatea finală.
 
 ## Registru Holiday nativ — 0.8.14
 
@@ -111,7 +119,7 @@ Pagina personală Holiday are acum spațiu între conținut și bara superioară
 
 `#EmployeeHolidayRequest` și intrarea canonică `#EmployeeManagement/holiday` folosesc aceeași pagină personală reorganizată. Soldul curent, zilele disponibile, zilele rezervate, dreptul anual și data resetării sunt prezentate distinct, iar acțiunea „Solicită concediu” este disponibilă atât în antet, cât și în starea goală. Cererile au status vizual, perioadă, număr de zile, notă, documente și numai acțiunile permise de starea lor și de ACL.
 
-Stilurile folosesc tokenii temei TUVTK și variabilele native EspoCRM ca fallback, inclusiv pentru stări și mod responsive. Instrumentele manageriale rămân într-o zonă separată și apar numai prin drepturile existente. Nu au fost modificate endpoint-urile, calculele, soldul, ledger-ul, fluxul de aprobare sau navigația generală.
+Stilurile folosesc tokenii temei TUVTK și variabilele native EspoCRM ca fallback, inclusiv pentru stări și mod responsive. În versiunea 0.8.15, instrumentele manageriale au fost mutate integral în `#EmployeeHolidayManagement`; pagina personală nu le mai afișează. Nu au fost modificate endpoint-urile, calculele, soldul, ledger-ul sau fluxul de aprobare.
 
 ## Resetarea datelor Holiday de test — 0.7.7
 
@@ -133,7 +141,7 @@ Intrările redundante „Employee Management” și „Employee Management — A
 
 `#EmployeeManagement/holiday` este intrarea canonică din workspace, iar `#EmployeeHolidayRequest` este o intrare compatibilă către aceeași pagină personală, fără implementare duplicată. `#EmployeeHolidayRequest/view/:id` păstrează detaliul nativ read-only. `#EmployeeHolidayRequest/create` deschide același formular de rezervare și execută comanda contabilă existentă, nu CRUD generic.
 
-Angajatul vede soldul curent, zilele disponibile, zilele rezervate de cererile Pending/ApprovalProcessing, dreptul anual, următoarea resetare și lista cererilor proprii cu status, detaliu și operațiile deja implementate. Mesajele pentru profil neinițializat și eroare de încărcare sunt păstrate. Acțiunile manageriale existente sunt afișate separat și numai prin ACL/Role-urile native.
+Angajatul vede soldul curent, zilele disponibile, zilele rezervate de cererile Pending/ApprovalProcessing, dreptul anual, următoarea resetare și lista cererilor proprii cu status, detaliu și operațiile deja implementate. Mesajele pentru profil neinițializat și eroare de încărcare sunt păstrate. Începând cu versiunea 0.8.15, acțiunile manageriale sunt disponibile numai în workspace-ul managerial dedicat.
 
 ## Corecții funcționale — 0.7.2
 
@@ -198,6 +206,7 @@ Toate scopes noi sunt implicit refuzate. Administratorul configurează explicit:
 | EmployeeHolidayApproval | Aprobare și retry autorizate, inclusiv autoaprobare; împreună cu ACL read al cererii |
 | EmployeeHolidayBooking | Cereri proprii și comenzile aferente; necesită și citire nativă a cererii/câmpurilor |
 | EmployeeHolidayRequestManagement | Rezervare pentru colegi și gestionare Pending, împreună cu Booking și Request read all |
+| EmployeeHolidayManagement | Vizibilitatea tabului nativ „Gestionare concedii”; nu acordă singur nicio operație și se configurează manual numai pe Rolurile manageriale |
 | EmployeeHolidayBalanceCorrection | Corecții și istoric; necesită și drepturile de administrare a profilurilor |
 | EmployeeAttendance | Pagina/pontarea proprie; AttendanceRecord și AttendanceWorkSchedule read own/câmpuri |
 | EmployeeAttendanceOverview | Matrice lunară; cele două entități Attendance read all/câmpuri |
@@ -234,17 +243,18 @@ Corecții: POST `EmployeeManagement/administration/profiles/correct` cu profileI
 Attendance: GET `EmployeeManagement/attendance/{myAttendance|overview}` cu month=YYYY-MM, GET `.../schedules`; POST `.../{mark|managerMarkRoutine|managerMark|schedule|remind|xlsx|pdf|initialize}`. Mark primește date/status și opțional revision; managerMarkRoutine adaugă userId și este limitat la lunile editabile, fără reason; managerMark păstrează corecția excepțională cu userId/reason obligatoriu. Schedule acceptă numai userId/remote/cic/cicStartDate/cicEndDate, niciodată ore, WTC sau assignedUser impus pentru o pontare proprie. Exporturile păstrează răspunsul original filename/mediaType/content base64. Initialize păstrează datele, schimbând numai începutul arhivei vizibile la luna curentă.
 
 ```bash
-bash ./build.sh --extension ./EmployeeManagement --zip 0.8.14 files scripts
+bash ./build.sh --extension ./EmployeeManagement --zip 0.8.15 files scripts
 python3 EmployeeManagement/tests/contract.py
 node EmployeeManagement/tests/regression/reset-date-field.test.mjs
 ```
 
-ZIP: **dist/employee-management-0.8.14.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile CLI/lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
+ZIP: **dist/employee-management-0.8.15.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile CLI/lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
 
 Installer-ul nu șterge date, nu migrează originalele și nu modifică Roles/WTC. Coexistența cu originalele este un scenariu controlat de laborator, nu recomandare de producție.
 
 ## Trasabilitate și teste
 
+- [Separarea workspace-urilor Holiday 0.8.15](HOLIDAY-WORKSPACES-0.8.15-RESULTS.md): rute, permisiuni, capturi Chromium, polling și conservarea datelor.
 - [Notificări email Holiday 0.8.12](HOLIDAY-APPROVAL-EMAIL-0.8.12-RESULTS.md): mecanism nativ, probe SMTP controlate, retry și conservarea datelor la upgrade.
 - [Inventar funcțional și modificări](MIGRATION-INVENTORY.md).
 - REUSE-MAP.json: importul inițial și hash-urile surselor.

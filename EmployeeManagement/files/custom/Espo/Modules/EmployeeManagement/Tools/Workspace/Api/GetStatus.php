@@ -42,7 +42,7 @@ final class GetStatus implements Action
             try { $this->attendance->assertScheduleEditor(); $sections[] = 'attendanceMetadata'; } catch (Forbidden) {}
         }
         return ResponseComposer::json([
-            'version' => '0.8.14',
+            'version' => '0.8.15',
             'readableScopes' => $read,
             'businessMutationsEnabled' => false,
             'settingsEnabled' => count($sections) > 0,

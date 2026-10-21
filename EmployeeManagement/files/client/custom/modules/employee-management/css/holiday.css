@@ -684,6 +684,119 @@
     color: var(--state-danger-text);
 }
 
+.employee-holiday-management-page .employee-holiday-management-hero .btn .fas {
+    margin-right: 5px;
+}
+
+.employee-holiday-management-page .employee-holiday-management-options {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin-bottom: 20px;
+}
+
+.employee-holiday-management-page .employee-holiday-management-option {
+    align-items: flex-start;
+    background: var(--employee-holiday-surface);
+    border: 1px solid var(--employee-holiday-border);
+    border-top: 3px solid transparent;
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--default-box-shadow);
+    color: var(--employee-holiday-text);
+    display: flex;
+    gap: 10px;
+    min-height: 94px;
+    padding: 13px 12px;
+    text-decoration: none;
+}
+
+.employee-holiday-management-page .employee-holiday-management-option:hover,
+.employee-holiday-management-page .employee-holiday-management-option:focus {
+    background: var(--employee-holiday-hover);
+    border-color: var(--employee-holiday-primary);
+    color: var(--employee-holiday-text);
+    text-decoration: none;
+}
+
+.employee-holiday-management-page .employee-holiday-management-option.is-active {
+    background: var(--employee-holiday-hover);
+    border-color: var(--employee-holiday-primary);
+    border-top-color: var(--employee-holiday-secondary);
+}
+
+.employee-holiday-management-page .employee-holiday-management-option-icon {
+    align-items: center;
+    background: var(--employee-holiday-hover);
+    border-radius: 50%;
+    color: var(--employee-holiday-primary);
+    display: flex;
+    flex: 0 0 34px;
+    height: 34px;
+    justify-content: center;
+    width: 34px;
+}
+
+.employee-holiday-management-page .employee-holiday-management-option.is-active .employee-holiday-management-option-icon {
+    background: var(--employee-holiday-surface);
+    color: var(--employee-holiday-secondary);
+}
+
+.employee-holiday-management-page .employee-holiday-management-option > span:last-child {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.employee-holiday-management-page .employee-holiday-management-option strong {
+    color: var(--employee-holiday-primary);
+    line-height: 1.25;
+}
+
+.employee-holiday-management-page .employee-holiday-management-option small {
+    color: var(--employee-holiday-muted);
+    line-height: 1.35;
+    margin-top: 4px;
+}
+
+.employee-holiday-management-page .employee-holiday-management-booking-body {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    padding: 22px 18px;
+}
+
+.employee-holiday-management-page .employee-holiday-management-booking-icon {
+    align-items: center;
+    background: var(--employee-holiday-hover);
+    border-radius: 50%;
+    color: var(--employee-holiday-primary);
+    display: flex;
+    flex: 0 0 46px;
+    font-size: 19px;
+    height: 46px;
+    justify-content: center;
+    width: 46px;
+}
+
+.employee-holiday-management-page .employee-holiday-management-booking-body > div {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.employee-holiday-management-page .employee-holiday-management-booking-body h4 {
+    margin: 0;
+}
+
+.employee-holiday-management-page .employee-holiday-management-booking-body p {
+    color: var(--employee-holiday-muted);
+    line-height: 1.45;
+    margin: 4px 0 0;
+}
+
+.employee-holiday-management-page .employee-holiday-management-booking-body .btn {
+    flex: 0 0 auto;
+}
+
 @media (max-width: 991px) {
     .employee-holiday-balance-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -697,6 +810,10 @@
     .employee-holiday-manager-actions {
         justify-content: flex-start;
         padding-left: 52px;
+    }
+
+    .employee-holiday-management-page .employee-holiday-management-options {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
@@ -757,5 +874,22 @@
 
     .employee-holiday-request-actions .btn {
         flex: 1 1 auto;
+    }
+
+    .employee-holiday-management-page .employee-holiday-management-options {
+        grid-template-columns: 1fr;
+    }
+
+    .employee-holiday-management-page .employee-holiday-management-option {
+        min-height: 76px;
+    }
+
+    .employee-holiday-management-page .employee-holiday-management-booking-body {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .employee-holiday-management-page .employee-holiday-management-booking-body .btn {
+        width: 100%;
     }
 }

@@ -39,7 +39,10 @@
         "Request Time Off": "Request time off",
         "No Description": "No note",
         "Calculated Working Days": "Selected working days",
-        "Verify Holiday Document": "Verify holiday document"
+        "Verify Holiday Document": "Verify holiday document",
+        "Holiday Management": "Holiday Management",
+        "Cancellation Requests": "Cancellation requests",
+        "Create Managed Holiday Request": "Create an employee holiday request"
     },
     "fields": {
         "name": "Name",
@@ -164,7 +167,16 @@
         "balanceWarningEmployeeNotification": "Your holiday balance is now {balance} days and exceeds the configured warning threshold of {threshold} days. No days were removed.\n\n[Open Time Off](#EmployeeManagement/holiday)",
         "balanceWarningApproverNotification": "The holiday balance of {employee} is now {balance} days and exceeds the configured warning threshold of {threshold} days. No days were removed.\n\n[Open Holiday Profiles](#EmployeeAdministration/profiles)",
         "approvalJobsPending": "Approval becomes available only after native Jobs and document finalization are integrated. Requests remain Pending; no provisional approval is created.",
-        "approvalJobsActive": "Approval runs in native Jobs. Approved and download links appear only after all documents are saved. Failed or interrupted operations can be retried by an authorized manager."
+        "approvalJobsActive": "Approval runs in native Jobs. Approved and download links appear only after all documents are saved. Failed or interrupted operations can be retried by an authorized manager.",
+        "holidayManagementIntro": "Approve requests, decide cancellations and manage employee holidays in a workspace separate from your personal requests.",
+        "holidayApprovalsCardHelp": "New requests and approvals in progress",
+        "holidayCancellationsCardHelp": "Cancellations awaiting a decision",
+        "approvedHolidaysCardHelp": "Approved holidays and authorized cancellation",
+        "holidayVerificationCardHelp": "Verify DOCX authenticity and integrity",
+        "holidayApprovalsSectionHelp": "Pending requests can be approved or rejected; processing requests remain visible with their actual state.",
+        "holidayCancellationsSectionHelp": "Decide cancellation requests separately while preserving the existing reason and accounting rules.",
+        "No Pending Cancellations": "There are no cancellation requests awaiting your decision.",
+        "holidayManagementEmptyHelp": "New items will appear here automatically, subject to your permissions."
     },
     "options": {
         "status": {

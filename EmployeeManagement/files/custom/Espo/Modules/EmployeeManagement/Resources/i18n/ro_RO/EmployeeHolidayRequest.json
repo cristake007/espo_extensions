@@ -39,7 +39,10 @@
         "Request Time Off": "Solicită concediu",
         "No Description": "Fără notă",
         "Calculated Working Days": "Zile lucrătoare selectate",
-        "Verify Holiday Document": "Verifică documentul de concediu"
+        "Verify Holiday Document": "Verifică documentul de concediu",
+        "Holiday Management": "Gestionare concedii",
+        "Cancellation Requests": "Cereri de anulare",
+        "Create Managed Holiday Request": "Creează o cerere pentru angajat"
     },
     "fields": {
         "name": "Denumire",
@@ -164,7 +167,16 @@
         "balanceWarningEmployeeNotification": "Soldul dumneavoastră de concediu este acum de {balance} zile și depășește pragul de avertizare configurat de {threshold} zile. Nu a fost eliminată nicio zi.\n\n[Deschide Concediu](#EmployeeManagement/holiday)",
         "balanceWarningApproverNotification": "Soldul de concediu al angajatului {employee} este acum de {balance} zile și depășește pragul de avertizare configurat de {threshold} zile. Nu a fost eliminată nicio zi.\n\n[Deschide Profiluri concediu](#EmployeeAdministration/profiles)",
         "approvalJobsPending": "Aprobarea va fi disponibilă după integrarea Jobs native și finalizarea documentelor. Cererile rămân Pending; nu se creează aprobări provizorii.",
-        "approvalJobsActive": "Aprobarea rulează prin Jobs native. Approved și documentele apar numai după salvarea tuturor fișierelor. Managerul autorizat poate relua operațiile eșuate sau întrerupte."
+        "approvalJobsActive": "Aprobarea rulează prin Jobs native. Approved și documentele apar numai după salvarea tuturor fișierelor. Managerul autorizat poate relua operațiile eșuate sau întrerupte.",
+        "holidayManagementIntro": "Aprobați cereri, soluționați anulări și administrați concediile angajaților dintr-un spațiu separat de cererile personale.",
+        "holidayApprovalsCardHelp": "Cereri noi și aprobări în curs",
+        "holidayCancellationsCardHelp": "Anulări care așteaptă decizia",
+        "approvedHolidaysCardHelp": "Concedii aprobate și anulare autorizată",
+        "holidayVerificationCardHelp": "Verificați autenticitatea și integritatea DOCX",
+        "holidayApprovalsSectionHelp": "Cererile Pending pot fi aprobate sau respinse; cele în procesare rămân afișate cu starea reală.",
+        "holidayCancellationsSectionHelp": "Soluționați separat cererile de anulare, păstrând motivul și regulile contabile existente.",
+        "No Pending Cancellations": "Nu există cereri de anulare care așteaptă decizia dumneavoastră.",
+        "holidayManagementEmptyHelp": "Elementele noi vor apărea automat aici, în limita permisiunilor dumneavoastră."
     },
     "options": {
         "status": {

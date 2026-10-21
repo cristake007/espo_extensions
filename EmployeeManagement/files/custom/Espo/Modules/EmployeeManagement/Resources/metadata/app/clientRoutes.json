@@ -27,12 +27,26 @@
         },
         "order": -102
     },
+    "EmployeeHolidayManagement": {
+        "params": {
+            "controller": "employee-management:controllers/workspace",
+            "action": "holidayManagement"
+        },
+        "order": -106
+    },
+    "EmployeeHolidayManagement/:section": {
+        "params": {
+            "controller": "employee-management:controllers/workspace",
+            "action": "holidayManagement"
+        },
+        "order": -107
+    },
     "EmployeeHolidayDocumentVerification": {
         "params": {
             "controller": "employee-management:controllers/workspace",
             "action": "verifyHolidayDocument"
         },
-        "order": -106
+        "order": -108
     },
     "EmployeeHolidayRequest": {
         "params": {

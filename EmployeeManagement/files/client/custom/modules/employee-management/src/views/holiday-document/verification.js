@@ -10,7 +10,7 @@ define(['view'], View => class extends View {
                         <p>Verificați documentul înregistrat și, opțional, integritatea exactă a fișierului DOCX.</p>
                     </div>
                 </div>
-                <a class="btn btn-default" href="#EmployeeManagement/holiday"><span class="fas fa-arrow-left"></span> Înapoi la concedii</a>
+                <a class="btn btn-default" href="#EmployeeHolidayManagement"><span class="fas fa-arrow-left"></span> Înapoi la gestionare concedii</a>
             </header>
             <section class="employee-holiday-requests employee-holiday-verification-card">
                 <form data-name="verification-form" class="employee-holiday-verification-form">

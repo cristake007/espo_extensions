@@ -12,6 +12,7 @@
         "EmployeeAdministration": "Administrare Employee Management",
         "EmployeeHolidayBooking": "Concedii — Cereri proprii",
         "EmployeeHolidayRequestManagement": "Concedii — Gestiune cereri angajați",
+        "EmployeeHolidayManagement": "Gestionare concedii — navigare",
         "EmployeeHolidayBalanceCorrection": "Concedii — Corecții sold",
         "EmployeeAttendance": "Attendance — Own entries",
         "EmployeeAttendanceOverview": "Attendance — Overview",
@@ -29,7 +30,8 @@
         "EmployeeManagement": "Employee Management",
         "EmployeeAdministration": "Administrare angajați",
         "EmployeeAttendance": "Pontajul meu",
-        "EmployeeAttendanceOverview": "Centralizator pontaje"
+        "EmployeeAttendanceOverview": "Centralizator pontaje",
+        "EmployeeHolidayManagement": "Gestionare concedii"
     },
     "labels": {
         "EmployeeManagement": "Employee Management",

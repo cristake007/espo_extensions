@@ -16,6 +16,7 @@
             "EmployeeHolidayApproval": false,
             "EmployeeHolidayBooking": false,
             "EmployeeHolidayRequestManagement": false,
+            "EmployeeHolidayManagement": false,
             "EmployeeHolidayBalanceCorrection": false,
             "EmployeeAttendance": false,
             "EmployeeAttendanceOverview": false,
