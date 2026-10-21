@@ -1,0 +1,112 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "readOnly": true
+        },
+        "annualEntitlement": {
+            "type": "float",
+            "required": true,
+            "readOnly": true,
+            "default": 0
+        },
+        "balance": {
+            "type": "float",
+            "required": true,
+            "readOnly": true,
+            "default": 0
+        },
+        "nextResetDate": {
+            "type": "date",
+            "required": true,
+            "readOnly": true
+        },
+        "calendarColor": {
+            "type": "colorpicker",
+            "required": true,
+            "readOnly": true,
+            "default": "#4F8A8B"
+        },
+        "isInitialized": {
+            "type": "bool",
+            "required": true,
+            "readOnly": true,
+            "default": false
+        },
+        "resetPending": {
+            "type": "bool",
+            "required": true,
+            "readOnly": true,
+            "default": false
+        },
+        "pendingResetDate": {
+            "type": "date",
+            "readOnly": true
+        },
+        "pendingResetKey": {
+            "type": "varchar",
+            "maxLength": 190,
+            "readOnly": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "assignedUser": {
+            "type": "link",
+            "entity": "User",
+            "required": true,
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true
+        }
+    },
+    "links": {
+        "ledgerEntries": {
+            "type": "hasMany",
+            "entity": "EmployeeHolidayLedger",
+            "foreign": "profile"
+        },
+        "holidayRequests": {
+            "type": "hasMany",
+            "entity": "EmployeeHolidayRequest",
+            "foreign": "profile"
+        },
+        "assignedUser": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "indexes": {
+        "userUnique": {
+            "unique": true,
+            "columns": [
+                "assignedUserId"
+            ]
+        },
+        "nextResetDate": {
+            "columns": [
+                "nextResetDate"
+            ]
+        }
+    }
+}

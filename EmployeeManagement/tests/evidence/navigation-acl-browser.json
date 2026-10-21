@@ -1,0 +1,251 @@
+{
+  "results": [
+    {
+      "test": "section-count-manager",
+      "status": "PASS"
+    },
+    {
+      "test": "manager-no-global-admin",
+      "status": "PASS"
+    },
+    {
+      "test": "manager-cannot-manage-global-Settings",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "manager-cannot-manage-global-Role",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "manager-cannot-create-WTC",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-JS-errors-manager",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "delegated-entry-denied-employee",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-employee-attendance",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-employee-holiday",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-employee-profiles",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-employee-attendanceMetadata",
+      "status": "PASS"
+    },
+    {
+      "test": "API-denied-employee-GET-EmployeeManagement/administration/attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "API-denied-employee-PUT-EmployeeManagement/administration/attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "API-denied-employee-GET-EmployeeManagement/attendance/schedules",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "API-denied-employee-POST-EmployeeManagement/attendance/schedule",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-JS-errors-employee",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "section-count-entry",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-entry-attendance",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-entry-holiday",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-entry-profiles",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-entry-attendanceMetadata",
+      "status": "PASS"
+    },
+    {
+      "test": "API-denied-entry-GET-EmployeeManagement/administration/attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "API-denied-entry-PUT-EmployeeManagement/administration/attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "API-denied-entry-GET-EmployeeManagement/attendance/schedules",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "API-denied-entry-POST-EmployeeManagement/attendance/schedule",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-JS-errors-entry",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "delegated-entry-denied-noentry",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-noentry-attendance",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-noentry-holiday",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-noentry-profiles",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-noentry-attendanceMetadata",
+      "status": "PASS"
+    },
+    {
+      "test": "API-denied-noentry-GET-EmployeeManagement/administration/attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "API-denied-noentry-PUT-EmployeeManagement/administration/attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "API-denied-noentry-GET-EmployeeManagement/attendance/schedules",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "API-denied-noentry-POST-EmployeeManagement/attendance/schedule",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "Schedules-link-hidden-noentry",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-noentry",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "section-count-viewer",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-viewer-attendance",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-viewer-holiday",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-viewer-profiles",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-section-denied-viewer-attendanceMetadata",
+      "status": "PASS"
+    },
+    {
+      "test": "API-denied-viewer-GET-EmployeeManagement/administration/attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "API-denied-viewer-PUT-EmployeeManagement/administration/attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "API-denied-viewer-GET-EmployeeManagement/attendance/schedules",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "API-denied-viewer-POST-EmployeeManagement/attendance/schedule",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "Schedules-link-hidden-viewer",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-viewer",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "delegated-entry-denied-admin",
+      "status": "PASS"
+    },
+    {
+      "test": "technical-admin-business-denied-EmployeeManagement/workspace/status",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "technical-admin-business-denied-EmployeeManagement/administration/status",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "technical-admin-business-denied-EmployeeManagement/administration/attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "technical-admin-business-denied-EmployeeManagement/attendance/schedules",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-JS-errors-admin",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 54,
+  "failures": 0
+}

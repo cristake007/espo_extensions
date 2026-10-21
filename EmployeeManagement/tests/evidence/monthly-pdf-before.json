@@ -1,0 +1,67 @@
+{
+  "results": [
+    {
+      "test": "managerUnset-NON-ADMIN-no-global-Export",
+      "status": "PASS",
+      "observed": {
+        "type": "regular",
+        "exportPermission": "no"
+      }
+    },
+    {
+      "test": "managerUnset-management-and-incomplete-policy",
+      "status": "PASS",
+      "observed": {
+        "month": "2026-10",
+        "registerComplete": false
+      }
+    },
+    {
+      "test": "managerUnset-reproduce-disabled-PDF",
+      "status": "PASS"
+    },
+    {
+      "test": "managerUnset-reproduce-backend-403",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "managerUnset-no-JS-errors",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "managerDenied-NON-ADMIN-no-global-Export",
+      "status": "PASS",
+      "observed": {
+        "type": "regular",
+        "exportPermission": "no"
+      }
+    },
+    {
+      "test": "managerDenied-management-and-incomplete-policy",
+      "status": "PASS",
+      "observed": {
+        "month": "2026-10",
+        "registerComplete": false
+      }
+    },
+    {
+      "test": "managerDenied-reproduce-disabled-PDF",
+      "status": "PASS"
+    },
+    {
+      "test": "managerDenied-reproduce-backend-403",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "managerDenied-no-JS-errors",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 10,
+  "failures": 0,
+  "complete": true
+}

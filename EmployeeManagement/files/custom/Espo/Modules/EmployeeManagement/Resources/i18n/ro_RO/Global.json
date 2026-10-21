@@ -1,0 +1,38 @@
+{
+    "scopeNames": {
+        "EmployeeAttendanceRecord": "Pontaje",
+        "EmployeeHolidayRequest": "Cereri de concediu",
+        "EmployeeHolidayProfile": "Solduri de concediu",
+        "EmployeeHolidayLedger": "Registrul concediilor",
+        "EmployeeAttendanceSettings": "Politici pontaj",
+        "EmployeeHolidaySettings": "Configurări concedii",
+        "EmployeeHolidayProfileManagement": "Administrare profiluri concedii",
+        "EmployeeHolidayApproval": "Aprobare concedii (comenzi încă inactive)",
+        "EmployeeManagement": "Spațiu Employee Management",
+        "EmployeeAdministration": "Administrare Employee Management",
+        "EmployeeHolidayBooking": "Concedii — Cereri proprii",
+        "EmployeeHolidayRequestManagement": "Concedii — Gestiune cereri angajați",
+        "EmployeeHolidayBalanceCorrection": "Concedii — Corecții sold",
+        "EmployeeAttendance": "Attendance — Own entries",
+        "EmployeeAttendanceOverview": "Attendance — Overview",
+        "EmployeeAttendanceManagement": "Attendance — Management",
+        "EmployeeAttendanceWorkSchedule": "Attendance — Remote / CIC",
+        "EmployeeAttendanceMonth": "Attendance — Historical norm (internal)",
+        "EmployeeAbsence": "Absențe colegi"
+    },
+    "scopeNamesPlural": {
+        "EmployeeAttendanceRecord": "Pontaje",
+        "EmployeeHolidayRequest": "Cereri de concediu",
+        "EmployeeHolidayProfile": "Solduri de concediu",
+        "EmployeeHolidayLedger": "Registrul concediilor",
+        "EmployeeAbsence": "Absențe colegi",
+        "EmployeeManagement": "Employee Management",
+        "EmployeeAdministration": "Administrare angajați",
+        "EmployeeAttendance": "Pontajul meu",
+        "EmployeeAttendanceOverview": "Centralizator pontaje"
+    },
+    "labels": {
+        "EmployeeManagement": "Employee Management",
+        "EmployeeAdministration": "Employee Management — Administrare"
+    }
+}

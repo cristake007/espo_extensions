@@ -1,0 +1,71 @@
+{
+  "testedPackageVersion": "0.6.0",
+  "finalPackageSha256": "0cdcb453fe7e96473313abbdd5722dae69dd6811cde0dd823c8cef3035d6f909",
+  "project": "employee-feasibility-20261020",
+  "compose": "/tmp/employee-feasibility-20261020-yDmmnL/compose.yaml",
+  "siteUrl": "http://127.0.0.1:18089",
+  "espo": "10.0.1",
+  "php": "8.4.23",
+  "database": "12.3.2-MariaDB-ubu2404",
+  "installedExtensions": {
+    "Zile Sărbătoare": "0.9.5",
+    "Holiday Management": "1.9.4",
+    "Attendance Management": "1.11.0",
+    "Employee Management": "0.6.0"
+  },
+  "nativeAppCheck": {
+    "migrationNotNeeded": "PASS",
+    "database": "PASS",
+    "notInMaintenanceMode": "PASS",
+    "cronEnabled": "PASS"
+  },
+  "nativeWorker": {
+    "startedInStage6": true,
+    "actualSigkillAndRestartTested": true,
+    "jobPeriodForNotExistingProcessLabFaultOverride": 5,
+    "restoredJobPeriodForNotExistingProcess": 300,
+    "defaultDetectionIsNotSla": true,
+    "nativeJobSettings": {
+      "daemonInterval": 10,
+      "daemonMaxProcessNumber": 5,
+      "jobRunInParallel": true,
+      "jobPeriodForNotExistingProcess": 300
+    }
+  },
+  "faultCleanup": {
+    "temporarySqlTriggerCount": 0,
+    "templateBackupExists": false,
+    "templateSha256": "737e695378896bacf26cf93187d371f4a064704a3f2e99eddbecbd798d1f9c0e"
+  },
+  "finalLabState": {
+    "app": "stopped",
+    "db": "stopped",
+    "worker": "stopped",
+    "volumes": "retained",
+    "ephemeralBrowser": "removed"
+  },
+  "companyReadOnlyInspection": {
+    "espocrm": {
+      "id": "2b50b998f3f0d0dcb7b106ffe6440a9ddfec234461cbaeab4fd288754d0e7574",
+      "startedAt": "2026-10-19T10:00:12.604635732Z"
+    },
+    "espocrm-daemon": {
+      "id": "f61631ee6f8e78337342aa0413724ac2060e2b87ce64016442ccdbb23c249450",
+      "startedAt": "2026-10-19T10:00:18.536468117Z"
+    },
+    "espocrm-websocket": {
+      "id": "81788952dd3fd7fbded4cb2c984e0a4f0db6cdb9a709a0ddc6e2e2e37072b355",
+      "startedAt": "2026-10-19T10:00:18.321696139Z"
+    },
+    "espocrm-db": {
+      "id": "5b68370c7445b577c8e8707e86d299e2dc598e31a1b454ef360022d85bd6e01b",
+      "startedAt": "2026-10-19T10:00:02.427297612Z"
+    }
+  },
+  "companyContainerIdentityAndStartedAtUnchanged": true,
+  "companyBusinessWritesExecuted": false,
+  "testNotes": [
+    "Dependent population/configuration fixtures ran sequentially in the final regression run.",
+    "No original extension source, company installation, core or approved architecture document changed."
+  ]
+}

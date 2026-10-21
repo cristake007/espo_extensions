@@ -1,0 +1,34 @@
+{
+    "params": {
+        "employeeHolidayAnnualEntitlementDays": {
+            "level": "admin"
+        },
+        "employeeHolidayResetDate": {
+            "level": "admin"
+        },
+        "employeeHolidayAutomaticAnnualGrantEnabled": {
+            "level": "admin"
+        },
+        "employeeHolidayCarryOverLimitDays": {
+            "level": "admin"
+        },
+        "employeeHolidayNegativeBalanceLimitDays": {
+            "level": "admin"
+        },
+        "employeeHolidayApprovers": {
+            "level": "admin"
+        },
+        "employeeHolidayApprovalBlock1Title": {
+            "level": "admin"
+        },
+        "employeeHolidayApprovalBlock1Name": {
+            "level": "admin"
+        },
+        "employeeHolidayApprovalBlock2Title": {
+            "level": "admin"
+        },
+        "employeeHolidayApprovalBlock2Name": {
+            "level": "admin"
+        }
+    }
+}

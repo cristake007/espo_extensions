@@ -1,0 +1,34 @@
+{
+    "labels": {
+        "My Holiday": "My Time Off",
+        "Holiday Approvals": "Holiday Approvals",
+        "HolidayProfileManagement": "Holiday Profile Management",
+        "HolidayRequestManagement": "Time Off Manager",
+        "HolidayBalanceCorrection": "Holiday Balance Correction",
+        "EmployeeManagementSettings": "Holiday Management Settings",
+        "HolidayOverview": "Holiday Overview"
+    },
+    "scopeNames": {
+        "EmployeeHolidayRequest": "Time Off",
+        "EmployeeHolidayProfile": "Holiday Profile",
+        "EmployeeHolidayLedger": "Holiday Ledger",
+        "HolidayProfileManagement": "Holiday Profile Management",
+        "HolidayRequestManagement": "Time Off Manager",
+        "HolidayBalanceCorrection": "Holiday Balance Correction",
+        "EmployeeManagementSettings": "Holiday Management Settings",
+        "HolidayOverview": "Holiday Overview"
+    },
+    "scopeNamesPlural": {
+        "EmployeeHolidayRequest": "Time Off",
+        "EmployeeHolidayProfile": "Holiday Profiles",
+        "EmployeeHolidayLedger": "Holiday Ledger Entries",
+        "HolidayProfileManagement": "Holiday Profile Management",
+        "HolidayRequestManagement": "Time Off Manager",
+        "HolidayBalanceCorrection": "Holiday Balance Correction",
+        "EmployeeManagementSettings": "Holiday Management Settings",
+        "HolidayOverview": "Holiday Overview"
+    },
+    "dashlets": {
+        "HolidayApprovals": "Holiday Approvals"
+    }
+}

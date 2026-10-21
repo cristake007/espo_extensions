@@ -1,0 +1,97 @@
+[
+    {
+        "route": "/EmployeeManagement/settings",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayAdministration\\Api\\GetSettings"
+    },
+    {
+        "route": "/EmployeeManagement/settings",
+        "method": "put",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayAdministration\\Api\\PutSettings"
+    },
+    {
+        "route": "/EmployeeManagement/overview",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayOverview\\Api\\GetOverview"
+    },
+    {
+        "route": "/EmployeeManagement/profiles",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayBalance\\Api\\GetProfiles"
+    },
+    {
+        "route": "/EmployeeManagement/profiles/:id/corrections",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayBalance\\Api\\GetCorrectionHistory"
+    },
+    {
+        "route": "/EmployeeManagement/bulkInitialize",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayBalance\\Api\\PostBulkInitialize"
+    },
+    {
+        "route": "/EmployeeManagement/completeInitialSetup",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayBalance\\Api\\PostCompleteInitialSetup"
+    },
+    {
+        "route": "/EmployeeManagement/testDataResetPreview",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayBalance\\Api\\GetTestDataResetPreview"
+    },
+    {
+        "route": "/EmployeeManagement/testDataReset",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayBalance\\Api\\PostTestDataReset"
+    },
+    {
+        "route": "/EmployeeManagement/correct",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayBalance\\Api\\PostCorrection"
+    },
+    {
+        "route": "/EmployeeManagement/reset",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayBalance\\Api\\PostReset"
+    },
+    {
+        "route": "/EmployeeManagement/myBalance",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\EmployeeHolidayRequest\\Api\\GetMyBalance"
+    },
+    {
+        "route": "/EmployeeManagement/managedBookingUsers",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\EmployeeHolidayRequest\\Api\\GetManagedBookingUsers"
+    },
+    {
+        "route": "/EmployeeManagement/managedBookings",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\EmployeeHolidayRequest\\Api\\PostManagedBooking"
+    },
+    {
+        "route": "/EmployeeManagement/requests/:id/approval",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\EmployeeHolidayRequest\\Api\\GetApproval"
+    },
+    {
+        "route": "/EmployeeManagement/requests/:id/decision",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\EmployeeHolidayRequest\\Api\\PostDecision"
+    },
+    {
+        "route": "/EmployeeManagement/requests/:id/cancellation-request",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\EmployeeHolidayRequest\\Api\\PostCancellationRequest"
+    },
+    {
+        "route": "/EmployeeManagement/requests/:id/cancel",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\EmployeeHolidayRequest\\Api\\PostCancel"
+    },
+    {
+        "route": "/EmployeeManagement/approvalQueue",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\EmployeeHolidayRequest\\Api\\GetApprovalQueue"
+    }
+]

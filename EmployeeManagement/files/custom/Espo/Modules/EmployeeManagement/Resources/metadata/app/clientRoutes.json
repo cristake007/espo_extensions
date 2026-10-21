@@ -1,0 +1,65 @@
+{
+    "EmployeeManagement": {
+        "params": {
+            "controller": "employee-management:controllers/workspace",
+            "action": "index"
+        },
+        "order": -100
+    },
+    "EmployeeAdministration": {
+        "params": {
+            "controller": "employee-management:controllers/workspace",
+            "action": "administration"
+        },
+        "order": -100
+    },
+    "EmployeeAdministration/:section": {
+        "params": {
+            "controller": "employee-management:controllers/workspace",
+            "action": "section"
+        },
+        "order": -101
+    },
+    "EmployeeManagement/holiday": {
+        "params": {
+            "controller": "employee-management:controllers/workspace",
+            "action": "holiday"
+        },
+        "order": -102
+    },
+    "EmployeeHolidayRequest": {
+        "params": {
+            "controller": "employee-management:controllers/workspace",
+            "action": "holiday"
+        },
+        "order": -104
+    },
+    "EmployeeAttendance": {
+        "params": {
+            "controller": "employee-management:controllers/attendance",
+            "action": "index"
+        },
+        "order": -103
+    },
+    "EmployeeAttendanceOverview": {
+        "params": {
+            "controller": "employee-management:controllers/attendance-overview",
+            "action": "index"
+        },
+        "order": -103
+    },
+    "EmployeeAttendance/month/:month": {
+        "params": {
+            "controller": "employee-management:controllers/attendance",
+            "action": "index"
+        },
+        "order": -103
+    },
+    "EmployeeHolidayRequest/create": {
+        "params": {
+            "controller": "employee-management:controllers/workspace",
+            "action": "createHoliday"
+        },
+        "order": -105
+    }
+}

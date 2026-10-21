@@ -1,0 +1,13 @@
+{
+    "controller": "employee-management:controllers/holiday-request",
+    "acl": "employee-management:acl/holiday-request",
+    "iconClass": "fas fa-umbrella-beach",
+    "views": {
+        "list": "employee-management:views/holiday-request/list"
+    },
+    "recordViews": {
+        "detail": "employee-management:views/holiday-request/record/detail",
+        "detailSmall": "employee-management:views/holiday-request/record/detail-small",
+        "editSmall": "employee-management:views/holiday-request/record/edit-small"
+    }
+}

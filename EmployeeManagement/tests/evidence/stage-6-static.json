@@ -1,0 +1,62 @@
+{
+  "testedPackageVersion": "0.6.0",
+  "finalPackageSha256": "0cdcb453fe7e96473313abbdd5722dae69dd6811cde0dd823c8cef3035d6f909",
+  "phpLintAndMetadata": {
+    "status": "PASS",
+    "command": "bash build.sh --extension EmployeeManagement --validate",
+    "runtimePhpFiles": 35,
+    "runtimeJsonFiles": 77
+  },
+  "javascriptSyntax": {
+    "status": "PASS",
+    "command": "node --check for every runtime JavaScript file",
+    "files": 21
+  },
+  "fixtureSyntax": {
+    "status": "PASS",
+    "files": [
+      "tests/integration/stage-6.php",
+      "tests/integration/stage-6-lifecycle.php",
+      "tests/integration/stage-6-observations.php",
+      "tests/browser/stage-6.cjs"
+    ]
+  },
+  "contract": {
+    "status": "PASS",
+    "command": "python3 EmployeeManagement/tests/contract.py",
+    "originalImportsPreserved": 175,
+    "originalRuntimeAndLifecycleFiles": 196,
+    "stage6ReuseMappings": 6,
+    "zipMembersByteIdenticalToSource": true
+  },
+  "annualDateRegression": {
+    "status": "PASS",
+    "command": "node EmployeeManagement/tests/regression/reset-date-field.test.mjs",
+    "assertions": 2,
+    "failures": 0
+  },
+  "zipDiffFrom050": {
+    "addedRuntimeFiles": [
+      "files/custom/Espo/Modules/EmployeeManagement/Jobs/GenerateHolidayApproval.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityAcl/EmployeeHolidayRequest.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayDocument/HolidayApprovalDocumentService.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayDocument/HolidayApprovalService.php"
+    ],
+    "changedRuntimeFiles": [
+      "files/client/custom/modules/employee-management/src/views/holiday-request/index.js",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeHolidayRequest.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeHolidayRequest.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeHolidayRequest.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceMonthService.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/HolidayAttendanceGuard.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/Holiday.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/Workspace/Api/GetStatus.php"
+    ],
+    "removedMembers": []
+  },
+  "renderersAndDocxTemplateUnchangedFrom050": true,
+  "packageBytes": 166337
+}

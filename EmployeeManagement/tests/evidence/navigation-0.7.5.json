@@ -1,0 +1,29 @@
+{
+  "environment": "employee-feasibility-20261020",
+  "upgrade": {
+    "version": "0.7.5",
+    "tabListBefore": [
+      "EmployeeManagement",
+      "EmployeeAttendance",
+      "EmployeeAttendanceOverview",
+      "EmployeeAdministration"
+    ],
+    "tabListAfter": []
+  },
+  "browser": {
+    "sidebarCounts": {
+      "EmployeeManagement": 0,
+      "EmployeeAttendance": 0,
+      "EmployeeAttendanceOverview": 0,
+      "EmployeeAdministration": 0
+    },
+    "workspaceLinksPresent": [
+      "#EmployeeAttendance",
+      "#EmployeeAttendanceOverview",
+      "#EmployeeManagement/holiday"
+    ],
+    "redundantFlyoutEntries": 0,
+    "javascriptErrors": []
+  },
+  "status": "PASS"
+}

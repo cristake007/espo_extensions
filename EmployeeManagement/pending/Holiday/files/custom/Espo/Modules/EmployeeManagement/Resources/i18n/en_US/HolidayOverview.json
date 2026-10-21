@@ -1,0 +1,18 @@
+{
+    "labels": {
+        "Holiday Overview": "Holiday Overview",
+        "Holiday Settings": "Holiday Settings",
+        "Month": "Month",
+        "Date": "Date",
+        "Employee": "Employee",
+        "Employees": "Employees",
+        "Away Today": "Away Today",
+        "Pending Requests": "Pending Requests",
+        "Missing Profiles": "Missing Profiles",
+        "Profile Missing": "Profile not initialized"
+    },
+    "messages": {
+        "Overview Guide": "Monthly employee-by-day view of pending, approved and cancellation-pending time off.",
+        "Balance Detail": "Balance: {balance} · pending: {pending}"
+    }
+}

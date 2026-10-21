@@ -1,0 +1,68 @@
+[
+  {
+    "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceSettingsService.php",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceSettingsService.php",
+    "sourceSha256": "4088aa71670954aa604828556181ce0fdca5a255b675a5af9efbeeed6913622f",
+    "treatment": "Adapted from preserved legacy implementation; ACL/allowlists/ownership/idempotency hardened for stage 2."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+    "sourceSha256": "5136f0cc263b03badfb6f73f8b796e7929f4f094cbc43ca5ae8f72d9756cd66c",
+    "treatment": "Adapted from preserved legacy implementation; ACL/allowlists/ownership/idempotency hardened for stage 2."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+    "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+    "treatment": "Adapted from preserved legacy implementation; ACL/allowlists/ownership/idempotency hardened for stage 2."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/admin/profiles.js",
+    "destination": "files/client/custom/modules/employee-management/src/views/administration/profiles.js",
+    "sourceSha256": "fd7895b414eb2209af537383c3a457621e4d7e47d689f41f1347a38feadb60e0",
+    "treatment": "Adapted from preserved legacy implementation; ACL/allowlists/ownership/idempotency hardened for stage 2."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Admin.json",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeAdministration.json",
+    "sourceSha256": "0b7002fb2cb76bdc3226e67f3d7482aab92b8d89c8f6ab6d63d4601a5b85f144",
+    "treatment": "Adapted from preserved legacy implementation; ACL/allowlists/ownership/idempotency hardened for stage 2."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Admin.json",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeAdministration.json",
+    "sourceSha256": "367da0cd3b923c3ce6143c813f6c4d7088af22bcef5b56ff72d0b942de5dc264",
+    "treatment": "Adapted from preserved legacy implementation; ACL/allowlists/ownership/idempotency hardened for stage 2."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/fields/annual-reset-date.js",
+    "destination": "files/client/custom/modules/employee-management/src/views/fields/annual-reset-date.js",
+    "sourceSha256": "9531f8c743a71884ae5d166ea8652bce670b8f84cd371df958c0b1e1db5c782d",
+    "treatment": "Identical preserved MM-DD/date normalization; no functional rewrite."
+  },
+  {
+    "source": "pending/Attendance/files/client/custom/modules/employee-management/src/views/admin/manager-index.js",
+    "destination": "files/client/custom/modules/employee-management/src/views/administration/index.js",
+    "sourceSha256": "59316c5b1eaf8584ea4c60b3edfe4c4b5643e59a4fbc3f481134540b350d6882",
+    "treatment": "Preserved panel/grid view; dynamic ACL-filtered sections, own labels and EmployeeAdministration routes instead of #Admin."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/complete-initial-setup.js",
+    "destination": "files/client/custom/modules/employee-management/src/views/modals/complete-initial-setup.js",
+    "sourceSha256": "5e112f48f0af27877168cc24e4601c45f96e6fc191efe8bb579b93c927f347c7",
+    "treatment": "Preserved original initial-setup modal and native float field; endpoint/translation scope adapted, retry key stable for modal lifetime."
+  },
+  {
+    "source": "../HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/Settings.json",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/employeeManagement.json",
+    "sourceSha256": "4c8f819a3fa0e8df1d235bde3c7e1a8e331bd3fbcbbbc0bc7400fe89119f9a69",
+    "treatment": "Field declarations, defaults and bounds reused in own metadata instead of global Settings. Native restricted candidate multiEnum instead of unrestricted User selector; annual reset field preserved."
+  },
+  {
+    "source": "../AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/entityDefs/Settings.json",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/employeeManagement.json",
+    "sourceSha256": "b4eec25e098033e97e4882a9bb9969a43245e6a25fd00cf23acf6caae2592abb",
+    "treatment": "Attendance policy field types and bounds retained; own API field names, archive read-only and program editor deferred to WTC integration."
+  }
+]

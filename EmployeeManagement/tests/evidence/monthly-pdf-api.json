@@ -1,0 +1,101 @@
+{
+    "results": [
+        {
+            "test": "managerUnset-regular-without-global-Export",
+            "status": "PASS",
+            "observed": "no"
+        },
+        {
+            "test": "managerUnset-monthly-PDF-authorized",
+            "status": "PASS",
+            "observed": null
+        },
+        {
+            "test": "managerUnset-actual-PDF-command",
+            "status": "PASS",
+            "observed": 200
+        },
+        {
+            "test": "managerUnset-generic-export-permission-preserved",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "managerDenied-regular-without-global-Export",
+            "status": "PASS",
+            "observed": "no"
+        },
+        {
+            "test": "managerDenied-monthly-PDF-authorized",
+            "status": "PASS",
+            "observed": null
+        },
+        {
+            "test": "managerDenied-actual-PDF-command",
+            "status": "PASS",
+            "observed": 200
+        },
+        {
+            "test": "managerDenied-generic-export-permission-preserved",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "PDF-security-viewerDenied",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "PDF-security-employee",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "PDF-security-own",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "PDF-security-fls",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "PDF-security-noOverview",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "PDF-security-admin",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "existing-authorized-viewer-PDF-preserved",
+            "status": "PASS",
+            "observed": 200
+        },
+        {
+            "test": "incomplete-policy-still-enforced",
+            "status": "PASS",
+            "observed": 409
+        },
+        {
+            "test": "explicit-platform-disable-still-enforced",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "managerUnset-global-Export-never-granted",
+            "status": "PASS",
+            "observed": null
+        },
+        {
+            "test": "managerDenied-global-Export-never-granted",
+            "status": "PASS",
+            "observed": null
+        }
+    ],
+    "assertions": 19,
+    "failures": 0
+}

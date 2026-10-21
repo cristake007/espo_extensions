@@ -1,0 +1,6 @@
+{
+    "labels": {
+        "StageOneReadOnly": "Datele private se consultă în interfețele native numai citire. Administrarea folosește operațiile autorizate dedicate.",
+        "AdministrationNotEnabled": "Configurarea extensiei va fi activată în etapa următoare. Setările platformei, Roles și WTC nu sunt expuse aici."
+    }
+}

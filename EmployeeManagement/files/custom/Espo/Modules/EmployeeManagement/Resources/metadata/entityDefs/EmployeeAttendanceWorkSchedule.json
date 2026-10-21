@@ -1,0 +1,83 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "readOnly": true
+        },
+        "remote": {
+            "type": "bool",
+            "default": false,
+            "readOnly": false,
+            "audited": true
+        },
+        "cic": {
+            "type": "bool",
+            "default": false,
+            "readOnly": false,
+            "audited": true
+        },
+        "cicStartDate": {
+            "type": "date",
+            "readOnly": false,
+            "audited": true
+        },
+        "cicEndDate": {
+            "type": "date",
+            "readOnly": false,
+            "audited": true
+        },
+        "effectiveFrom": {
+            "type": "date",
+            "required": true,
+            "readOnly": true,
+            "audited": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "assignedUser": {
+            "type": "link",
+            "entity": "User",
+            "required": true,
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true
+        }
+    },
+    "links": {
+        "assignedUser": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "indexes": {
+        "userEffectiveFromUnique": {
+            "unique": true,
+            "columns": [
+                "assignedUserId",
+                "effectiveFrom"
+            ]
+        }
+    },
+    "noDeletedAttribute": true
+}

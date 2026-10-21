@@ -1,0 +1,41 @@
+{
+    "fields": {
+        "name": "Name",
+        "profile": "Holiday Profile",
+        "request": "Holiday Request",
+        "user": "User",
+        "type": "Entry Type",
+        "delta": "Delta",
+        "balanceBefore": "Balance Before",
+        "balanceAfter": "Balance After",
+        "entitlementBefore": "Entitlement Before",
+        "entitlementAfter": "Entitlement After",
+        "resetDateBefore": "Reset Date Before",
+        "resetDateAfter": "Reset Date After",
+        "actor": "Actor",
+        "reason": "Reason",
+        "effectiveDate": "Effective Date",
+        "idempotencyKey": "Idempotency Key",
+        "createdAt": "Created At"
+    },
+    "options": {
+        "type": {
+            "initialization": "Initialization",
+            "openingBalanceSetup": "Opening Balance Setup",
+            "bulkUpdate": "Bulk Update",
+            "correction": "Correction",
+            "annualGrant": "Annual Grant",
+            "resetPending": "Pending Reset",
+            "resetOverride": "Forced Reset",
+            "automaticReset": "Automatic Reset",
+            "holidayBooked": "Holiday Booked",
+            "holidayAdjusted": "Holiday Adjusted",
+            "holidayCancelled": "Holiday Cancelled",
+            "holidayRejected": "Holiday Rejected"
+        }
+    },
+    "messages": {
+        "ledgerCreateForbidden": "Holiday ledger entries can only be created by the holiday balance service.",
+        "ledgerImmutable": "Holiday ledger entries cannot be changed or deleted."
+    }
+}

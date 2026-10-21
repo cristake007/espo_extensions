@@ -1,0 +1,138 @@
+{
+  "results": [
+    {
+      "test": "managerUnset-NON-ADMIN-no-global-Export",
+      "status": "PASS",
+      "observed": {
+        "type": "regular",
+        "exportPermission": "no"
+      }
+    },
+    {
+      "test": "managerUnset-management-and-incomplete-policy",
+      "status": "PASS",
+      "observed": {
+        "month": "2026-10",
+        "registerComplete": false
+      }
+    },
+    {
+      "test": "managerUnset-PDF-enabled-without-global-Export",
+      "status": "PASS"
+    },
+    {
+      "test": "managerUnset-XLSX-native-permission-retained",
+      "status": "PASS"
+    },
+    {
+      "test": "managerUnset-PDF-download-http",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "managerUnset-actual-monthly-PDF-file",
+      "status": "PASS",
+      "observed": {
+        "filename": "Condica de prezenta_Octombrie 2026.pdf",
+        "bytes": 35606,
+        "sha256": "75249076bf25864bb75fc3b5cd7a75dc61b5974bbd3f9eb8cf2dab7b77eac13b"
+      }
+    },
+    {
+      "test": "managerUnset-button-enabled-after-download",
+      "status": "PASS"
+    },
+    {
+      "test": "managerUnset-still-no-global-Export-after-download",
+      "status": "PASS"
+    },
+    {
+      "test": "managerUnset-no-JS-errors",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "managerDenied-NON-ADMIN-no-global-Export",
+      "status": "PASS",
+      "observed": {
+        "type": "regular",
+        "exportPermission": "no"
+      }
+    },
+    {
+      "test": "managerDenied-management-and-incomplete-policy",
+      "status": "PASS",
+      "observed": {
+        "month": "2026-10",
+        "registerComplete": false
+      }
+    },
+    {
+      "test": "managerDenied-PDF-enabled-without-global-Export",
+      "status": "PASS"
+    },
+    {
+      "test": "managerDenied-XLSX-native-permission-retained",
+      "status": "PASS"
+    },
+    {
+      "test": "managerDenied-PDF-download-http",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "managerDenied-actual-monthly-PDF-file",
+      "status": "PASS",
+      "observed": {
+        "filename": "Condica de prezenta_Octombrie 2026.pdf",
+        "bytes": 35606,
+        "sha256": "6d100665d073492adaf712a6442747a85e719077de4aea42440e287069c22913"
+      }
+    },
+    {
+      "test": "managerDenied-button-enabled-after-download",
+      "status": "PASS"
+    },
+    {
+      "test": "save-incomplete-policy-false",
+      "status": "PASS"
+    },
+    {
+      "test": "incomplete-policy-persists-false",
+      "status": "PASS"
+    },
+    {
+      "test": "PDF-button-follows-incomplete-policy-false",
+      "status": "PASS"
+    },
+    {
+      "test": "incomplete-disabled-command-denied",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "save-incomplete-policy-true",
+      "status": "PASS"
+    },
+    {
+      "test": "incomplete-policy-persists-true",
+      "status": "PASS"
+    },
+    {
+      "test": "PDF-button-follows-incomplete-policy-true",
+      "status": "PASS"
+    },
+    {
+      "test": "managerDenied-still-no-global-Export-after-download",
+      "status": "PASS"
+    },
+    {
+      "test": "managerDenied-no-JS-errors",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 25,
+  "failures": 0,
+  "complete": true
+}

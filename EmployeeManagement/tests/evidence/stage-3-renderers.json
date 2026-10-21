@@ -1,0 +1,54 @@
+[
+  {
+    "test": "reused-pdf-valid-signature",
+    "status": "PASS"
+  },
+  {
+    "test": "reused-xlsx-valid-zip",
+    "status": "PASS"
+  },
+  {
+    "test": "reused-xlsx-preserves-remote-CIC-CO",
+    "status": "PASS"
+  },
+  {
+    "test": "reused-xlsx-sheet",
+    "status": "PASS"
+  },
+  {
+    "test": "reused-docx-valid-zip",
+    "status": "PASS"
+  },
+  {
+    "test": "reused-docx-values",
+    "status": "PASS"
+  },
+  {
+    "test": "reused-balance-10",
+    "status": "PASS"
+  },
+  {
+    "test": "reused-balance-80",
+    "status": "PASS"
+  },
+  {
+    "test": "reused-balance--5",
+    "status": "PASS"
+  },
+  {
+    "test": "reused-balance--30",
+    "status": "PASS"
+  },
+  {
+    "test": "reused-booking-future",
+    "status": "PASS"
+  },
+  {
+    "test": "reused-booking-reject-backdate",
+    "status": "PASS"
+  },
+  {
+    "test": "reused-booking-unchanged-history",
+    "status": "PASS"
+  }
+]

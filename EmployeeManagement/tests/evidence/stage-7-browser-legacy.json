@@ -1,0 +1,162 @@
+{
+  "testedPackageVersion": "0.7.0",
+  "testedArtifactSha256": "8aa68c9c9162ac7dbd349b09539bd5e8d0dd73ebf10eefa8a33362c500797120",
+  "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+  "executedOnExactFinalZip": false,
+  "evidence": {
+    "version": "0.7.0",
+    "variant": "legacy",
+    "results": [
+      {
+        "test": "manager-self-approval-real-native-Job",
+        "status": "PASS"
+      },
+      {
+        "test": "browser-private-DOCX-after-native-Job",
+        "status": "PASS"
+      },
+      {
+        "test": "annual-opt-in-field-native-editable",
+        "status": "PASS"
+      },
+      {
+        "test": "manager-explicit-annual-setting-true",
+        "status": "PASS"
+      },
+      {
+        "test": "manager-explicit-annual-setting-false",
+        "status": "PASS"
+      },
+      {
+        "test": "delegated-page-no-WTC-or-global-Role-editor",
+        "status": "PASS"
+      },
+      {
+        "test": "common-CancellationPending-visible-manager",
+        "status": "PASS"
+      },
+      {
+        "test": "Approved-common-visible-manager",
+        "status": "PASS"
+      },
+      {
+        "test": "native-click-opens-minimal-detail-manager",
+        "status": "PASS"
+      },
+      {
+        "test": "minimal-detail-no-private-data-manager",
+        "status": "PASS"
+      },
+      {
+        "test": "minimal-detail-no-mutation-button-manager",
+        "status": "PASS"
+      },
+      {
+        "test": "no-JS-errors-manager",
+        "status": "PASS",
+        "observed": []
+      },
+      {
+        "test": "common-CancellationPending-visible-employee",
+        "status": "PASS"
+      },
+      {
+        "test": "Approved-common-visible-employee",
+        "status": "PASS"
+      },
+      {
+        "test": "native-click-opens-minimal-detail-employee",
+        "status": "PASS"
+      },
+      {
+        "test": "minimal-detail-no-private-data-employee",
+        "status": "PASS"
+      },
+      {
+        "test": "minimal-detail-no-mutation-button-employee",
+        "status": "PASS"
+      },
+      {
+        "test": "no-JS-errors-employee",
+        "status": "PASS",
+        "observed": []
+      },
+      {
+        "test": "common-CancellationPending-visible-colleague",
+        "status": "PASS"
+      },
+      {
+        "test": "Approved-common-visible-colleague",
+        "status": "PASS"
+      },
+      {
+        "test": "native-click-opens-minimal-detail-colleague",
+        "status": "PASS"
+      },
+      {
+        "test": "minimal-detail-no-private-data-colleague",
+        "status": "PASS"
+      },
+      {
+        "test": "minimal-detail-no-mutation-button-colleague",
+        "status": "PASS"
+      },
+      {
+        "test": "public-detail-no-private-source-access-browser",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "public-detail-no-document-access-browser",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "native-calendar-mode-listWeek",
+        "status": "PASS"
+      },
+      {
+        "test": "native-calendar-mode-agendaWeek",
+        "status": "PASS"
+      },
+      {
+        "test": "native-calendar-mode-agendaDay",
+        "status": "PASS"
+      },
+      {
+        "test": "no-JS-errors-colleague",
+        "status": "PASS",
+        "observed": []
+      },
+      {
+        "test": "no-public-event-without-business-access-denied",
+        "status": "PASS"
+      },
+      {
+        "test": "no-JS-errors-denied",
+        "status": "PASS",
+        "observed": []
+      },
+      {
+        "test": "no-public-event-without-business-access-fls",
+        "status": "PASS"
+      },
+      {
+        "test": "no-JS-errors-fls",
+        "status": "PASS",
+        "observed": []
+      },
+      {
+        "test": "no-public-event-without-business-access-admin",
+        "status": "PASS"
+      },
+      {
+        "test": "no-JS-errors-admin",
+        "status": "PASS",
+        "observed": []
+      }
+    ],
+    "assertions": 35,
+    "failures": 0
+  }
+}

@@ -1,0 +1,110 @@
+{
+    "version": "0.4.0",
+    "results": [
+        {
+            "test": "future-month-open-denied",
+            "status": "PASS",
+            "observed": 400
+        },
+        {
+            "test": "personal-frozen-state-and-only-own-data",
+            "status": "PASS",
+            "observed": 200
+        },
+        {
+            "test": "manager-cannot-write-work-over-frozen-CIC",
+            "status": "PASS",
+            "observed": 409
+        },
+        {
+            "test": "manager-medical-over-frozen-CIC",
+            "status": "PASS",
+            "observed": 200
+        },
+        {
+            "test": "current-CIC-period-for-UI",
+            "status": "PASS",
+            "observed": 200
+        },
+        {
+            "test": "current-CIC-medical-only-controls",
+            "status": "PASS",
+            "observed": 200
+        },
+        {
+            "test": "current-CIC-medical-valid",
+            "status": "PASS",
+            "observed": 200
+        },
+        {
+            "test": "medical-does-not-unlock-CIC-work",
+            "status": "PASS",
+            "observed": 409
+        },
+        {
+            "test": "current-month-future-days-prevent-premature-freeze",
+            "status": "PASS",
+            "observed": 200
+        },
+        {
+            "test": "WTC-reassignment-does-not-rewrite-history",
+            "status": "PASS",
+            "observed": null
+        },
+        {
+            "test": "manager-cannot-assign-native-WTC",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "native-field-edit-ACL-enforced",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "concurrent-daily-write-stale-conflict",
+            "status": "PASS",
+            "observed": [
+                200,
+                409
+            ]
+        },
+        {
+            "test": "concurrent-daily-write-one-record",
+            "status": "PASS",
+            "observed": null
+        },
+        {
+            "test": "archive-initializer-ACL-admin",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "archive-initializer-ACL-four",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "archive-initializer-ACL-viewer",
+            "status": "PASS",
+            "observed": 403
+        },
+        {
+            "test": "original-archive-initializer-active",
+            "status": "PASS",
+            "observed": 200
+        },
+        {
+            "test": "archive-initializer-never-deletes-data",
+            "status": "PASS",
+            "observed": null
+        },
+        {
+            "test": "all-supplemental-commands-preserve-norm",
+            "status": "PASS",
+            "observed": null
+        }
+    ],
+    "assertions": 20,
+    "failures": 0
+}

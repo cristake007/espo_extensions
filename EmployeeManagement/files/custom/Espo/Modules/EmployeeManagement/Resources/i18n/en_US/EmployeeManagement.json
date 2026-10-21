@@ -1,0 +1,6 @@
+{
+    "labels": {
+        "StageOneReadOnly": "Private records use native read-only views. Administration uses dedicated authorized operations.",
+        "AdministrationNotEnabled": "Extension configuration will be enabled in the next stage. Platform settings, Roles and WTC are not exposed here."
+    }
+}

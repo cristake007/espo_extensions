@@ -1,0 +1,92 @@
+{
+    "settings": {
+        "attendance": {
+            "editablePastMonths": {
+                "type": "int",
+                "viewType": "int",
+                "required": true,
+                "min": 0,
+                "max": 120
+            },
+            "allowIncompleteExports": {
+                "type": "bool",
+                "viewType": "bool"
+            },
+            "archiveStartMonth": {
+                "type": "varchar",
+                "viewType": "varchar",
+                "readOnly": true
+            },
+            "employeeAttendanceTestDataReset": {
+                "type": "varchar",
+                "viewType": "varchar",
+                "fieldView": "employee-management:views/fields/attendance-test-data-reset"
+            }
+        },
+        "holiday": {
+            "employeeHolidayAnnualEntitlementDays": {
+                "type": "int",
+                "viewType": "int",
+                "required": true,
+                "min": 1,
+                "default": null
+            },
+            "employeeHolidayResetDate": {
+                "type": "date",
+                "viewType": "date",
+                "required": true,
+                "default": null,
+                "fieldView": "employee-management:views/fields/annual-reset-date"
+            },
+            "employeeHolidayAutomaticAnnualGrantEnabled": {
+                "type": "bool",
+                "viewType": "bool",
+                "default": false,
+                "required": true
+            },
+            "employeeHolidayCarryOverLimitDays": {
+                "type": "int",
+                "viewType": "int",
+                "required": true,
+                "min": 0,
+                "default": 90
+            },
+            "employeeHolidayNegativeBalanceLimitDays": {
+                "type": "int",
+                "viewType": "int",
+                "required": true,
+                "max": 0,
+                "default": -21
+            },
+            "employeeHolidayApprovalBlock1Title": {
+                "type": "varchar",
+                "viewType": "varchar",
+                "maxLength": 150,
+                "default": ""
+            },
+            "employeeHolidayApprovalBlock1Name": {
+                "type": "varchar",
+                "viewType": "varchar",
+                "maxLength": 150,
+                "default": ""
+            },
+            "employeeHolidayApprovalBlock2Title": {
+                "type": "varchar",
+                "viewType": "varchar",
+                "maxLength": 150,
+                "default": ""
+            },
+            "employeeHolidayApprovalBlock2Name": {
+                "type": "varchar",
+                "viewType": "varchar",
+                "maxLength": 150,
+                "default": ""
+            },
+            "employeeHolidayTestDataReset": {
+                "type": "varchar",
+                "viewType": "varchar",
+                "fieldView": "employee-management:views/fields/test-data-reset"
+            }
+        }
+    }
+}

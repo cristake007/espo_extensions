@@ -1,0 +1,33 @@
+{
+    "fields": {
+        "employeeHolidayAnnualEntitlementDays": "Drept anual implicit (zile)",
+        "employeeHolidayResetDate": "Data implicită de resetare",
+        "employeeHolidayAutomaticAnnualGrantEnabled": "Activează acordarea anuală automată",
+        "employeeHolidayTestDataReset": "Resetare date de test",
+        "employeeHolidayCarryOverLimitDays": "Prag avertizare sold (zile)",
+        "employeeHolidayNegativeBalanceLimitDays": "Limita soldului negativ (zile)",
+        "employeeHolidayApprovers": "Aprobatori concedii",
+        "employeeHolidayApprovalBlock1Title": "Titlu bloc aprobare 1",
+        "employeeHolidayApprovalBlock1Name": "Nume bloc aprobare 1",
+        "employeeHolidayApprovalBlock2Title": "Titlu bloc aprobare 2",
+        "employeeHolidayApprovalBlock2Name": "Nume bloc aprobare 2"
+    },
+    "tooltips": {
+        "employeeHolidayAnnualEntitlementDays": "Numărul anual de zile acordat implicit la inițializarea profilului de concediu.",
+        "employeeHolidayResetDate": "Selectați data resetării anuale cu selectorul de dată EspoCRM. Anul este ignorat; este acceptat și formatul LL-ZZ, de exemplu 01-01.",
+        "employeeHolidayAutomaticAnnualGrantEnabled": "Dezactivată implicit. Dacă este activată, jobul zilnic adaugă automat dreptul anual profilurilor ajunse la data de resetare. Verificați soldurile și datele înainte de activare.",
+        "employeeHolidayCarryOverLimitDays": "Pragul de avertizare pentru soldul acumulat după resetarea anuală. Dreptul anual este acordat integral și nu se elimină nicio zi. Dacă soldul rezultat depășește această valoare, angajatul și aprobatorii configurați primesc o notificare.",
+        "employeeHolidayNegativeBalanceLimitDays": "Cel mai mic sold permis. Setați zero pentru a interzice soldul negativ.",
+        "employeeHolidayApprovers": "Selectați unul sau doi utilizatori interni activi care pot aproba cererile de concediu.",
+        "employeeHolidayApprovalBlock1Title": "Titlul tipărit pentru primul bloc de aprobare.",
+        "employeeHolidayApprovalBlock1Name": "Suprascriere opțională a numelui tipărit. Lăsați necompletat pentru numele real al aprobatorului.",
+        "employeeHolidayApprovalBlock2Title": "Titlul tipărit pentru al doilea bloc de aprobare.",
+        "employeeHolidayApprovalBlock2Name": "Suprascriere opțională a numelui tipărit. Lăsați necompletat pentru numele real al aprobatorului."
+    },
+    "labels": {
+        "Defaults": "Valori implicite",
+        "RESET": "RESET",
+        "Approval": "Aprobare",
+        "Printed Approval Blocks": "Blocuri tiparite de aprobare"
+    }
+}

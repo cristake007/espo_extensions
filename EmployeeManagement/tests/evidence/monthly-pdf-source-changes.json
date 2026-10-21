@@ -1,0 +1,17 @@
+{
+  "version": "0.7.2",
+  "previousZipSha256": "a057fc6cb3a0236eda4e5a1d0ed4dbafccbc61bcd21169101ce28369bda548da",
+  "zipSha256": "95d1de7097e985604ca23870fc109df6750b16862971c9da674c2e2c5014f1b8",
+  "changedFiles": [
+    "README.md",
+    "files/client/custom/modules/employee-management/src/views/attendance/overview.js",
+    "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendancePdf.php",
+    "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceAccessChecker.php",
+    "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "files/custom/Espo/Modules/EmployeeManagement/Tools/Workspace/Api/GetStatus.php",
+    "manifest.json"
+  ],
+  "generatorUnchanged": true,
+  "crc": "PASS",
+  "sourceParity": "PASS"
+}

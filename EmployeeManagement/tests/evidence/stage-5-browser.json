@@ -1,0 +1,129 @@
+{
+  "results": [
+    {
+      "test": "no-premature-approve-button-ui",
+      "status": "PASS"
+    },
+    {
+      "test": "native-role-booking-button-ui",
+      "status": "PASS"
+    },
+    {
+      "test": "original-edit-modal-conflict-is-backend-409",
+      "status": "PASS",
+      "observed": "Holiday conflicts with worked/business-trip attendance on 2026-10-19. Resolve the attendance explicitly before booking or approval."
+    },
+    {
+      "test": "conflict-reason-native-header",
+      "status": "PASS"
+    },
+    {
+      "test": "failed-edit-preserves-reusable-open-form",
+      "status": "PASS"
+    },
+    {
+      "test": "withdraw-conflicted-Pending-through-original-UI",
+      "status": "PASS"
+    },
+    {
+      "test": "Cancelled-history-kept-not-deleted",
+      "status": "PASS"
+    },
+    {
+      "test": "same-user-personal-attendance-still-operational",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-ui",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "no-premature-approve-button-manager",
+      "status": "PASS"
+    },
+    {
+      "test": "native-role-booking-button-manager",
+      "status": "PASS"
+    },
+    {
+      "test": "CancellationPending-private-queue-active",
+      "status": "PASS"
+    },
+    {
+      "test": "final-cancellation-through-reused-native-confirm",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "final-API-state-Cancelled",
+      "status": "PASS"
+    },
+    {
+      "test": "Cancelled-no-longer-in-active-queue",
+      "status": "PASS"
+    },
+    {
+      "test": "cancelled-absence-restores-frozen-manager-editor",
+      "status": "PASS"
+    },
+    {
+      "test": "frozen-manager-correction-still-audited",
+      "status": "PASS"
+    },
+    {
+      "test": "updated-matrix-medical-visible",
+      "status": "PASS"
+    },
+    {
+      "test": "export-after-integrated-correction",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-manager",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "CIC-existing-UI-allows-medical-not-work",
+      "status": "PASS"
+    },
+    {
+      "test": "CIC-medical-after-integration",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-cic",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "no-premature-approve-button-viewer",
+      "status": "PASS"
+    },
+    {
+      "test": "native-role-booking-button-viewer",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-viewer",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "technical-admin-excluded",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-admin",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 28,
+  "failures": 0,
+  "fixtureVersion": "0.5.0",
+  "testedPackageVersion": "0.5.0",
+  "packageSha256": "b7fd301ac44c98e2a4fc2f88a7f9dd4a71d40acbec480d5f993ab1291c0d66d5",
+  "fixtureSourceResult": "employee-stage5-browser-results.json"
+}

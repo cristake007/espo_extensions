@@ -1,0 +1,65 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "readOnly": true
+        },
+        "month": {
+            "type": "varchar",
+            "readOnly": true
+        },
+        "norms": {
+            "type": "jsonObject",
+            "readOnly": true,
+            "dbType": "longtext"
+        },
+        "policies": {
+            "type": "jsonObject",
+            "readOnly": true,
+            "dbType": "longtext"
+        },
+        "frozen": {
+            "type": "bool",
+            "readOnly": true,
+            "audited": true
+        },
+        "frozenAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "frozenBy": {
+            "type": "link",
+            "readOnly": true
+        },
+        "revision": {
+            "type": "int",
+            "readOnly": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        }
+    },
+    "links": {
+        "frozenBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "indexes": {
+        "monthUnique": {
+            "unique": true,
+            "columns": [
+                "month"
+            ]
+        }
+    },
+    "collection": {
+        "orderBy": "month",
+        "order": "desc"
+    }
+}

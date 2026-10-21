@@ -1,0 +1,2099 @@
+{
+  "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+  "assertions": 155,
+  "failures": 0,
+  "qualification": "First five phases ran on the candidate before final Calendar date-bound/color-only changes. Later fault, concurrency, privacy and date-bound phases ran on final ZIP. Failed exploratory attempts are not counted as passing tests.",
+  "runs": [
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "8aa68c9c9162ac7dbd349b09539bd5e8d0dd73ebf10eefa8a33362c500797120",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": false,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "setup",
+        "results": [
+          {
+            "test": "profile-manager",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "profile-employee",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "profile-colleague",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "profile-denied",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "profile-fls",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "unique-native-scheduled-registration",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "no-automatic-grants-enabled-by-install",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "configuration-visible-to-http-before-decision",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "book-employee-2026-11-02",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "Pending-no-public-projection",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "native-approval-processing",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "Processing-no-public-projection",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "book-colleague-2026-12-07",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "native-Calendar-endpoint-before-worker",
+            "status": "PASS",
+            "observed": {
+              "status": 200,
+              "body": [
+                {
+                  "scope": "EmployeeAbsence",
+                  "dateStart": null,
+                  "dateEnd": null,
+                  "id": "6ad6c9eb457ac5b70",
+                  "name": "Synthetic Stage3 employee",
+                  "status": null,
+                  "dateStartDate": "2026-11-09",
+                  "dateEndDate": "2026-11-13",
+                  "parentType": null,
+                  "parentId": null,
+                  "createdAt": null,
+                  "color": null
+                },
+                {
+                  "scope": "EmployeeAbsence",
+                  "dateStart": null,
+                  "dateEnd": null,
+                  "id": "6ad6c9eb8c765d932",
+                  "name": "ChangedLater ChangedLater",
+                  "status": null,
+                  "dateStartDate": "2026-11-30",
+                  "dateEndDate": "2026-12-02",
+                  "parentType": null,
+                  "parentId": null,
+                  "createdAt": null,
+                  "color": null
+                },
+                {
+                  "scope": "EmployeeAbsence",
+                  "dateStart": null,
+                  "dateEnd": null,
+                  "id": "6ad6c9eb9079d014f",
+                  "name": "SnapshotFirst SnapshotLast manager",
+                  "status": null,
+                  "dateStartDate": "2026-11-05",
+                  "dateEndDate": "2026-11-05",
+                  "parentType": null,
+                  "parentId": null,
+                  "createdAt": null,
+                  "color": null
+                },
+                {
+                  "scope": "EmployeeAbsence",
+                  "dateStart": null,
+                  "dateEnd": null,
+                  "id": "6ad6cfe2c7312670a",
+                  "name": "Calendar s76ad6cfcfca4eb Employee employee",
+                  "status": null,
+                  "dateStartDate": "2026-11-02",
+                  "dateEndDate": "2026-11-04",
+                  "parentType": null,
+                  "parentId": null,
+                  "createdAt": null,
+                  "color": null
+                },
+                {
+                  "scope": "EmployeeAbsence",
+                  "dateStart": null,
+                  "dateEnd": null,
+                  "id": "6ad6d00a11fa5454c",
+                  "name": "Calendar s76ad6cfcfca4eb Employee manager",
+                  "status": null,
+                  "dateStartDate": "2026-11-09",
+                  "dateEndDate": "2026-11-10",
+                  "parentType": null,
+                  "parentId": null,
+                  "createdAt": null,
+                  "color": null
+                },
+                {
+                  "scope": "EmployeeAbsence",
+                  "dateStart": null,
+                  "dateEnd": null,
+                  "id": "6ad6d0ae365a57479",
+                  "name": "Calendar s76ad6cfcfca4eb Employee manager",
+                  "status": null,
+                  "dateStartDate": "2026-11-16",
+                  "dateEndDate": "2026-11-17",
+                  "parentType": null,
+                  "parentId": null,
+                  "createdAt": null,
+                  "color": null
+                },
+                {
+                  "scope": "EmployeeAbsence",
+                  "dateStart": null,
+                  "dateEnd": null,
+                  "id": "6ad6d16c414a718a7",
+                  "name": "Calendar s76ad6cfcfca4eb Employee manager",
+                  "status": null,
+                  "dateStartDate": "2026-11-23",
+                  "dateEndDate": "2026-11-24",
+                  "parentType": null,
+                  "parentId": null,
+                  "createdAt": null,
+                  "color": null
+                },
+                {
+                  "dateStart": "2026-11-01 22:00:00",
+                  "dateEnd": "2026-11-02 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-02 22:00:00",
+                  "dateEnd": "2026-11-03 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-03 22:00:00",
+                  "dateEnd": "2026-11-04 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-04 22:00:00",
+                  "dateEnd": "2026-11-05 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-05 22:00:00",
+                  "dateEnd": "2026-11-06 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-08 22:00:00",
+                  "dateEnd": "2026-11-09 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-09 22:00:00",
+                  "dateEnd": "2026-11-10 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-10 22:00:00",
+                  "dateEnd": "2026-11-11 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-11 22:00:00",
+                  "dateEnd": "2026-11-12 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-12 22:00:00",
+                  "dateEnd": "2026-11-13 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-15 22:00:00",
+                  "dateEnd": "2026-11-16 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-16 22:00:00",
+                  "dateEnd": "2026-11-17 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-17 22:00:00",
+                  "dateEnd": "2026-11-18 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-18 22:00:00",
+                  "dateEnd": "2026-11-19 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-19 22:00:00",
+                  "dateEnd": "2026-11-20 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-22 22:00:00",
+                  "dateEnd": "2026-11-23 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-23 22:00:00",
+                  "dateEnd": "2026-11-24 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-24 22:00:00",
+                  "dateEnd": "2026-11-25 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-25 22:00:00",
+                  "dateEnd": "2026-11-26 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-26 22:00:00",
+                  "dateEnd": "2026-11-27 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-29 22:00:00",
+                  "dateEnd": "2026-11-30 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-30 22:00:00",
+                  "dateEnd": "2026-12-01 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-01 22:00:00",
+                  "dateEnd": "2026-12-02 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-02 22:00:00",
+                  "dateEnd": "2026-12-03 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-03 22:00:00",
+                  "dateEnd": "2026-12-04 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-06 22:00:00",
+                  "dateEnd": "2026-12-07 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-07 22:00:00",
+                  "dateEnd": "2026-12-08 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-08 22:00:00",
+                  "dateEnd": "2026-12-09 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-09 22:00:00",
+                  "dateEnd": "2026-12-10 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-10 22:00:00",
+                  "dateEnd": "2026-12-11 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-13 22:00:00",
+                  "dateEnd": "2026-12-14 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-14 22:00:00",
+                  "dateEnd": "2026-12-15 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-15 22:00:00",
+                  "dateEnd": "2026-12-16 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-16 22:00:00",
+                  "dateEnd": "2026-12-17 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-17 22:00:00",
+                  "dateEnd": "2026-12-18 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-20 22:00:00",
+                  "dateEnd": "2026-12-21 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-21 22:00:00",
+                  "dateEnd": "2026-12-22 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-22 22:00:00",
+                  "dateEnd": "2026-12-23 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-23 22:00:00",
+                  "dateEnd": "2026-12-24 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-24 22:00:00",
+                  "dateEnd": "2026-12-25 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-27 22:00:00",
+                  "dateEnd": "2026-12-28 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-28 22:00:00",
+                  "dateEnd": "2026-12-29 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-29 22:00:00",
+                  "dateEnd": "2026-12-30 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-30 22:00:00",
+                  "dateEnd": "2026-12-31 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-31 22:00:00",
+                  "dateEnd": "2027-01-01 22:00:00",
+                  "isWorkingRange": true
+                }
+              ],
+              "raw": "[{\"scope\":\"EmployeeAbsence\",\"dateStart\":null,\"dateEnd\":null,\"id\":\"6ad6c9eb457ac5b70\",\"name\":\"Synthetic Stage3 employee\",\"status\":null,\"dateStartDate\":\"2026-11-09\",\"dateEndDate\":\"2026-11-13\",\"parentType\":null,\"parentId\":null,\"createdAt\":null,\"color\":null},{\"scope\":\"EmployeeAbsence\",\"dateStart\":null,\"dateEnd\":null,\"id\":\"6ad6c9eb8c765d932\",\"name\":\"ChangedLater ChangedLater\",\"status\":null,\"dateStartDate\":\"2026-11-30\",\"dateEndDate\":\"2026-12-02\",\"parentType\":null,\"parentId\":null,\"createdAt\":null,\"color\":null},{\"scope\":\"EmployeeAbsence\",\"dateStart\":null,\"dateEnd\":null,\"id\":\"6ad6c9eb9079d014f\",\"name\":\"SnapshotFirst SnapshotLast manager\",\"status\":null,\"dateStartDate\":\"2026-11-05\",\"dateEndDate\":\"2026-11-05\",\"parentType\":null,\"parentId\":null,\"createdAt\":null,\"color\":null},{\"scope\":\"EmployeeAbsence\",\"dateStart\":null,\"dateEnd\":null,\"id\":\"6ad6cfe2c7312670a\",\"name\":\"Calendar s76ad6cfcfca4eb Employee employee\",\"status\":null,\"dateStartDate\":\"2026-11-02\",\"dateEndDate\":\"2026-11-04\",\"parentType\":null,\"parentId\":null,\"createdAt\":null,\"color\":null},{\"scope\":\"EmployeeAbsence\",\"dateStart\":null,\"dateEnd\":null,\"id\":\"6ad6d00a11fa5454c\",\"name\":\"Calendar s76ad6cfcfca4eb Employee manager\",\"status\":null,\"dateStartDate\":\"2026-11-09\",\"dateEndDate\":\"2026-11-10\",\"parentType\":null,\"parentId\":null,\"createdAt\":null,\"color\":null},{\"scope\":\"EmployeeAbsence\",\"dateStart\":null,\"dateEnd\":null,\"id\":\"6ad6d0ae365a57479\",\"name\":\"Calendar s76ad6cfcfca4eb Employee manager\",\"status\":null,\"dateStartDate\":\"2026-11-16\",\"dateEndDate\":\"2026-11-17\",\"parentType\":null,\"parentId\":null,\"createdAt\":null,\"color\":null},{\"scope\":\"EmployeeAbsence\",\"dateStart\":null,\"dateEnd\":null,\"id\":\"6ad6d16c414a718a7\",\"name\":\"Calendar s76ad6cfcfca4eb Employee manager\",\"status\":null,\"dateStartDate\":\"2026-11-23\",\"dateEndDate\":\"2026-11-24\",\"parentType\":null,\"parentId\":null,\"createdAt\":null,\"color\":null},{\"dateStart\":\"2026-11-01 22:00:00\",\"dateEnd\":\"2026-11-02 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-02 22:00:00\",\"dateEnd\":\"2026-11-03 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-03 22:00:00\",\"dateEnd\":\"2026-11-04 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-04 22:00:00\",\"dateEnd\":\"2026-11-05 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-05 22:00:00\",\"dateEnd\":\"2026-11-06 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-08 22:00:00\",\"dateEnd\":\"2026-11-09 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-09 22:00:00\",\"dateEnd\":\"2026-11-10 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-10 22:00:00\",\"dateEnd\":\"2026-11-11 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-11 22:00:00\",\"dateEnd\":\"2026-11-12 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-12 22:00:00\",\"dateEnd\":\"2026-11-13 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-15 22:00:00\",\"dateEnd\":\"2026-11-16 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-16 22:00:00\",\"dateEnd\":\"2026-11-17 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-17 22:00:00\",\"dateEnd\":\"2026-11-18 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-18 22:00:00\",\"dateEnd\":\"2026-11-19 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-19 22:00:00\",\"dateEnd\":\"2026-11-20 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-22 22:00:00\",\"dateEnd\":\"2026-11-23 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-23 22:00:00\",\"dateEnd\":\"2026-11-24 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-24 22:00:00\",\"dateEnd\":\"2026-11-25 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-25 22:00:00\",\"dateEnd\":\"2026-11-26 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-26 22:00:00\",\"dateEnd\":\"2026-11-27 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-29 22:00:00\",\"dateEnd\":\"2026-11-30 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-30 22:00:00\",\"dateEnd\":\"2026-12-01 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-01 22:00:00\",\"dateEnd\":\"2026-12-02 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-02 22:00:00\",\"dateEnd\":\"2026-12-03 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-03 22:00:00\",\"dateEnd\":\"2026-12-04 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-06 22:00:00\",\"dateEnd\":\"2026-12-07 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-07 22:00:00\",\"dateEnd\":\"2026-12-08 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-08 22:00:00\",\"dateEnd\":\"2026-12-09 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-09 22:00:00\",\"dateEnd\":\"2026-12-10 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-10 22:00:00\",\"dateEnd\":\"2026-12-11 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-13 22:00:00\",\"dateEnd\":\"2026-12-14 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-14 22:00:00\",\"dateEnd\":\"2026-12-15 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-15 22:00:00\",\"dateEnd\":\"2026-12-16 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-16 22:00:00\",\"dateEnd\":\"2026-12-17 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-17 22:00:00\",\"dateEnd\":\"2026-12-18 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-20 22:00:00\",\"dateEnd\":\"2026-12-21 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-21 22:00:00\",\"dateEnd\":\"2026-12-22 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-22 22:00:00\",\"dateEnd\":\"2026-12-23 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-23 22:00:00\",\"dateEnd\":\"2026-12-24 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-24 22:00:00\",\"dateEnd\":\"2026-12-25 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-27 22:00:00\",\"dateEnd\":\"2026-12-28 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-28 22:00:00\",\"dateEnd\":\"2026-12-29 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-29 22:00:00\",\"dateEnd\":\"2026-12-30 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-30 22:00:00\",\"dateEnd\":\"2026-12-31 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-31 22:00:00\",\"dateEnd\":\"2027-01-01 22:00:00\",\"isWorkingRange\":true}]",
+              "reason": ""
+            }
+          },
+          {
+            "test": "private-own-Pending-calendar",
+            "status": "PASS",
+            "observed": {
+              "status": 200,
+              "body": [
+                {
+                  "scope": "EmployeeHolidayRequest",
+                  "dateStart": null,
+                  "dateEnd": null,
+                  "id": "6ad6d25baefcaae9d",
+                  "name": "Holiday - Calendar s76ad6d256ca96b Employee colleague",
+                  "status": "Pending",
+                  "dateStartDate": "2026-12-07",
+                  "dateEndDate": "2026-12-08",
+                  "parentType": null,
+                  "parentId": null,
+                  "createdAt": "2026-10-20 02:30:51",
+                  "color": "#4F8A8B"
+                },
+                {
+                  "dateStart": "2026-11-01 22:00:00",
+                  "dateEnd": "2026-11-02 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-02 22:00:00",
+                  "dateEnd": "2026-11-03 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-03 22:00:00",
+                  "dateEnd": "2026-11-04 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-04 22:00:00",
+                  "dateEnd": "2026-11-05 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-05 22:00:00",
+                  "dateEnd": "2026-11-06 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-08 22:00:00",
+                  "dateEnd": "2026-11-09 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-09 22:00:00",
+                  "dateEnd": "2026-11-10 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-10 22:00:00",
+                  "dateEnd": "2026-11-11 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-11 22:00:00",
+                  "dateEnd": "2026-11-12 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-12 22:00:00",
+                  "dateEnd": "2026-11-13 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-15 22:00:00",
+                  "dateEnd": "2026-11-16 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-16 22:00:00",
+                  "dateEnd": "2026-11-17 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-17 22:00:00",
+                  "dateEnd": "2026-11-18 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-18 22:00:00",
+                  "dateEnd": "2026-11-19 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-19 22:00:00",
+                  "dateEnd": "2026-11-20 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-22 22:00:00",
+                  "dateEnd": "2026-11-23 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-23 22:00:00",
+                  "dateEnd": "2026-11-24 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-24 22:00:00",
+                  "dateEnd": "2026-11-25 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-25 22:00:00",
+                  "dateEnd": "2026-11-26 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-26 22:00:00",
+                  "dateEnd": "2026-11-27 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-29 22:00:00",
+                  "dateEnd": "2026-11-30 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-30 22:00:00",
+                  "dateEnd": "2026-12-01 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-01 22:00:00",
+                  "dateEnd": "2026-12-02 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-02 22:00:00",
+                  "dateEnd": "2026-12-03 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-03 22:00:00",
+                  "dateEnd": "2026-12-04 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-06 22:00:00",
+                  "dateEnd": "2026-12-07 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-07 22:00:00",
+                  "dateEnd": "2026-12-08 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-08 22:00:00",
+                  "dateEnd": "2026-12-09 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-09 22:00:00",
+                  "dateEnd": "2026-12-10 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-10 22:00:00",
+                  "dateEnd": "2026-12-11 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-13 22:00:00",
+                  "dateEnd": "2026-12-14 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-14 22:00:00",
+                  "dateEnd": "2026-12-15 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-15 22:00:00",
+                  "dateEnd": "2026-12-16 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-16 22:00:00",
+                  "dateEnd": "2026-12-17 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-17 22:00:00",
+                  "dateEnd": "2026-12-18 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-20 22:00:00",
+                  "dateEnd": "2026-12-21 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-21 22:00:00",
+                  "dateEnd": "2026-12-22 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-22 22:00:00",
+                  "dateEnd": "2026-12-23 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-23 22:00:00",
+                  "dateEnd": "2026-12-24 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-24 22:00:00",
+                  "dateEnd": "2026-12-25 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-27 22:00:00",
+                  "dateEnd": "2026-12-28 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-28 22:00:00",
+                  "dateEnd": "2026-12-29 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-29 22:00:00",
+                  "dateEnd": "2026-12-30 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-30 22:00:00",
+                  "dateEnd": "2026-12-31 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-31 22:00:00",
+                  "dateEnd": "2027-01-01 22:00:00",
+                  "isWorkingRange": true
+                }
+              ],
+              "raw": "[{\"scope\":\"EmployeeHolidayRequest\",\"dateStart\":null,\"dateEnd\":null,\"id\":\"6ad6d25baefcaae9d\",\"name\":\"Holiday - Calendar s76ad6d256ca96b Employee colleague\",\"status\":\"Pending\",\"dateStartDate\":\"2026-12-07\",\"dateEndDate\":\"2026-12-08\",\"parentType\":null,\"parentId\":null,\"createdAt\":\"2026-10-20 02:30:51\",\"color\":\"#4F8A8B\"},{\"dateStart\":\"2026-11-01 22:00:00\",\"dateEnd\":\"2026-11-02 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-02 22:00:00\",\"dateEnd\":\"2026-11-03 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-03 22:00:00\",\"dateEnd\":\"2026-11-04 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-04 22:00:00\",\"dateEnd\":\"2026-11-05 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-05 22:00:00\",\"dateEnd\":\"2026-11-06 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-08 22:00:00\",\"dateEnd\":\"2026-11-09 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-09 22:00:00\",\"dateEnd\":\"2026-11-10 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-10 22:00:00\",\"dateEnd\":\"2026-11-11 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-11 22:00:00\",\"dateEnd\":\"2026-11-12 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-12 22:00:00\",\"dateEnd\":\"2026-11-13 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-15 22:00:00\",\"dateEnd\":\"2026-11-16 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-16 22:00:00\",\"dateEnd\":\"2026-11-17 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-17 22:00:00\",\"dateEnd\":\"2026-11-18 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-18 22:00:00\",\"dateEnd\":\"2026-11-19 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-19 22:00:00\",\"dateEnd\":\"2026-11-20 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-22 22:00:00\",\"dateEnd\":\"2026-11-23 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-23 22:00:00\",\"dateEnd\":\"2026-11-24 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-24 22:00:00\",\"dateEnd\":\"2026-11-25 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-25 22:00:00\",\"dateEnd\":\"2026-11-26 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-26 22:00:00\",\"dateEnd\":\"2026-11-27 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-29 22:00:00\",\"dateEnd\":\"2026-11-30 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-30 22:00:00\",\"dateEnd\":\"2026-12-01 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-01 22:00:00\",\"dateEnd\":\"2026-12-02 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-02 22:00:00\",\"dateEnd\":\"2026-12-03 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-03 22:00:00\",\"dateEnd\":\"2026-12-04 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-06 22:00:00\",\"dateEnd\":\"2026-12-07 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-07 22:00:00\",\"dateEnd\":\"2026-12-08 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-08 22:00:00\",\"dateEnd\":\"2026-12-09 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-09 22:00:00\",\"dateEnd\":\"2026-12-10 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-10 22:00:00\",\"dateEnd\":\"2026-12-11 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-13 22:00:00\",\"dateEnd\":\"2026-12-14 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-14 22:00:00\",\"dateEnd\":\"2026-12-15 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-15 22:00:00\",\"dateEnd\":\"2026-12-16 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-16 22:00:00\",\"dateEnd\":\"2026-12-17 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-17 22:00:00\",\"dateEnd\":\"2026-12-18 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-20 22:00:00\",\"dateEnd\":\"2026-12-21 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-21 22:00:00\",\"dateEnd\":\"2026-12-22 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-22 22:00:00\",\"dateEnd\":\"2026-12-23 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-23 22:00:00\",\"dateEnd\":\"2026-12-24 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-24 22:00:00\",\"dateEnd\":\"2026-12-25 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-27 22:00:00\",\"dateEnd\":\"2026-12-28 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-28 22:00:00\",\"dateEnd\":\"2026-12-29 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-29 22:00:00\",\"dateEnd\":\"2026-12-30 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-30 22:00:00\",\"dateEnd\":\"2026-12-31 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-31 22:00:00\",\"dateEnd\":\"2027-01-01 22:00:00\",\"isWorkingRange\":true}]",
+              "reason": ""
+            }
+          },
+          {
+            "test": "private-Pending-not-visible-to-colleague",
+            "status": "PASS",
+            "observed": {
+              "status": 200,
+              "body": [
+                {
+                  "dateStart": "2026-11-01 22:00:00",
+                  "dateEnd": "2026-11-02 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-02 22:00:00",
+                  "dateEnd": "2026-11-03 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-03 22:00:00",
+                  "dateEnd": "2026-11-04 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-04 22:00:00",
+                  "dateEnd": "2026-11-05 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-05 22:00:00",
+                  "dateEnd": "2026-11-06 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-08 22:00:00",
+                  "dateEnd": "2026-11-09 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-09 22:00:00",
+                  "dateEnd": "2026-11-10 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-10 22:00:00",
+                  "dateEnd": "2026-11-11 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-11 22:00:00",
+                  "dateEnd": "2026-11-12 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-12 22:00:00",
+                  "dateEnd": "2026-11-13 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-15 22:00:00",
+                  "dateEnd": "2026-11-16 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-16 22:00:00",
+                  "dateEnd": "2026-11-17 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-17 22:00:00",
+                  "dateEnd": "2026-11-18 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-18 22:00:00",
+                  "dateEnd": "2026-11-19 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-19 22:00:00",
+                  "dateEnd": "2026-11-20 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-22 22:00:00",
+                  "dateEnd": "2026-11-23 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-23 22:00:00",
+                  "dateEnd": "2026-11-24 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-24 22:00:00",
+                  "dateEnd": "2026-11-25 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-25 22:00:00",
+                  "dateEnd": "2026-11-26 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-26 22:00:00",
+                  "dateEnd": "2026-11-27 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-29 22:00:00",
+                  "dateEnd": "2026-11-30 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-11-30 22:00:00",
+                  "dateEnd": "2026-12-01 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-01 22:00:00",
+                  "dateEnd": "2026-12-02 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-02 22:00:00",
+                  "dateEnd": "2026-12-03 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-03 22:00:00",
+                  "dateEnd": "2026-12-04 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-06 22:00:00",
+                  "dateEnd": "2026-12-07 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-07 22:00:00",
+                  "dateEnd": "2026-12-08 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-08 22:00:00",
+                  "dateEnd": "2026-12-09 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-09 22:00:00",
+                  "dateEnd": "2026-12-10 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-10 22:00:00",
+                  "dateEnd": "2026-12-11 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-13 22:00:00",
+                  "dateEnd": "2026-12-14 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-14 22:00:00",
+                  "dateEnd": "2026-12-15 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-15 22:00:00",
+                  "dateEnd": "2026-12-16 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-16 22:00:00",
+                  "dateEnd": "2026-12-17 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-17 22:00:00",
+                  "dateEnd": "2026-12-18 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-20 22:00:00",
+                  "dateEnd": "2026-12-21 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-21 22:00:00",
+                  "dateEnd": "2026-12-22 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-22 22:00:00",
+                  "dateEnd": "2026-12-23 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-23 22:00:00",
+                  "dateEnd": "2026-12-24 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-24 22:00:00",
+                  "dateEnd": "2026-12-25 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-27 22:00:00",
+                  "dateEnd": "2026-12-28 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-28 22:00:00",
+                  "dateEnd": "2026-12-29 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-29 22:00:00",
+                  "dateEnd": "2026-12-30 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-30 22:00:00",
+                  "dateEnd": "2026-12-31 22:00:00",
+                  "isWorkingRange": true
+                },
+                {
+                  "dateStart": "2026-12-31 22:00:00",
+                  "dateEnd": "2027-01-01 22:00:00",
+                  "isWorkingRange": true
+                }
+              ],
+              "raw": "[{\"dateStart\":\"2026-11-01 22:00:00\",\"dateEnd\":\"2026-11-02 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-02 22:00:00\",\"dateEnd\":\"2026-11-03 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-03 22:00:00\",\"dateEnd\":\"2026-11-04 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-04 22:00:00\",\"dateEnd\":\"2026-11-05 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-05 22:00:00\",\"dateEnd\":\"2026-11-06 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-08 22:00:00\",\"dateEnd\":\"2026-11-09 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-09 22:00:00\",\"dateEnd\":\"2026-11-10 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-10 22:00:00\",\"dateEnd\":\"2026-11-11 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-11 22:00:00\",\"dateEnd\":\"2026-11-12 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-12 22:00:00\",\"dateEnd\":\"2026-11-13 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-15 22:00:00\",\"dateEnd\":\"2026-11-16 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-16 22:00:00\",\"dateEnd\":\"2026-11-17 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-17 22:00:00\",\"dateEnd\":\"2026-11-18 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-18 22:00:00\",\"dateEnd\":\"2026-11-19 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-19 22:00:00\",\"dateEnd\":\"2026-11-20 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-22 22:00:00\",\"dateEnd\":\"2026-11-23 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-23 22:00:00\",\"dateEnd\":\"2026-11-24 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-24 22:00:00\",\"dateEnd\":\"2026-11-25 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-25 22:00:00\",\"dateEnd\":\"2026-11-26 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-26 22:00:00\",\"dateEnd\":\"2026-11-27 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-29 22:00:00\",\"dateEnd\":\"2026-11-30 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-11-30 22:00:00\",\"dateEnd\":\"2026-12-01 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-01 22:00:00\",\"dateEnd\":\"2026-12-02 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-02 22:00:00\",\"dateEnd\":\"2026-12-03 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-03 22:00:00\",\"dateEnd\":\"2026-12-04 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-06 22:00:00\",\"dateEnd\":\"2026-12-07 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-07 22:00:00\",\"dateEnd\":\"2026-12-08 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-08 22:00:00\",\"dateEnd\":\"2026-12-09 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-09 22:00:00\",\"dateEnd\":\"2026-12-10 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-10 22:00:00\",\"dateEnd\":\"2026-12-11 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-13 22:00:00\",\"dateEnd\":\"2026-12-14 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-14 22:00:00\",\"dateEnd\":\"2026-12-15 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-15 22:00:00\",\"dateEnd\":\"2026-12-16 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-16 22:00:00\",\"dateEnd\":\"2026-12-17 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-17 22:00:00\",\"dateEnd\":\"2026-12-18 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-20 22:00:00\",\"dateEnd\":\"2026-12-21 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-21 22:00:00\",\"dateEnd\":\"2026-12-22 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-22 22:00:00\",\"dateEnd\":\"2026-12-23 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-23 22:00:00\",\"dateEnd\":\"2026-12-24 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-24 22:00:00\",\"dateEnd\":\"2026-12-25 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-27 22:00:00\",\"dateEnd\":\"2026-12-28 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-28 22:00:00\",\"dateEnd\":\"2026-12-29 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-29 22:00:00\",\"dateEnd\":\"2026-12-30 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-30 22:00:00\",\"dateEnd\":\"2026-12-31 22:00:00\",\"isWorkingRange\":true},{\"dateStart\":\"2026-12-31 22:00:00\",\"dateEnd\":\"2027-01-01 22:00:00\",\"isWorkingRange\":true}]",
+              "reason": ""
+            }
+          },
+          {
+            "test": "source-registration-additive",
+            "status": "PASS",
+            "observed": null
+          }
+        ],
+        "assertions": 17,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "8aa68c9c9162ac7dbd349b09539bd5e8d0dd73ebf10eefa8a33362c500797120",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": false,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "calendar",
+        "results": [
+          {
+            "test": "real-worker-approved-with-document",
+            "status": "PASS",
+            "observed": "Approved"
+          },
+          {
+            "test": "approval-no-double-reservation",
+            "status": "PASS",
+            "observed": {
+              "balance": 37,
+              "ledger": 2
+            }
+          },
+          {
+            "test": "public-absence-created-in-finalization",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "colleague-sees-minimal-common-event",
+            "status": "PASS",
+            "observed": [
+              {
+                "scope": "EmployeeAbsence",
+                "dateStart": null,
+                "dateEnd": null,
+                "id": "6ad6d28edcae90552",
+                "name": "Calendar s76ad6d256ca96b Employee employee",
+                "status": null,
+                "dateStartDate": "2026-11-02",
+                "dateEndDate": "2026-11-04",
+                "parentType": null,
+                "parentId": null,
+                "createdAt": null,
+                "color": null
+              }
+            ]
+          },
+          {
+            "test": "Calendar-no-private-values",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "Approved-not-rendered-twice-as-private-request",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "common-event-on-other-user-calendar",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "native-record-by-id-minimal",
+            "status": "PASS",
+            "observed": {
+              "status": 200,
+              "body": {
+                "id": "6ad6d28edcae90552",
+                "name": "Calendar s76ad6d256ca96b Employee employee",
+                "deleted": false,
+                "dateStart": "2026-11-02",
+                "dateEnd": "2026-11-04",
+                "assignedUserId": "6ad6d2570f06b504c",
+                "assignedUserName": "Calendar s76ad6d256ca96b Employee employee"
+              },
+              "raw": "{\"id\":\"6ad6d28edcae90552\",\"name\":\"Calendar s76ad6d256ca96b Employee employee\",\"deleted\":false,\"dateStart\":\"2026-11-02\",\"dateEnd\":\"2026-11-04\",\"assignedUserId\":\"6ad6d2570f06b504c\",\"assignedUserName\":\"Calendar s76ad6d256ca96b Employee employee\"}",
+              "reason": ""
+            }
+          },
+          {
+            "test": "common-feed-business-ACL-denied",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "common-feed-business-ACL-admin",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "native-record-no-role-denied",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "Calendar-respects-native-date-FLS",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "record-date-FLS-not-reexposed",
+            "status": "PASS",
+            "observed": {
+              "status": 200,
+              "body": {
+                "id": "6ad6d28edcae90552",
+                "name": "Calendar s76ad6d256ca96b Employee employee",
+                "deleted": false,
+                "dateStart": "2026-11-02",
+                "assignedUserId": "6ad6d2570f06b504c",
+                "assignedUserName": "Calendar s76ad6d256ca96b Employee employee"
+              },
+              "raw": "{\"id\":\"6ad6d28edcae90552\",\"name\":\"Calendar s76ad6d256ca96b Employee employee\",\"deleted\":false,\"dateStart\":\"2026-11-02\",\"assignedUserId\":\"6ad6d2570f06b504c\",\"assignedUserName\":\"Calendar s76ad6d256ca96b Employee employee\"}",
+              "reason": ""
+            }
+          },
+          {
+            "test": "public-CRUD-closed-manager-POST",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "public-CRUD-closed-manager-PUT",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "public-CRUD-closed-manager-DELETE",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "public-CRUD-closed-employee-POST",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "public-CRUD-closed-employee-PUT",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "public-CRUD-closed-employee-DELETE",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "public-CRUD-closed-colleague-POST",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "public-CRUD-closed-colleague-PUT",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "public-CRUD-closed-colleague-DELETE",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "public-CRUD-closed-admin-POST",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "public-CRUD-closed-admin-PUT",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "public-CRUD-closed-admin-DELETE",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "public-link-write-closed",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "projection-does-not-grant-private-source",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "private-document-by-id-colleague",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "private-document-by-id-denied",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "owner-native-document-download",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "CancellationPending-keeps-same-projection",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "CancellationPending-still-public",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "disabled-real-native-job-no-mutation",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "no-global-ScheduledJob-read-employee",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "no-global-ScheduledJob-edit-employee",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "no-global-ScheduledJob-read-manager",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "no-global-ScheduledJob-edit-manager",
+            "status": "PASS",
+            "observed": 403
+          }
+        ],
+        "assertions": 37,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "8aa68c9c9162ac7dbd349b09539bd5e8d0dd73ebf10eefa8a33362c500797120",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": false,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "annual-setup",
+        "results": [
+          {
+            "test": "manager-explicit-opt-in-native-settings",
+            "status": "PASS",
+            "observed": {
+              "status": 200,
+              "body": {
+                "employeeHolidayAnnualEntitlementDays": 21,
+                "employeeHolidayResetDate": "2027-01-01",
+                "employeeHolidayAutomaticAnnualGrantEnabled": true,
+                "employeeHolidayCarryOverLimitDays": 30,
+                "employeeHolidayNegativeBalanceLimitDays": -21,
+                "employeeHolidayApproversIds": [
+                  "6ad6d2570da20765d"
+                ],
+                "employeeHolidayApproversNames": {
+                  "6ad6d2570da20765d": "Calendar s76ad6d256ca96b Employee manager"
+                },
+                "employeeHolidayApprovalBlock1Title": "Stage2 Director",
+                "employeeHolidayApprovalBlock1Name": "Synthetic Manager",
+                "employeeHolidayApprovalBlock2Title": "",
+                "employeeHolidayApprovalBlock2Name": "",
+                "isAdmin": false
+              },
+              "raw": "{\"employeeHolidayAnnualEntitlementDays\":21,\"employeeHolidayResetDate\":\"2027-01-01\",\"employeeHolidayAutomaticAnnualGrantEnabled\":true,\"employeeHolidayCarryOverLimitDays\":30,\"employeeHolidayNegativeBalanceLimitDays\":-21,\"employeeHolidayApproversIds\":[\"6ad6d2570da20765d\"],\"employeeHolidayApproversNames\":{\"6ad6d2570da20765d\":\"Calendar s76ad6d256ca96b Employee manager\"},\"employeeHolidayApprovalBlock1Title\":\"Stage2 Director\",\"employeeHolidayApprovalBlock1Name\":\"Synthetic Manager\",\"employeeHolidayApprovalBlock2Title\":\"\",\"employeeHolidayApprovalBlock2Name\":\"\",\"isAdmin\":false}",
+              "reason": ""
+            }
+          },
+          {
+            "test": "annual-opt-in-ACL-employee",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "annual-opt-in-ACL-admin",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "negative-balance-prepared-through-authorized-correction",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "native-scheduler-enqueued-owned-ScheduledJob",
+            "status": "PASS",
+            "observed": {
+              "id": "6ad6d2a4046fdc54e",
+              "name": "Employee Management — annual grants (opt-in)",
+              "deleted": false,
+              "status": "Pending",
+              "executeTime": "2026-10-20 02:32:04",
+              "number": 1031,
+              "className": null,
+              "job": null,
+              "data": null,
+              "scheduledJobJob": "ProcessEmployeeHolidayResets",
+              "queue": null,
+              "group": null,
+              "targetGroup": null,
+              "startedAt": null,
+              "executedAt": null,
+              "pid": null,
+              "attempts": 1,
+              "targetId": null,
+              "targetType": null,
+              "failedAttempts": null,
+              "createdAt": "2026-10-20 02:32:04",
+              "modifiedAt": "2026-10-20 02:32:04",
+              "scheduledJobId": "6ad6c9eb37e19cf05",
+              "scheduledJobName": "Employee Management — annual grants (opt-in)"
+            }
+          }
+        ],
+        "assertions": 5,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "8aa68c9c9162ac7dbd349b09539bd5e8d0dd73ebf10eefa8a33362c500797120",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": false,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "annual-complete",
+        "results": [
+          {
+            "test": "real-annual-native-worker-6ad6d2a405106f2d0",
+            "status": "PASS",
+            "observed": {
+              "status": "Success",
+              "startedAt": "2026-10-20 02:33:47",
+              "executedAt": "2026-10-20 02:33:47",
+              "failedAttempts": null
+            }
+          },
+          {
+            "test": "real-annual-native-worker-6ad6d2a40598e5d66",
+            "status": "PASS",
+            "observed": {
+              "status": "Success",
+              "startedAt": "2026-10-20 02:33:47",
+              "executedAt": "2026-10-20 02:33:47",
+              "failedAttempts": null
+            }
+          },
+          {
+            "test": "annual-original-additive-formula-employee",
+            "status": "PASS",
+            "observed": [
+              37,
+              58
+            ]
+          },
+          {
+            "test": "one-ledger-per-due-year-employee",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "reset-date-advanced-original-next-year-employee",
+            "status": "PASS",
+            "observed": "2027-10-20"
+          },
+          {
+            "test": "ledger-audit-system-and-key-6ad6d30bcac75fad2",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "annual-original-additive-formula-colleague",
+            "status": "PASS",
+            "observed": [
+              38,
+              80
+            ]
+          },
+          {
+            "test": "one-ledger-per-due-year-colleague",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "reset-date-advanced-original-next-year-colleague",
+            "status": "PASS",
+            "observed": "2027-10-20"
+          },
+          {
+            "test": "ledger-audit-system-and-key-6ad6d30bb83a33e8d",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "ledger-audit-system-and-key-6ad6d30bc3574533a",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "annual-original-additive-formula-denied",
+            "status": "PASS",
+            "observed": [
+              -5,
+              16
+            ]
+          },
+          {
+            "test": "one-ledger-per-due-year-denied",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "reset-date-advanced-original-next-year-denied",
+            "status": "PASS",
+            "observed": "2027-10-20"
+          },
+          {
+            "test": "ledger-audit-system-and-key-6ad6d30bd05560c4c",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "annual-excludes-admin-and-inactive",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "native-ScheduledJob-success-log",
+            "status": "PASS",
+            "observed": 1
+          },
+          {
+            "test": "annual-grant-does-not-recalculate-approved-document",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "original-balance-warning-notifications-employee",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "original-balance-warning-notifications-colleague",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "manager-can-disable-annual-processing",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "future-reset-profile-not-credited",
+            "status": "PASS",
+            "observed": null
+          }
+        ],
+        "assertions": 22,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "8aa68c9c9162ac7dbd349b09539bd5e8d0dd73ebf10eefa8a33362c500797120",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": false,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "calendar-boundary-setup",
+        "results": [
+          {
+            "test": "book-manager-2026-11-04",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "single-day-native-approval-initiated",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "book-manager-2026-12-08",
+            "status": "PASS",
+            "observed": 200
+          }
+        ],
+        "assertions": 3,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "calendar-boundary",
+        "results": [
+          {
+            "test": "single-day-approved-after-real-document",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "all-day-single-date-visible-Europe-Bucharest",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "all-day-previous-date-outside-exclusive-range",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "own-Pending-single-date-visible-Europe-Bucharest",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "all-day-partial-last-day-overlap",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "native-user-timezone-change-for-Calendar",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "single-day-visible-with-negative-UTC-offset",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "native-user-timezone-restored",
+            "status": "PASS",
+            "observed": 200
+          }
+        ],
+        "assertions": 8,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "calendar-color",
+        "results": [
+          {
+            "test": "original-profile-color-setting-updated-natively",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "common-Calendar-retains-original-live-employee-color",
+            "status": "PASS",
+            "observed": {
+              "scope": "EmployeeAbsence",
+              "dateStart": null,
+              "dateEnd": null,
+              "id": "6ad6d28edcae90552",
+              "name": "Calendar s76ad6d256ca96b Employee employee",
+              "status": null,
+              "dateStartDate": "2026-11-02",
+              "dateEndDate": "2026-11-04",
+              "parentType": null,
+              "parentId": null,
+              "createdAt": null,
+              "color": "#A1B2C3"
+            }
+          },
+          {
+            "test": "color-change-does-not-change-balance",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "shared-absence-needs-no-global-other-user-Calendar-permission",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "live-display-color-respects-native-field-ACL",
+            "status": "PASS",
+            "observed": {
+              "scope": "EmployeeAbsence",
+              "dateStart": null,
+              "dateEnd": null,
+              "id": "6ad6d28edcae90552",
+              "name": "Calendar s76ad6d256ca96b Employee employee",
+              "status": null,
+              "dateStartDate": "2026-11-02",
+              "dateEndDate": "2026-11-04",
+              "parentType": null,
+              "parentId": null,
+              "createdAt": null,
+              "color": null
+            }
+          },
+          {
+            "test": "public-color-role-does-not-grant-private-request",
+            "status": "PASS",
+            "observed": 403
+          }
+        ],
+        "assertions": 6,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "concurrency-setup",
+        "results": [
+          {
+            "test": "race-explicit-opt-in",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "race-profile-0",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "race-profile-1",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "race-profile-2",
+            "status": "PASS",
+            "observed": 200
+          }
+        ],
+        "assertions": 4,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "concurrency-complete",
+        "results": [
+          {
+            "test": "annual-race-no-hidden-retry-6ad6d3f568dca7c02",
+            "status": "PASS",
+            "observed": {
+              "id": "6ad6d3f568dca7c02",
+              "name": "Espo\\Modules\\EmployeeManagement\\Jobs\\ProcessEmployeeHolidayResets",
+              "deleted": false,
+              "status": "Success",
+              "executeTime": "2026-10-20 02:37:41",
+              "number": 1105,
+              "className": "Espo\\Modules\\EmployeeManagement\\Jobs\\ProcessEmployeeHolidayResets",
+              "job": null,
+              "data": {},
+              "scheduledJobJob": null,
+              "queue": null,
+              "group": "s7-new-race-a-s76ad6d3f478c2b",
+              "targetGroup": null,
+              "startedAt": "2026-10-20 02:37:42",
+              "executedAt": "2026-10-20 02:37:44",
+              "pid": 17,
+              "attempts": 0,
+              "targetId": null,
+              "targetType": null,
+              "failedAttempts": null,
+              "createdAt": "2026-10-20 02:37:41",
+              "modifiedAt": "2026-10-20 02:37:44",
+              "scheduledJobId": null,
+              "scheduledJobName": null
+            }
+          },
+          {
+            "test": "annual-race-no-hidden-retry-6ad6d3f56994c2a25",
+            "status": "PASS",
+            "observed": {
+              "id": "6ad6d3f56994c2a25",
+              "name": "Espo\\Modules\\EmployeeManagement\\Jobs\\ProcessEmployeeHolidayResets",
+              "deleted": false,
+              "status": "Success",
+              "executeTime": "2026-10-20 02:37:41",
+              "number": 1106,
+              "className": "Espo\\Modules\\EmployeeManagement\\Jobs\\ProcessEmployeeHolidayResets",
+              "job": null,
+              "data": {},
+              "scheduledJobJob": null,
+              "queue": null,
+              "group": "s7-new-race-b-s76ad6d3f478c2b",
+              "targetGroup": null,
+              "startedAt": "2026-10-20 02:37:42",
+              "executedAt": "2026-10-20 02:37:44",
+              "pid": 18,
+              "attempts": 0,
+              "targetId": null,
+              "targetType": null,
+              "failedAttempts": null,
+              "createdAt": "2026-10-20 02:37:41",
+              "modifiedAt": "2026-10-20 02:37:44",
+              "scheduledJobId": null,
+              "scheduledJobName": null
+            }
+          },
+          {
+            "test": "annual-concurrency-single-effect-6ad6d3f4ead1b93b5",
+            "status": "PASS",
+            "observed": 26
+          },
+          {
+            "test": "annual-concurrency-single-effect-6ad6d3f52e500a1d6",
+            "status": "PASS",
+            "observed": 26
+          },
+          {
+            "test": "annual-concurrency-single-effect-6ad6d3f5663420ebc",
+            "status": "PASS",
+            "observed": 26
+          }
+        ],
+        "assertions": 5,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "annual-failure-setup",
+        "results": [
+          {
+            "test": "annual-recovery-explicit-opt-in",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "recovery-profile-0",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "recovery-profile-1",
+            "status": "PASS",
+            "observed": 200
+          }
+        ],
+        "assertions": 3,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "annual-failure",
+        "results": [
+          {
+            "test": "native-annual-failure-detected",
+            "status": "PASS",
+            "observed": "Failed"
+          },
+          {
+            "test": "completed-profile-committed-failed-profile-rolled-back",
+            "status": "PASS",
+            "observed": [
+              26,
+              5
+            ]
+          }
+        ],
+        "assertions": 2,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "annual-recovered",
+        "results": [
+          {
+            "test": "annual-native-retry-completes",
+            "status": "PASS",
+            "observed": "Success"
+          },
+          {
+            "test": "annual-recovery-single-credit-6ad6d44ccfff9363a",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "annual-recovery-single-credit-6ad6d44d1333d9b7d",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "annual-retry-retains-first-ledger-ID",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "annual-recovery-disables-lab-grants",
+            "status": "PASS",
+            "observed": 200
+          }
+        ],
+        "assertions": 5,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "projection-failure-setup",
+        "results": [
+          {
+            "test": "book-manager-2027-02-01",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "projection-failure-initiated-real-Job",
+            "status": "PASS",
+            "observed": 200
+          }
+        ],
+        "assertions": 2,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "projection-failure",
+        "results": [
+          {
+            "test": "projection-fault-rolls-back-Approved",
+            "status": "PASS",
+            "observed": [
+              "ApprovalProcessing",
+              "Failed"
+            ]
+          },
+          {
+            "test": "rendered-staged-document-tracked",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "failed-projection-does-not-publish-document",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "failed-projection-keeps-one-reservation",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "controlled-retry-after-projection-error",
+            "status": "PASS",
+            "observed": 200
+          }
+        ],
+        "assertions": 5,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "projection-recovered",
+        "results": [
+          {
+            "test": "retry-publishes-Approved-and-one-projection",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "retry-reuses-same-document-and-accounting",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "cancellation-projection-failure-rolls-back-source-and-refund",
+            "status": "PASS",
+            "observed": 500
+          },
+          {
+            "test": "parallel-cancellation-one-effect-and-receipt",
+            "status": "PASS",
+            "observed": [
+              {
+                "status": 200,
+                "body": {
+                  "id": "6ad6d25aebf472748",
+                  "assignedUserId": "6ad6d2570f06b504c",
+                  "assignedUserName": "Calendar s76ad6d256ca96b Employee employee",
+                  "dateStartDate": "2026-11-02",
+                  "dateEndDate": "2026-11-04",
+                  "days": 3,
+                  "status": "Cancelled",
+                  "description": "PRIVATE real Stage7 approval",
+                  "cancellationReason": "PRIVATE cancellation reason",
+                  "accountingRevision": 5,
+                  "approvalState": "Completed",
+                  "approvalError": null,
+                  "approvalAttempts": 1,
+                  "approvalRetryAvailable": false,
+                  "documents": [
+                    {
+                      "id": "6ad6d28ec5e69eeaf",
+                      "name": "Cerere concediu - noiembrie 2026.docx"
+                    }
+                  ],
+                  "duplicate": false
+                }
+              },
+              {
+                "status": 200,
+                "body": {
+                  "id": "6ad6d25aebf472748",
+                  "assignedUserId": "6ad6d2570f06b504c",
+                  "assignedUserName": "Calendar s76ad6d256ca96b Employee employee",
+                  "dateStartDate": "2026-11-02",
+                  "dateEndDate": "2026-11-04",
+                  "days": 3,
+                  "status": "Cancelled",
+                  "description": "PRIVATE real Stage7 approval",
+                  "cancellationReason": "PRIVATE cancellation reason",
+                  "accountingRevision": 5,
+                  "approvalState": "Completed",
+                  "approvalError": null,
+                  "approvalAttempts": 1,
+                  "approvalRetryAvailable": false,
+                  "documents": [
+                    {
+                      "id": "6ad6d28ec5e69eeaf",
+                      "name": "Cerere concediu - noiembrie 2026.docx"
+                    }
+                  ],
+                  "duplicate": true
+                }
+              }
+            ]
+          },
+          {
+            "test": "final-cancellation-removes-projection-and-refunds-once",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "cancelled-public-ID-is-not-readable",
+            "status": "PASS",
+            "observed": 404
+          },
+          {
+            "test": "Cancelled-not-in-common-calendar",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "cancelled-document-remains-private-history",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "Rejected-has-no-common-event",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "ledger-sum-equals-balance-manager",
+            "status": "PASS",
+            "observed": [
+              36,
+              36
+            ]
+          },
+          {
+            "test": "ledger-sum-equals-balance-employee",
+            "status": "PASS",
+            "observed": [
+              61,
+              61
+            ]
+          },
+          {
+            "test": "ledger-sum-equals-balance-colleague",
+            "status": "PASS",
+            "observed": [
+              82,
+              82
+            ]
+          },
+          {
+            "test": "ledger-sum-equals-balance-denied",
+            "status": "PASS",
+            "observed": [
+              16,
+              16
+            ]
+          },
+          {
+            "test": "ledger-sum-equals-balance-fls",
+            "status": "PASS",
+            "observed": [
+              40,
+              40
+            ]
+          }
+        ],
+        "assertions": 14,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "privacy-extra",
+        "results": [
+          {
+            "test": "public-filter-positive-control-valid-native-format",
+            "status": "PASS",
+            "observed": 200
+          },
+          {
+            "test": "source-field-not-queryable-by-public-client",
+            "status": "PASS",
+            "observed": 400
+          },
+          {
+            "test": "no-private-relationship-source",
+            "status": "PASS",
+            "observed": 404
+          },
+          {
+            "test": "no-private-relationship-request",
+            "status": "PASS",
+            "observed": 404
+          },
+          {
+            "test": "no-private-relationship-approvalDocuments",
+            "status": "PASS",
+            "observed": 404
+          },
+          {
+            "test": "no-private-relationship-profile",
+            "status": "PASS",
+            "observed": 404
+          },
+          {
+            "test": "eligible-employee-present-before-type-change",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "converted-technical-admin-excluded-from-common-feed",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "converted-technical-admin-excluded-by-ID",
+            "status": "PASS",
+            "observed": 404
+          },
+          {
+            "test": "backfill-repeat-keeps-single-projection-and-ID",
+            "status": "PASS",
+            "observed": null
+          },
+          {
+            "test": "controlled-soft-deleted-projection-not-readable",
+            "status": "PASS",
+            "observed": 404
+          },
+          {
+            "test": "backfill-restores-soft-deleted-ID-without-duplicate",
+            "status": "PASS",
+            "observed": null
+          }
+        ],
+        "assertions": 12,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "default-acl",
+        "results": [
+          {
+            "test": "unconfigured-native-role-no-public-record-access",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "unconfigured-native-role-no-public-feed",
+            "status": "PASS",
+            "observed": null
+          }
+        ],
+        "assertions": 2,
+        "failures": 0
+      }
+    },
+    {
+      "testedPackageVersion": "0.7.0",
+      "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+      "executedOnExactFinalZip": true,
+      "evidence": {
+        "version": "0.7.0",
+        "phase": "export-acl",
+        "results": [
+          {
+            "test": "native-export-backend-closed-manager",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "native-export-backend-closed-employee",
+            "status": "PASS",
+            "observed": 403
+          },
+          {
+            "test": "native-export-backend-closed-colleague",
+            "status": "PASS",
+            "observed": 403
+          }
+        ],
+        "assertions": 3,
+        "failures": 0
+      }
+    }
+  ]
+}

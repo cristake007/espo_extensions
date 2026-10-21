@@ -1,0 +1,44 @@
+[
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "stage": "integratedStage4",
+    "previousSha256": "2f347b4ea10faf5345a4f20e44fea7819e9991e954baa5f6479c4fcef7a4242a",
+    "updatedSha256": "e75afc751fb473764f715edafae5ce8ffa96557673178092f3fbcfa0cf8bffdc"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceAccessChecker.php",
+    "stage": "integratedStage4",
+    "previousSha256": "23b03bdfdc93fb9c666d5602b7f08bd7acab5b03cefcd9de8668a403f0fa1f57",
+    "updatedSha256": "41b5e32f87fb3dd07678e27070c08f17611977044306eac1a2b9ccb455921d83"
+  },
+  {
+    "file": "files/client/custom/modules/employee-management/src/views/attendance/overview.js",
+    "stage": "integratedStage4",
+    "previousSha256": "ae1d8b06ea9e240df09ee6ce66f348e4216e294e5b569be87eab7a20a6d9947c",
+    "updatedSha256": "71fa1a179c7d48c17347961f71fa4a2a8e2502749cb7b3f5125361f036b3fded"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "stage": "integratedStage5",
+    "previousSha256": "2f347b4ea10faf5345a4f20e44fea7819e9991e954baa5f6479c4fcef7a4242a",
+    "updatedSha256": "e75afc751fb473764f715edafae5ce8ffa96557673178092f3fbcfa0cf8bffdc"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "stage": "integratedStage6",
+    "previousSha256": "2f347b4ea10faf5345a4f20e44fea7819e9991e954baa5f6479c4fcef7a4242a",
+    "updatedSha256": "e75afc751fb473764f715edafae5ce8ffa96557673178092f3fbcfa0cf8bffdc"
+  },
+  {
+    "file": "scripts/AfterInstall.php",
+    "stage": "integratedStage7",
+    "previousSha256": "63ee1d1cf57df6054bfef61ab5b84a20dcae850228f4e275b01d9b86dfe7ba7c",
+    "updatedSha256": "8a6d7aeb464ec3643714fb5c904e274eeaa060610eaffc83e777ed34de3d5bd5"
+  },
+  {
+    "file": "scripts/AfterUninstall.php",
+    "stage": "integratedStage7",
+    "previousSha256": "ce1313ca9d23a24d289af103754294b786034c0127a822c5219a09ad19f07afe",
+    "updatedSha256": "14fe31c8cb4ce0b516ff67bf1b7764ec4f8cd166667d33bec3a08df1f127e069"
+  }
+]

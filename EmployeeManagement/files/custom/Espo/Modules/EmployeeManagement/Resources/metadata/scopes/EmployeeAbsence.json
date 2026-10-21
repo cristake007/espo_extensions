@@ -1,0 +1,7 @@
+{
+    "entity": true, "object": true, "type": "Event", "module": "EmployeeManagement",
+    "calendar": true, "tab": false, "layouts": true, "acl": true, "aclPortal": false,
+    "stream": false, "customizable": false, "importable": false,
+    "aclActionList": ["create", "read", "edit", "delete"],
+    "aclActionLevelListMap": {"create": ["no"], "read": ["all", "no"], "edit": ["no"], "delete": ["no"]}
+}

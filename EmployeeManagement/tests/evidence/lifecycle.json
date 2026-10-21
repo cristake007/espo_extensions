@@ -1,0 +1,107 @@
+{
+    "status": "PASS",
+    "test": "replacement-rebuild-retains-records-config-and-original-modules",
+    "state": {
+        "tabList": [
+            {
+                "type": "divider",
+                "id": "342567",
+                "text": "$CRM"
+            },
+            "Account",
+            "Contact",
+            "Lead",
+            "Opportunity",
+            {
+                "type": "divider",
+                "text": "$Activities",
+                "id": "219419"
+            },
+            "Email",
+            "Meeting",
+            "Call",
+            "Task",
+            "Calendar",
+            {
+                "type": "divider",
+                "id": "655187",
+                "text": "$Support"
+            },
+            "Case",
+            "KnowledgeBaseArticle",
+            {
+                "type": "divider",
+                "text": null,
+                "id": "137994"
+            },
+            "_delimiter_",
+            {
+                "type": "divider",
+                "text": "$Marketing",
+                "id": "463280"
+            },
+            "Campaign",
+            "TargetList",
+            {
+                "type": "divider",
+                "text": "$Business",
+                "id": "518202"
+            },
+            "Document",
+            {
+                "type": "divider",
+                "text": "$Organization",
+                "id": "566592"
+            },
+            "User",
+            "Team",
+            "WorkingTimeCalendar",
+            {
+                "type": "divider",
+                "text": null,
+                "id": "898671"
+            },
+            "EmailTemplate",
+            "Template",
+            "Import",
+            "HolidayRequest",
+            "HolidayOverview",
+            "Attendance",
+            "AttendanceOverview"
+        ],
+        "calendarEntityList": [
+            "Meeting",
+            "Call",
+            "Task",
+            "ZileLibere",
+            "HolidayRequest",
+            "FeasibilityAbsence"
+        ],
+        "globalAdminRoute": {
+            "params": {
+                "controller": "attendance-management:controllers\/schedule-settings",
+                "action": "index"
+            },
+            "order": -100
+        },
+        "globalCalendarView": "holiday-management:views\/calendar\/calendar",
+        "counts": {
+            "AttendanceRecord": 0,
+            "AttendanceWorkSchedule": 0,
+            "HolidayRequest": 2,
+            "HolidayProfile": 2,
+            "HolidayLedger": 1,
+            "EmployeeAttendanceRecord": 2,
+            "EmployeeHolidayRequest": 2,
+            "EmployeeHolidayProfile": 2,
+            "EmployeeHolidayLedger": 2,
+            "WorkingTimeCalendar": 5,
+            "WorkingTimeRange": 4
+        },
+        "originalExtensions": {
+            "Attendance Management": "1.11.0",
+            "Holiday Management": "1.9.4",
+            "Zile S\u0103rb\u0103toare": "0.9.5"
+        }
+    }
+}

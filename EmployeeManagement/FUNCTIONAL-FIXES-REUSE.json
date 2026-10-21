@@ -1,0 +1,134 @@
+[
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+    "stage": "integratedStage2",
+    "previousSha256": "911da9d636066c616e27122b0d1097bf2fd0c7857edd2a87854487e32bd6654c",
+    "updatedSha256": "f7285f87e741062339942c357dd6622d60bfd6746ffc9bf6588d11bd9c370b34"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+    "stage": "integratedStage2",
+    "previousSha256": "d9d88b0919ac9b16e2ca3718ba4a7525e270ddbb104743738e6fabecce2ea21c",
+    "updatedSha256": "2329b4690dee3bd9f14594592553fe9e0fa6ee3387a53c6795b538b2dc4f5c81"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeAdministration.json",
+    "stage": "integratedStage2",
+    "previousSha256": "72e74a0e5e454e2353bab8337065651e0accec6d2a00cb5fa62ca1c2e12f4f69",
+    "updatedSha256": "373a51c5da7757a337d315aa632b2b28c5dc31d249acc9c1aa4a8049e089c807"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeAdministration.json",
+    "stage": "integratedStage2",
+    "previousSha256": "a1d3a35c7d549c62bbae2680fa251cf43251f517822cb6a3640650a0e8397ad4",
+    "updatedSha256": "8720c134119f7c57a400f4287d047a8b638f8a8a3d16ff8a8e120b197c811cf9"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/employeeManagement.json",
+    "stage": "integratedStage2",
+    "previousSha256": "fd22a4b1d19544f5ad692bd4b4917f75e3a110cc072fd860357c9952634e0a51",
+    "updatedSha256": "40825840ec3c0f8e372e4bdde8922942620423468d66fd7f64b528a3dd360dde"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/employeeManagement.json",
+    "stage": "integratedStage2",
+    "previousSha256": "fd22a4b1d19544f5ad692bd4b4917f75e3a110cc072fd860357c9952634e0a51",
+    "updatedSha256": "40825840ec3c0f8e372e4bdde8922942620423468d66fd7f64b528a3dd360dde"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+    "stage": "integratedStage3",
+    "previousSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
+    "updatedSha256": "f7e29fab072c5dd986e1b448dcc541c1396c8aac6a122eb16ef18e888e9d1b15"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+    "stage": "integratedStage3",
+    "previousSha256": "d9d88b0919ac9b16e2ca3718ba4a7525e270ddbb104743738e6fabecce2ea21c",
+    "updatedSha256": "2329b4690dee3bd9f14594592553fe9e0fa6ee3387a53c6795b538b2dc4f5c81"
+  },
+  {
+    "file": "files/client/custom/modules/employee-management/src/views/holiday-request/index.js",
+    "stage": "integratedStage3",
+    "previousSha256": "acb9a589965d7e99ee333977ebc09080fccd05d995c60111f5bbcf7e4a3f23e1",
+    "updatedSha256": "d0a59b6513632c798a260f5a265d6ed70346fcbfc72ab644b7d804d47cbe55c3"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "stage": "integratedStage4",
+    "previousSha256": "e75afc751fb473764f715edafae5ce8ffa96557673178092f3fbcfa0cf8bffdc",
+    "updatedSha256": "7ff345d9cc32555f24f3ce96462d7a2ecd9c3c5814cb0b30f965b7c36d082457"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendancePdfGenerator.php",
+    "stage": "integratedStage4",
+    "previousSha256": "69dbde38043c005e72c127f9e66b019e4ad9a421cbbb6df609d2c0a9e932bb9d",
+    "updatedSha256": "b5d0edd861579603828fb8f0859de37f8d6ca4dba5b33cae795acdea61c6858e"
+  },
+  {
+    "file": "files/client/custom/modules/employee-management/src/views/attendance/overview.js",
+    "stage": "integratedStage4",
+    "previousSha256": "71fa1a179c7d48c17347961f71fa4a2a8e2502749cb7b3f5125361f036b3fded",
+    "updatedSha256": "6bc498503a6913513353f1af8aa527c1ee9fff8ac0015740ea528346581c2116"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+    "stage": "integratedStage5",
+    "previousSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
+    "updatedSha256": "f7e29fab072c5dd986e1b448dcc541c1396c8aac6a122eb16ef18e888e9d1b15"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "stage": "integratedStage5",
+    "previousSha256": "e75afc751fb473764f715edafae5ce8ffa96557673178092f3fbcfa0cf8bffdc",
+    "updatedSha256": "7ff345d9cc32555f24f3ce96462d7a2ecd9c3c5814cb0b30f965b7c36d082457"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+    "stage": "integratedStage6",
+    "previousSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
+    "updatedSha256": "f7e29fab072c5dd986e1b448dcc541c1396c8aac6a122eb16ef18e888e9d1b15"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+    "stage": "integratedStage6",
+    "previousSha256": "d9d88b0919ac9b16e2ca3718ba4a7525e270ddbb104743738e6fabecce2ea21c",
+    "updatedSha256": "2329b4690dee3bd9f14594592553fe9e0fa6ee3387a53c6795b538b2dc4f5c81"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "stage": "integratedStage6",
+    "previousSha256": "e75afc751fb473764f715edafae5ce8ffa96557673178092f3fbcfa0cf8bffdc",
+    "updatedSha256": "7ff345d9cc32555f24f3ce96462d7a2ecd9c3c5814cb0b30f965b7c36d082457"
+  },
+  {
+    "file": "files/client/custom/modules/employee-management/src/views/holiday-request/index.js",
+    "stage": "integratedStage6",
+    "previousSha256": "acb9a589965d7e99ee333977ebc09080fccd05d995c60111f5bbcf7e4a3f23e1",
+    "updatedSha256": "d0a59b6513632c798a260f5a265d6ed70346fcbfc72ab644b7d804d47cbe55c3"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+    "stage": "integratedStage7",
+    "previousSha256": "d9d88b0919ac9b16e2ca3718ba4a7525e270ddbb104743738e6fabecce2ea21c",
+    "updatedSha256": "2329b4690dee3bd9f14594592553fe9e0fa6ee3387a53c6795b538b2dc4f5c81"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+    "stage": "integratedStage7",
+    "previousSha256": "911da9d636066c616e27122b0d1097bf2fd0c7857edd2a87854487e32bd6654c",
+    "updatedSha256": "f7285f87e741062339942c357dd6622d60bfd6746ffc9bf6588d11bd9c370b34"
+  },
+  {
+    "file": "files/client/custom/modules/employee-management/src/views/administration/settings.js",
+    "stage": "integratedStage7",
+    "previousSha256": "f1168a3a27334fa2f432588045532fcf98efdfc2f2790ec68d66aad6e0abcd80",
+    "updatedSha256": "72efbac1143f2ed68d4588ddac7e750675c7f4cff021fef512d917833cc806b2"
+  },
+  {
+    "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+    "stage": "integratedStage7",
+    "previousSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
+    "updatedSha256": "f7e29fab072c5dd986e1b448dcc541c1396c8aac6a122eb16ef18e888e9d1b15"
+  }
+]

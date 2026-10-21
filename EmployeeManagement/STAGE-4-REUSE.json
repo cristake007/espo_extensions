@@ -1,0 +1,110 @@
+[
+  {
+    "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "sourceSha256": "ce9e0259c2e4d3a76cf1e4cb37a5a04a058b2c1400a24f94e90f7522bafb95c6",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "adaptations": "Original matrix assembly, counters, missing-user lists, metadata validation, schedule map, reminders and date policies retained/adapted. WTC monthly norms replace fixed weekdays/times; shared aggregate supplies own view/exports/freeze. One atomic write path with User→Month→Record locks, current revision, manager reason/audit. CO > CIC except MedicalLeave; CancellationPending effective. Native read/write/export scopes are distinct."
+  },
+  {
+    "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceService.php",
+    "sourceSha256": "34a8169de28d2da65e889b9f657ef9d36ef1fb0dfa44bdf2cf8eb1fa96199d19",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceService.php",
+    "adaptations": "Original personal DTO, statuses, editing window and UI flow preserved. Original marking and classification are consolidated in the existing Overview service to avoid a second WTC/CIC/freeze engine; service delegates commands and projects only the current user from the private server aggregate."
+  },
+  {
+    "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceAccessChecker.php",
+    "sourceSha256": "81f5c5e0e05e5d7279768b1205b3c1a9d03751e5efbcb4d169a3443f50f1c942",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceAccessChecker.php",
+    "adaptations": "Native scopes and field permissions replace admin fallback. Regular/active actors, own/all read, overview vs management, metadata and native export permission; no automatic grants."
+  },
+  {
+    "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/ApprovedHolidayProvider.php",
+    "sourceSha256": "27d0b45232bd20d561d6478865912cdbb496b40a587a13a09bbaf5d562f32160",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/ApprovedHolidayProvider.php",
+    "adaptations": "Original read-only date projection extended to batch employees and Approved/CancellationPending; no Holiday accounting, approval or status mutations duplicated."
+  },
+  {
+    "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendancePdf.php",
+    "sourceSha256": "f441caae008c77ec5cafa2d547d2a4e3546e80b92c0ac69a48b0638ffaef2132",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendancePdf.php",
+    "adaptations": "Original generator response format, filenames/base64 and completeness check retained; native export and record/field ACL added. Current aggregate is read each time, never a cached downloaded file."
+  },
+  {
+    "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendanceXlsx.php",
+    "sourceSha256": "d5a5545b78614e53e5d00e8f5c35d466f25573002eb160fa3750496d3b28283c",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendanceXlsx.php",
+    "adaptations": "Original generator response format, filenames/base64 and completeness check retained; native export and record/field ACL added. Current aggregate is read each time, never a cached downloaded file."
+  },
+  {
+    "source": "../AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendancePdfGenerator.php",
+    "sourceSha256": "236b87b3cd51dae08f85117aed8b8e54f311030f472b3058f0e6571f55875202",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendancePdfGenerator.php",
+    "adaptations": "Previously mechanically imported renderer retained. Only per-cell schedule selection changed to derived WTC daily intervals, with legacy DTO fallback for regression; no rewrite of rendering, formatting, Remote/CIC/CO/CM or libraries."
+  },
+  {
+    "source": "../AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceXlsxGenerator.php",
+    "sourceSha256": "b6b515c31944d7c12c3b9d3cdb912b9dcecf0cfdfeac7a2c18ee9f5fc00faf98",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceXlsxGenerator.php",
+    "adaptations": "Previously mechanically imported renderer retained. Only per-cell schedule selection changed to derived WTC daily intervals, with legacy DTO fallback for regression; no rewrite of rendering, formatting, Remote/CIC/CO/CM or libraries."
+  },
+  {
+    "source": "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/my.js",
+    "sourceSha256": "7373ab8305bf9d33b36aed4abcbf5707a3d4e0dbeaaf0a50e88276c3f04ff91e",
+    "destination": "files/client/custom/modules/employee-management/src/views/attendance/my.js",
+    "adaptations": "Original page/table/actions/fields retained; own routes, backend capabilities, revision/reason commands, CIC MedicalLeave control, frozen state and native Roles. Schedules is now operational Remote/CIC only; technical WTC time editor omitted under approved D6. Existing global policies/archive are in delegated administration, not duplicated here."
+  },
+  {
+    "source": "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/overview.js",
+    "sourceSha256": "6f0464772e30be4608d6824c5be47e16109f20b090e9bd06db3f041ec93837b9",
+    "destination": "files/client/custom/modules/employee-management/src/views/attendance/overview.js",
+    "adaptations": "Original page/table/actions/fields retained; own routes, backend capabilities, revision/reason commands, CIC MedicalLeave control, frozen state and native Roles. Schedules is now operational Remote/CIC only; technical WTC time editor omitted under approved D6. Existing global policies/archive are in delegated administration, not duplicated here."
+  },
+  {
+    "source": "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/schedules.js",
+    "sourceSha256": "017d11a12b21e4d02c42aeedda0b2049ac286b0c30ed6456a7d82c267a7819c5",
+    "destination": "files/client/custom/modules/employee-management/src/views/attendance/schedules.js",
+    "adaptations": "Original page/table/actions/fields retained; own routes, backend capabilities, revision/reason commands, CIC MedicalLeave control, frozen state and native Roles. Schedules is now operational Remote/CIC only; technical WTC time editor omitted under approved D6. Existing global policies/archive are in delegated administration, not duplicated here."
+  },
+  {
+    "source": "pending/Attendance/files/client/custom/modules/employee-management/src/controllers/attendance.js",
+    "sourceSha256": "b0bada64296a442068c80546e894a9304d87523db4d5758db2bb67554a6e043a",
+    "destination": "files/client/custom/modules/employee-management/src/controllers/attendance.js",
+    "adaptations": "Original view wiring, namespace/route adapted and regular/active native scope guard added. Native monthly route uses a full :month path segment."
+  },
+  {
+    "source": "pending/Attendance/files/client/custom/modules/employee-management/src/controllers/attendance-overview.js",
+    "sourceSha256": "a6548053f1fae7fe1bc3d06c1d6ec32b8224b276907898fe29f112767e54017b",
+    "destination": "files/client/custom/modules/employee-management/src/controllers/attendance-overview.js",
+    "adaptations": "Original view wiring, namespace/route adapted and regular/active native scope guard added. Native monthly route uses a full :month path segment."
+  },
+  {
+    "source": "pending/Attendance/files/client/custom/modules/employee-management/css/attendance.css",
+    "sourceSha256": "bbde119b3baf694a3d8b49fac989cbc28d3c0c77e7d050f821aab8aa96b534a5",
+    "destination": "files/client/custom/modules/employee-management/css/attendance.css",
+    "adaptations": "Original CSS reused unchanged through native app.client.cssList; no core/theme overwrite."
+  },
+  {
+    "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAttendanceWorkSchedule.json",
+    "sourceSha256": "802ebed3180568294bdf823f8765c318ac03ceb0cca061e50cd22988329ca815",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAttendanceWorkSchedule.json",
+    "adaptations": "Operational Remote/CIC/date metadata retained with assignedUser ownership and native audit; start/end normative fields deliberately not registered (D6). Native field edit ACL can govern commands; generic CRUD remains closed."
+  },
+  {
+    "source": "../AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/entityDefs/AttendanceRecord.json",
+    "sourceSha256": "672fe2940b093454e1b15746d7197c9b069bc0b6eb10ad7367071bbaac4c41fe",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAttendanceRecord.json",
+    "adaptations": "Native daily record reused, now audited status/source/date/markedAt plus reason/revision. Status uses native field edit ACL while record service guards and entity checker still deny generic writes."
+  },
+  {
+    "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceSettingsService.php",
+    "sourceSha256": "4088aa71670954aa604828556181ce0fdca5a255b675a5af9efbeeed6913622f",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceSettingsService.php",
+    "adaptations": "Original initializeArchive method restored behind delegated native settings permission, retaining current-month visibility behavior and all data. Existing Stage 2 settings retained."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/cancellation-reason.js",
+    "sourceSha256": "87dcf8953cf997717437ed154b2c45cfd69400ce2b1b943a9c4c0d180852e52c",
+    "destination": "files/client/custom/modules/employee-management/src/views/modals/attendance-correction.js",
+    "adaptations": "Existing native reason-modal pattern reused for mandatory attendance correction reason; labels/header adapted, no new widget framework."
+  }
+]

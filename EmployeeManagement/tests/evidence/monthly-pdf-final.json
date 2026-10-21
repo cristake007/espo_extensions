@@ -1,0 +1,77 @@
+{
+  "version": "0.7.2",
+  "testedAtUtc": "2026-10-20T04:58:31.962929+00:00",
+  "environment": {
+    "espo": "10.0.1",
+    "php": "8.4.23",
+    "DockerLab": "employee-feasibility-20261020",
+    "data": "synthetic only",
+    "browser": "Chromium/Playwright"
+  },
+  "buildCommand": "bash ./build.sh --extension ./EmployeeManagement --zip 0.7.2 files scripts",
+  "zip": "dist/employee-management-0.7.2.zip",
+  "zipSha256": "95d1de7097e985604ca23870fc109df6750b16862971c9da674c2e2c5014f1b8",
+  "installedRuntimeFilesCompared": 166,
+  "installedRuntimeMismatches": [],
+  "actor": {
+    "type": "regular",
+    "globalExportPermissionBefore": "no",
+    "globalExportPermissionAfter": "no",
+    "operationalManagementScopes": true
+  },
+  "suites": [
+    {
+      "suite": "monthly-pdf-api",
+      "assertions": 19,
+      "failures": 0,
+      "evidence": "tests/evidence/monthly-pdf-api.json",
+      "sha256": "df5e4f9d6d2ed0bf49136958e727dd82efd39cc30b79a625dbeaa97802de44ae"
+    },
+    {
+      "suite": "monthly-pdf-browser",
+      "assertions": 25,
+      "failures": 0,
+      "evidence": "tests/evidence/monthly-pdf-browser.json",
+      "sha256": "e82b7c37949662d2a1c22165cdf7afc5baedd3dab7b7ce5c880363300bf6852e"
+    },
+    {
+      "suite": "monthly-pdf-files",
+      "assertions": 10,
+      "failures": 0,
+      "evidence": "tests/evidence/monthly-pdf-files.json",
+      "sha256": "0c77468fe4e51264a905e649aabc4bbebc43df18524c39afaeb9a2a7ea15702a"
+    },
+    {
+      "suite": "monthly-pdf-regression-attendance",
+      "assertions": 74,
+      "failures": 0,
+      "evidence": "tests/evidence/monthly-pdf-regression-attendance.json",
+      "sha256": "8377b0b2416ffd187a300cb3845e9963e9460cdad2bf44f9e0947e40cadaa96a"
+    },
+    {
+      "suite": "monthly-pdf-regression-attendance-extra",
+      "assertions": 20,
+      "failures": 0,
+      "evidence": "tests/evidence/monthly-pdf-regression-attendance-extra.json",
+      "sha256": "8ff7b35661d31356603b9e11c1fdf106c5f7862695921ce2c0b45e4e3f847472"
+    },
+    {
+      "suite": "monthly-pdf-regression-attendance-browser",
+      "assertions": 26,
+      "failures": 0,
+      "evidence": "tests/evidence/monthly-pdf-regression-attendance-browser.json",
+      "sha256": "0ee0b29fb0eb0bedadf8b82732fc01c8eb368abb0fa98103dca37f04cd8ea7a0"
+    }
+  ],
+  "assertions": 174,
+  "failures": 0,
+  "contract": "PASS",
+  "pdfLayoutRegression": "PASS",
+  "beforeEvidence": "tests/evidence/monthly-pdf-before.json",
+  "originalExtensionsModified": false,
+  "companyInstallationModified": false,
+  "globalAdministratorGranted": false,
+  "stage8Started": false,
+  "labConfigurationRestored": true,
+  "labContainersStopped": true
+}

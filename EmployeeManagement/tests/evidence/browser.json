@@ -1,0 +1,132 @@
+[
+  {
+    "test": "browser-workspace-manager",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-four-native-record-links-manager",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-administration-menu-manager",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-native-list-manager",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-no-create-button-manager",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-private-detail-manager",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-no-edit-button-manager",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-delegated-route-manager",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-no-unexpected-js-errors-manager",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "browser-workspace-owner",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-four-native-record-links-owner",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-administration-menu-owner",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-native-list-owner",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-no-create-button-owner",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-private-detail-owner",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-no-edit-button-owner",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-delegated-route-owner",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-no-unexpected-js-errors-owner",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "browser-workspace-colleague",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-four-native-record-links-colleague",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-administration-menu-colleague",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-native-list-colleague",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-no-create-button-colleague",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-private-detail-colleague",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-delegated-route-colleague",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-no-unexpected-js-errors-colleague",
+    "status": "PASS",
+    "observed": [
+      {
+        "message": "i",
+        "stack": ""
+      }
+    ]
+  },
+  {
+    "test": "browser-workspace-denied-unconfigured",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-no-unexpected-js-errors-unconfigured",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "browser-workspace-denied-admin",
+    "status": "PASS"
+  },
+  {
+    "test": "browser-no-unexpected-js-errors-admin",
+    "status": "PASS",
+    "observed": []
+  }
+]

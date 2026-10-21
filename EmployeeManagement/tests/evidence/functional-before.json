@@ -1,0 +1,36 @@
+{
+  "results": [
+    {
+      "test": "reproduce-all-management-without-native-export-disabled",
+      "status": "PASS"
+    },
+    {
+      "test": "reproduce-incomplete-enabled-but-export-not-authorized",
+      "status": "PASS"
+    },
+    {
+      "test": "reproduce-Dompdf-memory-error-real-request",
+      "status": "PASS",
+      "observed": 500
+    },
+    {
+      "test": "reproduce-no-downloaded-file",
+      "status": "PASS"
+    },
+    {
+      "test": "reproduce-native-create-form-not-business-booking",
+      "status": "PASS"
+    },
+    {
+      "test": "reproduce-native-create-No-create-access",
+      "status": "PASS",
+      "observed": "No create access."
+    },
+    {
+      "test": "reproduce-approval-role-blocked-by-empty-routing-list",
+      "status": "PASS"
+    }
+  ],
+  "assertions": 7,
+  "failures": 0
+}

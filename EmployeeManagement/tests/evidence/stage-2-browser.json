@@ -1,0 +1,232 @@
+[
+  {
+    "test": "native-administration-menu-manager",
+    "status": "PASS"
+  },
+  {
+    "test": "section-visibility-manager",
+    "status": "PASS",
+    "observed": [
+      "attendance",
+      "holiday",
+      "profiles"
+    ]
+  },
+  {
+    "test": "attendance-save-ui-manager",
+    "status": "PASS"
+  },
+  {
+    "test": "attendance-persisted-ui-manager",
+    "status": "PASS"
+  },
+  {
+    "test": "no-archive-button-manager",
+    "status": "PASS"
+  },
+  {
+    "test": "no-js-errors-manager",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "native-administration-menu-attendance",
+    "status": "PASS"
+  },
+  {
+    "test": "section-visibility-attendance",
+    "status": "PASS",
+    "observed": [
+      "attendance"
+    ]
+  },
+  {
+    "test": "attendance-save-ui-attendance",
+    "status": "PASS"
+  },
+  {
+    "test": "attendance-persisted-ui-attendance",
+    "status": "PASS"
+  },
+  {
+    "test": "no-archive-button-attendance",
+    "status": "PASS"
+  },
+  {
+    "test": "direct-holiday-route-denied-attendance",
+    "status": "PASS"
+  },
+  {
+    "test": "no-js-errors-attendance",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "native-administration-menu-holiday",
+    "status": "PASS"
+  },
+  {
+    "test": "section-visibility-holiday",
+    "status": "PASS",
+    "observed": [
+      "holiday"
+    ]
+  },
+  {
+    "test": "holiday-save-ui",
+    "status": "PASS"
+  },
+  {
+    "test": "holiday-persisted-ui",
+    "status": "PASS"
+  },
+  {
+    "test": "automatic-grant-not-editable",
+    "status": "PASS"
+  },
+  {
+    "test": "direct-profiles-route-denied-holiday",
+    "status": "PASS"
+  },
+  {
+    "test": "no-js-errors-holiday",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "native-administration-menu-profiles",
+    "status": "PASS"
+  },
+  {
+    "test": "section-visibility-profiles",
+    "status": "PASS",
+    "observed": [
+      "profiles"
+    ]
+  },
+  {
+    "test": "profile-population-ui",
+    "status": "PASS"
+  },
+  {
+    "test": "no-unsafe-profile-buttons",
+    "status": "PASS"
+  },
+  {
+    "test": "profile-initialize-ui",
+    "status": "PASS"
+  },
+  {
+    "test": "profile-no-opening-edit-after-init",
+    "status": "PASS"
+  },
+  {
+    "test": "preserved-initial-setup-modal-ui",
+    "status": "PASS"
+  },
+  {
+    "test": "profile-parameter-save-ui",
+    "status": "PASS"
+  },
+  {
+    "test": "direct-holiday-route-denied-profiles",
+    "status": "PASS"
+  },
+  {
+    "test": "no-js-errors-profiles",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "native-administration-menu-entry",
+    "status": "PASS"
+  },
+  {
+    "test": "section-visibility-entry",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "direct-holiday-route-denied-entry",
+    "status": "PASS"
+  },
+  {
+    "test": "direct-profiles-route-denied-entry",
+    "status": "PASS"
+  },
+  {
+    "test": "no-js-errors-entry",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "native-administration-menu-weak",
+    "status": "PASS"
+  },
+  {
+    "test": "section-visibility-weak",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "direct-holiday-route-denied-weak",
+    "status": "PASS"
+  },
+  {
+    "test": "direct-profiles-route-denied-weak",
+    "status": "PASS"
+  },
+  {
+    "test": "no-js-errors-weak",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "native-administration-menu-fls",
+    "status": "PASS"
+  },
+  {
+    "test": "section-visibility-fls",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "direct-holiday-route-denied-fls",
+    "status": "PASS"
+  },
+  {
+    "test": "direct-profiles-route-denied-fls",
+    "status": "PASS"
+  },
+  {
+    "test": "no-js-errors-fls",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "admin-page-denied-employee",
+    "status": "PASS"
+  },
+  {
+    "test": "direct-profiles-route-denied-employee",
+    "status": "PASS"
+  },
+  {
+    "test": "no-js-errors-employee",
+    "status": "PASS",
+    "observed": []
+  },
+  {
+    "test": "admin-page-denied-admin",
+    "status": "PASS"
+  },
+  {
+    "test": "direct-profiles-route-denied-admin",
+    "status": "PASS"
+  },
+  {
+    "test": "no-js-errors-admin",
+    "status": "PASS",
+    "observed": []
+  }
+]

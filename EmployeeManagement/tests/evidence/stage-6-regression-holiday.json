@@ -1,0 +1,1103 @@
+{
+  "testedPackageVersion": "0.6.0",
+  "finalPackageSha256": "0cdcb453fe7e96473313abbdd5722dae69dd6811cde0dd823c8cef3035d6f909",
+  "executedOnExactFinalZip": true,
+  "sourceFixtureOutput": "employee-stage3-api-results.json",
+  "observedAtUtc": "2026-10-20T01:38:10.462730+00:00",
+  "results": [
+    {
+      "test": "native-authorized-manager-settings",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "employeeHolidayAnnualEntitlementDays": 21,
+          "employeeHolidayResetDate": "2027-01-01",
+          "employeeHolidayAutomaticAnnualGrantEnabled": false,
+          "employeeHolidayCarryOverLimitDays": 90,
+          "employeeHolidayNegativeBalanceLimitDays": -21,
+          "employeeHolidayApproversIds": [
+            "6ad6c5c0188e4ae49"
+          ],
+          "employeeHolidayApproversNames": {
+            "6ad6c5c0188e4ae49": "Synthetic Stage3 manager"
+          },
+          "employeeHolidayApprovalBlock1Title": "Synthetic Director",
+          "employeeHolidayApprovalBlock1Name": "Synthetic Manager",
+          "employeeHolidayApprovalBlock2Title": "",
+          "employeeHolidayApprovalBlock2Name": "",
+          "isAdmin": false
+        },
+        "raw": "{\"employeeHolidayAnnualEntitlementDays\":21,\"employeeHolidayResetDate\":\"2027-01-01\",\"employeeHolidayAutomaticAnnualGrantEnabled\":false,\"employeeHolidayCarryOverLimitDays\":90,\"employeeHolidayNegativeBalanceLimitDays\":-21,\"employeeHolidayApproversIds\":[\"6ad6c5c0188e4ae49\"],\"employeeHolidayApproversNames\":{\"6ad6c5c0188e4ae49\":\"Synthetic Stage3 manager\"},\"employeeHolidayApprovalBlock1Title\":\"Synthetic Director\",\"employeeHolidayApprovalBlock1Name\":\"Synthetic Manager\",\"employeeHolidayApprovalBlock2Title\":\"\",\"employeeHolidayApprovalBlock2Name\":\"\",\"isAdmin\":false}"
+      }
+    },
+    {
+      "test": "initialize-manager",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "initialize-employee",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "initialize-colleague",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "initialize-noentry",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "initialize-nobook",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "initialize-uncfg",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "initialize-fls",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "initialize-weak",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "initialize-nowtc",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "initialize-zero",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "initialize-race",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "initialize-ui",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "create-deny-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "create-deny-noentry",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "create-deny-nobook",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "create-deny-fls",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "missing-explicit-WTC-no-fallback",
+      "status": "PASS",
+      "observed": {
+        "status": 400,
+        "body": null,
+        "raw": ""
+      }
+    },
+    {
+      "test": "negative-limit-preserved",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "negative-limit-no-partial-request",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "validation-0",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "validation-1",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "validation-2",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "validation-3",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "validation-4",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "validation-5",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "validation-6",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "validation-7",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "validation-8",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "validation-9",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "validation-10",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "create-native-WTC-Zile-request",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5c9ec063383a",
+          "assignedUserId": "6ad6c5c01a1ba40b7",
+          "assignedUserName": "Synthetic Stage3 employee",
+          "dateStartDate": "2026-11-09",
+          "dateEndDate": "2026-11-13",
+          "days": 3,
+          "status": "Pending",
+          "description": "PRIVATE synthetic stage 3",
+          "cancellationReason": null,
+          "accountingRevision": 1,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5c9ec063383a\",\"assignedUserId\":\"6ad6c5c01a1ba40b7\",\"assignedUserName\":\"Synthetic Stage3 employee\",\"dateStartDate\":\"2026-11-09\",\"dateEndDate\":\"2026-11-13\",\"days\":3,\"status\":\"Pending\",\"description\":\"PRIVATE synthetic stage 3\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}"
+      }
+    },
+    {
+      "test": "WTC-norm-not-personal-availability",
+      "status": "PASS",
+      "observed": 3
+    },
+    {
+      "test": "reservation-debits-once",
+      "status": "PASS",
+      "observed": 27
+    },
+    {
+      "test": "immutable-snapshot-has-days-hours-months",
+      "status": "PASS",
+      "observed": {
+        "version": 2,
+        "calendarId": "6ad6c5bfd45fd9d69",
+        "timezone": "Europe/Bucharest",
+        "dateStart": "2026-11-09",
+        "dateEnd": "2026-11-13",
+        "days": {
+          "2026-11-09": 6,
+          "2026-11-10": 6,
+          "2026-11-13": 6
+        },
+        "monthlyDays": {
+          "2026-11": 3
+        },
+        "totalDays": 3,
+        "excludedPublicDates": [
+          "2026-11-11"
+        ],
+        "ranges": {
+          "2026-11-09": [
+            [
+              "08:00",
+              "14:00"
+            ]
+          ],
+          "2026-11-10": [
+            [
+              "08:00",
+              "14:00"
+            ]
+          ],
+          "2026-11-13": [
+            [
+              "08:00",
+              "14:00"
+            ]
+          ]
+        },
+        "normSources": {
+          "2026-11": {
+            "monthId": "6ad6b8fc022e8d28c",
+            "calendarId": "6ad6c5bfd45fd9d69",
+            "timezone": "Europe/Bucharest"
+          }
+        }
+      }
+    },
+    {
+      "test": "create-retry-one-reservation",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5c9ec063383a",
+          "assignedUserId": "6ad6c5c01a1ba40b7",
+          "assignedUserName": "Synthetic Stage3 employee",
+          "dateStartDate": "2026-11-09",
+          "dateEndDate": "2026-11-13",
+          "days": 3,
+          "status": "Pending",
+          "description": "PRIVATE synthetic stage 3",
+          "cancellationReason": null,
+          "accountingRevision": 1,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": true
+        },
+        "raw": "{\"id\":\"6ad6c5c9ec063383a\",\"assignedUserId\":\"6ad6c5c01a1ba40b7\",\"assignedUserName\":\"Synthetic Stage3 employee\",\"dateStartDate\":\"2026-11-09\",\"dateEndDate\":\"2026-11-13\",\"days\":3,\"status\":\"Pending\",\"description\":\"PRIVATE synthetic stage 3\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":true}"
+      }
+    },
+    {
+      "test": "original-balance-pending-semantics",
+      "status": "PASS",
+      "observed": {
+        "initialized": true,
+        "profileId": "6ad6c5c0c75a4d84a",
+        "balance": 27,
+        "availableDays": 30,
+        "pendingDays": 3,
+        "annualEntitlement": 21,
+        "nextResetDate": "2027-01-01"
+      }
+    },
+    {
+      "test": "create-key-payload-conflict",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "overlap-active-request",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "request-command-privacy-colleague",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "request-command-privacy-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "request-command-privacy-fls",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "native-record-private",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "own-query-no-colleague-data",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "field-ACL-custom-query-no-bypass",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "reject-native-authority-employee",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "reject-native-authority-uncfg",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "reject-native-authority-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "stale-approval-preserves-Pending-and-reservation",
+      "status": "PASS",
+      "observed": {
+        "status": 409,
+        "body": null,
+        "raw": ""
+      }
+    },
+    {
+      "test": "description-edit-preserves-reservation",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5c9ec063383a",
+          "assignedUserId": "6ad6c5c01a1ba40b7",
+          "assignedUserName": "Synthetic Stage3 employee",
+          "dateStartDate": "2026-11-09",
+          "dateEndDate": "2026-11-13",
+          "days": 3,
+          "status": "Pending",
+          "description": "PRIVATE updated note",
+          "cancellationReason": null,
+          "accountingRevision": 2,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5c9ec063383a\",\"assignedUserId\":\"6ad6c5c01a1ba40b7\",\"assignedUserName\":\"Synthetic Stage3 employee\",\"dateStartDate\":\"2026-11-09\",\"dateEndDate\":\"2026-11-13\",\"days\":3,\"status\":\"Pending\",\"description\":\"PRIVATE updated note\",\"cancellationReason\":null,\"accountingRevision\":2,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}"
+      }
+    },
+    {
+      "test": "snapshot-stable-after-WTC-edit",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "edit-retry-idempotent",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "command-idempotency-payload-conflict",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "stale-revision-blocked",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "date-edit-reconciles-delta",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5c9ec063383a",
+          "assignedUserId": "6ad6c5c01a1ba40b7",
+          "assignedUserName": "Synthetic Stage3 employee",
+          "dateStartDate": "2026-11-09",
+          "dateEndDate": "2026-11-16",
+          "days": 4,
+          "status": "Pending",
+          "description": "PRIVATE extended",
+          "cancellationReason": null,
+          "accountingRevision": 3,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5c9ec063383a\",\"assignedUserId\":\"6ad6c5c01a1ba40b7\",\"assignedUserName\":\"Synthetic Stage3 employee\",\"dateStartDate\":\"2026-11-09\",\"dateEndDate\":\"2026-11-16\",\"days\":4,\"status\":\"Pending\",\"description\":\"PRIVATE extended\",\"cancellationReason\":null,\"accountingRevision\":3,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}"
+      }
+    },
+    {
+      "test": "withdraw-restores-and-retains-history",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5c9ec063383a",
+          "assignedUserId": "6ad6c5c01a1ba40b7",
+          "assignedUserName": "Synthetic Stage3 employee",
+          "dateStartDate": "2026-11-09",
+          "dateEndDate": "2026-11-16",
+          "days": 4,
+          "status": "Cancelled",
+          "description": "PRIVATE extended",
+          "cancellationReason": null,
+          "accountingRevision": 4,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5c9ec063383a\",\"assignedUserId\":\"6ad6c5c01a1ba40b7\",\"assignedUserName\":\"Synthetic Stage3 employee\",\"dateStartDate\":\"2026-11-09\",\"dateEndDate\":\"2026-11-16\",\"days\":4,\"status\":\"Cancelled\",\"description\":\"PRIVATE extended\",\"cancellationReason\":null,\"accountingRevision\":4,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}"
+      }
+    },
+    {
+      "test": "withdraw-retry-no-double-refund",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "cancelled-no-longer-blocks-interval",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "reject-refunds-atomic",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5cf6043d97a2",
+          "assignedUserId": "6ad6c5c01a1ba40b7",
+          "assignedUserName": "Synthetic Stage3 employee",
+          "dateStartDate": "2026-11-09",
+          "dateEndDate": "2026-11-13",
+          "days": 3,
+          "status": "Rejected",
+          "description": "PRIVATE synthetic stage 3",
+          "cancellationReason": null,
+          "accountingRevision": 2,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5cf6043d97a2\",\"assignedUserId\":\"6ad6c5c01a1ba40b7\",\"assignedUserName\":\"Synthetic Stage3 employee\",\"dateStartDate\":\"2026-11-09\",\"dateEndDate\":\"2026-11-13\",\"days\":3,\"status\":\"Rejected\",\"description\":\"PRIVATE synthetic stage 3\",\"cancellationReason\":null,\"accountingRevision\":2,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}"
+      }
+    },
+    {
+      "test": "rejected-no-longer-blocks-interval",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "Pending-cannot-request-approved-cancellation",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "original-cancellation-reason-required",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "cancellation-pending-no-premature-refund",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5cfe3749c4ab",
+          "assignedUserId": "6ad6c5c01a1ba40b7",
+          "assignedUserName": "Synthetic Stage3 employee",
+          "dateStartDate": "2026-11-09",
+          "dateEndDate": "2026-11-13",
+          "days": 3,
+          "status": "CancellationPending",
+          "description": "PRIVATE synthetic stage 3",
+          "cancellationReason": "PRIVATE synthetic cancellation",
+          "accountingRevision": 2,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [
+            {
+              "id": "6ad6c5d0316cf24cf",
+              "name": "synthetic-approval.docx"
+            }
+          ],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5cfe3749c4ab\",\"assignedUserId\":\"6ad6c5c01a1ba40b7\",\"assignedUserName\":\"Synthetic Stage3 employee\",\"dateStartDate\":\"2026-11-09\",\"dateEndDate\":\"2026-11-13\",\"days\":3,\"status\":\"CancellationPending\",\"description\":\"PRIVATE synthetic stage 3\",\"cancellationReason\":\"PRIVATE synthetic cancellation\",\"accountingRevision\":2,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[{\"id\":\"6ad6c5d0316cf24cf\",\"name\":\"synthetic-approval.docx\"}],\"duplicate\":false}"
+      }
+    },
+    {
+      "test": "CancellationPending-still-reserves",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "decline-cancellation-retains-existing-documented-approval",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5cfe3749c4ab",
+          "assignedUserId": "6ad6c5c01a1ba40b7",
+          "assignedUserName": "Synthetic Stage3 employee",
+          "dateStartDate": "2026-11-09",
+          "dateEndDate": "2026-11-13",
+          "days": 3,
+          "status": "Approved",
+          "description": "PRIVATE synthetic stage 3",
+          "cancellationReason": "PRIVATE synthetic cancellation",
+          "accountingRevision": 3,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [
+            {
+              "id": "6ad6c5d0316cf24cf",
+              "name": "synthetic-approval.docx"
+            }
+          ],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5cfe3749c4ab\",\"assignedUserId\":\"6ad6c5c01a1ba40b7\",\"assignedUserName\":\"Synthetic Stage3 employee\",\"dateStartDate\":\"2026-11-09\",\"dateEndDate\":\"2026-11-13\",\"days\":3,\"status\":\"Approved\",\"description\":\"PRIVATE synthetic stage 3\",\"cancellationReason\":\"PRIVATE synthetic cancellation\",\"accountingRevision\":3,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[{\"id\":\"6ad6c5d0316cf24cf\",\"name\":\"synthetic-approval.docx\"}],\"duplicate\":false}"
+      }
+    },
+    {
+      "test": "manager-cancel-approved-restores",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5cfe3749c4ab",
+          "assignedUserId": "6ad6c5c01a1ba40b7",
+          "assignedUserName": "Synthetic Stage3 employee",
+          "dateStartDate": "2026-11-09",
+          "dateEndDate": "2026-11-13",
+          "days": 3,
+          "status": "Cancelled",
+          "description": "PRIVATE synthetic stage 3",
+          "cancellationReason": "Manager synthetic cancellation",
+          "accountingRevision": 4,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [
+            {
+              "id": "6ad6c5d0316cf24cf",
+              "name": "synthetic-approval.docx"
+            }
+          ],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5cfe3749c4ab\",\"assignedUserId\":\"6ad6c5c01a1ba40b7\",\"assignedUserName\":\"Synthetic Stage3 employee\",\"dateStartDate\":\"2026-11-09\",\"dateEndDate\":\"2026-11-13\",\"days\":3,\"status\":\"Cancelled\",\"description\":\"PRIVATE synthetic stage 3\",\"cancellationReason\":\"Manager synthetic cancellation\",\"accountingRevision\":4,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[{\"id\":\"6ad6c5d0316cf24cf\",\"name\":\"synthetic-approval.docx\"}],\"duplicate\":false}"
+      }
+    },
+    {
+      "test": "approved-cancel-retry-once",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "final-cancel-request-keeps-debit",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "accept-cancellation-refunds-once",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "accept-cancellation-retry-single-refund",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "cannot-restore-Approved-without-file",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "invalid-historical-approval-can-be-cancelled",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "admin-beneficiary-excluded",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "inactive-beneficiary-excluded",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "employee-cannot-book-colleague",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "manager-self-request-supported",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5d5e98220e49",
+          "assignedUserId": "6ad6c5c0188e4ae49",
+          "assignedUserName": "Synthetic Stage3 manager",
+          "dateStartDate": "2026-11-09",
+          "dateEndDate": "2026-11-13",
+          "days": 3,
+          "status": "Pending",
+          "description": "PRIVATE synthetic stage 3",
+          "cancellationReason": null,
+          "accountingRevision": 1,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5d5e98220e49\",\"assignedUserId\":\"6ad6c5c0188e4ae49\",\"assignedUserName\":\"Synthetic Stage3 manager\",\"dateStartDate\":\"2026-11-09\",\"dateEndDate\":\"2026-11-13\",\"days\":3,\"status\":\"Pending\",\"description\":\"PRIVATE synthetic stage 3\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}"
+      }
+    },
+    {
+      "test": "stale-self-approval-preserves-Pending",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "manager-self-decision-no-new-prohibition",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "managed-booking-current-month-past-preserved",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5de055656870",
+          "assignedUserId": "6ad6c5c01aee58c3d",
+          "assignedUserName": "Synthetic Stage3 colleague",
+          "dateStartDate": "2026-10-01",
+          "dateEndDate": "2026-10-02",
+          "days": 2,
+          "status": "Pending",
+          "description": "PRIVATE synthetic stage 3",
+          "cancellationReason": null,
+          "accountingRevision": 1,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5de055656870\",\"assignedUserId\":\"6ad6c5c01aee58c3d\",\"assignedUserName\":\"Synthetic Stage3 colleague\",\"dateStartDate\":\"2026-10-01\",\"dateEndDate\":\"2026-10-02\",\"days\":2,\"status\":\"Pending\",\"description\":\"PRIVATE synthetic stage 3\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}"
+      }
+    },
+    {
+      "test": "managed-previous-month-blocked",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "managed-selector-native-query-and-eligibility",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "managed-selector-denies-employee",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "correction-denied-employee",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "correction-denied-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "correction-denied-uncfg",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "original-correction-reused",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "profileId": "6ad6c5c0c75a4d84a",
+          "ledgerId": "6ad6c5dfb6135cf8d",
+          "balance": 32.5,
+          "annualEntitlement": 21,
+          "nextResetDate": "2027-01-01",
+          "calendarColor": "#4F8A8B",
+          "resetPending": false,
+          "duplicate": false,
+          "automaticResetLedgerId": null
+        },
+        "raw": "{\"profileId\":\"6ad6c5c0c75a4d84a\",\"ledgerId\":\"6ad6c5dfb6135cf8d\",\"balance\":32.5,\"annualEntitlement\":21,\"nextResetDate\":\"2027-01-01\",\"calendarColor\":\"#4F8A8B\",\"resetPending\":false,\"duplicate\":false,\"automaticResetLedgerId\":null}"
+      }
+    },
+    {
+      "test": "correction-retry-single-ledger",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "correction-payload-conflict",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "stale-target-balance-correction-blocked",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "correction-invalid-delta",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "correction-invalid-delta",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "correction-invalid-reason",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "correction-invalid-actorId",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "original-history-reused",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "list": [
+            {
+              "id": "6ad6c5dfb6135cf8d",
+              "delta": 2.5,
+              "balanceBefore": 30,
+              "balanceAfter": 32.5,
+              "actorName": "Synthetic Stage3 manager",
+              "reason": "Synthetic correction",
+              "effectiveDate": "2026-10-20",
+              "createdAt": "2026-10-20 01:37:35"
+            }
+          ]
+        },
+        "raw": "{\"list\":[{\"id\":\"6ad6c5dfb6135cf8d\",\"delta\":2.5,\"balanceBefore\":30,\"balanceAfter\":32.5,\"actorName\":\"Synthetic Stage3 manager\",\"reason\":\"Synthetic correction\",\"effectiveDate\":\"2026-10-20\",\"createdAt\":\"2026-10-20 01:37:35\"}]}"
+      }
+    },
+    {
+      "test": "Processing-retains-pending-reservation",
+      "status": "PASS",
+      "observed": {
+        "initialized": true,
+        "profileId": "6ad6c5c25029cd4d3",
+        "balance": 27,
+        "availableDays": 30,
+        "pendingDays": 3,
+        "annualEntitlement": 21,
+        "nextResetDate": "2027-01-01"
+      }
+    },
+    {
+      "test": "Processing-command-blocked-withdraw",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "Processing-command-blocked-reject",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "Processing-command-blocked-update",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "DB-collision-translated-conflict",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "DB-failure-rolls-back-profile",
+      "status": "PASS",
+      "observed": 30
+    },
+    {
+      "test": "DB-failure-no-partial-request",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "DB-failure-no-extra-ledger",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "adjustment-negative-limit-rollback",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "parallel-identical-create",
+      "status": "PASS",
+      "observed": [
+        {
+          "status": 200,
+          "body": {
+            "id": "6ad6c6006980f3de8",
+            "assignedUserId": "6ad6c5c021bd0d2ea",
+            "assignedUserName": "Synthetic Stage3 race",
+            "dateStartDate": "2026-11-09",
+            "dateEndDate": "2026-11-13",
+            "days": 3,
+            "status": "Pending",
+            "description": "PRIVATE synthetic stage 3",
+            "cancellationReason": null,
+            "accountingRevision": 1,
+            "approvalState": null,
+            "approvalError": null,
+            "approvalAttempts": 0,
+            "approvalRetryAvailable": false,
+            "documents": [],
+            "duplicate": false
+          }
+        },
+        {
+          "status": 200,
+          "body": {
+            "id": "6ad6c6006980f3de8",
+            "assignedUserId": "6ad6c5c021bd0d2ea",
+            "assignedUserName": "Synthetic Stage3 race",
+            "dateStartDate": "2026-11-09",
+            "dateEndDate": "2026-11-13",
+            "days": 3,
+            "status": "Pending",
+            "description": "PRIVATE synthetic stage 3",
+            "cancellationReason": null,
+            "accountingRevision": 1,
+            "approvalState": null,
+            "approvalError": null,
+            "approvalAttempts": 0,
+            "approvalRetryAvailable": false,
+            "documents": [],
+            "duplicate": true
+          }
+        }
+      ]
+    },
+    {
+      "test": "parallel-create-one-duplicate",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "parallel-create-one-debit",
+      "status": "PASS",
+      "observed": 27
+    },
+    {
+      "test": "parallel-different-withdraw-stale-conflict",
+      "status": "PASS",
+      "observed": [
+        {
+          "status": 409,
+          "body": null
+        },
+        {
+          "status": 200,
+          "body": {
+            "id": "6ad6c6006980f3de8",
+            "assignedUserId": "6ad6c5c021bd0d2ea",
+            "assignedUserName": "Synthetic Stage3 race",
+            "dateStartDate": "2026-11-09",
+            "dateEndDate": "2026-11-13",
+            "days": 3,
+            "status": "Cancelled",
+            "description": "PRIVATE synthetic stage 3",
+            "cancellationReason": null,
+            "accountingRevision": 2,
+            "approvalState": null,
+            "approvalError": null,
+            "approvalAttempts": 0,
+            "approvalRetryAvailable": false,
+            "documents": [],
+            "duplicate": false
+          }
+        }
+      ]
+    },
+    {
+      "test": "parallel-no-double-refund",
+      "status": "PASS",
+      "observed": 30
+    },
+    {
+      "test": "parallel-overlap-one-winner",
+      "status": "PASS",
+      "observed": [
+        {
+          "status": 200,
+          "body": {
+            "id": "6ad6c60117ee7c252",
+            "assignedUserId": "6ad6c5c021bd0d2ea",
+            "assignedUserName": "Synthetic Stage3 race",
+            "dateStartDate": "2026-11-09",
+            "dateEndDate": "2026-11-13",
+            "days": 3,
+            "status": "Pending",
+            "description": "PRIVATE synthetic stage 3",
+            "cancellationReason": null,
+            "accountingRevision": 1,
+            "approvalState": null,
+            "approvalError": null,
+            "approvalAttempts": 0,
+            "approvalRetryAvailable": false,
+            "documents": [],
+            "duplicate": false
+          }
+        },
+        {
+          "status": 409,
+          "body": null
+        }
+      ]
+    },
+    {
+      "test": "parallel-overlap-one-reservation",
+      "status": "PASS",
+      "observed": 27
+    },
+    {
+      "test": "ledger-sum-equals-balance",
+      "status": "PASS",
+      "observed": [
+        32.5,
+        32.5
+      ]
+    },
+    {
+      "test": "generic-mutation-still-blocked-admin-PUT",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "generic-mutation-still-blocked-admin-DELETE",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "generic-mutation-still-blocked-manager-PUT",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "generic-mutation-still-blocked-manager-DELETE",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "generic-mutation-still-blocked-employee-PUT",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "generic-mutation-still-blocked-employee-DELETE",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "original-retained-AttendanceRecord",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-retained-AttendanceWorkSchedule",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-retained-HolidayRequest",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-retained-HolidayProfile",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-retained-HolidayLedger",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "commands-did-not-create-calendar-data-WorkingTimeCalendar",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "commands-did-not-create-calendar-data-WorkingTimeRange",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "commands-did-not-create-calendar-data-ZileLibere",
+      "status": "PASS",
+      "observed": null
+    }
+  ],
+  "assertions": 125,
+  "failures": 0,
+  "fixtureVersion": "0.3.0",
+  "adaptation": "Only obsolete Jobs-disabled assertions replaced by stale-revision approval guards in separate Stage6 regression copies. Historical fixtures untouched; actual approval is tested by Stage6 Jobs/browser."
+}

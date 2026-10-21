@@ -1,0 +1,26 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                }
+            ],
+            [
+                {
+                    "name": "assignedUser"
+                }
+            ],
+            [
+                {
+                    "name": "balance"
+                }
+            ],
+            [
+                {
+                    "name": "annualEntitlement"
+                }
+            ]
+        ]
+    }
+]

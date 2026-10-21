@@ -1,0 +1,20 @@
+[
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+    "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+    "adaptations": "Continue the existing 0.3/0.4 extracted request, reservation, adjustment, refund, ledger, revision and receipt implementation. Add the shared daily-record conflict guard to reserve/adjust/approval, including description-only edits. Lock affected normative months in ascending order and touch month revisions for effective cancellation transitions. Normalize command key order at the service boundary for API/internal caller retry interoperability. No second accounting owner, no synchronous or provisional approval."
+  },
+  {
+    "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "sourceSha256": "ce9e0259c2e4d3a76cf1e4cb37a5a04a058b2c1400a24f94e90f7522bafb95c6",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "adaptations": "Continue original matrix, CIC/CCC precedence, completion, freeze, reminders and export aggregate. Remove locking record reads from the read-only aggregate so record and Holiday reads use one DB snapshot behind the month lock. Retain authoritative locking reads on the write path. Keep reminder selection and native Notification persistence in the same native transaction/month lock as cancellation. Fix demonstrated delivery defect: native Notification.setUserId instead of nonexistent assignedUserId."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/WorkingDayCalculator.php",
+    "sourceSha256": "35213a14b4f7e77a5d201073aa28bd59229c03db7eb5aff867689081e0cf2371",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/WorkingDayCalculator.php",
+    "adaptations": "Retain the original strict parser, inclusive period and 367-day validation, and the WTC/ZileSarbatoare calculator already integrated. Expose the same period validator for slicing immutable monthly results, instead of duplicating validation or introducing another normative engine."
+  }
+]

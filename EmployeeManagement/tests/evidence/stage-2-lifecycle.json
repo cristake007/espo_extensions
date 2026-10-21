@@ -1,0 +1,130 @@
+{
+  "status": "PASS",
+  "test": "stage2-replacement-rebuild-retains-profiles-ledger-settings-roles-and-originals",
+  "state": {
+    "tabList": [
+      {
+        "type": "divider",
+        "id": "342567",
+        "text": "$CRM"
+      },
+      "Account",
+      "Contact",
+      "Lead",
+      "Opportunity",
+      {
+        "type": "divider",
+        "text": "$Activities",
+        "id": "219419"
+      },
+      "Email",
+      "Meeting",
+      "Call",
+      "Task",
+      "Calendar",
+      {
+        "type": "divider",
+        "id": "655187",
+        "text": "$Support"
+      },
+      "Case",
+      "KnowledgeBaseArticle",
+      {
+        "type": "divider",
+        "text": null,
+        "id": "137994"
+      },
+      "_delimiter_",
+      {
+        "type": "divider",
+        "text": "$Marketing",
+        "id": "463280"
+      },
+      "Campaign",
+      "TargetList",
+      {
+        "type": "divider",
+        "text": "$Business",
+        "id": "518202"
+      },
+      "Document",
+      {
+        "type": "divider",
+        "text": "$Organization",
+        "id": "566592"
+      },
+      "User",
+      "Team",
+      "WorkingTimeCalendar",
+      {
+        "type": "divider",
+        "text": null,
+        "id": "898671"
+      },
+      "EmailTemplate",
+      "Template",
+      "Import",
+      "HolidayRequest",
+      "HolidayOverview",
+      "Attendance",
+      "AttendanceOverview"
+    ],
+    "calendarEntityList": [
+      "Meeting",
+      "Call",
+      "Task",
+      "ZileLibere",
+      "HolidayRequest",
+      "FeasibilityAbsence"
+    ],
+    "globalAdminRoute": {
+      "params": {
+        "controller": "attendance-management:controllers/schedule-settings",
+        "action": "index"
+      },
+      "order": -100
+    },
+    "globalCalendarView": "holiday-management:views/calendar/calendar",
+    "counts": {
+      "AttendanceRecord": 0,
+      "AttendanceWorkSchedule": 0,
+      "HolidayRequest": 2,
+      "HolidayProfile": 2,
+      "HolidayLedger": 1,
+      "EmployeeAttendanceRecord": 2,
+      "EmployeeHolidayRequest": 2,
+      "EmployeeHolidayProfile": 17,
+      "EmployeeHolidayLedger": 31,
+      "WorkingTimeCalendar": 5,
+      "WorkingTimeRange": 4
+    },
+    "originalExtensions": {
+      "Attendance Management": "1.11.0",
+      "Holiday Management": "1.9.4",
+      "Zile Sărbătoare": "0.9.5"
+    },
+    "employeeManagementVersion": "0.2.0",
+    "employeeSettings": {
+      "employeeAttendanceEditablePastMonths": 4,
+      "employeeAttendanceAllowIncompleteExports": true,
+      "employeeAttendanceArchiveStartMonth": null,
+      "employeeHolidayAnnualEntitlementDays": 21,
+      "employeeHolidayResetDate": "2027-01-01",
+      "employeeHolidayAutomaticAnnualGrantEnabled": false,
+      "employeeHolidayCarryOverLimitDays": 90,
+      "employeeHolidayNegativeBalanceLimitDays": -21,
+      "employeeHolidayApproversIds": [
+        "6ad69f0923a0afa13"
+      ],
+      "employeeHolidayApprovalBlock1Title": "UI Stage2 Director",
+      "employeeHolidayApprovalBlock1Name": "Synthetic Manager",
+      "employeeHolidayApprovalBlock2Title": "",
+      "employeeHolidayApprovalBlock2Name": ""
+    },
+    "dataHashes": {
+      "EmployeeHolidayProfile": "281b43a2ff86f703ee061b021c1b957b100d0fe285db05e13011e87ec7441435",
+      "EmployeeHolidayLedger": "73914dee8005b8950551011d9d6ac71c47e692c4f3812ffe0cbb64bd2b99b2ef",
+      "Role": "766f0cc04da09534f19e352579ed63bb3a7d641acedee5786f94075fb2b5b3d0"
+    }
+  }
+}

@@ -1,0 +1,67 @@
+[
+    {
+        "route": "/EmployeeManagement/:area/status",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Workspace\\Api\\GetStatus"
+    },
+    {
+        "route": "/EmployeeManagement/administration/:section",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Administration\\Api\\Administration"
+    },
+    {
+        "route": "/EmployeeManagement/administration/:section",
+        "method": "put",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Administration\\Api\\Administration"
+    },
+    {
+        "route": "/EmployeeManagement/administration/:section/:operation",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Administration\\Api\\Administration"
+    },
+    {
+        "route": "/EmployeeManagement/administration/:section/:operation",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Administration\\Api\\Administration"
+    },
+    {
+        "route": "/EmployeeManagement/holiday/:operation",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayBalance\\Api\\Holiday"
+    },
+    {
+        "route": "/EmployeeManagement/holiday/:operation",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayBalance\\Api\\Holiday"
+    },
+    {
+        "route": "/EmployeeManagement/holiday/:id/:operation",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayBalance\\Api\\Holiday"
+    },
+    {
+        "route": "/EmployeeManagement/attendance/pdf",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\PostAttendancePdf"
+    },
+    {
+        "route": "/EmployeeManagement/attendance/xlsx",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\PostAttendanceXlsx"
+    },
+    {
+        "route": "/EmployeeManagement/attendance/:operation",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\Attendance"
+    },
+    {
+        "route": "/EmployeeManagement/attendance/:operation",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\Attendance"
+    },
+    {
+        "route": "/EmployeeManagement/attendance/:operation",
+        "method": "put",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\Attendance"
+    }
+]

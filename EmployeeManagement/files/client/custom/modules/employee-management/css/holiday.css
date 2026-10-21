@@ -1,0 +1,736 @@
+.employee-holiday-page {
+    --employee-holiday-primary: var(--tuvtk-primary, var(--brand-primary));
+    --employee-holiday-secondary: var(--tuvtk-secondary, var(--brand-danger));
+    --employee-holiday-surface: var(--tuvtk-surface, var(--panel-bg));
+    --employee-holiday-border: var(--tuvtk-border, var(--panel-default-border));
+    --employee-holiday-border-soft: var(--tuvtk-border-soft, var(--panel-default-border));
+    --employee-holiday-hover: var(--tuvtk-hover, var(--state-primary-bg));
+    --employee-holiday-text: var(--tuvtk-text, var(--text-color));
+    --employee-holiday-muted: var(--tuvtk-muted, var(--text-muted-color));
+    color: var(--employee-holiday-text);
+    margin: 0 auto;
+    max-width: 1180px;
+    padding: 16px 0 32px;
+    width: 100%;
+}
+
+.employee-holiday-hero {
+    align-items: center;
+    background: var(--employee-holiday-surface);
+    border: 1px solid var(--employee-holiday-border);
+    border-left: 4px solid var(--employee-holiday-secondary);
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--default-box-shadow);
+    display: flex;
+    gap: 24px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 22px 24px;
+}
+
+.employee-holiday-hero-copy {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    min-width: 0;
+}
+
+.employee-holiday-hero-icon {
+    align-items: center;
+    background: var(--employee-holiday-hover);
+    border-radius: 50%;
+    color: var(--employee-holiday-secondary);
+    display: flex;
+    flex: 0 0 52px;
+    font-size: 22px;
+    height: 52px;
+    justify-content: center;
+    width: 52px;
+}
+
+.employee-holiday-eyebrow {
+    color: var(--employee-holiday-secondary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+}
+
+.employee-holiday-hero h3 {
+    color: var(--employee-holiday-primary);
+    font-size: 24px;
+    line-height: 1.25;
+    margin: 0;
+}
+
+.employee-holiday-hero p {
+    color: var(--employee-holiday-muted);
+    line-height: 1.45;
+    margin: 5px 0 0;
+    max-width: 680px;
+}
+
+.employee-holiday-primary-action {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    justify-content: center;
+    min-height: 40px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.employee-holiday-balance,
+.employee-holiday-requests {
+    background: var(--employee-holiday-surface);
+    border: 1px solid var(--employee-holiday-border);
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--default-box-shadow);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.employee-holiday-section-heading {
+    align-items: center;
+    background: var(--default-heading-bg-color);
+    border-bottom: 1px solid var(--employee-holiday-border-soft);
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    padding: 15px 18px;
+}
+
+.employee-holiday-section-heading > div:first-child {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    min-width: 0;
+}
+
+.employee-holiday-section-icon {
+    color: var(--employee-holiday-primary);
+    flex: 0 0 auto;
+    font-size: 19px;
+}
+
+.employee-holiday-section-heading h4,
+.employee-holiday-manager h4,
+.employee-holiday-list-heading h4 {
+    margin: 0;
+}
+
+.employee-holiday-section-heading p,
+.employee-holiday-manager p,
+.employee-holiday-list-heading p {
+    color: var(--employee-holiday-muted);
+    font-size: 12px;
+    line-height: 1.4;
+    margin: 3px 0 0;
+}
+
+.employee-holiday-reset-date {
+    align-items: flex-end;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+}
+
+.employee-holiday-reset-date span {
+    color: var(--employee-holiday-muted);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.employee-holiday-reset-date strong {
+    color: var(--employee-holiday-primary);
+    font-variant-numeric: tabular-nums;
+    margin-top: 2px;
+}
+
+.employee-holiday-section-body {
+    padding: 18px;
+}
+
+.employee-holiday-balance-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.employee-holiday-metric {
+    --employee-holiday-metric-accent: var(--employee-holiday-primary);
+    --employee-holiday-metric-bg: var(--employee-holiday-hover);
+    align-items: center;
+    background: var(--employee-holiday-surface);
+    border: 1px solid var(--employee-holiday-border-soft);
+    border-top: 3px solid var(--employee-holiday-metric-accent);
+    border-radius: var(--panel-border-radius);
+    display: flex;
+    gap: 13px;
+    min-height: 94px;
+    min-width: 0;
+    padding: 15px;
+}
+
+.employee-holiday-metric-primary {
+    --employee-holiday-metric-accent: var(--employee-holiday-primary);
+    --employee-holiday-metric-bg: var(--state-primary-bg);
+}
+
+.employee-holiday-metric-success {
+    --employee-holiday-metric-accent: var(--brand-success);
+    --employee-holiday-metric-bg: var(--state-success-bg);
+}
+
+.employee-holiday-metric-warning {
+    --employee-holiday-metric-accent: var(--brand-warning);
+    --employee-holiday-metric-bg: var(--state-warning-bg);
+}
+
+.employee-holiday-metric-info {
+    --employee-holiday-metric-accent: var(--brand-info);
+    --employee-holiday-metric-bg: var(--state-info-bg);
+}
+
+.employee-holiday-metric-icon {
+    align-items: center;
+    background: var(--employee-holiday-metric-bg);
+    border-radius: 50%;
+    color: var(--employee-holiday-metric-accent);
+    display: flex;
+    flex: 0 0 40px;
+    font-size: 16px;
+    height: 40px;
+    justify-content: center;
+    width: 40px;
+}
+
+.employee-holiday-metric-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.employee-holiday-metric-copy span {
+    color: var(--employee-holiday-muted);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.25;
+    min-height: 28px;
+    text-transform: uppercase;
+}
+
+.employee-holiday-metric-copy strong {
+    color: var(--employee-holiday-metric-accent);
+    font-size: 28px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    margin-top: 5px;
+}
+
+.employee-holiday-state {
+    align-items: center;
+    border: 1px solid;
+    border-radius: var(--panel-border-radius);
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+}
+
+.employee-holiday-state > .fas {
+    flex: 0 0 auto;
+    font-size: 19px;
+}
+
+.employee-holiday-state-warning {
+    background: var(--state-warning-bg);
+    border-color: var(--state-warning-border);
+    color: var(--state-warning-text);
+}
+
+.employee-holiday-state-danger {
+    background: var(--state-danger-bg);
+    border-color: var(--state-danger-border);
+    color: var(--state-danger-text);
+}
+
+.employee-holiday-manager {
+    align-items: center;
+    background: var(--employee-holiday-hover);
+    border: 1px solid var(--employee-holiday-border);
+    border-radius: var(--panel-border-radius);
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 15px 18px;
+}
+
+.employee-holiday-manager-copy {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    min-width: 0;
+}
+
+.employee-holiday-manager-icon {
+    align-items: center;
+    background: var(--employee-holiday-surface);
+    border: 1px solid var(--employee-holiday-border-soft);
+    border-radius: 50%;
+    color: var(--employee-holiday-primary);
+    display: flex;
+    flex: 0 0 40px;
+    height: 40px;
+    justify-content: center;
+    width: 40px;
+}
+
+.employee-holiday-manager-actions,
+.employee-holiday-request-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.employee-holiday-manager-actions {
+    flex: 0 0 auto;
+    justify-content: flex-end;
+}
+
+.employee-holiday-list-heading {
+    background: var(--default-heading-bg-color);
+    border-bottom: 1px solid var(--employee-holiday-border-soft);
+    padding: 15px 18px;
+}
+
+.employee-holiday-list-heading > div {
+    align-items: center;
+    display: flex;
+    gap: 9px;
+}
+
+.employee-holiday-list-heading > div > .fas {
+    color: var(--employee-holiday-primary);
+}
+
+.employee-holiday-count {
+    align-items: center;
+    background: var(--employee-holiday-primary);
+    border-radius: 999px;
+    color: var(--brand-primary-text, #fff);
+    display: inline-flex;
+    font-size: 10px;
+    font-weight: 700;
+    height: 20px;
+    justify-content: center;
+    min-width: 20px;
+    padding: 0 6px;
+}
+
+.employee-holiday-empty {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 42px 24px;
+    text-align: center;
+}
+
+.employee-holiday-empty-icon {
+    align-items: center;
+    background: var(--employee-holiday-hover);
+    border-radius: 50%;
+    color: var(--employee-holiday-primary);
+    display: flex;
+    font-size: 25px;
+    height: 62px;
+    justify-content: center;
+    margin-bottom: 14px;
+    width: 62px;
+}
+
+.employee-holiday-empty h4 {
+    margin: 0;
+}
+
+.employee-holiday-empty p {
+    color: var(--employee-holiday-muted);
+    margin: 6px 0 17px;
+    max-width: 480px;
+}
+
+.employee-holiday-request-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.employee-holiday-request {
+    --employee-holiday-status-color: var(--employee-holiday-primary);
+    background: var(--employee-holiday-surface);
+    border-bottom: 1px solid var(--employee-holiday-border-soft);
+    border-left: 4px solid var(--employee-holiday-status-color);
+    padding: 16px 18px 14px;
+}
+
+.employee-holiday-request:last-child {
+    border-bottom: 0;
+}
+
+.employee-holiday-request:hover {
+    background: var(--employee-holiday-hover);
+}
+
+.employee-holiday-request-pending { --employee-holiday-status-color: var(--brand-warning); }
+.employee-holiday-request-processing { --employee-holiday-status-color: var(--brand-info); }
+.employee-holiday-request-approved { --employee-holiday-status-color: var(--brand-success); }
+.employee-holiday-request-rejected,
+.employee-holiday-request-cancellation { --employee-holiday-status-color: var(--employee-holiday-secondary); }
+.employee-holiday-request-cancelled { --employee-holiday-status-color: var(--employee-holiday-muted); }
+
+.employee-holiday-request-topline {
+    align-items: center;
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+}
+
+.employee-holiday-request-date {
+    align-items: center;
+    color: var(--employee-holiday-text);
+    display: flex;
+    gap: 8px;
+    min-width: 0;
+}
+
+.employee-holiday-request-date .far {
+    color: var(--employee-holiday-status-color);
+    flex: 0 0 auto;
+}
+
+.employee-holiday-request-date strong {
+    font-variant-numeric: tabular-nums;
+}
+
+.employee-holiday-status {
+    align-items: center;
+    border: 1px solid;
+    border-radius: 999px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 11px;
+    font-weight: 600;
+    gap: 6px;
+    line-height: 1;
+    padding: 6px 9px;
+}
+
+.employee-holiday-status-pending {
+    background: var(--state-warning-bg);
+    border-color: var(--state-warning-border);
+    color: var(--state-warning-text);
+}
+
+.employee-holiday-status-processing {
+    background: var(--state-info-bg);
+    border-color: var(--state-info-border);
+    color: var(--state-info-text);
+}
+
+.employee-holiday-status-approved {
+    background: var(--state-success-bg);
+    border-color: var(--state-success-border);
+    color: var(--state-success-text);
+}
+
+.employee-holiday-status-rejected,
+.employee-holiday-status-cancellation {
+    background: var(--state-danger-bg);
+    border-color: var(--state-danger-border);
+    color: var(--state-danger-text);
+}
+
+.employee-holiday-status-cancelled,
+.employee-holiday-status-default {
+    background: var(--state-default-bg);
+    border-color: var(--employee-holiday-border);
+    color: var(--state-default-text);
+}
+
+.employee-holiday-request-content {
+    align-items: center;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    padding: 13px 0;
+}
+
+.employee-holiday-request-main {
+    min-width: 0;
+}
+
+.employee-holiday-assignee {
+    align-items: center;
+    color: var(--employee-holiday-primary);
+    display: flex;
+    font-weight: 600;
+    gap: 7px;
+    margin-bottom: 5px;
+}
+
+.employee-holiday-description {
+    line-height: 1.45;
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.employee-holiday-description-empty {
+    color: var(--employee-holiday-muted);
+    font-style: italic;
+}
+
+.employee-holiday-days {
+    align-items: center;
+    border-left: 1px solid var(--employee-holiday-border-soft);
+    display: flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    min-width: 105px;
+    padding-left: 18px;
+}
+
+.employee-holiday-days strong {
+    color: var(--employee-holiday-status-color);
+    font-size: 25px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.employee-holiday-days span {
+    color: var(--employee-holiday-muted);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.2;
+    max-width: 56px;
+    text-transform: uppercase;
+}
+
+.employee-holiday-notice {
+    align-items: flex-start;
+    border: 1px solid;
+    border-radius: var(--panel-border-radius);
+    display: flex;
+    font-size: 12px;
+    gap: 9px;
+    margin-bottom: 12px;
+    padding: 9px 11px;
+}
+
+.employee-holiday-notice p {
+    margin: 2px 0 0;
+    white-space: pre-wrap;
+}
+
+.employee-holiday-notice-warning {
+    background: var(--state-warning-bg);
+    border-color: var(--state-warning-border);
+    color: var(--state-warning-text);
+}
+
+.employee-holiday-notice-info {
+    background: var(--state-info-bg);
+    border-color: var(--state-info-border);
+    color: var(--state-info-text);
+}
+
+.employee-holiday-notice-danger {
+    background: var(--state-danger-bg);
+    border-color: var(--state-danger-border);
+    color: var(--state-danger-text);
+}
+
+.employee-holiday-documents {
+    align-items: flex-start;
+    border-top: 1px solid var(--employee-holiday-border-soft);
+    display: flex;
+    gap: 9px;
+    margin-top: 1px;
+    padding: 11px 0;
+}
+
+.employee-holiday-documents > .fas {
+    color: var(--employee-holiday-primary);
+    margin-top: 3px;
+}
+
+.employee-holiday-documents a {
+    display: block;
+    overflow-wrap: anywhere;
+}
+
+.employee-holiday-documents a + a {
+    margin-top: 4px;
+}
+
+.employee-holiday-request-actions {
+    border-top: 1px solid var(--employee-holiday-border-soft);
+    padding-top: 12px;
+}
+
+.employee-holiday-request-actions .btn .fas,
+.employee-holiday-request-actions .btn .far,
+.employee-holiday-manager-actions .btn .fas {
+    margin-right: 3px;
+}
+
+.employee-holiday-live-calculation {
+    align-items: center;
+    background: var(--state-default-bg);
+    border: 1px solid var(--panel-default-border);
+    border-radius: var(--panel-border-radius);
+    display: flex;
+    gap: 11px;
+    margin: 2px 0 16px;
+    min-height: 62px;
+    padding: 10px 13px;
+}
+
+.employee-holiday-live-calculation-icon {
+    color: var(--text-muted-color);
+    flex: 0 0 auto;
+    font-size: 17px;
+}
+
+.employee-holiday-live-calculation > div {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.employee-holiday-live-calculation > div > span {
+    font-weight: 600;
+}
+
+.employee-holiday-live-calculation small {
+    color: var(--text-muted-color);
+    line-height: 1.35;
+    margin-top: 2px;
+}
+
+.employee-holiday-live-calculation > strong {
+    color: var(--brand-primary);
+    flex: 0 0 auto;
+    font-size: 27px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.employee-holiday-live-calculation.is-loading {
+    background: var(--state-info-bg);
+    border-color: var(--state-info-border);
+}
+
+.employee-holiday-live-calculation.is-loading .employee-holiday-live-calculation-icon {
+    color: var(--state-info-text);
+}
+
+.employee-holiday-live-calculation.is-ready {
+    background: var(--state-success-bg);
+    border-color: var(--state-success-border);
+}
+
+.employee-holiday-live-calculation.is-ready .employee-holiday-live-calculation-icon,
+.employee-holiday-live-calculation.is-ready > strong {
+    color: var(--state-success-text);
+}
+
+.employee-holiday-live-calculation.is-error {
+    background: var(--state-danger-bg);
+    border-color: var(--state-danger-border);
+}
+
+.employee-holiday-live-calculation.is-error .employee-holiday-live-calculation-icon,
+.employee-holiday-live-calculation.is-error > strong {
+    color: var(--state-danger-text);
+}
+
+@media (max-width: 991px) {
+    .employee-holiday-balance-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .employee-holiday-manager {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .employee-holiday-manager-actions {
+        justify-content: flex-start;
+        padding-left: 52px;
+    }
+}
+
+@media (max-width: 767px) {
+    .employee-holiday-page {
+        padding-top: 12px;
+    }
+
+    .employee-holiday-hero {
+        align-items: stretch;
+        flex-direction: column;
+        padding: 18px;
+    }
+
+    .employee-holiday-primary-action {
+        width: 100%;
+    }
+
+    .employee-holiday-section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .employee-holiday-reset-date {
+        align-items: flex-start;
+        padding-left: 31px;
+    }
+
+    .employee-holiday-balance-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .employee-holiday-manager-actions {
+        padding-left: 0;
+    }
+
+    .employee-holiday-manager-actions .btn {
+        flex: 1 1 auto;
+    }
+
+    .employee-holiday-request-topline,
+    .employee-holiday-request-content {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .employee-holiday-status {
+        align-self: flex-start;
+    }
+
+    .employee-holiday-days {
+        border-left: 0;
+        border-top: 1px solid var(--employee-holiday-border-soft);
+        padding-left: 0;
+        padding-top: 10px;
+        width: 100%;
+    }
+
+    .employee-holiday-request-actions .btn {
+        flex: 1 1 auto;
+    }
+}

@@ -1,0 +1,76 @@
+{
+  "user": {
+    "id": "6ad6f062b818fc4e9",
+    "type": "regular",
+    "isAdmin": false
+  },
+  "request": {
+    "id": "6ad7031e013a05d25",
+    "dateStart": "2026-12-07",
+    "dateEnd": "2026-12-11",
+    "days": 5,
+    "status": "Pending"
+  },
+  "routes": [
+    "#EmployeeManagement/holiday",
+    "#EmployeeHolidayRequest",
+    "#EmployeeHolidayRequest/create"
+  ],
+  "results": [
+    {
+      "test": "compatibility-route-opens-personal-page",
+      "status": "PASS"
+    },
+    {
+      "test": "original-balance-information-is-visible",
+      "status": "PASS"
+    },
+    {
+      "test": "non-admin-does-not-see-manager-actions",
+      "status": "PASS"
+    },
+    {
+      "test": "native-create-route-opens-accounting-form",
+      "status": "PASS"
+    },
+    {
+      "test": "non-admin-five-day-command-succeeds",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "id": "6ad7031e013a05d25",
+        "days": 5,
+        "requestStatus": "Pending"
+      }
+    },
+    {
+      "test": "own-request-and-status-are-visible",
+      "status": "PASS"
+    },
+    {
+      "test": "pending-reservation-and-balance-refresh",
+      "status": "PASS"
+    },
+    {
+      "test": "pending-owner-operations-are-available",
+      "status": "PASS"
+    },
+    {
+      "test": "canonical-and-compatibility-routes-share-the-request",
+      "status": "PASS",
+      "observed": "6ad7031e013a05d25"
+    },
+    {
+      "test": "generic-crud-remains-protected",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-browser-javascript-errors",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 11,
+  "failures": 0
+}

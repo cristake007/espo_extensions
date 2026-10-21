@@ -1,0 +1,42 @@
+{
+    "entity": true,
+    "object": true,
+    "acl": true,
+    "aclPortal": false,
+    "tab": false,
+    "layouts": true,
+    "stream": false,
+    "customizable": false,
+    "importable": false,
+    "calendar": false,
+    "type": "Base",
+    "module": "EmployeeManagement",
+    "preserveAuditLog": true,
+    "aclActionList": [
+        "create",
+        "read",
+        "edit",
+        "delete"
+    ],
+    "aclActionLevelListMap": {
+        "create": [
+            "yes",
+            "no"
+        ],
+        "read": [
+            "all",
+            "own",
+            "no"
+        ],
+        "edit": [
+            "all",
+            "own",
+            "no"
+        ],
+        "delete": [
+            "all",
+            "own",
+            "no"
+        ]
+    }
+}

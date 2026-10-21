@@ -1,0 +1,113 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "readOnly": true
+        },
+        "date": {
+            "type": "date",
+            "required": true,
+            "readOnly": true,
+            "audited": true
+        },
+        "status": {
+            "type": "enum",
+            "options": [
+                "AtWork",
+                "Holiday",
+                "BusinessTrip",
+                "MedicalLeave",
+                "ChildCareLeave"
+            ],
+            "required": true,
+            "readOnly": false,
+            "style": {
+                "AtWork": "success",
+                "Holiday": "info",
+                "BusinessTrip": "warning",
+                "MedicalLeave": "danger",
+                "ChildCareLeave": "info"
+            },
+            "audited": true
+        },
+        "source": {
+            "type": "enum",
+            "options": [
+                "Self",
+                "Manager"
+            ],
+            "required": true,
+            "readOnly": true,
+            "audited": true
+        },
+        "markedAt": {
+            "type": "datetime",
+            "required": true,
+            "readOnly": true,
+            "audited": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "assignedUser": {
+            "type": "link",
+            "entity": "User",
+            "required": true,
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true
+        },
+        "revision": {
+            "type": "int",
+            "readOnly": true,
+            "default": 0
+        },
+        "correctionReason": {
+            "type": "text",
+            "readOnly": true,
+            "audited": true
+        }
+    },
+    "links": {
+        "assignedUser": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "indexes": {
+        "userDateUnique": {
+            "unique": true,
+            "columns": [
+                "assignedUserId",
+                "date"
+            ]
+        },
+        "dateStatus": {
+            "columns": [
+                "date",
+                "status"
+            ]
+        }
+    },
+    "noDeletedAttribute": true
+}

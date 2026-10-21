@@ -1,0 +1,26 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                }
+            ],
+            [
+                {
+                    "name": "date"
+                }
+            ],
+            [
+                {
+                    "name": "status"
+                }
+            ],
+            [
+                {
+                    "name": "assignedUser"
+                }
+            ]
+        ]
+    }
+]

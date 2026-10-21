@@ -1,0 +1,8 @@
+{
+    "zipSha256": "95d1de7097e985604ca23870fc109df6750b16862971c9da674c2e2c5014f1b8",
+    "installedFilesChecked": 166,
+    "mismatches": [],
+    "phpVersion": "8.4.23",
+    "espoVersion": "10.0.1",
+    "memoryLimit": "256M"
+}

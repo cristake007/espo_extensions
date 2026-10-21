@@ -1,0 +1,154 @@
+{
+  "results": [
+    {
+      "test": "actor-is-active-regular-non-admin",
+      "status": "PASS",
+      "observed": {
+        "type": "regular",
+        "isActive": true
+      }
+    },
+    {
+      "test": "native-sidebar-EmployeeManagement",
+      "status": "PASS"
+    },
+    {
+      "test": "native-sidebar-EmployeeAttendance",
+      "status": "PASS"
+    },
+    {
+      "test": "native-sidebar-EmployeeAttendanceOverview",
+      "status": "PASS"
+    },
+    {
+      "test": "native-sidebar-EmployeeAdministration",
+      "status": "PASS"
+    },
+    {
+      "test": "no-operational-Admin-link",
+      "status": "PASS"
+    },
+    {
+      "test": "Schedules-from-overview-opens-delegated-page",
+      "status": "PASS"
+    },
+    {
+      "test": "Schedules-save-true",
+      "status": "PASS"
+    },
+    {
+      "test": "Schedules-persisted-true",
+      "status": "PASS"
+    },
+    {
+      "test": "Schedules-save-false",
+      "status": "PASS"
+    },
+    {
+      "test": "Schedules-persisted-false",
+      "status": "PASS"
+    },
+    {
+      "test": "attendance-save-3",
+      "status": "PASS"
+    },
+    {
+      "test": "attendance-persisted-3",
+      "status": "PASS"
+    },
+    {
+      "test": "attendance-save-2",
+      "status": "PASS"
+    },
+    {
+      "test": "attendance-persisted-2",
+      "status": "PASS"
+    },
+    {
+      "test": "holiday-save-Delegated browser validation",
+      "status": "PASS"
+    },
+    {
+      "test": "holiday-persisted-Delegated browser validation",
+      "status": "PASS"
+    },
+    {
+      "test": "holiday-save-Stage2 Director",
+      "status": "PASS"
+    },
+    {
+      "test": "holiday-persisted-Stage2 Director",
+      "status": "PASS"
+    },
+    {
+      "test": "initialized-profile-editable",
+      "status": "PASS"
+    },
+    {
+      "test": "profile-parameters-save-24",
+      "status": "PASS"
+    },
+    {
+      "test": "profile-parameters-persisted-24",
+      "status": "PASS"
+    },
+    {
+      "test": "profile-parameters-save-21",
+      "status": "PASS"
+    },
+    {
+      "test": "profile-parameters-persisted-21",
+      "status": "PASS"
+    },
+    {
+      "test": "page-EmployeeManagement",
+      "status": "PASS"
+    },
+    {
+      "test": "page-EmployeeAttendance",
+      "status": "PASS"
+    },
+    {
+      "test": "page-EmployeeAttendanceOverview",
+      "status": "PASS"
+    },
+    {
+      "test": "page-EmployeeManagement/holiday",
+      "status": "PASS"
+    },
+    {
+      "test": "page-EmployeeAdministration",
+      "status": "PASS"
+    },
+    {
+      "test": "all-four-delegated-sections",
+      "status": "PASS",
+      "observed": [
+        "#EmployeeAdministration/attendance",
+        "#EmployeeAdministration/attendanceMetadata",
+        "#EmployeeAdministration/holiday",
+        "#EmployeeAdministration/profiles"
+      ]
+    },
+    {
+      "test": "page-EmployeeAdministration/profiles",
+      "status": "PASS"
+    },
+    {
+      "test": "no-manager-page-http-errors",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "technical-Admin-remains-forbidden",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 34,
+  "failures": 0
+}

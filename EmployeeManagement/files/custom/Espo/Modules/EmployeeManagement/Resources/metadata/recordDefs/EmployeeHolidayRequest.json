@@ -1,0 +1,31 @@
+{
+    "exportDisabled": true,
+    "earlyBeforeCreateHookClassNameList": [
+        "Espo\\Modules\\EmployeeManagement\\Classes\\Record\\Hooks\\ReadOnlySaveGuard"
+    ],
+    "earlyBeforeUpdateHookClassNameList": [
+        "Espo\\Modules\\EmployeeManagement\\Classes\\Record\\Hooks\\ReadOnlySaveGuard"
+    ],
+    "beforeDeleteHookClassNameList": [
+        "Espo\\Modules\\EmployeeManagement\\Classes\\Record\\Hooks\\ReadOnlySaveGuard"
+    ],
+    "beforeLinkHookClassNameList": [
+        "Espo\\Modules\\EmployeeManagement\\Classes\\Record\\Hooks\\ReadOnlyLinkGuard"
+    ],
+    "beforeUnlinkHookClassNameList": [
+        "Espo\\Modules\\EmployeeManagement\\Classes\\Record\\Hooks\\ReadOnlyLinkGuard"
+    ],
+    "massActions": {
+        "update": {
+            "disabled": true
+        },
+        "delete": {
+            "disabled": true
+        }
+    },
+    "actions": {
+        "merge": {
+            "disabled": true
+        }
+    }
+}

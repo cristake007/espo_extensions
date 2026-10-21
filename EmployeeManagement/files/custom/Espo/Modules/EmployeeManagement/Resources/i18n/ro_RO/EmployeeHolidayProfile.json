@@ -1,0 +1,28 @@
+{
+    "labels": {
+        "Correct Balance": "Corectează soldul"
+    },
+    "fields": {
+        "name": "Denumire",
+        "user": "Utilizator",
+        "annualEntitlement": "Drept anual",
+        "balance": "Sold",
+        "nextResetDate": "Următoarea dată de resetare",
+        "calendarColor": "Culoare calendar",
+        "isInitialized": "Inițializat",
+        "resetPending": "Resetare în așteptare",
+        "pendingResetDate": "Data resetării în așteptare",
+        "pendingResetKey": "Cheia resetării în așteptare",
+        "createdAt": "Creat la",
+        "modifiedAt": "Modificat la"
+    },
+    "links": {
+        "ledgerEntries": "Înregistrări de sold",
+        "holidayRequests": "Cereri de concediu"
+    },
+    "messages": {
+        "profileCreateForbidden": "Profilurile de concediu pot fi create doar de serviciul de gestionare a soldului.",
+        "profileDeleteForbidden": "Profilurile de concediu nu pot fi șterse direct.",
+        "profileAccountingFieldsForbidden": "Câmpurile contabile ale profilului de concediu pot fi modificate doar de serviciul de gestionare a soldului."
+    }
+}

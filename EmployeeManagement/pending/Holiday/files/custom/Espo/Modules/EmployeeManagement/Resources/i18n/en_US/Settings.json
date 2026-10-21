@@ -1,0 +1,33 @@
+{
+    "fields": {
+        "employeeHolidayAnnualEntitlementDays": "Default Annual Entitlement (days)",
+        "employeeHolidayResetDate": "Default Reset Date",
+        "employeeHolidayAutomaticAnnualGrantEnabled": "Enable Automatic Annual Grants",
+        "employeeHolidayTestDataReset": "Test Data Reset",
+        "employeeHolidayCarryOverLimitDays": "Balance Warning Threshold (days)",
+        "employeeHolidayNegativeBalanceLimitDays": "Negative Balance Limit (days)",
+        "employeeHolidayApprovers": "Holiday Approvers",
+        "employeeHolidayApprovalBlock1Title": "Approval Block 1 Title",
+        "employeeHolidayApprovalBlock1Name": "Approval Block 1 Name",
+        "employeeHolidayApprovalBlock2Title": "Approval Block 2 Title",
+        "employeeHolidayApprovalBlock2Name": "Approval Block 2 Name"
+    },
+    "tooltips": {
+        "employeeHolidayAnnualEntitlementDays": "Annual days granted by default when a holiday profile is initialized.",
+        "employeeHolidayResetDate": "Select the annual reset date with the EspoCRM date picker. The year is ignored; MM-DD input such as 01-01 is also accepted.",
+        "employeeHolidayAutomaticAnnualGrantEnabled": "Disabled by default. When enabled, the daily job automatically adds annual entitlement to profiles that reached their reset date. Verify balances and dates before enabling it.",
+        "employeeHolidayCarryOverLimitDays": "Warning threshold for the accumulated balance after an annual reset. Annual entitlement is always granted in full and no days are removed. When the resulting balance exceeds this value, the employee and configured approvers receive a notification.",
+        "employeeHolidayNegativeBalanceLimitDays": "The lowest permitted balance. Set this to zero to prevent a negative balance.",
+        "employeeHolidayApprovers": "Select one or two active internal users who can approve holiday requests.",
+        "employeeHolidayApprovalBlock1Title": "Printed title for the first approval block.",
+        "employeeHolidayApprovalBlock1Name": "Optional printed-name override. Leave blank to use the actual approver name.",
+        "employeeHolidayApprovalBlock2Title": "Printed title for the second approval block.",
+        "employeeHolidayApprovalBlock2Name": "Optional printed-name override. Leave blank to use the actual approver name."
+    },
+    "labels": {
+        "Defaults": "Defaults",
+        "RESET": "RESET",
+        "Approval": "Approval",
+        "Printed Approval Blocks": "Printed Approval Blocks"
+    }
+}

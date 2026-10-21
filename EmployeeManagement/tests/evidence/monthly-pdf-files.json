@@ -1,0 +1,46 @@
+{
+  "results": [
+    {
+      "test": "managerUnset-PDF-readable-two-pages",
+      "status": "PASS"
+    },
+    {
+      "test": "managerUnset-correct-month",
+      "status": "PASS"
+    },
+    {
+      "test": "managerUnset-real-WTC-hours",
+      "status": "PASS"
+    },
+    {
+      "test": "managerUnset-manager-present",
+      "status": "PASS"
+    },
+    {
+      "test": "managerUnset-last-page-number",
+      "status": "PASS"
+    },
+    {
+      "test": "managerDenied-PDF-readable-two-pages",
+      "status": "PASS"
+    },
+    {
+      "test": "managerDenied-correct-month",
+      "status": "PASS"
+    },
+    {
+      "test": "managerDenied-real-WTC-hours",
+      "status": "PASS"
+    },
+    {
+      "test": "managerDenied-manager-present",
+      "status": "PASS"
+    },
+    {
+      "test": "managerDenied-last-page-number",
+      "status": "PASS"
+    }
+  ],
+  "assertions": 10,
+  "failures": 0
+}

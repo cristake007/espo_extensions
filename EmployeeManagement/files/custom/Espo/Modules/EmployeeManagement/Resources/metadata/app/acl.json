@@ -1,0 +1,25 @@
+{
+    "strictDefault": {
+        "scopeLevel": {
+            "EmployeeAbsence": false,
+            "EmployeeAttendanceRecord": false,
+            "EmployeeHolidayRequest": false,
+            "EmployeeHolidayProfile": false,
+            "EmployeeHolidayLedger": false,
+            "EmployeeManagement": false,
+            "EmployeeAdministration": false,
+            "EmployeeAttendanceSettings": false,
+            "EmployeeHolidaySettings": false,
+            "EmployeeHolidayProfileManagement": false,
+            "EmployeeHolidayApproval": false,
+            "EmployeeHolidayBooking": false,
+            "EmployeeHolidayRequestManagement": false,
+            "EmployeeHolidayBalanceCorrection": false,
+            "EmployeeAttendance": false,
+            "EmployeeAttendanceOverview": false,
+            "EmployeeAttendanceManagement": false,
+            "EmployeeAttendanceMonth": false,
+            "EmployeeAttendanceWorkSchedule": false
+        }
+    }
+}

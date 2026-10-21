@@ -1,0 +1,46 @@
+{
+    "params": {
+        "employeeHolidayAnnualEntitlementDays": {
+            "level": "admin"
+        },
+        "employeeHolidayResetDate": {
+            "level": "admin"
+        },
+        "employeeHolidayAutomaticAnnualGrantEnabled": {
+            "level": "admin"
+        },
+        "employeeHolidayCarryOverLimitDays": {
+            "level": "admin"
+        },
+        "employeeHolidayNegativeBalanceLimitDays": {
+            "level": "admin"
+        },
+        "employeeHolidayApproversIds": {
+            "level": "admin"
+        },
+        "employeeHolidayApprovalBlock1Title": {
+            "level": "admin"
+        },
+        "employeeHolidayApprovalBlock1Name": {
+            "level": "admin"
+        },
+        "employeeHolidayApprovalBlock2Title": {
+            "level": "admin"
+        },
+        "employeeHolidayApprovalBlock2Name": {
+            "level": "admin"
+        },
+        "employeeHolidayApproversNames": {
+            "level": "admin"
+        },
+        "employeeAttendanceEditablePastMonths": {
+            "level": "admin"
+        },
+        "employeeAttendanceAllowIncompleteExports": {
+            "level": "admin"
+        },
+        "employeeAttendanceArchiveStartMonth": {
+            "level": "admin"
+        }
+    }
+}

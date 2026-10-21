@@ -1,0 +1,84 @@
+{
+  "status": "PASS",
+  "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+  "packageBytes": 183598,
+  "zipMembers": 164,
+  "phpLint": {
+    "runtimeAndLifecycleFiles": 46,
+    "stage7PhpFixtures": 4
+  },
+  "jsonParse": {
+    "runtimeFiles": 92,
+    "manifest": 1
+  },
+  "javascriptSyntax": {
+    "runtimeFiles": 21,
+    "stage7BrowserFixture": 1
+  },
+  "commands": [
+    "bash build.sh --extension EmployeeManagement --validate",
+    "python3 EmployeeManagement/tests/contract.py",
+    "php -l on runtime/lifecycle/Stage7 PHP fixtures",
+    "node --check on runtime/Stage7 browser JavaScript",
+    "node EmployeeManagement/tests/regression/reset-date-field.test.mjs"
+  ],
+  "contract": {
+    "originalImportsPreserved": 175,
+    "originalRuntimeAndLifecycleFiles": 196,
+    "stage7ReuseMappings": 10,
+    "zipMembersByteIdenticalToSource": true
+  },
+  "annualDateRegression": {
+    "assertions": 2,
+    "failures": 0
+  },
+  "zipDiffFrom060": {
+    "added": [
+      "files/custom/Espo/Modules/EmployeeManagement/Classes/Acl/AbsenceAccessChecker.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Classes/Select/EligibleEmployee.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Controllers/EmployeeAbsence.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Entities/EmployeeAbsence.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Hooks/EmployeeHolidayRequest/Absence.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Jobs/ProcessEmployeeHolidayResets.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeAbsence.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/ScheduledJob.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeAbsence.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/ScheduledJob.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeAbsence/detail.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeAbsence/detailSmall.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeAbsence/list.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/aclDefs/EmployeeAbsence.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/scheduledJobs.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/clientDefs/EmployeeAbsence.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityAcl/EmployeeAbsence.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAbsence.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/recordDefs/EmployeeAbsence.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeAbsence.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/selectDefs/EmployeeAbsence.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeAbsence.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeHolidayRequest.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/Calendar/EmployeeAbsenceService.php",
+      "scripts/AfterInstall.php",
+      "scripts/AfterUninstall.php"
+    ],
+    "removed": [],
+    "changed": [
+      "README.md",
+      "files/client/custom/modules/employee-management/src/views/administration/settings.js",
+      "files/custom/Espo/Modules/EmployeeManagement/Classes/Acl/ReadOnlyAccessChecker.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeHolidayRequest.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Global.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeHolidayRequest.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Global.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/acl.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/employeeManagement.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeHolidayRequest.json",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+      "files/custom/Espo/Modules/EmployeeManagement/Tools/Workspace/Api/GetStatus.php",
+      "manifest.json"
+    ]
+  },
+  "renderersAndDocxTemplateUnchangedFrom060": true
+}

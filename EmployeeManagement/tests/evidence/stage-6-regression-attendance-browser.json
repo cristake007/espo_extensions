@@ -1,0 +1,124 @@
+{
+  "testedPackageVersion": "0.6.0",
+  "finalPackageSha256": "0cdcb453fe7e96473313abbdd5722dae69dd6811cde0dd823c8cef3035d6f909",
+  "executedOnExactFinalZip": true,
+  "sourceFixtureOutput": "employee-stage4-browser-results.json",
+  "observedAtUtc": "2026-10-20T01:36:34.235059+00:00",
+  "results": [
+    {
+      "test": "original-personal-view-loaded",
+      "status": "PASS"
+    },
+    {
+      "test": "native-personal-mark-ui",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "frozen-month-no-personal-day-buttons",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-ui",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "CIC-UI-medical-only",
+      "status": "PASS"
+    },
+    {
+      "test": "CIC-medical-original-UI",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-cic",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "matrix-management-vs-readonly-manager",
+      "status": "PASS"
+    },
+    {
+      "test": "reminders-visible-only-manager-manager",
+      "status": "PASS"
+    },
+    {
+      "test": "native-export-button-permission-manager",
+      "status": "PASS"
+    },
+    {
+      "test": "frozen-manager-correction-native-modal-ui",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "corrected-cell-visible",
+      "status": "PASS"
+    },
+    {
+      "test": "original-XLSX-download-ui",
+      "status": "PASS"
+    },
+    {
+      "test": "no-WTC-time-editor-ui",
+      "status": "PASS"
+    },
+    {
+      "test": "original-operational-settings-ui",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-manager",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "matrix-management-vs-readonly-viewer",
+      "status": "PASS"
+    },
+    {
+      "test": "reminders-visible-only-manager-viewer",
+      "status": "PASS"
+    },
+    {
+      "test": "native-export-button-permission-viewer",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-viewer",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "matrix-management-vs-readonly-noexport",
+      "status": "PASS"
+    },
+    {
+      "test": "reminders-visible-only-manager-noexport",
+      "status": "PASS"
+    },
+    {
+      "test": "native-export-button-permission-noexport",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-noexport",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "admin-personal-route-denied",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-admin",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 26,
+  "failures": 0,
+  "fixtureVersion": "0.4.0"
+}

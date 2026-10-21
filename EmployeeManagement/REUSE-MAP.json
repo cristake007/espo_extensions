@@ -1,0 +1,1052 @@
+[
+  {
+    "source": "AttendanceManagement/files/client/custom/modules/attendance-management/css/attendance.css",
+    "sha256": "9711ed875742f4cfe9f9ec70c63a7a713773a303244fe08d0d1bebd7f61539f5",
+    "destination": "pending/Attendance/files/client/custom/modules/employee-management/css/attendance.css",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/client/custom/modules/attendance-management/src/controllers/attendance-overview.js",
+    "sha256": "ee5c7ed8cf92f9e96bf709d6fc71d69c3f7952a2dce7d8201a12c76825754afa",
+    "destination": "pending/Attendance/files/client/custom/modules/employee-management/src/controllers/attendance-overview.js",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/client/custom/modules/attendance-management/src/controllers/attendance.js",
+    "sha256": "48b38b37fc4ad46acc1c488afdf5e7fcfddfb19464db74c729bf0efa5bcc6178",
+    "destination": "pending/Attendance/files/client/custom/modules/employee-management/src/controllers/attendance.js",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/admin/manager-index.js",
+    "sha256": "bd4b7b31ae99c2b9615fb37963e85ed7183835eded98bee8087dc858da21f898",
+    "destination": "pending/Attendance/files/client/custom/modules/employee-management/src/views/admin/manager-index.js",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/admin/settings.js",
+    "sha256": "4eb7e7d2e85be17b53e0ff50f5a95ac9f751a981dd4d7414884642ed80ef48bc",
+    "destination": "pending/Attendance/files/client/custom/modules/employee-management/src/views/admin/settings.js",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/attendance/my.js",
+    "sha256": "f10488b113290b1928cfdcbd53c80740c973f1892340ef0e09e97de036b3085d",
+    "destination": "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/my.js",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/attendance/overview.js",
+    "sha256": "149c36a63390c2733bb7572b6ecd4ee9eb88accdc284c448d49537a378a3f0ae",
+    "destination": "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/overview.js",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/attendance/schedules.js",
+    "sha256": "1895c3b27df19d70671efde448fa4a769f1f55c432feb533b0594db08858b5a6",
+    "destination": "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/schedules.js",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/fields/archive-initializer.js",
+    "sha256": "12943471563d0690fab22142a0dfcb58d59aeaf6d3e96bced34cb2c91568569b",
+    "destination": "pending/Attendance/files/client/custom/modules/employee-management/src/views/fields/archive-initializer.js",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/fields/work-schedules.js",
+    "sha256": "eded001b2e22621a4b0a1125a32f72ca7cbbdedc0c89dd6986148b1a8a466be8",
+    "destination": "pending/Attendance/files/client/custom/modules/employee-management/src/views/fields/work-schedules.js",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Classes/Record/Hooks/AttendanceRecord/BeforeCreate.php",
+    "sha256": "a086401b74a1d0323eb0f61d6c266d0b136f6ae22ad85449808b14baecc4c902",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeAttendanceRecord/BeforeCreate.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Classes/Record/Hooks/AttendanceRecord/BeforeDelete.php",
+    "sha256": "a290791acc19129aee795e7a1ec28629a0232f13905b752e6688ba8dc65e6cc4",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeAttendanceRecord/BeforeDelete.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Classes/Record/Hooks/AttendanceRecord/BeforeUpdate.php",
+    "sha256": "91b7678623c23413240a3ae7a7644544223323ab8fc8409fc10360449c2a6609",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeAttendanceRecord/BeforeUpdate.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/en_US/Admin.json",
+    "sha256": "b29e95b6be5a9b8992e0abbaf62639fcdcd2d3ab57312c649958a80df52abf8f",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Admin.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/en_US/AttendanceRecord.json",
+    "sha256": "565152311929f5b130bcfa49f808562cf499d0180033c36895792fb9e2c297c8",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeAttendanceRecord.json",
+    "installed": true
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/en_US/Global.json",
+    "sha256": "b33db02b9daa7b3868985a889c86490571ccf2dfc153d6b2be6c8c8b0205b9a9",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Global.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/en_US/Settings.json",
+    "sha256": "f0f2fb33dd48e0d7821833709711efaf936bdad26f91127fcf906912e46eb6ef",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Settings.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/ro_RO/Admin.json",
+    "sha256": "9196bebd977774083b367ef25372abae4b0b7cf9010ff2572a53cb1975667ef4",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Admin.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/ro_RO/AttendanceRecord.json",
+    "sha256": "ac00f0a1adf64759c23bff137b79049afcbc3a7db20b3c0262b1c2906fcdca4e",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeAttendanceRecord.json",
+    "installed": true
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/ro_RO/Global.json",
+    "sha256": "715213a9c7f9f41968f41eda5905db3b4104ba68ae93846b9c99ec71509e70d3",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Global.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/ro_RO/Settings.json",
+    "sha256": "69599e9b982a6942324222eb9623d2675409f6cd530750560d80e5357815e4d8",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Settings.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/aclDefs/AttendanceRecord.json",
+    "sha256": "ce59b2072accb587197c0a11d71ed6cd2a39a6b658a5cda28cd65bf65d881108",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/aclDefs/EmployeeAttendanceRecord.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/aclDefs/AttendanceWorkSchedule.json",
+    "sha256": "ce59b2072accb587197c0a11d71ed6cd2a39a6b658a5cda28cd65bf65d881108",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/aclDefs/EmployeeAttendanceWorkSchedule.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/app/client.json",
+    "sha256": "8a97fbb9ac72d10f5535ad63905f9b8391dd9faff1af6d473da0536c27a03323",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/client.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/clientDefs/Attendance.json",
+    "sha256": "305a5b98d772c544ee7013f4893af3a816f3e3630ef11532b20408b62405f1f3",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/clientDefs/Attendance.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/clientDefs/AttendanceOverview.json",
+    "sha256": "68eaf86a30c7be052f66876b9bb528cd03f07591d9da42524db976cb31c173b1",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/clientDefs/AttendanceOverview.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/entityDefs/AttendanceRecord.json",
+    "sha256": "672fe2940b093454e1b15746d7197c9b069bc0b6eb10ad7367071bbaac4c41fe",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAttendanceRecord.json",
+    "installed": true
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/entityDefs/AttendanceWorkSchedule.json",
+    "sha256": "802ebed3180568294bdf823f8765c318ac03ceb0cca061e50cd22988329ca815",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAttendanceWorkSchedule.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/recordDefs/AttendanceRecord.json",
+    "sha256": "9e0a2fbe3effa3ebad368524b19814706a2eca8ced31a872afcdaa42f2782f62",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/recordDefs/EmployeeAttendanceRecord.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/scopes/Attendance.json",
+    "sha256": "c26f240bd980765a86f38b6729a5343fa24c153fdbb597f36ce391e9cd5cccd9",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/Attendance.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/scopes/AttendanceOverview.json",
+    "sha256": "b7f7412e22dad50dc88fd323e7dfccd19ea82fce7753901d822533ab0fef4c97",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/AttendanceOverview.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/scopes/AttendanceRecord.json",
+    "sha256": "77597508507af12634d5ec396ca167c826b439d70c798fd98c659bfb0c92aa51",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeAttendanceRecord.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/scopes/AttendanceWorkSchedule.json",
+    "sha256": "77597508507af12634d5ec396ca167c826b439d70c798fd98c659bfb0c92aa51",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeAttendanceWorkSchedule.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/module.json",
+    "sha256": "6dac954e3473e3e29865d029173ac8714a47363a23b2151a7e1bacd04f3ad848",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/module.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/routes.json",
+    "sha256": "27a61da7f67a5f35ba721ea2819a70a22a7fd441a6695082082930bbbfe46a81",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/routes.json",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/GetAttendanceOverview.php",
+    "sha256": "36c41bc652be60ba52ee04363c1ddd281223eadaebb91364b6e87395e044bd6f",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/GetAttendanceOverview.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/GetAttendanceSchedules.php",
+    "sha256": "ac228849ba3a3c5244d078b0ab99613e270d5cc9430c66c8775904adc35b43c4",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/GetAttendanceSchedules.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/GetAttendanceSettings.php",
+    "sha256": "81ef01afdaed2de917cd97bb9f43d992aeb0a3b3cf0f4acbf2759f8039bf0bf7",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/GetAttendanceSettings.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/GetMyAttendance.php",
+    "sha256": "8e6af4e04843a7f97af0606834eafb4df942f114aa25a268d893eb7e4152793c",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/GetMyAttendance.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostAttendancePdf.php",
+    "sha256": "7aec6de3abb8031a43f2c494701d2bda653d1dc131cb3d732912fd14749a00b1",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendancePdf.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostAttendanceReminders.php",
+    "sha256": "11d72571022901837eb5fe454f910ae261f27a6e9d3a18a200f9b20cdc2e36a9",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendanceReminders.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostAttendanceSchedule.php",
+    "sha256": "098c5d155e82d9ed20e3ac090ed24b9ccd7c4a5009d6c7fe2bf508a76af7d0ae",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendanceSchedule.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostAttendanceXlsx.php",
+    "sha256": "a87f912e42b4e4eb71b709305e3c1d39bc0f6a6f9b4cd1e835d589302ed33b1e",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendanceXlsx.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostInitializeAttendanceArchive.php",
+    "sha256": "d0d16cc27b45f8fb9352a93997de9ff71e9a581d7912eee969e139cf9d2a5ab0",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostInitializeAttendanceArchive.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostManagerAttendance.php",
+    "sha256": "5d8bc0e06af5030b90b220213bbcb8953bc4acd6faee8927684a42925859b537",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostManagerAttendance.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostMarkAttendance.php",
+    "sha256": "e9b0ba36dfea0865fb73c3d7b3e2ce7c4dde42438659869edef53ab6f4ac81d2",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostMarkAttendance.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PutAttendanceSettings.php",
+    "sha256": "1583020428525c20d89a77aa819655a52c4baec9dbf7540a6be7fa7809ddb272",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PutAttendanceSettings.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/ApprovedHolidayProvider.php",
+    "sha256": "ddb5853787bc47f364da726c8c39b06a2c9db2bf6b3cac8001dcf1defe97f5c0",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/ApprovedHolidayProvider.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceAccessChecker.php",
+    "sha256": "70c418103f4b9445be1e168b08ede00c1c216db9abc73996b49ac7942fc9c075",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceAccessChecker.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "sha256": "bbb5958ebe47904ae211945347f6a83f2835b47cdf223ed0b8da85920cf06b54",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendancePdfGenerator.php",
+    "sha256": "236b87b3cd51dae08f85117aed8b8e54f311030f472b3058f0e6571f55875202",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendancePdfGenerator.php",
+    "installed": true
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceService.php",
+    "sha256": "0867f3df8325b91f947b98ef96fe4c1b3b117537b7e1ab861068334ecaf07621",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceService.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceSettingsService.php",
+    "sha256": "2cdafcc83a90b1019acd73553fa8e91b78e894b0e7e247aa7875e8082b68e73f",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceSettingsService.php",
+    "installed": false
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceXlsxGenerator.php",
+    "sha256": "b6b515c31944d7c12c3b9d3cdb912b9dcecf0cfdfeac7a2c18ee9f5fc00faf98",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceXlsxGenerator.php",
+    "installed": true
+  },
+  {
+    "source": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/NonWorkingDayProvider.php",
+    "sha256": "3900db93323f6f5ee6ff4e0226e68fe4fa9696a8b99b38d608b35c3f50c3e5a5",
+    "destination": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/NonWorkingDayProvider.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/css/calendar.css",
+    "sha256": "d6008c5ac6d56b9e80e731d01acdb0893cbc92d0bca95e8d4eaad3018895ff20",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/css/calendar.css",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/acl/holiday-request.js",
+    "sha256": "0dce9b1496aa9f6e1f315cb16cf9e299bceceda15fa3de22c60e32f4dff750cc",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/acl/holiday-request.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/controllers/holiday-overview.js",
+    "sha256": "ebc6fe0ee81a406a735d4163ebeed099981667dc2dc7b5f9ef19925e80554bff",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/controllers/holiday-overview.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/controllers/holiday-profiles.js",
+    "sha256": "572c352169c33e768f99498588652030ae83767331d375ea4202ea3b89727998",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/controllers/holiday-profiles.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/controllers/holiday-request.js",
+    "sha256": "0007bbb8b77be4f63bc96245edadca1cd6f73951eaf8549949c0660fdb90b2dd",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/controllers/holiday-request.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/admin/index.js",
+    "sha256": "00480d3db030453f1b1534292793854d4579817af7c9249f7fee92ac63fc4f0b",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/admin/index.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/admin/profiles.js",
+    "sha256": "fef5879b91a2ce66043be7b9bec69cd6205349ee759421c33ccc7f357d54b354",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/admin/profiles.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/admin/settings.js",
+    "sha256": "2b9fd59238ea7ddc0b9feaeced7265cc5ab1a6e011381d31b253241cfa100c4c",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/admin/settings.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/calendar/calendar.js",
+    "sha256": "afc61d5e4432799a9b581272d69c4694aac68b2ac8a42f7af59d5a829aba1fa8",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/calendar/calendar.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/dashlets/holiday-approvals.js",
+    "sha256": "7ca055b46935feb1ba57e6ce7e9ec632a929e9a2e492855f552762e91cb336f6",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/dashlets/holiday-approvals.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/fields/annual-reset-date.js",
+    "sha256": "9531f8c743a71884ae5d166ea8652bce670b8f84cd371df958c0b1e1db5c782d",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/fields/annual-reset-date.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/fields/test-data-reset.js",
+    "sha256": "534ba090c6f7a7ba4c9cbb42498305c473dd17b32924a86c91404cd9782d33c8",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/fields/test-data-reset.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-overview/index.js",
+    "sha256": "51202a94546248beb84a41366fa83404f468b76b8891b98f97b1fd5bcfdc2ec4",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-overview/index.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/fields/managed-employee.js",
+    "sha256": "38adb4531260592a8575bfc79680fd165ef3220d2c2dff6b63d9ac00becaff22",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/fields/managed-employee.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/fields/start-date.js",
+    "sha256": "39a5e40b5fa2358e90a119168c0e34c1557598135b14a6202777039f245e86ce",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/fields/start-date.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/list.js",
+    "sha256": "1a2ffb2ba23c9b6d18bd48bb66622cb5365788356b8327127a4c100eb76cad9b",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/list.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/record/approval-actions.js",
+    "sha256": "a5dd80faa4f68eaa6660cd366cf6e580c0796ed1fc57d878e0b87b186aa7c29b",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/record/approval-actions.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/record/detail-small.js",
+    "sha256": "88b953747d55305a85cc013126f5ec41002722682a5c590ff3af935136aa966d",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/record/detail-small.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/record/detail.js",
+    "sha256": "0439cd90181b6c5240458a2e6c4d2a62adab3fd2c5f94f387694d5d8ab07d67d",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/record/detail.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/record/edit-small.js",
+    "sha256": "e9d7b5c8d806062e6c316dcb1d6b977f3b4a3ba75e6b980b886ea302ee069c79",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/record/edit-small.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/balance-correction.js",
+    "sha256": "8bc9700c3841fd7b0446cf769c12940011aa92568290f3bcb81847fab2852a37",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/balance-correction.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/cancellation-reason.js",
+    "sha256": "ba3000f81f923297191c53d37c3b18cdc015859bcd1accce1e4b091002beb9de",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/cancellation-reason.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/complete-initial-setup.js",
+    "sha256": "5dd2dacc16a29b2d07449fe4701b8ca0cf8fed7a2823155d5c76ec4be656e1e0",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/complete-initial-setup.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/correction-history.js",
+    "sha256": "a882c456e9c1dd47e8ecb987b4f7e2527483ff167e6c307fe4be17deef750adf",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/correction-history.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/managed-booking.js",
+    "sha256": "351162ca2455e79af5716cf9c4bd4dcbd9e85d3d467e8f1a91446bc0abf6f8c0",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/managed-booking.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/managed-employee-select.js",
+    "sha256": "15433004f37b3ec6a4b9d34017f307768c8a8247b5dd1f3c3c730722f8d185d3",
+    "destination": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/managed-employee-select.js",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayLedger/BeforeCreate.php",
+    "sha256": "218615c715027bffb9ee1d13d5d4af64067ab3bd120638bd4ade48ea53a096f4",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayLedger/BeforeCreate.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayLedger/BeforeDelete.php",
+    "sha256": "835606618833719ed5d97c2427e7014b89d348487e2870a670f34ffadd255f33",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayLedger/BeforeDelete.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayLedger/BeforeUpdate.php",
+    "sha256": "8b3c62dac93c3a094a936466b265d4b35ea39a69bd416010e8f9979b6e5949d1",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayLedger/BeforeUpdate.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayProfile/BeforeCreate.php",
+    "sha256": "3cc6a4a935b1e32373c533112c8b06eb0f3d9cd672f760800c60581b047de32c",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayProfile/BeforeCreate.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayProfile/BeforeDelete.php",
+    "sha256": "c514e08ecb6d924a40783e8c00b62b70533e6f48af013a45d46849173eb27d63",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayProfile/BeforeDelete.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayProfile/BeforeUpdate.php",
+    "sha256": "1a298ff5aefdb066385aa43f9b58991e7731a5cf86c1092afabede2696ea47d4",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayProfile/BeforeUpdate.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayRequest/BeforeCreate.php",
+    "sha256": "7b0319cd8bdc1c355559b98f0f408fec051984806c9b44d6fb9b39ece9b64e7e",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayRequest/BeforeCreate.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayRequest/BeforeUpdate.php",
+    "sha256": "b4a46bacce8f704af0e14a021d54e7eb943036d99922ce69052741e3fd9862a5",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayRequest/BeforeUpdate.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Controllers/HolidayRequest.php",
+    "sha256": "769674f55782d33ea34b6fee6a0843b82cc95c98b91c62b3ab6500a72f6a8f86",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Controllers/EmployeeHolidayRequest.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Entities/HolidayRequest.php",
+    "sha256": "efb54e6866ce664654c43faa35e471837b1c76d58dd1c19e0d0462a5ae8e339f",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Entities/EmployeeHolidayRequest.php",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/FieldValidators/Settings/Approvers/Valid.php",
+    "sha256": "cecee9f09bff94cadea678f6823c39b9613d4260e920e1afdefbe435cf1ddca0",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/FieldValidators/Settings/Approvers/Valid.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Hooks/HolidayRequest/Balance.php",
+    "sha256": "109dfbc787ced61a36e5d36f11db751b2c79852fe6cd0d28ae496b6cd57a1a39",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Hooks/EmployeeHolidayRequest/Balance.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Jobs/ProcessHolidayResets.php",
+    "sha256": "cfd92246a600e14f329897686b27352646c5071fd0cd54b0fdc7b74aca925cc0",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Jobs/ProcessHolidayResets.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/Admin.json",
+    "sha256": "10c7f45249e1b0f981b66fef14937169fe2d51c2b87229af7832181488babe33",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Admin.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/Global.json",
+    "sha256": "44e58c97258f3a8150b8eef24c2a9e66bdb171861c13e7164885b50b2d4b90fd",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Global.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/HolidayLedger.json",
+    "sha256": "448aabbc243c8c0ab70ed00d50a907a467403dc36172dfe85ccdf4d721d12cae",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeHolidayLedger.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/HolidayOverview.json",
+    "sha256": "f0f420574b579d94a2fd72f9a036e1753a20d9fb8802f3a59d40748e82385855",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/HolidayOverview.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/HolidayProfile.json",
+    "sha256": "7d618346ef911be3a3de8adf658fd8fa936a523a480f7d00d8f0269df398bf43",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeHolidayProfile.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/HolidayRequest.json",
+    "sha256": "b563e5493d6a20fc6a114e2508efcd0edec176feb451f723ca219d5767e5b0f5",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeHolidayRequest.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/ScheduledJob.json",
+    "sha256": "cd454af1534c34bd5cad9548f51c0b3a5e7ad9f16621923b03117a48834f41d5",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/ScheduledJob.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/Settings.json",
+    "sha256": "28b23775870e6ebcca6ac3f03c738cd97d1dd66fc8e1c83a6bc8d87045157808",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Settings.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/Admin.json",
+    "sha256": "cad8530055909a6fa8430f4fcfa02e65b385727e9b84ad15ab2bcd6b75112cfd",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Admin.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/Global.json",
+    "sha256": "2e5b245561307d96489017500c2c4a2e7b5440cbf33123c9c5c171a167ddc081",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Global.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/HolidayLedger.json",
+    "sha256": "7b5c9fd371a54bb21350d17d6a944933ba2d9c680e9cce5a27e46dc9aadfbb76",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeHolidayLedger.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/HolidayOverview.json",
+    "sha256": "a72f198292d7c05cc1cfce73d9a1d6ed4bba42edd000ef8ec6f49cb2236e936b",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/HolidayOverview.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/HolidayProfile.json",
+    "sha256": "1f02081f9f26bb328573594bfdeca77fe9b14bd46dc4c1c22721afc4a7ade2bb",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeHolidayProfile.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/HolidayRequest.json",
+    "sha256": "b89463d05d3f25e3b47f3bffa51e704afb0f00abc8cace62acbc4e17eed4d75e",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeHolidayRequest.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/ScheduledJob.json",
+    "sha256": "705f709a8416a591e59db0a7a0c3312fd15e888ddb32e487e10ee40108953113",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/ScheduledJob.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/Settings.json",
+    "sha256": "10e92f819f5a795e87791df5ae5d9b3a4b270a2893ebd03b58e947dff19ac84d",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Settings.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/layouts/HolidayRequest/detail.json",
+    "sha256": "06bfe4ca55d55f3639c3a89e3f9cd5d56f7feb3c78b353561e58a6aa364a63e0",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeHolidayRequest/detail.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/layouts/HolidayRequest/detailSmall.json",
+    "sha256": "06bfe4ca55d55f3639c3a89e3f9cd5d56f7feb3c78b353561e58a6aa364a63e0",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeHolidayRequest/detailSmall.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/layouts/HolidayRequest/edit.json",
+    "sha256": "91e15e26159312ffeb234875bc6dcc4b71627f461f828b76a6267841efd8f8d9",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeHolidayRequest/edit.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/layouts/HolidayRequest/list.json",
+    "sha256": "fbf22bbd9af00598b54249c0ad43413b8ef1fe77633e1aff929d1fccc5b5ef4f",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeHolidayRequest/list.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/layouts/HolidayRequest/listSmall.json",
+    "sha256": "5ac4dcab37ac71acc57d497124abde98dfeca0164055db04a6214c46fb710861",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeHolidayRequest/listSmall.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/layouts/HolidayRequest/search.json",
+    "sha256": "4d321852d258f73cb7d2cf46ef52cd587a8451ad0d2d95dcf064412a25b73616",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeHolidayRequest/search.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/aclDefs/HolidayLedger.json",
+    "sha256": "d21442797f2a620205dffcfaf67cb8f13b97c44fc076c1ba92e55dc843c0b5b5",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/aclDefs/EmployeeHolidayLedger.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/aclDefs/HolidayProfile.json",
+    "sha256": "d21442797f2a620205dffcfaf67cb8f13b97c44fc076c1ba92e55dc843c0b5b5",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/aclDefs/EmployeeHolidayProfile.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/app/client.json",
+    "sha256": "b39320b573f42157472096029a6faef857786835853439a3a913a9cc34252665",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/client.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/app/config.json",
+    "sha256": "66b03bb8fbcc9ece8235639019f950152c011cef878651e5114626c67091d15d",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/config.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/app/scheduledJobs.json",
+    "sha256": "c3d1a44d0a8f5643a12e355084959fc2fd965d294e84d39895def2611e45667e",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/scheduledJobs.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/clientDefs/HolidayOverview.json",
+    "sha256": "6e4438913914ee08c16a254ba5b72c1df75a7753e8356372413b1c4b5245c167",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/clientDefs/HolidayOverview.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/clientDefs/HolidayRequest.json",
+    "sha256": "c2d0c31a400095a1654c671fa22fdd476abb8b2de415b3e95ffae6068bbeae6c",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/clientDefs/EmployeeHolidayRequest.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/dashlets/HolidayApprovals.json",
+    "sha256": "aa3602466e22c189141b9d72f13b8b3aca33df378b154dfea19886d34c1e003b",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/dashlets/HolidayApprovals.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityAcl/HolidayRequest.json",
+    "sha256": "8fac55dd29b73469ea6c39f6bc09d11084fdb3f694b65104ad62a34ed76562bb",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityAcl/EmployeeHolidayRequest.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/HolidayLedger.json",
+    "sha256": "ae54a2ebfa919e2cf3531fa94fbe9411c507374b57d6c01abfee370ab88fd089",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeHolidayLedger.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/HolidayProfile.json",
+    "sha256": "0048890969f244abd7f6f387a2457e8e816e055c39de1fca70040893481b31d3",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeHolidayProfile.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/HolidayRequest.json",
+    "sha256": "f8268ab18efb26d4bfd5ec347f3663c7ec36a3c270dc651fed70f7d3987047f8",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeHolidayRequest.json",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/recordDefs/HolidayLedger.json",
+    "sha256": "c7ab855eacdd1f113e35142e7b9f15576a65e4412fd7337fdad60abbbaaf61ef",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/recordDefs/EmployeeHolidayLedger.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/recordDefs/HolidayProfile.json",
+    "sha256": "2b7c48ba72e09e254ec3992e1ef328dc727b7ba7d33c68808915213128b41b83",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/recordDefs/EmployeeHolidayProfile.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/recordDefs/HolidayRequest.json",
+    "sha256": "27844137dd2752969afbdb19778ea60e72fc266b089aba26a4b2a98da69b6f0f",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/recordDefs/EmployeeHolidayRequest.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayBalanceCorrection.json",
+    "sha256": "fb8130cb74ce4b5703173ff1812a6be872f4768eee3dc74f27bf25bb7db0d337",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/HolidayBalanceCorrection.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayLedger.json",
+    "sha256": "f45d00c8a2f64032637234ffc0a8611656f15e3e0b95fa7e98d159f8221db4e0",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeHolidayLedger.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayManagementSettings.json",
+    "sha256": "fb8130cb74ce4b5703173ff1812a6be872f4768eee3dc74f27bf25bb7db0d337",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeManagementSettings.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayOverview.json",
+    "sha256": "a42e2d3941859b0dd625035a31dabf3aef15cf07dad216d6d107f282b0b33b1c",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/HolidayOverview.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayProfile.json",
+    "sha256": "f45d00c8a2f64032637234ffc0a8611656f15e3e0b95fa7e98d159f8221db4e0",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeHolidayProfile.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayProfileManagement.json",
+    "sha256": "fb8130cb74ce4b5703173ff1812a6be872f4768eee3dc74f27bf25bb7db0d337",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/HolidayProfileManagement.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayRequest.json",
+    "sha256": "9caf62afdab182fafefbf7f8fffeaa7077f300dfc6c3b630935e8b129f17d869",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeHolidayRequest.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayRequestManagement.json",
+    "sha256": "fb8130cb74ce4b5703173ff1812a6be872f4768eee3dc74f27bf25bb7db0d337",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/HolidayRequestManagement.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/module.json",
+    "sha256": "efb1246c18501dff4532f370b9ec7dc4d3ec6208984f9ff2bf726bca0cd52ec7",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/module.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/routes.json",
+    "sha256": "cda1240229faceefcb110a643c259026f159c81b529fdb94dcc186b5139d9c56",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/routes.json",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Services/HolidayRequest.php",
+    "sha256": "159024d5697ff4aabf0cf862cb8dc6e62b385be9c2edaed8daf56666a3cfb68d",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeHolidayRequest.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayAdministration/Api/GetSettings.php",
+    "sha256": "82c7d826543fe2afc4635deaa7aac41551421b3565f296583e1a01a7311f074b",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/Api/GetSettings.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayAdministration/Api/PutSettings.php",
+    "sha256": "8f4ab5a3929e18ecc0172f960b6110103be6a8e6bd2430e81b29a674b1a30d4e",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/Api/PutSettings.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayAdministration/HolidayManagementAccessChecker.php",
+    "sha256": "46695fc77b35c64e53247c31a67c66918da512f4c850125b180f1f6b60600eb9",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/EmployeeManagementAccessChecker.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+    "sha256": "4f9289664483af8ec850876808c539bc92b835bc9086877cde9155e21e0cfb90",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/GetCorrectionHistory.php",
+    "sha256": "f659c1b965ed953fd8e2ede49ced707a06ad730e44b1a8f98bb0311a50d73602",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/GetCorrectionHistory.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/GetProfiles.php",
+    "sha256": "1f311efb6f2b27b59f25f11d1c19a538954f6b463392e029efe6ea0429b3003f",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/GetProfiles.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/GetTestDataResetPreview.php",
+    "sha256": "dc2aa732c396fca2d7057f4ff986764e8a02d5e234c84a910904ccf31823844f",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/GetTestDataResetPreview.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/PostBulkInitialize.php",
+    "sha256": "20779d1b60ffb10148e4db9e20c1537e0b46fd3ced39be7db9f938727332c668",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/PostBulkInitialize.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/PostCompleteInitialSetup.php",
+    "sha256": "ea652c54a72c53443ac838cd728f83c2f40de16b7ffd525c6788741b614f3d37",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/PostCompleteInitialSetup.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/PostCorrection.php",
+    "sha256": "155e0703563250d5a426f7825bb46f90e4692210780b8a4ca580c49ca1b1ef38",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/PostCorrection.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/PostReset.php",
+    "sha256": "93783d418aa59b05de78e0ae12034015a9cef60c15d424883adf3399db9f45c3",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/PostReset.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/PostTestDataReset.php",
+    "sha256": "d433101656a6f211066e9887db4ff55acb2aebda61ccbdc57462e0dc9d16460f",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/PostTestDataReset.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/BalanceMath.php",
+    "sha256": "348a6f912e4d8b9e0b4668da77d48af8ad73a3c79b2c600ae1450a337cc955c3",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/BalanceMath.php",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceCorrectionAccessChecker.php",
+    "sha256": "763321e1dedb93ccc67766c122e924d40df33014fe0102092314eeae4025be2d",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceCorrectionAccessChecker.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+    "sha256": "8a1dd8cb845236af3f07264707d85a03f358ce652aec199a611852dc4b0a3597",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayDataResetService.php",
+    "sha256": "44568834fcc2b347660a58415e6b2e144ef98fda59a860e8ca1561ea08f7337f",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayDataResetService.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayProfileAccessChecker.php",
+    "sha256": "7ddaff0897afeaa7e9cbe50330ff4357210280fee675935fcae8b36ea9e21172",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileAccessChecker.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayDocument/HolidayApprovalDocumentService.php",
+    "sha256": "7cdeea4d3d295d45d8e7856b90ff7b4ed2a0c485ec6f11c47c89da9c535d813f",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayDocument/HolidayApprovalDocumentService.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayDocument/HolidayDocumentGenerator.php",
+    "sha256": "eec3d08fa368172cff4cd3a96b89be7f24f3fe1a9e372b2a1aae4d7c2f9f97c4",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayDocument/HolidayDocumentGenerator.php",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayOverview/Api/GetOverview.php",
+    "sha256": "bc2b7354c26de8ecd10ffdf81b0b5f43c0faf9af316004a0a69308bf5a881d59",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayOverview/Api/GetOverview.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayOverview/HolidayOverviewService.php",
+    "sha256": "7bf6a83b1d02185214c1ba130351dda82fd45185c76e0a02d4633e86095762e2",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayOverview/HolidayOverviewService.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/GetApproval.php",
+    "sha256": "22d3a34a7031897cb1880fdf31478e5526e309ee25b9d8437744cd9469d1f308",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/GetApproval.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/GetApprovalQueue.php",
+    "sha256": "6ef2d362a30225644b61e5a96ca31acdc5107b5c609fbbf14b5540541d2e0dc1",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/GetApprovalQueue.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/GetManagedBookingUsers.php",
+    "sha256": "5ee50d516195bc2979509821546de47fb18414aadaeb01478c174b94f9eb6dde",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/GetManagedBookingUsers.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/GetMyBalance.php",
+    "sha256": "4e5edd154baebaf6c0d372aa9333e56822c6105d11a68ba43dfaf417b119f3d8",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/GetMyBalance.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/PostCancel.php",
+    "sha256": "234eb663b88eae44dcba4348378a53eeef370f2588a550c7dc5cfd700fd6290b",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/PostCancel.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/PostCancellationRequest.php",
+    "sha256": "3e02935cd62f2b84e2cf7d7d1caefe6cdead5118579020b70aa8d1b93eb4a42c",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/PostCancellationRequest.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/PostDecision.php",
+    "sha256": "3538b0c09e2d704e3b39118a243fdfca5206c16bd5c0f354b775b54d10ba5e14",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/PostDecision.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/PostManagedBooking.php",
+    "sha256": "7b0903c8eecb223820bf017b3335330356016a068e4b28ac235ad77c922575d4",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/PostManagedBooking.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/BookingDatePolicy.php",
+    "sha256": "c09d3b4878f3bb2f5bd90d0d0b4b8d5e97e234eabc407b261fc83068ef0f718c",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/BookingDatePolicy.php",
+    "installed": true
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/HolidayRequestManagerAccessChecker.php",
+    "sha256": "7e4624739d469b7c6ff975214f0bbdef2999741c06ad027975ed4423e7dc9a38",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/HolidayRequestManagerAccessChecker.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/NonWorkingDayProvider.php",
+    "sha256": "9e86534bbdb98524964dd4b4ca208493b6ef2504917cb44d268dfa968b42f75c",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/NonWorkingDayProvider.php",
+    "installed": false
+  },
+  {
+    "source": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/WorkingDayCalculator.php",
+    "sha256": "438c99d7d4767608a7ecae9d7082765bc2b44966ad0ac644d0b46313bbab025e",
+    "destination": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/WorkingDayCalculator.php",
+    "installed": false
+  }
+]

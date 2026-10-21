@@ -1,0 +1,95 @@
+{
+  "results": [
+    {
+      "test": "workspace-link-loads-native-list-EmployeeAttendanceRecord",
+      "status": "PASS"
+    },
+    {
+      "test": "native-list-no-create-EmployeeAttendanceRecord",
+      "status": "PASS"
+    },
+    {
+      "test": "native-list-API-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "native-detail-EmployeeAttendanceRecord",
+      "status": "PASS"
+    },
+    {
+      "test": "native-detail-no-edit-EmployeeAttendanceRecord",
+      "status": "PASS"
+    },
+    {
+      "test": "workspace-link-loads-native-list-EmployeeHolidayRequest",
+      "status": "PASS"
+    },
+    {
+      "test": "native-list-no-create-EmployeeHolidayRequest",
+      "status": "PASS"
+    },
+    {
+      "test": "native-list-API-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "native-detail-EmployeeHolidayRequest",
+      "status": "PASS"
+    },
+    {
+      "test": "native-detail-no-edit-EmployeeHolidayRequest",
+      "status": "PASS"
+    },
+    {
+      "test": "workspace-link-loads-native-list-EmployeeHolidayProfile",
+      "status": "PASS"
+    },
+    {
+      "test": "native-list-no-create-EmployeeHolidayProfile",
+      "status": "PASS"
+    },
+    {
+      "test": "native-list-API-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "native-detail-EmployeeHolidayProfile",
+      "status": "PASS"
+    },
+    {
+      "test": "native-detail-no-edit-EmployeeHolidayProfile",
+      "status": "PASS"
+    },
+    {
+      "test": "workspace-link-loads-native-list-EmployeeHolidayLedger",
+      "status": "PASS"
+    },
+    {
+      "test": "native-list-no-create-EmployeeHolidayLedger",
+      "status": "PASS"
+    },
+    {
+      "test": "native-list-API-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "native-detail-EmployeeHolidayLedger",
+      "status": "PASS"
+    },
+    {
+      "test": "native-detail-no-edit-EmployeeHolidayLedger",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 21,
+  "failures": 0
+}

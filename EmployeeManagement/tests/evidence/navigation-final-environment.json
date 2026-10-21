@@ -1,0 +1,43 @@
+{
+  "observedOn": "2026-10-20",
+  "testedArtifact": "EmployeeManagement/dist/employee-management-0.7.0.zip",
+  "testedArtifactSha256": "8a329d3ec5b4c2c87d182c47792f0033665774133d2a97b607ffedfd221ec78a",
+  "size": 186733,
+  "executedOnExactFinalZip": true,
+  "environment": {
+    "dockerProject": "employee-feasibility-20261020",
+    "EspoCRM": "10.0.1",
+    "PHP": "8.4.23",
+    "siteUrl": "http://127.0.0.1:18089",
+    "browser": "Playwright Chromium",
+    "productionUpdated": false
+  },
+  "browserChecks": 109,
+  "results": {
+    "navigation-browser": {
+      "assertions": 34,
+      "failures": 0
+    },
+    "navigation-acl-browser": {
+      "assertions": 54,
+      "failures": 0
+    },
+    "navigation-records-browser": {
+      "assertions": 21,
+      "failures": 0
+    },
+    "navigation-before": {
+      "assertions": 4,
+      "failures": 0
+    },
+    "navigation-upgrade": {
+      "assertions": 17,
+      "failures": 0
+    }
+  },
+  "zipMatchesSources": true,
+  "cleanup": {
+    "isolatedLabStopped": true,
+    "volumesAndEvidenceRetained": true
+  }
+}

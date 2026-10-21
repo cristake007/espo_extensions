@@ -1,0 +1,729 @@
+/* Employee Administration pages. Every rule is scoped to a route-specific root. */
+.employee-administration-home-page,
+.employee-administration-settings-page,
+.employee-administration-profiles-page {
+    --employee-admin-primary: var(--tuvtk-primary, var(--brand-primary));
+    --employee-admin-secondary: var(--tuvtk-secondary, var(--brand-danger));
+    --employee-admin-surface: var(--tuvtk-surface, var(--panel-bg));
+    --employee-admin-border: var(--tuvtk-border, var(--panel-default-border));
+    --employee-admin-border-soft: var(--tuvtk-border-soft, var(--panel-default-border));
+    --employee-admin-hover: var(--tuvtk-hover, var(--state-primary-bg));
+    --employee-admin-text: var(--tuvtk-text, var(--text-color));
+    --employee-admin-muted: var(--tuvtk-muted, var(--text-muted-color));
+    color: var(--employee-admin-text);
+    margin: 0 auto;
+    max-width: 1180px;
+    padding: 16px 0 32px;
+    width: 100%;
+}
+
+/* Administration landing page. */
+.employee-administration-home-hero,
+.employee-administration-settings-hero,
+.employee-administration-profiles-hero {
+    align-items: center;
+    background: var(--employee-admin-surface);
+    border: 1px solid var(--employee-admin-border);
+    border-left: 4px solid var(--employee-admin-secondary);
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--default-box-shadow);
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 22px 24px;
+}
+
+.employee-administration-home-hero-icon,
+.employee-administration-settings-hero-icon,
+.employee-administration-profiles-hero-icon {
+    align-items: center;
+    background: var(--employee-admin-hover);
+    border-radius: 50%;
+    color: var(--employee-admin-secondary);
+    display: flex;
+    flex: 0 0 52px;
+    font-size: 21px;
+    height: 52px;
+    justify-content: center;
+    width: 52px;
+}
+
+.employee-administration-home-eyebrow,
+.employee-administration-settings-eyebrow,
+.employee-administration-profiles-eyebrow {
+    color: var(--employee-admin-secondary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+}
+
+.employee-administration-home-hero h3,
+.employee-administration-settings-hero h3,
+.employee-administration-profiles-hero h3 {
+    color: var(--employee-admin-primary);
+    font-size: 24px;
+    line-height: 1.25;
+    margin: 0;
+}
+
+.employee-administration-home-hero p,
+.employee-administration-settings-hero p,
+.employee-administration-profiles-hero p {
+    color: var(--employee-admin-muted);
+    line-height: 1.45;
+    margin: 5px 0 0;
+    max-width: 820px;
+}
+
+.employee-administration-home-panel,
+.employee-administration-settings-panel,
+.employee-administration-profiles-panel {
+    background: var(--employee-admin-surface);
+    border: 1px solid var(--employee-admin-border);
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--default-box-shadow);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.employee-administration-home-heading,
+.employee-administration-settings-heading,
+.employee-administration-profiles-heading {
+    align-items: center;
+    background: var(--default-heading-bg-color);
+    border-bottom: 1px solid var(--employee-admin-border-soft);
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    padding: 15px 18px;
+}
+
+.employee-administration-home-heading-copy,
+.employee-administration-profiles-heading-copy {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    min-width: 0;
+}
+
+.employee-administration-home-section-icon,
+.employee-administration-settings-heading-icon,
+.employee-administration-profiles-section-icon {
+    align-items: center;
+    background: var(--employee-admin-surface);
+    border: 1px solid var(--employee-admin-border-soft);
+    border-radius: 50%;
+    color: var(--employee-admin-primary);
+    display: flex;
+    flex: 0 0 38px;
+    height: 38px;
+    justify-content: center;
+    width: 38px;
+}
+
+.employee-administration-home-heading h4,
+.employee-administration-settings-heading h4,
+.employee-administration-profiles-heading h4 {
+    margin: 0;
+}
+
+.employee-administration-home-heading p,
+.employee-administration-settings-heading p,
+.employee-administration-profiles-heading p {
+    color: var(--employee-admin-muted);
+    font-size: 12px;
+    line-height: 1.4;
+    margin: 3px 0 0;
+}
+
+.employee-administration-home-count {
+    color: var(--employee-admin-muted);
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.employee-administration-home-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 18px;
+}
+
+.employee-administration-home-card {
+    align-items: center;
+    background: var(--employee-admin-surface);
+    border: 1px solid var(--employee-admin-border-soft);
+    border-left: 3px solid var(--employee-admin-primary);
+    border-radius: var(--panel-border-radius);
+    color: var(--employee-admin-text);
+    display: flex;
+    gap: 13px;
+    min-height: 88px;
+    min-width: 0;
+    padding: 15px;
+    text-decoration: none;
+    transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+
+.employee-administration-home-card:hover,
+.employee-administration-home-card:focus {
+    background: var(--employee-admin-hover);
+    border-color: var(--employee-admin-primary);
+    box-shadow: var(--default-box-shadow);
+    color: var(--employee-admin-text);
+    text-decoration: none;
+}
+
+.employee-administration-home-card-icon {
+    align-items: center;
+    background: var(--employee-admin-hover);
+    border-radius: 50%;
+    color: var(--employee-admin-primary);
+    display: flex;
+    flex: 0 0 42px;
+    font-size: 17px;
+    height: 42px;
+    justify-content: center;
+    width: 42px;
+}
+
+.employee-administration-home-card:hover .employee-administration-home-card-icon,
+.employee-administration-home-card:focus .employee-administration-home-card-icon {
+    background: var(--employee-admin-surface);
+}
+
+.employee-administration-home-card-copy {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.employee-administration-home-card-copy strong {
+    color: var(--employee-admin-primary);
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.employee-administration-home-card-copy small {
+    color: var(--employee-admin-muted);
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+.employee-administration-home-card-arrow {
+    color: var(--employee-admin-muted);
+    flex: 0 0 auto;
+    font-size: 11px;
+}
+
+.employee-administration-home-empty {
+    align-items: center;
+    color: var(--employee-admin-muted);
+    display: flex;
+    flex-direction: column;
+    padding: 42px 24px;
+    text-align: center;
+}
+
+.employee-administration-home-empty > .fas {
+    align-items: center;
+    background: var(--employee-admin-hover);
+    border-radius: 50%;
+    color: var(--employee-admin-primary);
+    display: flex;
+    font-size: 21px;
+    height: 56px;
+    justify-content: center;
+    margin-bottom: 13px;
+    width: 56px;
+}
+
+.employee-administration-home-empty strong {
+    color: var(--employee-admin-text);
+}
+
+.employee-administration-home-empty p {
+    margin: 5px 0 0;
+}
+
+/* Attendance and holiday settings. */
+.employee-administration-settings-hero-copy,
+.employee-administration-profiles-hero-copy {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    min-width: 0;
+}
+
+.employee-administration-settings-back,
+.employee-administration-profiles-back {
+    align-items: center;
+    border-radius: 50%;
+    color: var(--employee-admin-muted);
+    display: flex;
+    flex: 0 0 30px;
+    height: 30px;
+    justify-content: center;
+    text-decoration: none;
+    transition: background-color .15s ease, color .15s ease;
+    width: 30px;
+}
+
+.employee-administration-settings-back:hover,
+.employee-administration-settings-back:focus,
+.employee-administration-profiles-back:hover,
+.employee-administration-profiles-back:focus {
+    background: var(--employee-admin-hover);
+    color: var(--employee-admin-primary);
+    text-decoration: none;
+}
+
+.employee-administration-settings-heading {
+    justify-content: flex-start;
+}
+
+.employee-administration-settings-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 18px;
+}
+
+.employee-administration-setting-card {
+    background: var(--employee-admin-surface);
+    border: 1px solid var(--employee-admin-border-soft);
+    border-radius: var(--panel-border-radius);
+    min-width: 0;
+    padding: 15px;
+}
+
+.employee-administration-setting-card-wide {
+    grid-column: 1 / -1;
+}
+
+.employee-administration-setting-card-readonly {
+    background: var(--default-heading-bg-color);
+}
+
+.employee-administration-setting-label {
+    align-items: flex-start;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.employee-administration-setting-label label {
+    color: var(--employee-admin-text);
+    line-height: 1.35;
+    margin: 0;
+}
+
+.employee-administration-readonly-label {
+    color: var(--employee-admin-muted);
+    flex: 0 0 auto;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.employee-administration-readonly-label .fas {
+    margin-right: 3px;
+}
+
+.employee-administration-setting-card > p {
+    color: var(--employee-admin-muted);
+    font-size: 12px;
+    line-height: 1.4;
+    margin: 5px 0 13px;
+    min-height: 34px;
+}
+
+.employee-administration-setting-card-wide > p {
+    min-height: 0;
+}
+
+.employee-administration-setting-field {
+    max-width: 100%;
+}
+
+.employee-administration-setting-field .form-control {
+    max-width: 100%;
+}
+
+.employee-administration-setting-card:not(.employee-administration-setting-card-wide) .employee-administration-setting-field .form-control {
+    max-width: 360px;
+}
+
+.employee-administration-settings-footer {
+    align-items: center;
+    background: var(--employee-admin-surface);
+    border: 1px solid var(--employee-admin-border);
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--default-box-shadow);
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    padding: 14px 18px;
+}
+
+.employee-administration-settings-footer-dirty {
+    border-color: var(--employee-admin-primary);
+}
+
+.employee-administration-unsaved,
+.employee-administration-profile-dirty {
+    color: var(--employee-admin-primary);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.employee-administration-unsaved .fas,
+.employee-administration-profile-dirty .fas {
+    font-size: 6px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.employee-administration-settings-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-left: auto;
+}
+
+.employee-administration-settings-actions .btn .fas {
+    margin-right: 4px;
+}
+
+.employee-administration-holiday-page .employee-holiday-test-data-reset .alert,
+.employee-administration-attendance-page .employee-attendance-test-data-reset .alert {
+    line-height: 1.45;
+    margin-bottom: 14px;
+}
+
+.employee-administration-holiday-page .employee-holiday-test-data-reset .alert strong,
+.employee-administration-attendance-page .employee-attendance-test-data-reset .alert strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.employee-administration-holiday-page .employee-holiday-test-data-reset .well,
+.employee-administration-attendance-page .employee-attendance-test-data-reset .well {
+    background: var(--default-heading-bg-color);
+    border-color: var(--employee-admin-border-soft);
+    box-shadow: none;
+    margin-bottom: 14px;
+}
+
+.employee-administration-holiday-page .employee-holiday-test-data-reset .dl-horizontal,
+.employee-administration-attendance-page .employee-attendance-test-data-reset .dl-horizontal {
+    margin-bottom: 0;
+}
+
+/* Holiday profiles. */
+.employee-administration-profiles-hero {
+    justify-content: space-between;
+}
+
+.employee-administration-profiles-count {
+    align-items: flex-end;
+    color: var(--employee-admin-muted);
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.employee-administration-profiles-count strong {
+    color: var(--employee-admin-primary);
+    font-size: 24px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.employee-administration-profiles-count span {
+    margin-top: 4px;
+}
+
+.employee-administration-profiles-heading .btn {
+    flex: 0 0 auto;
+}
+
+.employee-administration-profiles-heading .btn .fas {
+    margin-right: 4px;
+}
+
+.employee-administration-profiles-table-wrap {
+    max-height: calc(100vh - 300px);
+    overflow: auto;
+}
+
+.employee-administration-profiles-table {
+    margin: 0;
+    min-width: 1080px;
+}
+
+.employee-administration-profiles-table th,
+.employee-administration-profiles-table td {
+    border-color: var(--employee-admin-border-soft) !important;
+    vertical-align: middle !important;
+}
+
+.employee-administration-profiles-table thead th {
+    background: var(--default-heading-bg-color);
+    color: var(--employee-admin-muted);
+    font-size: 10px;
+    letter-spacing: .035em;
+    padding: 11px 12px;
+    position: sticky;
+    text-transform: uppercase;
+    top: 0;
+    white-space: nowrap;
+    z-index: 2;
+}
+
+.employee-administration-profiles-table tbody td {
+    background: var(--employee-admin-surface);
+    padding: 12px;
+    transition: background-color .15s ease;
+}
+
+.employee-administration-profiles-table tbody tr:hover td {
+    background: var(--employee-admin-hover);
+}
+
+.employee-administration-profiles-table tbody tr.employee-administration-profile-row-dirty td {
+    background: var(--state-info-bg);
+}
+
+.employee-administration-profiles-table th:first-child,
+.employee-administration-profiles-table td:first-child {
+    left: 0;
+    min-width: 190px;
+    position: sticky;
+    z-index: 1;
+}
+
+.employee-administration-profiles-table thead th:first-child {
+    z-index: 3;
+}
+
+.employee-administration-profile-identity-inner {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+}
+
+.employee-administration-profile-avatar {
+    align-items: center;
+    background: var(--employee-admin-hover);
+    border-radius: 50%;
+    color: var(--employee-admin-primary);
+    display: flex;
+    flex: 0 0 34px;
+    height: 34px;
+    justify-content: center;
+    width: 34px;
+}
+
+.employee-administration-profile-person {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.employee-administration-profile-person strong {
+    overflow-wrap: anywhere;
+}
+
+.employee-administration-profile-dirty {
+    margin-top: 3px;
+}
+
+.employee-administration-profiles-table .field {
+    min-width: 115px;
+}
+
+.employee-administration-profiles-table .form-control {
+    min-width: 110px;
+}
+
+.employee-administration-profiles-table .holiday-profile-color-field {
+    min-width: 92px;
+}
+
+.employee-administration-profiles-table .holiday-profile-balance-control {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 150px;
+}
+
+.employee-administration-profiles-table .holiday-profile-balance-value {
+    font-size: 15px;
+    font-weight: 600;
+    min-width: 0;
+}
+
+.employee-administration-profile-status {
+    min-width: 175px;
+}
+
+.employee-administration-profile-status .btn {
+    display: block;
+    margin-top: 7px;
+    white-space: normal;
+}
+
+.employee-administration-profile-state {
+    align-items: center;
+    display: flex;
+    font-size: 11px;
+    font-weight: 600;
+    gap: 6px;
+}
+
+.employee-administration-profile-state-success {
+    color: var(--brand-success);
+}
+
+.employee-administration-profile-state-warning {
+    color: var(--brand-warning);
+}
+
+.employee-administration-profiles-state {
+    align-items: center;
+    color: var(--employee-admin-muted);
+    display: flex;
+    flex-direction: column;
+    padding: 44px 24px;
+    text-align: center;
+}
+
+.employee-administration-profiles-state > .fas {
+    align-items: center;
+    background: var(--employee-admin-hover);
+    border-radius: 50%;
+    color: var(--employee-admin-primary);
+    display: flex;
+    font-size: 22px;
+    height: 58px;
+    justify-content: center;
+    margin-bottom: 13px;
+    width: 58px;
+}
+
+.employee-administration-profiles-state strong {
+    color: var(--employee-admin-text);
+}
+
+.employee-administration-profiles-state p {
+    margin: 5px 0 0;
+    max-width: 480px;
+}
+
+.employee-administration-profiles-state-danger > .fas {
+    background: var(--state-danger-bg);
+    color: var(--brand-danger);
+}
+
+@media (max-width: 991px) {
+    .employee-administration-home-grid,
+    .employee-administration-settings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .employee-administration-setting-card-wide {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    .employee-administration-home-page,
+    .employee-administration-settings-page,
+    .employee-administration-profiles-page {
+        padding-top: 12px;
+    }
+
+    .employee-administration-home-hero,
+    .employee-administration-settings-hero,
+    .employee-administration-profiles-hero {
+        align-items: flex-start;
+        padding: 18px;
+    }
+
+    .employee-administration-settings-hero-copy,
+    .employee-administration-profiles-hero-copy {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .employee-administration-settings-back,
+    .employee-administration-profiles-back {
+        flex-basis: 26px;
+        height: 26px;
+        width: 26px;
+    }
+
+    .employee-administration-home-heading,
+    .employee-administration-profiles-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    .employee-administration-home-count {
+        padding-left: 50px;
+    }
+
+    .employee-administration-home-grid,
+    .employee-administration-settings-grid {
+        padding: 14px;
+    }
+
+    .employee-administration-settings-footer {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .employee-administration-settings-actions {
+        flex-direction: column;
+        margin-left: 0;
+    }
+
+    .employee-administration-settings-actions .btn,
+    .employee-administration-profiles-heading .btn {
+        width: 100%;
+    }
+
+    .employee-administration-profiles-hero {
+        flex-direction: column;
+    }
+
+    .employee-administration-profiles-count {
+        align-items: flex-start;
+        padding-left: 88px;
+    }
+
+    .employee-administration-profiles-table-wrap {
+        max-height: calc(100vh - 190px);
+    }
+
+    .employee-administration-holiday-page .employee-holiday-test-data-reset .dl-horizontal dt,
+    .employee-administration-attendance-page .employee-attendance-test-data-reset .dl-horizontal dt {
+        text-align: left;
+    }
+
+    .employee-administration-holiday-page .employee-holiday-test-data-reset .dl-horizontal dd,
+    .employee-administration-attendance-page .employee-attendance-test-data-reset .dl-horizontal dd {
+        margin-bottom: 7px;
+        margin-left: 0;
+    }
+}

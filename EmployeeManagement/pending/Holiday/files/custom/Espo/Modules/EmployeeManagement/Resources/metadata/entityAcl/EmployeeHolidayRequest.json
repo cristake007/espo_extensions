@@ -1,0 +1,19 @@
+{
+    "fields": {
+        "name": {"readOnly": true},
+        "days": {"readOnly": true},
+        "status": {"readOnly": true},
+        "decidedBy": {"readOnly": true},
+        "decidedAt": {"readOnly": true},
+        "cancellationReason": {"readOnly": true},
+        "cancellationRequestedBy": {"readOnly": true},
+        "cancellationRequestedAt": {"readOnly": true},
+        "cancellationDecidedBy": {"readOnly": true},
+        "cancellationDecidedAt": {"readOnly": true},
+        "approvalDocuments": {"readOnly": true},
+        "assignedUser": {"readOnly": true},
+        "profile": {"readOnly": true},
+        "accountingKey": {"readOnly": true},
+        "accountingRevision": {"readOnly": true}
+    }
+}

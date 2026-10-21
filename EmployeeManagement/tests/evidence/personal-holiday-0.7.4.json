@@ -1,0 +1,48 @@
+{
+  "environment": "employee-feasibility-20261020",
+  "actor": {
+    "type": "regular",
+    "isAdmin": false,
+    "profileInitialized": true
+  },
+  "results": [
+    {
+      "test": "native-entity-create-compatibility-adapter",
+      "status": "PASS",
+      "observed": {
+        "httpStatus": 200,
+        "requestId": "6ad705542d9693359",
+        "dateStart": "2027-01-18",
+        "dateEnd": "2027-01-22",
+        "days": 5,
+        "requestStatus": "Pending"
+      }
+    },
+    {
+      "test": "browser-create-route-non-admin",
+      "status": "PASS",
+      "observed": {
+        "route": "#EmployeeHolidayRequest/create",
+        "httpStatus": 200,
+        "requestId": "6ad705c582efbf5d6",
+        "dateStart": "2027-02-08",
+        "dateEnd": "2027-02-12",
+        "days": 5,
+        "requestStatus": "Pending",
+        "noCreateAccess": null,
+        "javascriptErrors": []
+      }
+    },
+    {
+      "test": "manager-user-flyout-redundant-items-removed",
+      "status": "PASS",
+      "observed": {
+        "employeeManagementFlyoutEntries": 0,
+        "employeeAdministrationFlyoutEntries": 0,
+        "authorizedSidebarEntries": 2
+      }
+    }
+  ],
+  "assertions": 3,
+  "failures": 0
+}

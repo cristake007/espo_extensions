@@ -1,0 +1,460 @@
+{
+  "testedPackageVersion": "0.7.0",
+  "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+  "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+  "executedOnExactFinalZip": true,
+  "evidence": {
+    "version": "0.4.0",
+    "results": [
+      {
+        "test": "personal-ACL-admin",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "personal-ACL-nomark",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "personal-ACL-fls",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "overview-ACL-admin",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "overview-ACL-four",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "overview-ACL-weak",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "overview-ACL-fls",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "native-readonly-overview",
+        "status": "PASS",
+        "observed": 200
+      },
+      {
+        "test": "population-15-no-admin",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "missing-WTC-reported-not-defaulted",
+        "status": "PASS",
+        "observed": 1
+      },
+      {
+        "test": "WTC-norm-four",
+        "status": "PASS",
+        "observed": [
+          84,
+          84
+        ]
+      },
+      {
+        "test": "WTC-norm-six",
+        "status": "PASS",
+        "observed": [
+          126,
+          126
+        ]
+      },
+      {
+        "test": "WTC-norm-eight",
+        "status": "PASS",
+        "observed": [
+          168,
+          168
+        ]
+      },
+      {
+        "test": "missing-WTC-mark-refused",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "personal-missing-WTC-explicit",
+        "status": "PASS",
+        "observed": 200
+      },
+      {
+        "test": "native-WTC-assignment-only-admin-fixture",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "personal-native-WTC-ready",
+        "status": "PASS",
+        "observed": 200
+      },
+      {
+        "test": "employee-mark",
+        "status": "PASS",
+        "observed": {
+          "status": 200,
+          "body": {
+            "userId": "6ad6d87b88db8052f",
+            "date": "2026-09-14",
+            "status": "AtWork",
+            "source": "Self",
+            "revision": 1
+          },
+          "raw": "{\"userId\":\"6ad6d87b88db8052f\",\"date\":\"2026-09-14\",\"status\":\"AtWork\",\"source\":\"Self\",\"revision\":1}"
+        }
+      },
+      {
+        "test": "legal-nonworking-day-blocked",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "weekend-blocked",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "future-mark-blocked",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "manager-future-mark-blocked",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "admin-business-write-blocked",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "admin-beneficiary-blocked",
+        "status": "PASS",
+        "observed": 404
+      },
+      {
+        "test": "mark-invalid-workingTimeCalendarId",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "mark-invalid-startTime",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "mark-invalid-assignedUserId",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "mark-invalid-status",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "mark-invalid-date",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "original-CIC-period-settings",
+        "status": "PASS",
+        "observed": {
+          "status": 200,
+          "body": {
+            "userId": "6ad6d87b8b041d9e7",
+            "remote": false,
+            "cic": true,
+            "cicStartDate": "2026-09-16",
+            "cicEndDate": "2026-09-18"
+          },
+          "raw": "{\"userId\":\"6ad6d87b8b041d9e7\",\"remote\":false,\"cic\":true,\"cicStartDate\":\"2026-09-16\",\"cicEndDate\":\"2026-09-18\"}"
+        }
+      },
+      {
+        "test": "metadata-write-ACL-viewer",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "metadata-write-ACL-four",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "metadata-write-ACL-admin",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "no-parallel-program-editor-API",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "CIC-period-validation",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "CIC-derived-status",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "CIC-blocks-AtWork",
+        "status": "PASS",
+        "observed": 409
+      },
+      {
+        "test": "CIC-blocks-BusinessTrip",
+        "status": "PASS",
+        "observed": 409
+      },
+      {
+        "test": "CIC-permits-medical-mark",
+        "status": "PASS",
+        "observed": {
+          "status": 200,
+          "body": {
+            "userId": "6ad6d87b8b041d9e7",
+            "date": "2026-09-16",
+            "status": "MedicalLeave",
+            "source": "Self",
+            "revision": 1
+          },
+          "raw": "{\"userId\":\"6ad6d87b8b041d9e7\",\"date\":\"2026-09-16\",\"status\":\"MedicalLeave\",\"source\":\"Self\",\"revision\":1}"
+        }
+      },
+      {
+        "test": "CIC-medical-visible-in-matrix",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "effective-CO-higher-priority-than-CIC-medical",
+        "status": "PASS",
+        "observed": 409
+      },
+      {
+        "test": "CancellationPending-remains-effective-CO",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "original-remote-metadata",
+        "status": "PASS",
+        "observed": 200
+      },
+      {
+        "test": "remote-mark",
+        "status": "PASS",
+        "observed": 200
+      },
+      {
+        "test": "overview-not-management",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "manager-reason-required",
+        "status": "PASS",
+        "observed": 400
+      },
+      {
+        "test": "manager-correction",
+        "status": "PASS",
+        "observed": {
+          "status": 200,
+          "body": {
+            "userId": "6ad6d87b88db8052f",
+            "date": "2026-09-14",
+            "status": "BusinessTrip",
+            "source": "Manager",
+            "revision": 2
+          },
+          "raw": "{\"userId\":\"6ad6d87b88db8052f\",\"date\":\"2026-09-14\",\"status\":\"BusinessTrip\",\"source\":\"Manager\",\"revision\":2}"
+        }
+      },
+      {
+        "test": "stale-record-revision-blocked",
+        "status": "PASS",
+        "observed": 409
+      },
+      {
+        "test": "historical-WTC-hours-preserved",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "historical-WTC-start-time-preserved",
+        "status": "PASS",
+        "observed": {
+          "startTime": "08:00",
+          "endTime": "12:00",
+          "remote": false
+        }
+      },
+      {
+        "test": "native-reminders-missing-only",
+        "status": "PASS",
+        "observed": 200
+      },
+      {
+        "test": "incomplete-export-config-enforced",
+        "status": "PASS",
+        "observed": 409
+      },
+      {
+        "test": "native-export-permission-enforced",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "100-percent-final-employee-mark",
+        "status": "PASS",
+        "observed": {
+          "status": 200,
+          "body": {
+            "userId": "6ad6d87b8a67e9bed",
+            "date": "2026-09-30",
+            "status": "AtWork",
+            "source": "Self",
+            "revision": 1
+          },
+          "raw": "{\"userId\":\"6ad6d87b8a67e9bed\",\"date\":\"2026-09-30\",\"status\":\"AtWork\",\"source\":\"Self\",\"revision\":1}"
+        }
+      },
+      {
+        "test": "100-percent-month-frozen",
+        "status": "PASS",
+        "observed": true
+      },
+      {
+        "test": "employee-frozen-month-denied",
+        "status": "PASS",
+        "observed": 409
+      },
+      {
+        "test": "frozen-month-no-reminders",
+        "status": "PASS",
+        "observed": 409
+      },
+      {
+        "test": "original-XLSX-export",
+        "status": "PASS",
+        "observed": 200
+      },
+      {
+        "test": "original-PDF-export",
+        "status": "PASS",
+        "observed": 200
+      },
+      {
+        "test": "manager-corrects-frozen-month",
+        "status": "PASS",
+        "observed": {
+          "status": 200,
+          "body": {
+            "userId": "6ad6d87b88db8052f",
+            "date": "2026-09-14",
+            "status": "MedicalLeave",
+            "source": "Manager",
+            "revision": 3
+          },
+          "raw": "{\"userId\":\"6ad6d87b88db8052f\",\"date\":\"2026-09-14\",\"status\":\"MedicalLeave\",\"source\":\"Manager\",\"revision\":3}"
+        }
+      },
+      {
+        "test": "correction-does-not-unfreeze",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "export-reflects-new-correction",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "XLSX-preserves-Remote-CIC-CO-medical",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "native-modifiedBy-and-reason",
+        "status": "PASS",
+        "observed": [
+          "6ad6d87b87afe4108",
+          "Synthetic managerial correction"
+        ]
+      },
+      {
+        "test": "native-status-audit-recorded",
+        "status": "PASS",
+        "observed": 2
+      },
+      {
+        "test": "norms-immutable-after-freeze-correction",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "generic-CRUD-closed-EmployeeAttendanceRecord",
+        "status": "PASS",
+        "observed": 403
+      },
+      {
+        "test": "generic-CRUD-closed-EmployeeAttendanceWorkSchedule",
+        "status": "PASS",
+        "observed": 404
+      },
+      {
+        "test": "generic-CRUD-closed-EmployeeAttendanceMonth",
+        "status": "PASS",
+        "observed": 404
+      },
+      {
+        "test": "original-data-retained-AttendanceRecord",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "original-data-retained-AttendanceWorkSchedule",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "original-data-retained-HolidayRequest",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "original-data-retained-HolidayProfile",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "original-data-retained-HolidayLedger",
+        "status": "PASS",
+        "observed": null
+      }
+    ],
+    "assertions": 74,
+    "failures": 0
+  },
+  "qualification": "Historical fixture version is retained in raw evidence; installed package tested was 0.7.0. Integration regression uses controlled laboratory finalization fixtures; Stage7 main API/browser additionally execute real native approval Jobs."
+}

@@ -1,0 +1,11 @@
+{
+    "results": [
+        {
+            "test": "lab-settings-restored",
+            "status": "PASS",
+            "observed": null
+        }
+    ],
+    "assertions": 1,
+    "failures": 0
+}

@@ -1,0 +1,169 @@
+{
+  "testedPackageVersion": "0.7.0",
+  "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+  "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+  "executedOnExactFinalZip": true,
+  "evidence": {
+    "status": "PASS",
+    "test": "stage7-replacement-rebuild-retains-projections-annual-activation-profile-ledger-documents-roles-and-originals",
+    "state": {
+      "tabList": [
+        {
+          "type": "divider",
+          "id": "342567",
+          "text": "$CRM"
+        },
+        "Account",
+        "Contact",
+        "Lead",
+        "Opportunity",
+        {
+          "type": "divider",
+          "text": "$Activities",
+          "id": "219419"
+        },
+        "Email",
+        "Meeting",
+        "Call",
+        "Task",
+        "Calendar",
+        {
+          "type": "divider",
+          "id": "655187",
+          "text": "$Support"
+        },
+        "Case",
+        "KnowledgeBaseArticle",
+        {
+          "type": "divider",
+          "text": null,
+          "id": "137994"
+        },
+        "_delimiter_",
+        {
+          "type": "divider",
+          "text": "$Marketing",
+          "id": "463280"
+        },
+        "Campaign",
+        "TargetList",
+        {
+          "type": "divider",
+          "text": "$Business",
+          "id": "518202"
+        },
+        "Document",
+        {
+          "type": "divider",
+          "text": "$Organization",
+          "id": "566592"
+        },
+        "User",
+        "Team",
+        "WorkingTimeCalendar",
+        {
+          "type": "divider",
+          "text": null,
+          "id": "898671"
+        },
+        "EmailTemplate",
+        "Template",
+        "Import",
+        "HolidayRequest",
+        "HolidayOverview",
+        "Attendance",
+        "AttendanceOverview"
+      ],
+      "calendarEntityList": [
+        "Meeting",
+        "Call",
+        "Task",
+        "ZileLibere",
+        "HolidayRequest",
+        "FeasibilityAbsence",
+        "EmployeeAbsence",
+        "EmployeeHolidayRequest"
+      ],
+      "globalAdminRoute": {
+        "params": {
+          "controller": "attendance-management:controllers/schedule-settings",
+          "action": "index"
+        },
+        "order": -100
+      },
+      "globalCalendarView": "holiday-management:views/calendar/calendar",
+      "counts": {
+        "AttendanceRecord": 0,
+        "AttendanceWorkSchedule": 0,
+        "HolidayRequest": 2,
+        "HolidayProfile": 2,
+        "HolidayLedger": 1,
+        "EmployeeAttendanceRecord": 3852,
+        "EmployeeAttendanceWorkSchedule": 24,
+        "EmployeeAttendanceMonth": 10,
+        "EmployeeHolidayRequest": 266,
+        "EmployeeHolidayProfile": 271,
+        "EmployeeHolidayLedger": 743,
+        "EmployeeAbsence": 36,
+        "WorkingTimeCalendar": 58,
+        "WorkingTimeRange": 26
+      },
+      "originalExtensions": {
+        "Attendance Management": "1.11.0",
+        "Holiday Management": "1.9.4",
+        "Zile Sărbătoare": "0.9.5"
+      },
+      "employeeManagementVersion": "0.7.0",
+      "employeeSettings": {
+        "employeeAttendanceEditablePastMonths": 2,
+        "employeeAttendanceAllowIncompleteExports": true,
+        "employeeAttendanceArchiveStartMonth": "2026-09",
+        "employeeHolidayAnnualEntitlementDays": 21,
+        "employeeHolidayResetDate": "2027-01-01",
+        "employeeHolidayAutomaticAnnualGrantEnabled": true,
+        "employeeHolidayCarryOverLimitDays": 90,
+        "employeeHolidayNegativeBalanceLimitDays": -21,
+        "employeeHolidayApproversIds": [
+          "6ad69f0923a0afa13"
+        ],
+        "employeeHolidayApprovalBlock1Title": "Stage2 Director",
+        "employeeHolidayApprovalBlock1Name": "Synthetic Manager",
+        "employeeHolidayApprovalBlock2Title": "",
+        "employeeHolidayApprovalBlock2Name": ""
+      },
+      "dataHashes": {
+        "EmployeeAttendanceRecord": "ad0d1e52e2cbf125d128a9f02d50cf95e9f5ff55c6e253c13acff0ff4fc3b579",
+        "EmployeeAttendanceWorkSchedule": "4f1ecf5fa47a19b96c8c9e8415cf5988832ca914aff19493a26a46ad0664e7c0",
+        "EmployeeAttendanceMonth": "d07a28d852337ab27c0372013498761214f33ea7f7f5cdeac187073ebe6c4fd3",
+        "EmployeeHolidayRequest": "f9f5b895edc0a48d467ad3474cbcf1628095d629eccf7afff12cd24c9be76937",
+        "EmployeeAbsence": "ac8c3ad2c5813e85d10cde0da2c37a27fd6567a3cf408e34cf78dc4824e72be4",
+        "EmployeeHolidayProfile": "3b1a33ccb704fd2e71f8a132c8f4a2d818db11dead7698fa7142bcf8288908af",
+        "EmployeeHolidayLedger": "1314f456b16a52e8e9294804b422be4bff71e89a6d0d16628d7ffc0fac4cb5df",
+        "Notification": "f4f04f4c2d6e5dd79352907292fc5ef8e419c1f322d2da73a2667d30b2112f04",
+        "Role": "4855cc0c39212726bbf048593d734e45530ccb8a3cf6444f603faeefddc33567"
+      },
+      "stagingForbidden": true,
+      "approvalFilesHash": "94c1a1a74831a862cc5d6b8255786b90930dc3b4ba8295b7422646b9ca12467a",
+      "approvalJobsHash": "4145546395b2622c8c4158a7a0a2f54e071872eee463241bff83cfbc5bdfa68a",
+      "annualScheduledJobs": [
+        {
+          "id": "6ad6c9eb37e19cf05",
+          "name": "Employee Management — annual grants (opt-in)",
+          "status": "Active",
+          "scheduling": "5 0 * * *",
+          "lastRun": "2026-10-20 02:33:47"
+        }
+      ],
+      "annualFlag": true,
+      "absenceReadDefault": false,
+      "absenceSourceForbidden": true
+    }
+  },
+  "commands": [
+    "php bin/command extension --file=/feasibility/employee-management-0.7.0.zip",
+    "php bin/command rebuild",
+    "php bin/command clear-cache",
+    "php /feasibility/employee-stage7-lifecycle.php verify"
+  ],
+  "qualification": "Same-version replacement with annual opt-in true, worker stopped. Also performed replacement with flag false before this final baseline. Full fresh standalone install/uninstall not certified here."
+}

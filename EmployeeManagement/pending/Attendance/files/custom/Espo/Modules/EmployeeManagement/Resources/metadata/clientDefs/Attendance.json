@@ -1,0 +1,4 @@
+{
+    "controller": "employee-management:controllers/attendance",
+    "iconClass": "fas fa-clipboard-check"
+}

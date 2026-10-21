@@ -1,0 +1,23 @@
+{
+  "results": [
+    {
+      "test": "reproduce-legacy-admin-link",
+      "status": "PASS"
+    },
+    {
+      "test": "reproduce-no-sidebar-tabs",
+      "status": "PASS"
+    },
+    {
+      "test": "reproduce-manager-403-from-Schedules",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 4,
+  "failures": 0
+}

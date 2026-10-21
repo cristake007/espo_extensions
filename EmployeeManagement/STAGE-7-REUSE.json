@@ -1,0 +1,62 @@
+[
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+    "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+    "adaptations": "Integrate original reset, processDueResets (100-year catch-up bound), applyResetGrant, nextYear, formatDays, warning threshold and Notification methods. BalanceMath unchanged: balance + entitlement, never expiry/cap. Native system-only scheduled entry, regular active targets, stable profile/due-date keys, current due-date/config recheck and operation hash under existing User/Profile locks. Resolve owner before the transaction to avoid a demonstrated MariaDB 12 RR stale-read/1020 failure; omit unnecessary joined name projection. Notification recipients require current native profile/FLS access. Existing initialization/correction logic retained."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Jobs/ProcessHolidayResets.php",
+    "sourceSha256": "feb535ba4d51a4548ece56d6d0e223f7d804a8d1a7d1139aba8d25c1201cd7e3",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Jobs/ProcessEmployeeHolidayResets.php",
+    "adaptations": "Same JobDataLess/run entry. Rename job to avoid collision with the installed legacy ProcessHolidayResets; inject the already integrated profile subset, no new runner/queue."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/scheduledJobs.json",
+    "sourceSha256": "bf1392526483b87ec1671468c1c40b49f632d7b1e02958da9dea0b356099bc35",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/scheduledJobs.json",
+    "adaptations": "Keep original 5 0 * * * and isDefault native ScheduledJob registration; unique job/class name. The business flag remains explicitly opt-in, independent of technical scheduling."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeHolidayRequest.php",
+    "sourceSha256": "98dd5adf919462632d1859fb84f2a24056470817c8cd0ba7edf4db4d8fb863f2",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeHolidayRequest.php",
+    "adaptations": "Reuse native getCalenderQuery signature, SelectBuilder, period predicate, union-compatible columns and original profile color. Restrict to selected-user Pending with native strict read/FLS, eligible actor/target and approver scope for others. Ignore skipAcl, return null for non-allowlisted global additional columns; no Approved duplicate or public read-all grant. Convert UTC bounds to native viewer Preferences/config timezone after a real single-day Day-view omission was demonstrated; preserve exclusive upper bounds."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeHolidayRequest.php",
+    "sourceSha256": "98dd5adf919462632d1859fb84f2a24056470817c8cd0ba7edf4db4d8fb863f2",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeAbsence.php",
+    "adaptations": "Adapt the same native Calendar query to the approved minimal Event. Select only public name/dates, opaque projection ID and null protocol columns; no private request relationship/payload. Keep original live calendarColor through an allowlisted native ORM join, expose it only as a non-stored presentation field subject to FLS; no public profile link. Use viewer-local all-day bounds. Native strict ACL/FLS and mandatory eligible-employee Select filter. Shared feed is global minimal information like ZileLibere, not a personal Working Time range."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+    "sourceSha256": "5136f0cc263b03badfb6f73f8b796e7929f4f094cbc43ca5ae8f72d9756cd66c",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+    "adaptations": "Retain all settings, validation and delegated ConfigWriter/ACL. Remove only the Stage2 safety gate prohibiting automaticGrant=true now that the native annual job is integrated; no automatic opt-in."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/admin/settings.js",
+    "sourceSha256": "6f4d87265566a57d251eb9d8984e068d99d4f128399c8412c6767dd161a1bc92",
+    "destination": "files/client/custom/modules/employee-management/src/views/administration/settings.js",
+    "adaptations": "Continue the existing native-field delegated settings adapter. Original annual bool becomes editable; remove the temporary Stage2 forced read-only payload. No global Settings/Admin/WTC editor."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+    "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+    "adaptations": "No request/approval/accounting rule change. Shared profile locking projection omits the redundant assignedUserName join; beneficiary is already locked. Existing Stage6 native Jobs/snapshots/receipts and Stage5 conflict guards retained."
+  },
+  {
+    "source": "../HolidayManagement/scripts/AfterInstall.php",
+    "sourceSha256": "bf4af12a7d0b0b890e25f3345109e9c0056edcbe06b58c45e17de8b83f47bdec",
+    "destination": "scripts/AfterInstall.php",
+    "adaptations": "Reuse native Populator and ConfigWriter, add only own Calendar sources and set annual flag false only when absent. Release 0.7.5 no longer adds sidebar links and removes entries inserted automatically by older releases. Idempotent transactional projection backfill; no Roles, WTC or legacy data migration."
+  },
+  {
+    "source": "../HolidayManagement/scripts/BeforeUninstall.php",
+    "sourceSha256": "def416affaf7675d8fa6916e09fe8391099e8e23a8cf8f405aa6e56783b7e7d3",
+    "destination": "scripts/AfterUninstall.php",
+    "adaptations": "Adapt own-registration cleanup to native AfterUninstall (10.0.1 skips this script on upgrade). Remove only own Calendar list entries; deactivate own ScheduledJob, retain business data/files/settings/history. Do not remove legacy jobs or reset activation on upgrade. Full uninstall certification remains Stage8."
+  }
+]

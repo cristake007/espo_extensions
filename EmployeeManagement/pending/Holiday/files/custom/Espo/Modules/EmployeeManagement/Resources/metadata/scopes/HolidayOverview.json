@@ -1,0 +1,9 @@
+{
+    "entity": false,
+    "object": false,
+    "acl": "boolean",
+    "tab": true,
+    "disabled": false,
+    "module": "EmployeeManagement",
+    "languageIsGlobal": true
+}

@@ -1,0 +1,227 @@
+{
+  "testedPackageVersion": "0.6.0",
+  "finalPackageSha256": "0cdcb453fe7e96473313abbdd5722dae69dd6811cde0dd823c8cef3035d6f909",
+  "executedOnExactFinalZip": true,
+  "sourceFixtureOutput": "employee-stage6-observations.json",
+  "observedAtUtc": "2026-10-20T01:40:16.698309+00:00",
+  "php": "8.4.23",
+  "database": "12.3.2-MariaDB-ubu2404",
+  "extensions": {
+    "Zile Sărbătoare": "0.9.5",
+    "Holiday Management": "1.9.4",
+    "Attendance Management": "1.11.0",
+    "Employee Management": "0.6.0"
+  },
+  "nativeJobSettings": {
+    "daemonInterval": 10,
+    "daemonMaxProcessNumber": 5,
+    "jobRunInParallel": true,
+    "jobPeriodForNotExistingProcess": 300
+  },
+  "faultTriggerCount": 0,
+  "templateBackupExists": false,
+  "templateSha256": "737e695378896bacf26cf93187d371f4a064704a3f2e99eddbecbd798d1f9c0e",
+  "jobs": {
+    "self": {
+      "requestStatus": "Approved",
+      "approvalState": "Completed",
+      "approvalAttempts": 1,
+      "nativeJobs": [
+        {
+          "id": "6ad6c08ecc1ac8a20",
+          "status": "Success",
+          "createdAt": "2026-10-20 01:14:54",
+          "executeTime": "2026-10-20 01:14:54",
+          "startedAt": "2026-10-20 01:15:00",
+          "executedAt": "2026-10-20 01:15:00",
+          "attempts": 0,
+          "failedAttempts": null,
+          "group": "employee-holiday:6ad6c08e86ad2df58",
+          "scheduledToStartSeconds": 6
+        }
+      ]
+    },
+    "normal": {
+      "requestStatus": "Cancelled",
+      "approvalState": "Completed",
+      "approvalAttempts": 1,
+      "nativeJobs": [
+        {
+          "id": "6ad6c08deee8e8498",
+          "status": "Success",
+          "createdAt": "2026-10-20 01:14:53",
+          "executeTime": "2026-10-20 01:14:53",
+          "startedAt": "2026-10-20 01:14:59",
+          "executedAt": "2026-10-20 01:15:00",
+          "attempts": 0,
+          "failedAttempts": null,
+          "group": "employee-holiday:6ad6c08cbcafc31d5",
+          "scheduledToStartSeconds": 6
+        }
+      ]
+    },
+    "failure": {
+      "requestStatus": "Approved",
+      "approvalState": "Completed",
+      "approvalAttempts": 2,
+      "nativeJobs": [
+        {
+          "id": "6ad6c09f460e4aa67",
+          "status": "Failed",
+          "createdAt": "2026-10-20 01:15:11",
+          "executeTime": "2026-10-20 01:15:11",
+          "startedAt": "2026-10-20 01:15:19",
+          "executedAt": null,
+          "attempts": 0,
+          "failedAttempts": null,
+          "group": "employee-holiday:6ad6c09ef05bde20b",
+          "scheduledToStartSeconds": 8
+        },
+        {
+          "id": "6ad6c0cd4e6d90d49",
+          "status": "Success",
+          "createdAt": "2026-10-20 01:15:57",
+          "executeTime": "2026-10-20 01:15:57",
+          "startedAt": "2026-10-20 01:15:59",
+          "executedAt": "2026-10-20 01:16:00",
+          "attempts": 0,
+          "failedAttempts": null,
+          "group": "employee-holiday:6ad6c09ef05bde20b",
+          "scheduledToStartSeconds": 2
+        }
+      ]
+    },
+    "crash": {
+      "requestStatus": "Approved",
+      "approvalState": "Completed",
+      "approvalAttempts": 2,
+      "nativeJobs": [
+        {
+          "id": "6ad6c0d0cfd57f310",
+          "status": "Failed",
+          "createdAt": "2026-10-20 01:16:00",
+          "executeTime": "2026-10-20 01:16:00",
+          "startedAt": "2026-10-20 01:16:10",
+          "executedAt": null,
+          "attempts": 0,
+          "failedAttempts": null,
+          "group": "employee-holiday:6ad6c0d085dee37a3",
+          "scheduledToStartSeconds": 10
+        },
+        {
+          "id": "6ad6c104ea4870e70",
+          "status": "Success",
+          "createdAt": "2026-10-20 01:16:52",
+          "executeTime": "2026-10-20 01:16:52",
+          "startedAt": "2026-10-20 01:17:02",
+          "executedAt": "2026-10-20 01:17:02",
+          "attempts": 0,
+          "failedAttempts": null,
+          "group": "employee-holiday:6ad6c0d085dee37a3",
+          "scheduledToStartSeconds": 10
+        }
+      ]
+    },
+    "finalSmoke": {
+      "requestStatus": "Approved",
+      "approvalState": "Completed",
+      "approvalAttempts": 1,
+      "nativeJobs": [
+        {
+          "id": "6ad6c3cb6c64348c4",
+          "status": "Success",
+          "createdAt": "2026-10-20 01:28:43",
+          "executeTime": "2026-10-20 01:28:43",
+          "startedAt": "2026-10-20 01:28:44",
+          "executedAt": "2026-10-20 01:28:45",
+          "attempts": 0,
+          "failedAttempts": null,
+          "group": "employee-holiday:6ad6c3cb28f107aac",
+          "scheduledToStartSeconds": 1
+        }
+      ]
+    },
+    "rendererFailure": {
+      "requestStatus": "Approved",
+      "approvalState": "Completed",
+      "approvalAttempts": 2,
+      "nativeJobs": [
+        {
+          "id": "6ad6c456a108b3ce2",
+          "status": "Failed",
+          "createdAt": "2026-10-20 01:31:02",
+          "executeTime": "2026-10-20 01:31:02",
+          "startedAt": "2026-10-20 01:31:04",
+          "executedAt": null,
+          "attempts": 0,
+          "failedAttempts": null,
+          "group": "employee-holiday:6ad6c4565bc960260",
+          "scheduledToStartSeconds": 2
+        },
+        {
+          "id": "6ad6c4589b03d3f00",
+          "status": "Success",
+          "createdAt": "2026-10-20 01:31:04",
+          "executeTime": "2026-10-20 01:31:04",
+          "startedAt": "2026-10-20 01:31:13",
+          "executedAt": "2026-10-20 01:31:13",
+          "attempts": 0,
+          "failedAttempts": null,
+          "group": "employee-holiday:6ad6c4565bc960260",
+          "scheduledToStartSeconds": 9
+        }
+      ]
+    },
+    "browserSelf": {
+      "requestStatus": "Approved",
+      "approvalState": "Completed",
+      "approvalAttempts": 1,
+      "nativeJobs": [
+        {
+          "id": "6ad6c64dba4c84e61",
+          "status": "Success",
+          "createdAt": "2026-10-20 01:39:25",
+          "executeTime": "2026-10-20 01:39:25",
+          "startedAt": "2026-10-20 01:39:32",
+          "executedAt": "2026-10-20 01:39:32",
+          "attempts": 0,
+          "failedAttempts": null,
+          "group": "employee-holiday:6ad6c63a130f33ddc",
+          "scheduledToStartSeconds": 7
+        }
+      ]
+    },
+    "browserRetry": {
+      "requestStatus": "Approved",
+      "approvalState": "Completed",
+      "approvalAttempts": 2,
+      "nativeJobs": [
+        {
+          "id": "6ad6c649b076039ac",
+          "status": "Failed",
+          "createdAt": "2026-10-20 01:39:21",
+          "executeTime": "2026-10-20 01:39:21",
+          "startedAt": "2026-10-20 01:39:23",
+          "executedAt": null,
+          "attempts": 0,
+          "failedAttempts": null,
+          "group": "employee-holiday:6ad6c6496027919dd",
+          "scheduledToStartSeconds": 2
+        },
+        {
+          "id": "6ad6c656dbbb5b6bf",
+          "status": "Success",
+          "createdAt": "2026-10-20 01:39:34",
+          "executeTime": "2026-10-20 01:39:34",
+          "startedAt": "2026-10-20 01:39:42",
+          "executedAt": "2026-10-20 01:39:42",
+          "attempts": 0,
+          "failedAttempts": null,
+          "group": "employee-holiday:6ad6c6496027919dd",
+          "scheduledToStartSeconds": 8
+        }
+      ]
+    }
+  },
+  "fixtureVersion": "10.0.1"
+}

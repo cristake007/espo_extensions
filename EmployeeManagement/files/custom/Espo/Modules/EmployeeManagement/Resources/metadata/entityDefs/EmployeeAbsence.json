@@ -1,0 +1,15 @@
+{
+    "fields": {
+        "name": {"type": "varchar", "required": true, "readOnly": true},
+        "dateStart": {"type": "date", "required": true, "readOnly": true},
+        "dateEnd": {"type": "date", "required": true, "readOnly": true},
+        "color": {"type": "colorpicker", "readOnly": true, "notStorable": true},
+        "assignedUser": {"type": "link", "entity": "User", "required": true, "readOnly": true},
+        "sourceId": {"type": "varchar", "maxLength": 24, "readOnly": true},
+        "createdAt": {"type": "datetime", "readOnly": true}
+    },
+    "links": {"assignedUser": {"type": "belongsTo", "entity": "User"}},
+    "indexes": {"sourceUnique": {"unique": true, "columns": ["sourceId"]}, "period": {"columns": ["dateStart", "dateEnd"]}},
+    "collection": {"orderBy": "dateStart", "order": "asc"},
+    "repositoryClassName": "Espo\\Core\\Repositories\\Event"
+}

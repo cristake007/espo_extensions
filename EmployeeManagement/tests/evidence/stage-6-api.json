@@ -1,0 +1,894 @@
+{
+  "testedPackageVersion": "0.6.0",
+  "finalPackageSha256": "0cdcb453fe7e96473313abbdd5722dae69dd6811cde0dd823c8cef3035d6f909",
+  "scopeNote": "Initial setup through post/crash/restart phases ran on the 0.6.0 candidate before final receipt-FLS and opaque-JSON hardening; the native Job orchestrator and DOCX renderer did not change in that hardening. Phases explicitly marked executedOnExactFinalZip plus the final browser, all regression suites and lifecycle ran on the final ZIP. The kill/restart sequence was not repeated on every rebuild.",
+  "phases": [
+    {
+      "version": "0.6.0",
+      "phase": "browser-ready",
+      "results": [
+        {
+          "test": "browser-real-failure-ready",
+          "status": "PASS",
+          "observed": null
+        }
+      ],
+      "assertions": 1,
+      "failures": 0,
+      "executedOnExactFinalZip": true,
+      "observedAtUtc": "2026-10-20T01:39:23.210486+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "browser-repeat-complete",
+      "results": [
+        {
+          "test": "final-browser-operations-really-Approved",
+          "status": "PASS",
+          "observed": null
+        }
+      ],
+      "assertions": 1,
+      "failures": 0,
+      "executedOnExactFinalZip": true,
+      "observedAtUtc": "2026-10-20T01:39:52.870388+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "browser-repeat",
+      "results": [
+        {
+          "test": "book-manager-2027-04-05",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "book-manager-2028-01-31",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "final-ZIP-browser-failure-scheduled",
+          "status": "PASS",
+          "observed": 200
+        }
+      ],
+      "assertions": 3,
+      "failures": 0,
+      "executedOnExactFinalZip": true,
+      "observedAtUtc": "2026-10-20T01:39:21.730491+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "conflict-setup",
+      "results": [
+        {
+          "test": "book-ui-2026-10-20",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "real-Processing-before-attendance-conflict",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "Processing-is-not-yet-effective-CO",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "Processing-protected-from-withdraw",
+          "status": "PASS",
+          "observed": 409
+        },
+        {
+          "test": "Processing-protected-from-reject",
+          "status": "PASS",
+          "observed": 409
+        },
+        {
+          "test": "Processing-protected-from-cancel",
+          "status": "PASS",
+          "observed": 409
+        },
+        {
+          "test": "Processing-invalid-commands-no-accounting-effect",
+          "status": "PASS",
+          "observed": null
+        }
+      ],
+      "assertions": 7,
+      "failures": 0,
+      "executedOnExactFinalZip": false,
+      "observedAtUtc": "2026-10-20T01:14:59.038850+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "crash-ready",
+      "results": [
+        {
+          "test": "real-worker-Processing-with-first-file-persisted",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "native-job-really-Running-before-kill",
+          "status": "PASS",
+          "observed": "Running"
+        }
+      ],
+      "assertions": 2,
+      "failures": 0,
+      "executedOnExactFinalZip": false,
+      "observedAtUtc": "2026-10-20T01:16:10.330656+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "failure",
+      "results": [
+        {
+          "test": "real-generation-error-is-visible-and-recoverable",
+          "status": "PASS",
+          "observed": [
+            "ApprovalProcessing",
+            "Failed",
+            "Document generation/storage failed. The operation remains reserved and can be retried by an authorized manager."
+          ]
+        },
+        {
+          "test": "native-Job-Failed-not-false-Success",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "failed-operation-keeps-reservation",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "partial-result-one-tracked-document",
+          "status": "PASS",
+          "observed": 1
+        },
+        {
+          "test": "partial-document-cannot-be-downloaded-even-by-owner",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "partial-attachment-metadata-denied-to-manager",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "employee-cannot-retry-approval",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "controlled-retry-same-operation",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "concurrent-second-retry-refused-while-job-live",
+          "status": "PASS",
+          "observed": 409
+        }
+      ],
+      "assertions": 9,
+      "failures": 0,
+      "executedOnExactFinalZip": false,
+      "observedAtUtc": "2026-10-20T01:15:57.614691+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "normal",
+      "results": [
+        {
+          "test": "native-worker-completes-approval",
+          "status": "PASS",
+          "observed": [
+            "Approved",
+            "Completed",
+            "Success"
+          ]
+        },
+        {
+          "test": "native-job-Success",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "normal-and-self-no-second-accounting",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "self-approval-completes",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "one-document-per-reserved-month",
+          "status": "PASS",
+          "observed": 2
+        },
+        {
+          "test": "native-DOCX-download-6ad6c0941e3e17731",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "immutable-approval-name-signature-values-6ad6c0941e3e17731",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "document-download-ACL-colleague-6ad6c0941e3e17731",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "document-download-ACL-noapproval-6ad6c0941e3e17731",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "native-DOCX-download-6ad6c09415135bebe",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "immutable-approval-name-signature-values-6ad6c09415135bebe",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "document-download-ACL-colleague-6ad6c09415135bebe",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "document-download-ACL-noapproval-6ad6c09415135bebe",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "native-record-hides-operation-internals",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "documents-visible-immediately-after-completion",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "approval-command-retry-is-receipt-not-new-debit",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "real-finalizer-rechecks-attendance-in-Processing",
+          "status": "PASS",
+          "observed": "Holiday conflicts with worked/business-trip attendance on 2026-10-20. Resolve the attendance explicitly before booking or approval."
+        },
+        {
+          "test": "explicit-correction-before-retry",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "resolved-conflict-retry-same-reservation",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "resolved-conflict-Approved-after-document",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "book-employee-2027-01-29",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "failure-operation-started",
+          "status": "PASS",
+          "observed": 200
+        }
+      ],
+      "assertions": 22,
+      "failures": 0,
+      "executedOnExactFinalZip": false,
+      "observedAtUtc": "2026-10-20T01:15:11.290817+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "post",
+      "results": [
+        {
+          "test": "real-Approved-to-CancellationPending",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "real-cancellation-pending-no-refund",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "real-document-approved-cancellation-refunds-once",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "real-final-cancel-retry-no-second-refund",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "real-cancellation-keeps-original-documents",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "cancelled-document-retained-private-history",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "native-attachment-mutation-denied-employee",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "native-attachment-mutation-denied-colleague",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "actual-Job-Approved-blocks-incompatible-attendance",
+          "status": "PASS",
+          "observed": 409
+        },
+        {
+          "test": "ledger-integrity-after-native-Jobs-manager",
+          "status": "PASS",
+          "observed": [
+            54,
+            54
+          ]
+        },
+        {
+          "test": "ledger-integrity-after-native-Jobs-employee",
+          "status": "PASS",
+          "observed": [
+            57,
+            57
+          ]
+        },
+        {
+          "test": "ledger-integrity-after-native-Jobs-colleague",
+          "status": "PASS",
+          "observed": [
+            60,
+            60
+          ]
+        },
+        {
+          "test": "ledger-integrity-after-native-Jobs-nodoc",
+          "status": "PASS",
+          "observed": [
+            59,
+            59
+          ]
+        },
+        {
+          "test": "ledger-integrity-after-native-Jobs-noapproval",
+          "status": "PASS",
+          "observed": [
+            60,
+            60
+          ]
+        },
+        {
+          "test": "ledger-integrity-after-native-Jobs-ui",
+          "status": "PASS",
+          "observed": [
+            56,
+            56
+          ]
+        },
+        {
+          "test": "private-queue-no-unfinished-current-cohort-operations",
+          "status": "PASS",
+          "observed": 200
+        }
+      ],
+      "assertions": 16,
+      "failures": 0,
+      "executedOnExactFinalZip": false,
+      "observedAtUtc": "2026-10-20T01:19:23.086122+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "recover",
+      "results": [
+        {
+          "test": "native-restart-detects-lost-process",
+          "status": "PASS",
+          "observed": "Failed"
+        },
+        {
+          "test": "lost-worker-error-and-retry-visible-without-global-Jobs",
+          "status": "PASS",
+          "observed": "Failed"
+        },
+        {
+          "test": "native-Job-reprogrammed-for-same-operation",
+          "status": "PASS",
+          "observed": 200
+        }
+      ],
+      "assertions": 3,
+      "failures": 0,
+      "executedOnExactFinalZip": false,
+      "observedAtUtc": "2026-10-20T01:16:52.962538+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "recovered",
+      "results": [
+        {
+          "test": "restart-retry-finishes-Approved",
+          "status": "PASS",
+          "observed": "Approved"
+        },
+        {
+          "test": "restart-retry-no-duplicate-documents",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "restart-retry-no-second-debit-ledger",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "book-manager-2027-03-01",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "book-manager-2027-01-29",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "browser-real-failure-scheduled",
+          "status": "PASS",
+          "observed": 200
+        }
+      ],
+      "assertions": 6,
+      "failures": 0,
+      "executedOnExactFinalZip": false,
+      "observedAtUtc": "2026-10-20T01:17:10.322491+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "renderer-complete",
+      "results": [
+        {
+          "test": "restored-original-template-completes-real-Job",
+          "status": "PASS",
+          "observed": "Approved"
+        },
+        {
+          "test": "renderer-failure-retry-no-second-accounting",
+          "status": "PASS",
+          "observed": null
+        }
+      ],
+      "assertions": 2,
+      "failures": 0,
+      "executedOnExactFinalZip": true,
+      "observedAtUtc": "2026-10-20T01:31:13.688102+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "renderer-fail",
+      "results": [
+        {
+          "test": "book-colleague-2027-03-15",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "renderer-failure-operation-started",
+          "status": "PASS",
+          "observed": 200
+        }
+      ],
+      "assertions": 2,
+      "failures": 0,
+      "executedOnExactFinalZip": true,
+      "observedAtUtc": "2026-10-20T01:31:02.664133+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "renderer-retry",
+      "results": [
+        {
+          "test": "real-DOCX-template-failure-never-Approved",
+          "status": "PASS",
+          "observed": [
+            "ApprovalProcessing",
+            "Failed"
+          ]
+        },
+        {
+          "test": "renderer-failure-controlled-retry",
+          "status": "PASS",
+          "observed": 200
+        }
+      ],
+      "assertions": 2,
+      "failures": 0,
+      "executedOnExactFinalZip": true,
+      "observedAtUtc": "2026-10-20T01:31:04.640128+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "restart",
+      "results": [
+        {
+          "test": "worker-interruption-did-not-publish-Approved",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "interruption-keeps-tracked-first-file",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "interruption-keeps-balance-ledger",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "Running-job-not-overridden-by-business-timeout",
+          "status": "PASS",
+          "observed": 409
+        }
+      ],
+      "assertions": 4,
+      "failures": 0,
+      "executedOnExactFinalZip": false,
+      "observedAtUtc": "2026-10-20T01:16:15.614641+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "retried",
+      "results": [
+        {
+          "test": "retry-completes-all-DOCX-before-Approved",
+          "status": "PASS",
+          "observed": [
+            "Approved",
+            2
+          ]
+        },
+        {
+          "test": "retry-reuses-first-attachment-id",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "retry-no-extra-accounting",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "duplicate-native-Jobs-no-duplicate-documents",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "book-ui-2027-01-29",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "interruptible-real-job-scheduled",
+          "status": "PASS",
+          "observed": 200
+        }
+      ],
+      "assertions": 6,
+      "failures": 0,
+      "executedOnExactFinalZip": false,
+      "observedAtUtc": "2026-10-20T01:16:00.858682+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "security",
+      "results": [
+        {
+          "test": "receipt-retry-respects-revoked-document-FLS",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "receipt-does-not-leak-previous-document-IDs",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "internal-JSON-not-a-field-ACL-side-channel-manager",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "internal-JSON-not-a-field-ACL-side-channel-employee",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "revoked-document-FLS-applies-to-native-download",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "business-decider-not-system-worker",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "technical-author-trace-is-system",
+          "status": "PASS",
+          "observed": "system"
+        },
+        {
+          "test": "native-status-audit-includes-processing-and-approved",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "book-manager-2027-03-08",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "final-package-real-approval-started",
+          "status": "PASS",
+          "observed": 200
+        }
+      ],
+      "assertions": 10,
+      "failures": 0,
+      "executedOnExactFinalZip": true,
+      "observedAtUtc": "2026-10-20T01:28:43.448533+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "setup",
+      "results": [
+        {
+          "test": "profile-manager",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "profile-employee",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "profile-colleague",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "profile-nodoc",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "profile-noapproval",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "profile-ui",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "book-employee-2026-11-30",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "approval-ACL-employee",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "approval-ACL-colleague",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "approval-ACL-admin",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "approval-ACL-noapproval",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "concurrent-identical-approval-receipt",
+          "status": "PASS",
+          "observed": [
+            {
+              "status": 200,
+              "body": {
+                "id": "6ad6c08cbcafc31d5",
+                "assignedUserId": "6ad6c08aa2ee1d603",
+                "assignedUserName": "SnapshotFirst SnapshotLast employee",
+                "dateStartDate": "2026-11-30",
+                "dateEndDate": "2026-12-02",
+                "days": 2,
+                "status": "ApprovalProcessing",
+                "description": "PRIVATE real Stage6 approval",
+                "cancellationReason": null,
+                "accountingRevision": 2,
+                "approvalState": "Pending",
+                "approvalError": null,
+                "approvalAttempts": 0,
+                "approvalRetryAvailable": false,
+                "documents": [],
+                "duplicate": false
+              }
+            },
+            {
+              "status": 200,
+              "body": {
+                "id": "6ad6c08cbcafc31d5",
+                "assignedUserId": "6ad6c08aa2ee1d603",
+                "assignedUserName": "SnapshotFirst SnapshotLast employee",
+                "dateStartDate": "2026-11-30",
+                "dateEndDate": "2026-12-02",
+                "days": 2,
+                "status": "ApprovalProcessing",
+                "description": "PRIVATE real Stage6 approval",
+                "cancellationReason": null,
+                "accountingRevision": 2,
+                "approvalState": "Pending",
+                "approvalError": null,
+                "approvalAttempts": 0,
+                "approvalRetryAvailable": false,
+                "documents": [],
+                "duplicate": true
+              }
+            }
+          ]
+        },
+        {
+          "test": "Processing-persisted-before-worker",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "no-second-debit-on-initiation",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "one-native-job-under-concurrent-initiation",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "cannot-retry-live-Pending-job",
+          "status": "PASS",
+          "observed": 409
+        },
+        {
+          "test": "book-manager-2026-11-05",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "manager-self-approval-initiates-native-job",
+          "status": "PASS",
+          "observed": {
+            "status": 200,
+            "body": {
+              "id": "6ad6c08e86ad2df58",
+              "assignedUserId": "6ad6c08aa1a66da11",
+              "assignedUserName": "SnapshotFirst SnapshotLast manager",
+              "dateStartDate": "2026-11-05",
+              "dateEndDate": "2026-11-05",
+              "days": 1,
+              "status": "ApprovalProcessing",
+              "description": "PRIVATE real Stage6 approval",
+              "cancellationReason": null,
+              "accountingRevision": 2,
+              "approvalState": "Pending",
+              "approvalError": null,
+              "approvalAttempts": 0,
+              "approvalRetryAvailable": false,
+              "documents": [],
+              "duplicate": false
+            },
+            "raw": "{\"id\":\"6ad6c08e86ad2df58\",\"assignedUserId\":\"6ad6c08aa1a66da11\",\"assignedUserName\":\"SnapshotFirst SnapshotLast manager\",\"dateStartDate\":\"2026-11-05\",\"dateEndDate\":\"2026-11-05\",\"days\":1,\"status\":\"ApprovalProcessing\",\"description\":\"PRIVATE real Stage6 approval\",\"cancellationReason\":null,\"accountingRevision\":2,\"approvalState\":\"Pending\",\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}",
+            "reason": ""
+          }
+        },
+        {
+          "test": "book-nodoc-2026-11-06",
+          "status": "PASS",
+          "observed": 200
+        },
+        {
+          "test": "recipient-document-FLS-required",
+          "status": "PASS",
+          "observed": "The employee requires native read access to the request and approval documents."
+        },
+        {
+          "test": "manager-no-global-Jobs-access",
+          "status": "PASS",
+          "observed": 403
+        },
+        {
+          "test": "native-scheduling-rolls-back-atomically",
+          "status": "PASS",
+          "observed": null
+        }
+      ],
+      "assertions": 22,
+      "failures": 0,
+      "executedOnExactFinalZip": false,
+      "observedAtUtc": "2026-10-20T01:14:55.694859+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "phase": "smoke-complete",
+      "results": [
+        {
+          "test": "final-package-real-job-Approved-after-files",
+          "status": "PASS",
+          "observed": [
+            "Approved",
+            1
+          ]
+        },
+        {
+          "test": "final-package-no-second-accounting",
+          "status": "PASS",
+          "observed": null
+        },
+        {
+          "test": "final-package-native-private-download",
+          "status": "PASS",
+          "observed": 200
+        }
+      ],
+      "assertions": 3,
+      "failures": 0,
+      "executedOnExactFinalZip": true,
+      "observedAtUtc": "2026-10-20T01:28:45.428528+00:00"
+    }
+  ],
+  "assertions": 121,
+  "failures": 0
+}

@@ -1,0 +1,121 @@
+{
+  "testedPackageVersion": "0.6.0",
+  "finalPackageSha256": "0cdcb453fe7e96473313abbdd5722dae69dd6811cde0dd823c8cef3035d6f909",
+  "executedOnExactFinalZip": true,
+  "sourceFixtureOutput": "employee-stage6-browser-results.json",
+  "observedAtUtc": "2026-10-20T01:39:52.274390+00:00",
+  "results": [
+    {
+      "test": "manager-can-initiate-own-approval",
+      "status": "PASS"
+    },
+    {
+      "test": "real-approval-enters-Processing-in-UI",
+      "status": "PASS",
+      "observed": "ApprovalProcessing"
+    },
+    {
+      "test": "native-worker-polling-reveals-saved-document",
+      "status": "PASS"
+    },
+    {
+      "test": "Approved-only-after-document-visible",
+      "status": "PASS"
+    },
+    {
+      "test": "real-worker-error-visible-in-UI",
+      "status": "PASS"
+    },
+    {
+      "test": "partial-document-not-exposed-in-UI",
+      "status": "PASS"
+    },
+    {
+      "test": "authorized-controlled-retry-through-native-confirm",
+      "status": "PASS"
+    },
+    {
+      "test": "retry-UI-completes-all-month-documents",
+      "status": "PASS"
+    },
+    {
+      "test": "error-cleared-only-on-recovery",
+      "status": "PASS"
+    },
+    {
+      "test": "native-private-DOCX-download-browser",
+      "status": "PASS",
+      "observed": "Cerere concediu - ianuarie 2028.docx"
+    },
+    {
+      "test": "no-JS-errors-manager",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "employee-sees-own-generated-documents",
+      "status": "PASS"
+    },
+    {
+      "test": "employee-no-approval-or-retry-buttons",
+      "status": "PASS"
+    },
+    {
+      "test": "employee-native-download-authorized",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-employee",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "no-colleague-private-request-colleague",
+      "status": "PASS"
+    },
+    {
+      "test": "no-unauthorized-approval-actions-colleague",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-document-download-denied-colleague",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-JS-errors-colleague",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "no-colleague-private-request-noapproval",
+      "status": "PASS"
+    },
+    {
+      "test": "no-unauthorized-approval-actions-noapproval",
+      "status": "PASS"
+    },
+    {
+      "test": "direct-document-download-denied-noapproval",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-JS-errors-noapproval",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "technical-admin-business-route-denied",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-admin",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 25,
+  "failures": 0,
+  "fixtureVersion": "0.6.0"
+}

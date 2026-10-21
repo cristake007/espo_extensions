@@ -1,0 +1,152 @@
+{
+  "completedAtUtc": "2026-10-20T04:41:41.627906+00:00",
+  "environment": {
+    "isolation": "Docker employee-feasibility-20261020; synthetic users and data only",
+    "espoVersion": "10.0.1",
+    "phpVersion": "8.4.23",
+    "memoryLimit": "256M",
+    "browser": "Chromium via Playwright",
+    "actors": "active regular NON-ADMIN manager, employee, native Team manager; separate limited-ACL accounts"
+  },
+  "artifact": {
+    "path": "dist/employee-management-0.7.0.zip",
+    "sha256": "66632b66dfee1c7ab07f7e3996bd0e2a77fa3f78e75b4fc65028ab20595dfc2d",
+    "zipEntries": 170,
+    "crc": "PASS",
+    "installedRuntimeFilesCompared": 166,
+    "installedRuntimeMismatches": []
+  },
+  "suites": [
+    {
+      "suite": "functional-api",
+      "assertions": 21,
+      "failures": 0,
+      "evidence": "tests/evidence/functional-api.json",
+      "sha256": "86428b7d99153d3dbd4e62c5da4894e1036a9ad19f2f16380a4062fef4e931c0"
+    },
+    {
+      "suite": "functional-export-browser",
+      "assertions": 16,
+      "failures": 0,
+      "evidence": "tests/evidence/functional-export-browser.json",
+      "sha256": "972edca7d5a265f071c0feaca520b5076fdf68a8021f4612d0fe6cb99dda0f1d"
+    },
+    {
+      "suite": "functional-booking-browser",
+      "assertions": 20,
+      "failures": 0,
+      "evidence": "tests/evidence/functional-booking-browser.json",
+      "sha256": "2643d27f1164ee2083872052977a2194ebdcecc2f147295dbbc0101805f51d51"
+    },
+    {
+      "suite": "functional-regression-acl",
+      "assertions": 126,
+      "failures": 0,
+      "evidence": "tests/evidence/functional-regression-acl.json",
+      "sha256": "8d3e4114c89a7cc4719b72abbf6729e07b3047dd8b9b0ca3bdbb75ce25fc6299"
+    },
+    {
+      "suite": "functional-regression-administration",
+      "assertions": 120,
+      "failures": 0,
+      "evidence": "tests/evidence/functional-regression-administration.json",
+      "sha256": "a957a930cfd730f4b7b88b5273c17bbf278dd83e46577b4bb2ce73e62ec156da"
+    },
+    {
+      "suite": "functional-regression-holiday",
+      "assertions": 126,
+      "failures": 0,
+      "evidence": "tests/evidence/functional-regression-holiday.json",
+      "sha256": "f022a965f4825a29755cf6e1bf910d9f30ac261d9032832968e270830fd9398b"
+    },
+    {
+      "suite": "functional-regression-attendance",
+      "assertions": 74,
+      "failures": 0,
+      "evidence": "tests/evidence/functional-regression-attendance.json",
+      "sha256": "fdc791f65abb0030f7c218b105311c293491fbaec93688a339cfa4d06808174e"
+    },
+    {
+      "suite": "functional-regression-attendance-extra",
+      "assertions": 20,
+      "failures": 0,
+      "evidence": "tests/evidence/functional-regression-attendance-extra.json",
+      "sha256": "8ff7b35661d31356603b9e11c1fdf106c5f7862695921ce2c0b45e4e3f847472"
+    },
+    {
+      "suite": "functional-regression-attendance-browser",
+      "assertions": 26,
+      "failures": 0,
+      "evidence": "tests/evidence/functional-regression-attendance-browser.json",
+      "sha256": "0ee0b29fb0eb0bedadf8b82732fc01c8eb368abb0fa98103dca37f04cd8ea7a0"
+    },
+    {
+      "suite": "functional-regression-renderers",
+      "assertions": 13,
+      "failures": 0,
+      "evidence": "tests/evidence/functional-regression-renderers.json",
+      "sha256": "fabcdcd8c2422fdfe720ba1e74560b7720a7c23d66e06d75730d288c59950cf8"
+    }
+  ],
+  "structuredAssertions": 562,
+  "failures": 0,
+  "additionalChecks": [
+    "contract.py PASS: ZIP matches source; original hashes and native ACL invariants",
+    "reset-date-field.test.mjs: 2 PASS",
+    "navigation-lifecycle.php: 5 PASS",
+    "pdf-layout.php: PASS",
+    "PDF parser result: functional-pdf-validation.json"
+  ],
+  "limits": [
+    "Historical stage reports are not counted as rerun. No blanket claim of every production configuration.",
+    "Worker completion and document appearance verified after reload; no certification of automatic SPA view refresh.",
+    "Native Export=yes remains required and is never granted automatically."
+  ],
+  "originalExtensionsModified": false,
+  "companyInstallationModified": false,
+  "globalAdministratorGranted": false,
+  "stage8Started": false,
+  "generalInterfaceRedesigned": false,
+  "labConfigurationRestored": true,
+  "downloadedFiles": [
+    {
+      "path": "tests/evidence/functional-attendance.pdf",
+      "bytes": 1046245,
+      "sha256": "84441dca8c74adfa74b3b1ed0c08b1343d250cb38342f17b477e1918524df0b3"
+    },
+    {
+      "path": "tests/evidence/functional-attendance.xlsx",
+      "bytes": 213668,
+      "sha256": "6bea82378e4755c870bd6e61fb2ea28c5d24f5a619c0013113d8dca47f23ed6a"
+    },
+    {
+      "path": "tests/evidence/functional-approved-holiday.docx",
+      "bytes": 16349,
+      "sha256": "1520b02193a90946236228e9c19927064245ade1eaf8656523050874cdfb1fac"
+    }
+  ],
+  "pdfValidation": {
+    "evidence": "tests/evidence/functional-pdf-validation.json",
+    "pages": 77,
+    "assertions": 8,
+    "failures": 0,
+    "textSamplePageNumbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      77
+    ]
+  },
+  "structuredAssertionsIncludingPdfValidation": 570,
+  "labContainersStopped": [
+    "employee-feasibility-20261020-app-1",
+    "employee-feasibility-20261020-db-1",
+    "employee-feasibility-20261020-worker-1",
+    "employee-feasibility-20261020-browser-1"
+  ]
+}

@@ -1,0 +1,62 @@
+[
+    {
+        "route": "/EmployeeManagement/myAttendance",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\GetMyAttendance"
+    },
+    {
+        "route": "/EmployeeManagement/mark",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\PostMarkAttendance"
+    },
+    {
+        "route": "/EmployeeManagement/overview",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\GetAttendanceOverview"
+    },
+    {
+        "route": "/EmployeeManagement/overview/remind",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\PostAttendanceReminders"
+    },
+    {
+        "route": "/EmployeeManagement/schedules",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\GetAttendanceSchedules"
+    },
+    {
+        "route": "/EmployeeManagement/settings",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\GetAttendanceSettings"
+    },
+    {
+        "route": "/EmployeeManagement/settings",
+        "method": "put",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\PutAttendanceSettings"
+    },
+    {
+        "route": "/EmployeeManagement/settings/initialize",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\PostInitializeAttendanceArchive"
+    },
+    {
+        "route": "/EmployeeManagement/overview/schedule",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\PostAttendanceSchedule"
+    },
+    {
+        "route": "/EmployeeManagement/overview/mark",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\PostManagerAttendance"
+    },
+    {
+        "route": "/EmployeeManagement/overview/xlsx",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\PostAttendanceXlsx"
+    },
+    {
+        "route": "/EmployeeManagement/overview/pdf",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\PostAttendancePdf"
+    }
+]

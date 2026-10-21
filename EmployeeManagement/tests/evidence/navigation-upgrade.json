@@ -1,0 +1,74 @@
+{
+    "results": [
+        {
+            "test": "upgrade-preserves-otherTabs",
+            "status": "PASS"
+        },
+        {
+            "test": "upgrade-preserves-AdminRoute",
+            "status": "PASS"
+        },
+        {
+            "test": "upgrade-preserves-calendarView",
+            "status": "PASS"
+        },
+        {
+            "test": "upgrade-preserves-calendarEntityList",
+            "status": "PASS"
+        },
+        {
+            "test": "upgrade-preserves-employeeSettings",
+            "status": "PASS"
+        },
+        {
+            "test": "upgrade-preserves-Role",
+            "status": "PASS"
+        },
+        {
+            "test": "upgrade-preserves-User",
+            "status": "PASS"
+        },
+        {
+            "test": "upgrade-preserves-WorkingTimeCalendar",
+            "status": "PASS"
+        },
+        {
+            "test": "upgrade-preserves-WorkingTimeRange",
+            "status": "PASS"
+        },
+        {
+            "test": "upgrade-preserves-EmployeeHolidayProfile",
+            "status": "PASS"
+        },
+        {
+            "test": "upgrade-preserves-EmployeeHolidayLedger",
+            "status": "PASS"
+        },
+        {
+            "test": "upgrade-preserves-EmployeeHolidayRequest",
+            "status": "PASS"
+        },
+        {
+            "test": "upgrade-preserves-EmployeeAttendanceWorkSchedule",
+            "status": "PASS"
+        },
+        {
+            "test": "single-native-tab-EmployeeManagement",
+            "status": "PASS"
+        },
+        {
+            "test": "single-native-tab-EmployeeAttendance",
+            "status": "PASS"
+        },
+        {
+            "test": "single-native-tab-EmployeeAttendanceOverview",
+            "status": "PASS"
+        },
+        {
+            "test": "single-native-tab-EmployeeAdministration",
+            "status": "PASS"
+        }
+    ],
+    "assertions": 17,
+    "failures": 0
+}

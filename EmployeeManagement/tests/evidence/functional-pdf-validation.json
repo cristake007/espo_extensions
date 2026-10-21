@@ -1,0 +1,50 @@
+{
+  "results": [
+    {
+      "test": "readable-PDF-pages",
+      "status": "PASS"
+    },
+    {
+      "test": "native-WTC-11-17-in-PDF",
+      "status": "PASS"
+    },
+    {
+      "test": "manager-in-PDF",
+      "status": "PASS"
+    },
+    {
+      "test": "employee-in-PDF",
+      "status": "PASS"
+    },
+    {
+      "test": "sampled-pages-have-title",
+      "status": "PASS"
+    },
+    {
+      "test": "first-page-number",
+      "status": "PASS"
+    },
+    {
+      "test": "last-page-number",
+      "status": "PASS"
+    },
+    {
+      "test": "A4-portrait",
+      "status": "PASS"
+    }
+  ],
+  "pages": 77,
+  "textSamplePageNumbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    77
+  ],
+  "assertions": 8,
+  "failures": 0
+}

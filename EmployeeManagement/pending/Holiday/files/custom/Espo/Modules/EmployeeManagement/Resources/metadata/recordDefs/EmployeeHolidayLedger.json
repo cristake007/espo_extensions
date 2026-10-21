@@ -1,0 +1,18 @@
+{
+    "beforeCreateHookClassNameList": [
+        "Espo\\Modules\\EmployeeManagement\\Classes\\Record\\Hooks\\EmployeeHolidayLedger\\BeforeCreate"
+    ],
+    "beforeUpdateHookClassNameList": [
+        "Espo\\Modules\\EmployeeManagement\\Classes\\Record\\Hooks\\EmployeeHolidayLedger\\BeforeUpdate"
+    ],
+    "beforeDeleteHookClassNameList": [
+        "Espo\\Modules\\EmployeeManagement\\Classes\\Record\\Hooks\\EmployeeHolidayLedger\\BeforeDelete"
+    ],
+    "massActions": {
+        "update": {"disabled": true},
+        "delete": {"disabled": true}
+    },
+    "actions": {
+        "merge": {"disabled": true}
+    }
+}

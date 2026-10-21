@@ -1,0 +1,290 @@
+{
+    "transactionalSave": true,
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "readOnly": true
+        },
+        "dateStart": {
+            "type": "datetimeOptional",
+            "utility": true,
+            "readOnly": true
+        },
+        "dateEnd": {
+            "type": "datetimeOptional",
+            "utility": true,
+            "after": "dateStart",
+            "readOnly": true
+        },
+        "dateStartDate": {
+            "type": "date",
+            "required": true,
+            "audited": true,
+            "useNumericFormat": true,
+            "readOnly": true
+        },
+        "dateEndDate": {
+            "type": "date",
+            "required": true,
+            "audited": true,
+            "useNumericFormat": true,
+            "after": "dateStartDate",
+            "afterOrEqual": true,
+            "readOnly": true
+        },
+        "days": {
+            "type": "int",
+            "required": true,
+            "readOnly": true,
+            "default": 0
+        },
+        "status": {
+            "type": "enum",
+            "options": [
+                "Pending",
+                "ApprovalProcessing",
+                "Approved",
+                "Rejected",
+                "CancellationPending",
+                "Cancelled"
+            ],
+            "default": "Pending",
+            "required": true,
+            "readOnly": true,
+            "audited": true,
+            "style": {
+                "Pending": "warning",
+                "Approved": "success",
+                "Rejected": "danger",
+                "CancellationPending": "warning",
+                "Cancelled": "default",
+                "ApprovalProcessing": "warning"
+            }
+        },
+        "decidedBy": {
+            "type": "link",
+            "entity": "User",
+            "readOnly": true,
+            "audited": true
+        },
+        "decidedAt": {
+            "type": "datetime",
+            "readOnly": true,
+            "audited": true
+        },
+        "cancellationReason": {
+            "type": "text",
+            "readOnly": true,
+            "audited": true
+        },
+        "cancellationRequestedBy": {
+            "type": "link",
+            "entity": "User",
+            "readOnly": true,
+            "audited": true
+        },
+        "cancellationRequestedAt": {
+            "type": "datetime",
+            "readOnly": true,
+            "audited": true
+        },
+        "cancellationDecidedBy": {
+            "type": "link",
+            "entity": "User",
+            "readOnly": true,
+            "audited": true
+        },
+        "cancellationDecidedAt": {
+            "type": "datetime",
+            "readOnly": true,
+            "audited": true
+        },
+        "description": {
+            "type": "text",
+            "readOnly": true
+        },
+        "approvalDocuments": {
+            "type": "attachmentMultiple",
+            "readOnly": true,
+            "accept": [
+                ".docx"
+            ],
+            "maxCount": 13
+        },
+        "assignedUser": {
+            "type": "link",
+            "entity": "User",
+            "required": true,
+            "readOnly": true
+        },
+        "profile": {
+            "type": "link",
+            "entity": "EmployeeHolidayProfile",
+            "required": true,
+            "readOnly": true
+        },
+        "color": {
+            "type": "foreign",
+            "link": "profile",
+            "field": "calendarColor",
+            "readOnly": true
+        },
+        "accountingKey": {
+            "type": "varchar",
+            "maxLength": 64,
+            "required": true,
+            "readOnly": true
+        },
+        "accountingRevision": {
+            "type": "int",
+            "required": true,
+            "readOnly": true,
+            "default": 1,
+            "audited": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true
+        },
+        "calculationSnapshot": {
+            "type": "jsonObject",
+            "readOnly": true
+        },
+        "operationReceipts": {
+            "type": "jsonObject",
+            "readOnly": true
+        },
+        "creationHash": {
+            "type": "varchar",
+            "maxLength": 64,
+            "readOnly": true
+        },
+        "approvalSnapshot": {
+            "type": "jsonObject",
+            "readOnly": true
+        },
+        "approvalManifest": {
+            "type": "jsonObject",
+            "readOnly": true
+        },
+        "approvalOperationKey": {
+            "type": "varchar",
+            "readOnly": true,
+            "maxLength": 64
+        },
+        "approvalToken": {
+            "type": "varchar",
+            "readOnly": true,
+            "maxLength": 64
+        },
+        "approvalJobId": {
+            "type": "varchar",
+            "readOnly": true,
+            "maxLength": 64
+        },
+        "approvalRevision": {
+            "type": "int",
+            "readOnly": true,
+            "default": 0
+        },
+        "approvalAttempts": {
+            "type": "int",
+            "readOnly": true,
+            "default": 0
+        },
+        "approvalState": {
+            "type": "enum",
+            "readOnly": true,
+            "options": [
+                "Pending",
+                "Processing",
+                "Failed",
+                "Completed"
+            ],
+            "audited": true
+        },
+        "approvalError": {
+            "type": "text",
+            "readOnly": true
+        },
+        "approvalStaging": {
+            "type": "attachmentMultiple",
+            "readOnly": true
+        }
+    },
+    "links": {
+        "assignedUser": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "profile": {
+            "type": "belongsTo",
+            "entity": "EmployeeHolidayProfile"
+        },
+        "decidedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "cancellationRequestedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "cancellationDecidedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "dateStartDate",
+        "order": "desc",
+        "textFilterFields": [
+            "name",
+            "description"
+        ]
+    },
+    "indexes": {
+        "assignedUserRange": {
+            "columns": [
+                "assignedUserId",
+                "dateStartDate",
+                "dateEndDate",
+                "deleted"
+            ]
+        },
+        "profileRange": {
+            "columns": [
+                "profileId",
+                "dateStartDate",
+                "dateEndDate",
+                "deleted"
+            ]
+        },
+        "accountingKeyUnique": {
+            "unique": true,
+            "columns": [
+                "accountingKey"
+            ]
+        }
+    }
+}

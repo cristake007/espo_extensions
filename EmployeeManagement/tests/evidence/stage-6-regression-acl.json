@@ -1,0 +1,653 @@
+{
+  "testedPackageVersion": "0.6.0",
+  "finalPackageSha256": "0cdcb453fe7e96473313abbdd5722dae69dd6811cde0dd823c8cef3035d6f909",
+  "executedOnExactFinalZip": true,
+  "sourceFixtureOutput": "employee-stage1-api-results.json",
+  "observedAtUtc": "2026-10-20T01:33:57.491614+00:00",
+  "results": [
+    {
+      "test": "authenticated-owner",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "authenticated-manager",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "authenticated-colleague",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "authenticated-denied",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "authenticated-unconfigured",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "metadata-owner-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "ownership-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "not-calendar-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "own-read-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "colleague-private-id-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "denied-private-id-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "unconfigured-private-id-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "manager-read-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "own-list-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "test": "no-mutation-owner-POST-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-owner-PUT-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-owner-DELETE-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-manager-POST-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-manager-PUT-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-manager-DELETE-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-admin-POST-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-admin-PUT-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-admin-DELETE-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-update-em_stage1_manager-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-delete-em_stage1_manager-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-export-em_stage1_manager-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-update-admin-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-delete-admin-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-export-admin-EmployeeAttendanceRecord",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "metadata-owner-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "ownership-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "not-calendar-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "own-read-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "colleague-private-id-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "denied-private-id-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "unconfigured-private-id-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "manager-read-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "own-list-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "test": "no-mutation-owner-POST-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-owner-PUT-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-owner-DELETE-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-manager-POST-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-manager-PUT-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-manager-DELETE-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-admin-POST-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-admin-PUT-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-admin-DELETE-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-update-em_stage1_manager-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-delete-em_stage1_manager-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-export-em_stage1_manager-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-update-admin-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-delete-admin-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-export-admin-EmployeeHolidayRequest",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "metadata-owner-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "ownership-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "not-calendar-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "own-read-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "colleague-private-id-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "denied-private-id-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "unconfigured-private-id-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "manager-read-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "own-list-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "test": "no-mutation-owner-POST-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-owner-PUT-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-owner-DELETE-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-manager-POST-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-manager-PUT-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-manager-DELETE-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-admin-POST-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-admin-PUT-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-admin-DELETE-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-update-em_stage1_manager-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-delete-em_stage1_manager-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-export-em_stage1_manager-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-update-admin-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-delete-admin-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-export-admin-EmployeeHolidayProfile",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "metadata-owner-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "ownership-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "not-calendar-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "own-read-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "colleague-private-id-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "denied-private-id-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "unconfigured-private-id-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "manager-read-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "own-list-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "test": "no-mutation-owner-POST-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-owner-PUT-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-owner-DELETE-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-manager-POST-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-manager-PUT-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-manager-DELETE-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-admin-POST-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-admin-PUT-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mutation-admin-DELETE-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-update-em_stage1_manager-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-delete-em_stage1_manager-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-export-em_stage1_manager-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-update-admin-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-mass-delete-admin-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-export-admin-EmployeeHolidayLedger",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "workspace-workspace-owner",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "workspace-administration-owner",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "workspace-workspace-manager",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "workspace-administration-manager",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "workspace-workspace-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "workspace-administration-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "workspace-workspace-denied",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "workspace-administration-denied",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "workspace-workspace-unconfigured",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "workspace-administration-unconfigured",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-relationship-mutation-manager-POST",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-relationship-mutation-manager-DELETE",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-relationship-mutation-admin-POST",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-relationship-mutation-admin-DELETE",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-private-related-list",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "P2-private-note-not-returned",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "private-download-owner",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "private-download-manager",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "private-download-colleague",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "private-download-denied",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "original-data-unchanged-AttendanceRecord",
+      "status": "PASS",
+      "observed": 0
+    },
+    {
+      "test": "original-data-unchanged-AttendanceWorkSchedule",
+      "status": "PASS",
+      "observed": 0
+    },
+    {
+      "test": "original-data-unchanged-HolidayRequest",
+      "status": "PASS",
+      "observed": 2
+    },
+    {
+      "test": "original-data-unchanged-HolidayProfile",
+      "status": "PASS",
+      "observed": 2
+    },
+    {
+      "test": "original-data-unchanged-HolidayLedger",
+      "status": "PASS",
+      "observed": 1
+    }
+  ],
+  "assertions": 126,
+  "failures": 0
+}

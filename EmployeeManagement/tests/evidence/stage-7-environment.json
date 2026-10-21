@@ -1,0 +1,48 @@
+{
+  "observedOn": "2026-10-20",
+  "dockerProject": "employee-feasibility-20261020",
+  "compose": "/tmp/employee-feasibility-20261020-yDmmnL/compose.yaml",
+  "siteUrl": "http://127.0.0.1:18089",
+  "espo": "10.0.1",
+  "php": "8.4.23",
+  "database": "12.3.2-MariaDB-ubu2404",
+  "originalExtensions": {
+    "Attendance Management": "1.11.0",
+    "Holiday Management": "1.9.4",
+    "Zile Sărbătoare": "0.9.5"
+  },
+  "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+  "appCheck": {
+    "migrationNotNeeded": true,
+    "databaseOk": true,
+    "notInMaintenance": true,
+    "cronEnabled": true
+  },
+  "cleanup": {
+    "remainingFaultTriggers": 0,
+    "temporaryCustomCalendarOverrideExists": false,
+    "calendarEntityListRestored": true,
+    "annualFlagRestoredFalse": true,
+    "annualScheduleRestored": "5 0 * * *",
+    "labStoppedVolumesRetained": true
+  },
+  "calendarTestQualification": "Legacy Holiday overrides the actual Zile calendar view. A temporary lab-only Custom metadata overlay selected byte-identical original Zile view metadata for the Zile browser run. An unsupported old FeasibilityAbsence probe was temporarily excluded from native Calendar list. Both lab-only changes restored before lifecycle baseline. No Calendar override in EmployeeManagement package.",
+  "companyContainersReadOnlyInspected": {
+    "espocrm": {
+      "id": "2b50b998f3f0d0dcb7b106ffe6440a9ddfec234461cbaeab4fd288754d0e7574",
+      "startedAt": "2026-10-19T10:00:12.604635732Z"
+    },
+    "espocrm-daemon": {
+      "id": "f61631ee6f8e78337342aa0413724ac2060e2b87ce64016442ccdbb23c249450",
+      "startedAt": "2026-10-19T10:00:18.536468117Z"
+    },
+    "espocrm-websocket": {
+      "id": "81788952dd3fd7fbded4cb2c984e0a4f0db6cdb9a709a0ddc6e2e2e37072b355",
+      "startedAt": "2026-10-19T10:00:18.321696139Z"
+    },
+    "espocrm-db": {
+      "id": "5b68370c7445b577c8e8707e86d299e2dc598e31a1b454ef360022d85bd6e01b",
+      "startedAt": "2026-10-19T10:00:02.427297612Z"
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "results": [
+    {
+      "test": "noexport-keeps-native-ACL",
+      "status": "PASS"
+    },
+    {
+      "test": "disabled-PDF-explains-native-permission",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-noexport",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "PDF-actor-active-regular-native-export",
+      "status": "PASS"
+    },
+    {
+      "test": "WTC-shows-real-native-11-17",
+      "status": "PASS"
+    },
+    {
+      "test": "WTC-shows-split-native-ranges",
+      "status": "PASS"
+    },
+    {
+      "test": "WTC-shows-native-exception",
+      "status": "PASS"
+    },
+    {
+      "test": "pdf-download-http",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "pdf-download-completed",
+      "status": "PASS",
+      "observed": "Condica de prezenta_Octombrie 2026.pdf"
+    },
+    {
+      "test": "pdf-download-valid-file",
+      "status": "PASS",
+      "observed": {
+        "bytes": 1046245,
+        "filename": "Condica de prezenta_Octombrie 2026.pdf",
+        "sha256": "84441dca8c74adfa74b3b1ed0c08b1343d250cb38342f17b477e1918524df0b3"
+      }
+    },
+    {
+      "test": "PDF-all-original-seven-employee-pages",
+      "status": "PASS"
+    },
+    {
+      "test": "xlsx-download-http",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "xlsx-download-completed",
+      "status": "PASS",
+      "observed": "Condica de prezenta_Octombrie 2026.xlsx"
+    },
+    {
+      "test": "xlsx-download-valid-file",
+      "status": "PASS",
+      "observed": {
+        "bytes": 213668,
+        "filename": "Condica de prezenta_Octombrie 2026.xlsx",
+        "sha256": "6bea82378e4755c870bd6e61fb2ea28c5d24f5a619c0013113d8dca47f23ed6a"
+      }
+    },
+    {
+      "test": "no-redundant-approver-field",
+      "status": "PASS"
+    },
+    {
+      "test": "settings-save-without-approver-list",
+      "status": "PASS"
+    }
+  ],
+  "assertions": 16,
+  "failures": 0
+}

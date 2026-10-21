@@ -1,0 +1,617 @@
+{
+  "testedPackageVersion": "0.6.0",
+  "finalPackageSha256": "0cdcb453fe7e96473313abbdd5722dae69dd6811cde0dd823c8cef3035d6f909",
+  "executedOnExactFinalZip": true,
+  "sourceFixtureOutput": "employee-stage3-regression-administration-results.json",
+  "observedAtUtc": "2026-10-20T01:38:35.078647+00:00",
+  "results": [
+    {
+      "test": "auth-manager",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-manager-attendance",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-manager-holiday",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-manager-profiles",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "auth-attendance",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-attendance-attendance",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-attendance-holiday",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-attendance-profiles",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "auth-holiday",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-holiday-attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-holiday-holiday",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-holiday-profiles",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "auth-profiles",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-profiles-attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-profiles-holiday",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-profiles-profiles",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "auth-entry",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-entry-attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-entry-holiday",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-entry-profiles",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "auth-noentry",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-noentry-attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-noentry-holiday",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-noentry-profiles",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "auth-weak",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-weak-attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-weak-holiday",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-weak-profiles",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "auth-fls",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-fls-attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-fls-holiday",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-fls-profiles",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "auth-employee",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "section-employee-attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-employee-holiday",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-employee-profiles",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-admin-attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-admin-holiday",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "section-admin-profiles",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "attendance-save",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "attendance-deny-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "attendance-deny-em_stage2_employee",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "attendance-deny-em_stage2_entry",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "attendance-deny-em_stage2_noentry",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "attendance-deny-em_stage2_holiday",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "attendance-invalid-siteUrl",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "attendance-invalid-workingTimeCalendarId",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "attendance-invalid-editablePastMonths",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "attendance-invalid-editablePastMonths",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "attendance-invalid-allowIncompleteExports",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "attendance-invalid-archiveStartMonth",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "holiday-save",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "holiday-deny-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "holiday-deny-em_stage2_employee",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "holiday-deny-em_stage2_attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "holiday-deny-em_stage2_entry",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "holiday-invalid-siteUrl",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "holiday-invalid-employeeHolidayApproversNames",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "holiday-invalid-employeeHolidayApproversIds",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "holiday-invalid-employeeHolidayApproversIds",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "holiday-invalid-employeeHolidayApproversIds",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "holiday-invalid-employeeHolidayAutomaticAnnualGrantEnabled",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "holiday-invalid-employeeHolidayResetDate",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "holiday-invalid-employeeHolidayApprovalBlock1Name",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "holiday-invalid-employeeHolidayAnnualEntitlementDays",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "approver-options-only-native-authorized",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "profile-population-regular-active",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "profile-mutation-deny-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "profile-mutation-deny-em_stage2_employee",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "profile-mutation-deny-em_stage2_attendance",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "profile-mutation-deny-em_stage2_entry",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "profile-mutation-deny-em_stage2_weak",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "profile-mutation-deny-em_stage2_fls",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "initialize-profile",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "initialize-retry-idempotent",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "one-initialization-ledger",
+      "status": "PASS",
+      "observed": 1
+    },
+    {
+      "test": "idempotency-payload-conflict",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "idempotency-cross-user-conflict",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "profile-parameter-update-not-balance",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "opening-cannot-correct-balance",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "ineligible-beneficiary-6ad68f1adbd22a644",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "ineligible-beneficiary-6ad69f093118a694f",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "invalid-batch-rollback-response",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "invalid-batch-no-partial-profile",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "invalid-batch-no-partial-ledger",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "invalid-profile-payload",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "invalid-profile-payload",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "invalid-profile-payload",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "unimplemented-operation-blocked-correct",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "unimplemented-operation-blocked-reset",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "unimplemented-operation-blocked-decision",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "zero-profile-initialize",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "setup-nonfinite-input-is-bad-request",
+      "status": "PASS",
+      "observed": 400
+    },
+    {
+      "test": "setup-deny-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "setup-deny-em_stage2_employee",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "setup-deny-em_stage2_entry",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "setup-deny-em_stage2_weak",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "preserved-complete-initial-setup",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "setup-retry-idempotent",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "setup-single-ledger",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "setup-not-a-balance-correction",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "generic-profile-write-blocked-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "generic-profile-write-blocked-em_stage2_manager",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "generic-profile-write-blocked-em_stage2_profiles",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "private-profile-id-blocked",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-platform-escalation-Settings",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-platform-escalation-Role",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-platform-escalation-WorkingTimeCalendar",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "global-site-url-unchanged",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-and-WTC-unchanged-AttendanceRecord",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-and-WTC-unchanged-AttendanceWorkSchedule",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-and-WTC-unchanged-HolidayRequest",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-and-WTC-unchanged-HolidayProfile",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-and-WTC-unchanged-HolidayLedger",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-and-WTC-unchanged-WorkingTimeCalendar",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-and-WTC-unchanged-WorkingTimeRange",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "parallel-initialization-responses",
+      "status": "PASS",
+      "observed": [
+        200,
+        200
+      ]
+    },
+    {
+      "test": "parallel-initialization-one-duplicate",
+      "status": "PASS",
+      "observed": [
+        false,
+        true
+      ]
+    },
+    {
+      "test": "parallel-initialization-single-ledger",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "parallel-initialization-single-profile",
+      "status": "PASS",
+      "observed": null
+    }
+  ],
+  "assertions": 120,
+  "failures": 0
+}

@@ -1,0 +1,140 @@
+{
+  "status": "PASS",
+  "test": "stage5-replacement-rebuild-retains-profiles-ledger-settings-roles-and-originals",
+  "state": {
+    "tabList": [
+      {
+        "type": "divider",
+        "id": "342567",
+        "text": "$CRM"
+      },
+      "Account",
+      "Contact",
+      "Lead",
+      "Opportunity",
+      {
+        "type": "divider",
+        "text": "$Activities",
+        "id": "219419"
+      },
+      "Email",
+      "Meeting",
+      "Call",
+      "Task",
+      "Calendar",
+      {
+        "type": "divider",
+        "id": "655187",
+        "text": "$Support"
+      },
+      "Case",
+      "KnowledgeBaseArticle",
+      {
+        "type": "divider",
+        "text": null,
+        "id": "137994"
+      },
+      "_delimiter_",
+      {
+        "type": "divider",
+        "text": "$Marketing",
+        "id": "463280"
+      },
+      "Campaign",
+      "TargetList",
+      {
+        "type": "divider",
+        "text": "$Business",
+        "id": "518202"
+      },
+      "Document",
+      {
+        "type": "divider",
+        "text": "$Organization",
+        "id": "566592"
+      },
+      "User",
+      "Team",
+      "WorkingTimeCalendar",
+      {
+        "type": "divider",
+        "text": null,
+        "id": "898671"
+      },
+      "EmailTemplate",
+      "Template",
+      "Import",
+      "HolidayRequest",
+      "HolidayOverview",
+      "Attendance",
+      "AttendanceOverview"
+    ],
+    "calendarEntityList": [
+      "Meeting",
+      "Call",
+      "Task",
+      "ZileLibere",
+      "HolidayRequest",
+      "FeasibilityAbsence"
+    ],
+    "globalAdminRoute": {
+      "params": {
+        "controller": "attendance-management:controllers/schedule-settings",
+        "action": "index"
+      },
+      "order": -100
+    },
+    "globalCalendarView": "holiday-management:views/calendar/calendar",
+    "counts": {
+      "AttendanceRecord": 0,
+      "AttendanceWorkSchedule": 0,
+      "HolidayRequest": 2,
+      "HolidayProfile": 2,
+      "HolidayLedger": 1,
+      "EmployeeAttendanceRecord": 2556,
+      "EmployeeAttendanceWorkSchedule": 16,
+      "EmployeeAttendanceMonth": 4,
+      "EmployeeHolidayRequest": 143,
+      "EmployeeHolidayProfile": 155,
+      "EmployeeHolidayLedger": 417,
+      "WorkingTimeCalendar": 37,
+      "WorkingTimeRange": 20
+    },
+    "originalExtensions": {
+      "Attendance Management": "1.11.0",
+      "Holiday Management": "1.9.4",
+      "Zile Sărbătoare": "0.9.5"
+    },
+    "employeeManagementVersion": "0.5.0",
+    "employeeSettings": {
+      "employeeAttendanceEditablePastMonths": 2,
+      "employeeAttendanceAllowIncompleteExports": true,
+      "employeeAttendanceArchiveStartMonth": "2026-09",
+      "employeeHolidayAnnualEntitlementDays": 21,
+      "employeeHolidayResetDate": "2027-01-01",
+      "employeeHolidayAutomaticAnnualGrantEnabled": false,
+      "employeeHolidayCarryOverLimitDays": 90,
+      "employeeHolidayNegativeBalanceLimitDays": -21,
+      "employeeHolidayApproversIds": [
+        "6ad69f0923a0afa13"
+      ],
+      "employeeHolidayApprovalBlock1Title": "Stage2 Director",
+      "employeeHolidayApprovalBlock1Name": "Synthetic Manager",
+      "employeeHolidayApprovalBlock2Title": "",
+      "employeeHolidayApprovalBlock2Name": ""
+    },
+    "dataHashes": {
+      "EmployeeAttendanceRecord": "80e5b08969e864bbf3594fcaac79297dca35a85c05ca72955a926cd568321ed7",
+      "EmployeeAttendanceWorkSchedule": "7912dbd430d128c8536d5730968e8323cccda38cee2dbd23c3829d7afdd89d3c",
+      "EmployeeAttendanceMonth": "dab58d3cdf2d9cbb2c1062c06cdaaacff3a28253454da5418dbfdc752a476633",
+      "EmployeeHolidayRequest": "af96c77114b4c2359740f2e24644fc69b8d12f411927d85b767c429bdd5e03b0",
+      "EmployeeHolidayProfile": "ed3fc6f7a6e29ce08fe563fca790ee6f1043d530fc6bcfa7c3769e58430497cf",
+      "EmployeeHolidayLedger": "443004f5fdb6dec2bef79cab7465bc3b6cc9b3a2ecf58fb2bceeb9ebf87c9fb9",
+      "Notification": "5188a9afd037753be2829f4bbe0f276f763dac515ef4110538818f2a71ba6f54",
+      "Role": "b22b52e5a75d5efb7e24c181f97d4bbe134733c106cc945b51f1d58b2fb55736"
+    }
+  },
+  "testedPackageVersion": "0.5.0",
+  "packageSha256": "b7fd301ac44c98e2a4fc2f88a7f9dd4a71d40acbec480d5f993ab1291c0d66d5",
+  "fixtureSourceResult": "employee-stage5-lifecycle-results.json"
+}

@@ -1,0 +1,4 @@
+{
+    "controller": "employee-management:controllers/attendance-overview",
+    "iconClass": "fas fa-users"
+}

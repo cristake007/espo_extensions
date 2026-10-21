@@ -1,0 +1,19 @@
+{
+  "version": "0.7.1",
+  "builtAtUtc": "2026-10-20T04:45:30.022174+00:00",
+  "command": "bash ./build.sh --extension ./EmployeeManagement --zip 0.7.1 files scripts",
+  "harness": "/opt/espo_extensions/build.sh",
+  "artifact": "/opt/espo_extensions/dist/employee-management-0.7.1.zip",
+  "sha256": "a057fc6cb3a0236eda4e5a1d0ed4dbafccbc61bcd21169101ce28369bda548da",
+  "crc": "PASS",
+  "sourceParity": "PASS",
+  "packagedFiles": 170,
+  "changesFromTested070": [
+    "README.md",
+    "files/custom/Espo/Modules/EmployeeManagement/Tools/Workspace/Api/GetStatus.php",
+    "manifest.json"
+  ],
+  "runtimeChange": "Workspace status version only; business logic identical to tested 0.7.0",
+  "validation": "Repository harness JSON/PHP/module validation and tests/contract.py PASS",
+  "functionalTestsRerun": false
+}

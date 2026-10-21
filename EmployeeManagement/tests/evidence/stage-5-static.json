@@ -1,0 +1,9 @@
+{
+  "testedPackageVersion": "0.5.0",
+  "packageSha256": "b7fd301ac44c98e2a4fc2f88a7f9dd4a71d40acbec480d5f993ab1291c0d66d5",
+  "phpLintAndMetadata": {"status": "PASS", "command": "bash build.sh --extension EmployeeManagement --validate", "phpFiles": 32},
+  "javascriptSyntax": {"status": "PASS", "command": "node --check on every runtime .js", "files": 21},
+  "contract": {"status": "PASS", "command": "python3 EmployeeManagement/tests/contract.py", "originalImportsPreserved": 175, "originalRuntimeAndLifecycleFiles": 196, "stage5TargetedAdaptations": 3, "zipMembersByteIdenticalToSource": true},
+  "annualDateRegression": {"status": "PASS", "command": "node EmployeeManagement/tests/regression/reset-date-field.test.mjs", "assertions": 2, "failures": 0},
+  "zipDiffFrom040": {"addedRuntimeFiles": 1, "changedExistingRuntimeFiles": 5, "removedMembers": 0, "frontendFilesUnchanged": 21, "renderersUnchanged": ["AttendancePdfGenerator.php", "AttendanceXlsxGenerator.php", "HolidayDocumentGenerator.php"]}
+}

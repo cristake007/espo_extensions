@@ -1,0 +1,34 @@
+{
+    "labels": {
+        "My Holiday": "Concediul meu",
+        "Holiday Approvals": "Aprobări concedii",
+        "HolidayProfileManagement": "Administrare profiluri de concediu",
+        "HolidayRequestManagement": "Responsabil concedii",
+        "HolidayBalanceCorrection": "Corectare sold concediu",
+        "EmployeeManagementSettings": "Setări administrare concedii",
+        "HolidayOverview": "Situație concedii"
+    },
+    "scopeNames": {
+        "EmployeeHolidayRequest": "Concediu",
+        "EmployeeHolidayProfile": "Profil de concediu",
+        "EmployeeHolidayLedger": "Registru de concedii",
+        "HolidayProfileManagement": "Administrare profiluri de concediu",
+        "HolidayRequestManagement": "Responsabil concedii",
+        "HolidayBalanceCorrection": "Corectare sold concediu",
+        "EmployeeManagementSettings": "Setări administrare concedii",
+        "HolidayOverview": "Situație concedii"
+    },
+    "scopeNamesPlural": {
+        "EmployeeHolidayRequest": "Concedii",
+        "EmployeeHolidayProfile": "Profiluri de concediu",
+        "EmployeeHolidayLedger": "Înregistrări în registrul de concedii",
+        "HolidayProfileManagement": "Administrare profiluri de concediu",
+        "HolidayRequestManagement": "Responsabil concedii",
+        "HolidayBalanceCorrection": "Corectare sold concediu",
+        "EmployeeManagementSettings": "Setări administrare concedii",
+        "HolidayOverview": "Situație concedii"
+    },
+    "dashlets": {
+        "HolidayApprovals": "Aprobări concedii"
+    }
+}

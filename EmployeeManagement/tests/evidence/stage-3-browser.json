@@ -1,0 +1,133 @@
+{
+  "results": [
+    {
+      "test": "no-premature-approve-ui",
+      "status": "PASS"
+    },
+    {
+      "test": "booking-button-native-scope-ui",
+      "status": "PASS"
+    },
+    {
+      "test": "manager-booking-native-scope-ui",
+      "status": "PASS"
+    },
+    {
+      "test": "reused-booking-modal-create",
+      "status": "PASS",
+      "observed": "{\"id\":\"6ad6ab7c86e070b58\",\"assignedUserId\":\"6ad6ab51e0a345158\",\"assignedUserName\":\"Synthetic Stage3 ui\",\"dateStartDate\":\"2026-11-23\",\"dateEndDate\":\"2026-11-24\",\"days\":2,\"status\":\"Pending\",\"description\":\"PRIVATE browser Holiday request\",\"cancellationReason\":null,\"accountingRevision\":1,\"duplicate\":false}"
+    },
+    {
+      "test": "native-date-input-requested-interval",
+      "status": "PASS",
+      "observed": {
+        "id": "6ad6ab7c86e070b58",
+        "assignedUserId": "6ad6ab51e0a345158",
+        "assignedUserName": "Synthetic Stage3 ui",
+        "dateStartDate": "2026-11-23",
+        "dateEndDate": "2026-11-24",
+        "days": 2,
+        "status": "Pending",
+        "description": "PRIVATE browser Holiday request",
+        "cancellationReason": null,
+        "accountingRevision": 1,
+        "duplicate": false
+      }
+    },
+    {
+      "test": "private-request-rendered",
+      "status": "PASS"
+    },
+    {
+      "test": "reused-booking-modal-update",
+      "status": "PASS"
+    },
+    {
+      "test": "withdraw-through-native-confirm",
+      "status": "PASS"
+    },
+    {
+      "test": "withdraw-history-retained",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-ui",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "no-premature-approve-manager",
+      "status": "PASS"
+    },
+    {
+      "test": "booking-button-native-scope-manager",
+      "status": "PASS"
+    },
+    {
+      "test": "manager-booking-native-scope-manager",
+      "status": "PASS"
+    },
+    {
+      "test": "authorized-queue-visible",
+      "status": "PASS"
+    },
+    {
+      "test": "authorized-queue-includes-employees",
+      "status": "PASS"
+    },
+    {
+      "test": "reject-ui-atomic",
+      "status": "PASS"
+    },
+    {
+      "test": "original-correction-modal-ui",
+      "status": "PASS"
+    },
+    {
+      "test": "original-history-modal-ui",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-manager",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "no-premature-approve-nobook",
+      "status": "PASS"
+    },
+    {
+      "test": "booking-button-native-scope-nobook",
+      "status": "PASS"
+    },
+    {
+      "test": "manager-booking-native-scope-nobook",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-nobook",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "direct-private-workspace-denied-noentry",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-noentry",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "direct-private-workspace-denied-admin",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-admin",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 27,
+  "failures": 0
+}

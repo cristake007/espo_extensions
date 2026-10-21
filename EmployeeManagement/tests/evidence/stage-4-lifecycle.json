@@ -1,0 +1,136 @@
+{
+    "status": "PASS",
+    "test": "stage4-replacement-rebuild-retains-profiles-ledger-settings-roles-and-originals",
+    "state": {
+        "tabList": [
+            {
+                "type": "divider",
+                "id": "342567",
+                "text": "$CRM"
+            },
+            "Account",
+            "Contact",
+            "Lead",
+            "Opportunity",
+            {
+                "type": "divider",
+                "text": "$Activities",
+                "id": "219419"
+            },
+            "Email",
+            "Meeting",
+            "Call",
+            "Task",
+            "Calendar",
+            {
+                "type": "divider",
+                "id": "655187",
+                "text": "$Support"
+            },
+            "Case",
+            "KnowledgeBaseArticle",
+            {
+                "type": "divider",
+                "text": null,
+                "id": "137994"
+            },
+            "_delimiter_",
+            {
+                "type": "divider",
+                "text": "$Marketing",
+                "id": "463280"
+            },
+            "Campaign",
+            "TargetList",
+            {
+                "type": "divider",
+                "text": "$Business",
+                "id": "518202"
+            },
+            "Document",
+            {
+                "type": "divider",
+                "text": "$Organization",
+                "id": "566592"
+            },
+            "User",
+            "Team",
+            "WorkingTimeCalendar",
+            {
+                "type": "divider",
+                "text": null,
+                "id": "898671"
+            },
+            "EmailTemplate",
+            "Template",
+            "Import",
+            "HolidayRequest",
+            "HolidayOverview",
+            "Attendance",
+            "AttendanceOverview"
+        ],
+        "calendarEntityList": [
+            "Meeting",
+            "Call",
+            "Task",
+            "ZileLibere",
+            "HolidayRequest",
+            "FeasibilityAbsence"
+        ],
+        "globalAdminRoute": {
+            "params": {
+                "controller": "attendance-management:controllers\/schedule-settings",
+                "action": "index"
+            },
+            "order": -100
+        },
+        "globalCalendarView": "holiday-management:views\/calendar\/calendar",
+        "counts": {
+            "AttendanceRecord": 0,
+            "AttendanceWorkSchedule": 0,
+            "HolidayRequest": 2,
+            "HolidayProfile": 2,
+            "HolidayLedger": 1,
+            "EmployeeAttendanceRecord": 1266,
+            "EmployeeAttendanceWorkSchedule": 8,
+            "EmployeeAttendanceMonth": 2,
+            "EmployeeHolidayRequest": 74,
+            "EmployeeHolidayProfile": 109,
+            "EmployeeHolidayLedger": 260,
+            "WorkingTimeCalendar": 24,
+            "WorkingTimeRange": 18
+        },
+        "originalExtensions": {
+            "Attendance Management": "1.11.0",
+            "Holiday Management": "1.9.4",
+            "Zile S\u0103rb\u0103toare": "0.9.5"
+        },
+        "employeeManagementVersion": "0.4.0",
+        "employeeSettings": {
+            "employeeAttendanceEditablePastMonths": 2,
+            "employeeAttendanceAllowIncompleteExports": true,
+            "employeeAttendanceArchiveStartMonth": "2026-09",
+            "employeeHolidayAnnualEntitlementDays": 21,
+            "employeeHolidayResetDate": "2027-01-01",
+            "employeeHolidayAutomaticAnnualGrantEnabled": false,
+            "employeeHolidayCarryOverLimitDays": 90,
+            "employeeHolidayNegativeBalanceLimitDays": -21,
+            "employeeHolidayApproversIds": [
+                "6ad69f0923a0afa13"
+            ],
+            "employeeHolidayApprovalBlock1Title": "Stage2 Director",
+            "employeeHolidayApprovalBlock1Name": "Synthetic Manager",
+            "employeeHolidayApprovalBlock2Title": "",
+            "employeeHolidayApprovalBlock2Name": ""
+        },
+        "dataHashes": {
+            "EmployeeAttendanceRecord": "a332ec81974dd140c4f0754ed6e48d3c2efa24e8172186036a966978d41d9de1",
+            "EmployeeAttendanceWorkSchedule": "7dca61975b9a0ec636dfe9e508174701c6bd34093b241034f34d4f151d852135",
+            "EmployeeAttendanceMonth": "b6ecd8a64b389c137ae724a2592717f3758c66d9d9f34c3215b5f1aca2b91a82",
+            "EmployeeHolidayRequest": "e27326495e20ff48b1d2951b02737221b6e8e4f517254ad4a928de78544f7200",
+            "EmployeeHolidayProfile": "9de3d91f044495ab04746d7caa1b90833be67ca1ea032aaa30ceb7d53db2dc1f",
+            "EmployeeHolidayLedger": "243e79eb6ec212e5819d0098319a65471a20140700fb792c0abfd0d0e17d1cef",
+            "Role": "79cf4525919ea43cf95bc524b5c2503cb17bb85cf22d5de47888fdd5a694742b"
+        }
+    }
+}

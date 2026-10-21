@@ -1,0 +1,29 @@
+{
+    "fields": {
+        "operationReceipts": {"forbidden": true},
+        "calculationSnapshot": {"forbidden": true},
+        "creationHash": {"forbidden": true},
+        "accountingKey": {"forbidden": true},
+        "approvalSnapshot": {
+            "forbidden": true
+        },
+        "approvalManifest": {
+            "forbidden": true
+        },
+        "approvalOperationKey": {
+            "forbidden": true
+        },
+        "approvalToken": {
+            "forbidden": true
+        },
+        "approvalJobId": {
+            "forbidden": true
+        },
+        "approvalRevision": {
+            "forbidden": true
+        },
+        "approvalStaging": {
+            "forbidden": true
+        }
+    }
+}

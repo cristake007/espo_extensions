@@ -1,0 +1,873 @@
+{
+  "testedPackageVersion": "0.6.0",
+  "finalPackageSha256": "0cdcb453fe7e96473313abbdd5722dae69dd6811cde0dd823c8cef3035d6f909",
+  "executedOnExactFinalZip": true,
+  "sourceFixtureOutput": "employee-stage5-api-results.json",
+  "observedAtUtc": "2026-10-20T01:36:59.290972+00:00",
+  "results": [
+    {
+      "test": "native-profile-initialization-manager",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "native-profile-initialization-four",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "native-profile-initialization-six",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "native-profile-initialization-eight",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "native-profile-initialization-cic",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "native-profile-initialization-remote",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "native-profile-initialization-race",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "native-profile-initialization-ui",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "existing-attendance-AtWork",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "create-rejects-AtWork",
+      "status": "PASS",
+      "observed": {
+        "status": 409,
+        "body": null,
+        "raw": "",
+        "reason": "Holiday conflicts with worked/business-trip attendance on 2026-10-01. Resolve the attendance explicitly before booking or approval."
+      }
+    },
+    {
+      "test": "create-conflict-no-accounting-effect-AtWork",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "existing-attendance-BusinessTrip",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "create-rejects-BusinessTrip",
+      "status": "PASS",
+      "observed": {
+        "status": 409,
+        "body": null,
+        "raw": "",
+        "reason": "Holiday conflicts with worked/business-trip attendance on 2026-10-02. Resolve the attendance explicitly before booking or approval."
+      }
+    },
+    {
+      "test": "create-conflict-no-accounting-effect-BusinessTrip",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "managed-Pending-before-attendance",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5a5d01656f36",
+          "assignedUserId": "6ad6c57c581896ebf",
+          "assignedUserName": "Synthetic Stage4 four",
+          "dateStartDate": "2026-10-05",
+          "dateEndDate": "2026-10-05",
+          "days": 1,
+          "status": "Pending",
+          "description": "PRIVATE Stage5 s56ad6c5a2924b8",
+          "cancellationReason": null,
+          "accountingRevision": 1,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5a5d01656f36\",\"assignedUserId\":\"6ad6c57c581896ebf\",\"assignedUserName\":\"Synthetic Stage4 four\",\"dateStartDate\":\"2026-10-05\",\"dateEndDate\":\"2026-10-05\",\"days\":1,\"status\":\"Pending\",\"description\":\"PRIVATE Stage5 s56ad6c5a2924b8\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}",
+        "reason": ""
+      }
+    },
+    {
+      "test": "Pending-not-effective-absence-no-new-business-rule",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "description-update-rechecks-attendance",
+      "status": "PASS",
+      "observed": {
+        "status": 409,
+        "body": null,
+        "raw": "",
+        "reason": "Holiday conflicts with worked/business-trip attendance on 2026-10-05. Resolve the attendance explicitly before booking or approval."
+      }
+    },
+    {
+      "test": "update-conflict-full-rollback",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "approval-checks-real-conflict-before-Jobs-gate",
+      "status": "PASS",
+      "observed": {
+        "status": 409,
+        "body": null,
+        "raw": "",
+        "reason": "Holiday conflicts with worked/business-trip attendance on 2026-10-05. Resolve the attendance explicitly before booking or approval."
+      }
+    },
+    {
+      "test": "explicit-audited-manager-conflict-resolution",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "Pending-edit-after-explicit-resolution",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5a5d01656f36",
+          "assignedUserId": "6ad6c57c581896ebf",
+          "assignedUserName": "Synthetic Stage4 four",
+          "dateStartDate": "2026-10-05",
+          "dateEndDate": "2026-10-05",
+          "days": 1,
+          "status": "Pending",
+          "description": "Resolved, preserve norm",
+          "cancellationReason": null,
+          "accountingRevision": 2,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5a5d01656f36\",\"assignedUserId\":\"6ad6c57c581896ebf\",\"assignedUserName\":\"Synthetic Stage4 four\",\"dateStartDate\":\"2026-10-05\",\"dateEndDate\":\"2026-10-05\",\"days\":1,\"status\":\"Pending\",\"description\":\"Resolved, preserve norm\",\"cancellationReason\":null,\"accountingRevision\":2,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}",
+        "reason": ""
+      }
+    },
+    {
+      "test": "stale-compatible-approval-blocked-without-mutation",
+      "status": "PASS",
+      "observed": {
+        "status": 409,
+        "body": null,
+        "raw": "",
+        "reason": "Stale Holiday request revision. Reload the record."
+      }
+    },
+    {
+      "test": "today-work-for-date-update-conflict",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "date-change-rechecks-attendance",
+      "status": "PASS",
+      "observed": {
+        "status": 409,
+        "body": null,
+        "raw": "",
+        "reason": "Holiday conflicts with worked/business-trip attendance on 2026-10-20. Resolve the attendance explicitly before booking or approval."
+      }
+    },
+    {
+      "test": "date-change-conflict-rolls-back-snapshot-ledger",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "withdraw-refundable-once",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "withdraw-retry-no-duplicate-ledger",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "Cancelled-history-does-not-block-reservation",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "reject-refund",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "Rejected-history-does-not-block-reservation",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "shared-history-reservation",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5a99d53e52ec",
+          "assignedUserId": "6ad6c57c581896ebf",
+          "assignedUserName": "Synthetic Stage4 four",
+          "dateStartDate": "2026-10-22",
+          "dateEndDate": "2026-10-22",
+          "days": 1,
+          "status": "Pending",
+          "description": "PRIVATE Stage5 s56ad6c5a2924b8",
+          "cancellationReason": null,
+          "accountingRevision": 1,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5a99d53e52ec\",\"assignedUserId\":\"6ad6c57c581896ebf\",\"assignedUserName\":\"Synthetic Stage4 four\",\"dateStartDate\":\"2026-10-22\",\"dateEndDate\":\"2026-10-22\",\"days\":1,\"status\":\"Pending\",\"description\":\"PRIVATE Stage5 s56ad6c5a2924b8\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}",
+        "reason": ""
+      }
+    },
+    {
+      "test": "Holiday-uses-Attendance-historical-WTC-hours",
+      "status": "PASS",
+      "observed": {
+        "version": 2,
+        "calendarId": "6ad6c57c204bebaa2",
+        "timezone": "Europe/Bucharest",
+        "dateStart": "2026-10-22",
+        "dateEnd": "2026-10-22",
+        "days": {
+          "2026-10-22": 4
+        },
+        "monthlyDays": {
+          "2026-10": 1
+        },
+        "totalDays": 1,
+        "excludedPublicDates": [],
+        "ranges": {
+          "2026-10-22": [
+            [
+              "08:00",
+              "12:00"
+            ]
+          ]
+        },
+        "normSources": {
+          "2026-10": {
+            "monthId": "6ad6afdbc74e04bdc",
+            "calendarId": "6ad6c57c204bebaa2",
+            "timezone": "Europe/Bucharest"
+          }
+        }
+      }
+    },
+    {
+      "test": "Holiday-never-rewrites-captured-month",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "changed-WTC-weekdays-do-not-diverge-from-captured-month",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5a9d6f0add19",
+          "assignedUserId": "6ad6c57c581896ebf",
+          "assignedUserName": "Synthetic Stage4 four",
+          "dateStartDate": "2026-10-23",
+          "dateEndDate": "2026-10-23",
+          "days": 1,
+          "status": "Pending",
+          "description": "PRIVATE Stage5 s56ad6c5a2924b8",
+          "cancellationReason": null,
+          "accountingRevision": 1,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5a9d6f0add19\",\"assignedUserId\":\"6ad6c57c581896ebf\",\"assignedUserName\":\"Synthetic Stage4 four\",\"dateStartDate\":\"2026-10-23\",\"dateEndDate\":\"2026-10-23\",\"days\":1,\"status\":\"Pending\",\"description\":\"PRIVATE Stage5 s56ad6c5a2924b8\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}",
+        "reason": ""
+      }
+    },
+    {
+      "test": "future-booking-captures-month-once",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5aa7e70a38f1",
+          "assignedUserId": "6ad6c57c58e6d4645",
+          "assignedUserName": "Synthetic Stage4 six",
+          "dateStartDate": "2026-11-23",
+          "dateEndDate": "2026-11-24",
+          "days": 2,
+          "status": "Pending",
+          "description": "PRIVATE Stage5 s56ad6c5a2924b8",
+          "cancellationReason": null,
+          "accountingRevision": 1,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5aa7e70a38f1\",\"assignedUserId\":\"6ad6c57c58e6d4645\",\"assignedUserName\":\"Synthetic Stage4 six\",\"dateStartDate\":\"2026-11-23\",\"dateEndDate\":\"2026-11-24\",\"days\":2,\"status\":\"Pending\",\"description\":\"PRIVATE Stage5 s56ad6c5a2924b8\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}",
+        "reason": ""
+      }
+    },
+    {
+      "test": "description-edit-never-recalculates-norm",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "Approved-projected-in-matrix",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "Approved-to-CancellationPending",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "CancellationPending-no-refund",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "CancellationPending-remains-projected",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "CancellationPending-still-reserves",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "documented-cancellation-refusal-keeps-CO-and-balance",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "final-cancellation-removes-CO",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "final-cancel-retry-one-ledger",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "same-period-bookable-after-final-cancellation",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "CIC-configured-inclusive-period",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "CO-booking-permitted-during-CIC",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5ae7e00eeb7b",
+          "assignedUserId": "6ad6c57c5a4544ff7",
+          "assignedUserName": "Synthetic Stage4 cic",
+          "dateStartDate": "2026-10-07",
+          "dateEndDate": "2026-10-07",
+          "days": 1,
+          "status": "Pending",
+          "description": "PRIVATE Stage5 s56ad6c5a2924b8",
+          "cancellationReason": null,
+          "accountingRevision": 1,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5ae7e00eeb7b\",\"assignedUserId\":\"6ad6c57c5a4544ff7\",\"assignedUserName\":\"Synthetic Stage4 cic\",\"dateStartDate\":\"2026-10-07\",\"dateEndDate\":\"2026-10-07\",\"days\":1,\"status\":\"Pending\",\"description\":\"PRIVATE Stage5 s56ad6c5a2924b8\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}",
+        "reason": ""
+      }
+    },
+    {
+      "test": "CO-higher-priority-than-CIC",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "effective-CO-blocks-manual-AtWork",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "effective-CO-blocks-manual-BusinessTrip",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "effective-CO-blocks-manual-MedicalLeave",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "final-cancel-restores-CIC-without-manual-CO-record",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "medical-permitted-after-CO-cancel-during-CIC",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "CIC-still-blocks-work-after-medical-AtWork",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "CIC-still-blocks-work-after-medical-BusinessTrip",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "explicit-medical-correction-keeps-historical-CIC-period-complete",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "historical-fixture-first-resolves-work-auditably",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "frozen-CO-projection",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "frozen-CO-export",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "manager-cannot-override-effective-CO-in-frozen-month",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "frozen-cancel-restores-existing-medical",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "audited-manager-correction-after-final-cancel",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "exports-refresh-after-cancellation-and-correction",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "XLSX-real-regression-contains-CO-CIC-medical",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "frozen-flag-and-historical-norm-never-reset",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "employee-still-cannot-correct-frozen-sheet",
+      "status": "PASS",
+      "observed": 409
+    },
+    {
+      "test": "HTTP-create-vs-mark-valid-serialized-outcomes",
+      "status": "PASS",
+      "observed": [
+        {
+          "status": 409,
+          "body": null
+        },
+        {
+          "status": 200,
+          "body": {
+            "userId": "6ad6c57c5ae3ff30c",
+            "date": "2026-10-06",
+            "status": "AtWork",
+            "source": "Self",
+            "revision": 1
+          }
+        }
+      ]
+    },
+    {
+      "test": "concurrent-create-loser-has-no-reservation",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "race-fixture-Pending-finalize-first",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5b58281c49a7",
+          "assignedUserId": "6ad6c57c58e6d4645",
+          "assignedUserName": "Synthetic Stage4 six",
+          "dateStartDate": "2026-10-08",
+          "dateEndDate": "2026-10-08",
+          "days": 1,
+          "status": "Pending",
+          "description": "PRIVATE Stage5 s56ad6c5a2924b8",
+          "cancellationReason": null,
+          "accountingRevision": 1,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5b58281c49a7\",\"assignedUserId\":\"6ad6c57c58e6d4645\",\"assignedUserName\":\"Synthetic Stage4 six\",\"dateStartDate\":\"2026-10-08\",\"dateEndDate\":\"2026-10-08\",\"days\":1,\"status\":\"Pending\",\"description\":\"PRIVATE Stage5 s56ad6c5a2924b8\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}",
+        "reason": ""
+      }
+    },
+    {
+      "test": "deterministic-independent-connections-finalize-first",
+      "status": "PASS",
+      "observed": [
+        {
+          "status": 200,
+          "body": {
+            "fixtureOnly": true,
+            "status": "Approved"
+          }
+        },
+        {
+          "status": 409,
+          "message": "An active approved holiday controls attendance for this date."
+        }
+      ]
+    },
+    {
+      "test": "controlled-finalization-no-second-accounting-finalize-first",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "never-Approved-plus-work-finalize-first",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "controlled-approved-fixture-cancellable",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "race-fixture-Pending-mark-first",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5b63ff15c8bf",
+          "assignedUserId": "6ad6c57c58e6d4645",
+          "assignedUserName": "Synthetic Stage4 six",
+          "dateStartDate": "2026-10-09",
+          "dateEndDate": "2026-10-09",
+          "days": 1,
+          "status": "Pending",
+          "description": "PRIVATE Stage5 s56ad6c5a2924b8",
+          "cancellationReason": null,
+          "accountingRevision": 1,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [],
+          "duplicate": false
+        },
+        "raw": "{\"id\":\"6ad6c5b63ff15c8bf\",\"assignedUserId\":\"6ad6c57c58e6d4645\",\"assignedUserName\":\"Synthetic Stage4 six\",\"dateStartDate\":\"2026-10-09\",\"dateEndDate\":\"2026-10-09\",\"days\":1,\"status\":\"Pending\",\"description\":\"PRIVATE Stage5 s56ad6c5a2924b8\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}",
+        "reason": ""
+      }
+    },
+    {
+      "test": "deterministic-independent-connections-mark-first",
+      "status": "PASS",
+      "observed": [
+        {
+          "status": 200,
+          "body": {
+            "userId": "6ad6c57c58e6d4645",
+            "date": "2026-10-09",
+            "status": "AtWork",
+            "source": "Self",
+            "revision": 1
+          }
+        },
+        {
+          "status": 409,
+          "message": "Holiday conflicts with worked/business-trip attendance on 2026-10-09. Resolve the attendance explicitly before booking or approval."
+        }
+      ]
+    },
+    {
+      "test": "controlled-finalization-no-second-accounting-mark-first",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "never-Approved-plus-work-mark-first",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "active-absence-not-missing",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "concurrent-cancel-reminder-completes-without-deadlock",
+      "status": "PASS",
+      "observed": [
+        {
+          "status": 200,
+          "body": {
+            "id": "6ad6c5b6c203d7a47",
+            "assignedUserId": "6ad6c57c5ae3ff30c",
+            "assignedUserName": "Synthetic Stage4 remote",
+            "dateStartDate": "2026-10-14",
+            "dateEndDate": "2026-10-14",
+            "days": 1,
+            "status": "Cancelled",
+            "description": "PRIVATE Stage5 s56ad6c5a2924b8",
+            "cancellationReason": "Controlled concurrent cancellation",
+            "accountingRevision": 2,
+            "approvalState": null,
+            "approvalError": null,
+            "approvalAttempts": 0,
+            "approvalRetryAvailable": false,
+            "documents": [
+              {
+                "id": "6ad6c5b6c54fa21a3",
+                "name": "stage5-historical-fixture.docx"
+              }
+            ],
+            "duplicate": false
+          }
+        },
+        200
+      ]
+    },
+    {
+      "test": "final-cancel-creates-real-missing-day",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "native-reminder-uses-post-cancel-missing-dates",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "reminder-delivered-through-native-Notification-API",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "cross-process-cancel-receipt-idempotent",
+      "status": "PASS",
+      "observed": {
+        "status": 200,
+        "body": {
+          "id": "6ad6c5b6c203d7a47",
+          "assignedUserId": "6ad6c57c5ae3ff30c",
+          "assignedUserName": "Synthetic Stage4 remote",
+          "dateStartDate": "2026-10-14",
+          "dateEndDate": "2026-10-14",
+          "days": 1,
+          "status": "Cancelled",
+          "description": "PRIVATE Stage5 s56ad6c5a2924b8",
+          "cancellationReason": "Controlled concurrent cancellation",
+          "accountingRevision": 2,
+          "approvalState": null,
+          "approvalError": null,
+          "approvalAttempts": 0,
+          "approvalRetryAvailable": false,
+          "documents": [
+            {
+              "id": "6ad6c5b6c54fa21a3",
+              "name": "stage5-historical-fixture.docx"
+            }
+          ],
+          "duplicate": true
+        },
+        "raw": "{\"id\":\"6ad6c5b6c203d7a47\",\"assignedUserId\":\"6ad6c57c5ae3ff30c\",\"assignedUserName\":\"Synthetic Stage4 remote\",\"dateStartDate\":\"2026-10-14\",\"dateEndDate\":\"2026-10-14\",\"days\":1,\"status\":\"Cancelled\",\"description\":\"PRIVATE Stage5 s56ad6c5a2924b8\",\"cancellationReason\":\"Controlled concurrent cancellation\",\"accountingRevision\":2,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[{\"id\":\"6ad6c5b6c54fa21a3\",\"name\":\"stage5-historical-fixture.docx\"}],\"duplicate\":true}",
+        "reason": ""
+      }
+    },
+    {
+      "test": "native-ACL-business-create-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "native-ACL-business-approval-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "native-ACL-business-create-viewer",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "native-ACL-business-approval-viewer",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "private-colleague-request-not-exposed",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-API-bypass-to-Approved-manager",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-API-bypass-to-Approved-four",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "no-API-bypass-to-Approved-admin",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "private-colleague-document-not-exposed",
+      "status": "PASS",
+      "observed": 403
+    },
+    {
+      "test": "ledger-equals-live-balance-four",
+      "status": "PASS",
+      "observed": [
+        28,
+        28
+      ]
+    },
+    {
+      "test": "ledger-equals-live-balance-six",
+      "status": "PASS",
+      "observed": [
+        27,
+        27
+      ]
+    },
+    {
+      "test": "ledger-equals-live-balance-cic",
+      "status": "PASS",
+      "observed": [
+        30,
+        30
+      ]
+    },
+    {
+      "test": "ledger-equals-live-balance-remote",
+      "status": "PASS",
+      "observed": [
+        30,
+        30
+      ]
+    },
+    {
+      "test": "original-data-unchanged-AttendanceRecord",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-data-unchanged-AttendanceWorkSchedule",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-data-unchanged-HolidayRequest",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-data-unchanged-HolidayProfile",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "original-data-unchanged-HolidayLedger",
+      "status": "PASS",
+      "observed": null
+    },
+    {
+      "test": "browser-CancellationPending-fixture",
+      "status": "PASS",
+      "observed": 200
+    },
+    {
+      "test": "browser-Pending-with-later-work-fixture",
+      "status": "PASS",
+      "observed": 200
+    }
+  ],
+  "assertions": 103,
+  "failures": 0,
+  "approvalFixturesOnly": true,
+  "fixtureVersion": "0.5.0",
+  "adaptation": "Only obsolete Jobs-disabled assertions replaced by stale-revision approval guards in separate Stage6 regression copies. Historical fixtures untouched; actual approval is tested by Stage6 Jobs/browser."
+}

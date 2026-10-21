@@ -1,0 +1,145 @@
+{
+  "testedPackageVersion": "0.6.0",
+  "finalPackageSha256": "0cdcb453fe7e96473313abbdd5722dae69dd6811cde0dd823c8cef3035d6f909",
+  "executedOnExactFinalZip": true,
+  "sourceFixtureOutput": "employee-stage6-lifecycle-results.json",
+  "observedAtUtc": "2026-10-20T01:40:16.406310+00:00",
+  "status": "PASS",
+  "test": "stage6-replacement-rebuild-retains-profiles-ledger-settings-roles-and-originals",
+  "state": {
+    "tabList": [
+      {
+        "type": "divider",
+        "id": "342567",
+        "text": "$CRM"
+      },
+      "Account",
+      "Contact",
+      "Lead",
+      "Opportunity",
+      {
+        "type": "divider",
+        "text": "$Activities",
+        "id": "219419"
+      },
+      "Email",
+      "Meeting",
+      "Call",
+      "Task",
+      "Calendar",
+      {
+        "type": "divider",
+        "id": "655187",
+        "text": "$Support"
+      },
+      "Case",
+      "KnowledgeBaseArticle",
+      {
+        "type": "divider",
+        "text": null,
+        "id": "137994"
+      },
+      "_delimiter_",
+      {
+        "type": "divider",
+        "text": "$Marketing",
+        "id": "463280"
+      },
+      "Campaign",
+      "TargetList",
+      {
+        "type": "divider",
+        "text": "$Business",
+        "id": "518202"
+      },
+      "Document",
+      {
+        "type": "divider",
+        "text": "$Organization",
+        "id": "566592"
+      },
+      "User",
+      "Team",
+      "WorkingTimeCalendar",
+      {
+        "type": "divider",
+        "text": null,
+        "id": "898671"
+      },
+      "EmailTemplate",
+      "Template",
+      "Import",
+      "HolidayRequest",
+      "HolidayOverview",
+      "Attendance",
+      "AttendanceOverview"
+    ],
+    "calendarEntityList": [
+      "Meeting",
+      "Call",
+      "Task",
+      "ZileLibere",
+      "HolidayRequest",
+      "FeasibilityAbsence"
+    ],
+    "globalAdminRoute": {
+      "params": {
+        "controller": "attendance-management:controllers/schedule-settings",
+        "action": "index"
+      },
+      "order": -100
+    },
+    "globalCalendarView": "holiday-management:views/calendar/calendar",
+    "counts": {
+      "AttendanceRecord": 0,
+      "AttendanceWorkSchedule": 0,
+      "HolidayRequest": 2,
+      "HolidayProfile": 2,
+      "HolidayLedger": 1,
+      "EmployeeAttendanceRecord": 3525,
+      "EmployeeAttendanceWorkSchedule": 22,
+      "EmployeeAttendanceMonth": 10,
+      "EmployeeHolidayRequest": 219,
+      "EmployeeHolidayProfile": 211,
+      "EmployeeHolidayLedger": 589,
+      "WorkingTimeCalendar": 50,
+      "WorkingTimeRange": 24
+    },
+    "originalExtensions": {
+      "Attendance Management": "1.11.0",
+      "Holiday Management": "1.9.4",
+      "Zile Sărbătoare": "0.9.5"
+    },
+    "employeeManagementVersion": "0.6.0",
+    "employeeSettings": {
+      "employeeAttendanceEditablePastMonths": 2,
+      "employeeAttendanceAllowIncompleteExports": true,
+      "employeeAttendanceArchiveStartMonth": "2026-09",
+      "employeeHolidayAnnualEntitlementDays": 21,
+      "employeeHolidayResetDate": "2027-01-01",
+      "employeeHolidayAutomaticAnnualGrantEnabled": false,
+      "employeeHolidayCarryOverLimitDays": 90,
+      "employeeHolidayNegativeBalanceLimitDays": -21,
+      "employeeHolidayApproversIds": [
+        "6ad69f0923a0afa13"
+      ],
+      "employeeHolidayApprovalBlock1Title": "Stage2 Director",
+      "employeeHolidayApprovalBlock1Name": "Synthetic Manager",
+      "employeeHolidayApprovalBlock2Title": "",
+      "employeeHolidayApprovalBlock2Name": ""
+    },
+    "dataHashes": {
+      "EmployeeAttendanceRecord": "16bbe21750184934d67c24e500f78bef8af4a521ade67db1477b0d062526b0c1",
+      "EmployeeAttendanceWorkSchedule": "14fcb53a0c86feed9ca31f473d210785942642b55abd45d38e7a81cd0501716e",
+      "EmployeeAttendanceMonth": "512e7dc93fb530c3c30bcee3984d4873ac1e4986541fe72dedd89fb5f505583b",
+      "EmployeeHolidayRequest": "c62d220b47965dab56061c5b5d9339b9e4c1de0e21e395cef16d9bf98bf84da5",
+      "EmployeeHolidayProfile": "e8b998bfc272956971b29a5228754629ca9e6afc87cc01d712359fea2a9b88fa",
+      "EmployeeHolidayLedger": "92a571d4b0b95aa034565509fa22b959d5273fcdcdea756d933fa5ad4eccb798",
+      "Notification": "ec2f3674c2b5234af561cb378c5fdc25d99d4895c54dfcc20ec0daffde4c2ba6",
+      "Role": "3f460aa52ce6c438ea98bd43a6387f3ad82c781ab31b1fe6e6cf471494a8d0cf"
+    },
+    "stagingForbidden": true,
+    "approvalFilesHash": "ce2fc6efa00eda84eb70d20e95594f37e2a30bc3e78509eb42d19ccb487ed43f",
+    "approvalJobsHash": "04607dc0f4fa1b4e8dc533b089101ef18aabad966c87dd6dcc3f2b6982c74dd4"
+  }
+}

@@ -1,0 +1,17 @@
+[
+    {
+        "name": "name"
+    },
+    {
+        "name": "assignedUser"
+    },
+    {
+        "name": "type"
+    },
+    {
+        "name": "delta"
+    },
+    {
+        "name": "balanceAfter"
+    }
+]

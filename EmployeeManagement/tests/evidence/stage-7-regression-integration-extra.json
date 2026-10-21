@@ -1,0 +1,173 @@
+{
+  "testedPackageVersion": "0.7.0",
+  "testedArtifactSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+  "finalPackageSha256": "a6d7365ea0aad3e72cfabe2566a487663303c54327299dcb867e54db3f1d0868",
+  "executedOnExactFinalZip": true,
+  "evidence": {
+    "version": "0.5.0",
+    "results": [
+      {
+        "test": "edit-race-Pending-fixture",
+        "status": "PASS",
+        "observed": {
+          "status": 200,
+          "body": {
+            "id": "6ad6d9ad1c159b3e3",
+            "assignedUserId": "6ad6d87b8a67e9bed",
+            "assignedUserName": "Synthetic Stage4 eight",
+            "dateStartDate": "2026-10-15",
+            "dateEndDate": "2026-10-15",
+            "days": 1,
+            "status": "Pending",
+            "description": "PRIVATE Stage5 s56ad6d9acd64ea",
+            "cancellationReason": null,
+            "accountingRevision": 1,
+            "approvalState": null,
+            "approvalError": null,
+            "approvalAttempts": 0,
+            "approvalRetryAvailable": false,
+            "documents": [],
+            "duplicate": false
+          },
+          "raw": "{\"id\":\"6ad6d9ad1c159b3e3\",\"assignedUserId\":\"6ad6d87b8a67e9bed\",\"assignedUserName\":\"Synthetic Stage4 eight\",\"dateStartDate\":\"2026-10-15\",\"dateEndDate\":\"2026-10-15\",\"days\":1,\"status\":\"Pending\",\"description\":\"PRIVATE Stage5 s56ad6d9acd64ea\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}",
+          "reason": ""
+        }
+      },
+      {
+        "test": "HTTP-modification-vs-mark-serialized",
+        "status": "PASS",
+        "observed": [
+          {
+            "status": 409,
+            "body": null
+          },
+          {
+            "status": 200,
+            "body": {
+              "userId": "6ad6d87b8a67e9bed",
+              "date": "2026-10-15",
+              "status": "AtWork",
+              "source": "Self",
+              "revision": 1
+            }
+          }
+        ]
+      },
+      {
+        "test": "concurrent-description-edit-no-double-accounting",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "approval-rechecks-after-edit-mark-race",
+        "status": "PASS",
+        "observed": "Holiday conflicts with worked/business-trip attendance on 2026-10-15. Resolve the attendance explicitly before booking or approval."
+      },
+      {
+        "test": "cancel-mark-race-Pending-fixture",
+        "status": "PASS",
+        "observed": {
+          "status": 200,
+          "body": {
+            "id": "6ad6d9ade83a6ff2d",
+            "assignedUserId": "6ad6d87b8a67e9bed",
+            "assignedUserName": "Synthetic Stage4 eight",
+            "dateStartDate": "2026-10-16",
+            "dateEndDate": "2026-10-16",
+            "days": 1,
+            "status": "Pending",
+            "description": "PRIVATE Stage5 s56ad6d9acd64ea",
+            "cancellationReason": null,
+            "accountingRevision": 1,
+            "approvalState": null,
+            "approvalError": null,
+            "approvalAttempts": 0,
+            "approvalRetryAvailable": false,
+            "documents": [],
+            "duplicate": false
+          },
+          "raw": "{\"id\":\"6ad6d9ade83a6ff2d\",\"assignedUserId\":\"6ad6d87b8a67e9bed\",\"assignedUserName\":\"Synthetic Stage4 eight\",\"dateStartDate\":\"2026-10-16\",\"dateEndDate\":\"2026-10-16\",\"days\":1,\"status\":\"Pending\",\"description\":\"PRIVATE Stage5 s56ad6d9acd64ea\",\"cancellationReason\":null,\"accountingRevision\":1,\"approvalState\":null,\"approvalError\":null,\"approvalAttempts\":0,\"approvalRetryAvailable\":false,\"documents\":[],\"duplicate\":false}",
+          "reason": ""
+        }
+      },
+      {
+        "test": "HTTP-cancellation-vs-mark-serialized",
+        "status": "PASS",
+        "observed": [
+          {
+            "status": 200,
+            "body": {
+              "id": "6ad6d9ade83a6ff2d",
+              "assignedUserId": "6ad6d87b8a67e9bed",
+              "assignedUserName": "Synthetic Stage4 eight",
+              "dateStartDate": "2026-10-16",
+              "dateEndDate": "2026-10-16",
+              "days": 1,
+              "status": "Cancelled",
+              "description": "PRIVATE Stage5 s56ad6d9acd64ea",
+              "cancellationReason": "Concurrent cancellation vs attendance",
+              "accountingRevision": 2,
+              "approvalState": null,
+              "approvalError": null,
+              "approvalAttempts": 0,
+              "approvalRetryAvailable": false,
+              "documents": [
+                {
+                  "id": "6ad6d9ae02a1d94ef",
+                  "name": "stage5-historical-fixture.docx"
+                }
+              ],
+              "duplicate": false
+            }
+          },
+          {
+            "status": 200,
+            "body": {
+              "userId": "6ad6d87b8a67e9bed",
+              "date": "2026-10-16",
+              "status": "AtWork",
+              "source": "Self",
+              "revision": 1
+            }
+          }
+        ]
+      },
+      {
+        "test": "concurrent-cancel-final-state-and-exact-refund",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "concurrent-cancellation-retry-no-duplicate-ledger",
+        "status": "PASS",
+        "observed": 200
+      },
+      {
+        "test": "matrix-after-concurrent-cancel-never-CO",
+        "status": "PASS",
+        "observed": null
+      },
+      {
+        "test": "mark-after-final-cancellation-allowed",
+        "status": "PASS",
+        "observed": 200
+      },
+      {
+        "test": "Cancelled-not-editable-even-after-attendance",
+        "status": "PASS",
+        "observed": 409
+      },
+      {
+        "test": "extra-races-ledger-sum-equals-live-balance",
+        "status": "PASS",
+        "observed": [
+          29,
+          29
+        ]
+      }
+    ],
+    "assertions": 12,
+    "failures": 0
+  },
+  "qualification": "Historical fixture version is retained in raw evidence; installed package tested was 0.7.0. Integration regression uses controlled laboratory finalization fixtures; Stage7 main API/browser additionally execute real native approval Jobs."
+}

@@ -1,0 +1,80 @@
+[
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+    "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+    "adaptations": "Extracted getMyBalance/getPendingDays, managed-user listing, prepare/reserve/adjust, original dates/overlap/negative-limit helpers. Existing cancellation/rejection refund formulas and validation conditions adapted into explicit transactional commands. Native Roles, regular-only, User→Profile→Request locks, revision guards, idempotent receipts; positive active overlap states (P3/P5). No synchronous approval transferred (D7)."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+    "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+    "adaptations": "Original correct/listCorrections methods added to Stage 2 profile service. Same delta, ledger, reason/history; native correction scope, regular eligibility, User-first lock and payload-bound retry. Existing ledger/snapshot helpers reused by request service, not duplicated."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/WorkingDayCalculator.php",
+    "sourceSha256": "35213a14b4f7e77a5d201073aa28bd59229c03db7eb5aff867689081e0cf2371",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/WorkingDayCalculator.php",
+    "adaptations": "Original date parser, interval bound and no-working-days validation retained. Count now delegates normative day/hour evaluation to assigned native WTC and composes original ZileSarbatoare dates; personal absence excluded from normative source. Booking snapshot fixes computed dates/hours/month totals."
+  },
+  {
+    "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/NonWorkingDayProvider.php",
+    "sourceSha256": "8cb1211d39e1bb503c4fd454683778e160e9d3de0cb82f58414fb772f3a7fcba",
+    "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/NonWorkingDayProvider.php",
+    "adaptations": "Original RO ZileLibere query retained; missing dependency fails explicitly instead of silently assuming no public days."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/managed-booking.js",
+    "sourceSha256": "e0f54745f36b020fc4867d741afd2148f1af11da69d4ba9a37cbca3ae99f8410",
+    "destination": "files/client/custom/modules/employee-management/src/views/modals/managed-booking.js",
+    "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/managed-employee-select.js",
+    "sourceSha256": "db975ff83ccd6335c427bb63a394a7e52209e60b846b41617ca41d8b26f7a94f",
+    "destination": "files/client/custom/modules/employee-management/src/views/modals/managed-employee-select.js",
+    "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/cancellation-reason.js",
+    "sourceSha256": "87dcf8953cf997717437ed154b2c45cfd69400ce2b1b943a9c4c0d180852e52c",
+    "destination": "files/client/custom/modules/employee-management/src/views/modals/cancellation-reason.js",
+    "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/fields/managed-employee.js",
+    "sourceSha256": "2b953d28b1f5739448b314ce9b09cf3bfeda87da35dae5d4cec14d0aaf263ce6",
+    "destination": "files/client/custom/modules/employee-management/src/views/holiday-request/fields/managed-employee.js",
+    "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/fields/start-date.js",
+    "sourceSha256": "39a5e40b5fa2358e90a119168c0e34c1557598135b14a6202777039f245e86ce",
+    "destination": "files/client/custom/modules/employee-management/src/views/holiday-request/fields/start-date.js",
+    "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/balance-correction.js",
+    "sourceSha256": "be1ecc30567ae87232047cc72e9d76a1a2081ef70a73c4d4a7ccaa1704fa8f4d",
+    "destination": "files/client/custom/modules/employee-management/src/views/modals/balance-correction.js",
+    "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/correction-history.js",
+    "sourceSha256": "17191eda20f4e121843575f12ea9ab6632487b850145f18c286e3acb678a6c7b",
+    "destination": "files/client/custom/modules/employee-management/src/views/modals/correction-history.js",
+    "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/admin/profiles.js",
+    "sourceSha256": "fd7895b414eb2209af537383c3a457621e4d7e47d689f41f1347a38feadb60e0",
+    "destination": "files/client/custom/modules/employee-management/src/views/administration/profiles.js",
+    "adaptations": "Original correction/history actions restored to Stage 2 page only for native EmployeeHolidayBalanceCorrection scope; original modals reused."
+  },
+  {
+    "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/dashlets/holiday-approvals.js",
+    "sourceSha256": "0f13c5535cf21cfc4b7b263dcc1d8d23236da4f7599604e405387d0aa8cb7835",
+    "destination": "files/client/custom/modules/employee-management/src/views/holiday-request/index.js",
+    "adaptations": "Original private queue row content, dates, escaped description/reason and decision UX used as basis for a thin regular-view workspace adapter. Own requests and queue share existing modals; native confirmations, scope-gated controls. Pending approval intentionally absent until Jobs; no Calendar override."
+  }
+]

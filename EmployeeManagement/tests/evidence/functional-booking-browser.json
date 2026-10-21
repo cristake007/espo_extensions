@@ -1,0 +1,137 @@
+{
+  "results": [
+    {
+      "test": "command-create-response",
+      "status": "PASS",
+      "observed": {
+        "status": 200
+      }
+    },
+    {
+      "test": "native-create-URL-uses-domain-command",
+      "status": "PASS",
+      "observed": {
+        "id": "6ad6f075d1f8d6a05",
+        "assignedUserId": "6ad6f062b6aadccf3",
+        "assignedUserName": "Functional manager",
+        "dateStartDate": "2026-11-23",
+        "dateEndDate": "2026-11-23",
+        "days": 1,
+        "status": "Pending",
+        "description": "Functional browser manager own request",
+        "cancellationReason": null,
+        "accountingRevision": 1,
+        "approvalState": null,
+        "approvalError": null,
+        "approvalAttempts": 0,
+        "approvalRetryAvailable": false,
+        "documents": [],
+        "duplicate": false
+      }
+    },
+    {
+      "test": "manager-created-request-persists-in-own-list",
+      "status": "PASS"
+    },
+    {
+      "test": "manager-self-approval-without-routing-list",
+      "status": "PASS"
+    },
+    {
+      "test": "self-approval-real-native-worker-completed",
+      "status": "PASS"
+    },
+    {
+      "test": "command-create-response",
+      "status": "PASS",
+      "observed": {
+        "status": 200
+      }
+    },
+    {
+      "test": "employee-created-own-request",
+      "status": "PASS",
+      "observed": {
+        "id": "6ad6f08271a7d939c",
+        "assignedUserId": "6ad6f062b818fc4e9",
+        "assignedUserName": "Functional employee",
+        "dateStartDate": "2026-11-24",
+        "dateEndDate": "2026-11-24",
+        "days": 1,
+        "status": "Pending",
+        "description": "Functional browser employee own request",
+        "cancellationReason": null,
+        "accountingRevision": 1,
+        "approvalState": null,
+        "approvalError": null,
+        "approvalAttempts": 0,
+        "approvalRetryAvailable": false,
+        "documents": [],
+        "duplicate": false
+      }
+    },
+    {
+      "test": "employee-has-no-manager-booking",
+      "status": "PASS"
+    },
+    {
+      "test": "employee-has-no-approval-button",
+      "status": "PASS"
+    },
+    {
+      "test": "employee-request-persists-after-reload",
+      "status": "PASS"
+    },
+    {
+      "test": "employee-pending-update-saves",
+      "status": "PASS"
+    },
+    {
+      "test": "employee-pending-update-persists",
+      "status": "PASS"
+    },
+    {
+      "test": "manager-approves-employee-without-routing-list",
+      "status": "PASS"
+    },
+    {
+      "test": "employee-private-DOCX-download-real-file",
+      "status": "PASS"
+    },
+    {
+      "test": "approver-inherited-through-native-Team-role",
+      "status": "PASS"
+    },
+    {
+      "test": "no-JS-errors-team-manager",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "unauthorized-native-create-entry-nobook",
+      "status": "PASS",
+      "observed": {
+        "status": 403
+      }
+    },
+    {
+      "test": "unauthorized-native-create-entry-fls",
+      "status": "PASS",
+      "observed": {
+        "status": 403
+      }
+    },
+    {
+      "test": "no-JS-errors-manager",
+      "status": "PASS",
+      "observed": []
+    },
+    {
+      "test": "no-JS-errors-employee",
+      "status": "PASS",
+      "observed": []
+    }
+  ],
+  "assertions": 20,
+  "failures": 0
+}

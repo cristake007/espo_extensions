@@ -1,0 +1,6 @@
+{
+    "ProcessEmployeeHolidayResets": {
+        "jobClassName": "Espo\\Modules\\EmployeeManagement\\Jobs\\ProcessEmployeeHolidayResets",
+        "scheduling": "5 0 * * *", "isDefault": true
+    }
+}

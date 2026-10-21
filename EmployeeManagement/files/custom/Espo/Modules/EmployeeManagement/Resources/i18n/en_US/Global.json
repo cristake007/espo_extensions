@@ -1,0 +1,38 @@
+{
+    "scopeNames": {
+        "EmployeeAttendanceRecord": "Attendance records",
+        "EmployeeHolidayRequest": "Holiday requests",
+        "EmployeeHolidayProfile": "Holiday profiles",
+        "EmployeeHolidayLedger": "Holiday ledger",
+        "EmployeeAttendanceSettings": "Attendance policies",
+        "EmployeeHolidaySettings": "Holiday settings",
+        "EmployeeHolidayProfileManagement": "Manage holiday profiles",
+        "EmployeeHolidayApproval": "Holiday approval (commands pending)",
+        "EmployeeManagement": "Employee Management workspace",
+        "EmployeeAdministration": "Employee Management administration",
+        "EmployeeHolidayBooking": "Holiday — Book own requests",
+        "EmployeeHolidayRequestManagement": "Holiday — Manage employee requests",
+        "EmployeeHolidayBalanceCorrection": "Holiday — Balance corrections",
+        "EmployeeAttendance": "Attendance — Own entries",
+        "EmployeeAttendanceOverview": "Attendance — Overview",
+        "EmployeeAttendanceManagement": "Attendance — Management",
+        "EmployeeAttendanceWorkSchedule": "Attendance — Remote / CIC",
+        "EmployeeAttendanceMonth": "Attendance — Historical norm (internal)",
+        "EmployeeAbsence": "Colleague Absences"
+    },
+    "scopeNamesPlural": {
+        "EmployeeAttendanceRecord": "Attendance records",
+        "EmployeeHolidayRequest": "Holiday requests",
+        "EmployeeHolidayProfile": "Holiday profiles",
+        "EmployeeHolidayLedger": "Holiday ledger",
+        "EmployeeAbsence": "Colleague Absences",
+        "EmployeeManagement": "Employee Management",
+        "EmployeeAdministration": "Employee administration",
+        "EmployeeAttendance": "My attendance",
+        "EmployeeAttendanceOverview": "Attendance overview"
+    },
+    "labels": {
+        "EmployeeManagement": "Employee Management",
+        "EmployeeAdministration": "Employee Management — Administration"
+    }
+}

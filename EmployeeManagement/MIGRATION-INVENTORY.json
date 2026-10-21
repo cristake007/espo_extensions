@@ -1,0 +1,2215 @@
+{
+  "stage": "0.7.0",
+  "originalVersions": {
+    "AttendanceManagement": "1.11.0",
+    "HolidayManagement": "1.9.4"
+  },
+  "integratedStage2": [
+    {
+      "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceSettingsService.php",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceSettingsService.php",
+      "sourceSha256": "4088aa71670954aa604828556181ce0fdca5a255b675a5af9efbeeed6913622f",
+      "treatment": "Adapted from preserved legacy implementation; ACL/allowlists/ownership/idempotency hardened for stage 2.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceSettingsService.php",
+      "destinationSha256": "d691b34b0fd684a4e1c9c9fbaa459a545e7a0111228287e5e6b6761ef61f0418"
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+      "sourceSha256": "5136f0cc263b03badfb6f73f8b796e7929f4f094cbc43ca5ae8f72d9756cd66c",
+      "treatment": "Adapted from preserved legacy implementation; ACL/allowlists/ownership/idempotency hardened for stage 2.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+      "destinationSha256": "10be4c5670e0f5c7d6b7ebd28a6639054c87f6a5dc72d74b3db788a34aa45982",
+      "preFunctionalFixesSha256": "911da9d636066c616e27122b0d1097bf2fd0c7857edd2a87854487e32bd6654c",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+      "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+      "treatment": "Adapted from preserved legacy implementation; ACL/allowlists/ownership/idempotency hardened for stage 2.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "destinationSha256": "2329b4690dee3bd9f14594592553fe9e0fa6ee3387a53c6795b538b2dc4f5c81",
+      "preFunctionalFixesSha256": "d9d88b0919ac9b16e2ca3718ba4a7525e270ddbb104743738e6fabecce2ea21c",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/admin/profiles.js",
+      "destination": "files/client/custom/modules/employee-management/src/views/administration/profiles.js",
+      "sourceSha256": "fd7895b414eb2209af537383c3a457621e4d7e47d689f41f1347a38feadb60e0",
+      "treatment": "Adapted from preserved legacy implementation; ACL/allowlists/ownership/idempotency hardened for stage 2.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/admin/profiles.js",
+      "destinationSha256": "62f9237c3b3999036281ab8595fff05d60aa909155a412befe133e050e942850"
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Admin.json",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeAdministration.json",
+      "sourceSha256": "0b7002fb2cb76bdc3226e67f3d7482aab92b8d89c8f6ab6d63d4601a5b85f144",
+      "treatment": "Adapted from preserved legacy implementation; ACL/allowlists/ownership/idempotency hardened for stage 2.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/Admin.json",
+      "destinationSha256": "01a0cf852588109d92992b6e254c257a81c339a73620048b095f209733edfa35",
+      "preFunctionalFixesSha256": "72e74a0e5e454e2353bab8337065651e0accec6d2a00cb5fa62ca1c2e12f4f69",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Admin.json",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeAdministration.json",
+      "sourceSha256": "367da0cd3b923c3ce6143c813f6c4d7088af22bcef5b56ff72d0b942de5dc264",
+      "treatment": "Adapted from preserved legacy implementation; ACL/allowlists/ownership/idempotency hardened for stage 2.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/Admin.json",
+      "destinationSha256": "e3ca6838d9cfc64f254fdcb4f496497482b0692b8ebf8b55b998f0829943a131",
+      "preFunctionalFixesSha256": "a1d3a35c7d549c62bbae2680fa251cf43251f517822cb6a3640650a0e8397ad4",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/fields/annual-reset-date.js",
+      "destination": "files/client/custom/modules/employee-management/src/views/fields/annual-reset-date.js",
+      "sourceSha256": "9531f8c743a71884ae5d166ea8652bce670b8f84cd371df958c0b1e1db5c782d",
+      "treatment": "Identical preserved MM-DD/date normalization; no functional rewrite.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/fields/annual-reset-date.js",
+      "destinationSha256": "9531f8c743a71884ae5d166ea8652bce670b8f84cd371df958c0b1e1db5c782d"
+    },
+    {
+      "source": "pending/Attendance/files/client/custom/modules/employee-management/src/views/admin/manager-index.js",
+      "destination": "files/client/custom/modules/employee-management/src/views/administration/index.js",
+      "sourceSha256": "59316c5b1eaf8584ea4c60b3edfe4c4b5643e59a4fbc3f481134540b350d6882",
+      "treatment": "Preserved panel/grid view; dynamic ACL-filtered sections, own labels and EmployeeAdministration routes instead of #Admin.",
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/admin/manager-index.js",
+      "destinationSha256": "6c75d683547be6f287b3a26c876690225bc180d6b30c8b095d512e01ccbaa3d0"
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/complete-initial-setup.js",
+      "destination": "files/client/custom/modules/employee-management/src/views/modals/complete-initial-setup.js",
+      "sourceSha256": "5e112f48f0af27877168cc24e4601c45f96e6fc191efe8bb579b93c927f347c7",
+      "treatment": "Preserved original initial-setup modal and native float field; endpoint/translation scope adapted, retry key stable for modal lifetime.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/complete-initial-setup.js",
+      "destinationSha256": "67ab4f864685ac3f923dcb4dc09ab8557fea0325bab75c4d8c4e92d2a1f621a4"
+    },
+    {
+      "source": "../HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/Settings.json",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/employeeManagement.json",
+      "sourceSha256": "4c8f819a3fa0e8df1d235bde3c7e1a8e331bd3fbcbbbc0bc7400fe89119f9a69",
+      "treatment": "Field declarations, defaults and bounds reused in own metadata instead of global Settings. Native restricted candidate multiEnum instead of unrestricted User selector; annual reset field preserved.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/Settings.json",
+      "destinationSha256": "24d861126e66ca3efa16480e28657b06afdc7a55771b10d73f6c3cae8577b16e",
+      "preFunctionalFixesSha256": "fd22a4b1d19544f5ad692bd4b4917f75e3a110cc072fd860357c9952634e0a51",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "../AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/entityDefs/Settings.json",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/employeeManagement.json",
+      "sourceSha256": "b4eec25e098033e97e4882a9bb9969a43245e6a25fd00cf23acf6caae2592abb",
+      "treatment": "Attendance policy field types and bounds retained; own API field names, archive read-only and program editor deferred to WTC integration.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/entityDefs/Settings.json",
+      "destinationSha256": "24d861126e66ca3efa16480e28657b06afdc7a55771b10d73f6c3cae8577b16e",
+      "preFunctionalFixesSha256": "fd22a4b1d19544f5ad692bd4b4917f75e3a110cc072fd860357c9952634e0a51",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    }
+  ],
+  "integratedStage3": [
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+      "adaptations": "Extracted getMyBalance/getPendingDays, managed-user listing, prepare/reserve/adjust, original dates/overlap/negative-limit helpers. Existing cancellation/rejection refund formulas and validation conditions adapted into explicit transactional commands. Native Roles, regular-only, User→Profile→Request locks, revision guards, idempotent receipts; positive active overlap states (P3/P5). No synchronous approval transferred (D7).",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "destinationSha256": "78a04456f9788d5408f803c3e917dd948d49049a3012b610cf93e4832a5d1c3f",
+      "preFunctionalFixesSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+      "adaptations": "Original correct/listCorrections methods added to Stage 2 profile service. Same delta, ledger, reason/history; native correction scope, regular eligibility, User-first lock and payload-bound retry. Existing ledger/snapshot helpers reused by request service, not duplicated.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "destinationSha256": "2329b4690dee3bd9f14594592553fe9e0fa6ee3387a53c6795b538b2dc4f5c81",
+      "preFunctionalFixesSha256": "d9d88b0919ac9b16e2ca3718ba4a7525e270ddbb104743738e6fabecce2ea21c",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/WorkingDayCalculator.php",
+      "sourceSha256": "35213a14b4f7e77a5d201073aa28bd59229c03db7eb5aff867689081e0cf2371",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/WorkingDayCalculator.php",
+      "adaptations": "Original date parser, interval bound and no-working-days validation retained. Count now delegates normative day/hour evaluation to assigned native WTC and composes original ZileSarbatoare dates; personal absence excluded from normative source. Booking snapshot fixes computed dates/hours/month totals.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/WorkingDayCalculator.php",
+      "destinationSha256": "840539407832217ffff5cd12a3298e3f7ab34b372496f2ae43edbee19030a8ff"
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/NonWorkingDayProvider.php",
+      "sourceSha256": "8cb1211d39e1bb503c4fd454683778e160e9d3de0cb82f58414fb772f3a7fcba",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/NonWorkingDayProvider.php",
+      "adaptations": "Original RO ZileLibere query retained; missing dependency fails explicitly instead of silently assuming no public days.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/NonWorkingDayProvider.php",
+      "destinationSha256": "740a845ec23c1e8045299bbaec5a4c436bfd823fbaa4e6787f3dfb0090f7a86a"
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/managed-booking.js",
+      "sourceSha256": "e0f54745f36b020fc4867d741afd2148f1af11da69d4ba9a37cbca3ae99f8410",
+      "destination": "files/client/custom/modules/employee-management/src/views/modals/managed-booking.js",
+      "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/managed-booking.js",
+      "destinationSha256": "f01521c1e8917089dcb3e9be23dea03faca5de907fd468f7750954645706fa47"
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/managed-employee-select.js",
+      "sourceSha256": "db975ff83ccd6335c427bb63a394a7e52209e60b846b41617ca41d8b26f7a94f",
+      "destination": "files/client/custom/modules/employee-management/src/views/modals/managed-employee-select.js",
+      "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/managed-employee-select.js",
+      "destinationSha256": "db975ff83ccd6335c427bb63a394a7e52209e60b846b41617ca41d8b26f7a94f"
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/cancellation-reason.js",
+      "sourceSha256": "87dcf8953cf997717437ed154b2c45cfd69400ce2b1b943a9c4c0d180852e52c",
+      "destination": "files/client/custom/modules/employee-management/src/views/modals/cancellation-reason.js",
+      "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/cancellation-reason.js",
+      "destinationSha256": "87dcf8953cf997717437ed154b2c45cfd69400ce2b1b943a9c4c0d180852e52c"
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/fields/managed-employee.js",
+      "sourceSha256": "2b953d28b1f5739448b314ce9b09cf3bfeda87da35dae5d4cec14d0aaf263ce6",
+      "destination": "files/client/custom/modules/employee-management/src/views/holiday-request/fields/managed-employee.js",
+      "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/fields/managed-employee.js",
+      "destinationSha256": "2b953d28b1f5739448b314ce9b09cf3bfeda87da35dae5d4cec14d0aaf263ce6"
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/fields/start-date.js",
+      "sourceSha256": "39a5e40b5fa2358e90a119168c0e34c1557598135b14a6202777039f245e86ce",
+      "destination": "files/client/custom/modules/employee-management/src/views/holiday-request/fields/start-date.js",
+      "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/fields/start-date.js",
+      "destinationSha256": "39a5e40b5fa2358e90a119168c0e34c1557598135b14a6202777039f245e86ce"
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/balance-correction.js",
+      "sourceSha256": "be1ecc30567ae87232047cc72e9d76a1a2081ef70a73c4d4a7ccaa1704fa8f4d",
+      "destination": "files/client/custom/modules/employee-management/src/views/modals/balance-correction.js",
+      "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/balance-correction.js",
+      "destinationSha256": "d0e1abde44d976e6b93b0fca18b4429249bdc9560eb2e7f0829d0339a3c5c6df"
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/correction-history.js",
+      "sourceSha256": "17191eda20f4e121843575f12ea9ab6632487b850145f18c286e3acb678a6c7b",
+      "destination": "files/client/custom/modules/employee-management/src/views/modals/correction-history.js",
+      "adaptations": "Native fields/modal retained; namespaced endpoints, own/managed/Pending-edit options and stable idempotency key adapted where applicable. No replacement numeric/date/link widgets.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/correction-history.js",
+      "destinationSha256": "160b565338fc064b15324d3186a59173f9eb515adede95cffb1245b6459c6695"
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/admin/profiles.js",
+      "sourceSha256": "fd7895b414eb2209af537383c3a457621e4d7e47d689f41f1347a38feadb60e0",
+      "destination": "files/client/custom/modules/employee-management/src/views/administration/profiles.js",
+      "adaptations": "Original correction/history actions restored to Stage 2 page only for native EmployeeHolidayBalanceCorrection scope; original modals reused.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/admin/profiles.js",
+      "destinationSha256": "62f9237c3b3999036281ab8595fff05d60aa909155a412befe133e050e942850"
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/dashlets/holiday-approvals.js",
+      "sourceSha256": "0f13c5535cf21cfc4b7b263dcc1d8d23236da4f7599604e405387d0aa8cb7835",
+      "destination": "files/client/custom/modules/employee-management/src/views/holiday-request/index.js",
+      "adaptations": "Original private queue row content, dates, escaped description/reason and decision UX used as basis for a regular-view workspace adapter. Own requests and queue share existing modals; native confirmations and scope-gated controls. The 0.7.8 presentation adds a theme-token balance summary, status cards and responsive empty states without changing commands, ACL or accounting. No Calendar override.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/dashlets/holiday-approvals.js",
+      "destinationSha256": "13483fa250ac5afbfc865e1694e52c8daf91548df108558e54e88b258ff45f4b",
+      "preFunctionalFixesSha256": "acb9a589965d7e99ee333977ebc09080fccd05d995c60111f5bbcf7e4a3f23e1",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    }
+  ],
+  "integratedStage4": [
+    {
+      "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+      "sourceSha256": "ce9e0259c2e4d3a76cf1e4cb37a5a04a058b2c1400a24f94e90f7522bafb95c6",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+      "adaptations": "Original matrix assembly, counters, missing-user lists, metadata validation, schedule map, reminders and date policies retained/adapted. WTC monthly norms replace fixed weekdays/times; shared aggregate supplies own view/exports/freeze. One atomic write path with User→Month→Record locks, current revision, manager reason/audit. CO > CIC except MedicalLeave; CancellationPending effective. Native read/write/export scopes are distinct.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceOverviewService.php",
+      "destinationSha256": "91ba024d1e2a0486f3f2bd6487e576710355924f3c8f1c67a5eea84b2af985a1",
+      "preNavigationHotfixSha256": "2f347b4ea10faf5345a4f20e44fea7819e9991e954baa5f6479c4fcef7a4242a",
+      "navigationHotfix": "See NAVIGATION-HOTFIX-RESULTS.md: delegated route, native tabs and ACL intersection.",
+      "preFunctionalFixesSha256": "e75afc751fb473764f715edafae5ce8ffa96557673178092f3fbcfa0cf8bffdc",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers.",
+      "preMonthlyPdfFixSha256": "7ff345d9cc32555f24f3ce96462d7a2ecd9c3c5814cb0b30f965b7c36d082457",
+      "monthlyPdfFix": "0.7.2: operational monthly PDF authorization via native AttendanceManagement, independent from global generic Export; see MONTHLY-PDF-FIX-RESULTS.md."
+    },
+    {
+      "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceService.php",
+      "sourceSha256": "34a8169de28d2da65e889b9f657ef9d36ef1fb0dfa44bdf2cf8eb1fa96199d19",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceService.php",
+      "adaptations": "Original personal DTO, statuses, editing window and UI flow preserved. Original marking and classification are consolidated in the existing Overview service to avoid a second WTC/CIC/freeze engine; service delegates commands and projects only the current user from the private server aggregate.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceService.php",
+      "destinationSha256": "cdf51ef65c2e3c101a3f1f08fae2f19e68a87c989c41f847666636c13369979c"
+    },
+    {
+      "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceAccessChecker.php",
+      "sourceSha256": "81f5c5e0e05e5d7279768b1205b3c1a9d03751e5efbcb4d169a3443f50f1c942",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceAccessChecker.php",
+      "adaptations": "Native scopes and field permissions replace admin fallback. Regular/active actors, own/all read, overview vs management, metadata and native export permission; no automatic grants.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceAccessChecker.php",
+      "destinationSha256": "701bb1185d8096c2d34400b4f7099571b304e02df85b0e67228f25deefc1eaa5",
+      "preNavigationHotfixSha256": "23b03bdfdc93fb9c666d5602b7f08bd7acab5b03cefcd9de8668a403f0fa1f57",
+      "navigationHotfix": "See NAVIGATION-HOTFIX-RESULTS.md: delegated route, native tabs and ACL intersection.",
+      "preMonthlyPdfFixSha256": "41b5e32f87fb3dd07678e27070c08f17611977044306eac1a2b9ccb455921d83",
+      "monthlyPdfFix": "0.7.2: operational monthly PDF authorization via native AttendanceManagement, independent from global generic Export; see MONTHLY-PDF-FIX-RESULTS.md."
+    },
+    {
+      "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/ApprovedHolidayProvider.php",
+      "sourceSha256": "27d0b45232bd20d561d6478865912cdbb496b40a587a13a09bbaf5d562f32160",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/ApprovedHolidayProvider.php",
+      "adaptations": "Original read-only date projection extended to batch employees and Approved/CancellationPending; no Holiday accounting, approval or status mutations duplicated.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/ApprovedHolidayProvider.php",
+      "destinationSha256": "053135125c18dc12b6c0649dd89b9ac27d35003c9e9fa0844c62d8ebad6a688d"
+    },
+    {
+      "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendancePdf.php",
+      "sourceSha256": "f441caae008c77ec5cafa2d547d2a4e3546e80b92c0ac69a48b0638ffaef2132",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendancePdf.php",
+      "adaptations": "Original generator response format, filenames/base64 and completeness check retained; native export and record/field ACL added. Current aggregate is read each time, never a cached downloaded file.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostAttendancePdf.php",
+      "destinationSha256": "3de1565a889efcc057d4ee34198a2dffcb4b49656cf5ce8cb4797d24051ae7e4",
+      "preMonthlyPdfFixSha256": "4a71a36ee711a2e3b2fa45c531ae27893be37d0af226e953a771425fa22f7847",
+      "monthlyPdfFix": "0.7.2: operational monthly PDF authorization via native AttendanceManagement, independent from global generic Export; see MONTHLY-PDF-FIX-RESULTS.md."
+    },
+    {
+      "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendanceXlsx.php",
+      "sourceSha256": "d5a5545b78614e53e5d00e8f5c35d466f25573002eb160fa3750496d3b28283c",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendanceXlsx.php",
+      "adaptations": "Original generator response format, filenames/base64 and completeness check retained; native export and record/field ACL added. Current aggregate is read each time, never a cached downloaded file.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostAttendanceXlsx.php",
+      "destinationSha256": "1270f676f14af847785c7a20b5b4c252feeb28fe396ac3f15414ff524ae03481"
+    },
+    {
+      "source": "../AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendancePdfGenerator.php",
+      "sourceSha256": "236b87b3cd51dae08f85117aed8b8e54f311030f472b3058f0e6571f55875202",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendancePdfGenerator.php",
+      "adaptations": "Previously mechanically imported renderer retained. Only per-cell schedule selection changed to derived WTC daily intervals, with legacy DTO fallback for regression; no rewrite of rendering, formatting, Remote/CIC/CO/CM or libraries.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendancePdfGenerator.php",
+      "destinationSha256": "59d0ad95bffcf43dddba1152d1faecc39f3262c4eb22a2769c2ee21debe87941",
+      "preFunctionalFixesSha256": "69dbde38043c005e72c127f9e66b019e4ad9a421cbbb6df609d2c0a9e932bb9d",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "../AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceXlsxGenerator.php",
+      "sourceSha256": "b6b515c31944d7c12c3b9d3cdb912b9dcecf0cfdfeac7a2c18ee9f5fc00faf98",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceXlsxGenerator.php",
+      "adaptations": "Previously mechanically imported renderer retained. Only per-cell schedule selection changed to derived WTC daily intervals, with legacy DTO fallback for regression; no rewrite of rendering, formatting, Remote/CIC/CO/CM or libraries.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceXlsxGenerator.php",
+      "destinationSha256": "8c349686bbddf7d332f295db3bcc4545b56567e919ccbf4ff3a68ebe3f84d142"
+    },
+    {
+      "source": "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/my.js",
+      "sourceSha256": "7373ab8305bf9d33b36aed4abcbf5707a3d4e0dbeaaf0a50e88276c3f04ff91e",
+      "destination": "files/client/custom/modules/employee-management/src/views/attendance/my.js",
+      "adaptations": "Original page/table/actions/fields retained; own routes, backend capabilities, revision/reason commands, CIC MedicalLeave control, frozen state and native Roles. The 0.8.0 personal workspace adds a theme-token hero, explicit status cards, monthly metrics, accessible pressed state and responsive rows; each action is still shown only for its server capability. Schedules remains operational Remote/CIC only; technical WTC time editor omitted under approved D6. Existing global policies/archive are in delegated administration, not duplicated here.",
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/attendance/my.js",
+      "destinationSha256": "a6cc5ee1f0fa45b6c9bc82d601680ac66319f867abd880ee3cea86bb1276d784"
+    },
+    {
+      "source": "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/overview.js",
+      "sourceSha256": "6f0464772e30be4608d6824c5be47e16109f20b090e9bd06db3f041ec93837b9",
+      "destination": "files/client/custom/modules/employee-management/src/views/attendance/overview.js",
+      "adaptations": "Original page/table/actions/fields retained; own routes, backend capabilities, revision/reason commands, CIC MedicalLeave control, frozen state and native Roles. The 0.8.2 team overview uses the same 1180px workspace as the personal pages, moves period selection into the hero, keeps commands compact, presents four monthly metrics in one row with expandable full details, and retains the complete sticky matrix, legend, counts and empty state. In 0.8.3 the matrix heading is explicitly horizontal and left-aligned, with a readable non-pill count at the right; status cells expose the same semantic colors as the complete legend, including CIC and missing entries. Reminder, correction and export commands are unchanged. Schedules remains operational Remote/CIC only; technical WTC time editor omitted under approved D6. Existing global policies/archive are in delegated administration, not duplicated here.",
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/attendance/overview.js",
+      "destinationSha256": "47c5422d439eea0fc06b4d60c6209a0bba514867b91559b349abc7f22481e969",
+      "preNavigationHotfixSha256": "ae1d8b06ea9e240df09ee6ce66f348e4216e294e5b569be87eab7a20a6d9947c",
+      "navigationHotfix": "See NAVIGATION-HOTFIX-RESULTS.md: delegated route, native tabs and ACL intersection.",
+      "preFunctionalFixesSha256": "71fa1a179c7d48c17347961f71fa4a2a8e2502749cb7b3f5125361f036b3fded",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers.",
+      "preMonthlyPdfFixSha256": "6bc498503a6913513353f1af8aa527c1ee9fff8ac0015740ea528346581c2116",
+      "monthlyPdfFix": "0.7.2: operational monthly PDF authorization via native AttendanceManagement, independent from global generic Export; see MONTHLY-PDF-FIX-RESULTS.md."
+    },
+    {
+      "source": "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/schedules.js",
+      "sourceSha256": "017d11a12b21e4d02c42aeedda0b2049ac286b0c30ed6456a7d82c267a7819c5",
+      "destination": "files/client/custom/modules/employee-management/src/views/attendance/schedules.js",
+      "adaptations": "Original page/actions/fields retained; own routes, backend capabilities, revision/reason commands, CIC MedicalLeave control, frozen state and native Roles. Schedules is operational Remote/CIC only; technical WTC time editor omitted under approved D6. The 0.8.4 administration workspace uses the shared 1180px theme-token layout, compact per-employee configuration cards, an employee count, empty state and unsaved-change feedback. Each employee still saves independently through the same command, with native Espo date fields and unchanged CIC validation. Existing global policies/archive are in delegated administration, not duplicated here.",
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/attendance/schedules.js",
+      "destinationSha256": "94db3ab25beefcaed6808cabc9401b3b9c0817a7750f4f9c28b64c93c12bcce4"
+    },
+    {
+      "source": "pending/Attendance/files/client/custom/modules/employee-management/src/controllers/attendance.js",
+      "sourceSha256": "b0bada64296a442068c80546e894a9304d87523db4d5758db2bb67554a6e043a",
+      "destination": "files/client/custom/modules/employee-management/src/controllers/attendance.js",
+      "adaptations": "Original view wiring, namespace/route adapted and regular/active native scope guard added. Native monthly route uses a full :month path segment.",
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/controllers/attendance.js",
+      "destinationSha256": "03825fcc9d70bec9742ee5eca57d37ae2a469c72a07f9aca528cf9fa64af399e"
+    },
+    {
+      "source": "pending/Attendance/files/client/custom/modules/employee-management/src/controllers/attendance-overview.js",
+      "sourceSha256": "a6548053f1fae7fe1bc3d06c1d6ec32b8224b276907898fe29f112767e54017b",
+      "destination": "files/client/custom/modules/employee-management/src/controllers/attendance-overview.js",
+      "adaptations": "Original view wiring, namespace/route adapted and regular/active native scope guard added. Native monthly route uses a full :month path segment.",
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/controllers/attendance-overview.js",
+      "destinationSha256": "c66cc2662e5919cea336a8a718d4d46df7f47f6e539500d16c4620b783c3f1e0"
+    },
+    {
+      "source": "pending/Attendance/files/client/custom/modules/employee-management/css/attendance.css",
+      "sourceSha256": "bbde119b3baf694a3d8b49fac989cbc28d3c0c77e7d050f821aab8aa96b534a5",
+      "destination": "files/client/custom/modules/employee-management/css/attendance.css",
+      "adaptations": "Original CSS remains loaded through native app.client.cssList with no core/theme overwrite. The personal page, team overview and 0.8.4 Remote/CIC administration workspace are independently scoped, aligned to the shared 1180px width and responsive breakpoints. They consume TUVTK tokens with native Espo fallbacks. The metadata page additions only restyle its own employee rows, controls, native date fields, save state and empty state.",
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/css/attendance.css",
+      "destinationSha256": "30db5f834e8473c422acc29b67cb2356c9e803d32f56d956ae470869134a2301"
+    },
+    {
+      "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAttendanceWorkSchedule.json",
+      "sourceSha256": "802ebed3180568294bdf823f8765c318ac03ceb0cca061e50cd22988329ca815",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAttendanceWorkSchedule.json",
+      "adaptations": "Operational Remote/CIC/date metadata retained with assignedUser ownership and native audit; start/end normative fields deliberately not registered (D6). Native field edit ACL can govern commands; generic CRUD remains closed.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/entityDefs/AttendanceWorkSchedule.json",
+      "destinationSha256": "2b628c90a767e5904ffd71d1107f9ba320255fbbbaee8764526dd34c7081bae8"
+    },
+    {
+      "source": "../AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/entityDefs/AttendanceRecord.json",
+      "sourceSha256": "672fe2940b093454e1b15746d7197c9b069bc0b6eb10ad7367071bbaac4c41fe",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAttendanceRecord.json",
+      "adaptations": "Native daily record reused, now audited status/source/date/markedAt plus reason/revision. Status uses native field edit ACL while record service guards and entity checker still deny generic writes.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/entityDefs/AttendanceRecord.json",
+      "destinationSha256": "7e7c3ef2fd952874bda867760025158bc0652a197ce647afe29c5d826bd4efae"
+    },
+    {
+      "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceSettingsService.php",
+      "sourceSha256": "4088aa71670954aa604828556181ce0fdca5a255b675a5af9efbeeed6913622f",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceSettingsService.php",
+      "adaptations": "Original initializeArchive method restored behind delegated native settings permission, retaining current-month visibility behavior and all data. Existing Stage 2 settings retained.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceSettingsService.php",
+      "destinationSha256": "d691b34b0fd684a4e1c9c9fbaa459a545e7a0111228287e5e6b6761ef61f0418"
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/cancellation-reason.js",
+      "sourceSha256": "87dcf8953cf997717437ed154b2c45cfd69400ce2b1b943a9c4c0d180852e52c",
+      "destination": "files/client/custom/modules/employee-management/src/views/modals/attendance-correction.js",
+      "adaptations": "Existing native reason-modal pattern reused for mandatory attendance correction reason; labels/header adapted, no new widget framework.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/cancellation-reason.js",
+      "destinationSha256": "8e2e8afa29a6274fe720353dc5deed863098483e240c538815ee866a2b77b81f"
+    }
+  ],
+  "integratedStage5": [
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+      "adaptations": "Continue the existing 0.3/0.4 extracted request, reservation, adjustment, refund, ledger, revision and receipt implementation. Add the shared daily-record conflict guard to reserve/adjust/approval, including description-only edits. Lock affected normative months in ascending order and touch month revisions for effective cancellation transitions. Normalize command key order at the service boundary for API/internal caller retry interoperability. No second accounting owner, no synchronous or provisional approval.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "destinationSha256": "78a04456f9788d5408f803c3e917dd948d49049a3012b610cf93e4832a5d1c3f",
+      "preFunctionalFixesSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+      "sourceSha256": "ce9e0259c2e4d3a76cf1e4cb37a5a04a058b2c1400a24f94e90f7522bafb95c6",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+      "adaptations": "Continue original matrix, CIC/CCC precedence, completion, freeze, reminders and export aggregate. Remove locking record reads from the read-only aggregate so record and Holiday reads use one DB snapshot behind the month lock. Retain authoritative locking reads on the write path. Keep reminder selection and native Notification persistence in the same native transaction/month lock as cancellation. Fix demonstrated delivery defect: native Notification.setUserId instead of nonexistent assignedUserId.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceOverviewService.php",
+      "destinationSha256": "91ba024d1e2a0486f3f2bd6487e576710355924f3c8f1c67a5eea84b2af985a1",
+      "preNavigationHotfixSha256": "2f347b4ea10faf5345a4f20e44fea7819e9991e954baa5f6479c4fcef7a4242a",
+      "navigationHotfix": "See NAVIGATION-HOTFIX-RESULTS.md: delegated route, native tabs and ACL intersection.",
+      "preFunctionalFixesSha256": "e75afc751fb473764f715edafae5ce8ffa96557673178092f3fbcfa0cf8bffdc",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers.",
+      "preMonthlyPdfFixSha256": "7ff345d9cc32555f24f3ce96462d7a2ecd9c3c5814cb0b30f965b7c36d082457",
+      "monthlyPdfFix": "0.7.2: operational monthly PDF authorization via native AttendanceManagement, independent from global generic Export; see MONTHLY-PDF-FIX-RESULTS.md."
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/WorkingDayCalculator.php",
+      "sourceSha256": "35213a14b4f7e77a5d201073aa28bd59229c03db7eb5aff867689081e0cf2371",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/WorkingDayCalculator.php",
+      "adaptations": "Retain the original strict parser, inclusive period and 367-day validation, and the WTC/ZileSarbatoare calculator already integrated. Expose the same period validator for slicing immutable monthly results, instead of duplicating validation or introducing another normative engine.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/WorkingDayCalculator.php",
+      "destinationSha256": "840539407832217ffff5cd12a3298e3f7ab34b372496f2ae43edbee19030a8ff"
+    }
+  ],
+  "integratedStage6": [
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayDocument/HolidayApprovalDocumentService.php",
+      "sourceSha256": "37bd2413a0c60660ba8cb32b06838b6e6e5240904c8bf146117ee0df899987ca",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayDocument/HolidayApprovalDocumentService.php",
+      "adaptations": "Retain original Romanian month filenames, inclusive monthly segmentation, document fields, signatures fallback, formatting and balance arithmetic. Capture values and monthly totals from reserved calculationSnapshot at decision, not current calendar/config during retry. Move tracked Attachment/FileStorage coordination to the native Job service. Renderer/template unchanged; obsolete count/current-calendar dependency removed for P8.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayDocument/HolidayApprovalDocumentService.php",
+      "destinationSha256": "45d6fdd922f12616e2e398824d81c8c8d5c860532eb399f1db2863ab21604449"
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+      "adaptations": "Continue reused request/accounting implementation. Native grouped Job creation and immutable decision snapshot replace the old synchronous generate call; native retry command reuses the same reservation/receipts. Existing cancellation/refund/revision logic retained. Explicit locking projection excludes foreign author/decider joins after a real MariaDB deadlock; result exposes only natively authorized published documents/state.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "destinationSha256": "78a04456f9788d5408f803c3e917dd948d49049a3012b610cf93e4832a5d1c3f",
+      "preFunctionalFixesSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+      "adaptations": "No financial behavior changes. Targeted explicit forUpdate projections omit author joins that otherwise lock unrelated Users in MariaDB; owner is already locked first. Existing original helpers, fields, ledger and idempotency retained.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "destinationSha256": "2329b4690dee3bd9f14594592553fe9e0fa6ee3387a53c6795b538b2dc4f5c81",
+      "preFunctionalFixesSha256": "d9d88b0919ac9b16e2ca3718ba4a7525e270ddbb104743738e6fabecce2ea21c",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+      "sourceSha256": "ce9e0259c2e4d3a76cf1e4cb37a5a04a058b2c1400a24f94e90f7522bafb95c6",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+      "adaptations": "Attendance behavior/UI/exports/CIC/freeze unchanged. Restrict locking User, metadata and daily-record reads to required attributes, avoiding foreign author User joins during concurrent approval jobs. Non-locking aggregate remains unchanged.",
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceOverviewService.php",
+      "destinationSha256": "91ba024d1e2a0486f3f2bd6487e576710355924f3c8f1c67a5eea84b2af985a1",
+      "preNavigationHotfixSha256": "2f347b4ea10faf5345a4f20e44fea7819e9991e954baa5f6479c4fcef7a4242a",
+      "navigationHotfix": "See NAVIGATION-HOTFIX-RESULTS.md: delegated route, native tabs and ACL intersection.",
+      "preFunctionalFixesSha256": "e75afc751fb473764f715edafae5ce8ffa96557673178092f3fbcfa0cf8bffdc",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers.",
+      "preMonthlyPdfFixSha256": "7ff345d9cc32555f24f3ce96462d7a2ecd9c3c5814cb0b30f965b7c36d082457",
+      "monthlyPdfFix": "0.7.2: operational monthly PDF authorization via native AttendanceManagement, independent from global generic Export; see MONTHLY-PDF-FIX-RESULTS.md."
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/dashlets/holiday-approvals.js",
+      "sourceSha256": "0f13c5535cf21cfc4b7b263dcc1d8d23236da4f7599604e405387d0aa8cb7835",
+      "destination": "files/client/custom/modules/employee-management/src/views/holiday-request/index.js",
+      "adaptations": "Continue private list/queue adapter derived in Stage3 from the original approval dashlet and existing native modals. Activate approve and retry through native confirmation; show protected errors, poll only Processing requests, clean up on view removal, link published attachments through the native download entrypoint. The 0.7.8 theme-token presentation leaves these behaviors unchanged. No Calendar/Admin override.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/dashlets/holiday-approvals.js",
+      "destinationSha256": "13483fa250ac5afbfc865e1694e52c8daf91548df108558e54e88b258ff45f4b",
+      "preFunctionalFixesSha256": "acb9a589965d7e99ee333977ebc09080fccd05d995c60111f5bbcf7e4a3f23e1",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "../HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/HolidayRequest.json",
+      "sourceSha256": "f8268ab18efb26d4bfd5ec347f3663c7ec36a3c270dc651fed70f7d3987047f8",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeHolidayRequest.json",
+      "adaptations": "Extend existing request metadata with read-only decision snapshot/manifest/job correlation, attempts/state/error and staging attachment field. Native entityAcl forbids internal fields and staging reads; generic CRUD remains closed. No operation or permission entity introduced.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/HolidayRequest.json",
+      "destinationSha256": "7c12b03823f74866ba9e2bb9fcb92712347c77ed669b05801239312c5febaecb"
+    }
+  ],
+  "integratedStage7": [
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+      "adaptations": "Integrate original reset, processDueResets (100-year catch-up bound), applyResetGrant, nextYear, formatDays, warning threshold and Notification methods. BalanceMath unchanged: balance + entitlement, never expiry/cap. Native system-only scheduled entry, regular active targets, stable profile/due-date keys, current due-date/config recheck and operation hash under existing User/Profile locks. Resolve owner before the transaction to avoid a demonstrated MariaDB 12 RR stale-read/1020 failure; omit unnecessary joined name projection. Notification recipients require current native profile/FLS access. Existing initialization/correction logic retained.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "destinationSha256": "2329b4690dee3bd9f14594592553fe9e0fa6ee3387a53c6795b538b2dc4f5c81",
+      "preFunctionalFixesSha256": "d9d88b0919ac9b16e2ca3718ba4a7525e270ddbb104743738e6fabecce2ea21c",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Jobs/ProcessHolidayResets.php",
+      "sourceSha256": "feb535ba4d51a4548ece56d6d0e223f7d804a8d1a7d1139aba8d25c1201cd7e3",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Jobs/ProcessEmployeeHolidayResets.php",
+      "adaptations": "Same JobDataLess/run entry. Rename job to avoid collision with the installed legacy ProcessHolidayResets; inject the already integrated profile subset, no new runner/queue.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Jobs/ProcessHolidayResets.php",
+      "destinationSha256": "3f27eb41043d147ee2c79b5422e710e9516f993f9c20b5c33c0a7e33af54e340"
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/scheduledJobs.json",
+      "sourceSha256": "bf1392526483b87ec1671468c1c40b49f632d7b1e02958da9dea0b356099bc35",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/scheduledJobs.json",
+      "adaptations": "Keep original 5 0 * * * and isDefault native ScheduledJob registration; unique job/class name. The business flag remains explicitly opt-in, independent of technical scheduling.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/app/scheduledJobs.json",
+      "destinationSha256": "82fa4a5733de794eae29050798cc82e31b9f7a0d24d15cf9851e66e79bc211c7"
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeHolidayRequest.php",
+      "sourceSha256": "98dd5adf919462632d1859fb84f2a24056470817c8cd0ba7edf4db4d8fb863f2",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeHolidayRequest.php",
+      "adaptations": "Reuse native getCalenderQuery signature, SelectBuilder, period predicate, union-compatible columns and original profile color. Restrict to selected-user Pending with native strict read/FLS, eligible actor/target and approver scope for others. Ignore skipAcl, return null for non-allowlisted global additional columns; no Approved duplicate or public read-all grant. Convert UTC bounds to native viewer Preferences/config timezone after a real single-day Day-view omission was demonstrated; preserve exclusive upper bounds.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Services/HolidayRequest.php",
+      "destinationSha256": "f94fbf9ee8ecb18545d2a23297df6f22ac90d0920bc6a18b5bd59d74966eacc8"
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeHolidayRequest.php",
+      "sourceSha256": "98dd5adf919462632d1859fb84f2a24056470817c8cd0ba7edf4db4d8fb863f2",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeAbsence.php",
+      "adaptations": "Adapt the same native Calendar query to the approved minimal Event. Select only public name/dates, opaque projection ID and null protocol columns; no private request relationship/payload. Keep original live calendarColor through an allowlisted native ORM join, expose it only as a non-stored presentation field subject to FLS; no public profile link. Use viewer-local all-day bounds. Native strict ACL/FLS and mandatory eligible-employee Select filter. Shared feed is global minimal information like ZileLibere, not a personal Working Time range.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Services/HolidayRequest.php",
+      "destinationSha256": "dbfaa870db4ba39c5bf9007231d1955617a065f130ae0040a26a6f0329cf2e79"
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+      "sourceSha256": "5136f0cc263b03badfb6f73f8b796e7929f4f094cbc43ca5ae8f72d9756cd66c",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+      "adaptations": "Retain all settings, validation and delegated ConfigWriter/ACL. Remove only the Stage2 safety gate prohibiting automaticGrant=true now that the native annual job is integrated; no automatic opt-in.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+      "destinationSha256": "10be4c5670e0f5c7d6b7ebd28a6639054c87f6a5dc72d74b3db788a34aa45982",
+      "preFunctionalFixesSha256": "911da9d636066c616e27122b0d1097bf2fd0c7857edd2a87854487e32bd6654c",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/admin/settings.js",
+      "sourceSha256": "6f4d87265566a57d251eb9d8984e068d99d4f128399c8412c6767dd161a1bc92",
+      "destination": "files/client/custom/modules/employee-management/src/views/administration/settings.js",
+      "adaptations": "Continue the existing native-field delegated settings adapter. Original annual bool becomes editable; remove the temporary Stage2 forced read-only payload. No global Settings/Admin/WTC editor.",
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/admin/settings.js",
+      "destinationSha256": "cc9b6c287e1483c377a95720e65fbde3d0f67d8020545f2f4c264beaef250a48",
+      "preFunctionalFixesSha256": "f1168a3a27334fa2f432588045532fcf98efdfc2f2790ec68d66aad6e0abcd80",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "sourceSha256": "661fa4f94b4932a491eb226047bceb164f444580af8d14195db635892435ac28",
+      "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
+      "adaptations": "No request/approval/accounting rule change. Shared profile locking projection omits the redundant assignedUserName join; beneficiary is already locked. Existing Stage6 native Jobs/snapshots/receipts and Stage5 conflict guards retained.",
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "destinationSha256": "78a04456f9788d5408f803c3e917dd948d49049a3012b610cf93e4832a5d1c3f",
+      "preFunctionalFixesSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
+      "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
+    },
+    {
+      "source": "../HolidayManagement/scripts/AfterInstall.php",
+      "sourceSha256": "bf4af12a7d0b0b890e25f3345109e9c0056edcbe06b58c45e17de8b83f47bdec",
+      "destination": "scripts/AfterInstall.php",
+      "adaptations": "Reuse native Populator and ConfigWriter, add only own Calendar sources and set the annual flag false only when absent. Since 0.7.9 install and upgrade never read or write tabList: no sidebar entries are added and administrator-managed entries remain untouched. Idempotent transactional projection backfill; no Roles, WTC or legacy data migration.",
+      "original": "HolidayManagement/scripts/AfterInstall.php",
+      "destinationSha256": "7b37a2e8a8ebe88bb469379ac581855a2183f6f9b7c322a5e6fc9dd7a148a7b3",
+      "preNavigationHotfixSha256": "63ee1d1cf57df6054bfef61ab5b84a20dcae850228f4e275b01d9b86dfe7ba7c",
+      "navigationHotfix": "See NAVIGATION-HOTFIX-RESULTS.md: delegated route, native tabs and ACL intersection."
+    },
+    {
+      "source": "../HolidayManagement/scripts/BeforeUninstall.php",
+      "sourceSha256": "def416affaf7675d8fa6916e09fe8391099e8e23a8cf8f405aa6e56783b7e7d3",
+      "destination": "scripts/AfterUninstall.php",
+      "adaptations": "Adapt own-registration cleanup to native AfterUninstall (10.0.1 skips this script on upgrade). Remove only own Calendar list entries; deactivate own ScheduledJob, retain business data/files/settings/history. Do not remove legacy jobs or reset activation on upgrade. Full uninstall certification remains Stage8.",
+      "original": "HolidayManagement/scripts/BeforeUninstall.php",
+      "destinationSha256": "14fe31c8cb4ce0b516ff67bf1b7764ec4f8cd166667d33bec3a08df1f127e069",
+      "preNavigationHotfixSha256": "ce1313ca9d23a24d289af103754294b786034c0127a822c5219a09ad19f07afe",
+      "navigationHotfix": "See NAVIGATION-HOTFIX-RESULTS.md: delegated route, native tabs and ACL intersection."
+    }
+  ],
+  "originalRuntimeAndLifecycleFiles": [
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/css/attendance.css",
+      "originalSha256": "9711ed875742f4cfe9f9ec70c63a7a713773a303244fe08d0d1bebd7f61539f5",
+      "preservedAt": [
+        "pending/Attendance/files/client/custom/modules/employee-management/css/attendance.css",
+        "files/client/custom/modules/employee-management/css/attendance.css"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/controllers/attendance-overview.js",
+      "originalSha256": "ee5c7ed8cf92f9e96bf709d6fc71d69c3f7952a2dce7d8201a12c76825754afa",
+      "preservedAt": [
+        "pending/Attendance/files/client/custom/modules/employee-management/src/controllers/attendance-overview.js",
+        "files/client/custom/modules/employee-management/src/controllers/attendance-overview.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/controllers/attendance.js",
+      "originalSha256": "48b38b37fc4ad46acc1c488afdf5e7fcfddfb19464db74c729bf0efa5bcc6178",
+      "preservedAt": [
+        "pending/Attendance/files/client/custom/modules/employee-management/src/controllers/attendance.js",
+        "files/client/custom/modules/employee-management/src/controllers/attendance.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/controllers/schedule-settings.js",
+      "originalSha256": "d9044efbc3d5ef48f2d486e72ef7917e16426431d4d451854fca9039d459e9ee",
+      "preservedAt": [],
+      "reason": "Global Admin/Calendar/menu/mandatory-ACL registration intentionally not installed under the approved D3/P2/P6/P11 decisions; original source preserved."
+    },
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/admin/manager-index.js",
+      "originalSha256": "bd4b7b31ae99c2b9615fb37963e85ed7183835eded98bee8087dc858da21f898",
+      "preservedAt": [
+        "pending/Attendance/files/client/custom/modules/employee-management/src/views/admin/manager-index.js",
+        "files/client/custom/modules/employee-management/src/views/administration/index.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/admin/settings.js",
+      "originalSha256": "4eb7e7d2e85be17b53e0ff50f5a95ac9f751a981dd4d7414884642ed80ef48bc",
+      "preservedAt": [
+        "pending/Attendance/files/client/custom/modules/employee-management/src/views/admin/settings.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/attendance/my.js",
+      "originalSha256": "f10488b113290b1928cfdcbd53c80740c973f1892340ef0e09e97de036b3085d",
+      "preservedAt": [
+        "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/my.js",
+        "files/client/custom/modules/employee-management/src/views/attendance/my.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/attendance/overview.js",
+      "originalSha256": "149c36a63390c2733bb7572b6ecd4ee9eb88accdc284c448d49537a378a3f0ae",
+      "preservedAt": [
+        "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/overview.js",
+        "files/client/custom/modules/employee-management/src/views/attendance/overview.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/attendance/schedules.js",
+      "originalSha256": "1895c3b27df19d70671efde448fa4a769f1f55c432feb533b0594db08858b5a6",
+      "preservedAt": [
+        "pending/Attendance/files/client/custom/modules/employee-management/src/views/attendance/schedules.js",
+        "files/client/custom/modules/employee-management/src/views/attendance/schedules.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/fields/archive-initializer.js",
+      "originalSha256": "12943471563d0690fab22142a0dfcb58d59aeaf6d3e96bced34cb2c91568569b",
+      "preservedAt": [
+        "pending/Attendance/files/client/custom/modules/employee-management/src/views/fields/archive-initializer.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/fields/work-schedules.js",
+      "originalSha256": "eded001b2e22621a4b0a1125a32f72ca7cbbdedc0c89dd6986148b1a8a466be8",
+      "preservedAt": [
+        "pending/Attendance/files/client/custom/modules/employee-management/src/views/fields/work-schedules.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/settings/fields/group-tab-list.js",
+      "originalSha256": "f6da749ce52e4751fa0c8b575046d4390dc9e955dc7cdca9ff24bf7c57052d65",
+      "preservedAt": [],
+      "reason": "Legacy global tab editor adapter not installed; no global tabList override (P10). Original source preserved."
+    },
+    {
+      "original": "AttendanceManagement/files/client/custom/modules/attendance-management/src/views/settings/fields/tab-list.js",
+      "originalSha256": "ad7b72286f5fc6289becc5fe5f6eb8c6ab15358470bbf947cad48e35960783f1",
+      "preservedAt": [],
+      "reason": "Legacy global tab editor adapter not installed; no global tabList override (P10). Original source preserved."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Classes/Record/Hooks/AttendanceRecord/BeforeCreate.php",
+      "originalSha256": "a086401b74a1d0323eb0f61d6c266d0b136f6ae22ad85449808b14baecc4c902",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeAttendanceRecord/BeforeCreate.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Classes/Record/Hooks/AttendanceRecord/BeforeDelete.php",
+      "originalSha256": "a290791acc19129aee795e7a1ec28629a0232f13905b752e6688ba8dc65e6cc4",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeAttendanceRecord/BeforeDelete.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Classes/Record/Hooks/AttendanceRecord/BeforeUpdate.php",
+      "originalSha256": "91b7678623c23413240a3ae7a7644544223323ab8fc8409fc10360449c2a6609",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeAttendanceRecord/BeforeUpdate.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/en_US/Admin.json",
+      "originalSha256": "b29e95b6be5a9b8992e0abbaf62639fcdcd2d3ab57312c649958a80df52abf8f",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Admin.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/en_US/AttendanceRecord.json",
+      "originalSha256": "565152311929f5b130bcfa49f808562cf499d0180033c36895792fb9e2c297c8",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeAttendanceRecord.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/en_US/Global.json",
+      "originalSha256": "b33db02b9daa7b3868985a889c86490571ccf2dfc153d6b2be6c8c8b0205b9a9",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Global.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/en_US/Settings.json",
+      "originalSha256": "f0f2fb33dd48e0d7821833709711efaf936bdad26f91127fcf906912e46eb6ef",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Settings.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/ro_RO/Admin.json",
+      "originalSha256": "9196bebd977774083b367ef25372abae4b0b7cf9010ff2572a53cb1975667ef4",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Admin.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/ro_RO/AttendanceRecord.json",
+      "originalSha256": "ac00f0a1adf64759c23bff137b79049afcbc3a7db20b3c0262b1c2906fcdca4e",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeAttendanceRecord.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/ro_RO/Global.json",
+      "originalSha256": "715213a9c7f9f41968f41eda5905db3b4104ba68ae93846b9c99ec71509e70d3",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Global.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/i18n/ro_RO/Settings.json",
+      "originalSha256": "69599e9b982a6942324222eb9623d2675409f6cd530750560d80e5357815e4d8",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Settings.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/aclDefs/AttendanceRecord.json",
+      "originalSha256": "ce59b2072accb587197c0a11d71ed6cd2a39a6b658a5cda28cd65bf65d881108",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/aclDefs/EmployeeAttendanceRecord.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/aclDefs/AttendanceWorkSchedule.json",
+      "originalSha256": "ce59b2072accb587197c0a11d71ed6cd2a39a6b658a5cda28cd65bf65d881108",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/aclDefs/EmployeeAttendanceWorkSchedule.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/app/adminPanel.json",
+      "originalSha256": "5aa5159e94570181e4a449c474ba532991f61870e28db8c45a10c2f5f8dbcac4",
+      "preservedAt": [],
+      "reason": "Global Admin/Calendar/menu/mandatory-ACL registration intentionally not installed under the approved D3/P2/P6/P11 decisions; original source preserved."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/app/client.json",
+      "originalSha256": "8a97fbb9ac72d10f5535ad63905f9b8391dd9faff1af6d473da0536c27a03323",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/client.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/app/clientNavbar.json",
+      "originalSha256": "b260e2c70eea92e5dad7343f0f7937790cec4829306ce0ae397457d697f3ac51",
+      "preservedAt": [],
+      "reason": "Global Admin/Calendar/menu/mandatory-ACL registration intentionally not installed under the approved D3/P2/P6/P11 decisions; original source preserved."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/app/clientRoutes.json",
+      "originalSha256": "f6c4260de2c93663068d3132dcd96fd98b65f9679a39357a9f07f3fd4abb69ab",
+      "preservedAt": [],
+      "reason": "Global Admin/Calendar/menu/mandatory-ACL registration intentionally not installed under the approved D3/P2/P6/P11 decisions; original source preserved."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/clientDefs/Attendance.json",
+      "originalSha256": "305a5b98d772c544ee7013f4893af3a816f3e3630ef11532b20408b62405f1f3",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/clientDefs/Attendance.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/clientDefs/AttendanceOverview.json",
+      "originalSha256": "68eaf86a30c7be052f66876b9bb528cd03f07591d9da42524db976cb31c173b1",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/clientDefs/AttendanceOverview.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/entityDefs/AttendanceRecord.json",
+      "originalSha256": "672fe2940b093454e1b15746d7197c9b069bc0b6eb10ad7367071bbaac4c41fe",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAttendanceRecord.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/entityDefs/AttendanceWorkSchedule.json",
+      "originalSha256": "802ebed3180568294bdf823f8765c318ac03ceb0cca061e50cd22988329ca815",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAttendanceWorkSchedule.json",
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeAttendanceWorkSchedule.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/entityDefs/Settings.json",
+      "originalSha256": "b4eec25e098033e97e4882a9bb9969a43245e6a25fd00cf23acf6caae2592abb",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/employeeManagement.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/recordDefs/AttendanceRecord.json",
+      "originalSha256": "9e0a2fbe3effa3ebad368524b19814706a2eca8ced31a872afcdaa42f2782f62",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/recordDefs/EmployeeAttendanceRecord.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/scopes/Attendance.json",
+      "originalSha256": "c26f240bd980765a86f38b6729a5343fa24c153fdbb597f36ce391e9cd5cccd9",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/Attendance.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/scopes/AttendanceOverview.json",
+      "originalSha256": "b7f7412e22dad50dc88fd323e7dfccd19ea82fce7753901d822533ab0fef4c97",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/AttendanceOverview.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/scopes/AttendanceRecord.json",
+      "originalSha256": "77597508507af12634d5ec396ca167c826b439d70c798fd98c659bfb0c92aa51",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeAttendanceRecord.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/metadata/scopes/AttendanceWorkSchedule.json",
+      "originalSha256": "77597508507af12634d5ec396ca167c826b439d70c798fd98c659bfb0c92aa51",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeAttendanceWorkSchedule.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/module.json",
+      "originalSha256": "6dac954e3473e3e29865d029173ac8714a47363a23b2151a7e1bacd04f3ad848",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/module.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Resources/routes.json",
+      "originalSha256": "27a61da7f67a5f35ba721ea2819a70a22a7fd441a6695082082930bbbfe46a81",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Resources/routes.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/GetAttendanceOverview.php",
+      "originalSha256": "36c41bc652be60ba52ee04363c1ddd281223eadaebb91364b6e87395e044bd6f",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/GetAttendanceOverview.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/GetAttendanceSchedules.php",
+      "originalSha256": "ac228849ba3a3c5244d078b0ab99613e270d5cc9430c66c8775904adc35b43c4",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/GetAttendanceSchedules.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/GetAttendanceSettings.php",
+      "originalSha256": "81ef01afdaed2de917cd97bb9f43d992aeb0a3b3cf0f4acbf2759f8039bf0bf7",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/GetAttendanceSettings.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/GetMyAttendance.php",
+      "originalSha256": "8e6af4e04843a7f97af0606834eafb4df942f114aa25a268d893eb7e4152793c",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/GetMyAttendance.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostAttendancePdf.php",
+      "originalSha256": "7aec6de3abb8031a43f2c494701d2bda653d1dc131cb3d732912fd14749a00b1",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendancePdf.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendancePdf.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostAttendanceReminders.php",
+      "originalSha256": "11d72571022901837eb5fe454f910ae261f27a6e9d3a18a200f9b20cdc2e36a9",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendanceReminders.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostAttendanceSchedule.php",
+      "originalSha256": "098c5d155e82d9ed20e3ac090ed24b9ccd7c4a5009d6c7fe2bf508a76af7d0ae",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendanceSchedule.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostAttendanceXlsx.php",
+      "originalSha256": "a87f912e42b4e4eb71b709305e3c1d39bc0f6a6f9b4cd1e835d589302ed33b1e",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendanceXlsx.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostAttendanceXlsx.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostInitializeAttendanceArchive.php",
+      "originalSha256": "d0d16cc27b45f8fb9352a93997de9ff71e9a581d7912eee969e139cf9d2a5ab0",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostInitializeAttendanceArchive.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostManagerAttendance.php",
+      "originalSha256": "5d8bc0e06af5030b90b220213bbcb8953bc4acd6faee8927684a42925859b537",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostManagerAttendance.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PostMarkAttendance.php",
+      "originalSha256": "e9b0ba36dfea0865fb73c3d7b3e2ce7c4dde42438659869edef53ab6f4ac81d2",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PostMarkAttendance.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/Api/PutAttendanceSettings.php",
+      "originalSha256": "1583020428525c20d89a77aa819655a52c4baec9dbf7540a6be7fa7809ddb272",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/Api/PutAttendanceSettings.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/ApprovedHolidayProvider.php",
+      "originalSha256": "ddb5853787bc47f364da726c8c39b06a2c9db2bf6b3cac8001dcf1defe97f5c0",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/ApprovedHolidayProvider.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/ApprovedHolidayProvider.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceAccessChecker.php",
+      "originalSha256": "70c418103f4b9445be1e168b08ede00c1c216db9abc73996b49ac7942fc9c075",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceAccessChecker.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceAccessChecker.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceOverviewService.php",
+      "originalSha256": "bbb5958ebe47904ae211945347f6a83f2835b47cdf223ed0b8da85920cf06b54",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceOverviewService.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendancePdfGenerator.php",
+      "originalSha256": "236b87b3cd51dae08f85117aed8b8e54f311030f472b3058f0e6571f55875202",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendancePdfGenerator.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceService.php",
+      "originalSha256": "0867f3df8325b91f947b98ef96fe4c1b3b117537b7e1ab861068334ecaf07621",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceService.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceService.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceSettingsService.php",
+      "originalSha256": "2cdafcc83a90b1019acd73553fa8e91b78e894b0e7e247aa7875e8082b68e73f",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceSettingsService.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceSettingsService.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/AttendanceXlsxGenerator.php",
+      "originalSha256": "b6b515c31944d7c12c3b9d3cdb912b9dcecf0cfdfeac7a2c18ee9f5fc00faf98",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceXlsxGenerator.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/files/custom/Espo/Modules/AttendanceManagement/Tools/Attendance/NonWorkingDayProvider.php",
+      "originalSha256": "3900db93323f6f5ee6ff4e0226e68fe4fa9696a8b99b38d608b35c3f50c3e5a5",
+      "preservedAt": [
+        "pending/Attendance/files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/NonWorkingDayProvider.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "AttendanceManagement/scripts/AfterInstall.php",
+      "originalSha256": "688087a8cc3d1b9b2eae081e5ca1d431e658c0897585cc9c12251aa4800af723",
+      "preservedAt": [],
+      "reason": "Original lifecycle scripts preserved in source, not executed by the new package. Native metadata lifecycle replaces legacy global navigation mutations (D10/P10); Jobs remain pending."
+    },
+    {
+      "original": "AttendanceManagement/scripts/BeforeUninstall.php",
+      "originalSha256": "40a7f6eda70b4d8096ba77afc6693f81c9ebbf5377fcc7e69d839a4b0ee1336a",
+      "preservedAt": [],
+      "reason": "Original lifecycle scripts preserved in source, not executed by the new package. Native metadata lifecycle replaces legacy global navigation mutations (D10/P10); Jobs remain pending."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/css/calendar.css",
+      "originalSha256": "d6008c5ac6d56b9e80e731d01acdb0893cbc92d0bca95e8d4eaad3018895ff20",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/css/calendar.css"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/js/admin-menu.js",
+      "originalSha256": "4b214a6fff40ebc46a5d68bc143c6fe331bd49e9510d7d9d0417beb0a3b93741",
+      "preservedAt": [],
+      "reason": "Global Admin/Calendar/menu/mandatory-ACL registration intentionally not installed under the approved D3/P2/P6/P11 decisions; original source preserved."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/js/approver-menu.js",
+      "originalSha256": "6b78487655a30c13cc2a5011e5e5df3979da5d190d947167dbe0b751268402e0",
+      "preservedAt": [],
+      "reason": "Global Admin/Calendar/menu/mandatory-ACL registration intentionally not installed under the approved D3/P2/P6/P11 decisions; original source preserved."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/acl/holiday-request.js",
+      "originalSha256": "0dce9b1496aa9f6e1f315cb16cf9e299bceceda15fa3de22c60e32f4dff750cc",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/acl/holiday-request.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/controllers/holiday-overview.js",
+      "originalSha256": "ebc6fe0ee81a406a735d4163ebeed099981667dc2dc7b5f9ef19925e80554bff",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/controllers/holiday-overview.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/controllers/holiday-profiles.js",
+      "originalSha256": "572c352169c33e768f99498588652030ae83767331d375ea4202ea3b89727998",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/controllers/holiday-profiles.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/controllers/holiday-request.js",
+      "originalSha256": "0007bbb8b77be4f63bc96245edadca1cd6f73951eaf8549949c0660fdb90b2dd",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/controllers/holiday-request.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/controllers/holiday-settings.js",
+      "originalSha256": "436e80919d3b8120b5f2f9f16bd7ede503e2ea4666c703a0fb38ac5a363657c8",
+      "preservedAt": [],
+      "reason": "Global Admin/Calendar/menu/mandatory-ACL registration intentionally not installed under the approved D3/P2/P6/P11 decisions; original source preserved."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/admin/index.js",
+      "originalSha256": "00480d3db030453f1b1534292793854d4579817af7c9249f7fee92ac63fc4f0b",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/admin/index.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/admin/profiles.js",
+      "originalSha256": "fef5879b91a2ce66043be7b9bec69cd6205349ee759421c33ccc7f357d54b354",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/admin/profiles.js",
+        "files/client/custom/modules/employee-management/src/views/administration/profiles.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/admin/settings.js",
+      "originalSha256": "2b9fd59238ea7ddc0b9feaeced7265cc5ab1a6e011381d31b253241cfa100c4c",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/admin/settings.js",
+        "files/client/custom/modules/employee-management/src/views/administration/settings.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/calendar/calendar.js",
+      "originalSha256": "afc61d5e4432799a9b581272d69c4694aac68b2ac8a42f7af59d5a829aba1fa8",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/calendar/calendar.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/dashlets/holiday-approvals.js",
+      "originalSha256": "7ca055b46935feb1ba57e6ce7e9ec632a929e9a2e492855f552762e91cb336f6",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/dashlets/holiday-approvals.js",
+        "files/client/custom/modules/employee-management/src/views/holiday-request/index.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/fields/annual-reset-date.js",
+      "originalSha256": "9531f8c743a71884ae5d166ea8652bce670b8f84cd371df958c0b1e1db5c782d",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/fields/annual-reset-date.js",
+        "files/client/custom/modules/employee-management/src/views/fields/annual-reset-date.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/fields/test-data-reset.js",
+      "originalSha256": "534ba090c6f7a7ba4c9cbb42498305c473dd17b32924a86c91404cd9782d33c8",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/fields/test-data-reset.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-overview/index.js",
+      "originalSha256": "51202a94546248beb84a41366fa83404f468b76b8891b98f97b1fd5bcfdc2ec4",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-overview/index.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/fields/managed-employee.js",
+      "originalSha256": "38adb4531260592a8575bfc79680fd165ef3220d2c2dff6b63d9ac00becaff22",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/fields/managed-employee.js",
+        "files/client/custom/modules/employee-management/src/views/holiday-request/fields/managed-employee.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/fields/start-date.js",
+      "originalSha256": "39a5e40b5fa2358e90a119168c0e34c1557598135b14a6202777039f245e86ce",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/fields/start-date.js",
+        "files/client/custom/modules/employee-management/src/views/holiday-request/fields/start-date.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/list.js",
+      "originalSha256": "1a2ffb2ba23c9b6d18bd48bb66622cb5365788356b8327127a4c100eb76cad9b",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/list.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/record/approval-actions.js",
+      "originalSha256": "a5dd80faa4f68eaa6660cd366cf6e580c0796ed1fc57d878e0b87b186aa7c29b",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/record/approval-actions.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/record/detail-small.js",
+      "originalSha256": "88b953747d55305a85cc013126f5ec41002722682a5c590ff3af935136aa966d",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/record/detail-small.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/record/detail.js",
+      "originalSha256": "0439cd90181b6c5240458a2e6c4d2a62adab3fd2c5f94f387694d5d8ab07d67d",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/record/detail.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/holiday-request/record/edit-small.js",
+      "originalSha256": "e9d7b5c8d806062e6c316dcb1d6b977f3b4a3ba75e6b980b886ea302ee069c79",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/holiday-request/record/edit-small.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/balance-correction.js",
+      "originalSha256": "8bc9700c3841fd7b0446cf769c12940011aa92568290f3bcb81847fab2852a37",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/balance-correction.js",
+        "files/client/custom/modules/employee-management/src/views/modals/balance-correction.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/cancellation-reason.js",
+      "originalSha256": "ba3000f81f923297191c53d37c3b18cdc015859bcd1accce1e4b091002beb9de",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/cancellation-reason.js",
+        "files/client/custom/modules/employee-management/src/views/modals/cancellation-reason.js",
+        "files/client/custom/modules/employee-management/src/views/modals/attendance-correction.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/complete-initial-setup.js",
+      "originalSha256": "5dd2dacc16a29b2d07449fe4701b8ca0cf8fed7a2823155d5c76ec4be656e1e0",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/complete-initial-setup.js",
+        "files/client/custom/modules/employee-management/src/views/modals/complete-initial-setup.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/correction-history.js",
+      "originalSha256": "a882c456e9c1dd47e8ecb987b4f7e2527483ff167e6c307fe4be17deef750adf",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/correction-history.js",
+        "files/client/custom/modules/employee-management/src/views/modals/correction-history.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/managed-booking.js",
+      "originalSha256": "351162ca2455e79af5716cf9c4bd4dcbd9e85d3d467e8f1a91446bc0abf6f8c0",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/managed-booking.js",
+        "files/client/custom/modules/employee-management/src/views/modals/managed-booking.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/modals/managed-employee-select.js",
+      "originalSha256": "15433004f37b3ec6a4b9d34017f307768c8a8247b5dd1f3c3c730722f8d185d3",
+      "preservedAt": [
+        "pending/Holiday/files/client/custom/modules/employee-management/src/views/modals/managed-employee-select.js",
+        "files/client/custom/modules/employee-management/src/views/modals/managed-employee-select.js"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayLedger/BeforeCreate.php",
+      "originalSha256": "218615c715027bffb9ee1d13d5d4af64067ab3bd120638bd4ade48ea53a096f4",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayLedger/BeforeCreate.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayLedger/BeforeDelete.php",
+      "originalSha256": "835606618833719ed5d97c2427e7014b89d348487e2870a670f34ffadd255f33",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayLedger/BeforeDelete.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayLedger/BeforeUpdate.php",
+      "originalSha256": "8b3c62dac93c3a094a936466b265d4b35ea39a69bd416010e8f9979b6e5949d1",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayLedger/BeforeUpdate.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayProfile/BeforeCreate.php",
+      "originalSha256": "3cc6a4a935b1e32373c533112c8b06eb0f3d9cd672f760800c60581b047de32c",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayProfile/BeforeCreate.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayProfile/BeforeDelete.php",
+      "originalSha256": "c514e08ecb6d924a40783e8c00b62b70533e6f48af013a45d46849173eb27d63",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayProfile/BeforeDelete.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayProfile/BeforeUpdate.php",
+      "originalSha256": "1a298ff5aefdb066385aa43f9b58991e7731a5cf86c1092afabede2696ea47d4",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayProfile/BeforeUpdate.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayRequest/BeforeCreate.php",
+      "originalSha256": "7b0319cd8bdc1c355559b98f0f408fec051984806c9b44d6fb9b39ece9b64e7e",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayRequest/BeforeCreate.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Classes/Record/Hooks/HolidayRequest/BeforeUpdate.php",
+      "originalSha256": "b4a46bacce8f704af0e14a021d54e7eb943036d99922ce69052741e3fd9862a5",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Classes/Record/Hooks/EmployeeHolidayRequest/BeforeUpdate.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Controllers/HolidayRequest.php",
+      "originalSha256": "769674f55782d33ea34b6fee6a0843b82cc95c98b91c62b3ab6500a72f6a8f86",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Controllers/EmployeeHolidayRequest.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Entities/HolidayRequest.php",
+      "originalSha256": "efb54e6866ce664654c43faa35e471837b1c76d58dd1c19e0d0462a5ae8e339f",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Entities/EmployeeHolidayRequest.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/FieldValidators/Settings/Approvers/Valid.php",
+      "originalSha256": "cecee9f09bff94cadea678f6823c39b9613d4260e920e1afdefbe435cf1ddca0",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/FieldValidators/Settings/Approvers/Valid.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Hooks/HolidayRequest/Balance.php",
+      "originalSha256": "109dfbc787ced61a36e5d36f11db751b2c79852fe6cd0d28ae496b6cd57a1a39",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Hooks/EmployeeHolidayRequest/Balance.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Jobs/ProcessHolidayResets.php",
+      "originalSha256": "cfd92246a600e14f329897686b27352646c5071fd0cd54b0fdc7b74aca925cc0",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Jobs/ProcessHolidayResets.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Jobs/ProcessEmployeeHolidayResets.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/Admin.json",
+      "originalSha256": "10c7f45249e1b0f981b66fef14937169fe2d51c2b87229af7832181488babe33",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Admin.json",
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeAdministration.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/Global.json",
+      "originalSha256": "44e58c97258f3a8150b8eef24c2a9e66bdb171861c13e7164885b50b2d4b90fd",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Global.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/HolidayLedger.json",
+      "originalSha256": "448aabbc243c8c0ab70ed00d50a907a467403dc36172dfe85ccdf4d721d12cae",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeHolidayLedger.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/HolidayOverview.json",
+      "originalSha256": "f0f420574b579d94a2fd72f9a036e1753a20d9fb8802f3a59d40748e82385855",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/HolidayOverview.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/HolidayProfile.json",
+      "originalSha256": "7d618346ef911be3a3de8adf658fd8fa936a523a480f7d00d8f0269df398bf43",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeHolidayProfile.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/HolidayRequest.json",
+      "originalSha256": "b563e5493d6a20fc6a114e2508efcd0edec176feb451f723ca219d5767e5b0f5",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/EmployeeHolidayRequest.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/ScheduledJob.json",
+      "originalSha256": "cd454af1534c34bd5cad9548f51c0b3a5e7ad9f16621923b03117a48834f41d5",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/ScheduledJob.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/en_US/Settings.json",
+      "originalSha256": "28b23775870e6ebcca6ac3f03c738cd97d1dd66fc8e1c83a6bc8d87045157808",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/en_US/Settings.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/Admin.json",
+      "originalSha256": "cad8530055909a6fa8430f4fcfa02e65b385727e9b84ad15ab2bcd6b75112cfd",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Admin.json",
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeAdministration.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/Global.json",
+      "originalSha256": "2e5b245561307d96489017500c2c4a2e7b5440cbf33123c9c5c171a167ddc081",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Global.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/HolidayLedger.json",
+      "originalSha256": "7b5c9fd371a54bb21350d17d6a944933ba2d9c680e9cce5a27e46dc9aadfbb76",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeHolidayLedger.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/HolidayOverview.json",
+      "originalSha256": "a72f198292d7c05cc1cfce73d9a1d6ed4bba42edd000ef8ec6f49cb2236e936b",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/HolidayOverview.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/HolidayProfile.json",
+      "originalSha256": "1f02081f9f26bb328573594bfdeca77fe9b14bd46dc4c1c22721afc4a7ade2bb",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeHolidayProfile.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/HolidayRequest.json",
+      "originalSha256": "b89463d05d3f25e3b47f3bffa51e704afb0f00abc8cace62acbc4e17eed4d75e",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/EmployeeHolidayRequest.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/ScheduledJob.json",
+      "originalSha256": "705f709a8416a591e59db0a7a0c3312fd15e888ddb32e487e10ee40108953113",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/ScheduledJob.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/i18n/ro_RO/Settings.json",
+      "originalSha256": "10e92f819f5a795e87791df5ae5d9b3a4b270a2893ebd03b58e947dff19ac84d",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/i18n/ro_RO/Settings.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/layouts/HolidayRequest/detail.json",
+      "originalSha256": "06bfe4ca55d55f3639c3a89e3f9cd5d56f7feb3c78b353561e58a6aa364a63e0",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeHolidayRequest/detail.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/layouts/HolidayRequest/detailSmall.json",
+      "originalSha256": "06bfe4ca55d55f3639c3a89e3f9cd5d56f7feb3c78b353561e58a6aa364a63e0",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeHolidayRequest/detailSmall.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/layouts/HolidayRequest/edit.json",
+      "originalSha256": "91e15e26159312ffeb234875bc6dcc4b71627f461f828b76a6267841efd8f8d9",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeHolidayRequest/edit.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/layouts/HolidayRequest/list.json",
+      "originalSha256": "fbf22bbd9af00598b54249c0ad43413b8ef1fe77633e1aff929d1fccc5b5ef4f",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeHolidayRequest/list.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/layouts/HolidayRequest/listSmall.json",
+      "originalSha256": "5ac4dcab37ac71acc57d497124abde98dfeca0164055db04a6214c46fb710861",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeHolidayRequest/listSmall.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/layouts/HolidayRequest/search.json",
+      "originalSha256": "4d321852d258f73cb7d2cf46ef52cd587a8451ad0d2d95dcf064412a25b73616",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/layouts/EmployeeHolidayRequest/search.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/aclDefs/HolidayLedger.json",
+      "originalSha256": "d21442797f2a620205dffcfaf67cb8f13b97c44fc076c1ba92e55dc843c0b5b5",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/aclDefs/EmployeeHolidayLedger.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/aclDefs/HolidayProfile.json",
+      "originalSha256": "d21442797f2a620205dffcfaf67cb8f13b97c44fc076c1ba92e55dc843c0b5b5",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/aclDefs/EmployeeHolidayProfile.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/app/acl.json",
+      "originalSha256": "c131ba797a2e61991aa68e56f4b30f97b37918040234b4da93260e13c0058c08",
+      "preservedAt": [],
+      "reason": "Global Admin/Calendar/menu/mandatory-ACL registration intentionally not installed under the approved D3/P2/P6/P11 decisions; original source preserved."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/app/adminPanel.json",
+      "originalSha256": "4b3b8bc676f994c9fb34dfc5ed36aeeeef1c33f6e766572f3d17e3fbf7e31321",
+      "preservedAt": [],
+      "reason": "Global Admin/Calendar/menu/mandatory-ACL registration intentionally not installed under the approved D3/P2/P6/P11 decisions; original source preserved."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/app/client.json",
+      "originalSha256": "b39320b573f42157472096029a6faef857786835853439a3a913a9cc34252665",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/client.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/app/clientNavbar.json",
+      "originalSha256": "d566b105bdb5027cec01d3ca348525ad6106a0502ebd1a6bac818a9b350f922f",
+      "preservedAt": [],
+      "reason": "Global Admin/Calendar/menu/mandatory-ACL registration intentionally not installed under the approved D3/P2/P6/P11 decisions; original source preserved."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/app/clientRoutes.json",
+      "originalSha256": "d0cb51e05e036ba0f4d17819b84254a9376ebd7495891775ea24a4ea13a5608c",
+      "preservedAt": [],
+      "reason": "Global Admin/Calendar/menu/mandatory-ACL registration intentionally not installed under the approved D3/P2/P6/P11 decisions; original source preserved."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/app/config.json",
+      "originalSha256": "66b03bb8fbcc9ece8235639019f950152c011cef878651e5114626c67091d15d",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/config.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/app/scheduledJobs.json",
+      "originalSha256": "c3d1a44d0a8f5643a12e355084959fc2fd965d294e84d39895def2611e45667e",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/scheduledJobs.json",
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/scheduledJobs.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/clientDefs/Calendar.json",
+      "originalSha256": "3eb1e7d606fa591a47dcbe5fdb7c769ed65eedc6436a7af991b6505c7f7d2dc4",
+      "preservedAt": [],
+      "reason": "Global Admin/Calendar/menu/mandatory-ACL registration intentionally not installed under the approved D3/P2/P6/P11 decisions; original source preserved."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/clientDefs/HolidayOverview.json",
+      "originalSha256": "6e4438913914ee08c16a254ba5b72c1df75a7753e8356372413b1c4b5245c167",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/clientDefs/HolidayOverview.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/clientDefs/HolidayRequest.json",
+      "originalSha256": "c2d0c31a400095a1654c671fa22fdd476abb8b2de415b3e95ffae6068bbeae6c",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/clientDefs/EmployeeHolidayRequest.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/dashlets/HolidayApprovals.json",
+      "originalSha256": "aa3602466e22c189141b9d72f13b8b3aca33df378b154dfea19886d34c1e003b",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/dashlets/HolidayApprovals.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityAcl/HolidayRequest.json",
+      "originalSha256": "8fac55dd29b73469ea6c39f6bc09d11084fdb3f694b65104ad62a34ed76562bb",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityAcl/EmployeeHolidayRequest.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/HolidayLedger.json",
+      "originalSha256": "ae54a2ebfa919e2cf3531fa94fbe9411c507374b57d6c01abfee370ab88fd089",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeHolidayLedger.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/HolidayProfile.json",
+      "originalSha256": "0048890969f244abd7f6f387a2457e8e816e055c39de1fca70040893481b31d3",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeHolidayProfile.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/HolidayRequest.json",
+      "originalSha256": "f8268ab18efb26d4bfd5ec347f3663c7ec36a3c270dc651fed70f7d3987047f8",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityDefs/EmployeeHolidayRequest.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/Settings.json",
+      "originalSha256": "4c8f819a3fa0e8df1d235bde3c7e1a8e331bd3fbcbbbc0bc7400fe89119f9a69",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/app/employeeManagement.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/recordDefs/HolidayLedger.json",
+      "originalSha256": "c7ab855eacdd1f113e35142e7b9f15576a65e4412fd7337fdad60abbbaaf61ef",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/recordDefs/EmployeeHolidayLedger.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/recordDefs/HolidayProfile.json",
+      "originalSha256": "2b7c48ba72e09e254ec3992e1ef328dc727b7ba7d33c68808915213128b41b83",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/recordDefs/EmployeeHolidayProfile.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/recordDefs/HolidayRequest.json",
+      "originalSha256": "27844137dd2752969afbdb19778ea60e72fc266b089aba26a4b2a98da69b6f0f",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/recordDefs/EmployeeHolidayRequest.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayBalanceCorrection.json",
+      "originalSha256": "fb8130cb74ce4b5703173ff1812a6be872f4768eee3dc74f27bf25bb7db0d337",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/HolidayBalanceCorrection.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayLedger.json",
+      "originalSha256": "f45d00c8a2f64032637234ffc0a8611656f15e3e0b95fa7e98d159f8221db4e0",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeHolidayLedger.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayManagementSettings.json",
+      "originalSha256": "fb8130cb74ce4b5703173ff1812a6be872f4768eee3dc74f27bf25bb7db0d337",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeManagementSettings.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayOverview.json",
+      "originalSha256": "a42e2d3941859b0dd625035a31dabf3aef15cf07dad216d6d107f282b0b33b1c",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/HolidayOverview.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayProfile.json",
+      "originalSha256": "f45d00c8a2f64032637234ffc0a8611656f15e3e0b95fa7e98d159f8221db4e0",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeHolidayProfile.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayProfileManagement.json",
+      "originalSha256": "fb8130cb74ce4b5703173ff1812a6be872f4768eee3dc74f27bf25bb7db0d337",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/HolidayProfileManagement.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayRequest.json",
+      "originalSha256": "9caf62afdab182fafefbf7f8fffeaa7077f300dfc6c3b630935e8b129f17d869",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/EmployeeHolidayRequest.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/scopes/HolidayRequestManagement.json",
+      "originalSha256": "fb8130cb74ce4b5703173ff1812a6be872f4768eee3dc74f27bf25bb7db0d337",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/scopes/HolidayRequestManagement.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/module.json",
+      "originalSha256": "efb1246c18501dff4532f370b9ec7dc4d3ec6208984f9ff2bf726bca0cd52ec7",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/module.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/routes.json",
+      "originalSha256": "cda1240229faceefcb110a643c259026f159c81b529fdb94dcc186b5139d9c56",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Resources/routes.json"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/templates/holiday-request.docx",
+      "originalSha256": "737e695378896bacf26cf93187d371f4a064704a3f2e99eddbecbd798d1f9c0e",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Resources/templates/holiday-request.docx"
+      ],
+      "reason": "Byte-identical template preserved."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Services/HolidayRequest.php",
+      "originalSha256": "159024d5697ff4aabf0cf862cb8dc6e62b385be9c2edaed8daf56666a3cfb68d",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeHolidayRequest.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeHolidayRequest.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Services/EmployeeAbsence.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayAdministration/Api/GetSettings.php",
+      "originalSha256": "82c7d826543fe2afc4635deaa7aac41551421b3565f296583e1a01a7311f074b",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/Api/GetSettings.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayAdministration/Api/PutSettings.php",
+      "originalSha256": "8f4ab5a3929e18ecc0172f960b6110103be6a8e6bd2430e81b29a674b1a30d4e",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/Api/PutSettings.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayAdministration/HolidayManagementAccessChecker.php",
+      "originalSha256": "46695fc77b35c64e53247c31a67c66918da512f4c850125b180f1f6b60600eb9",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/EmployeeManagementAccessChecker.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+      "originalSha256": "4f9289664483af8ec850876808c539bc92b835bc9086877cde9155e21e0cfb90",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayAdministration/HolidaySettingsService.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/GetCorrectionHistory.php",
+      "originalSha256": "f659c1b965ed953fd8e2ede49ced707a06ad730e44b1a8f98bb0311a50d73602",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/GetCorrectionHistory.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/GetProfiles.php",
+      "originalSha256": "1f311efb6f2b27b59f25f11d1c19a538954f6b463392e029efe6ea0429b3003f",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/GetProfiles.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/GetTestDataResetPreview.php",
+      "originalSha256": "dc2aa732c396fca2d7057f4ff986764e8a02d5e234c84a910904ccf31823844f",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/GetTestDataResetPreview.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/PostBulkInitialize.php",
+      "originalSha256": "20779d1b60ffb10148e4db9e20c1537e0b46fd3ced39be7db9f938727332c668",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/PostBulkInitialize.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/PostCompleteInitialSetup.php",
+      "originalSha256": "ea652c54a72c53443ac838cd728f83c2f40de16b7ffd525c6788741b614f3d37",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/PostCompleteInitialSetup.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/PostCorrection.php",
+      "originalSha256": "155e0703563250d5a426f7825bb46f90e4692210780b8a4ca580c49ca1b1ef38",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/PostCorrection.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/PostReset.php",
+      "originalSha256": "93783d418aa59b05de78e0ae12034015a9cef60c15d424883adf3399db9f45c3",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/PostReset.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/Api/PostTestDataReset.php",
+      "originalSha256": "d433101656a6f211066e9887db4ff55acb2aebda61ccbdc57462e0dc9d16460f",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/Api/PostTestDataReset.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/BalanceMath.php",
+      "originalSha256": "348a6f912e4d8b9e0b4668da77d48af8ad73a3c79b2c600ae1450a337cc955c3",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/BalanceMath.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceCorrectionAccessChecker.php",
+      "originalSha256": "763321e1dedb93ccc67766c122e924d40df33014fe0102092314eeae4025be2d",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceCorrectionAccessChecker.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+      "originalSha256": "8a1dd8cb845236af3f07264707d85a03f358ce652aec199a611852dc4b0a3597",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayBalanceService.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileService.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayDataResetService.php",
+      "originalSha256": "44568834fcc2b347660a58415e6b2e144ef98fda59a860e8ca1561ea08f7337f",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayDataResetService.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayProfileAccessChecker.php",
+      "originalSha256": "7ddaff0897afeaa7e9cbe50330ff4357210280fee675935fcae8b36ea9e21172",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayProfileAccessChecker.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayDocument/HolidayApprovalDocumentService.php",
+      "originalSha256": "7cdeea4d3d295d45d8e7856b90ff7b4ed2a0c485ec6f11c47c89da9c535d813f",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayDocument/HolidayApprovalDocumentService.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayDocument/HolidayApprovalDocumentService.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayDocument/HolidayDocumentGenerator.php",
+      "originalSha256": "eec3d08fa368172cff4cd3a96b89be7f24f3fe1a9e372b2a1aae4d7c2f9f97c4",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayDocument/HolidayDocumentGenerator.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayOverview/Api/GetOverview.php",
+      "originalSha256": "bc2b7354c26de8ecd10ffdf81b0b5f43c0faf9af316004a0a69308bf5a881d59",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayOverview/Api/GetOverview.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayOverview/HolidayOverviewService.php",
+      "originalSha256": "7bf6a83b1d02185214c1ba130351dda82fd45185c76e0a02d4633e86095762e2",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayOverview/HolidayOverviewService.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/GetApproval.php",
+      "originalSha256": "22d3a34a7031897cb1880fdf31478e5526e309ee25b9d8437744cd9469d1f308",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/GetApproval.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/GetApprovalQueue.php",
+      "originalSha256": "6ef2d362a30225644b61e5a96ca31acdc5107b5c609fbbf14b5540541d2e0dc1",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/GetApprovalQueue.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/GetManagedBookingUsers.php",
+      "originalSha256": "5ee50d516195bc2979509821546de47fb18414aadaeb01478c174b94f9eb6dde",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/GetManagedBookingUsers.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/GetMyBalance.php",
+      "originalSha256": "4e5edd154baebaf6c0d372aa9333e56822c6105d11a68ba43dfaf417b119f3d8",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/GetMyBalance.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/PostCancel.php",
+      "originalSha256": "234eb663b88eae44dcba4348378a53eeef370f2588a550c7dc5cfd700fd6290b",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/PostCancel.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/PostCancellationRequest.php",
+      "originalSha256": "3e02935cd62f2b84e2cf7d7d1caefe6cdead5118579020b70aa8d1b93eb4a42c",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/PostCancellationRequest.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/PostDecision.php",
+      "originalSha256": "3538b0c09e2d704e3b39118a243fdfca5206c16bd5c0f354b775b54d10ba5e14",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/PostDecision.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/Api/PostManagedBooking.php",
+      "originalSha256": "7b0903c8eecb223820bf017b3335330356016a068e4b28ac235ad77c922575d4",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/Api/PostManagedBooking.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/BookingDatePolicy.php",
+      "originalSha256": "c09d3b4878f3bb2f5bd90d0d0b4b8d5e97e234eabc407b261fc83068ef0f718c",
+      "preservedAt": [
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/BookingDatePolicy.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/HolidayRequestManagerAccessChecker.php",
+      "originalSha256": "7e4624739d469b7c6ff975214f0bbdef2999741c06ad027975ed4423e7dc9a38",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/HolidayRequestManagerAccessChecker.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/NonWorkingDayProvider.php",
+      "originalSha256": "9e86534bbdb98524964dd4b4ca208493b6ef2504917cb44d268dfa968b42f75c",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/NonWorkingDayProvider.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/NonWorkingDayProvider.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayRequest/WorkingDayCalculator.php",
+      "originalSha256": "438c99d7d4767608a7ecae9d7082765bc2b44966ad0ac644d0b46313bbab025e",
+      "preservedAt": [
+        "pending/Holiday/files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/WorkingDayCalculator.php",
+        "files/custom/Espo/Modules/EmployeeManagement/Tools/EmployeeHolidayRequest/WorkingDayCalculator.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/scripts/AfterInstall.php",
+      "originalSha256": "bf4af12a7d0b0b890e25f3345109e9c0056edcbe06b58c45e17de8b83f47bdec",
+      "preservedAt": [
+        "scripts/AfterInstall.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    },
+    {
+      "original": "HolidayManagement/scripts/BeforeUninstall.php",
+      "originalSha256": "def416affaf7675d8fa6916e09fe8391099e8e23a8cf8f405aa6e56783b7e7d3",
+      "preservedAt": [
+        "scripts/AfterUninstall.php"
+      ],
+      "reason": "Preserved in original source and imported copy; activation follows the approved incremental stages."
+    }
+  ],
+  "newIntegrationComponentsStage5": [
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/HolidayAttendanceGuard.php",
+      "reason": "D8 cross-component ORM check over existing Attendance statuses, called under native User/month transaction locks. No accounting, workflow or API endpoint."
+    },
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceMonthService.php",
+      "baseVersion": "0.4.0",
+      "reason": "Extend the existing immutable month result with sorted range locking, slicing for Holiday snapshots, and observable revisions. Reuses the WTC calculator; never configures or duplicates a schedule."
+    }
+  ],
+  "newIntegrationComponentsStage6": [
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayDocument/HolidayApprovalService.php",
+      "reason": "Necessary native Job orchestration and durable manifest/fencing for P3/P8; does not own accounting, implement a queue, or replace the original DOCX renderer."
+    },
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Jobs/GenerateHolidayApproval.php",
+      "reason": "Thin Espo\\Core\\Job\\Job entrypoint; native group/scheduler/daemon, no custom runner."
+    },
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Resources/metadata/entityAcl/EmployeeHolidayRequest.json",
+      "reason": "Native forbidden field restrictions protect staging documents and operation internals without an Attachment ACL or core override."
+    },
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/AttendanceMonthService.php",
+      "reason": "Existing Stage4/5 month state: explicit locking projection avoids foreign frozenBy User locks on MariaDB; norms/freeze rules unchanged."
+    },
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Attendance/HolidayAttendanceGuard.php",
+      "reason": "Existing Stage5 guard: lock only id/date of incompatible records, not author User joins; same predicate and validations."
+    }
+  ],
+  "newIntegrationComponentsStage7": [
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Tools/Calendar/EmployeeAbsenceService.php",
+      "reason": "Approved minimal read projection only; synchronous source transaction and native soft-delete/restore with unique source. No accounting or second Calendar engine."
+    },
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Hooks/EmployeeHolidayRequest/Absence.php",
+      "reason": "Native ORM afterSave couples projection with existing command/Job transaction, no parallel accounting hook."
+    },
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Classes/Select/EligibleEmployee.php",
+      "reason": "Native mandatory AdditionalApplier excludes inactive/admin targets in all native list/Calendar reads without a User lifecycle override."
+    },
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Classes/Acl/AbsenceAccessChecker.php",
+      "reason": "Reuse maintained read-only checker and native own/all semantics; eligible-target record reads, no mutation grants."
+    },
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Entities/EmployeeAbsence.php",
+      "reason": "Native Event class for the approved minimal public entity; no source link, documents, description or balance."
+    },
+    {
+      "file": "files/custom/Espo/Modules/EmployeeManagement/Controllers/EmployeeAbsence.php",
+      "reason": "Native Record controller; existing record hooks, native entityAcl and strict defaults protect generic APIs."
+    }
+  ],
+  "releaseVersion": "0.7.2"
+}
