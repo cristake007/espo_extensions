@@ -27,7 +27,7 @@
     "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/dashlets/holiday-approvals.js",
     "sourceSha256": "0f13c5535cf21cfc4b7b263dcc1d8d23236da4f7599604e405387d0aa8cb7835",
     "destination": "files/client/custom/modules/employee-management/src/views/holiday-request/index.js",
-    "adaptations": "Continue private list/queue adapter derived in Stage3 from the original approval dashlet and existing native modals. Activate approve and retry through native confirmation; show protected errors, poll only Processing requests, clean up on view removal, link published attachments through the native download entrypoint. No Calendar/Admin override."
+    "adaptations": "Continue private list/queue adapter derived in Stage3 from the original approval dashlet and existing native modals. Activate approve and retry through native confirmation; show protected errors, use visibility-aware adaptive polling for all current list modes with faster checks only while Processing, serialize refreshes, clean up on view removal, and link published attachments through the native download entrypoint. No Calendar/Admin override."
   },
   {
     "source": "../HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Resources/metadata/entityDefs/HolidayRequest.json",

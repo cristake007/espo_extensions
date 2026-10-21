@@ -1,6 +1,16 @@
-# Employee Management 0.8.9
+# Employee Management 0.8.10
 
-Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.9 clarifică spațiile de lucru principale și administrative, închid ruta alternativă care mai putea produce `No create access`, păstrează navigația administrată nativ, furnizează iconul nativ pentru tabul Holiday Requests și includ resetări explicite pentru datele Holiday și Attendance de test. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
+Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.10 clarifică spațiile de lucru principale și administrative, închid ruta alternativă care mai putea produce `No create access`, păstrează navigația administrată nativ, furnizează iconul nativ pentru tabul Holiday Requests și includ resetări explicite pentru datele Holiday și Attendance de test. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
+
+## Actualizare eficientă Holiday — 0.8.10
+
+- Listele personale, aprobările în așteptare și concediile aprobate sunt verificate la 30 de secunde, inclusiv când lista managerială este goală.
+- Cererile aflate în `ApprovalProcessing` folosesc temporar intervalul de 5 secunde, pentru publicarea promptă a stării finale și a documentelor.
+- Polling-ul este oprit în taburile ascunse, este reluat imediat la revenire și folosește backoff exponențial limitat după erori de rețea.
+- Request-urile de listă sunt serializate, refresh-urile concurente sunt reunite, iar răspunsurile unui mod anterior nu pot suprascrie lista curentă.
+- Listarea backend selectează numai câmpurile necesare și încarcă documentele publicate într-o singură interogare, păstrând ACL/FLS și răspunsul API existent.
+
+Această optimizare reduce traficul produs de interfața Holiday; nu este prezentată ca remediu pentru erori Cloudflare 522 sau conexiuni WebSocket.
 
 ## Calcul și decizii concediu în timp real — 0.8.9
 
@@ -178,12 +188,12 @@ Corecții: POST `EmployeeManagement/administration/profiles/correct` cu profileI
 Attendance: GET `EmployeeManagement/attendance/{myAttendance|overview}` cu month=YYYY-MM, GET `.../schedules`; POST `.../{mark|managerMark|schedule|remind|xlsx|pdf|initialize}`. Mark primește date/status și opțional revision; managerMark adaugă userId/reason obligatoriu. Schedule acceptă numai userId/remote/cic/cicStartDate/cicEndDate, niciodată ore, WTC sau assignedUser impus pentru o pontare proprie. Exporturile păstrează răspunsul original filename/mediaType/content base64. Initialize păstrează datele, schimbând numai începutul arhivei vizibile la luna curentă.
 
 ```bash
-bash ./build.sh --extension ./EmployeeManagement --zip 0.8.9 files scripts
+bash ./build.sh --extension ./EmployeeManagement --zip 0.8.10 files scripts
 python3 EmployeeManagement/tests/contract.py
 node EmployeeManagement/tests/regression/reset-date-field.test.mjs
 ```
 
-ZIP: **dist/employee-management-0.8.9.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile native de lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
+ZIP: **dist/employee-management-0.8.10.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile native de lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
 
 Installer-ul nu șterge date, nu migrează originalele și nu modifică Roles/WTC. Coexistența cu originalele este un scenariu controlat de laborator, nu recomandare de producție.
 

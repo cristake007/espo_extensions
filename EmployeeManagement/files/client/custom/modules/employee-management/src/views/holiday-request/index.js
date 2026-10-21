@@ -173,16 +173,35 @@ define(['view'], View => class extends View {
     events = {
         'click [data-action="create"]': function () { this.openForm(false); },
         'click [data-action="managed"]': function () { this.openForm(true); },
-        'click [data-action="queue"]': function () { this.listMode = 'queue'; this.refresh(); },
-        'click [data-action="approved"]': function () { this.listMode = 'approved'; this.refresh(); },
-        'click [data-action="own"]': function () { this.listMode = 'own'; this.refresh(); },
+        'click [data-action="queue"]': function () { this.switchListMode('queue'); },
+        'click [data-action="approved"]': function () { this.switchListMode('approved'); },
+        'click [data-action="own"]': function () { this.switchListMode('own'); },
         'click article [data-action]': 'act',
     };
 
     setup() {
-        this.rows = []; this.listMode = 'own'; this.balanceInfo = null; this.balanceLoadFailed = false; this.wait(this.load());
-        this.pollTimer=setInterval(()=>this.pollForUpdates().catch(()=>{}),3000);
-        this.on('remove',()=>clearInterval(this.pollTimer));
+        this.rows = [];
+        this.listMode = 'own';
+        this.listModeVersion = 0;
+        this.balanceInfo = null;
+        this.balanceLoadFailed = false;
+        this.pollFailureCount = 0;
+        this.pollStopped = false;
+        this.pollImmediatePending = false;
+        this.visibilityVersion = 0;
+        this.visibilityHandler = this.handleVisibilityChange.bind(this);
+        document.addEventListener('visibilitychange', this.visibilityHandler);
+
+        const initialLoad = this.load(this.listMode, this.listModeVersion);
+        this.wait(initialLoad);
+        initialLoad.then(
+            () => this.schedulePoll(),
+            () => {
+                this.recordPollingFailure();
+                this.schedulePoll();
+            },
+        );
+        this.on('remove', () => this.stopPolling());
     }
     data() {
         const balance = this.balanceInfo || {};
@@ -226,20 +245,30 @@ define(['view'], View => class extends View {
         }
     }
 
-    async load() {
-        this.canBook = this.getAcl().checkScope('EmployeeHolidayBooking');
-        this.canManage = this.getAcl().checkScope('EmployeeHolidayRequestManagement') && this.getAcl().getLevel('EmployeeHolidayRequest', 'read') === 'all';
-        const response = await Espo.Ajax.getRequest(`EmployeeManagement/holiday/${this.listMode === 'own' ? 'requests' : this.listMode}`);
-        this.requestSignature = this.makeRequestSignature(response.list || []);
-        this.canQueue = response.canDecide === true;
-        try {
-            this.balanceInfo = await Espo.Ajax.getRequest('EmployeeManagement/holiday/balance');
-            this.balanceLoadFailed = false;
-        } catch (e) {
-            this.balanceInfo = null;
-            this.balanceLoadFailed = true;
+    async load(mode = this.listMode, modeVersion = this.listModeVersion, listResponse = null) {
+        const canBook = this.getAcl().checkScope('EmployeeHolidayBooking');
+        const canManage = this.getAcl().checkScope('EmployeeHolidayRequestManagement') &&
+            this.getAcl().getLevel('EmployeeHolidayRequest', 'read') === 'all';
+        const response = listResponse || await this.requestList(mode);
+
+        if (!this.isCurrentListContext(mode, modeVersion)) {
+            return false;
         }
-        this.rows = (response.list || []).map(row => {
+
+        let balanceInfo = null;
+        let balanceLoadFailed = false;
+        try {
+            balanceInfo = await Espo.Ajax.getRequest('EmployeeManagement/holiday/balance');
+        } catch (e) {
+            balanceLoadFailed = true;
+        }
+
+        if (!this.isCurrentListContext(mode, modeVersion)) {
+            return false;
+        }
+
+        const canQueue = response.canDecide === true;
+        const rows = (response.list || []).map(row => {
             const documents = (row.documents || []).map(document => ({
                 ...document,
                 url:`${this.getBasePath()}?entryPoint=download&id=${encodeURIComponent(document.id)}`,
@@ -251,19 +280,66 @@ define(['view'], View => class extends View {
                 statusLabel:this.getLanguage().translateOption(row.status, 'status', 'EmployeeHolidayRequest'),
                 statusClass:this.statusClass(row.status),
                 statusIcon:this.statusIcon(row.status),
-                showAssignee:this.listMode !== 'own',
-                editable:row.status === 'Pending' && (row.assignedUserId === this.getUser().id || this.canManage) && this.canBook,
-                rejectable:this.canQueue && row.status === 'Pending',
-                approvable:this.canQueue && response.approvalEnabled && row.status === 'Pending',
+                showAssignee:mode !== 'own',
+                editable:row.status === 'Pending' && (row.assignedUserId === this.getUser().id || canManage) && canBook,
+                rejectable:canQueue && row.status === 'Pending',
+                approvable:canQueue && response.approvalEnabled && row.status === 'Pending',
                 processing:row.status === 'ApprovalProcessing',
-                retryable:this.canQueue && row.status === 'ApprovalProcessing' && row.approvalRetryAvailable,
+                retryable:canQueue && row.status === 'ApprovalProcessing' && row.approvalRetryAvailable,
                 documents,
                 hasDocuments:documents.length > 0,
                 requestCancellation:row.status === 'Approved' && row.assignedUserId === this.getUser().id && row.dateStartDate >= this.getDateTime().getToday(),
-                cancellable:this.canQueue && row.status === 'Approved',
-                cancellationPending:this.canQueue && row.status === 'CancellationPending',
+                cancellable:canQueue && row.status === 'Approved',
+                cancellationPending:canQueue && row.status === 'CancellationPending',
             };
         });
+
+        this.canBook = canBook;
+        this.canManage = canManage;
+        this.canQueue = canQueue;
+        this.balanceInfo = balanceInfo;
+        this.balanceLoadFailed = balanceLoadFailed;
+        this.rows = rows;
+        this.requestSignature = this.makeRequestSignature(response.list || []);
+
+        return true;
+    }
+    async requestList(mode) {
+        while (this.listRequestPromise) {
+            try {
+                await this.listRequestPromise;
+            } catch (e) {
+                // The next request is still allowed after the previous caller handled its failure.
+            }
+        }
+
+        if (this.pollStopped) {
+            throw new Error('Holiday view was removed.');
+        }
+
+        const endpoint = mode === 'own' ? 'requests' : mode;
+        const request = Espo.Ajax.getRequest(`EmployeeManagement/holiday/${endpoint}`);
+        this.listRequestPromise = request;
+
+        try {
+            return await request;
+        } finally {
+            if (this.listRequestPromise === request) {
+                this.listRequestPromise = null;
+            }
+        }
+    }
+    isCurrentListContext(mode, modeVersion) {
+        return !this.pollStopped && this.listMode === mode && this.listModeVersion === modeVersion;
+    }
+    switchListMode(mode) {
+        if (this.listMode === mode || this.pollStopped) {
+            return;
+        }
+
+        this.listMode = mode;
+        this.listModeVersion++;
+        this.refresh();
     }
     makeRequestSignature(rows) {
         return JSON.stringify((rows || []).map(row => [
@@ -272,29 +348,39 @@ define(['view'], View => class extends View {
             row.accountingRevision,
             row.approvalState,
             row.approvalError,
-            (row.documents || []).map(document => document.id),
+            (row.documents || []).map(document => [document.id, document.name]),
         ]));
     }
     async pollForUpdates() {
-        if (this.requestSignature === undefined || this.polling || this.refreshing ||
-            (this.listMode !== 'own' && !this.rows.some(row => row.processing))) {
-            return;
+        if (this.pollStopped || this.isDocumentHidden() || this.polling || this.refreshing) {
+            return false;
         }
 
+        const mode = this.listMode;
+        const modeVersion = this.listModeVersion;
+        const visibilityVersion = this.visibilityVersion;
         this.polling = true;
         try {
-            const endpoint = this.listMode === 'own' ? 'requests' : this.listMode;
-            const response = await Espo.Ajax.getRequest(`EmployeeManagement/holiday/${endpoint}`);
+            const response = await this.requestList(mode);
+
+            if (
+                !this.isCurrentListContext(mode, modeVersion) ||
+                visibilityVersion !== this.visibilityVersion ||
+                this.isDocumentHidden()
+            ) {
+                return true;
+            }
+
             const signature = this.makeRequestSignature(response.list || []);
 
-            if (signature === this.requestSignature) {
-                return;
+            if (signature === this.requestSignature && !this.balanceLoadFailed) {
+                return true;
             }
 
             const previousStatuses = new Map(this.rows.map(row => [row.id, row.status]));
-            await this.refresh();
+            const applied = await this.refresh({mode, modeVersion, listResponse:response});
 
-            if (this.listMode === 'own') {
+            if (applied && this.isCurrentListContext(mode, modeVersion) && mode === 'own') {
                 this.rows.forEach(row => {
                     const previous = previousStatuses.get(row.id);
                     if (previous && previous !== row.status && row.status === 'Approved') {
@@ -305,6 +391,7 @@ define(['view'], View => class extends View {
                     }
                 });
             }
+            return true;
         } finally {
             this.polling = false;
         }
@@ -315,7 +402,161 @@ define(['view'], View => class extends View {
     statusIcon(status) {
         return ({Pending:'fa-clock',ApprovalProcessing:'fa-cog',Approved:'fa-check-circle',Rejected:'fa-times-circle',CancellationPending:'fa-exclamation-circle',Cancelled:'fa-ban'})[status] || 'fa-circle';
     }
-    async refresh() { if(this.refreshing){return;}this.refreshing=true;try{await this.load();await this.reRender();}finally{this.refreshing=false;} }
+    async refresh(options = {}) {
+        this.pendingRefresh = {
+            mode:options.mode ?? this.listMode,
+            modeVersion:options.modeVersion ?? this.listModeVersion,
+            listResponse:options.listResponse ?? null,
+        };
+
+        if (this.refreshPromise) {
+            return this.refreshPromise;
+        }
+
+        this.refreshing = true;
+        const promise = (async () => {
+            let appliedAny = false;
+
+            while (this.pendingRefresh && !this.pollStopped) {
+                const refresh = this.pendingRefresh;
+                this.pendingRefresh = null;
+
+                try {
+                    const applied = await this.load(refresh.mode, refresh.modeVersion, refresh.listResponse);
+                    if (applied) {
+                        await this.reRender();
+                        appliedAny = true;
+                    }
+                } catch (e) {
+                    if (!this.pendingRefresh) {
+                        throw e;
+                    }
+                }
+            }
+
+            if (appliedAny && !this.polling) {
+                this.recordPollingRecovery();
+            }
+
+            return appliedAny;
+        })();
+        this.refreshPromise = promise;
+
+        try {
+            return await promise;
+        } finally {
+            if (this.refreshPromise === promise) {
+                this.refreshPromise = null;
+                this.refreshing = false;
+            }
+
+            if (!this.polling) {
+                if (this.pollImmediatePending) {
+                    this.pollImmediatePending = false;
+                    this.schedulePoll(0);
+                } else {
+                    this.schedulePoll();
+                }
+            }
+        }
+    }
+    isDocumentHidden() {
+        return document.hidden === true;
+    }
+    getPollingDelay() {
+        const baseDelay = this.rows.some(row => row.processing) ? 5000 : 30000;
+
+        if (!this.pollFailureCount) {
+            return baseDelay;
+        }
+
+        return Math.min(120000, baseDelay * (2 ** Math.min(this.pollFailureCount, 5)));
+    }
+    schedulePoll(delay = this.getPollingDelay()) {
+        clearTimeout(this.pollTimer);
+        this.pollTimer = null;
+
+        if (this.pollStopped || this.isDocumentHidden()) {
+            return;
+        }
+
+        this.pollTimer = setTimeout(() => {
+            this.pollTimer = null;
+            this.runScheduledPoll();
+        }, delay);
+    }
+    async runScheduledPoll() {
+        if (this.pollStopped || this.isDocumentHidden()) {
+            return;
+        }
+
+        try {
+            const completed = await this.pollForUpdates();
+            if (completed) {
+                this.recordPollingRecovery();
+            }
+        } catch (e) {
+            this.recordPollingFailure();
+        } finally {
+            if (this.pollStopped || this.isDocumentHidden()) {
+                return;
+            }
+
+            if (this.pollImmediatePending) {
+                this.pollImmediatePending = false;
+                this.schedulePoll(0);
+            } else {
+                this.schedulePoll();
+            }
+        }
+    }
+    recordPollingFailure() {
+        this.pollFailureCount = Math.min((this.pollFailureCount || 0) + 1, 6);
+
+        if (this.pollFailureCount === 1 && typeof console !== 'undefined') {
+            console.warn('Employee Management Holiday refresh failed; retrying with backoff.');
+        }
+    }
+    recordPollingRecovery() {
+        if (!this.pollFailureCount) {
+            return;
+        }
+
+        this.pollFailureCount = 0;
+        if (typeof console !== 'undefined') {
+            console.info('Employee Management Holiday refresh resumed.');
+        }
+    }
+    handleVisibilityChange() {
+        this.visibilityVersion++;
+
+        if (this.isDocumentHidden()) {
+            clearTimeout(this.pollTimer);
+            this.pollTimer = null;
+            return;
+        }
+
+        clearTimeout(this.pollTimer);
+        this.pollTimer = null;
+        if (this.polling || this.refreshing) {
+            this.pollImmediatePending = true;
+            return;
+        }
+
+        this.schedulePoll(0);
+    }
+    stopPolling() {
+        if (this.pollStopped) {
+            return;
+        }
+
+        this.pollStopped = true;
+        this.pendingRefresh = null;
+        this.pollImmediatePending = false;
+        clearTimeout(this.pollTimer);
+        this.pollTimer = null;
+        document.removeEventListener('visibilitychange', this.visibilityHandler);
+    }
 
     openForm(managed, record) {
         this.createView('booking', 'employee-management:views/modals/managed-booking', {managed, record}).then(modal => {

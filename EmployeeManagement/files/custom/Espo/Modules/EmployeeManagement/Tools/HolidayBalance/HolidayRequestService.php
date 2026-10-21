@@ -18,6 +18,7 @@ final class HolidayRequestService
 {
     // Avoid locking foreign author/decider joins on MariaDB.
     public const LOCK_FIELDS = ['id', 'name', 'dateStart', 'dateEnd', 'dateStartDate', 'dateEndDate', 'days', 'status', 'decidedById', 'decidedAt', 'cancellationReason', 'cancellationRequestedById', 'cancellationRequestedAt', 'cancellationDecidedById', 'cancellationDecidedAt', 'description', 'assignedUserId', 'profileId', 'accountingKey', 'accountingRevision', 'createdAt', 'modifiedAt', 'createdById', 'modifiedById', 'calculationSnapshot', 'operationReceipts', 'creationHash', 'approvalSnapshot', 'approvalManifest', 'approvalOperationKey', 'approvalToken', 'approvalJobId', 'approvalRevision', 'approvalAttempts', 'approvalState', 'approvalError', 'assignedUserName'];
+    private const LIST_FIELDS = ['id', 'assignedUserId', 'assignedUserName', 'dateStartDate', 'dateEndDate', 'days', 'status', 'description', 'cancellationReason', 'accountingRevision', 'approvalOperationKey', 'approvalJobId', 'approvalAttempts', 'approvalState', 'approvalError'];
     private const PROFILE = 'EmployeeHolidayProfile';
     private const REQUEST = 'EmployeeHolidayRequest';
     private const STATUS_PENDING = 'Pending';
@@ -354,22 +355,49 @@ final class HolidayRequestService
 
     private function buildRequestList(array $where): array
     {
-        $list = [];
+        $requests = [];
         $eligible = [];
-        foreach ($this->entityManager->getRDBRepository('User')->where(['type' => User::TYPE_REGULAR, 'isActive' => true])->find() as $owner) {
+        foreach ($this->entityManager->getRDBRepository('User')->where(['type' => User::TYPE_REGULAR, 'isActive' => true])->select(['id'])->find() as $owner) {
             $eligible[(string) $owner->getId()] = true;
         }
-        foreach ($this->entityManager->getRDBRepository(self::REQUEST)->where($where)->order('dateStartDate', 'DESC')->find() as $request) {
+        foreach ($this->entityManager->getRDBRepository(self::REQUEST)->where($where)->select(self::LIST_FIELDS)->order('dateStartDate', 'DESC')->find() as $request) {
             if (!isset($eligible[(string) $request->get('assignedUserId')])) { continue; }
             $this->assertRequestAccess($request);
-            $list[] = $this->result($request);
+            $requests[] = $request;
+        }
+        $documents = $this->buildApprovalDocumentMap($requests);
+        $list = [];
+        foreach ($requests as $request) {
+            $list[] = $this->result($request, $documents[(string) $request->getId()] ?? []);
         }
         $canDecide = false;
         try { $this->assertApprover(); $canDecide = $this->acl->getLevel(self::REQUEST, 'read') === 'all'; } catch (Forbidden) {}
         return ['list' => $list, 'total' => count($list), 'approvalEnabled' => true, 'canDecide' => $canDecide];
     }
 
-    private function result(Entity $request): array
+    /** @param list<Entity> $requests @return array<string, list<array{id: string, name: string}>> */
+    private function buildApprovalDocumentMap(array $requests): array
+    {
+        $documents = [];
+        foreach ($requests as $request) { $documents[(string) $request->getId()] = []; }
+        if (!$documents) { return $documents; }
+        $forbidden = $this->acl->getScopeForbiddenAttributeList(self::REQUEST, 'read');
+        if (in_array('approvalDocumentsIds', $forbidden, true) || !$this->acl->checkField(self::REQUEST, 'approvalDocuments', 'read')) {
+            return $documents;
+        }
+        foreach ($this->entityManager->getRDBRepository('Attachment')->where([
+            'parentId' => array_keys($documents), 'parentType' => self::REQUEST, 'field' => 'approvalDocuments',
+        ])->select(['id', 'name', 'parentId', 'parentType', 'field'])->find() as $attachment) {
+            $parentId = (string) $attachment->get('parentId');
+            if (isset($documents[$parentId]) && $this->acl->checkEntity($attachment, 'read')) {
+                $documents[$parentId][] = ['id' => (string) $attachment->getId(), 'name' => (string) $attachment->get('name')];
+            }
+        }
+        return $documents;
+    }
+
+    /** @param null|list<array{id: string, name: string}> $documents */
+    private function result(Entity $request, ?array $documents = null): array
     {
         $result = [];
         foreach (['id', 'assignedUserId', 'assignedUserName', 'dateStartDate', 'dateEndDate', 'days', 'status', 'description', 'cancellationReason', 'accountingRevision'] as $field) { $result[$field] = $request->get($field); }
@@ -377,8 +405,8 @@ final class HolidayRequestService
         foreach ($this->approvals->state($request) as $field=>$value) {
             if (!in_array($field==='approvalRetryAvailable'?'approvalState':$field,$forbidden,true)) { $result[$field]=$value; }
         }
-        $result['documents']=[];
-        if (!in_array('approvalDocumentsIds',$forbidden,true) && $this->acl->checkField(self::REQUEST,'approvalDocuments','read')) {
+        $result['documents']=$documents ?? [];
+        if ($documents === null && !in_array('approvalDocumentsIds',$forbidden,true) && $this->acl->checkField(self::REQUEST,'approvalDocuments','read')) {
             foreach ($this->entityManager->getRDBRepository('Attachment')->where(['parentId'=>$request->getId(),'parentType'=>self::REQUEST,'field'=>'approvalDocuments'])->find() as $a) {
                 if ($this->acl->checkEntity($a,'read')) { $result['documents'][]=['id'=>$a->getId(),'name'=>$a->get('name')]; }
             }

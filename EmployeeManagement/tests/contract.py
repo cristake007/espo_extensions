@@ -94,7 +94,7 @@ for item in stage3:
     assert hashlib.sha256((root/item['source']).read_bytes()).hexdigest()==item['sourceSha256'],item['source']
 for item in inventory['integratedStage3']:
     assert hashlib.sha256((root/item['destination']).read_bytes()).hexdigest()==item['destinationSha256'],item['destination']
-assert manifest['version']=='0.8.9'
+assert manifest['version']=='0.8.10'
 status = (modules[0]/'Tools/Workspace/Api/GetStatus.php').read_text()
 assert "'version' => '" + manifest['version'] + "'" in status
 assert not (modules[0]/'Hooks/EmployeeHolidayRequest/Balance.php').exists(), 'Commands exclusively own request accounting.'
@@ -118,7 +118,7 @@ for item in stage5:
     assert hashlib.sha256((root/item['source']).read_bytes()).hexdigest()==item['sourceSha256'], item['source']
 for item in inventory['integratedStage5']:
     assert hashlib.sha256((root/item['destination']).read_bytes()).hexdigest()==item['destinationSha256'], item['destination']
-assert inventory['stage']=='0.7.0'
+assert inventory['stage']==manifest['version']
 assert service.count('$this->attendanceGuard->assertCompatible($request);')==3
 assert '$this->months->snapshot($user, $start, $end)' in service
 assert '$this->approvals->initiate(' in service and '$this->approvals->retry($request)' in service
@@ -204,12 +204,20 @@ for key in ['balance.availableDays','balance.pendingDays','balance.annualEntitle
 for token in ['employee-holiday-balance-grid', 'employee-holiday-request-list',
               'data-action="create"', 'statusClass(row.status)', 'hasDocuments:documents.length > 0']:
     assert token in holiday_page
-for token in ['data-action="approved"', "this.listMode = 'approved'", "EmployeeManagement/holiday/${this.listMode === 'own' ? 'requests' : this.listMode}",
+for token in ['data-action="approved"', "this.switchListMode('approved')", "const endpoint = mode === 'own' ? 'requests' : mode",
               "row.dateStartDate >= this.getDateTime().getToday()"]:
     assert token in holiday_page
-for token in ['pollForUpdates()', 'makeRequestSignature(response.list || [])',
+for token in ['pollForUpdates()', 'makeRequestSignature(response.list || [])', 'getPollingDelay()',
+              'document.addEventListener', 'document.removeEventListener', 'recordPollingFailure()',
               "row.status === 'Approved'", "row.status === 'Rejected'"]:
     assert token in holiday_page
+assert 'setInterval' not in holiday_page
+assert "this.listMode !== 'own' && !this.rows.some" not in holiday_page
+assert 'baseDelay = this.rows.some(row => row.processing) ? 5000 : 30000' in holiday_page
+assert 'Math.min(120000' in holiday_page
+assert 'buildApprovalDocumentMap($requests)' in service
+assert "->select(self::LIST_FIELDS)" in service
+assert (root/'tests/regression/holiday-polling.test.mjs').is_file()
 assert 'listApprovedRequests()' in service
 holiday_api=(modules[0]/'Tools/HolidayBalance/Api/Holiday.php').read_text()
 assert "'approved' => $this->service->listApprovedRequests()" in holiday_api

@@ -1,5 +1,5 @@
 {
-  "stage": "0.7.0",
+  "stage": "0.8.10",
   "originalVersions": {
     "AttendanceManagement": "1.11.0",
     "HolidayManagement": "1.9.4"
@@ -113,7 +113,7 @@
       "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
       "adaptations": "Extracted getMyBalance/getPendingDays, managed-user listing, prepare/reserve/adjust, original dates/overlap/negative-limit helpers. Existing cancellation/rejection refund formulas and validation conditions adapted into explicit transactional commands. Native Roles, regular-only, User→Profile→Request locks, revision guards, idempotent receipts; positive active overlap states (P3/P5). No synchronous approval transferred (D7).",
       "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
-      "destinationSha256": "78a04456f9788d5408f803c3e917dd948d49049a3012b610cf93e4832a5d1c3f",
+      "destinationSha256": "95060db1e6c0259356a652bfe29d72347ddf7ca1ce177849ca16def5d87ee289",
       "preFunctionalFixesSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
       "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
     },
@@ -213,7 +213,7 @@
       "destination": "files/client/custom/modules/employee-management/src/views/holiday-request/index.js",
       "adaptations": "Original private queue row content, dates, escaped description/reason and decision UX used as basis for a regular-view workspace adapter. Own requests and queue share existing modals; native confirmations and scope-gated controls. The 0.7.8 presentation adds a theme-token balance summary, status cards and responsive empty states without changing commands, ACL or accounting. No Calendar override.",
       "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/dashlets/holiday-approvals.js",
-      "destinationSha256": "13483fa250ac5afbfc865e1694e52c8daf91548df108558e54e88b258ff45f4b",
+      "destinationSha256": "c8b991b19f573bccc2545a61c6007e28db8a4dcb302e6986201954b9ca196308",
       "preFunctionalFixesSha256": "acb9a589965d7e99ee333977ebc09080fccd05d995c60111f5bbcf7e4a3f23e1",
       "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
     }
@@ -391,7 +391,7 @@
       "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
       "adaptations": "Continue the existing 0.3/0.4 extracted request, reservation, adjustment, refund, ledger, revision and receipt implementation. Add the shared daily-record conflict guard to reserve/adjust/approval, including description-only edits. Lock affected normative months in ascending order and touch month revisions for effective cancellation transitions. Normalize command key order at the service boundary for API/internal caller retry interoperability. No second accounting owner, no synchronous or provisional approval.",
       "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
-      "destinationSha256": "78a04456f9788d5408f803c3e917dd948d49049a3012b610cf93e4832a5d1c3f",
+      "destinationSha256": "95060db1e6c0259356a652bfe29d72347ddf7ca1ce177849ca16def5d87ee289",
       "preFunctionalFixesSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
       "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
     },
@@ -433,7 +433,7 @@
       "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
       "adaptations": "Continue reused request/accounting implementation. Native grouped Job creation and immutable decision snapshot replace the old synchronous generate call; native retry command reuses the same reservation/receipts. Existing cancellation/refund/revision logic retained. Explicit locking projection excludes foreign author/decider joins after a real MariaDB deadlock; result exposes only natively authorized published documents/state.",
       "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
-      "destinationSha256": "78a04456f9788d5408f803c3e917dd948d49049a3012b610cf93e4832a5d1c3f",
+      "destinationSha256": "95060db1e6c0259356a652bfe29d72347ddf7ca1ce177849ca16def5d87ee289",
       "preFunctionalFixesSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
       "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
     },
@@ -465,9 +465,9 @@
       "source": "pending/Holiday/files/client/custom/modules/employee-management/src/views/dashlets/holiday-approvals.js",
       "sourceSha256": "0f13c5535cf21cfc4b7b263dcc1d8d23236da4f7599604e405387d0aa8cb7835",
       "destination": "files/client/custom/modules/employee-management/src/views/holiday-request/index.js",
-      "adaptations": "Continue private list/queue adapter derived in Stage3 from the original approval dashlet and existing native modals. Activate approve and retry through native confirmation; show protected errors, poll only Processing requests, clean up on view removal, link published attachments through the native download entrypoint. The 0.7.8 theme-token presentation leaves these behaviors unchanged. No Calendar/Admin override.",
+      "adaptations": "Continue private list/queue adapter derived in Stage3 from the original approval dashlet and existing native modals. Activate approve and retry through native confirmation; show protected errors, use visibility-aware adaptive polling for all current list modes with faster checks only while Processing, serialize refreshes, clean up on view removal, and link published attachments through the native download entrypoint. The 0.7.8 theme-token presentation remains unchanged. No Calendar/Admin override.",
       "original": "HolidayManagement/files/client/custom/modules/holiday-management/src/views/dashlets/holiday-approvals.js",
-      "destinationSha256": "13483fa250ac5afbfc865e1694e52c8daf91548df108558e54e88b258ff45f4b",
+      "destinationSha256": "c8b991b19f573bccc2545a61c6007e28db8a4dcb302e6986201954b9ca196308",
       "preFunctionalFixesSha256": "acb9a589965d7e99ee333977ebc09080fccd05d995c60111f5bbcf7e4a3f23e1",
       "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
     },
@@ -549,7 +549,7 @@
       "destination": "files/custom/Espo/Modules/EmployeeManagement/Tools/HolidayBalance/HolidayRequestService.php",
       "adaptations": "No request/approval/accounting rule change. Shared profile locking projection omits the redundant assignedUserName join; beneficiary is already locked. Existing Stage6 native Jobs/snapshots/receipts and Stage5 conflict guards retained.",
       "original": "HolidayManagement/files/custom/Espo/Modules/HolidayManagement/Tools/HolidayBalance/HolidayBalanceService.php",
-      "destinationSha256": "78a04456f9788d5408f803c3e917dd948d49049a3012b610cf93e4832a5d1c3f",
+      "destinationSha256": "95060db1e6c0259356a652bfe29d72347ddf7ca1ce177849ca16def5d87ee289",
       "preFunctionalFixesSha256": "c6d2fa65d42cc1fd1b558959859deb1cebd002817e60cfe7e2c6da5457701b60",
       "functionalFixes": "See FUNCTIONAL-FIXES-RESULTS.md: PDF page batching, real native WTC intervals, guarded booking entry and native Role approvers."
     },
@@ -2211,5 +2211,5 @@
       "reason": "Native Record controller; existing record hooks, native entityAcl and strict defaults protect generic APIs."
     }
   ],
-  "releaseVersion": "0.7.2"
+  "releaseVersion": "0.8.10"
 }
