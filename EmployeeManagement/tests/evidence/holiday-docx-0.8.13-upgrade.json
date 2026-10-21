@@ -1,0 +1,52 @@
+{
+  "status": "PASS",
+  "environment": {
+    "siteUrl": "http://127.0.0.1:18089",
+    "espocrm": "10.0.1",
+    "php": "8.4.23",
+    "database": "isolated MariaDB container"
+  },
+  "fromVersion": "0.8.12",
+  "toVersion": "0.8.13",
+  "differences": [],
+  "before": {
+    "counts": {
+      "EmployeeAttendanceRecord": 1,
+      "EmployeeHolidayRequest": 1,
+      "EmployeeHolidayProfile": 1,
+      "EmployeeHolidayLedger": 1,
+      "EmployeeAbsence": 1,
+      "Attachments": 1
+    },
+    "hashes": {
+      "EmployeeAttendanceRecord": "c4adf22fbae81af9674ddeff94d3cc220b85f2013b3a522f17ac0e0f74f67eaa",
+      "EmployeeHolidayRequest": "0c47059e14d0180826dceba7725a0180dc4a0ddb0ecfb996cb31f7be7d1d3a51",
+      "EmployeeHolidayProfile": "c669050b825677f1d3afea9ee0543a1804aa04f466e725db033f12181ae0e4e8",
+      "EmployeeHolidayLedger": "424e9ac79d896e498f0bf5fa1c9a41c63dfaf66867bc13ae77cd8298bddffc9e",
+      "EmployeeAbsence": "c5bf8aa528b3ceca6526716fa3eebc77ab272c3e95d478c9611af3fa8b4a1883",
+      "Attachments": "75b23cc843542cf38c4f38aba82627b330f7208bbc3293f1576b8907bcdca432"
+    }
+  },
+  "after": {
+    "counts": {
+      "EmployeeAttendanceRecord": 1,
+      "EmployeeHolidayRequest": 1,
+      "EmployeeHolidayProfile": 1,
+      "EmployeeHolidayLedger": 1,
+      "EmployeeAbsence": 1,
+      "Attachments": 1
+    },
+    "hashes": {
+      "EmployeeAttendanceRecord": "c4adf22fbae81af9674ddeff94d3cc220b85f2013b3a522f17ac0e0f74f67eaa",
+      "EmployeeHolidayRequest": "0c47059e14d0180826dceba7725a0180dc4a0ddb0ecfb996cb31f7be7d1d3a51",
+      "EmployeeHolidayProfile": "c669050b825677f1d3afea9ee0543a1804aa04f466e725db033f12181ae0e4e8",
+      "EmployeeHolidayLedger": "424e9ac79d896e498f0bf5fa1c9a41c63dfaf66867bc13ae77cd8298bddffc9e",
+      "EmployeeAbsence": "c5bf8aa528b3ceca6526716fa3eebc77ab272c3e95d478c9611af3fa8b4a1883",
+      "Attachments": "75b23cc843542cf38c4f38aba82627b330f7208bbc3293f1576b8907bcdca432"
+    }
+  },
+  "newInternalRecordCounts": {
+    "EmployeeHolidayDocument": 0,
+    "EmployeeHolidayDocumentVerificationLog": 0
+  }
+}

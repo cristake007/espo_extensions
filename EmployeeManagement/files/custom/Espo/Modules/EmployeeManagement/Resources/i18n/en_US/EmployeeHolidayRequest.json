@@ -38,7 +38,8 @@
         "Holiday Workspace": "My holiday workspace",
         "Request Time Off": "Request time off",
         "No Description": "No note",
-        "Calculated Working Days": "Selected working days"
+        "Calculated Working Days": "Selected working days",
+        "Verify Holiday Document": "Verify holiday document"
     },
     "fields": {
         "name": "Name",
@@ -57,6 +58,7 @@
         "assignedUser": "User",
         "profile": "Holiday Profile",
         "approvalDocuments": "Approved vacation documents",
+        "supersededApprovalDocuments": "Superseded vacation documents",
         "dateStart": "Start Date and Time",
         "dateEnd": "End Date and Time",
         "color": "Calendar Color",

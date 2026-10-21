@@ -24,7 +24,7 @@ final class HolidayApprovalService
         private AttendanceMonthService $months, private HolidayAttendanceGuard $attendance,
         private AclManager $aclManager,
         private \Espo\Modules\EmployeeManagement\Tools\HolidayAdministration\HolidayApproverProvider $approvers,
-        private HolidayDecisionNotifier $decisionNotifier) {}
+        private HolidayDecisionNotifier $decisionNotifier, private HolidayDocumentRegistry $registry) {}
 
     /** Caller owns User/Profile/Request/month locks and command authorization. */
     public function initiate(Entity $request,User $target,Entity $profile,User $approver,float $pendingDays): void
@@ -123,6 +123,9 @@ final class HolidayApprovalService
                     $item=$manifest[$document['month']]??[];
                     $a=isset($item['id'])?$this->em->getEntityById('Attachment',$item['id']):null;
                     if (!$a instanceof Attachment || $a->get('parentId')!==$request->getId() || $a->get('parentType')!==self::REQUEST || !$this->validFile($a,$item)) { throw new RuntimeException('A required approval document is not persisted.'); }
+                    if (isset($document['verificationCode'])) {
+                        $this->registry->registerApproval($request,$a,$document,$snapshot,(string)$item['sha256']);
+                    }
                     $a->setTargetField('approvalDocuments');$this->em->saveEntity($a);$ids[]=$a->getId();
                 }
                 $request->set(['approvalDocumentsIds'=>$ids,'status'=>'Approved','approvalState'=>'Completed','approvalError'=>null,

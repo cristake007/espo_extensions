@@ -112,6 +112,12 @@
             ],
             "maxCount": 13
         },
+        "supersededApprovalDocuments": {
+            "type": "attachmentMultiple",
+            "readOnly": true,
+            "accept": [".docx"],
+            "maxCount": 30
+        },
         "assignedUser": {
             "type": "link",
             "entity": "User",

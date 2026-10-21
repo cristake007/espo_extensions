@@ -38,7 +38,8 @@
         "Holiday Workspace": "Spațiul meu de concedii",
         "Request Time Off": "Solicită concediu",
         "No Description": "Fără notă",
-        "Calculated Working Days": "Zile lucrătoare selectate"
+        "Calculated Working Days": "Zile lucrătoare selectate",
+        "Verify Holiday Document": "Verifică documentul de concediu"
     },
     "fields": {
         "name": "Denumire",
@@ -57,6 +58,7 @@
         "assignedUser": "Utilizator",
         "profile": "Profil de concediu",
         "approvalDocuments": "Documente de concediu aprobate",
+        "supersededApprovalDocuments": "Documente de concediu înlocuite",
         "dateStart": "Data și ora de început",
         "dateEnd": "Data și ora de sfârșit",
         "color": "Culoare calendar",

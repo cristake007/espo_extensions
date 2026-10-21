@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "assertions": 16,
+  "failures": 0,
+  "covered": [
+    "legacy and issued identities",
+    "original bytes preserved",
+    "superseded and published attachment fields",
+    "SHA-256 bound to final bytes",
+    "approval status and accounting revision unchanged",
+    "ledger, attendance and selected-month scope unchanged",
+    "corrected values in actual reissued DOCX XML",
+    "one exact verification-code line",
+    "team-inherited approval permission",
+    "authorized official-detail lookup",
+    "exact match and modified-file detection",
+    "unknown-code non-disclosure",
+    "cancellation-pending and revoked states",
+    "superseded state",
+    "unauthorized employee rejection",
+    "persistent verification audit"
+  ],
+  "api": {
+    "authorizedManagerStatus": 200,
+    "unauthorizedEmployeeStatus": 403,
+    "rateLimitStatuses": [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 409]
+  },
+  "manualReissue": {
+    "month": "2027-01",
+    "annualEntitlement": 21,
+    "carryover": 3,
+    "availableBeforeLeave": 24,
+    "requestedDays": 3,
+    "projectedRemaining": 21,
+    "accountingChanges": "NONE",
+    "originalDocument": "PRESERVED",
+    "duplicateExecution": "safely rejected because confirmed attachment was no longer current"
+  }
+}

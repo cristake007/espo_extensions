@@ -1,5 +1,5 @@
 {
-  "stage": "0.8.12",
+  "stage": "0.8.13",
   "originalVersions": {
     "AttendanceManagement": "1.11.0",
     "HolidayManagement": "1.9.4"
@@ -2221,5 +2221,5 @@
       "reason": "Thin Espo Core Job entrypoint for permission-revalidated native EmailSender delivery; no alternate queue or worker."
     }
   ],
-  "releaseVersion": "0.8.12"
+  "releaseVersion": "0.8.13"
 }

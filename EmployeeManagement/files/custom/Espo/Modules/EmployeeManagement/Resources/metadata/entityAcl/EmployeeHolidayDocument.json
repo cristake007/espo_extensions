@@ -1,0 +1,9 @@
+{
+    "fields": {
+        "issueKey": {"forbidden": true},
+        "verificationCode": {"forbidden": true},
+        "verificationCodeHash": {"forbidden": true},
+        "sha256": {"forbidden": true},
+        "operatorContext": {"forbidden": true}
+    }
+}

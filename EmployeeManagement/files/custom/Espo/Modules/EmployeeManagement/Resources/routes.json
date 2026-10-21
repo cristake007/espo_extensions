@@ -40,6 +40,11 @@
         "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayBalance\\Api\\Holiday"
     },
     {
+        "route": "/EmployeeManagement/holiday-document/verify",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\HolidayDocument\\Api\\VerifyHolidayDocument"
+    },
+    {
         "route": "/EmployeeManagement/attendance/pdf",
         "method": "post",
         "actionClassName": "Espo\\Modules\\EmployeeManagement\\Tools\\Attendance\\Api\\PostAttendancePdf"

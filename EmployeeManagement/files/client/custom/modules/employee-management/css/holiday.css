@@ -14,6 +14,31 @@
     width: 100%;
 }
 
+.employee-holiday-verification-card {
+    padding: 20px;
+}
+
+.employee-holiday-verification-form {
+    max-width: 680px;
+}
+
+.employee-holiday-verification-result {
+    margin: 20px 0 0;
+}
+
+.employee-holiday-verification-details {
+    display: grid;
+    gap: 7px 18px;
+    grid-template-columns: minmax(150px, 220px) minmax(0, 1fr);
+    margin: 0;
+}
+
+.employee-holiday-verification-details dt,
+.employee-holiday-verification-details dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
 .employee-holiday-hero {
     align-items: center;
     background: var(--employee-holiday-surface);

@@ -1,0 +1,14 @@
+{
+    "entity": true,
+    "object": true,
+    "acl": true,
+    "aclPortal": false,
+    "tab": false,
+    "layouts": false,
+    "stream": false,
+    "customizable": false,
+    "importable": false,
+    "calendar": false,
+    "type": "Base",
+    "module": "EmployeeManagement"
+}

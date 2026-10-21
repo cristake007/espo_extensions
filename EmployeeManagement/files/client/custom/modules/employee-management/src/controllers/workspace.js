@@ -10,6 +10,15 @@ define(['controller', 'ajax'], (Controller, Ajax) => class extends Controller {
         return this.main('employee-management:views/holiday-request/index');
     }
 
+    actionVerifyHolidayDocument() {
+        if (!this.getUser().isRegular() || !this.getUser().get('isActive') ||
+            !this.getAcl().checkScope('EmployeeManagement') ||
+            !this.getAcl().checkScope('EmployeeHolidayApproval')) {
+            this.baseController.error403(); return;
+        }
+        return this.main('employee-management:views/holiday-document/verification');
+    }
+
     actionAdministration() {
         return this.openAdministration();
     }

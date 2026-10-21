@@ -1,0 +1,40 @@
+{
+    "fields": {
+        "name": {"type": "varchar", "required": true, "readOnly": true},
+        "issueKey": {"type": "varchar", "maxLength": 64, "required": true, "readOnly": true},
+        "verificationCode": {"type": "varchar", "maxLength": 32, "readOnly": true},
+        "verificationCodeHash": {"type": "varchar", "maxLength": 64, "readOnly": true},
+        "sha256": {"type": "varchar", "maxLength": 64, "required": true, "readOnly": true},
+        "request": {"type": "link", "entity": "EmployeeHolidayRequest", "required": true, "readOnly": true},
+        "attachment": {"type": "link", "entity": "Attachment", "required": true, "readOnly": true},
+        "month": {"type": "varchar", "maxLength": 7, "required": true, "readOnly": true},
+        "version": {"type": "int", "required": true, "readOnly": true},
+        "status": {"type": "enum", "options": ["Prepared", "Issued", "Superseded"], "required": true, "readOnly": true},
+        "issueType": {"type": "enum", "options": ["Approval", "Reissue", "Legacy"], "required": true, "readOnly": true},
+        "employeeName": {"type": "varchar", "readOnly": true},
+        "dateStart": {"type": "date", "required": true, "readOnly": true},
+        "dateEnd": {"type": "date", "required": true, "readOnly": true},
+        "workingDays": {"type": "int", "required": true, "readOnly": true},
+        "approvedBy": {"type": "link", "entity": "User", "readOnly": true},
+        "approvedAt": {"type": "datetime", "readOnly": true},
+        "issuedAt": {"type": "datetime", "required": true, "readOnly": true},
+        "supersededAt": {"type": "datetime", "readOnly": true},
+        "supersededByDocument": {"type": "link", "entity": "EmployeeHolidayDocument", "readOnly": true},
+        "reissueReason": {"type": "text", "readOnly": true},
+        "operatorContext": {"type": "text", "readOnly": true},
+        "createdAt": {"type": "datetime", "readOnly": true}
+    },
+    "links": {
+        "request": {"type": "belongsTo", "entity": "EmployeeHolidayRequest"},
+        "attachment": {"type": "belongsTo", "entity": "Attachment"},
+        "approvedBy": {"type": "belongsTo", "entity": "User"},
+        "supersededByDocument": {"type": "belongsTo", "entity": "EmployeeHolidayDocument"}
+    },
+    "indexes": {
+        "issueKeyUnique": {"unique": true, "columns": ["issueKey"]},
+        "verificationCodeHashUnique": {"unique": true, "columns": ["verificationCodeHash"]},
+        "requestMonthVersionUnique": {"unique": true, "columns": ["requestId", "month", "version"]},
+        "requestMonthStatus": {"columns": ["requestId", "month", "status"]}
+    },
+    "noDeletedAttribute": true
+}

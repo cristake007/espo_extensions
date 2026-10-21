@@ -97,6 +97,7 @@ define(['view'], View => class extends View {
                 {{#if canManage}}<button class="btn btn-default" data-action="managed"><span class="fas fa-user-plus" aria-hidden="true"></span> {{translate 'Book for Employee' category='labels' scope='EmployeeHolidayRequest'}}</button>{{/if}}
                 {{#if canQueue}}{{#unless queueMode}}<button class="btn btn-default" data-action="queue"><span class="fas fa-clipboard-check" aria-hidden="true"></span> {{translate 'Holiday Approvals' category='labels' scope='EmployeeHolidayRequest'}}</button>{{/unless}}{{/if}}
                 {{#if canQueue}}{{#unless approvedMode}}<button class="btn btn-default" data-action="approved"><span class="fas fa-calendar-check" aria-hidden="true"></span> {{translate 'Approved Holidays' category='labels' scope='EmployeeHolidayRequest'}}</button>{{/unless}}{{/if}}
+                {{#if canQueue}}<a class="btn btn-default" href="#EmployeeHolidayDocumentVerification"><span class="fas fa-shield-alt" aria-hidden="true"></span> {{translate 'Verify Holiday Document' category='labels' scope='EmployeeHolidayRequest'}}</a>{{/if}}
                 {{#if managerMode}}<button class="btn btn-default" data-action="own"><span class="fas fa-user" aria-hidden="true"></span> {{translate 'My Holiday Requests' category='labels' scope='EmployeeHolidayRequest'}}</button>{{/if}}
             </div>
         </section>

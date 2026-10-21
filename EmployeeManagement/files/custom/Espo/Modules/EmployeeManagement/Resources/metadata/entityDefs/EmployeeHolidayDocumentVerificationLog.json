@@ -1,0 +1,22 @@
+{
+    "fields": {
+        "name": {"type": "varchar", "required": true, "readOnly": true},
+        "actor": {"type": "link", "entity": "User", "required": true, "readOnly": true},
+        "document": {"type": "link", "entity": "EmployeeHolidayDocument", "readOnly": true},
+        "request": {"type": "link", "entity": "EmployeeHolidayRequest", "readOnly": true},
+        "codeFingerprint": {"type": "varchar", "maxLength": 16, "required": true, "readOnly": true},
+        "outcome": {"type": "varchar", "maxLength": 32, "required": true, "readOnly": true},
+        "fileProvided": {"type": "bool", "required": true, "readOnly": true},
+        "createdAt": {"type": "datetime", "readOnly": true}
+    },
+    "links": {
+        "actor": {"type": "belongsTo", "entity": "User"},
+        "document": {"type": "belongsTo", "entity": "EmployeeHolidayDocument"},
+        "request": {"type": "belongsTo", "entity": "EmployeeHolidayRequest"}
+    },
+    "indexes": {
+        "actorCreatedAt": {"columns": ["actorId", "createdAt"]},
+        "documentCreatedAt": {"columns": ["documentId", "createdAt"]}
+    },
+    "noDeletedAttribute": true
+}

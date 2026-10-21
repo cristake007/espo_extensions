@@ -261,7 +261,7 @@ final class HolidayRequestService
                 if ($status !== 'Pending') { throw new Conflict('Only Pending requests can enter approval.'); }
                 $this->assertNoRequestOverlap($request, $userId, (string) $request->get('dateStartDate'), (string) $request->get('dateEndDate'));
                 $this->attendanceGuard->assertCompatible($request);
-                $this->approvals->initiate($request,$target,$profile,$this->user,$this->getPendingDays($userId));
+                $this->approvals->initiate($request,$target,$profile,$this->user,(float)$request->get('days'));
             } elseif ($operation === 'retryApproval') {
                 $this->approvals->retry($request);
             }

@@ -1,6 +1,27 @@
-# Employee Management 0.8.12
+# Employee Management 0.8.13
 
-Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.12 clarifică spațiile de lucru principale și administrative, păstrează navigația administrată nativ și adaugă notificarea prin email a aprobatorilor pentru cererile noi. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
+Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.13 clarifică spațiile de lucru principale și administrative, păstrează navigația administrată nativ, notifică aprobatorii și adaugă verificarea documentelor Holiday. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
+
+## Documente Holiday verificabile — 0.8.13
+
+- Proiecția financiară DOCX tratează acordarea anuală programată dintre segmente fără a modifica profilul, soldul sau ledger-ul. Segmentarea lunară existentă rămâne neschimbată.
+- Tabelul păstrează antetele originale. Pentru un segment cu report, celula „Total zile” afișează dreptul anual și reportul pe două rânduri (de exemplu `21 - 2027` și `3 - report 2026`), iar „Deja primite” rămâne numărul de zile folosite din dreptul anului curent.
+- Fiecare DOCX nou conține exact linia `Cod de verificare: <32 caractere hexazecimale>` într-un paragraf normal, imediat sub tabelul principal și aliniat la dreapta. Codul provine din 128 biți generați prin `random_bytes()` și rămâne stabil la retry-ul aceleiași emiteri.
+- SHA-256 al fișierului final este legat de atașament într-o evidență internă. Managerii cu permisiuni efective de aprobare pot folosi `#EmployeeHolidayDocumentVerification`; backend-ul reverifică ACL/FLS și accesul la cerere.
+- Documentele unei cereri `Cancelled` sunt raportate ca revocate, cele înlocuite ca superseded, iar `CancellationPending` este afișat distinct. Fișierele istorice nu sunt șterse sau rescrise.
+- Reemiterea este exclusiv CLI și pornește implicit în dry-run. Din rădăcina proiectului Docker:
+
+```bash
+docker compose exec -u www-data espocrm php custom/Espo/Modules/EmployeeManagement/Command/reissue-holiday-document.php \
+  --request-id=REQUEST_ID --month=2027-01 --dry-run
+
+docker compose exec -u www-data espocrm php custom/Espo/Modules/EmployeeManagement/Command/reissue-holiday-document.php \
+  --request-id=REQUEST_ID --month=2027-01 --execute \
+  --reason="Corectare sold reportat 2026-2027" --confirm-attachment-id=ATTACHMENT_ID
+```
+
+Numele serviciului Compose poate diferi. Execuția cere ID-ul atașamentului raportat de un dry-run proaspăt. Nu reexecută aprobarea și nu schimbă statusul, revizia contabilă, soldul, ledger-ul, Attendance sau WTC.
+Pentru snapshot-urile legacy cross-year, dry-run-ul folosește snapshotul imutabil al documentului și ledger-ul rezervării cererii, care consemnează dreptul anual și data de resetare înainte ca grantul viitor să fie executat. Regula automată configurată trebuie să confirme aceeași dată; în caz contrar operația se oprește și cere o confirmare istorică documentată și auditată.
 
 ## Notificarea aprobatorilor Holiday — 0.8.12
 
@@ -203,12 +224,12 @@ Corecții: POST `EmployeeManagement/administration/profiles/correct` cu profileI
 Attendance: GET `EmployeeManagement/attendance/{myAttendance|overview}` cu month=YYYY-MM, GET `.../schedules`; POST `.../{mark|managerMarkRoutine|managerMark|schedule|remind|xlsx|pdf|initialize}`. Mark primește date/status și opțional revision; managerMarkRoutine adaugă userId și este limitat la lunile editabile, fără reason; managerMark păstrează corecția excepțională cu userId/reason obligatoriu. Schedule acceptă numai userId/remote/cic/cicStartDate/cicEndDate, niciodată ore, WTC sau assignedUser impus pentru o pontare proprie. Exporturile păstrează răspunsul original filename/mediaType/content base64. Initialize păstrează datele, schimbând numai începutul arhivei vizibile la luna curentă.
 
 ```bash
-bash ./build.sh --extension ./EmployeeManagement --zip 0.8.12 files scripts
+bash ./build.sh --extension ./EmployeeManagement --zip 0.8.13 files scripts
 python3 EmployeeManagement/tests/contract.py
 node EmployeeManagement/tests/regression/reset-date-field.test.mjs
 ```
 
-ZIP: **dist/employee-management-0.8.12.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile native de lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
+ZIP: **dist/employee-management-0.8.13.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile CLI/lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
 
 Installer-ul nu șterge date, nu migrează originalele și nu modifică Roles/WTC. Coexistența cu originalele este un scenariu controlat de laborator, nu recomandare de producție.
 

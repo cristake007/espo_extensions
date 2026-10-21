@@ -6,6 +6,8 @@
             "EmployeeHolidayRequest": false,
             "EmployeeHolidayProfile": false,
             "EmployeeHolidayLedger": false,
+            "EmployeeHolidayDocument": false,
+            "EmployeeHolidayDocumentVerificationLog": false,
             "EmployeeManagement": false,
             "EmployeeAdministration": false,
             "EmployeeAttendanceSettings": false,
