@@ -38,7 +38,8 @@
         "delta": {
             "type": "float",
             "required": true,
-            "readOnly": true
+            "readOnly": true,
+            "view": "employee-management:views/fields/signed-holiday-days"
         },
         "balanceBefore": {
             "type": "float",
@@ -153,6 +154,10 @@
                 "createdAt"
             ]
         }
+    },
+    "collection": {
+        "orderBy": "createdAt",
+        "order": "desc"
     },
     "noDeletedAttribute": true
 }

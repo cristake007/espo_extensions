@@ -1,22 +1,25 @@
 [
     {
+        "label": "Main Information",
         "rows": [
             [
                 {
-                    "name": "name"
-                }
-            ],
-            [
+                    "name": "type"
+                },
                 {
                     "name": "assignedUser"
                 }
             ],
             [
                 {
-                    "name": "type"
-                }
+                    "name": "createdAt"
+                },
+                false
             ],
             [
+                {
+                    "name": "balanceBefore"
+                },
                 {
                     "name": "delta"
                 }
@@ -24,6 +27,48 @@
             [
                 {
                     "name": "balanceAfter"
+                },
+                false
+            ]
+        ]
+    },
+    {
+        "label": "Additional Information",
+        "rows": [
+            [
+                {
+                    "name": "actor"
+                },
+                {
+                    "name": "effectiveDate"
+                }
+            ],
+            [
+                {
+                    "name": "reason",
+                    "fullWidth": true
+                }
+            ],
+            [
+                {
+                    "name": "request"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "entitlementBefore"
+                },
+                {
+                    "name": "entitlementAfter"
+                }
+            ],
+            [
+                {
+                    "name": "resetDateBefore"
+                },
+                {
+                    "name": "resetDateAfter"
                 }
             ]
         ]

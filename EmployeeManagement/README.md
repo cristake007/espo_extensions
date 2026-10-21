@@ -1,6 +1,16 @@
-# Employee Management 0.8.13
+# Employee Management 0.8.14
 
-Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.13 clarifică spațiile de lucru principale și administrative, păstrează navigația administrată nativ, notifică aprobatorii și adaugă verificarea documentelor Holiday. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
+Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.14 clarifică spațiile de lucru principale și administrative, păstrează navigația administrată nativ, notifică aprobatorii, verifică documentele Holiday și oferă un registru Holiday nativ mai ușor de urmărit. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
+
+## Registru Holiday nativ — 0.8.14
+
+- Ruta existentă `#EmployeeHolidayLedger` folosește în continuare controllerul Record, lista, detaliul, căutarea, sortarea și paginarea native EspoCRM. Nu există un API sau un ecran paralel.
+- Lista afișează data operațiunii, operațiunea tradusă, angajatul, soldul anterior, modificarea, soldul ulterior și actorul, implicit în ordinea `createdAt DESC`.
+- Filtrul de angajat este câmpul link nativ `assignedUser` din panoul standard de căutare. Managerii cu `Read: All` îl pot selecta sau șterge; ACL-ul rămâne aplicat fiecărei interogări. Pentru ca selectorul să poată găsi angajații permiși, Rolul managerului trebuie să acorde și nivelul nativ de citire adecvat pentru `User`.
+- Angajații au nevoie de configurarea manuală a Rolului nativ `EmployeeHolidayLedger → Read: Own`; managerii folosesc `Read: All`. Extensia nu modifică automat niciun Role. `assignedUser` este câmpul de ownership pe care EspoCRM 10.0.1 îl detectează și îl folosește pentru lista `OnlyOwn` și accesul direct la înregistrare.
+- Create, Edit și Delete rămân `No`, iar checker-ele și hook-urile read-only existente rămân active. Singurul view client dedicat formatează câmpul numeric existent `delta` cu `+`, `−` sau `0`, reutilizând formatarea float nativă.
+- Prezentarea 0.8.14 folosește un view EspoCRM extins, cu antet „Istoric concedii”, stări loading/empty/error, rânduri semantice și layout responsive. Managerul are selectorul nativ `User` direct în antet, conectat la același `SearchManager` și Record API nativ.
+- `EmployeeHolidayLedger` declară `iconClass: fas fa-history`; iconul apare prin mecanismul nativ când administratorul configurează scope-ul ca tab, fără modificarea automată a navigației utilizatorului.
 
 ## Documente Holiday verificabile — 0.8.13
 
@@ -224,12 +234,12 @@ Corecții: POST `EmployeeManagement/administration/profiles/correct` cu profileI
 Attendance: GET `EmployeeManagement/attendance/{myAttendance|overview}` cu month=YYYY-MM, GET `.../schedules`; POST `.../{mark|managerMarkRoutine|managerMark|schedule|remind|xlsx|pdf|initialize}`. Mark primește date/status și opțional revision; managerMarkRoutine adaugă userId și este limitat la lunile editabile, fără reason; managerMark păstrează corecția excepțională cu userId/reason obligatoriu. Schedule acceptă numai userId/remote/cic/cicStartDate/cicEndDate, niciodată ore, WTC sau assignedUser impus pentru o pontare proprie. Exporturile păstrează răspunsul original filename/mediaType/content base64. Initialize păstrează datele, schimbând numai începutul arhivei vizibile la luna curentă.
 
 ```bash
-bash ./build.sh --extension ./EmployeeManagement --zip 0.8.13 files scripts
+bash ./build.sh --extension ./EmployeeManagement --zip 0.8.14 files scripts
 python3 EmployeeManagement/tests/contract.py
 node EmployeeManagement/tests/regression/reset-date-field.test.mjs
 ```
 
-ZIP: **dist/employee-management-0.8.13.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile CLI/lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
+ZIP: **dist/employee-management-0.8.14.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile CLI/lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
 
 Installer-ul nu șterge date, nu migrează originalele și nu modifică Roles/WTC. Coexistența cu originalele este un scenariu controlat de laborator, nu recomandare de producție.
 

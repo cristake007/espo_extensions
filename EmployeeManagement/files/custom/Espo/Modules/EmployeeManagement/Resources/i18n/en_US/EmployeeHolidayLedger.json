@@ -4,19 +4,33 @@
         "profile": "Holiday Profile",
         "request": "Holiday Request",
         "user": "User",
-        "type": "Entry Type",
-        "delta": "Delta",
+        "type": "Operation",
+        "delta": "Change",
         "balanceBefore": "Balance Before",
         "balanceAfter": "Balance After",
         "entitlementBefore": "Entitlement Before",
         "entitlementAfter": "Entitlement After",
         "resetDateBefore": "Reset Date Before",
         "resetDateAfter": "Reset Date After",
-        "actor": "Actor",
+        "actor": "Performed By",
         "reason": "Reason",
         "effectiveDate": "Effective Date",
         "idempotencyKey": "Idempotency Key",
-        "createdAt": "Created At"
+        "createdAt": "Operation Date",
+        "assignedUser": "Employee"
+    },
+    "labels": {
+        "Main Information": "Main Information",
+        "Additional Information": "Additional Information",
+        "Holiday History": "Holiday History",
+        "Holiday Ledger": "Balance Ledger",
+        "All Employees": "All Employees",
+        "My History": "My History",
+        "Filter Employee": "Select Employee",
+        "Retry": "Retry",
+        "No Ledger Entries": "No history entries",
+        "Ledger Loading": "Loading history…",
+        "Ledger Unavailable": "History could not be loaded"
     },
     "options": {
         "type": {
@@ -36,6 +50,13 @@
     },
     "messages": {
         "ledgerCreateForbidden": "Holiday ledger entries can only be created by the holiday balance service.",
-        "ledgerImmutable": "Holiday ledger entries cannot be changed or deleted."
+        "ledgerImmutable": "Holiday ledger entries cannot be changed or deleted.",
+        "holidayHistoryIntro": "Follow every holiday-balance change from the previous value through to the resulting balance.",
+        "holidayLedgerHelp": "Operations are shown newest first. Open the operation date to view the complete details.",
+        "managerEmployeeFilterHelp": "Select an employee or return to all records permitted by your role.",
+        "employeeLedgerHelp": "Only operations that affected your own holiday balance are shown here.",
+        "ledgerEntryCount": "{count} operations",
+        "ledgerEmptyHelp": "There are no balance changes matching the current selection yet.",
+        "ledgerErrorHelp": "Check your connection and try again. No record was changed."
     }
 }

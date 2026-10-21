@@ -1,0 +1,21 @@
+[
+    {
+        "name": "createdAt",
+        "link": true,
+        "width": 28
+    },
+    {
+        "name": "type",
+        "link": true
+    },
+    {
+        "name": "delta",
+        "width": 18,
+        "align": "right"
+    },
+    {
+        "name": "balanceAfter",
+        "width": 18,
+        "align": "right"
+    }
+]

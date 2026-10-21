@@ -1,17 +1,34 @@
 [
     {
-        "name": "name"
+        "name": "createdAt",
+        "link": true,
+        "width": 16
     },
     {
-        "name": "assignedUser"
+        "name": "type",
+        "width": 16
     },
     {
-        "name": "type"
+        "name": "assignedUser",
+        "width": 18
     },
     {
-        "name": "delta"
+        "name": "balanceBefore",
+        "width": 12,
+        "align": "right"
     },
     {
-        "name": "balanceAfter"
+        "name": "delta",
+        "width": 12,
+        "align": "right"
+    },
+    {
+        "name": "balanceAfter",
+        "width": 12,
+        "align": "right"
+    },
+    {
+        "name": "actor",
+        "width": 18
     }
 ]

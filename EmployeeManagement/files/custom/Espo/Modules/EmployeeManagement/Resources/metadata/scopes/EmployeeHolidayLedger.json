@@ -20,7 +20,6 @@
     ],
     "aclActionLevelListMap": {
         "create": [
-            "yes",
             "no"
         ],
         "read": [
@@ -29,13 +28,9 @@
             "no"
         ],
         "edit": [
-            "all",
-            "own",
             "no"
         ],
         "delete": [
-            "all",
-            "own",
             "no"
         ]
     }

@@ -1,0 +1,10 @@
+{
+    "fields": {
+        "idempotencyKey": {
+            "forbidden": true
+        },
+        "operationHash": {
+            "forbidden": true
+        }
+    }
+}

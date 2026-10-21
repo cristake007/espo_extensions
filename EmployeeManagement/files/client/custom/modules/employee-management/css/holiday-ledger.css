@@ -1,0 +1,406 @@
+.employee-holiday-ledger-page {
+    --employee-ledger-primary: var(--tuvtk-primary, var(--brand-primary));
+    --employee-ledger-secondary: var(--tuvtk-secondary, var(--brand-danger));
+    --employee-ledger-surface: var(--tuvtk-surface, var(--panel-bg));
+    --employee-ledger-border: var(--tuvtk-border, var(--panel-default-border));
+    --employee-ledger-border-soft: var(--tuvtk-border-soft, var(--panel-default-border));
+    --employee-ledger-hover: var(--tuvtk-hover, var(--state-primary-bg));
+    --employee-ledger-text: var(--tuvtk-text, var(--text-color));
+    --employee-ledger-muted: var(--tuvtk-muted, var(--text-muted-color));
+    color: var(--employee-ledger-text);
+    margin: 0 auto;
+    max-width: 1180px;
+    padding: 16px 0 32px;
+    width: 100%;
+}
+
+.employee-holiday-ledger-hero {
+    align-items: center;
+    background: var(--employee-ledger-surface);
+    border: 1px solid var(--employee-ledger-border);
+    border-left: 4px solid var(--employee-ledger-secondary);
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--default-box-shadow);
+    display: flex;
+    gap: 26px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 22px 24px;
+}
+
+.employee-holiday-ledger-hero-copy {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    min-width: 0;
+}
+
+.employee-holiday-ledger-hero-icon {
+    align-items: center;
+    background: var(--employee-ledger-hover);
+    border-radius: 50%;
+    color: var(--employee-ledger-secondary);
+    display: flex;
+    flex: 0 0 52px;
+    font-size: 22px;
+    height: 52px;
+    justify-content: center;
+    width: 52px;
+}
+
+.employee-holiday-ledger-eyebrow {
+    color: var(--employee-ledger-secondary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+}
+
+.employee-holiday-ledger-hero h3 {
+    color: var(--employee-ledger-primary);
+    font-size: 24px;
+    line-height: 1.25;
+    margin: 0;
+}
+
+.employee-holiday-ledger-hero-copy p {
+    color: var(--employee-ledger-muted);
+    line-height: 1.45;
+    margin: 5px 0 0;
+    max-width: 620px;
+}
+
+.employee-holiday-ledger-filter {
+    background: var(--default-heading-bg-color);
+    border: 1px solid var(--employee-ledger-border-soft);
+    border-radius: var(--panel-border-radius);
+    flex: 0 0 340px;
+    padding: 13px 14px;
+}
+
+.employee-holiday-ledger-filter > label {
+    color: var(--employee-ledger-primary);
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.employee-holiday-ledger-user-field .field {
+    margin-bottom: 0;
+}
+
+.employee-holiday-ledger-user-field input {
+    width: 100%;
+}
+
+.employee-holiday-ledger-filter > p {
+    color: var(--employee-ledger-muted);
+    font-size: 11px;
+    line-height: 1.35;
+    margin: 7px 0 9px;
+}
+
+.employee-holiday-ledger-filter-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.employee-holiday-ledger-filter-actions .btn {
+    align-items: center;
+    display: inline-flex;
+    gap: 6px;
+    justify-content: center;
+}
+
+.employee-holiday-ledger-panel {
+    background: var(--employee-ledger-surface);
+    border: 1px solid var(--employee-ledger-border);
+    border-radius: var(--panel-border-radius);
+    box-shadow: var(--default-box-shadow);
+    overflow: hidden;
+}
+
+.employee-holiday-ledger-heading {
+    align-items: center;
+    background: var(--default-heading-bg-color);
+    border-bottom: 1px solid var(--employee-ledger-border-soft);
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    padding: 15px 18px;
+}
+
+.employee-holiday-ledger-heading-copy {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    min-width: 0;
+}
+
+.employee-holiday-ledger-section-icon {
+    align-items: center;
+    background: var(--employee-ledger-hover);
+    border-radius: 50%;
+    color: var(--employee-ledger-primary);
+    display: flex;
+    flex: 0 0 38px;
+    font-size: 16px;
+    height: 38px;
+    justify-content: center;
+    width: 38px;
+}
+
+.employee-holiday-ledger-heading h4 {
+    margin: 0;
+}
+
+.employee-holiday-ledger-heading p {
+    color: var(--employee-ledger-muted);
+    font-size: 12px;
+    line-height: 1.4;
+    margin: 3px 0 0;
+}
+
+.employee-holiday-ledger-count {
+    color: var(--employee-ledger-muted);
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.employee-holiday-ledger-state {
+    align-items: center;
+    color: var(--employee-ledger-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    justify-content: center;
+    min-height: 210px;
+    padding: 28px 20px;
+    text-align: center;
+}
+
+.employee-holiday-ledger-state > .fas,
+.employee-holiday-ledger-state > .far {
+    color: var(--employee-ledger-primary);
+    font-size: 30px;
+}
+
+.employee-holiday-ledger-error > .fas {
+    color: var(--brand-danger);
+}
+
+.employee-holiday-ledger-state strong {
+    color: var(--employee-ledger-text);
+    font-size: 15px;
+}
+
+.employee-holiday-ledger-state p {
+    margin: 0;
+    max-width: 520px;
+}
+
+.employee-holiday-ledger-list-hidden {
+    display: none;
+}
+
+.employee-holiday-ledger-list {
+    padding: 0 14px 14px;
+}
+
+.employee-holiday-ledger-page .list-buttons-container {
+    align-items: center;
+    display: flex;
+    min-height: 48px;
+    padding: 9px 2px 6px;
+}
+
+.employee-holiday-ledger-page .list-buttons-container .pagination {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.employee-holiday-ledger-page .list-buttons-container .settings-container {
+    margin-left: auto;
+}
+
+.employee-holiday-ledger-page .list {
+    overflow-x: auto;
+    padding: 0 2px 2px;
+}
+
+.employee-holiday-ledger-page .list > table {
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    margin: -8px 0 0;
+    min-width: 840px;
+}
+
+.employee-holiday-ledger-page .list > table > thead > tr > th {
+    border: 0;
+    color: var(--employee-ledger-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .045em;
+    padding: 10px 12px 7px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.employee-holiday-ledger-page .list > table > tbody > tr > td {
+    background: var(--employee-ledger-surface);
+    border-bottom: 1px solid var(--employee-ledger-border-soft);
+    border-top: 1px solid var(--employee-ledger-border-soft);
+    padding: 13px 12px;
+    vertical-align: middle;
+}
+
+.employee-holiday-ledger-page .list > table > tbody > tr > td:first-child {
+    border-left: 3px solid var(--employee-ledger-primary);
+    border-radius: var(--panel-border-radius) 0 0 var(--panel-border-radius);
+}
+
+.employee-holiday-ledger-page .list > table > tbody > tr > td:last-child {
+    border-radius: 0 var(--panel-border-radius) var(--panel-border-radius) 0;
+    border-right: 1px solid var(--employee-ledger-border-soft);
+}
+
+.employee-holiday-ledger-page .list > table > tbody > tr:hover > td {
+    background: var(--employee-ledger-hover);
+}
+
+.employee-holiday-ledger-page .list-row.employee-holiday-ledger-row-positive > td:first-child {
+    border-left-color: var(--brand-success);
+}
+
+.employee-holiday-ledger-page .list-row.employee-holiday-ledger-row-negative > td:first-child {
+    border-left-color: var(--brand-danger);
+}
+
+.employee-holiday-ledger-page .list-row.employee-holiday-ledger-row-neutral > td:first-child {
+    border-left-color: var(--employee-ledger-muted);
+}
+
+.employee-holiday-ledger-page .list-row > td[data-name="createdAt"] a {
+    font-weight: 600;
+}
+
+.employee-holiday-ledger-page .list-row > td[data-name="balanceBefore"] {
+    color: var(--employee-ledger-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.employee-holiday-ledger-page .list-row > td[data-name="balanceAfter"] {
+    color: var(--employee-ledger-primary);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+}
+
+.employee-holiday-ledger-page .list-row > td[data-name="delta"] {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+}
+
+.employee-holiday-ledger-page .employee-holiday-ledger-row-positive > td[data-name="delta"] {
+    color: var(--brand-success);
+}
+
+.employee-holiday-ledger-page .employee-holiday-ledger-row-negative > td[data-name="delta"] {
+    color: var(--brand-danger);
+}
+
+.employee-holiday-ledger-page .employee-holiday-ledger-row-neutral > td[data-name="delta"] {
+    color: var(--employee-ledger-muted);
+}
+
+@media (max-width: 991px) {
+    .employee-holiday-ledger-hero {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .employee-holiday-ledger-filter {
+        flex-basis: auto;
+        width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .employee-holiday-ledger-page {
+        padding: 12px 0 24px;
+    }
+
+    .employee-holiday-ledger-hero {
+        gap: 18px;
+        padding: 18px;
+    }
+
+    .employee-holiday-ledger-hero-copy {
+        align-items: flex-start;
+    }
+
+    .employee-holiday-ledger-hero-icon {
+        flex-basis: 44px;
+        font-size: 19px;
+        height: 44px;
+        width: 44px;
+    }
+
+    .employee-holiday-ledger-hero h3 {
+        font-size: 21px;
+    }
+
+    .employee-holiday-ledger-filter-actions {
+        flex-direction: column;
+    }
+
+    .employee-holiday-ledger-filter-actions .btn {
+        width: 100%;
+    }
+
+    .employee-holiday-ledger-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px;
+    }
+
+    .employee-holiday-ledger-count {
+        padding-left: 50px;
+    }
+
+    .employee-holiday-ledger-list {
+        padding: 0 8px 10px;
+    }
+
+    .employee-holiday-ledger-page .list > table {
+        min-width: 100%;
+        table-layout: fixed;
+    }
+
+    .employee-holiday-ledger-page .list > table > thead > tr > th,
+    .employee-holiday-ledger-page .list > table > tbody > tr > td {
+        overflow-wrap: normal;
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+
+    .employee-holiday-ledger-page .list > table > thead > tr > th {
+        font-size: 8px;
+        white-space: normal;
+    }
+
+    .employee-holiday-ledger-page .list-row > td[data-name="createdAt"],
+    .employee-holiday-ledger-page .list-row > td[data-name="type"],
+    .employee-holiday-ledger-page .list-row > td[data-name="createdAt"] a,
+    .employee-holiday-ledger-page .list-row > td[data-name="type"] a {
+        overflow: visible;
+        text-overflow: clip;
+        white-space: normal;
+    }
+
+}

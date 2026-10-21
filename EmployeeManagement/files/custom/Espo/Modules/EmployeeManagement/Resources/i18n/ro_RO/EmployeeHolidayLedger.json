@@ -4,19 +4,33 @@
         "profile": "Profil de concediu",
         "request": "Cerere de concediu",
         "user": "Utilizator",
-        "type": "Tip înregistrare",
-        "delta": "Diferență",
+        "type": "Operațiune",
+        "delta": "Modificare",
         "balanceBefore": "Sold anterior",
         "balanceAfter": "Sold ulterior",
         "entitlementBefore": "Drept anterior",
         "entitlementAfter": "Drept ulterior",
         "resetDateBefore": "Data resetării anterioare",
         "resetDateAfter": "Data resetării ulterioare",
-        "actor": "Autor",
+        "actor": "Efectuat de",
         "reason": "Motiv",
         "effectiveDate": "Data efectivă",
         "idempotencyKey": "Cheie de idempotență",
-        "createdAt": "Creat la"
+        "createdAt": "Data operațiunii",
+        "assignedUser": "Angajat"
+    },
+    "labels": {
+        "Main Information": "Informații principale",
+        "Additional Information": "Informații suplimentare",
+        "Holiday History": "Istoric concedii",
+        "Holiday Ledger": "Registrul soldului",
+        "All Employees": "Toți angajații",
+        "My History": "Istoricul meu",
+        "Filter Employee": "Selectează angajatul",
+        "Retry": "Reîncearcă",
+        "No Ledger Entries": "Nu există operațiuni în istoric",
+        "Ledger Loading": "Se încarcă istoricul…",
+        "Ledger Unavailable": "Istoricul nu a putut fi încărcat"
     },
     "options": {
         "type": {
@@ -36,6 +50,13 @@
     },
     "messages": {
         "ledgerCreateForbidden": "Înregistrările din registrul de concedii pot fi create doar de serviciul de gestionare a soldului.",
-        "ledgerImmutable": "Înregistrările din registrul de concedii nu pot fi modificate sau șterse."
+        "ledgerImmutable": "Înregistrările din registrul de concedii nu pot fi modificate sau șterse.",
+        "holidayHistoryIntro": "Urmărește fiecare modificare a soldului de concediu, de la valoarea anterioară până la soldul rezultat.",
+        "holidayLedgerHelp": "Operațiunile sunt afișate în ordine cronologică inversă. Deschide data operațiunii pentru detalii complete.",
+        "managerEmployeeFilterHelp": "Selectează un angajat sau revino la toate înregistrările permise de rolul tău.",
+        "employeeLedgerHelp": "Aici sunt afișate numai operațiunile care au afectat soldul tău de concediu.",
+        "ledgerEntryCount": "{count} operațiuni",
+        "ledgerEmptyHelp": "Nu există încă modificări de sold care să corespundă selecției curente.",
+        "ledgerErrorHelp": "Verifică conexiunea și încearcă din nou. Nicio înregistrare nu a fost modificată."
     }
 }

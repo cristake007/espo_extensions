@@ -102,9 +102,48 @@ for item in stage3:
 for item in inventory['integratedStage3']:
     if item['destination'] not in focused_release_adaptations:
         assert hashlib.sha256((root/item['destination']).read_bytes()).hexdigest()==item['destinationSha256'],item['destination']
-assert manifest['version']=='0.8.13'
+assert manifest['version']=='0.8.14'
 status = (modules[0]/'Tools/Workspace/Api/GetStatus.php').read_text()
 assert "'version' => '" + manifest['version'] + "'" in status
+
+# 0.8.14 keeps Holiday Ledger on the native Record stack and makes the
+# presentation contract explicit in package validation.
+ledger_entity=json.loads((metadata/'entityDefs/EmployeeHolidayLedger.json').read_text())
+ledger_list=json.loads((modules[0]/'Resources/layouts/EmployeeHolidayLedger/list.json').read_text())
+ledger_list_small=json.loads((modules[0]/'Resources/layouts/EmployeeHolidayLedger/listSmall.json').read_text())
+ledger_detail=json.loads((modules[0]/'Resources/layouts/EmployeeHolidayLedger/detail.json').read_text())
+ledger_filters=json.loads((modules[0]/'Resources/layouts/EmployeeHolidayLedger/filters.json').read_text())
+ledger_client=json.loads((metadata/'clientDefs/EmployeeHolidayLedger.json').read_text())
+ledger_scope=json.loads((metadata/'scopes/EmployeeHolidayLedger.json').read_text())
+ledger_entity_acl=json.loads((metadata/'entityAcl/EmployeeHolidayLedger.json').read_text())
+assert ledger_entity['collection']=={'orderBy': 'createdAt', 'order': 'desc'}
+assert [item['name'] for item in ledger_list]==[
+    'createdAt', 'type', 'assignedUser', 'balanceBefore', 'delta', 'balanceAfter', 'actor'
+]
+assert [item['name'] for item in ledger_list_small]==['createdAt', 'type', 'delta', 'balanceAfter']
+assert ledger_filters==['assignedUser', 'type', 'createdAt', 'effectiveDate', 'actor']
+assert ledger_client['controller']=='controllers/record'
+assert ledger_client['iconClass']=='fas fa-history'
+assert ledger_client['views']['list']=='employee-management:views/holiday-ledger/list'
+assert ledger_client['recordViews']['list']=='employee-management:views/holiday-ledger/record/list'
+assert all(ledger_client[key] is True for key in [
+    'createDisabled', 'editDisabled', 'removeDisabled', 'massUpdateDisabled', 'massRemoveDisabled'
+])
+assert ledger_scope['aclActionLevelListMap']['read']==['all', 'own', 'no']
+assert all(ledger_scope['aclActionLevelListMap'][action]==['no'] for action in ['create', 'edit', 'delete'])
+ledger_detail_fields={
+    field['name']
+    for panel in ledger_detail
+    for row in panel['rows']
+    for field in row if field
+}
+assert {'type', 'assignedUser', 'createdAt', 'balanceBefore', 'delta', 'balanceAfter'} <= ledger_detail_fields
+assert not {'idempotencyKey', 'operationHash'} & ledger_detail_fields
+assert ledger_entity_acl['fields']['idempotencyKey']['forbidden'] is True
+assert ledger_entity_acl['fields']['operationHash']['forbidden'] is True
+assert not (modules[0]/'Tools/HolidayBalance/Api/EmployeeHolidayLedger.php').exists()
+print('PASS: native Holiday Ledger list/detail/filter/ordering, Own/All ACL, and read-only package contract.')
+
 assert not (modules[0]/'Hooks/EmployeeHolidayRequest/Balance.php').exists(), 'Commands exclusively own request accounting.'
 service=(modules[0]/'Tools/HolidayBalance/HolidayRequestService.php').read_text()
 assert '$this->approvalDocumentService->generate' not in service

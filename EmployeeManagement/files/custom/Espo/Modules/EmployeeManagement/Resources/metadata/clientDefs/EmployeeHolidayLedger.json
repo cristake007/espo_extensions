@@ -1,5 +1,12 @@
 {
     "controller": "controllers/record",
+    "iconClass": "fas fa-history",
+    "views": {
+        "list": "employee-management:views/holiday-ledger/list"
+    },
+    "recordViews": {
+        "list": "employee-management:views/holiday-ledger/record/list"
+    },
     "createDisabled": true,
     "editDisabled": true,
     "removeDisabled": true,
