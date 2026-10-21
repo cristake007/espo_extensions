@@ -67,15 +67,17 @@ Build from the repository root:
 
 Run the phase contract tests:
 
+The old `tests/phase-001/docker.ps1` and `phase-002/docker.ps1` scripts create
+separate Compose labs and remove their volumes. They are historical fixtures,
+not integration runners for the persistent test instance. Keep them disabled
+until their setup, mutations and cleanup are isolated for shared runtime use.
+
 ```bash
-node --test HolidayManagement/tests/phase-001/contract.test.mjs
-node --test HolidayManagement/tests/phase-002/contract.test.mjs
+./test-node.sh test HolidayManagement
 php HolidayManagement/tests/phase-002/balance-math.test.php
-node --test HolidayManagement/tests/phase-003/contract.test.mjs
 php HolidayManagement/tests/phase-003/working-day-calculator.test.php
 php HolidayManagement/tests/phase-003/booking-date-policy.test.php
 php HolidayManagement/tests/phase-003/lifecycle.test.php
-node --test HolidayManagement/tests/phase-004/contract.test.mjs
 php HolidayManagement/tests/phase-004/document-generator.test.php
 ```
 

@@ -9,7 +9,9 @@ use RuntimeException;
 
 final class RuntimeGuard
 {
-    public const ESPO_VERSION = '10.0.0';
+    public const ESPO_VERSION = '10.0.10';
+    public const APPROVED_SITE_URL = 'http://178.104.183.29';
+    public const APPROVED_RUNTIME_PATH = '/var/www/html';
     public const PRODUCTION_PATH = '/opt/crm.cursurituv.ro';
 
     public static function assertExplicitNonProductionPath(string $candidate): string
@@ -40,17 +42,23 @@ final class RuntimeGuard
             throw new RuntimeException('The resolved path points to the prohibited production instance.');
         }
 
-        $packagePath = $resolved . DIRECTORY_SEPARATOR . 'package.json';
-        $packageContents = file_get_contents($packagePath);
-
-        if ($packageContents === false) {
-            throw new RuntimeException('The test-instance package.json could not be read.');
+        if ($resolved !== self::APPROVED_RUNTIME_PATH) {
+            throw new RuntimeException('The path is not the approved persistent EspoCRM runtime.');
         }
 
-        $package = json_decode($packageContents, true, flags: JSON_THROW_ON_ERROR);
+        $statePath = $resolved . '/data/state.php';
+        $configPath = $resolved . '/data/config.php';
 
-        if (!is_array($package) || ($package['version'] ?? null) !== self::ESPO_VERSION) {
-            throw new RuntimeException('The explicit test instance must be EspoCRM 10.0.0.');
+        if (!is_file($statePath) || !is_file($configPath)) {
+            throw new RuntimeException('The approved runtime identity files are missing.');
+        }
+
+        $state = require $statePath;
+        $config = require $configPath;
+
+        if (($state['version'] ?? null) !== self::ESPO_VERSION ||
+            ($config['siteUrl'] ?? null) !== self::APPROVED_SITE_URL) {
+            throw new RuntimeException('The path does not match the approved EspoCRM test instance.');
         }
 
         return $resolved;

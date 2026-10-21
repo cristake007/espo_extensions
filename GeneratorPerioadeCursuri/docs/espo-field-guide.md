@@ -1,5 +1,9 @@
 # EspoCRM Field Guide - GeneratorPerioadeCursuri
 
+For current operations use the persistent instance in `/var/www/espocrm` and
+the root `AGENTS.md`. Paths and findings in the historical phases below describe
+only the environments where those checks originally ran.
+
 This guide is intended to be copied into:
 
 `extensions/GeneratorPerioadeCursuri/docs/espo-field-guide.md`
@@ -349,14 +353,11 @@ Preferred direction:
 
 Do not implement upload field if the metadata shape is unconfirmed.
 
-Before implementing `sourceFile`, Codex should inspect local examples:
+Before implementing `sourceFile`, inspect repository examples first:
 
 ```bash
-find /opt/crm.cursurituv.ro \
-  -path '*/.codex-backups/*' -prune -o \
-  -type f -name '*.json' -print 2>/dev/null \
-  | xargs grep -n '"type"[[:space:]]*:[[:space:]]*"file"\|"type"[[:space:]]*:[[:space:]]*"attachmentMultiple"' 2>/dev/null \
-  | head -80
+rg -n '"type"[[:space:]]*:[[:space:]]*"(file|attachmentMultiple)"' \
+  GeneratorPerioadeCursuri/files --glob '*.json'
 ```
 
 If a clear local example is found, copy the native metadata pattern minimally.

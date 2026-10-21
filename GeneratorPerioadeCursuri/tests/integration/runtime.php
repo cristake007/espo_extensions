@@ -13,6 +13,14 @@ use Espo\ORM\EntityManager;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+$testConfig = require '/var/www/html/data/config.php';
+$testState = require '/var/www/html/data/state.php';
+
+if (($testConfig['siteUrl'] ?? null) !== 'http://178.104.183.29' ||
+    ($testState['version'] ?? null) !== '10.0.10') {
+    throw new RuntimeException('Refusing integration against an unapproved EspoCRM instance.');
+}
+
 require '/var/www/html/bootstrap.php';
 
 $scope = 'GeneratorPerioadeCursuriWordPressUpdater';

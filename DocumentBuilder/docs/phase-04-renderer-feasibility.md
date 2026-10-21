@@ -41,9 +41,12 @@ Attachment and generated media bytes will be passed as validated data URIs, matc
 
 ## Pending runtime procedure
 
-Do not run the runtime harness on `/opt/crm.cursurituv.ro`. On a separately approved EspoCRM 10.0.0 instance:
+The Phase 04 harness is pinned to a standalone EspoCRM 10.0.0 source tree and
+is not yet adapted to the approved persistent 10.0.10 instance. Before using it,
+verify the current renderer APIs, bind it to the approved runtime identity and
+isolate font-cache and output writes. The historical procedure to revisit is:
 
-1. Confirm the instance is disposable or backed up and record its path and URL.
+1. Confirm a backup and record the approved instance path, URL and versions.
 2. Run `php DocumentBuilder/tests/phase-04/render-fixtures.php /path/to/non-production-espo /new/output/directory` from this repository.
 3. Preserve the emitted `runtime-results.json`, PDFs, environment details, and SHA-256 hashes outside the extension package.
 4. Render every fixture twice with fresh instances and compare page counts and hashes. Hash differences require visual/content comparison; they are not automatically failures.

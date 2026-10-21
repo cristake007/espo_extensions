@@ -23,7 +23,7 @@ Every GitHub source link below is pinned to the peeled commit, not a moving bran
 
 `/opt/crm.cursurituv.ro` is production. Development installation, extension upgrade or uninstall, rebuild, cache clearing, test-record or fixture creation, experimental API/PDF/job execution, and cleanup are **PROHIBITED** there.
 
-Runtime validation may occur only after the product owner explicitly supplies a separate non-production EspoCRM instance. Before any runtime check, confirm that the instance reports core version `10.0.0`, record its path and URL, and confirm that its data is disposable or backed up. Until then, all install, rebuild, API, ACL, storage, queue, and PDF smoke checks remain pending.
+Current runtime validation targets only the persistent test instance at `http://178.104.183.29` (Compose `/var/www/espocrm`). Before any runtime check, verify its actual EspoCRM/PHP versions against the manifest, its configured URL, and a backup for destructive operations. The pinned 10.0.0 source findings in this contract are historical evidence; API, ACL, storage, queue, and PDF behavior on 10.0.10 still requires separate runtime validation with isolated fixtures.
 
 The official commands are `bin/command app-info --core-version`, `php rebuild.php`, and `php clear_cache.php`; recording them here is not authorization to run them. See [console commands](https://docs.espocrm.com/administration/commands/) and [extension administration](https://docs.espocrm.com/administration/extensions/).
 

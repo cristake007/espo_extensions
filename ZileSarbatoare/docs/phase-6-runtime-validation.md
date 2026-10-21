@@ -1,9 +1,11 @@
 # Phase 6 EspoCRM runtime validation
 
-Status: **not executed — an EspoCRM runtime is not available in this workspace**
+Status: **not executed on the persistent test instance**. The approved runtime
+is `http://178.104.183.29` (Compose `/var/www/espocrm`, EspoCRM 10.0.10,
+PHP 8.4.27 at migration time).
 
-Run this checklist on a disposable, non-production EspoCRM `>=10.0.0` instance
-using PHP `>=8.4`. Back up the database first. Use an administrator, two active
+Use only this persistent test instance after checking the manifest and a backup.
+Use an administrator, two active
 regular users whose roles respectively allow and deny `ZileLibere` read access,
 plus portal and API users.
 
@@ -42,6 +44,11 @@ Verify:
 
 ## Synchronization and transactions
 
+These steps are pending adaptation. Isolate the synthetic country/year scope,
+stub or control outbound Nager.Date responses, and establish exact fixture
+ownership and cleanup before running them. Do not inject failures into the
+shared database.
+
 1. Run `bin/command run-job SyncZileSarbatoare` with the integration disabled;
    confirm it performs no HTTP request.
 2. Enable the integration and synchronize the captured test years; confirm
@@ -53,6 +60,11 @@ Verify:
    skips without writes.
 
 ## Upgrade, reinstall, and uninstall retention
+
+This lifecycle section records the intended checks but is **not adapted for
+execution** on the persistent instance. Uninstall/reinstall and settings changes
+require a verified backup, restoration plan and explicit authorization; no
+global cleanup or reset is permitted.
 
 1. Change the country, years, schedule, and enabled state from their defaults.
 2. Install the same or newer package without uninstalling; confirm every saved

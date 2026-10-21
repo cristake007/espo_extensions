@@ -15,19 +15,20 @@ database.
 
 ## Build and install
 
-From the `projects/espo_extensions` repository root:
+From `/opt/espo_extensions`:
 
 ```bash
 bash build.sh --extension ZileSarbatoare --zip 0.9.5 files scripts
 ```
 
-Upload `dist/zile-sarbatoare-0.9.5.zip` in **Administration > Extensions**, or
-install it from the EspoCRM root:
+After validation, upload `dist/zile-sarbatoare-0.9.5.zip` to the persistent
+test instance at `http://178.104.183.29` through **Administration > Extensions**,
+or install it from its approved Compose service:
 
 ```bash
-bin/command extension --file="/path/to/zile-sarbatoare-0.9.5.zip"
-bin/command rebuild
-bin/command populate-scheduled-jobs
+docker compose -f /var/www/espocrm/docker-compose.yml exec -T espocrm bin/command extension --file="/path/in/container/zile-sarbatoare-0.9.5.zip"
+docker compose -f /var/www/espocrm/docker-compose.yml exec -T espocrm bin/command rebuild
+docker compose -f /var/www/espocrm/docker-compose.yml exec -T espocrm bin/command populate-scheduled-jobs
 ```
 
 Installing the same version again or upgrading preserves saved Nager.Date

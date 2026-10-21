@@ -26,11 +26,13 @@ Template versions, snapshots, generation history, generated PDFs, and media atta
 
 ## Pending non-production smoke checklist
 
-Do not run this checklist on `/opt/crm.cursurituv.ro`. It remains pending until the product owner supplies a separate non-production instance.
+This checklist remains pending on the approved persistent test instance at
+`http://178.104.183.29`. Adapt lifecycle fixture ownership, exact cleanup and
+backup/restore first; do not run uninstall or destructive steps automatically.
 
-1. Confirm `bin/command app-info --core-version` reports `10.0.0` and record the test instance path.
-2. Back up or confirm disposability of the test instance, including its database and configured file storage.
-3. Install `dist/document-builder-1.0.0.zip` through Administration > Extensions or the documented extension CLI command.
+1. Confirm the actual EspoCRM and PHP versions, configured URL and Compose identity; check them against `manifest.json`.
+2. Back up the database and configured file storage before any destructive lifecycle step.
+3. After candidate validation, install the ZIP built from the current manifest version through Administration > Extensions or the native extension CLI in the approved Compose service.
 4. Confirm installation and rebuild complete without errors and the module appears as `Document Builder`.
 5. Inspect `tabList`: exactly one group has ID `document-builder`; all prior entries retain their order and values.
 6. Reinstall the same package and confirm the owned group is not duplicated.

@@ -1,5 +1,11 @@
 import {defineConfig} from '@playwright/test';
 
+const approvedBaseURL = 'http://178.104.183.29';
+
+if (process.env.ESPO_BASE_URL !== approvedBaseURL) {
+    throw new Error(`Set ESPO_BASE_URL explicitly to the approved test instance: ${approvedBaseURL}`);
+}
+
 export default defineConfig({
     testDir: '.',
     testMatch: '**/*.spec.mjs',
@@ -12,7 +18,7 @@ export default defineConfig({
     outputDir: '/tmp/gpc-playwright-results',
     reporter: [['list']],
     use: {
-        baseURL: process.env.ESPO_BASE_URL || 'https://crm.cursurituv.ro',
+        baseURL: approvedBaseURL,
         screenshot: 'only-on-failure',
         trace: 'off',
         video: 'off',

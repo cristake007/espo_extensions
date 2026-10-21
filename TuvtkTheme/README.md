@@ -1,7 +1,8 @@
 # TUVTK Theme
 
-Installable EspoCRM extension containing the custom `Tuvtk` theme used by
-`intern.cursurituv.ro`.
+Installable EspoCRM extension containing the custom `Tuvtk` theme. Test
+installation uses the persistent instance at `http://178.104.183.29` after
+checking this extension's manifest against the runtime versions.
 
 The extension was created with the repository scaffold generator. Its theme
 payload installs these files:

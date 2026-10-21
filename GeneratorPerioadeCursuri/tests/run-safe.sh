@@ -19,14 +19,7 @@ php GeneratorPerioadeCursuri/tests/offline/word-comparison-service.php
 php GeneratorPerioadeCursuri/tests/offline/xml-title-compatibility.php
 php GeneratorPerioadeCursuri/tests/offline/mec-xml-builder.php
 php GeneratorPerioadeCursuri/tests/offline/menu-lifecycle.php
-node GeneratorPerioadeCursuri/tests/offline/error-message-quality.mjs
-node GeneratorPerioadeCursuri/tests/offline/word-matcher-view-state.mjs
-node GeneratorPerioadeCursuri/tests/offline/word-comparator-view-state.mjs
-node GeneratorPerioadeCursuri/tests/offline/detail-layout-field-visibility.mjs
-node GeneratorPerioadeCursuri/tests/offline/record-ui.mjs
-node GeneratorPerioadeCursuri/tests/offline/holiday-import.mjs
-node GeneratorPerioadeCursuri/tests/offline/generator-edit-validation.mjs
-node GeneratorPerioadeCursuri/tests/offline/generator-detail-export.mjs
+./test-node.sh test GeneratorPerioadeCursuri
 bash build.sh --extension GeneratorPerioadeCursuri --zip files scripts >/dev/null
 version="$(php -r '$manifest = json_decode(file_get_contents("GeneratorPerioadeCursuri/manifest.json"), true, 512, JSON_THROW_ON_ERROR); echo $manifest["version"];')"
 php GeneratorPerioadeCursuri/tests/wordpress-updater/phase-6.php \

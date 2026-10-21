@@ -39,6 +39,11 @@ files/custom/Espo/Custom/Resources/
 - PHP: `>=8.3.0 <8.6.0`, matching the verified EspoCRM 10.0.0 baseline.
 - Later EspoCRM releases admitted by the manifest are not certified until explicitly validated.
 
+The persistent test instance currently runs EspoCRM 10.0.10 and PHP 8.4.27,
+which satisfy the manifest ranges. Runtime certification on 10.0.10 remains
+pending; follow the root `README.md` and `tests/README.md` before installing or
+running integration checks.
+
 ## Build
 
 From the repository root, build the installable ZIP with:

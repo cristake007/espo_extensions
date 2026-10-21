@@ -6,7 +6,7 @@ const path = require('node:path');
 
 const extensionRoot = path.resolve(__dirname, '../..');
 const sourceRoot = path.join(extensionRoot, 'files/client/custom/modules/document-builder/src');
-const cache = new Map();
+const cache = new Map([['dompurify', {sanitize: value => String(value).replace(/<[^>]*>/g, '')}]]);
 let activeDefinition = null;
 
 function define(dependencies, factory) {

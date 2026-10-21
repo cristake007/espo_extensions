@@ -1,5 +1,12 @@
 # Employee Management 0.8.15
 
+**Testare curentă:** instanța persistentă de la `http://178.104.183.29` rulează
+EspoCRM 10.0.10 și PHP 8.4.27. Manifestul acestei versiuni cere exact
+EspoCRM 10.0.1 și PHP 8.4.23; nu instala pachetul acolo până la rezolvarea
+compatibilității declarate. Testele de integrare istorice folosesc fixture-uri,
+ID-uri și resetări dintr-un laborator anterior și rămân neadaptate. Vezi
+`../README.md` pentru condițiile de reutilizare.
+
 Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.15 clarifică spațiile de lucru principale și administrative, păstrează navigația administrată nativ, notifică aprobatorii, verifică documentele Holiday și oferă un registru Holiday nativ mai ușor de urmărit. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
 
 ## Spații Holiday personale și manageriale separate — 0.8.15
@@ -221,7 +228,7 @@ Controalele se aplică în UI și backend, inclusiv la acces direct. Profile man
 
 - Calendarul nativ citește EmployeeAbsence: numai numele și intervalul Approved/CancellationPending, fără link la cerere, motive, solduri sau documente. Pending apare doar în sursa privată autorizată, nu în cea comună. Proiecția se actualizează tranzacțional; nu este sursa pontajului sau a contabilității.
 - Acordați explicit rolurilor **Calendar=yes**, **EmployeeAbsence.read=all**, fără create/edit/delete. Nu se instalează granturi mandatory. Lecturile prin API/ID și Calendar păstrează ACL/FLS; administratorii tehnici/inactivii nu apar ca angajați.
-- Nu se livrează view Calendar global. ZileSarbatoare păstrează propriul calendarView/timelineView. Dacă originalul Holiday este încă instalat și suprascrie view-ul, conflictul lui vechi nu este reparat printr-un alt override Employee Management. Testați pachetul într-o instanță separată cu ZileSarbatoare, fără vechile extensii operaționale.
+- Nu se livrează view Calendar global. ZileSarbatoare păstrează propriul calendarView/timelineView. Dacă originalul Holiday este încă instalat și suprascrie view-ul, conflictul lui vechi nu este reparat printr-un alt override Employee Management. Scenariul de coexistență rămâne neadaptat pentru instanța persistentă până la rezolvarea compatibilității și izolarea fixture-urilor.
 - ScheduledJob **ProcessEmployeeHolidayResets**, expresia originală **5 0 * * *** în fusul orar al scheduler-ului nativ, folosește metoda originală processDueResets/reset/applyResetGrant și BalanceMath: soldul se **adună** cu entitlement, fără pierderea zilelor acumulate; nextResetDate avansează cu un an, inclusiv recuperarea anilor scadenți (limita originală 100 iterații).
 - Job-ul nativ este înregistrat la instalare, dar **nu acordă zile** până când managerul autorizat configurează explicit opțiunea din #EmployeeAdministration/holiday. Upgrade-ul nu activează opțiunea și nu resetează alegerea existentă. Administratorul tehnic gestionează cron/daemon/Scheduled Jobs, nu managerul.
 - Unicitate per profil/scadență, tranzacție User→Profile→Ledger, notificări originale de prag numai destinatarilor autorizați. Jobs duplicate/reluate nu dublează soldul, ledger-ul sau notificările. O eroare rămâne vizibilă în istoricul nativ tehnic; reluarea folosește același ScheduledJob, fără panou Jobs delegat.
@@ -245,7 +252,7 @@ Attendance: GET `EmployeeManagement/attendance/{myAttendance|overview}` cu month
 ```bash
 bash ./build.sh --extension ./EmployeeManagement --zip 0.8.15 files scripts
 python3 EmployeeManagement/tests/contract.py
-node EmployeeManagement/tests/regression/reset-date-field.test.mjs
+./test-node.sh test EmployeeManagement
 ```
 
 ZIP: **dist/employee-management-0.8.15.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile CLI/lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
@@ -271,4 +278,4 @@ Installer-ul nu șterge date, nu migrează originalele și nu modifică Roles/WT
 
 Rețetele de import din tools sunt trasă de adaptare, nu generatoare de rulat peste implementarea întreținută. Build-ul execută numai validarea și împachetarea; migration-inventory.py emite un patch de inventar fără modificarea originalelor.
 
-Fixture-urile se execută exclusiv în laboratorul employee-feasibility-20261020, cu opt-in și parole sintetice în variabile de mediu. Nu se rulează pe datele companiei și nu necesită infrastructură permanentă nouă.
+Fixture-urile de integrare de mai jos au fost create pentru laboratorul istoric `employee-feasibility-20261020`. Nu se execută pe instanța persistentă: presupun versiunea 10.0.1, ID-uri și date de laborator, iar unele probe schimbă configurări sau șterg date. Reutilizarea cere compatibilitate declarată și fixture-uri sintetice izolate, cu cleanup verificat pe ID-uri exacte.

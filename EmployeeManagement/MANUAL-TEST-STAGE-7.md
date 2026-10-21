@@ -1,5 +1,12 @@
 # Testare manuală — Employee Management 0.7.0
 
+**Ghid istoric, neadaptat la instanța persistentă.** Pachetul și fixture-urile de
+mai jos aparțin etapei 0.7.0, iar versiunea curentă 0.8.15 declară strict
+EspoCRM 10.0.1 și PHP 8.4.23. Instanța aprobată rulează 10.0.10 / 8.4.27.
+Nu executa pașii de instalare, schimbare a Jobs sau resetare pe aceasta.
+Pentru o nouă validare, rezolvă mai întâi compatibilitatea și izolează datele
+sintetice și cleanup-ul conform `../AGENTS.md`.
+
 Numai într-o instanță separată de producție, cu date sintetice și backup. Versiuni verificate: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizați instanța companiei. Pachetul nu este încă production-ready.
 
 1. Instalați ZileSarbatoare și [ZIP-ul Employee Management](dist/employee-management-0.7.0.zip) prin Administration → Extensions. Folosiți o instanță fără extensiile operaționale vechi Attendance/Holiday; vechiul Holiday suprascrie separat view-ul ZileSarbatoare. Nu copiați metadata de laborator în producție.

@@ -1,5 +1,11 @@
 # Document Builder for EspoCRM — Layered Implementation Plan
 
+Current test operations follow the root `AGENTS.md` and `README.md`: the only
+approved runtime is the persistent EspoCRM instance at `http://178.104.183.29`
+in `/var/www/espocrm`. The 10.0.0 source references and future-instance wording
+below record the plan's original evidence baseline; verify runtime behavior on
+the current version before claiming compatibility.
+
 ## 1. Status and authority
 
 This plan covers the incremental implementation of the Document Builder extension described by `document-builder-espocrm-prd.md`.
