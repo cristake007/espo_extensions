@@ -15,7 +15,14 @@ define('tuvtk-theme:views/site/navbar', ['views/site/navbar', 'ui', 'jquery'], f
 
         switchMinimizer() {
             this.hideTuvtkCollapsedTooltips();
-            super.switchMinimizer();
+
+            if (this.isSideMenuOpened) {
+                this.closeSideMenu();
+
+                return;
+            }
+
+            return super.switchMinimizer();
         }
 
         initTuvtkCollapsedTooltips() {
@@ -35,6 +42,8 @@ define('tuvtk-theme:views/site/navbar', ['views/site/navbar', 'ui', 'jquery'], f
                     if (!text) {
                         return;
                     }
+
+                    const originalAriaLabel = anchor.getAttribute('aria-label');
 
                     labelElement.removeAttribute('title');
                     anchor.setAttribute('aria-label', text);
@@ -91,6 +100,7 @@ define('tuvtk-theme:views/site/navbar', ['views/site/navbar', 'ui', 'jquery'], f
                         show,
                         hide,
                         text,
+                        originalAriaLabel,
                     });
                 });
         }
@@ -111,6 +121,13 @@ define('tuvtk-theme:views/site/navbar', ['views/site/navbar', 'ui', 'jquery'], f
                 item.anchor.removeEventListener('focusout', item.hide);
                 item.$anchor.off('.tuvtk-navbar');
                 item.labelElement.setAttribute('title', item.text);
+
+                if (item.originalAriaLabel === null) {
+                    item.anchor.removeAttribute('aria-label');
+                } else {
+                    item.anchor.setAttribute('aria-label', item.originalAriaLabel);
+                }
+
                 item.popover.destroy();
             });
 

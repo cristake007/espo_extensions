@@ -1,33 +1,8 @@
 {
+    "parent": "Espo",
     "stylesheet": "client/custom/css/tuvtk.css",
     "stylesheetIframe": "client/custom/css/tuvtk-iframe.css",
-    "stylesheetIframeFallback": "client/css/espo/light-iframe.css",
     "logo": "client/img/logo-light.svg",
-    "params": {
-        "navbar": {
-            "type": "enum",
-            "default": "side",
-            "options": [
-                "side",
-                "top"
-            ]
-        }
-    },
-    "mappedParams": {
-        "navbarHeight": {
-            "param": "navbar",
-            "valueMap": {
-                "side": 32,
-                "top": 43
-            }
-        }
-    },
-    "dashboardCellHeight": 40,
-    "dashboardCellMargin": 16,
-    "navbarHeight": 43,
-    "modalFooterAtTheTop": true,
-    "modalFullHeight": true,
-    "fontSize": 14,
     "textColor": "#304253",
     "hoverColor": "#164194",
     "chartGridColor": "#cfd7df",

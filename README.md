@@ -17,15 +17,38 @@ La migrare, mediul a raportat EspoCRM 10.0.10, PHP 8.4.27 și URL-ul de mai sus.
 
 ## Flux de lucru
 
-Modifică sursele aici, rulează `./build.sh --extension ./NumeExtensie --validate` și testele relevante, apoi construiește ZIP-ul candidat numai când testezi sau livrezi o schimbare de extensie. Verifică inventarul și compatibilitatea înainte de instalarea nativă în EspoCRM de test. Rulează probele de integrare, API, ACL și browser cu date sintetice marcate unic și cleanup pe ID-uri exacte. Predă URL-ul și rezultatele pentru aprobarea vizuală; numai după aceea livrează același ZIP validat cu SHA-256. Instalarea în producție revine utilizatorului.
+Modifică sursele aici, rulează `./test-php.sh validate NumeExtensie` și testele relevante, apoi construiește ZIP-ul candidat prin `./test-php.sh build NumeExtensie` numai când testezi sau livrezi o schimbare de extensie. Pe hosturile cu PHP și ZIP poți apela direct `build.sh`. Verifică inventarul și compatibilitatea înainte de instalarea nativă în EspoCRM de test. Rulează probele de integrare, API, ACL și browser cu date sintetice marcate unic și cleanup pe ID-uri exacte. Predă URL-ul și rezultatele pentru aprobarea vizuală; numai după aceea livrează același ZIP validat cu SHA-256. Instalarea în producție revine utilizatorului.
 
-Hostul acestui workspace nu are PHP sau Node instalate. Pentru verificările statice se poate folosi CLI-ul imaginii EspoCRM cu repository-ul montat read-only, de exemplu:
+Hostul acestui workspace nu are PHP sau Node instalate. Validarea și construirea pachetelor se fac cu wrapperul Docker dedicat:
 
 ```bash
-docker run --rm --entrypoint bash -v /opt/espo_extensions:/repo:ro -w /repo espocrm/espocrm:fpm ./build.sh --extension ./GeneratorPerioadeCursuri --validate
+./test-php.sh validate EmployeeManagement
+./test-php.sh validate ZileSarbatoare
+./test-php.sh validate --all
+./test-php.sh build EmployeeManagement
+./test-php.sh php -v
 ```
 
-Aceasta rulează doar harness-ul static; nu pornește o altă instanță EspoCRM.
+[`test-php.sh`](test-php.sh) construiește și reutilizează prin cache o imagine
+locală minimală din PHP CLI Alpine oficial `8.4.27`. Imaginea de bază
+`php:8.4.27-cli-alpine3.23` este fixată și prin digest în
+[`docker/php-runner/Dockerfile`](docker/php-runner/Dockerfile); sunt adăugate
+numai Bash și ZIP. Rulările folosesc containere efemere și `--network none`.
+Repository-ul este montat read-only pentru validare și comenzi PHP; la build,
+numai `dist/` primește un mount cu scriere. Fișierele sunt create cu UID/GID-ul
+utilizatorului curent. `validate --all` descoperă extensiile după manifestele de
+la rădăcină și exclude `espocrm-extension-scaffold`, care este un șablon.
+
+Wrapperul apelează harness-ul comun `build.sh`; validarea și formatul ZIP nu
+sunt duplicate. Pe serverele care au deja PHP și ZIP, comenzile directe rămân
+suportate:
+
+```bash
+./build.sh --extension ./EmployeeManagement --validate
+./build.sh --extension ./EmployeeManagement --zip files scripts
+```
+
+Aceste comenzi rulează doar harness-ul static și nu pornesc o instanță EspoCRM.
 
 ## Node.js și Playwright fără instalare pe host
 

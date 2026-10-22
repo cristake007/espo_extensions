@@ -4,6 +4,8 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 node_image='node:24.22.1-bookworm-slim@sha256:55fb5f5a527ea2c5c4a95f963e48ef90aa38c7b346054fdc8ee9957a2b55d205'
 playwright_image='mcr.microsoft.com/playwright:v1.61.1-noble@sha256:5b8f294aff9041b7191c34a4bab3ac270157a28774d4b0660e9743297b697e48'
+authenticated_browser_env='/root/.config/espocrm/test.env'
+approved_espo_base_url='http://178.104.183.29'
 
 usage() {
     cat <<'USAGE'
@@ -21,12 +23,52 @@ Examples:
 
 The repository is mounted read-only. Playwright dependencies are installed from
 the existing package-lock.json into a temporary Docker volume for each run.
+Authenticated Playwright variables are loaded from /root/.config/espocrm/test.env.
 USAGE
 }
 
 fail() {
     printf 'Error: %s\n' "$*" >&2
     exit 1
+}
+
+load_authenticated_browser_env() {
+    local load_status missing=() variable
+
+    [ -e "$authenticated_browser_env" ] ||
+        fail "authenticated browser credential file is missing: $authenticated_browser_env"
+    [ -f "$authenticated_browser_env" ] ||
+        fail "authenticated browser credential path is not a regular file: $authenticated_browser_env"
+    [ -r "$authenticated_browser_env" ] ||
+        fail "authenticated browser credential file is not readable: $authenticated_browser_env"
+
+    bash -n "$authenticated_browser_env" 2>/dev/null ||
+        fail "authenticated browser credential file has invalid shell syntax: $authenticated_browser_env"
+
+    unset ESPO_BASE_URL ESPO_ADMIN_USERNAME ESPO_ADMIN_PASSWORD
+    set +e +u
+    set -a
+    # shellcheck disable=SC1090
+    source "$authenticated_browser_env" >/dev/null 2>&1
+    load_status=$?
+    set +a
+    set -eu
+
+    [ "$load_status" -eq 0 ] ||
+        fail "authenticated browser credential file could not be loaded: $authenticated_browser_env"
+
+    for variable in ESPO_BASE_URL ESPO_ADMIN_USERNAME ESPO_ADMIN_PASSWORD; do
+        [ -n "${!variable:-}" ] || missing+=("$variable")
+    done
+
+    [ "${#missing[@]}" -eq 0 ] ||
+        fail "authenticated browser credential file is missing required variables: ${missing[*]}"
+    [ "$ESPO_BASE_URL" = "$approved_espo_base_url" ] ||
+        fail "ESPO_BASE_URL in the authenticated browser credential file must target $approved_espo_base_url"
+
+    export ESPO_BASE_URL ESPO_ADMIN_USERNAME ESPO_ADMIN_PASSWORD
+    printf 'Loaded authenticated browser test environment from %s; secret values are not displayed.\n' \
+        "$authenticated_browser_env"
 }
 
 require_extension() {
@@ -81,6 +123,7 @@ case "$mode" in
         ;;
     playwright)
         [ "$#" -gt 0 ] || { usage; exit 2; }
+        load_authenticated_browser_env
         extension="$1"
         shift
         require_extension "$extension"
