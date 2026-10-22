@@ -1,11 +1,13 @@
 {
     "name": "Employee Management",
-    "version": "0.8.15",
+    "version": "0.8.16",
     "acceptableVersions": [
-        "10.0.1"
+        "10.0.1",
+        "10.0.10"
     ],
     "php": [
-        "8.4.23"
+        "8.4.23",
+        "8.4.27"
     ],
     "releaseDate": "2026-10-21",
     "author": "TUV Thuringen Karpat",

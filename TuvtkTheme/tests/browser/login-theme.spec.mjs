@@ -78,7 +78,7 @@ test('desktop login renders the candidate 25/75 split over native Espo CSS', asy
     expect(Math.abs(visual.buttonLeft - visual.usernameLeft)).toBeLessThanOrEqual(0.5);
     expect(Math.abs(visual.buttonWidth - visual.usernameWidth)).toBeLessThanOrEqual(0.5);
     expect(visual.horizontalOverflow).toBeLessThanOrEqual(0);
-    await page.screenshot({path: path.join(screenshotDir, 'tuvtk-login-1.0.19-desktop.png'), fullPage: true});
+    await page.screenshot({path: path.join(screenshotDir, 'tuvtk-login-1.0.20-desktop.png'), fullPage: true});
 });
 
 test('mobile login stays single-column and contained', async ({page}) => {
@@ -112,7 +112,7 @@ test('mobile login stays single-column and contained', async ({page}) => {
     expect(visual.loginWidth).toBeLessThanOrEqual(390);
     expect(Math.abs(visual.buttonLeft - visual.usernameLeft)).toBeLessThanOrEqual(0.5);
     expect(Math.abs(visual.buttonWidth - visual.usernameWidth)).toBeLessThanOrEqual(0.5);
-    await page.screenshot({path: path.join(screenshotDir, 'tuvtk-login-1.0.19-mobile.png'), fullPage: true});
+    await page.screenshot({path: path.join(screenshotDir, 'tuvtk-login-1.0.20-mobile.png'), fullPage: true});
 });
 
 const navigationFixture = `<!doctype html>
@@ -223,20 +223,20 @@ async function navbarGeometry(page) {
     return page.evaluate(() => {
         const navbar = document.querySelector('#navbar > .navbar');
         const minimizer = navbar.querySelector('a.minimizer');
-        const active = navbar.querySelector('ul.tabs > li.active > a');
+        const navbarHeader = navbar.querySelector('.navbar-header');
+        const sideMenuButton = navbar.querySelector('a.side-menu-button');
         const navbarRect = navbar.getBoundingClientRect();
         const minimizerRect = minimizer.getBoundingClientRect();
-        const railStyle = getComputedStyle(navbar, '::after');
         const navbarStyle = getComputedStyle(navbar);
-        const activeStyle = getComputedStyle(active);
+        const nativeAfterStyle = getComputedStyle(navbar, '::after');
+        const navbarHeaderStyle = getComputedStyle(navbarHeader);
+        const sideMenuButtonStyle = getComputedStyle(sideMenuButton);
         const visibleIcon = [...minimizer.children]
             .find(element => getComputedStyle(element).display !== 'none');
         const visibleIconRect = visibleIcon.getBoundingClientRect();
         const visibleIconStyle = getComputedStyle(visibleIcon);
-        const railWidth = Number.parseFloat(railStyle.width);
-        const railRight = Number.parseFloat(railStyle.right);
-        const railTransform = new DOMMatrixReadOnly(railStyle.transform);
-        const containingRight = navbarRect.right - Number.parseFloat(navbarStyle.borderRightWidth);
+        const railWidth = Number.parseFloat(navbarStyle.borderRightWidth);
+        const containingRight = navbarRect.right - railWidth;
 
         return {
             classes: [...document.body.classList],
@@ -246,17 +246,31 @@ async function navbarGeometry(page) {
             navbarWidth: navbarRect.width,
             containerEdge: containingRight,
             minimizerOffsetParentIsNavbar: minimizer.offsetParent === navbar,
-            railCenter: containingRight - railRight - railWidth / 2 + railTransform.m41,
+            navbarBorderRightColor: navbarStyle.borderRightColor,
+            railCenter: navbarRect.right - railWidth / 2,
             minimizerCenter: minimizerRect.left + minimizerRect.width / 2,
             minimizerCenterY: minimizerRect.top + minimizerRect.height / 2,
             iconCenter: visibleIconRect.left + visibleIconRect.width / 2,
             iconCenterY: visibleIconRect.top + visibleIconRect.height / 2,
             iconDisplay: visibleIconStyle.display,
             minimizerVisible: minimizerRect.width > 0 && minimizerRect.height > 0,
-            railZIndex: Number.parseInt(railStyle.zIndex, 10),
-            railWidth: railStyle.width,
-            railHeight: railStyle.height,
-            activeZIndex: activeStyle.zIndex === 'auto' ? 0 : Number.parseInt(activeStyle.zIndex, 10),
+            railWidth,
+            railHeight: navbarRect.height,
+            nativeAfterBackground: nativeAfterStyle.backgroundColor,
+            nativeAfterPosition: nativeAfterStyle.position,
+            nativeAfterTransform: nativeAfterStyle.transform,
+            navbarHeaderBorders: [
+                navbarHeaderStyle.borderTopWidth,
+                navbarHeaderStyle.borderRightWidth,
+                navbarHeaderStyle.borderBottomWidth,
+                navbarHeaderStyle.borderLeftWidth,
+            ],
+            sideMenuButtonBorders: [
+                sideMenuButtonStyle.borderTopWidth,
+                sideMenuButtonStyle.borderRightWidth,
+                sideMenuButtonStyle.borderBottomWidth,
+                sideMenuButtonStyle.borderLeftWidth,
+            ],
         };
     });
 }
@@ -297,18 +311,21 @@ test('navigation, semantic buttons and calendar retain the TUVTK identity', asyn
     await page.locator('a.minimizer').hover();
     await page.waitForTimeout(200);
     const rail = await page.locator('#navbar > .navbar').evaluate(element => {
-        const railStyle = getComputedStyle(element, '::after');
+        const navbarStyle = getComputedStyle(element);
+        const nativeAfterStyle = getComputedStyle(element, '::after');
 
         return {
-            backgroundColor: railStyle.backgroundColor,
-            height: Number.parseFloat(railStyle.height),
-            zIndex: Number.parseInt(railStyle.zIndex, 10),
+            borderRightColor: navbarStyle.borderRightColor,
+            borderRightWidth: navbarStyle.borderRightWidth,
+            nativeAfterBackground: nativeAfterStyle.backgroundColor,
+            nativeAfterPosition: nativeAfterStyle.position,
         };
     });
-    expect(rail.backgroundColor).toBe('rgb(22, 65, 148)');
-    expect(rail.height).toBeGreaterThanOrEqual(899);
-    expect(rail.zIndex).toBe(10);
-    await page.screenshot({path: path.join(screenshotDir, 'tuvtk-components-1.0.19.png'), fullPage: true});
+    expect(rail.borderRightColor).toBe('rgb(22, 65, 148)');
+    expect(rail.borderRightWidth).toBe('1px');
+    expect(rail.nativeAfterBackground).toBe('rgba(0, 0, 0, 0)');
+    expect(rail.nativeAfterPosition).not.toBe('absolute');
+    await page.screenshot({path: path.join(screenshotDir, 'tuvtk-components-1.0.20.png'), fullPage: true});
 });
 
 test('form and modal styling remains scoped and token-driven', async ({page}) => {
@@ -360,19 +377,19 @@ test('chevron closes the hamburger overlay once and preserves the permanent stat
 
     await capture('expanded');
     await page.screenshot({
-        path: path.join(screenshotDir, 'tuvtk-sidenav-expanded-1.0.19.png'),
+        path: path.join(screenshotDir, 'tuvtk-sidenav-expanded-1.0.20.png'),
         fullPage: true,
     });
     await minimizer.click();
     await capture('expanded-to-collapsed-by-chevron');
     await page.screenshot({
-        path: path.join(screenshotDir, 'tuvtk-sidenav-collapsed-1.0.19.png'),
+        path: path.join(screenshotDir, 'tuvtk-sidenav-collapsed-1.0.20.png'),
         fullPage: true,
     });
     await hamburger.click();
     await capture('collapsed-to-overlay-by-hamburger');
     await page.screenshot({
-        path: path.join(screenshotDir, 'tuvtk-sidenav-hamburger-expanded-1.0.19.png'),
+        path: path.join(screenshotDir, 'tuvtk-sidenav-hamburger-expanded-1.0.20.png'),
         fullPage: true,
     });
     await minimizer.click();
@@ -398,9 +415,13 @@ test('chevron closes the hamburger overlay once and preserves the permanent stat
         expect(Math.abs(state.iconCenter - state.minimizerCenter), state.name).toBeLessThanOrEqual(0.5);
         expect(Math.abs(state.iconCenterY - state.minimizerCenterY), state.name).toBeLessThanOrEqual(0.5);
         expect(state.iconDisplay, state.name).not.toBe('none');
-        expect(state.railWidth, state.name).toBe('1px');
-        expect(Number.parseFloat(state.railHeight), state.name).toBeGreaterThanOrEqual(899);
-        expect(state.railZIndex, state.name).toBeGreaterThan(state.activeZIndex);
+        expect(state.railWidth, state.name).toBe(1);
+        expect(state.railHeight, state.name).toBeGreaterThanOrEqual(899);
+        expect(state.nativeAfterBackground, state.name).toBe('rgba(0, 0, 0, 0)');
+        expect(state.nativeAfterPosition, state.name).not.toBe('absolute');
+        expect(state.nativeAfterTransform, state.name).toBe('none');
+        expect(state.navbarHeaderBorders, state.name).toEqual(Array(4).fill('0px'));
+        expect(state.sideMenuButtonBorders, state.name).toEqual(Array(4).fill('0px'));
     }
 
     expect(states[1].classes).toContain('minimized');
@@ -472,7 +493,7 @@ test('Administration headings are blue without leaking to dashboard headings', a
         await page.screenshot({
             path: path.join(
                 screenshotDir,
-                `tuvtk-administration-headings-1.0.19-${viewport.name}.png`
+                `tuvtk-administration-headings-1.0.20-${viewport.name}.png`
             ),
             fullPage: true,
         });
@@ -488,7 +509,7 @@ test('Administration headings are blue without leaking to dashboard headings', a
 
     await expect(page.locator('#main .page-header h3')).toHaveCSS('color', 'rgb(17, 24, 39)');
     await page.screenshot({
-        path: path.join(screenshotDir, 'tuvtk-dashboard-heading-1.0.19.png'),
+        path: path.join(screenshotDir, 'tuvtk-dashboard-heading-1.0.20.png'),
         fullPage: true,
     });
 });

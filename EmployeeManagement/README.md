@@ -1,13 +1,13 @@
-# Employee Management 0.8.15
+# Employee Management 0.8.16
 
 **Testare curentă:** instanța persistentă de la `http://178.104.183.29` rulează
-EspoCRM 10.0.10 și PHP 8.4.27. Manifestul acestei versiuni cere exact
-EspoCRM 10.0.1 și PHP 8.4.23; nu instala pachetul acolo până la rezolvarea
-compatibilității declarate. Testele de integrare istorice folosesc fixture-uri,
-ID-uri și resetări dintr-un laborator anterior și rămân neadaptate. Vezi
-`../README.md` pentru condițiile de reutilizare.
+EspoCRM 10.0.10 și PHP 8.4.27. Candidatul 0.8.16 acceptă explicit această
+pereche și păstrează perechea verificată anterior EspoCRM 10.0.1 / PHP 8.4.23.
+Nu declară alte versiuni intermediare sau viitoare. Testele de integrare
+istorice folosesc fixture-uri, ID-uri și resetări dintr-un laborator anterior
+și rămân neadaptate. Vezi `../README.md` pentru condițiile de reutilizare.
 
-Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.15 clarifică spațiile de lucru principale și administrative, păstrează navigația administrată nativ, notifică aprobatorii, verifică documentele Holiday și oferă un registru Holiday nativ mai ușor de urmărit. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1**, PHP **8.4.23**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
+Etapa 7 plus paginile Holiday, Attendance și centralizatorul echipei: Calendar comun minimal și acordări/resetări anuale opt-in prin Scheduled Jobs native, peste fluxurile Attendance–Holiday și documentele private deja integrate. Versiunile 0.7.3–0.8.15 clarifică spațiile de lucru principale și administrative, păstrează navigația administrată nativ, notifică aprobatorii, verifică documentele Holiday și oferă un registru Holiday nativ mai ușor de urmărit. Versiunea 0.8.16 actualizează exclusiv compatibilitatea declarată și versiunea raportată de workspace, fără modificări funcționale, ACL sau de schemă. **Nu production-ready.** Compatibilitate strictă: EspoCRM **10.0.1 / 10.0.10**, PHP **8.4.23 / 8.4.27**, Zile Sărbătoare **0.9.5**. Nu actualizează platforma.
 
 ## Spații Holiday personale și manageriale separate — 0.8.15
 
@@ -250,12 +250,12 @@ Corecții: POST `EmployeeManagement/administration/profiles/correct` cu profileI
 Attendance: GET `EmployeeManagement/attendance/{myAttendance|overview}` cu month=YYYY-MM, GET `.../schedules`; POST `.../{mark|managerMarkRoutine|managerMark|schedule|remind|xlsx|pdf|initialize}`. Mark primește date/status și opțional revision; managerMarkRoutine adaugă userId și este limitat la lunile editabile, fără reason; managerMark păstrează corecția excepțională cu userId/reason obligatoriu. Schedule acceptă numai userId/remote/cic/cicStartDate/cicEndDate, niciodată ore, WTC sau assignedUser impus pentru o pontare proprie. Exporturile păstrează răspunsul original filename/mediaType/content base64. Initialize păstrează datele, schimbând numai începutul arhivei vizibile la luna curentă.
 
 ```bash
-bash ./build.sh --extension ./EmployeeManagement --zip 0.8.15 files scripts
+bash ./build.sh --extension ./EmployeeManagement --zip 0.8.16 files scripts
 python3 EmployeeManagement/tests/contract.py
 ./test-node.sh test EmployeeManagement
 ```
 
-ZIP: **dist/employee-management-0.8.15.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile CLI/lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
+ZIP: **dist/employee-management-0.8.16.zip**, generat de harness-ul comun **/opt/espo_extensions/build.sh**. `EmployeeManagement/build.sh` deleagă aceluiași harness. Include numai manifest, README, files și scripturile CLI/lifecycle proprii. Pending, teste, inventare și uneltele de import nu sunt instalate. ZIP-ul este ignorat de Git; scriptul comun nu este modificat.
 
 Installer-ul nu șterge date, nu migrează originalele și nu modifică Roles/WTC. Coexistența cu originalele este un scenariu controlat de laborator, nu recomandare de producție.
 

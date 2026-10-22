@@ -18,11 +18,11 @@ const metadataRoot = path.join(
 
 const read = relativePath => readFile(path.join(extensionRoot, relativePath), 'utf8');
 
-test('manifest and theme metadata describe the 1.0.19 Espo-derived theme', async () => {
+test('manifest and theme metadata describe the 1.0.20 Espo-derived theme', async () => {
     const manifest = JSON.parse(await read('manifest.json'));
     const theme = JSON.parse(await readFile(path.join(metadataRoot, 'themes', 'Tuvtk.json'), 'utf8'));
 
-    assert.equal(manifest.version, '1.0.19');
+    assert.equal(manifest.version, '1.0.20');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.deepEqual(manifest.php, ['>=8.4']);
     assert.equal(theme.parent, 'Espo');
@@ -154,19 +154,29 @@ test('theme labels use Espo theme translation keys', async () => {
     }
 });
 
-test('sidenav geometry follows the native navbar edge in every collapsed state', async () => {
+test('sidenav uses one token-driven border rail in every collapsed state', async () => {
     const navigation = await read('files/client/custom/css/tuvtk.css');
 
+    assert.match(navigation, /--tuvtk-color-navigation-rail:\s*#c8d3e1;/i);
+    assert.match(
+        navigation,
+        /#navbar > \.navbar\s*\{[\s\S]*?border-right:\s*1px solid var\(--tuvtk-color-navigation-rail\);/
+    );
+    assert.match(
+        navigation,
+        /#navbar > \.navbar:has\(a\.minimizer:is\(:hover, :focus-visible\)\)\s*\{[\s\S]*?border-right-color:\s*var\(--tuvtk-color-primary\);/
+    );
+    assert.match(
+        navigation,
+        /#navbar > \.navbar \.navbar-header,[\s\S]*?#navbar > \.navbar \.navbar-header a\.side-menu-button,[\s\S]*?\.minimized:not\(\.side-menu-opened\)[\s\S]*?#navbar > \.navbar \.navbar-header a\.side-menu-button\s*\{[\s\S]*?border:\s*0;/
+    );
     assert.match(navigation, /#navbar > \.navbar a\.minimizer\s*\{[\s\S]*?position:\s*absolute;/);
     assert.match(navigation, /#navbar > \.navbar a\.minimizer\s*\{[\s\S]*?right:\s*0;/);
     assert.match(navigation, /#navbar > \.navbar a\.minimizer\s*\{[\s\S]*?transform:\s*translate\(50%, -50%\);/);
     assert.doesNotMatch(navigation, /\.minimized\.side-menu-opened/);
     assert.doesNotMatch(navigation, /left:\s*calc\(var\(--navbar-(?:minimized-)?width\)/);
-    assert.match(navigation, /\.navbar::after[\s\S]*?z-index:\s*10;/);
-    assert.match(navigation, /\.navbar::after[\s\S]*?right:\s*0;/);
-    assert.match(navigation, /\.navbar::after[\s\S]*?transform:\s*translateX\(50%\);/);
-    assert.match(navigation, /\.navbar::after[\s\S]*?clear:\s*none;/);
-    assert.match(navigation, /\.navbar::after[\s\S]*?height:\s*auto;/);
+    assert.doesNotMatch(navigation, /#navbar > \.navbar::after/);
+    assert.doesNotMatch(navigation, /border-right-color:\s*transparent/);
 });
 
 test('Administration colors are scoped to the native admin template', async () => {

@@ -9,8 +9,8 @@ root = Path(__file__).resolve().parents[1]
 repo = root.parent
 manifest = json.loads((root / 'manifest.json').read_text())
 package = repo / ('dist/employee-management-' + manifest['version'] + '.zip')
-assert manifest['acceptableVersions'] == ['10.0.1']
-assert manifest['php'] == ['8.4.23']
+assert manifest['acceptableVersions'] == ['10.0.1', '10.0.10']
+assert manifest['php'] == ['8.4.23', '8.4.27']
 assert manifest['dependencies'] == {'Zile Sărbătoare': ['0.9.5']}
 modules = list((root / 'files/custom/Espo/Modules').iterdir())
 assert [p.name for p in modules] == ['EmployeeManagement']
@@ -102,7 +102,7 @@ for item in stage3:
 for item in inventory['integratedStage3']:
     if item['destination'] not in focused_release_adaptations:
         assert hashlib.sha256((root/item['destination']).read_bytes()).hexdigest()==item['destinationSha256'],item['destination']
-assert manifest['version']=='0.8.15'
+assert manifest['version']=='0.8.16'
 status = (modules[0]/'Tools/Workspace/Api/GetStatus.php').read_text()
 assert "'version' => '" + manifest['version'] + "'" in status
 

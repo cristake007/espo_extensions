@@ -15,6 +15,7 @@
     --tuvtk-color-hover: #f4f8fc;
     --tuvtk-color-divider: #d8e1ec;
     --tuvtk-color-divider-soft: #e7edf5;
+    --tuvtk-color-navigation-rail: #c8d3e1;
     --tuvtk-color-text: #1f2937;
     --tuvtk-color-muted: #6b7280;
     --tuvtk-color-label: #7c8797;
@@ -142,8 +143,9 @@ body {
 
 /* 3. Navigare */
 body[data-navbar="side"] #navbar > .navbar {
-    border-right: var(--1px) solid #c8d3e1;
+    border-right: 1px solid var(--tuvtk-color-navigation-rail);
     box-shadow: none;
+    transition: border-right-color 160ms ease;
 }
 
 body[data-navbar="side"] #navbar .navbar ul.tabs,
@@ -241,33 +243,15 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
 
 /* Full-height rail and its native collapse control. */
 @media screen and (min-width: 768px) {
-    body[data-navbar="side"] #navbar > .navbar {
-        transition: border-right-color 160ms ease;
-    }
-
-    body[data-navbar="side"] #navbar > .navbar::after {
-        content: "";
-        position: absolute;
-        z-index: 10;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        display: block;
-        clear: none;
-        width: var(--1px);
-        height: auto;
-        background: #c8d3e1;
-        pointer-events: none;
-        transform: translateX(50%);
-        transition: background-color 160ms ease;
+    body[data-navbar="side"] #navbar > .navbar .navbar-header,
+    body[data-navbar="side"] #navbar > .navbar .navbar-header a.side-menu-button,
+    body[data-navbar="side"].minimized:not(.side-menu-opened)
+    #navbar > .navbar .navbar-header a.side-menu-button {
+        border: 0;
     }
 
     body[data-navbar="side"] #navbar > .navbar:has(a.minimizer:is(:hover, :focus-visible)) {
         border-right-color: var(--tuvtk-color-primary);
-    }
-
-    body[data-navbar="side"] #navbar > .navbar:has(a.minimizer:is(:hover, :focus-visible))::after {
-        background: var(--tuvtk-color-primary);
     }
 
     body[data-navbar="side"] #navbar > .navbar a.minimizer {
@@ -283,7 +267,7 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
         height: var(--20px);
         margin: 0;
         padding: 0;
-        border: var(--1px) solid #c8d3e1;
+        border: var(--1px) solid var(--tuvtk-color-navigation-rail);
         border-radius: 50%;
         background: var(--tuvtk-color-surface);
         color: var(--tuvtk-color-muted);
@@ -356,7 +340,6 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
 
 @media (prefers-reduced-motion: reduce) {
     body[data-navbar="side"] #navbar > .navbar,
-    body[data-navbar="side"] #navbar > .navbar::after,
     body[data-navbar="side"] #navbar .navbar a.minimizer,
     body[data-navbar="side"] #navbar .navbar ul.tabs > li:not(.tab-divider) > a::before {
         transition: none;
