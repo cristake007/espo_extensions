@@ -243,11 +243,27 @@ body[data-navbar="side"] #navbar .navbar ul.tabs > li.tab-group.open:not(.tab-di
 
 /* Full-height rail and its native collapse control. */
 @media screen and (min-width: 768px) {
+    /* Native fixed widths include the navbar border; percentage widths use its
+       content box and keep descendant backgrounds out of the rail pixel. */
+    body[data-navbar="side"] #navbar > .navbar .navbar-header,
+    body[data-navbar="side"] #navbar > .navbar ul.tabs,
+    body[data-navbar="side"].minimized.side-menu-opened
+    #navbar > .navbar .navbar-header,
+    body[data-navbar="side"].minimized.side-menu-opened
+    #navbar > .navbar ul.tabs {
+        width: 100%;
+    }
+
     body[data-navbar="side"] #navbar > .navbar .navbar-header,
     body[data-navbar="side"] #navbar > .navbar .navbar-header a.side-menu-button,
     body[data-navbar="side"].minimized:not(.side-menu-opened)
     #navbar > .navbar .navbar-header a.side-menu-button {
         border: 0;
+    }
+
+    body[data-navbar="side"].minimized:not(.side-menu-opened)
+    #navbar > .navbar .navbar-header a.side-menu-button {
+        width: 100%;
     }
 
     body[data-navbar="side"] #navbar > .navbar:has(a.minimizer:is(:hover, :focus-visible)) {

@@ -27,7 +27,7 @@ From the repository root:
 ./test-php.sh build TuvtkTheme
 ```
 
-The resulting `dist/tuvtk-theme-1.0.20.zip` can be uploaded from
+The resulting `dist/tuvtk-theme-1.0.21.zip` can be uploaded from
 **Administration > Extensions** in EspoCRM. After installation, run
 **Administration > Rebuild** and clear the browser cache. The theme is then
 available as `Tuvtk` in EspoCRM's appearance settings.
@@ -86,6 +86,11 @@ The full-height sidebar rail now has one visual paint source in every native
 navbar state. Its one-pixel thickness remains unchanged when the collapse
 handle is hovered or focused, whether the sidebar is expanded or collapsed.
 
-Use the `tuvtk-theme-1.0.20.zip` release asset when downloading the extension
+## Rail paint containment in 1.0.21
+
+Sidebar header and menu backgrounds now stop at the navbar content edge, so
+hover and active states cannot paint over the single right-hand rail.
+
+Use the `tuvtk-theme-1.0.21.zip` release asset when downloading the extension
 from GitHub. GitHub's automatically generated **Source code** ZIP is a copy of
 the whole repository and is not an EspoCRM installation package.

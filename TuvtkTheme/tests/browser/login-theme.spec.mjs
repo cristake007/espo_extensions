@@ -78,7 +78,7 @@ test('desktop login renders the candidate 25/75 split over native Espo CSS', asy
     expect(Math.abs(visual.buttonLeft - visual.usernameLeft)).toBeLessThanOrEqual(0.5);
     expect(Math.abs(visual.buttonWidth - visual.usernameWidth)).toBeLessThanOrEqual(0.5);
     expect(visual.horizontalOverflow).toBeLessThanOrEqual(0);
-    await page.screenshot({path: path.join(screenshotDir, 'tuvtk-login-1.0.20-desktop.png'), fullPage: true});
+    await page.screenshot({path: path.join(screenshotDir, 'tuvtk-login-1.0.21-desktop.png'), fullPage: true});
 });
 
 test('mobile login stays single-column and contained', async ({page}) => {
@@ -112,7 +112,7 @@ test('mobile login stays single-column and contained', async ({page}) => {
     expect(visual.loginWidth).toBeLessThanOrEqual(390);
     expect(Math.abs(visual.buttonLeft - visual.usernameLeft)).toBeLessThanOrEqual(0.5);
     expect(Math.abs(visual.buttonWidth - visual.usernameWidth)).toBeLessThanOrEqual(0.5);
-    await page.screenshot({path: path.join(screenshotDir, 'tuvtk-login-1.0.20-mobile.png'), fullPage: true});
+    await page.screenshot({path: path.join(screenshotDir, 'tuvtk-login-1.0.21-mobile.png'), fullPage: true});
 });
 
 const navigationFixture = `<!doctype html>
@@ -325,7 +325,7 @@ test('navigation, semantic buttons and calendar retain the TUVTK identity', asyn
     expect(rail.borderRightWidth).toBe('1px');
     expect(rail.nativeAfterBackground).toBe('rgba(0, 0, 0, 0)');
     expect(rail.nativeAfterPosition).not.toBe('absolute');
-    await page.screenshot({path: path.join(screenshotDir, 'tuvtk-components-1.0.20.png'), fullPage: true});
+    await page.screenshot({path: path.join(screenshotDir, 'tuvtk-components-1.0.21.png'), fullPage: true});
 });
 
 test('form and modal styling remains scoped and token-driven', async ({page}) => {
@@ -377,19 +377,19 @@ test('chevron closes the hamburger overlay once and preserves the permanent stat
 
     await capture('expanded');
     await page.screenshot({
-        path: path.join(screenshotDir, 'tuvtk-sidenav-expanded-1.0.20.png'),
+        path: path.join(screenshotDir, 'tuvtk-sidenav-expanded-1.0.21.png'),
         fullPage: true,
     });
     await minimizer.click();
     await capture('expanded-to-collapsed-by-chevron');
     await page.screenshot({
-        path: path.join(screenshotDir, 'tuvtk-sidenav-collapsed-1.0.20.png'),
+        path: path.join(screenshotDir, 'tuvtk-sidenav-collapsed-1.0.21.png'),
         fullPage: true,
     });
     await hamburger.click();
     await capture('collapsed-to-overlay-by-hamburger');
     await page.screenshot({
-        path: path.join(screenshotDir, 'tuvtk-sidenav-hamburger-expanded-1.0.20.png'),
+        path: path.join(screenshotDir, 'tuvtk-sidenav-hamburger-expanded-1.0.21.png'),
         fullPage: true,
     });
     await minimizer.click();
@@ -493,7 +493,7 @@ test('Administration headings are blue without leaking to dashboard headings', a
         await page.screenshot({
             path: path.join(
                 screenshotDir,
-                `tuvtk-administration-headings-1.0.20-${viewport.name}.png`
+                `tuvtk-administration-headings-1.0.21-${viewport.name}.png`
             ),
             fullPage: true,
         });
@@ -509,7 +509,7 @@ test('Administration headings are blue without leaking to dashboard headings', a
 
     await expect(page.locator('#main .page-header h3')).toHaveCSS('color', 'rgb(17, 24, 39)');
     await page.screenshot({
-        path: path.join(screenshotDir, 'tuvtk-dashboard-heading-1.0.20.png'),
+        path: path.join(screenshotDir, 'tuvtk-dashboard-heading-1.0.21.png'),
         fullPage: true,
     });
 });

@@ -50,6 +50,9 @@ async function geometry(page) {
         const minimizer = navbar.querySelector('a.minimizer');
         const navbarHeader = navbar.querySelector('.navbar-header');
         const sideMenuButton = navbar.querySelector('a.side-menu-button');
+        const tabs = navbar.querySelector('ul.tabs');
+        const activeLink = tabs.querySelector('li.active > a') ||
+            tabs.querySelector('li:not(.tab-divider) > a');
         const navbarRect = navbar.getBoundingClientRect();
         const minimizerRect = minimizer.getBoundingClientRect();
         const navbarStyle = getComputedStyle(navbar);
@@ -88,6 +91,12 @@ async function geometry(page) {
                 sideMenuButtonStyle.borderBottomWidth,
                 sideMenuButtonStyle.borderLeftWidth,
             ],
+            paintedRightEdges: {
+                navbarHeader: navbarHeader.getBoundingClientRect().right,
+                sideMenuButton: sideMenuButton.getBoundingClientRect().right,
+                tabs: tabs.getBoundingClientRect().right,
+                activeLink: activeLink.getBoundingClientRect().right,
+            },
             minimizerCenter: minimizerRect.left + minimizerRect.width / 2,
             minimizerCenterY: minimizerRect.top + minimizerRect.height / 2,
             iconCenter: visibleIconRect.left + visibleIconRect.width / 2,
@@ -138,10 +147,21 @@ test.describe('authenticated TUVTK navigation', () => {
                 await page.evaluate(() => document.activeElement?.blur());
                 await page.waitForTimeout(200);
             };
+            const expectPaintInsideRail = state => {
+                for (const [element, right] of Object.entries(state.paintedRightEdges)) {
+                    expect(right, `${state.name || 'interaction'}: ${element}`)
+                        .toBeLessThanOrEqual(state.containerEdge);
+                }
+            };
 
             await capture('expanded');
             const expanded = states.at(-1);
             expect(expanded.navbarBorderRightColor).toBe('rgb(200, 211, 225)');
+            expectPaintInsideRail(expanded);
+
+            await page.locator('#navbar ul.tabs > li:not(.tab-divider) > a').first().hover();
+            expectPaintInsideRail(await geometry(page));
+            await clearMinimizerInteraction();
 
             await minimizer.hover();
             const expandedHoverStart = await geometry(page);
@@ -177,6 +197,10 @@ test.describe('authenticated TUVTK navigation', () => {
             const collapsedHoverEnd = await geometry(page);
             expect(collapsedHoverEnd.railWidth).toBe(1);
             expect(collapsedHoverEnd.navbarBorderRightColor).toBe('rgb(22, 65, 148)');
+            await clearMinimizerInteraction();
+
+            await hamburger.hover();
+            expectPaintInsideRail(await geometry(page));
             await clearMinimizerInteraction();
 
             await hamburger.click();
@@ -226,6 +250,7 @@ test.describe('authenticated TUVTK navigation', () => {
                 expect(state.nativeAfterTransform, state.name).toBe('none');
                 expect(state.navbarHeaderBorders, state.name).toEqual(Array(4).fill('0px'));
                 expect(state.sideMenuButtonBorders, state.name).toEqual(Array(4).fill('0px'));
+                expectPaintInsideRail(state);
             }
 
             await page.locator('#navbar ul.tabs > li:not(.tab-divider) > a').first().hover();
@@ -233,7 +258,7 @@ test.describe('authenticated TUVTK navigation', () => {
             expect(hoverState.railWidth).toBe(1);
             expect(hoverState.navbarBorderRightColor).toBe('rgb(200, 211, 225)');
             await page.screenshot({
-                path: path.join(screenshotDir, 'tuvtk-authenticated-sidenav-1.0.20.png'),
+                path: path.join(screenshotDir, 'tuvtk-authenticated-sidenav-1.0.21.png'),
                 fullPage: true,
             });
         } finally {
@@ -274,7 +299,7 @@ test.describe('authenticated TUVTK navigation', () => {
             await page.screenshot({
                 path: path.join(
                     screenshotDir,
-                    `tuvtk-authenticated-administration-1.0.20-${viewport.name}.png`
+                    `tuvtk-authenticated-administration-1.0.21-${viewport.name}.png`
                 ),
                 fullPage: true,
             });

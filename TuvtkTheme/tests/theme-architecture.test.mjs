@@ -18,11 +18,11 @@ const metadataRoot = path.join(
 
 const read = relativePath => readFile(path.join(extensionRoot, relativePath), 'utf8');
 
-test('manifest and theme metadata describe the 1.0.20 Espo-derived theme', async () => {
+test('manifest and theme metadata describe the 1.0.21 Espo-derived theme', async () => {
     const manifest = JSON.parse(await read('manifest.json'));
     const theme = JSON.parse(await readFile(path.join(metadataRoot, 'themes', 'Tuvtk.json'), 'utf8'));
 
-    assert.equal(manifest.version, '1.0.20');
+    assert.equal(manifest.version, '1.0.21');
     assert.deepEqual(manifest.acceptableVersions, ['>=10.0.0']);
     assert.deepEqual(manifest.php, ['>=8.4']);
     assert.equal(theme.parent, 'Espo');
@@ -170,10 +170,17 @@ test('sidenav uses one token-driven border rail in every collapsed state', async
         navigation,
         /#navbar > \.navbar \.navbar-header,[\s\S]*?#navbar > \.navbar \.navbar-header a\.side-menu-button,[\s\S]*?\.minimized:not\(\.side-menu-opened\)[\s\S]*?#navbar > \.navbar \.navbar-header a\.side-menu-button\s*\{[\s\S]*?border:\s*0;/
     );
+    assert.match(
+        navigation,
+        /#navbar > \.navbar \.navbar-header,[\s\S]*?#navbar > \.navbar ul\.tabs\s*\{[\s\S]*?width:\s*100%;/
+    );
+    assert.match(
+        navigation,
+        /\.minimized:not\(\.side-menu-opened\)[\s\S]*?#navbar > \.navbar \.navbar-header a\.side-menu-button\s*\{[\s\S]*?width:\s*100%;/
+    );
     assert.match(navigation, /#navbar > \.navbar a\.minimizer\s*\{[\s\S]*?position:\s*absolute;/);
     assert.match(navigation, /#navbar > \.navbar a\.minimizer\s*\{[\s\S]*?right:\s*0;/);
     assert.match(navigation, /#navbar > \.navbar a\.minimizer\s*\{[\s\S]*?transform:\s*translate\(50%, -50%\);/);
-    assert.doesNotMatch(navigation, /\.minimized\.side-menu-opened/);
     assert.doesNotMatch(navigation, /left:\s*calc\(var\(--navbar-(?:minimized-)?width\)/);
     assert.doesNotMatch(navigation, /#navbar > \.navbar::after/);
     assert.doesNotMatch(navigation, /border-right-color:\s*transparent/);
