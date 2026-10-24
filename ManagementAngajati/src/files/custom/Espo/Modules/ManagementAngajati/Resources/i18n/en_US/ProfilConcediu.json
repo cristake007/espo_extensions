@@ -1,0 +1,48 @@
+{
+    "fields": {
+        "zileAnuale": "Annual entitlement for future grants",
+        "zileDisponibileAnCurent": "Initial available balance from current year",
+        "zileReportateAnAnterior": "Remaining from the previous year",
+        "disponibileAnCurent": "Available from current year",
+        "disponibileReportate": "Available carried-over days",
+        "dataUrmatoareiAcordari": "Next grant date",
+        "dataAcordareCurenta": "Current grant date",
+        "dataNouaAcordare": "New next grant date",
+        "drepturiAfectate": "Annual grants whose date would change",
+        "motivProgramAcordare": "Grant schedule correction reason",
+        "diferentaCorectie": "Difference (+/- days)",
+        "motivCorectie": "Correction reason"
+    },
+    "labels": {
+        "initializeaza": "Initialize",
+        "corecteazaProgramAcordare": "Correct grant date",
+        "impactCorectieProgramAcordare": "Grant correction impact",
+        "cereriBlocante": "Requests blocking the change",
+        "corecteazaSold": "Apply correction",
+        "istoricSold": "Recent history"
+    },
+    "messages": {
+        "profilSalvat": "The leave profile has been saved.",
+        "corectieProgramAcordareSalvata": "The next grant date was corrected and recorded in history.",
+        "corectieProgramAcordareInvalida": "Choose a different date and enter a reason of at least 3 characters.",
+        "confirmareCorectieProgramAcordare": "The correction can only change unused future entitlements. Approved requests and historical documents will not be recalculated. Continue?",
+        "programAcordarePoateFiCorectat": "The change is allowed. Only unused future entitlements will be updated; historical requests and documents remain unchanged.",
+        "dataAcordareTrebuieViitoare": "The change is blocked: the new grant date must be later than today.",
+        "dataAcordareNeschimbata": "The change is blocked: the new date is identical to the existing date.",
+        "anAcordareDiferit": "The change is blocked: the correction must remain in the same calendar year. Changing the year requires a separate administrative operation.",
+        "programAcordareFolositDeCereri": "The change is blocked because a future annual entitlement is already reserved or consumed by the requests listed below. They must be rejected or cancelled before correction.",
+        "programAcordareDataInvalida": "The change is blocked: the new month and day do not form a valid date for one of the future entitlements.",
+        "corectieSoldSalvata": "The balance correction was saved and recorded in history.",
+        "corectieSoldInvalida": "Enter a non-zero whole-number difference and a reason of at least 3 characters.",
+        "corectieSoldPesteDisponibil": "Cannot subtract {scadere} days; the available balance is {disponibile}.",
+        "explicatieInitializare": "Annual entitlement defines how many days will be granted on the next grant date. Initial balance is the real number of current-year days available now; no historical usage is inferred. Remaining days from the previous year are entered separately and used first.",
+        "explicatieDrepturiAfectate": "This is the number of scheduled annual grant records whose date would change, not the number of leave requests.",
+        "initializareConcediuInvalida": "The initialization data is invalid.",
+        "zileDisponibilePesteDrept": "The initial current-year balance cannot exceed the configured annual entitlement.",
+        "dataUrmatoareiAcordariTrebuieViitoare": "The next grant date must be later than today. Days currently available must be entered in the initial balance.",
+        "profilConcediuExistent": "The employee has an existing leave profile.",
+        "profilConcediuInvalid": "The leave profile is invalid.",
+        "profilConcediuNeinitializat": "The leave profile is not initialized.",
+        "angajatInvalid": "The employee is invalid."
+    }
+}

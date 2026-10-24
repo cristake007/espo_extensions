@@ -1,0 +1,19 @@
+{
+    "module": "ManagementAngajati",
+    "name": "ManagementAngajati",
+    "description": "Gestionarea prezenței, concediilor și a datelor angajaților.",
+    "author": "Popa Dorin Cristian",
+    "bundled": true,
+    "acceptableVersions": [
+        ">=9.3.0"
+    ],
+    "php": [
+        ">=8.3"
+    ],
+    "dependencies": {
+        "Zile Sărbătoare": [
+            ">=0.9.5"
+        ]
+    },
+    "scripts": []
+}

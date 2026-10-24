@@ -1,0 +1,13 @@
+{
+    "controller": "management-angajati:controllers/concedii",
+    "views": {
+        "list": "management-angajati:views/concedii/spatiu-personal"
+    },
+    "modalViews": {
+        "detail": "management-angajati:views/cerere-concediu/modals/detaliu"
+    },
+    "iconClass": "fas fa-umbrella-beach",
+    "nameAttribute": "assignedUserName",
+    "editDisabled": true,
+    "removeDisabled": true
+}

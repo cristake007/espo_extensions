@@ -19,7 +19,7 @@ La migrare, mediul a raportat EspoCRM 10.0.10, PHP 8.4.27 și URL-ul de mai sus.
 
 Modifică sursele aici, rulează `./test-php.sh validate NumeExtensie` și testele relevante, apoi construiește ZIP-ul candidat prin `./test-php.sh build NumeExtensie` numai când testezi sau livrezi o schimbare de extensie. Pe hosturile cu PHP și ZIP poți apela direct `build.sh`. Verifică inventarul și compatibilitatea înainte de instalarea nativă în EspoCRM de test. Rulează probele de integrare, API, ACL și browser cu date sintetice marcate unic și cleanup pe ID-uri exacte. Predă URL-ul și rezultatele pentru aprobarea vizuală; numai după aceea livrează același ZIP validat cu SHA-256. Instalarea în producție revine utilizatorului.
 
-Hostul acestui workspace nu are PHP sau Node instalate. Validarea și construirea pachetelor se fac cu wrapperul Docker dedicat:
+Pentru extensiile legacy, validarea PHP și construirea pachetelor pot fi făcute fără instalarea PHP pe host, prin wrapperul Docker dedicat:
 
 ```bash
 ./test-php.sh validate EmployeeManagement
@@ -40,8 +40,10 @@ utilizatorului curent. `validate --all` descoperă extensiile după manifestele 
 la rădăcină și exclude `espocrm-extension-scaffold`, care este un șablon.
 
 Wrapperul apelează harness-ul comun `build.sh`; validarea și formatul ZIP nu
-sunt duplicate. Pe serverele care au deja PHP și ZIP, comenzile directe rămân
-suportate:
+sunt duplicate. Proiectele moderne bazate pe `src/`, precum
+`ManagementAngajati`, folosesc propriul build cu Node.js, PHP și Composer pe
+host, descris în secțiunea următoare. Pentru extensiile legacy, pe serverele
+care au deja PHP și ZIP, comenzile directe rămân suportate:
 
 ```bash
 ./build.sh --extension ./EmployeeManagement --validate
@@ -49,6 +51,39 @@ suportate:
 ```
 
 Aceste comenzi rulează doar harness-ul static și nu pornesc o instanță EspoCRM.
+
+## Extensii moderne bazate pe `src/`
+
+`ManagementAngajati` folosește instrumentele oficiale EspoCRM și păstrează sursele în:
+
+```text
+ManagementAngajati/src/files
+ManagementAngajati/src/scripts
+```
+
+Nu dubla aceste directoare la rădăcina extensiei. Build-ul propriu compilează JavaScript-ul și template-urile, instalează dependențele PHP ale modulului și produce arhiva finală cu `files/` și `scripts/` la rădăcina ZIP-ului.
+
+Prima inițializare după clonarea repository-ului:
+
+```bash
+cd ManagementAngajati
+./build.sh --bootstrap
+./build.sh --validate
+./build.sh --zip
+```
+
+Din rădăcina repository-ului pot fi folosite și comenzile uniforme:
+
+```bash
+./build.sh --extension ./ManagementAngajati --validate
+./build.sh --extension ./ManagementAngajati --zip
+./test-php.sh validate ManagementAngajati
+./test-php.sh build ManagementAngajati
+```
+
+Validarea comună verifică manifestul, JSON-ul și PHP-ul direct din `src/`. Construirea ZIP-ului este delegată către `ManagementAngajati/build.sh`; pentru aceasta hostul trebuie să aibă Node.js, npm, PHP, Composer, ZIP și Unzip, iar dependențele trebuie pregătite prin `--bootstrap`.
+
+Instrucțiunile complete pentru un server nou, mediul local EspoCRM, versionare și livrare sunt în [`ManagementAngajati/README.md`](ManagementAngajati/README.md).
 
 ## Node.js și Playwright fără instalare pe host
 

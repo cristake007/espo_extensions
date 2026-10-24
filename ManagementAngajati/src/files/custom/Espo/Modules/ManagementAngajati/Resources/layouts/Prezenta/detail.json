@@ -1,0 +1,41 @@
+[
+    {
+        "label": "",
+        "rows": [
+            [
+                {"name": "assignedUser"},
+                {"name": "dataPrezenta"}
+            ],
+            [
+                {"name": "codPrezenta"},
+                {"name": "teams"}
+            ]
+        ]
+    },
+    {
+        "label": "corectieManageriala",
+        "rows": [
+            [
+                {"name": "esteCorectieManageriala"},
+                {"name": "corectataLa"}
+            ],
+            [
+                {"name": "corectataDe"},
+                {"name": "motivCorectie"}
+            ]
+        ]
+    },
+    {
+        "label": "systemInformation",
+        "rows": [
+            [
+                {"name": "createdAt"},
+                {"name": "createdBy"}
+            ],
+            [
+                {"name": "modifiedAt"},
+                {"name": "modifiedBy"}
+            ]
+        ]
+    }
+]

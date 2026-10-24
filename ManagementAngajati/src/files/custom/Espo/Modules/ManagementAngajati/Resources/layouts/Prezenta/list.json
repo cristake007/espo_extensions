@@ -1,0 +1,24 @@
+[
+    {
+        "name": "dataPrezenta",
+        "link": true,
+        "width": 16
+    },
+    {
+        "name": "assignedUser",
+        "width": 24
+    },
+    {
+        "name": "codPrezenta",
+        "width": 18
+    },
+    {
+        "name": "modifiedAt",
+        "width": 20
+    },
+    {
+        "name": "modifiedBy",
+        "width": 22,
+        "hidden": true
+    }
+]

@@ -1,0 +1,63 @@
+{
+    "fields": {
+        "angajat": "Angajat",
+        "modAplicareRemote": "Mod de aplicare Remote",
+        "dataInceput": "Data de început",
+        "dataSfarsit": "Data de sfârșit",
+        "numarLuniAnterioareEditabile": "Luni anterioare editabile",
+        "dataAngajare": "Data angajării",
+        "calendarLucru": "Calendar de lucru"
+        ,"aprobatoriConcedii": "Manageri aprobatori"
+        ,"necesitaAmbiiManageri": "Este necesară aprobarea ambilor manageri"
+        ,"acordareAnualaAutomata": "Acordă automat zilele anuale la data programată"
+    },
+    "labels": {
+        "managementAngajati": "Managementul angajaților",
+        "setariCondica": "Setări condică",
+        "profiluriAngajati": "Profiluri angajați",
+        "resetareDateTestCondica": "Resetează datele de test ale condicii",
+        "confirmareResetCondica": "Confirmarea resetării",
+        "prezenteSterse": "Prezențe eliminate",
+        "stariLunaSterse": "Stări lunare eliminate",
+        "remindereSterse": "Remindere eliminate",
+        "configuratiiCicRemoteSterse": "Configurații CIC/Remote eliminate",
+        "dateAngajareGolire": "Date de angajare golite",
+        "calendareLucruPastrate": "Calendare WTC păstrate"
+        ,"setariConcedii": "Setări concedii"
+        ,"resetareDateTestConcedii": "Resetează datele de test ale concediilor"
+        ,"confirmareResetConcedii": "Scrie RESET DATE CONCEDII pentru confirmare"
+        ,"profiluriConcediu": "Profiluri de concediu"
+        ,"cereriConcediu": "Cereri de concediu"
+        ,"registruConcediu": "Înregistrări în istoric"
+    },
+    "options": {
+        "curent": "Opțiune curentă, fără interval",
+        "interval": "Aplicare pe interval de date"
+    },
+    "messages": {
+        "setariCondicaInvalide": "Setările condicii conțin un angajat invalid sau duplicat.",
+        "explicatieManagement": "Configurează funcționalitățile extensiei ManagementAngajati.",
+        "explicatieSetari": "Configurează afișarea Remote și perioada CIC pentru fiecare angajat activ.",
+        "setariSalvate": "Setările condicii au fost salvate.",
+        "faraCalendarLucru": "Angajatul nu are calendar de lucru.",
+        "explicatieLuniEditabile": "Numărul lunilor anterioare în care sunt permise modificări obișnuite (0–120).",
+        "numarLuniEditabileInvalid": "Numărul lunilor anterioare editabile trebuie să fie între 0 și 120.",
+        "explicatieProfiluri": "Configurează data angajării și calendarul de lucru nativ pentru fiecare angajat activ.",
+        "profiluriAngajatiInvalide": "Profilurile angajaților conțin date invalide, incomplete sau duplicate.",
+        "angajatProfilInvalid": "Angajatul selectat nu este un utilizator regular activ.",
+        "calendarLucruInvalid": "Calendarul de lucru selectat nu există.",
+        "dataAngajareDupaPrezenta": "Data angajării nu poate fi ulterioară unei prezențe deja înregistrate.",
+        "profiluriSalvate": "Profilurile angajaților au fost salvate.",
+        "avertismentResetareDateTestCondica": "Operație distructivă și ireversibilă.",
+        "explicatieResetareDateTestCondica": "Sunt eliminate prezențele, lunile închise, reminderele, configurațiile CIC/Remote și datele de angajare. Utilizatorii, rolurile, calendarele WTC și sărbătorile sunt păstrate.",
+        "confirmareFinalaResetareDateTestCondica": "Resetați definitiv toate datele de test ale condicii? Operația nu poate fi anulată.",
+        "confirmareResetCondicaInvalida": "Expresia de confirmare pentru resetarea condicii nu este validă.",
+        "resetareDateTestCondicaReusita": "Datele de test ale condicii au fost resetate."
+        ,"explicatieConcedii": "Configurează aprobatorii și inițializează soldurile angajaților."
+        ,"explicatieAcordareAnualaAutomata": "Când opțiunea este activă, sistemul acordă dreptul anual la data stabilită în profil și recuperează automat eventualele date ratate. Dezactivarea nu șterge drepturile deja acordate sau rezervate."
+        ,"explicatieResetareDateTestConcedii": "Șterge definitiv profilurile, drepturile, cererile, alocările și istoricul concediilor. Utilizatorii, rolurile, calendarele de lucru și configurarea aprobatorilor sunt păstrate."
+        ,"confirmareFinalaResetareDateTestConcedii": "Resetați definitiv toate datele de test ale concediilor? Operația nu poate fi anulată."
+        ,"confirmareResetConcediiInvalida": "Expresia de confirmare pentru resetarea concediilor nu este validă."
+        ,"resetareDateTestConcediiReusita": "Datele de test ale concediilor au fost resetate."
+    }
+}

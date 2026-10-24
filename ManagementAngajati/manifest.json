@@ -1,0 +1,19 @@
+{
+    "name": "ManagementAngajati",
+    "version": "0.0.1",
+    "acceptableVersions": [
+        ">=9.3.0"
+    ],
+    "php": [
+        ">=8.3"
+    ],
+    "releaseDate": "2026-10-24",
+    "author": "Popa Dorin Cristian",
+    "description": "Gestionarea prezenței, concediilor și a datelor angajaților.",
+    "skipBackup": true,
+    "dependencies": {
+        "Zile Sărbătoare": [
+            ">=0.9.5"
+        ]
+    }
+}

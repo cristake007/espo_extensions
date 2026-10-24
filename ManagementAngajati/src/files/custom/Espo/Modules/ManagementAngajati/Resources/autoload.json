@@ -1,0 +1,6 @@
+{
+    "psr-4": {
+        "PhpOffice\\PhpWord\\": "custom/Espo/Modules/ManagementAngajati/vendor/phpoffice/phpword/src/PhpWord",
+        "PhpOffice\\Math\\": "custom/Espo/Modules/ManagementAngajati/vendor/phpoffice/math/src"
+    }
+}

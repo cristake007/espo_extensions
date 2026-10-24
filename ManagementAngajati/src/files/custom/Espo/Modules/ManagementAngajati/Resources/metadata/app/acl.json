@@ -1,0 +1,14 @@
+{
+    "mandatory": {
+        "scopeLevel": {
+            "AdministrareConcedii": "boolean:GestionareAngajati",
+            "ProfilConcediu": "boolean:GestionareAngajati",
+            "DreptConcediu": "boolean:GestionareAngajati",
+            "AlocareConcediu": "boolean:GestionareAngajati",
+            "RegistruConcediu": "boolean:GestionareAngajati",
+            "CondicaPrezenta": "boolean:GestionareAngajati",
+            "ConfiguratieCondicaAngajat": "boolean:GestionareAngajati",
+            "StareLunaCondica": "boolean:GestionareAngajati"
+        }
+    }
+}

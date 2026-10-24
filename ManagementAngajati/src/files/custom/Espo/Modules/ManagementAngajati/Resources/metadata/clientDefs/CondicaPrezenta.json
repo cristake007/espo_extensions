@@ -1,0 +1,7 @@
+{
+    "controller": "management-angajati:controllers/condica-prezenta",
+    "views": {
+        "list": "management-angajati:views/condica-prezenta/lunara"
+    },
+    "iconClass": "fas fa-users"
+}

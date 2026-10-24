@@ -1,0 +1,28 @@
+{
+    "transactionalSave": true,
+    "optimisticConcurrencyControl": true,
+    "deleteId": true,
+    "fields": {
+        "name": {"type": "varchar", "required": true, "readOnly": true},
+        "profil": {"type": "link", "entity": "ProfilConcediu", "required": true, "readOnlyAfterCreate": true},
+        "assignedUser": {"type": "link", "entity": "User", "required": true, "readOnlyAfterCreate": true},
+        "anOrigine": {"type": "int", "required": true, "readOnlyAfterCreate": true},
+        "tip": {"type": "enum", "options": ["Anual", "ReportInitial", "Corectie"], "required": true, "readOnlyAfterCreate": true},
+        "zileAcordate": {"type": "int", "required": true, "default": 0, "min": 0, "audited": true},
+        "zileRezervate": {"type": "int", "required": true, "default": 0, "min": 0, "readOnly": true, "audited": true},
+        "zileConsumate": {"type": "int", "required": true, "default": 0, "min": 0, "readOnly": true, "audited": true},
+        "zileConsumateInitial": {"type": "int", "required": true, "default": 0, "min": 0, "readOnly": true},
+        "dataAcordare": {"type": "date", "required": true, "readOnlyAfterCreate": true, "audited": true, "useNumericFormat": true},
+        "createdAt": {"type": "datetime", "readOnly": true},
+        "modifiedAt": {"type": "datetime", "readOnly": true}
+    },
+    "links": {
+        "profil": {"type": "belongsTo", "entity": "ProfilConcediu", "foreign": "drepturi"},
+        "assignedUser": {"type": "belongsTo", "entity": "User"},
+        "alocari": {"type": "hasMany", "entity": "AlocareConcediu", "foreign": "drept"}
+    },
+    "indexes": {
+        "profilAnTip": {"type": "unique", "columns": ["profilId", "anOrigine", "tip", "deleteId"]},
+        "ordineConsumare": {"columns": ["assignedUserId", "anOrigine", "dataAcordare", "deleted"]}
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "fields": {
+        "angajat": "Employee"
+    },
+    "labels": {
+        "administrareConcedii": "Leave management",
+        "managementAngajati": "Employee management",
+        "listaCereri": "Employee requests",
+        "cereri": "requests",
+        "deSolutionat": "requiring action",
+        "faraCereri": "There are no leave requests",
+        "documente": "Documents",
+        "actiuni": "Actions",
+        "aproba": "Approve",
+        "respinge": "Reject",
+        "aprobaAnularea": "Approve cancellation",
+        "respingeAnularea": "Reject cancellation",
+        "motivAnulare": "Cancellation reason"
+    },
+    "messages": {
+        "descriereAdministrareConcedii": "Review leave requests, approvals, cancellations and generated documents.",
+        "descriereListaCereri": "Available actions follow the approvers and current state of each request.",
+        "faraCereriExplicatie": "Requests submitted by employees will appear here for review.",
+        "decizieSalvata": "The decision has been saved.",
+        "decizieAnulareSalvata": "The cancellation decision has been saved.",
+        "doiAprobatoriNecesari": "Select the two approving managers.",
+        "aprobatorInvalid": "One of the approvers is not a valid active user."
+    }
+}

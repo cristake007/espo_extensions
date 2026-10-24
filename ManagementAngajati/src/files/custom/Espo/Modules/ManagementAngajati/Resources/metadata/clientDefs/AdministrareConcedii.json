@@ -1,0 +1,4 @@
+{
+    "controller": "management-angajati:controllers/administrare-concedii",
+    "iconClass": "fas fa-user-shield"
+}

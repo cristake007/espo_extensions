@@ -1,0 +1,20 @@
+{
+    "fields": {
+        "profil": "Leave profile",
+        "assignedUser": "Employee",
+        "anOrigine": "Origin year",
+        "tip": "Entitlement type",
+        "zileAcordate": "Granted days",
+        "zileRezervate": "Reserved days",
+        "zileConsumate": "Used days",
+        "zileConsumateInitial": "Days used before initialization",
+        "dataAcordare": "Grant date"
+    },
+    "options": {
+        "tip": {
+            "Anual": "Annual entitlement",
+            "ReportInitial": "Carry-over imported at initialization",
+            "Corectie": "Correction"
+        }
+    }
+}

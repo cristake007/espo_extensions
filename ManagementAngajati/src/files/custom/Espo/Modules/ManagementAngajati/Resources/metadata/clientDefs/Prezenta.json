@@ -1,0 +1,7 @@
+{
+    "controller": "management-angajati:controllers/prezenta",
+    "views": {
+        "list": "management-angajati:views/prezenta/lista-lunara"
+    },
+    "iconClass": "fas fa-calendar-check"
+}

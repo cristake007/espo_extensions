@@ -1,0 +1,63 @@
+{
+    "labels": {
+        "condicaPrezenta": "Condica de prezență",
+        "completare": "Completare",
+        "prezenteLipsa": "Prezențe lipsă",
+        "calendareLucru": "Calendare de lucru",
+        "angajati": "Angajați",
+        "remote": "Remote",
+        "calendarLipsa": "Calendar de lucru lipsă",
+        "inchideLuna": "Închide luna",
+        "pregatitaPentruInchidere": "Pregătită pentru închidere",
+        "necesitaCompletare": "Nu poate fi închisă încă",
+        "lunaInghetata": "Date înghețate",
+        "trimiteRemindere": "Trimite remindere",
+        "descarcaXlsx": "Descarcă XLSX",
+        "descarcaPdf": "Descarcă PDF",
+        "foaieCondica": "Condică",
+        "titluExport": "Condica de prezență",
+        "revizieExport": "Revizia",
+        "dataExport": "Data",
+        "programExport": "Program",
+        "oraIntrareExport": "Ora intrare",
+        "oraIesireExport": "Ora ieșire",
+        "oreExport": "Ore",
+        "prezentaExport": "Prezență"
+    },
+    "stariLuna": {
+        "deschisa": "Lună deschisă",
+        "inchisa": "Lună închisă"
+    },
+    "motiveBlocareInchidere": {
+        "lunaNeincheiata": "luna calendaristică nu s-a încheiat",
+        "faraAngajati": "nu există angajați eligibili",
+        "calendareLipsa": "există calendare de lucru neconfigurate",
+        "profiluriLipsa": "există date de angajare neconfigurate",
+        "faraZileScadente": "nu există zile lucrătoare eligibile",
+        "prezenteLipsa": "există prezențe necompletate",
+        "zileViitoare": "există zile lucrătoare viitoare"
+    },
+    "messages": {
+        "lunaCondicaNeincheiata": "Poate fi închisă numai o lună calendaristică încheiată.",
+        "lunaCondicaDejaInchisa": "Luna este deja închisă.",
+        "lunaCondicaIncompleta": "Luna nu poate fi închisă până când prezența tuturor angajaților nu este completată 100%.",
+        "instantaneuCondicaInvalid": "Instantaneul lunii închise nu este valid.",
+        "confirmareInchidereLuna": "Închiderea îngheață structura și normele lunii. Modificările ulterioare vor necesita o corecție managerială motivată. Continuați?",
+        "lunaInchisaCuSucces": "Luna a fost închisă și înghețată.",
+        "corectieCondicaInvalida": "Datele corecției nu sunt valide.",
+        "corectieNecesitaLunaInchisa": "Corecția managerială este disponibilă numai pentru o lună închisă.",
+        "ziCondicaNecorectabila": "Ziua selectată nu poate fi corectată.",
+        "motivCorectieObligatoriu": "Motivul corecției este obligatoriu.",
+        "corectieSalvata": "Corecția managerială a fost salvată.",
+        "actiunePrezentaInvalida": "Acțiunea nu mai corespunde celulei afișate. Reîncărcați luna și încercați din nou.",
+        "marcarePrezentaInvalida": "Datele pentru marcarea prezenței nu sunt valide."
+        ,"remindereInAfaraFerestreiEditabile": "Reminderele pot fi trimise numai pentru lunile în care angajații își mai pot completa prezența."
+        ,"confirmareTrimitereRemindere": "Trimite fiecărui angajat o singură notificare cu toate lunile editabile în care are prezențe lipsă?"
+        ,"remindereTrimise": "Au fost trimise sau actualizate {numar} remindere."
+        ,"niciunReminderTrimis": "Nu există angajați eligibili pentru notificare."
+        ,"reminderPrezentaFereastra": "Ai prezențe necompletate în următoarele luni:"
+        ,"reminderPrezentaLuna": "- {numar} zile în {luna} — [Deschide luna]({ruta})"
+        ,"exportCondicaNecesitaLunaInchisa": "Condica poate fi exportată numai după închiderea unei luni completate integral."
+        ,"exportCondicaIncompleta": "Condica nu poate fi exportată deoarece luna nu este completată integral."
+    }
+}

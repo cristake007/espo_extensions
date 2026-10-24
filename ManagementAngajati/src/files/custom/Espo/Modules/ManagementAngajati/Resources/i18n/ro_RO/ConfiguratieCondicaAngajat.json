@@ -1,0 +1,30 @@
+{
+    "fields": {
+        "name": "Nume",
+        "remoteActiv": "Remote activ",
+        "dataInceputRemote": "Data început Remote",
+        "dataSfarsitRemote": "Data sfârșit Remote",
+        "cicActiv": "CIC activ",
+        "dataInceputCic": "Data început CIC",
+        "dataSfarsitCic": "Data sfârșit CIC",
+        "createdAt": "Creat la",
+        "modifiedAt": "Modificat la",
+        "createdBy": "Creat de",
+        "modifiedBy": "Modificat de",
+        "assignedUser": "Responsabil configurație",
+        "angajat": "Angajat"
+    },
+    "messages": {
+        "angajatConfiguratieInvalid": "Configurația poate fi asociată numai unui angajat activ.",
+        "configuratiePrezentaDuplicata": "Angajatul are deja o configurație pentru condică.",
+        "perioadaCicObligatorie": "Data de început și data de sfârșit sunt obligatorii când CIC este activ.",
+        "perioadaCicInvalida": "Perioada CIC nu este validă. Data de sfârșit trebuie să fie egală sau ulterioară datei de început.",
+        "dataAngajareLipsaPentruCic": "Data angajării trebuie completată înainte de activarea CIC.",
+        "perioadaCicInainteDeAngajare": "Perioada CIC nu poate începe înainte de data angajării.",
+        "perioadaRemoteObligatorie": "Datele intervalului Remote sunt obligatorii în modul de aplicare pe interval.",
+        "perioadaRemoteInvalida": "Perioada Remote nu este validă. Data de sfârșit trebuie să fie egală sau ulterioară datei de început.",
+        "modAplicareRemoteInvalid": "Modul de aplicare Remote selectat nu este valid.",
+        "conflictePerioadaCic": "Perioada CIC nu poate fi salvată deoarece există deja înregistrări de prezență în intervalul selectat.",
+        "ziAcoperitaDeCic": "Ziua este inclusă într-o perioadă CIC și nu poate fi completată manual."
+    }
+}

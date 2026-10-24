@@ -1,0 +1,21 @@
+{
+    "transactionalSave": true,
+    "deleteId": true,
+    "fields": {
+        "name": {"type": "varchar", "required": true, "readOnly": true},
+        "cerere": {"type": "link", "entity": "CerereConcediu", "required": true, "readOnlyAfterCreate": true},
+        "drept": {"type": "link", "entity": "DreptConcediu", "required": true, "readOnlyAfterCreate": true},
+        "anConsum": {"type": "int", "required": true, "readOnlyAfterCreate": true},
+        "numarZile": {"type": "int", "required": true, "min": 1, "readOnlyAfterCreate": true},
+        "stare": {"type": "enum", "options": ["Rezervata", "Consumata", "Eliberata"], "required": true, "default": "Rezervata", "readOnly": true, "audited": true},
+        "createdAt": {"type": "datetime", "readOnly": true},
+        "modifiedAt": {"type": "datetime", "readOnly": true}
+    },
+    "links": {
+        "cerere": {"type": "belongsTo", "entity": "CerereConcediu", "foreign": "alocari"},
+        "drept": {"type": "belongsTo", "entity": "DreptConcediu", "foreign": "alocari"}
+    },
+    "indexes": {
+        "cerereDrept": {"type": "unique", "columns": ["cerereId", "dreptId", "anConsum", "deleteId"]}
+    }
+}

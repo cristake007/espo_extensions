@@ -1,0 +1,63 @@
+{
+    "labels": {
+        "condicaPrezenta": "Attendance Register",
+        "completare": "Completion",
+        "prezenteLipsa": "Missing attendance",
+        "calendareLucru": "Working time calendars",
+        "angajati": "Employees",
+        "remote": "Remote",
+        "calendarLipsa": "Working time calendar missing",
+        "inchideLuna": "Close month",
+        "pregatitaPentruInchidere": "Ready to close",
+        "necesitaCompletare": "Cannot be closed yet",
+        "lunaInghetata": "Frozen data",
+        "trimiteRemindere": "Send reminders",
+        "descarcaXlsx": "Download XLSX",
+        "descarcaPdf": "Download PDF",
+        "foaieCondica": "Register",
+        "titluExport": "Attendance Register",
+        "revizieExport": "Revision",
+        "dataExport": "Date",
+        "programExport": "Schedule",
+        "oraIntrareExport": "Start time",
+        "oraIesireExport": "End time",
+        "oreExport": "Hours",
+        "prezentaExport": "Attendance"
+    },
+    "stariLuna": {
+        "deschisa": "Open month",
+        "inchisa": "Closed month"
+    },
+    "motiveBlocareInchidere": {
+        "lunaNeincheiata": "the calendar month has not ended",
+        "faraAngajati": "there are no eligible employees",
+        "calendareLipsa": "some working time calendars are missing",
+        "profiluriLipsa": "some employment dates are missing",
+        "faraZileScadente": "there are no eligible working days",
+        "prezenteLipsa": "attendance entries are missing",
+        "zileViitoare": "there are future working days"
+    },
+    "messages": {
+        "lunaCondicaNeincheiata": "Only a completed calendar month can be closed.",
+        "lunaCondicaDejaInchisa": "The month is already closed.",
+        "lunaCondicaIncompleta": "The month cannot be closed until attendance is 100% complete for every employee.",
+        "instantaneuCondicaInvalid": "The closed month snapshot is invalid.",
+        "confirmareInchidereLuna": "Closing freezes the month's structure and scheduled time. Later changes will require a reasoned managerial correction. Continue?",
+        "lunaInchisaCuSucces": "The month has been closed and frozen.",
+        "corectieCondicaInvalida": "The correction data is invalid.",
+        "corectieNecesitaLunaInchisa": "A managerial correction is available only for a closed month.",
+        "ziCondicaNecorectabila": "The selected day cannot be corrected.",
+        "motivCorectieObligatoriu": "A correction reason is required.",
+        "corectieSalvata": "The managerial correction has been saved.",
+        "actiunePrezentaInvalida": "The action no longer matches the displayed cell. Reload the month and try again.",
+        "marcarePrezentaInvalida": "The attendance marking data is invalid."
+        ,"remindereInAfaraFerestreiEditabile": "Reminders can only be sent for months in which employees can still complete their attendance."
+        ,"confirmareTrimitereRemindere": "Send each employee one notification containing every editable month with missing attendance?"
+        ,"remindereTrimise": "{numar} reminders were sent or refreshed."
+        ,"niciunReminderTrimis": "There are no eligible employees to notify."
+        ,"reminderPrezentaFereastra": "You have missing attendance in the following months:"
+        ,"reminderPrezentaLuna": "- {numar} days in {luna} — [Open month]({ruta})"
+        ,"exportCondicaNecesitaLunaInchisa": "The register can only be exported after a fully completed month has been closed."
+        ,"exportCondicaIncompleta": "The register cannot be exported because the month is not fully completed."
+    }
+}

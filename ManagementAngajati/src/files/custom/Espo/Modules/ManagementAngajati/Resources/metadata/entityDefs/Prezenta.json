@@ -1,0 +1,137 @@
+{
+    "transactionalSave": true,
+    "optimisticConcurrencyControl": true,
+    "deleteId": true,
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "readOnly": true,
+            "maxLength": 255
+        },
+        "dataPrezenta": {
+            "type": "date",
+            "required": true,
+            "readOnlyAfterCreate": true,
+            "audited": true,
+            "useNumericFormat": true
+        },
+        "codPrezenta": {
+            "type": "enum",
+            "options": [
+                "P",
+                "D",
+                "CM"
+            ],
+            "required": true,
+            "audited": true,
+            "displayAsLabel": true,
+            "style": {
+                "P": "success",
+                "D": "warning",
+                "CM": "danger"
+            }
+        },
+        "esteCorectieManageriala": {
+            "type": "bool",
+            "default": false,
+            "readOnly": true,
+            "audited": true
+        },
+        "motivCorectie": {
+            "type": "text",
+            "readOnly": true,
+            "audited": true
+        },
+        "corectataLa": {
+            "type": "datetime",
+            "readOnly": true,
+            "audited": true
+        },
+        "corectataDe": {
+            "type": "link",
+            "entity": "User",
+            "readOnly": true,
+            "audited": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        },
+        "assignedUser": {
+            "type": "link",
+            "required": true,
+            "readOnlyAfterCreate": true,
+            "view": "views/fields/assigned-user"
+        },
+        "teams": {
+            "type": "linkMultiple",
+            "view": "views/fields/teams"
+        }
+    },
+    "links": {
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "corectataDe": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "assignedUser": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "teams": {
+            "type": "hasMany",
+            "entity": "Team",
+            "relationName": "entityTeam",
+            "layoutRelationshipsDisabled": true
+        }
+    },
+    "indexes": {
+        "angajatDataPrezenta": {
+            "type": "unique",
+            "columns": [
+                "assignedUserId",
+                "dataPrezenta",
+                "deleteId"
+            ]
+        },
+        "dataCodPrezenta": {
+            "columns": [
+                "dataPrezenta",
+                "codPrezenta",
+                "deleted"
+            ]
+        },
+        "angajat": {
+            "columns": [
+                "assignedUserId",
+                "deleted"
+            ]
+        }
+    },
+    "collection": {
+        "orderBy": "dataPrezenta",
+        "order": "desc"
+    }
+}

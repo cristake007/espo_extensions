@@ -1,0 +1,4 @@
+{
+    "controller": "management-angajati:controllers/gestionare-angajati",
+    "iconClass": "fas fa-user-cog"
+}

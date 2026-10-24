@@ -1,0 +1,15 @@
+{
+    "entity": true,
+    "object": true,
+    "type": "Base",
+    "module": "ManagementAngajati",
+    "acl": true,
+    "aclPortal": false,
+    "tab": true,
+    "layouts": false,
+    "stream": false,
+    "customizable": false,
+    "importable": false,
+    "notifications": false,
+    "preserveAuditLog": true
+}

@@ -24,6 +24,10 @@ Modes:
       The ZIP root will contain manifest.json, README.md when present, and the
       requested paths.
 
+      Modern projects containing extension.json and src/files delegate packaging
+      to their own build.sh so frontend bundles and Composer dependencies are
+      generated before the final ZIP is copied to dist/.
+
   --extension PATH --validate
       Validates the manifest and module descriptors, all JSON under files and
       scripts, and PHP syntax where PHP files are present.
@@ -94,18 +98,26 @@ json_escape() {
 validate_extension() {
     local extension_abs="$1"
     local manifest_path="${extension_abs}/manifest.json"
-    local modules_root="${extension_abs}/files/custom/Espo/Modules"
+    local source_root="${extension_abs}"
+    local modules_root
     local json_file php_file validation_output module_dir descriptor legacy_descriptor
     local module_found=false
     local validation_roots=("${manifest_path}")
+
+    if [ -f "${extension_abs}/extension.json" ] && [ -d "${extension_abs}/src/files" ]; then
+        source_root="${extension_abs}/src"
+        validation_roots+=("${extension_abs}/extension.json")
+    fi
+
+    modules_root="${source_root}/files/custom/Espo/Modules"
 
     [ -f "$manifest_path" ] || fail "manifest.json was not found in ${extension_abs}"
     [ -d "$modules_root" ] || fail "EspoCRM module directory was not found in ${extension_abs}/files"
 
     require_php
 
-    [ ! -d "${extension_abs}/files" ] || validation_roots+=("${extension_abs}/files")
-    [ ! -d "${extension_abs}/scripts" ] || validation_roots+=("${extension_abs}/scripts")
+    [ ! -d "${source_root}/files" ] || validation_roots+=("${source_root}/files")
+    [ ! -d "${source_root}/scripts" ] || validation_roots+=("${source_root}/scripts")
 
     while IFS= read -r -d '' json_file; do
         # The single-quoted program is intentionally passed verbatim to PHP.
@@ -359,10 +371,21 @@ zip_extension() {
     [ -n "$extension_path" ] || fail "--extension is required"
     [ "$zip_requested" = true ] || fail "--zip is required"
 
-    require_zip
-
     extension_abs="$(cd "$extension_path" 2>/dev/null && pwd)" || fail "extension path not found: ${extension_path}"
     manifest_path="${extension_abs}/manifest.json"
+
+    if [ -f "${extension_abs}/extension.json" ] && [ -d "${extension_abs}/src/files" ]; then
+        [ "${#paths[@]}" -eq 0 ] ||
+            fail 'modern projects do not accept VERSION or path arguments; use --zip only'
+        [ -x "${extension_abs}/build.sh" ] ||
+            fail "modern project build script is missing or not executable: ${extension_abs}/build.sh"
+
+        validate_extension "$extension_abs"
+        "${extension_abs}/build.sh" --zip "$DIST_DIR"
+        return
+    fi
+
+    require_zip
 
     validate_extension "$extension_abs"
 

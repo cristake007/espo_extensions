@@ -1,0 +1,20 @@
+{
+    "fields": {
+        "profil": "Profil concediu",
+        "assignedUser": "Angajat",
+        "anOrigine": "Anul de origine",
+        "tip": "Tipul dreptului",
+        "zileAcordate": "Zile acordate",
+        "zileRezervate": "Zile rezervate",
+        "zileConsumate": "Zile consumate",
+        "zileConsumateInitial": "Zile consumate înainte de inițializare",
+        "dataAcordare": "Data acordării"
+    },
+    "options": {
+        "tip": {
+            "Anual": "Drept anual",
+            "ReportInitial": "Report preluat la inițializare",
+            "Corectie": "Corecție"
+        }
+    }
+}

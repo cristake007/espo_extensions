@@ -1,0 +1,63 @@
+{
+    "fields": {
+        "angajat": "Employee",
+        "modAplicareRemote": "Remote mode",
+        "dataInceput": "Start date",
+        "dataSfarsit": "End date",
+        "numarLuniAnterioareEditabile": "Editable previous months",
+        "dataAngajare": "Employment date",
+        "calendarLucru": "Working Time Calendar"
+        ,"aprobatoriConcedii": "Approving managers"
+        ,"necesitaAmbiiManageri": "Require approval from both managers"
+        ,"acordareAnualaAutomata": "Automatically grant annual days on the scheduled date"
+    },
+    "labels": {
+        "managementAngajati": "Employee Management",
+        "setariCondica": "Attendance Settings",
+        "profiluriAngajati": "Employee Profiles",
+        "resetareDateTestCondica": "Reset attendance test data",
+        "confirmareResetCondica": "Reset confirmation",
+        "prezenteSterse": "Attendance records removed",
+        "stariLunaSterse": "Month states removed",
+        "remindereSterse": "Reminders removed",
+        "configuratiiCicRemoteSterse": "CIC/Remote configurations removed",
+        "dateAngajareGolire": "Employment dates cleared",
+        "calendareLucruPastrate": "WTC calendars preserved"
+        ,"setariConcedii": "Leave settings"
+        ,"resetareDateTestConcedii": "Reset leave test data"
+        ,"confirmareResetConcedii": "Type RESET DATE CONCEDII to confirm"
+        ,"profiluriConcediu": "Leave profiles"
+        ,"cereriConcediu": "Leave requests"
+        ,"registruConcediu": "History entries"
+    },
+    "options": {
+        "curent": "Current option, without a date range",
+        "interval": "Apply over a date range"
+    },
+    "messages": {
+        "setariCondicaInvalide": "The attendance register settings contain an invalid or duplicate employee.",
+        "explicatieManagement": "Configure the ManagementAngajati extension features.",
+        "explicatieSetari": "Configure Remote display and the childcare leave period for each active employee.",
+        "setariSalvate": "Attendance settings have been saved.",
+        "faraCalendarLucru": "The employee does not have a working time calendar.",
+        "explicatieLuniEditabile": "The number of previous months in which regular changes are allowed (0–120).",
+        "numarLuniEditabileInvalid": "The number of editable previous months must be between 0 and 120.",
+        "explicatieProfiluri": "Configure the employment date and native working time calendar for every active employee.",
+        "profiluriAngajatiInvalide": "The employee profiles contain invalid, incomplete, or duplicate data.",
+        "angajatProfilInvalid": "The selected employee is not an active regular user.",
+        "calendarLucruInvalid": "The selected working time calendar does not exist.",
+        "dataAngajareDupaPrezenta": "The employment date cannot be later than an existing attendance record.",
+        "profiluriSalvate": "Employee profiles have been saved.",
+        "avertismentResetareDateTestCondica": "Destructive and irreversible operation.",
+        "explicatieResetareDateTestCondica": "Attendance records, closed months, reminders, CIC/Remote configurations and employment dates are removed. Users, roles, WTC calendars and holidays are preserved.",
+        "confirmareFinalaResetareDateTestCondica": "Permanently reset all attendance test data? This operation cannot be undone.",
+        "confirmareResetCondicaInvalida": "The attendance reset confirmation phrase is invalid.",
+        "resetareDateTestCondicaReusita": "The attendance test data was reset."
+        ,"explicatieConcedii": "Configure approvers and initialize employee balances."
+        ,"explicatieAcordareAnualaAutomata": "When enabled, the system grants the annual entitlement on the date configured in the profile and automatically catches up missed dates. Disabling it does not remove entitlements already granted or reserved."
+        ,"explicatieResetareDateTestConcedii": "Permanently removes leave profiles, entitlements, requests, allocations and history. Users, roles, working calendars and approver settings are preserved."
+        ,"confirmareFinalaResetareDateTestConcedii": "Permanently reset all leave test data? This operation cannot be undone."
+        ,"confirmareResetConcediiInvalida": "The leave reset confirmation phrase is invalid."
+        ,"resetareDateTestConcediiReusita": "The leave test data was reset."
+    }
+}

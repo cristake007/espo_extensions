@@ -1,0 +1,15 @@
+{
+    "relationships": {
+        "angajat": {
+            "linkForeignAccessCheckDisabled": true
+        }
+    },
+    "massActions": {
+        "update": {
+            "allowed": false
+        },
+        "delete": {
+            "allowed": false
+        }
+    }
+}

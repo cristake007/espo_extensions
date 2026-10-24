@@ -1,0 +1,33 @@
+{
+    "scopeNames": {
+        "CerereConcediu": "Concedii",
+        "AdministrareConcedii": "Administrare concedii",
+        "ProfilConcediu": "Profil concediu",
+        "DreptConcediu": "Drept concediu",
+        "AlocareConcediu": "Alocare concediu",
+        "RegistruConcediu": "Registru concediu",
+        "Prezenta": "Prezență",
+        "CondicaPrezenta": "Condica de prezență",
+        "GestionareAngajati": "Managementul angajaților",
+        "ConfiguratieCondicaAngajat": "Configurație condică angajat"
+    },
+    "scopeNamesPlural": {
+        "CerereConcediu": "Concedii",
+        "AdministrareConcedii": "Administrare concedii",
+        "ProfilConcediu": "Profiluri concediu",
+        "DreptConcediu": "Drepturi concediu",
+        "AlocareConcediu": "Alocări concediu",
+        "RegistruConcediu": "Registru concediu",
+        "Prezenta": "Prezență",
+        "CondicaPrezenta": "Condica de prezență",
+        "GestionareAngajati": "Managementul angajaților",
+        "ConfiguratieCondicaAngajat": "Configurații condică angajați"
+    },
+    "navbarTabs": {
+        "concedii": "Concediile mele",
+        "administrareConcedii": "Administrare concedii",
+        "prezenta": "Prezență",
+        "condicaPrezenta": "Condica de prezență",
+        "managementAngajati": "Managementul angajaților"
+    }
+}

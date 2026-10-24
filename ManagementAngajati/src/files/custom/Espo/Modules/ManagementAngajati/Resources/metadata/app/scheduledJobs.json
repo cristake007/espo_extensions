@@ -1,0 +1,7 @@
+{
+    "AcordaZileConcediuAnuale": {
+        "jobClassName": "Espo\\Modules\\ManagementAngajati\\Jobs\\AcordaZileConcediuAnuale",
+        "scheduling": "15 0 * * *",
+        "isDefault": true
+    }
+}

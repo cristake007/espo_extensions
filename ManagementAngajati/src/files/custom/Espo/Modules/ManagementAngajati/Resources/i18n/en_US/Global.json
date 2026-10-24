@@ -1,0 +1,33 @@
+{
+    "scopeNames": {
+        "CerereConcediu": "Leave",
+        "AdministrareConcedii": "Leave Management",
+        "ProfilConcediu": "Leave Profile",
+        "DreptConcediu": "Leave Entitlement",
+        "AlocareConcediu": "Leave Allocation",
+        "RegistruConcediu": "Leave Ledger",
+        "Prezenta": "Attendance",
+        "CondicaPrezenta": "Attendance Register",
+        "GestionareAngajati": "Employee Management",
+        "ConfiguratieCondicaAngajat": "Employee Attendance Configuration"
+    },
+    "scopeNamesPlural": {
+        "CerereConcediu": "Leave",
+        "AdministrareConcedii": "Leave Management",
+        "ProfilConcediu": "Leave Profiles",
+        "DreptConcediu": "Leave Entitlements",
+        "AlocareConcediu": "Leave Allocations",
+        "RegistruConcediu": "Leave Ledger",
+        "Prezenta": "Attendance",
+        "CondicaPrezenta": "Attendance Register",
+        "GestionareAngajati": "Employee Management",
+        "ConfiguratieCondicaAngajat": "Employee Attendance Configurations"
+    },
+    "navbarTabs": {
+        "concedii": "My Leave",
+        "administrareConcedii": "Leave Management",
+        "prezenta": "Attendance",
+        "condicaPrezenta": "Attendance Register",
+        "managementAngajati": "Employee Management"
+    }
+}

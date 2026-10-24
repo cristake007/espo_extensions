@@ -1,0 +1,29 @@
+{
+    "fields": {
+        "name": {"type": "varchar", "required": true, "readOnly": true},
+        "profil": {"type": "link", "entity": "ProfilConcediu", "required": true, "readOnly": true},
+        "cerere": {"type": "link", "entity": "CerereConcediu", "readOnly": true},
+        "drept": {"type": "link", "entity": "DreptConcediu", "readOnly": true},
+        "tip": {"type": "enum", "options": ["Initializare", "AcordareAnuala", "Rezervare", "Consumare", "Eliberare", "Restaurare", "Corectie", "CorectieProgramAcordare"], "required": true, "readOnly": true},
+        "numarZile": {"type": "int", "required": true, "readOnly": true},
+        "motiv": {"type": "text", "readOnly": true},
+        "cheieOperatie": {"type": "varchar", "required": true, "readOnly": true, "maxLength": 190},
+        "dataEfectiva": {"type": "date", "required": true, "readOnly": true, "useNumericFormat": true},
+        "assignedUser": {"type": "link", "entity": "User", "required": true, "readOnly": true},
+        "actor": {"type": "link", "entity": "User", "required": true, "readOnly": true},
+        "createdAt": {"type": "datetime", "readOnly": true}
+    },
+    "links": {
+        "profil": {"type": "belongsTo", "entity": "ProfilConcediu"},
+        "cerere": {"type": "belongsTo", "entity": "CerereConcediu"},
+        "drept": {"type": "belongsTo", "entity": "DreptConcediu"},
+        "assignedUser": {"type": "belongsTo", "entity": "User"},
+        "actor": {"type": "belongsTo", "entity": "User"}
+    },
+    "indexes": {
+        "cheieOperatieUnica": {"type": "unique", "columns": ["cheieOperatie"]},
+        "profilCreat": {"columns": ["profilId", "createdAt"]}
+    },
+    "noDeletedAttribute": true,
+    "collection": {"orderBy": "createdAt", "order": "desc"}
+}

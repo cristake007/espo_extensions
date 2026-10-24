@@ -1,0 +1,17 @@
+{
+    "fields": {
+        "name": "Month",
+        "luna": "Month",
+        "stare": "Status",
+        "instantaneu": "Frozen snapshot",
+        "inchisaLa": "Closed at",
+        "inchisaDe": "Closed by",
+        "revizie": "Revision"
+    },
+    "options": {
+        "stare": {
+            "deschisa": "Open",
+            "inchisa": "Closed"
+        }
+    }
+}

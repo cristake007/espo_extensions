@@ -1,0 +1,30 @@
+{
+    "fields": {
+        "name": "Name",
+        "remoteActiv": "Remote enabled",
+        "dataInceputRemote": "Remote start date",
+        "dataSfarsitRemote": "Remote end date",
+        "cicActiv": "Childcare leave (CIC) enabled",
+        "dataInceputCic": "Childcare leave start date",
+        "dataSfarsitCic": "Childcare leave end date",
+        "createdAt": "Created at",
+        "modifiedAt": "Modified at",
+        "createdBy": "Created by",
+        "modifiedBy": "Modified by",
+        "assignedUser": "Configuration owner",
+        "angajat": "Employee"
+    },
+    "messages": {
+        "angajatConfiguratieInvalid": "The configuration can only be assigned to an active employee.",
+        "configuratiePrezentaDuplicata": "The employee already has an attendance configuration.",
+        "perioadaCicObligatorie": "The start and end dates are required when childcare leave is enabled.",
+        "perioadaCicInvalida": "The childcare leave period is invalid. The end date must be on or after the start date.",
+        "dataAngajareLipsaPentruCic": "The employment date must be set before enabling childcare leave.",
+        "perioadaCicInainteDeAngajare": "The childcare leave period cannot start before the employment date.",
+        "perioadaRemoteObligatorie": "The Remote period dates are required when date-range mode is used.",
+        "perioadaRemoteInvalida": "The Remote period is invalid. The end date must be on or after the start date.",
+        "modAplicareRemoteInvalid": "The selected Remote mode is invalid.",
+        "conflictePerioadaCic": "The childcare leave period cannot be saved because attendance records already exist in the selected interval.",
+        "ziAcoperitaDeCic": "This day is covered by a childcare leave period and cannot be completed manually."
+    }
+}

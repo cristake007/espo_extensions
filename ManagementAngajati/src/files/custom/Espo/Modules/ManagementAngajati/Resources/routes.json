@@ -1,0 +1,147 @@
+[
+    {
+        "route": "/Concedii/spatiu-personal",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ObtineConcediileMele"
+    },
+    {
+        "route": "/Concedii/cereri",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\CreeazaCerereConcediu"
+    },
+    {
+        "route": "/Concedii/previzualizare-perioada",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\PrevizualizeazaPerioadaConcediu"
+    },
+    {
+        "route": "/Concedii/cereri/:id/anulare",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\SolicitaAnulareCerereConcediu"
+    },
+    {
+        "route": "/Concedii/cereri/:id/documente",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\GenereazaDocumenteConcediu"
+    },
+    {
+        "route": "/AdministrareConcedii/cereri",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ObtineAdministrareConcedii"
+    },
+    {
+        "route": "/AdministrareConcedii/cereri/:id/decizie",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\DecideCerereConcediu"
+    },
+    {
+        "route": "/AdministrareConcedii/cereri/:id/decizie-anulare",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\DecideAnulareCerereConcediu"
+    },
+    {
+        "route": "/ManagementAngajati/profiluri-concediu",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ObtineProfiluriConcediu"
+    },
+    {
+        "route": "/ManagementAngajati/profiluri-concediu",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\SalveazaProfilConcediu"
+    },
+    {
+        "route": "/ManagementAngajati/setari-concedii",
+        "method": "put",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\SalveazaSetariConcedii"
+    },
+    {
+        "route": "/ManagementAngajati/profiluri-concediu/:idAngajat/corectie",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\CorecteazaSoldConcediu"
+    },
+    {
+        "route": "/ManagementAngajati/profiluri-concediu/:idAngajat/corectie-program-acordare",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\CorecteazaProgramAcordareConcediu"
+    },
+    {
+        "route": "/ManagementAngajati/profiluri-concediu/:idAngajat/previzualizare-corectie-program-acordare",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\PrevizualizeazaCorectieProgramAcordareConcediu"
+    },
+    {
+        "route": "/ManagementAngajati/reset-date-concedii",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ObtinePrevizualizareResetConcedii"
+    },
+    {
+        "route": "/ManagementAngajati/reset-date-concedii",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ReseteazaDateTestConcedii"
+    },
+    {
+        "route": "/Prezenta/prezenta-personala",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ObtineCalendarPrezentaPersonala"
+    },
+    {
+        "route": "/CondicaPrezenta/condica-lunara",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ObtineCondicaPrezentaLunara"
+    },
+    {
+        "route": "/ManagementAngajati/setari-condica",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ObtineSetariCondica"
+    },
+    {
+        "route": "/ManagementAngajati/setari-condica",
+        "method": "put",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\SalveazaSetariCondica"
+    },
+    {
+        "route": "/CondicaPrezenta/inchide-luna",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\InchideLunaCondica"
+    },
+    {
+        "route": "/CondicaPrezenta/corecteaza-luna",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\CorecteazaLunaCondica"
+    },
+    {
+        "route": "/CondicaPrezenta/marcheaza-prezenta",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\MarcheazaPrezentaCondica"
+    },
+    {
+        "route": "/ManagementAngajati/profiluri-angajati",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ObtineProfiluriAngajati"
+    },
+    {
+        "route": "/ManagementAngajati/profiluri-angajati",
+        "method": "put",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\SalveazaProfiluriAngajati"
+    },
+    {
+        "route": "/CondicaPrezenta/trimite-remindere",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\TrimiteReminderePrezenta"
+    },
+    {
+        "route": "/CondicaPrezenta/export/:format",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\DescarcaExportCondica"
+    },
+    {
+        "route": "/ManagementAngajati/reset-date-condica",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ObtinePrevizualizareResetCondica"
+    },
+    {
+        "route": "/ManagementAngajati/reset-date-condica",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ReseteazaDateTestCondica"
+    }
+]

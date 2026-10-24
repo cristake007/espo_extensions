@@ -1,0 +1,9 @@
+{
+    "entity": false,
+    "module": "ManagementAngajati",
+    "acl": "boolean",
+    "aclPortal": false,
+    "tab": true,
+    "layouts": false,
+    "customizable": false
+}

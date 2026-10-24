@@ -1,0 +1,6 @@
+{
+    "beforeCreateHookClassNameList": ["Espo\\Modules\\ManagementAngajati\\Classes\\RecordHooks\\CerereConcediu\\BlocheazaCreareaDirecta"],
+    "beforeUpdateHookClassNameList": ["Espo\\Modules\\ManagementAngajati\\Classes\\RecordHooks\\CerereConcediu\\BlocheazaActualizareaDirecta"],
+    "beforeDeleteHookClassNameList": ["Espo\\Modules\\ManagementAngajati\\Classes\\RecordHooks\\CerereConcediu\\BlocheazaStergereaDirecta"],
+    "massActions": {"update": {"allowed": false}, "delete": {"allowed": false}}
+}

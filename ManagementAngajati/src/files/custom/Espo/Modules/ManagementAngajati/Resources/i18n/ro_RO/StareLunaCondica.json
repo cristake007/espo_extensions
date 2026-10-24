@@ -1,0 +1,17 @@
+{
+    "fields": {
+        "name": "Lună",
+        "luna": "Lună",
+        "stare": "Stare",
+        "instantaneu": "Instantaneu înghețat",
+        "inchisaLa": "Închisă la",
+        "inchisaDe": "Închisă de",
+        "revizie": "Revizie"
+    },
+    "options": {
+        "stare": {
+            "deschisa": "Deschisă",
+            "inchisa": "Închisă"
+        }
+    }
+}

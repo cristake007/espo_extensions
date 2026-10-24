@@ -1,0 +1,53 @@
+{
+    "transactionalSave": true,
+    "optimisticConcurrencyControl": true,
+    "deleteId": true,
+    "fields": {
+        "name": {"type": "varchar", "required": true, "readOnly": true},
+        "dateStart": {"type": "datetimeOptional", "utility": true, "readOnly": true},
+        "dateEnd": {"type": "datetimeOptional", "utility": true, "readOnly": true, "after": "dateStart"},
+        "dateStartDate": {"type": "date", "notStorable": true, "required": true, "useNumericFormat": true, "select": {"select": "dataInceput"}},
+        "dateEndDate": {"type": "date", "notStorable": true, "required": true, "useNumericFormat": true, "after": "dateStartDate", "afterOrEqual": true, "select": {"select": "dataSfarsit"}},
+        "dataInceput": {"type": "date", "required": true, "readOnlyAfterCreate": true, "audited": true, "useNumericFormat": true},
+        "dataSfarsit": {"type": "date", "required": true, "readOnlyAfterCreate": true, "audited": true, "useNumericFormat": true, "after": "dataInceput", "afterOrEqual": true},
+        "numarZile": {"type": "int", "required": true, "readOnly": true, "default": 0, "view": "management-angajati:views/cerere-concediu/fields/numar-zile"},
+        "stare": {"type": "enum", "options": ["InAsteptare", "Aprobata", "AnulareSolicitata", "Respinsa", "Anulata"], "required": true, "default": "InAsteptare", "readOnly": true, "audited": true, "displayAsLabel": true, "style": {"InAsteptare": "warning", "Aprobata": "success", "AnulareSolicitata": "warning", "Respinsa": "danger", "Anulata": "default"}},
+        "descriere": {"type": "text", "audited": true},
+        "profil": {"type": "link", "entity": "ProfilConcediu", "required": true, "readOnly": true},
+        "aprobariNecesare": {"type": "int", "required": true, "default": 1, "readOnly": true},
+        "aprobatoriNecesari": {"type": "jsonArray", "readOnly": true},
+        "aprobatoriConfirmati": {"type": "jsonArray", "readOnly": true},
+        "decisaLa": {"type": "datetime", "readOnly": true, "audited": true},
+        "decisaDe": {"type": "link", "entity": "User", "readOnly": true, "audited": true},
+        "motivDecizie": {"type": "text", "readOnly": true, "audited": true},
+        "instantaneuDocumente": {"type": "jsonObject", "readOnly": true},
+        "documenteConcediu": {"type": "attachmentMultiple", "readOnly": true},
+        "anulareSolicitataLa": {"type": "datetime", "readOnly": true, "audited": true},
+        "motivAnulare": {"type": "text", "readOnly": true, "audited": true},
+        "aprobatoriAnulareConfirmati": {"type": "jsonArray", "readOnly": true},
+        "motivDecizieAnulare": {"type": "text", "readOnly": true, "audited": true},
+        "anulataLa": {"type": "datetime", "readOnly": true, "audited": true},
+        "anulataDe": {"type": "link", "entity": "User", "readOnly": true, "audited": true},
+        "assignedUser": {"type": "link", "entity": "User", "required": true, "readOnlyAfterCreate": true},
+        "teams": {"type": "linkMultiple", "view": "views/fields/teams"},
+        "createdAt": {"type": "datetime", "readOnly": true},
+        "modifiedAt": {"type": "datetime", "readOnly": true},
+        "createdBy": {"type": "link", "readOnly": true},
+        "modifiedBy": {"type": "link", "readOnly": true}
+    },
+    "links": {
+        "profil": {"type": "belongsTo", "entity": "ProfilConcediu", "foreign": "cereri"},
+        "decisaDe": {"type": "belongsTo", "entity": "User"},
+        "anulataDe": {"type": "belongsTo", "entity": "User"},
+        "assignedUser": {"type": "belongsTo", "entity": "User"},
+        "teams": {"type": "hasMany", "entity": "Team", "relationName": "entityTeam", "layoutRelationshipsDisabled": true},
+        "createdBy": {"type": "belongsTo", "entity": "User"},
+        "modifiedBy": {"type": "belongsTo", "entity": "User"},
+        "alocari": {"type": "hasMany", "entity": "AlocareConcediu", "foreign": "cerere"}
+    },
+    "indexes": {
+        "angajatPerioada": {"columns": ["assignedUserId", "dataInceput", "dataSfarsit", "deleted"]},
+        "stareData": {"columns": ["stare", "dataInceput", "deleted"]}
+    },
+    "collection": {"orderBy": "dataInceput", "order": "desc"}
+}

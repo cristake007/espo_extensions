@@ -1,0 +1,15 @@
+[
+    {
+        "label": "",
+        "rows": [
+            [
+                {"name": "assignedUser"},
+                {"name": "dataPrezenta"}
+            ],
+            [
+                {"name": "codPrezenta"},
+                false
+            ]
+        ]
+    }
+]

@@ -1,0 +1,29 @@
+{
+    "transactionalSave": true,
+    "optimisticConcurrencyControl": true,
+    "deleteId": true,
+    "fields": {
+        "name": {"type": "varchar", "required": true, "readOnly": true},
+        "zileAnuale": {"type": "int", "required": true, "default": 21, "min": 0, "audited": true},
+        "zileDisponibileAnCurent": {"type": "int", "min": 0, "notStorable": true},
+        "zileReportateAnAnterior": {"type": "int", "min": 0, "notStorable": true},
+        "diferentaCorectie": {"type": "int", "notStorable": true},
+        "dataUrmatoareiAcordari": {"type": "date", "required": true, "audited": true, "useNumericFormat": true},
+        "initializat": {"type": "bool", "required": true, "default": false, "readOnly": true, "audited": true},
+        "assignedUser": {"type": "link", "entity": "User", "required": true, "readOnlyAfterCreate": true, "audited": true},
+        "createdAt": {"type": "datetime", "readOnly": true},
+        "modifiedAt": {"type": "datetime", "readOnly": true},
+        "createdBy": {"type": "link", "readOnly": true},
+        "modifiedBy": {"type": "link", "readOnly": true}
+    },
+    "links": {
+        "assignedUser": {"type": "belongsTo", "entity": "User"},
+        "createdBy": {"type": "belongsTo", "entity": "User"},
+        "modifiedBy": {"type": "belongsTo", "entity": "User"},
+        "drepturi": {"type": "hasMany", "entity": "DreptConcediu", "foreign": "profil"},
+        "cereri": {"type": "hasMany", "entity": "CerereConcediu", "foreign": "profil"}
+    },
+    "indexes": {
+        "angajatUnic": {"type": "unique", "columns": ["assignedUserId", "deleteId"]}
+    }
+}

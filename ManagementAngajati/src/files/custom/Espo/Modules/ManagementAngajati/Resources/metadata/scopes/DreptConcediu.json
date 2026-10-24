@@ -1,0 +1,11 @@
+{
+    "entity": true,
+    "module": "ManagementAngajati",
+    "acl": false,
+    "aclPortal": false,
+    "tab": false,
+    "layouts": false,
+    "customizable": false,
+    "importable": false,
+    "preserveAuditLog": true
+}

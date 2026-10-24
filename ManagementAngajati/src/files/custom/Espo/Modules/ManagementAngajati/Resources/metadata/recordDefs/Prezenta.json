@@ -1,0 +1,16 @@
+{
+    "earlyBeforeCreateHookClassNameList": [
+        "Espo\\Modules\\ManagementAngajati\\Classes\\RecordHooks\\Prezenta\\StabilesteNumele"
+    ],
+    "beforeCreateHookClassNameList": [
+        "Espo\\Modules\\ManagementAngajati\\Classes\\RecordHooks\\Prezenta\\InainteDeCreare"
+    ],
+    "beforeUpdateHookClassNameList": [
+        "Espo\\Modules\\ManagementAngajati\\Classes\\RecordHooks\\Prezenta\\InainteDeActualizare"
+    ],
+    "massActions": {
+        "update": {
+            "allowed": false
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "fields": {
+        "angajat": "Angajat"
+    },
+    "labels": {
+        "administrareConcedii": "Administrare concedii",
+        "managementAngajati": "Managementul angajaților",
+        "listaCereri": "Cererile angajaților",
+        "cereri": "cereri",
+        "deSolutionat": "de soluționat",
+        "faraCereri": "Nu există cereri de concediu",
+        "documente": "Documente",
+        "actiuni": "Acțiuni",
+        "aproba": "Aprobă",
+        "respinge": "Respinge",
+        "aprobaAnularea": "Aprobă anularea",
+        "respingeAnularea": "Respinge anularea",
+        "motivAnulare": "Motivul anulării"
+    },
+    "messages": {
+        "descriereAdministrareConcedii": "Examinează cererile de concediu, aprobările, anulările și documentele generate.",
+        "descriereListaCereri": "Acțiunile disponibile respectă aprobatorii și starea fiecărei cereri.",
+        "faraCereriExplicatie": "Cererile trimise de angajați vor apărea aici pentru analiză.",
+        "decizieSalvata": "Decizia a fost salvată.",
+        "decizieAnulareSalvata": "Decizia privind anularea a fost salvată.",
+        "doiAprobatoriNecesari": "Selectează cei doi manageri aprobatori.",
+        "aprobatorInvalid": "Unul dintre aprobatori nu este un utilizator activ valid."
+    }
+}

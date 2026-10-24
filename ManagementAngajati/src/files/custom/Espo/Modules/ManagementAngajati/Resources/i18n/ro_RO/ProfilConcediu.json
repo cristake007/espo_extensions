@@ -1,0 +1,48 @@
+{
+    "fields": {
+        "zileAnuale": "Drept anual pentru acordările viitoare",
+        "zileDisponibileAnCurent": "Sold inițial disponibil din anul curent",
+        "zileReportateAnAnterior": "Rămase din anul anterior",
+        "disponibileAnCurent": "Disponibile din anul curent",
+        "disponibileReportate": "Disponibile reportate",
+        "dataUrmatoareiAcordari": "Data următoarei acordări",
+        "dataAcordareCurenta": "Data actuală a acordării",
+        "dataNouaAcordare": "Noua dată a următoarei acordări",
+        "drepturiAfectate": "Acordări anuale a căror dată s-ar modifica",
+        "motivProgramAcordare": "Motivul corecției programului",
+        "diferentaCorectie": "Diferență (+/- zile)",
+        "motivCorectie": "Motivul corecției"
+    },
+    "labels": {
+        "initializeaza": "Inițializează",
+        "corecteazaProgramAcordare": "Corectează acordarea",
+        "impactCorectieProgramAcordare": "Impactul corecției acordării",
+        "cereriBlocante": "Cereri care blochează modificarea",
+        "corecteazaSold": "Aplică corecția",
+        "istoricSold": "Istoric recent"
+    },
+    "messages": {
+        "profilSalvat": "Profilul de concediu a fost salvat.",
+        "corectieProgramAcordareSalvata": "Data următoarei acordări a fost corectată și înregistrată în istoric.",
+        "corectieProgramAcordareInvalida": "Alege o dată diferită și introdu un motiv de cel puțin 3 caractere.",
+        "confirmareCorectieProgramAcordare": "Corecția poate modifica numai drepturile viitoare neutilizate. Cererile aprobate și documentele istorice nu vor fi recalculate. Continui?",
+        "programAcordarePoateFiCorectat": "Modificarea este permisă. Vor fi actualizate numai drepturile viitoare neutilizate; cererile și documentele istorice rămân neschimbate.",
+        "dataAcordareTrebuieViitoare": "Modificarea este blocată: noua dată a acordării trebuie să fie ulterioară zilei curente.",
+        "dataAcordareNeschimbata": "Modificarea este blocată: noua dată este identică cu data existentă.",
+        "anAcordareDiferit": "Modificarea este blocată: corecția trebuie să rămână în același an calendaristic. Pentru schimbarea anului este necesară o operație administrativă separată.",
+        "programAcordareFolositDeCereri": "Modificarea este blocată deoarece un drept anual viitor este deja rezervat sau consumat de cererile afișate mai jos. Cererile trebuie respinse sau anulate înaintea corecției.",
+        "programAcordareDataInvalida": "Modificarea este blocată: noua zi și lună nu formează o dată validă pentru unul dintre drepturile viitoare.",
+        "corectieSoldSalvata": "Corecția soldului a fost salvată și înregistrată în istoric.",
+        "corectieSoldInvalida": "Introdu o diferență întreagă, diferită de zero, și un motiv de cel puțin 3 caractere.",
+        "corectieSoldPesteDisponibil": "Nu se pot scădea {scadere} zile; soldul disponibil este {disponibile}.",
+        "explicatieInitializare": "Dreptul anual stabilește câte zile vor fi acordate la data următoarei acordări. Soldul inițial este numărul real de zile disponibile acum din anul curent; nu se deduce niciun consum istoric. Zilele rămase din anul anterior se introduc separat și sunt folosite primele.",
+        "explicatieDrepturiAfectate": "Numărul reprezintă acordările anuale programate a căror dată s-ar schimba, nu numărul cererilor de concediu.",
+        "initializareConcediuInvalida": "Datele de inițializare nu sunt valide.",
+        "zileDisponibilePesteDrept": "Soldul inițial din anul curent nu poate depăși dreptul anual configurat.",
+        "dataUrmatoareiAcordariTrebuieViitoare": "Data următoarei acordări trebuie să fie ulterioară zilei curente. Zilele disponibile în prezent se introduc în soldul inițial.",
+        "profilConcediuExistent": "Angajatul are deja un profil de concediu.",
+        "profilConcediuInvalid": "Profilul de concediu nu este valid.",
+        "profilConcediuNeinitializat": "Profilul de concediu nu este inițializat.",
+        "angajatInvalid": "Angajatul nu este valid."
+    }
+}

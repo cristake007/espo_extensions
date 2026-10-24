@@ -106,6 +106,16 @@ build_extension() {
     local build_args=(./build.sh --extension "./${extension}" --zip)
 
     require_extension "$extension"
+
+    if [ -f "${repo_root}/${extension}/extension.json" ] &&
+        [ -d "${repo_root}/${extension}/src/files" ]; then
+        [ -x "${repo_root}/${extension}/build.sh" ] ||
+            fail "modern extension build script is missing or not executable: $extension"
+        mkdir -p "${repo_root}/dist"
+        "${repo_root}/${extension}/build.sh" --zip "${repo_root}/dist"
+        return
+    fi
+
     [ -d "${repo_root}/${extension}/files" ] || fail "extension files directory not found: $extension"
     mkdir -p "${repo_root}/dist"
 

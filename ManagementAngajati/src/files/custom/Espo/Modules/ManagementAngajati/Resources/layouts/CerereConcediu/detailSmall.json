@@ -1,0 +1,9 @@
+[
+    {
+        "rows": [
+            [{"name": "dateStartDate"}, {"name": "dateEndDate"}],
+            [{"name": "numarZile"}, {"name": "stare"}],
+            [{"name": "descriere", "fullWidth": true}]
+        ]
+    }
+]

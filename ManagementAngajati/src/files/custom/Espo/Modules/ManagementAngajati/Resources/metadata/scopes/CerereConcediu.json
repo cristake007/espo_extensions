@@ -1,0 +1,16 @@
+{
+    "entity": true,
+    "object": true,
+    "type": "Event",
+    "module": "ManagementAngajati",
+    "acl": true,
+    "aclPortal": false,
+    "calendar": true,
+    "tab": true,
+    "layouts": false,
+    "stream": false,
+    "customizable": false,
+    "importable": false,
+    "notifications": false,
+    "preserveAuditLog": true
+}

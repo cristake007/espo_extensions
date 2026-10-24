@@ -1,0 +1,9 @@
+{
+    "fields": {
+        "dataAngajare": {
+            "type": "date",
+            "audited": true,
+            "customizationDisabled": true
+        }
+    }
+}
