@@ -74,6 +74,7 @@ validate() {
     check_versions
 
     cd "$extension_root"
+    node tools/validate-frontend-modules.mjs
     npm run unit-tests
     npm run sa
 }
