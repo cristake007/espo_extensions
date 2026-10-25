@@ -1,4 +1,4 @@
-define(
+define('modules/management-angajati/views/administrare-concedii/index', 
     ['view', 'management-angajati:instrumente/prezenta'],
     (Vizualizare, InstrumentePrezenta) => {
     return class VizualizareAdministrareConcedii extends Vizualizare {
