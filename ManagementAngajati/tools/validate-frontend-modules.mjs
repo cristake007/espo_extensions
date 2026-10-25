@@ -1,8 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 
 const sourceDir = path.resolve(
-    import.meta.dirname,
+    path.dirname(fileURLToPath(import.meta.url)),
     '../src/files/client/custom/modules/management-angajati/src'
 );
 const modulePrefix = 'modules/management-angajati/';
