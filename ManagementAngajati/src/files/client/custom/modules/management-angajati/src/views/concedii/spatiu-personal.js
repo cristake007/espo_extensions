@@ -1,4 +1,4 @@
-define(['view'], (Vizualizare) => {
+define('modules/management-angajati/views/concedii/spatiu-personal', ['view'], (Vizualizare) => {
     return class VizualizareConcediiPersonale extends Vizualizare {
         template = 'management-angajati:concedii/spatiu-personal'
 
