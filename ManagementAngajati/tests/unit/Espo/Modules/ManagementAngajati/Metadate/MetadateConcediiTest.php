@@ -127,7 +127,7 @@ class MetadateConcediiTest extends TestCase
         );
         self::assertNotFalse($vizualizareCalendar);
         self::assertStringContainsString(
-            "define(['zile-sarbatoare:views/calendar/calendar']",
+            "define('modules/management-angajati/views/calendar/calendar', ['zile-sarbatoare:views/calendar/calendar']",
             $vizualizareCalendar
         );
         self::assertStringContainsString(
@@ -234,7 +234,7 @@ class MetadateConcediiTest extends TestCase
         );
         self::assertNotFalse($camp);
         self::assertNotFalse($serviciu);
-        self::assertStringContainsString("define(['views/fields/int']", $camp);
+        self::assertStringContainsString("define('modules/management-angajati/views/cerere-concediu/fields/numar-zile', ['views/fields/int']", $camp);
         self::assertStringContainsString('change:dateStartDate change:dateEndDate', $camp);
         self::assertStringContainsString('if (!this.model.isNew()) return;', $camp);
         self::assertStringContainsString('Concedii/previzualizare-perioada', $camp);
@@ -423,7 +423,7 @@ class MetadateConcediiTest extends TestCase
         self::assertStringNotContainsString('#CerereConcediu/view/{{id}}', $rand);
         self::assertStringContainsString(
             "decizieLuata = true;\n                            rezolva(true);\n                            dialog.close();",
-            $rand
+            str_replace("\r\n", "\n", $rand)
         );
         self::assertStringContainsString(
             "if (!decizieLuata) rezolva(false);",
