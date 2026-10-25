@@ -1,4 +1,4 @@
-define(['controller'], (Controlor) => {
+define('modules/management-angajati/controllers/administrare-concedii', ['controller'], (Controlor) => {
     return class ControlorAdministrareConcedii extends Controlor {
         defaultAction = 'index'
         checkAccessGlobal() {
