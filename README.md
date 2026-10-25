@@ -42,7 +42,9 @@ la rădăcină și exclude `espocrm-extension-scaffold`, care este un șablon.
 Wrapperul apelează harness-ul comun `build.sh`; validarea și formatul ZIP nu
 sunt duplicate. Proiectele moderne bazate pe `src/`, precum
 `ManagementAngajati`, folosesc propriul build cu Node.js, PHP și Composer pe
-host, descris în secțiunea următoare. Pentru extensiile legacy, pe serverele
+host, descris în secțiunea următoare. La `validate --all`, extensiile
+legacy sunt validate static în Docker, iar proiectele moderne rulează
+suitele complete pe host; lipsa dependențelor este o eroare, nu un PASS. Pentru extensiile legacy, pe serverele
 care au deja PHP și ZIP, comenzile directe rămân suportate:
 
 ```bash
@@ -63,25 +65,34 @@ ManagementAngajati/src/scripts
 
 Nu dubla aceste directoare la rădăcina extensiei. Build-ul propriu compilează JavaScript-ul și template-urile, instalează dependențele PHP ale modulului și produce arhiva finală cu `files/` și `scripts/` la rădăcina ZIP-ului.
 
-Prima inițializare după clonarea repository-ului:
+Din rădăcina repository-ului, pregătirea inițială și comenzile zilnice
+folosesc aceeași interfață:
 
 ```bash
-cd ManagementAngajati
-./build.sh --bootstrap
-./build.sh --validate
-./build.sh --zip
-```
-
-Din rădăcina repository-ului pot fi folosite și comenzile uniforme:
-
-```bash
+./build.sh --extension ./ManagementAngajati --bootstrap
 ./build.sh --extension ./ManagementAngajati --validate
 ./build.sh --extension ./ManagementAngajati --zip
+```
+
+`--bootstrap` instalează dependențele proiectului și pregătește runtime-ul
+de test (nu creează ZIP). Se execută după clonare sau la actualizarea
+dependențelor. `--validate` rulează verificările statice comune și apoi
+testele PHPUnit/PHPStan ale proiectului modern. `--zip` execută validarea
+necesară, compilează frontend-ul și produce arhiva instalabilă.
+
+Sunt disponibile și comenzile:
+
+```bash
 ./test-php.sh validate ManagementAngajati
 ./test-php.sh build ManagementAngajati
 ```
 
-Validarea comună verifică manifestul, JSON-ul și PHP-ul direct din `src/`. Construirea ZIP-ului este delegată către `ManagementAngajati/build.sh`; pentru aceasta hostul trebuie să aibă Node.js, npm, PHP, Composer, ZIP și Unzip, iar dependențele trebuie pregătite prin `--bootstrap`.
+Pentru extensiile legacy, `--validate` rămâne strict static (manifest,
+JSON și sintaxa PHP), fără a pretinde executarea suitei de teste.
+Pentru proiectele moderne, wrapperul `test-php.sh` deleagă către host,
+fără containerul PHP legacy. Construirea ZIP-ului are nevoie de Node.js,
+npm, PHP, Composer, ZIP și Unzip compatibile, plus dependențele pregătite
+prin `--bootstrap`.
 
 Instrucțiunile complete pentru un server nou, mediul local EspoCRM, versionare și livrare sunt în [`ManagementAngajati/README.md`](ManagementAngajati/README.md).
 
