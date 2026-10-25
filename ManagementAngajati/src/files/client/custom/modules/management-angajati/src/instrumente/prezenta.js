@@ -1,4 +1,4 @@
-define([], () => ({
+define('modules/management-angajati/instrumente/prezenta', [], () => ({
     obtineCoduriPrezenta(metadate) {
         const optiuni = metadate.get([
             'entityDefs',
