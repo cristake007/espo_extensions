@@ -1,4 +1,4 @@
-define(['view'], (Vizualizare) => {
+define('modules/management-angajati/views/gestionare-angajati/concedii', ['view'], (Vizualizare) => {
     return class VizualizareSetariConcedii extends Vizualizare {
         template = 'management-angajati:gestionare-angajati/concedii'
         setup() {
