@@ -1,4 +1,4 @@
-define(['controller'], (Controlor) => {
+define('modules/management-angajati/controllers/gestionare-angajati', ['controller'], (Controlor) => {
     return class ControlorGestionareAngajati extends Controlor {
 
         defaultAction = 'index'
