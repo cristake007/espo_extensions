@@ -1,4 +1,4 @@
-define(['view'], (Vizualizare) => {
+define('modules/management-angajati/views/gestionare-angajati/rand-profil-concediu', ['view'], (Vizualizare) => {
     return class VizualizareRandProfilConcediu extends Vizualizare {
         template = 'management-angajati:gestionare-angajati/rand-profil-concediu'
         setup() {
