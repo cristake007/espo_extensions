@@ -1,4 +1,4 @@
-define(
+define('modules/management-angajati/views/condica-prezenta/lunara', 
     ['view', 'management-angajati:instrumente/prezenta'],
     (View, InstrumentePrezenta) => {
     return class VizualizareCondicaPrezentaLunara extends View {
