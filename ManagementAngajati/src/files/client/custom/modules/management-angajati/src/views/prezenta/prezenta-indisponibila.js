@@ -1,4 +1,4 @@
-define(['view'], (Vizualizare) => {
+define('modules/management-angajati/views/prezenta/prezenta-indisponibila', ['view'], (Vizualizare) => {
     return class VizualizarePrezentaIndisponibil extends Vizualizare {
 
         template = 'management-angajati:prezenta/prezenta-indisponibila'
