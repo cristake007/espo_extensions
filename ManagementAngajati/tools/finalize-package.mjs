@@ -33,11 +33,32 @@ for (const prefix of requiredPrefixes) {
     }
 }
 
-const frontendBundle =
-    'files/client/custom/modules/management-angajati/lib/module-management-angajati.js';
+const frontendRoot = 'files/client/custom/modules/management-angajati/lib/';
+const frontendInit = frontendRoot + 'init.js';
+const frontendBundle = frontendRoot + 'module-management-angajati.js';
+const frontendClientMetadata =
+    'files/custom/Espo/Modules/ManagementAngajati/Resources/metadata/app/client.json';
+const frontendInitUrl = 'client/custom/modules/management-angajati/lib/init.js';
 
-if (!entries.includes(frontendBundle)) {
-    throw new Error('Generated package does not contain the compiled frontend bundle.');
+for (const required of [frontendInit, frontendBundle, frontendClientMetadata]) {
+    if (!entries.includes(required)) {
+        throw new Error(`Generated package does not contain required frontend file: ${required}`);
+    }
+}
+
+const clientMetadata = JSON.parse(
+    archive.getEntry(frontendClientMetadata).getData().toString('utf8')
+);
+
+if (
+    !Array.isArray(clientMetadata.scriptList) ||
+    !clientMetadata.scriptList.includes('__APPEND__') ||
+    !clientMetadata.scriptList.includes(frontendInitUrl)
+) {
+    throw new Error(
+        'Bundled frontend is not registered in app/client.json scriptList: ' +
+        frontendInitUrl
+    );
 }
 
 fs.mkdirSync(path.dirname(outputZip), {recursive: true});
