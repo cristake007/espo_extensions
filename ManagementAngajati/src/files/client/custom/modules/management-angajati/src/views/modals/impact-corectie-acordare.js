@@ -1,4 +1,4 @@
-define(['views/modal'], (Modal) => {
+define('modules/management-angajati/views/modals/impact-corectie-acordare', ['views/modal'], (Modal) => {
     return class DialogImpactCorectieAcordare extends Modal {
         className = 'dialog dialog-record'
         fitHeight = true
