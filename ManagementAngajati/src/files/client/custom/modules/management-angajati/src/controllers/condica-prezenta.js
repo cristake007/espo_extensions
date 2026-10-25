@@ -1,4 +1,4 @@
-define(['controllers/record'], (ControlorInregistrare) => {
+define('modules/management-angajati/controllers/condica-prezenta', ['controllers/record'], (ControlorInregistrare) => {
     return class ControlorCondicaPrezenta extends ControlorInregistrare {
 
         entityType = 'Prezenta'
