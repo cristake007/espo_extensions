@@ -1,4 +1,4 @@
-define(['view'], (Vizualizare) => {
+define('modules/management-angajati/views/gestionare-angajati/index', ['view'], (Vizualizare) => {
     return class VizualizareGestionareAngajati extends Vizualizare {
 
         template = 'management-angajati:gestionare-angajati/index'
