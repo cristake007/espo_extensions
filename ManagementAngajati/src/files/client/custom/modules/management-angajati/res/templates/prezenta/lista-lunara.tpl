@@ -10,6 +10,24 @@
         </div>
     </header>
 
+    {{#if esteCicActiv}}
+    <section class="stare-cic-panou" aria-labelledby="stare-cic-prezenta-titlu">
+        <div class="stare-cic-icon" aria-hidden="true"><span class="fas fa-child"></span></div>
+        <div class="stare-cic-continut">
+            <span class="label label-info">{{cicStare}}</span>
+            <h3 id="stare-cic-prezenta-titlu">{{cicTitlu}}</h3>
+            <p>{{cicExplicatie}}</p>
+            <dl class="stare-cic-perioada">
+                <dt>{{cicPerioada}}</dt>
+                <dd>{{cicDataInceput}} – {{cicDataSfarsit}}</dd>
+            </dl>
+            <div class="stare-cic-mesaj">
+                <span class="fas fa-check-circle" aria-hidden="true"></span>
+                <span><strong>{{cicFaraActiune}}</strong><small>{{cicContactManager}}</small></span>
+            </div>
+        </div>
+    </section>
+    {{else}}
     <section class="prezenta-astazi-panou" data-zi="{{dataAstazi}}">
         <div class="prezenta-personala-panou-antet">
             <div class="prezenta-personala-sectiune-identitate">
@@ -103,4 +121,5 @@
         <div class="prezenta-personala-gol"><span class="fas fa-calendar-times" aria-hidden="true"></span><h4>{{faraZile}}</h4><p>{{faraZileExplicatie}}</p></div>
         {{/if}}
     </section>
+    {{/if}}
 </main>

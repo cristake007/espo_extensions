@@ -84,6 +84,122 @@ class SolduriConcediu
         return $rezultat;
     }
 
+    /**
+     * Reconstituie soldul disponibil imediat dupa fiecare cerere, exclusiv din ledger.
+     *
+     * @param list<Entity> $cereri
+     * @return list<array<string, bool|int|string|null>>
+     */
+    public function cronologieCereri(Entity $profil, array $cereri): array
+    {
+        $cereriDupaId = [];
+
+        foreach ($cereri as $cerere) {
+            $cereriDupaId[$cerere->getId()] = $cerere;
+        }
+
+        if ($cereriDupaId === []) {
+            return [];
+        }
+
+        $inregistrari = $this->managerEntitati->getRDBRepository('RegistruConcediu')
+            ->where(['profilId' => $profil->getId()])
+            ->order('createdAt', 'ASC')
+            ->order('id', 'ASC')
+            ->find();
+        $soldDisponibil = 0;
+        $cronologie = [];
+        $pozitiiOperatii = [];
+
+        foreach ($inregistrari as $inregistrare) {
+            $tip = (string) $inregistrare->get('tip');
+            $numarZile = (int) $inregistrare->get('numarZile');
+            $soldInainte = $soldDisponibil;
+
+            if (in_array($tip, [
+                'Initializare',
+                'AcordareAnuala',
+                'Corectie',
+                'Rezervare',
+                'Eliberare',
+                'Restaurare',
+            ], true)) {
+                $soldDisponibil += $numarZile;
+            }
+
+            $idCerere = (string) $inregistrare->get('cerereId');
+
+            if (!in_array($tip, ['Rezervare', 'Eliberare', 'Restaurare'], true)) {
+                continue;
+            }
+
+            $cerere = $cereriDupaId[$idCerere] ?? null;
+
+            if (!$cerere instanceof Entity) {
+                continue;
+            }
+
+            if ($cronologie === []) {
+                $cronologie[] = [
+                    'idCerere' => null,
+                    'esteInitializare' => true,
+                    'tipEveniment' => 'Initializare',
+                    'dataInceput' => null,
+                    'dataSfarsit' => null,
+                    'numarZile' => 0,
+                    'stare' => 'Initializare',
+                    'descriere' => null,
+                    'soldInainte' => $soldInainte,
+                    'soldDupa' => $soldInainte,
+                    'zileRezervate' => 0,
+                    'zileRestituite' => 0,
+                    'impactFinal' => 0,
+                    'dataOperatie' => null,
+                    'motivOperatie' => null,
+                ];
+            }
+
+            $tipEveniment = $tip === 'Rezervare' ? 'Rezervare' : 'Restituire';
+            $cheieOperatie = $tipEveniment . ':' . $idCerere;
+
+            if (!array_key_exists($cheieOperatie, $pozitiiOperatii)) {
+                $pozitiiOperatii[$cheieOperatie] = count($cronologie);
+                $cronologie[] = [
+                    'idCerere' => $idCerere,
+                    'esteInitializare' => false,
+                    'tipEveniment' => $tipEveniment,
+                    'dataInceput' => (string) $cerere->get('dataInceput'),
+                    'dataSfarsit' => (string) $cerere->get('dataSfarsit'),
+                    'numarZile' => abs($numarZile),
+                    'stare' => (string) $cerere->get('stare'),
+                    'descriere' => $cerere->get('descriere'),
+                    'soldInainte' => $soldInainte,
+                    'soldDupa' => $soldDisponibil,
+                    'zileRezervate' => $tipEveniment === 'Rezervare' ? abs($numarZile) : 0,
+                    'zileRestituite' => $tipEveniment === 'Restituire' ? abs($numarZile) : 0,
+                    'impactFinal' => $numarZile,
+                    'dataOperatie' => (string) $inregistrare->get('dataEfectiva'),
+                    'motivOperatie' => $inregistrare->get('motiv'),
+                ];
+                continue;
+            }
+
+            $pozitie = $pozitiiOperatii[$cheieOperatie];
+            $cronologie[$pozitie]['soldDupa'] = $soldDisponibil;
+            $cronologie[$pozitie]['numarZile'] += abs($numarZile);
+            $cronologie[$pozitie][
+                $tipEveniment === 'Rezervare' ? 'zileRezervate' : 'zileRestituite'
+            ] += abs($numarZile);
+            $cronologie[$pozitie]['impactFinal'] += $numarZile;
+
+            if (!$cronologie[$pozitie]['motivOperatie'] && $inregistrare->get('motiv')) {
+                $cronologie[$pozitie]['motivOperatie'] = $inregistrare->get('motiv');
+            }
+        }
+
+        return array_values($cronologie);
+    }
+
     /** @return array{sold: array<string, mixed>, istoric: list<array<string, int|string|null>>} */
     public function corecteaza(string $idAngajat, int $diferenta, string $motiv): array
     {

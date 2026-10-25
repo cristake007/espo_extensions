@@ -11,7 +11,7 @@ use Espo\Entities\User;
 use Espo\ORM\Entity;
 use Espo\ORM\EntityManager;
 
-/** Creeaza notificari native Espo pentru etapele fluxului de anulare. */
+/** Creeaza notificari native Espo pentru intregul flux al cererilor de concediu. */
 class NotificatorCereriConcediu
 {
     public function __construct(
@@ -19,6 +19,36 @@ class NotificatorCereriConcediu
         private LanguageFactory $fabricaLimbi,
         private Config $configuratie,
     ) {}
+
+    public function notificaCerereNoua(Entity $cerere): void
+    {
+        $this->notificaAprobatori($cerere, 'notificareCerereNoua');
+    }
+
+    public function notificaAprobarePartiala(
+        Entity $cerere,
+        string $numeAprobator,
+    ): void {
+        $confirmati = array_values(array_filter(
+            (array) $cerere->get('aprobatoriConfirmati'),
+            'is_string'
+        ));
+
+        $this->notificaAprobatori(
+            $cerere,
+            'notificareAprobarePartiala',
+            $confirmati,
+            ['{manager}' => $numeAprobator]
+        );
+    }
+
+    public function notificaDecizieCerere(Entity $cerere, bool $aprobata): void
+    {
+        $this->notificaAngajat(
+            $cerere,
+            $aprobata ? 'notificareCerereAprobata' : 'notificareCerereRespinsa'
+        );
+    }
 
     public function notificaRetragere(Entity $cerere): void
     {
@@ -31,6 +61,14 @@ class NotificatorCereriConcediu
     }
 
     public function notificaDecizieAnulare(Entity $cerere, bool $aprobata): void
+    {
+        $this->notificaAngajat(
+            $cerere,
+            $aprobata ? 'notificareAnulareAprobata' : 'notificareAnulareRespinsa'
+        );
+    }
+
+    private function notificaAngajat(Entity $cerere, string $cheieMesaj): void
     {
         $idAngajat = $cerere->get('assignedUserId');
 
@@ -49,17 +87,26 @@ class NotificatorCereriConcediu
         $this->creeaza(
             $angajat,
             $cerere,
-            $aprobata ? 'notificareAnulareAprobata' : 'notificareAnulareRespinsa',
+            $cheieMesaj,
             '#CerereConcediu'
         );
     }
 
-    private function notificaAprobatori(Entity $cerere, string $cheieMesaj): void
-    {
+    /**
+     * @param list<string> $idAprobatoriExclusi
+     * @param array<string, string> $inlocuiri
+     */
+    private function notificaAprobatori(
+        Entity $cerere,
+        string $cheieMesaj,
+        array $idAprobatoriExclusi = [],
+        array $inlocuiri = [],
+    ): void {
         $idAprobatori = array_values(array_unique(array_filter(
             (array) $cerere->get('aprobatoriNecesari'),
             'is_string'
         )));
+        $idAprobatori = array_values(array_diff($idAprobatori, $idAprobatoriExclusi));
 
         if ($idAprobatori === []) {
             return;
@@ -69,21 +116,29 @@ class NotificatorCereriConcediu
             ->where(['id' => $idAprobatori, 'isActive' => true])
             ->find() as $aprobator) {
             if ($aprobator instanceof User) {
-                $this->creeaza($aprobator, $cerere, $cheieMesaj, '#AdministrareConcedii');
+                $this->creeaza(
+                    $aprobator,
+                    $cerere,
+                    $cheieMesaj,
+                    '#AdministrareConcedii',
+                    $inlocuiri
+                );
             }
         }
     }
 
+    /** @param array<string, string> $inlocuiri */
     private function creeaza(
         User $destinatar,
         Entity $cerere,
         string $cheieMesaj,
         string $ruta,
+        array $inlocuiri = [],
     ): void {
         $limba = $this->obtineLimba($destinatar);
         $mesaj = strtr(
             $limba->translateLabel($cheieMesaj, 'messages', 'CerereConcediu'),
-            [
+            $inlocuiri + [
                 '{angajat}' => (string) $cerere->get('assignedUserName'),
                 '{inceput}' => (string) $cerere->get('dataInceput'),
                 '{sfarsit}' => (string) $cerere->get('dataSfarsit'),
@@ -115,9 +170,11 @@ class NotificatorCereriConcediu
 
     private function obtineLimba(User $utilizator): Language
     {
-        $preferinte = $this->managerEntitati
-            ->getRepositoryByClass(Preferences::class)
-            ->getById($utilizator->getId());
+        $preferinte = $this->managerEntitati->getEntityById(
+            Preferences::ENTITY_TYPE,
+            $utilizator->getId()
+        );
+        $preferinte = $preferinte instanceof Preferences ? $preferinte : null;
         $codLimba = Language::detectLanguage($this->configuratie, $preferinte) ?? 'en_US';
 
         return $this->fabricaLimbi->create($codLimba);

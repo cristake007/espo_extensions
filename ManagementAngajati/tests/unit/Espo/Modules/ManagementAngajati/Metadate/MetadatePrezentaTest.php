@@ -90,6 +90,10 @@ class MetadatePrezentaTest extends TestCase
 
         self::assertSame('Prezență', $globalRomana['navbarTabs']['prezenta']);
         self::assertSame('Attendance', $globalEngleza['navbarTabs']['prezenta']);
+        self::assertSame('Management', $globalRomana['navbarTabs']['management']);
+        self::assertSame('Management', $globalEngleza['navbarTabs']['management']);
+        self::assertSame('Administrare', $globalRomana['scopeNamesPlural']['GestionareAngajati']);
+        self::assertSame('Administration', $globalEngleza['scopeNamesPlural']['GestionareAngajati']);
         self::assertSame('Concediu medical', $traduceriRomana['options']['codPrezenta']['CM']);
         self::assertSame('Medical leave', $traduceriEngleza['options']['codPrezenta']['CM']);
         self::assertSame(
@@ -110,7 +114,10 @@ class MetadatePrezentaTest extends TestCase
             ],
             array_keys($traduceriRomana['fields'])
         );
-        self::assertSame(['P', 'D', 'CM', 'CO'], array_keys($traduceriRomana['options']['codPrezenta']));
+        self::assertSame(
+            ['P', 'D', 'CM', 'CO', 'CIC'],
+            array_keys($traduceriRomana['options']['codPrezenta'])
+        );
         self::assertSame(
             [
                 'dataPrezentaViitoare',
@@ -139,6 +146,8 @@ class MetadatePrezentaTest extends TestCase
                 'ajutorP',
                 'ajutorD',
                 'ajutorCM',
+                'prezentaSuspendataCic',
+                'cicContactManager',
             ],
             array_keys($traduceriRomana['messages'])
         );
@@ -156,7 +165,8 @@ class MetadatePrezentaTest extends TestCase
                 'zileInregistrate', 'zileAfisate', 'faraZile',
                 'prezentaAstazi', 'stareCurenta', 'alegePrezenta', 'registruLunar',
                 'zileCompletate', 'zileNecompletate', 'zileViitoare', 'nemarcat',
-                'nicioActiuneNecesara'],
+                'nicioActiuneNecesara', 'prezentaIndisponibilaCic', 'cicActiv',
+                'perioadaCic', 'cicFaraPontare'],
             array_keys($traduceriRomana['labels'])
         );
         self::assertCount(12, $traduceriRomana['luni']);
@@ -310,6 +320,9 @@ class MetadatePrezentaTest extends TestCase
         );
         self::assertNotFalse($sablonLista);
         self::assertStringContainsString('{{#if poateFiCompletata}}', $sablonLista);
+        self::assertStringContainsString('{{#if esteCicActiv}}', $sablonLista);
+        self::assertStringContainsString('stare-cic-panou', $sablonLista);
+        self::assertStringContainsString('calendar.situatieCic', $continutView);
         self::assertStringContainsString(
             'class="btn prezenta-actiune-card {{butonClasa}}',
             $sablonLista
@@ -318,7 +331,7 @@ class MetadatePrezentaTest extends TestCase
         self::assertStringNotContainsString('poateMergeLaLunaAnterioara', $sablonLista);
     }
 
-    public function testCondicaEsteTabNativCuPermisiuneaGestionareMostenita(): void
+    public function testCondicaEsteTabNativCuPermisiuneIndependenta(): void
     {
         $scopeCondica = $this->citesteJson('Resources/metadata/scopes/CondicaPrezenta.json');
         $scopeGestionare = $this->citesteJson('Resources/metadata/scopes/GestionareAngajati.json');
@@ -337,10 +350,7 @@ class MetadatePrezentaTest extends TestCase
         self::assertSame('boolean', $scopeGestionare['acl']);
         self::assertTrue($scopeGestionare['tab']);
         self::assertFalse($scopeGestionare['customizable']);
-        self::assertSame(
-            'boolean:GestionareAngajati',
-            $definitieAcl['mandatory']['scopeLevel']['CondicaPrezenta']
-        );
+        self::assertArrayNotHasKey('CondicaPrezenta', $definitieAcl['mandatory']['scopeLevel']);
         self::assertArrayNotHasKey('adminMandatory', $definitieAcl);
         self::assertSame(
             'management-angajati:controllers/condica-prezenta',
@@ -362,14 +372,24 @@ class MetadatePrezentaTest extends TestCase
         $sablonCondica = file_get_contents(
             self::CALE_CLIENT . '/res/templates/condica-prezenta/lunara.tpl'
         );
+        $stiluri = file_get_contents(
+            self::CALE_CLIENT . '/css/management-angajati.css'
+        );
         self::assertNotFalse($continutCondica);
         self::assertNotFalse($sablonCondica);
+        self::assertNotFalse($stiluri);
         self::assertStringNotContainsString(
             'poateMergeLaLunaAnterioara',
             $continutCondica
         );
         self::assertStringNotContainsString(
             'poateMergeLaLunaAnterioara',
+            $sablonCondica
+        );
+        self::assertStringContainsString('lunaMinimaDisponibila', $continutCondica);
+        self::assertStringContainsString('poateMergeAnterior', $continutCondica);
+        self::assertStringContainsString(
+            '{{#unless poateMergeAnterior}}disabled{{/unless}}',
             $sablonCondica
         );
         self::assertStringContainsString(
@@ -396,6 +416,18 @@ class MetadatePrezentaTest extends TestCase
         self::assertStringNotContainsString('data-id-angajat', $sablonCondica);
         self::assertStringNotContainsString('data-nume-angajat', $sablonCondica);
         self::assertStringNotContainsString('data-id-prezenta', $sablonCondica);
+        self::assertStringContainsString('condica-antet', $sablonCondica);
+        self::assertStringContainsString('condica-indicatori', $sablonCondica);
+        self::assertStringContainsString('<details class="condica-indicator-detalii">', $sablonCondica);
+        self::assertStringContainsString('data-detaliu-lipsa="{{idAngajat}}"', $sablonCondica);
+        self::assertStringContainsString('condica-mini-tabel', $sablonCondica);
+        self::assertStringContainsString('condica-legenda', $sablonCondica);
+        self::assertStringContainsString('{{clasaVizuala}}', $sablonCondica);
+        self::assertStringContainsString('obtineClasaVizualaCelula', $continutCondica);
+        self::assertStringContainsString('position: sticky', $stiluri);
+        self::assertStringContainsString('max-height: 68vh', $stiluri);
+        self::assertStringContainsString('max-height: 170px', $stiluri);
+        self::assertStringContainsString('summary::-webkit-details-marker', $stiluri);
         self::assertSame(
             'management-angajati:controllers/gestionare-angajati',
             $definitieGestionare['controller']
@@ -465,7 +497,11 @@ class MetadatePrezentaTest extends TestCase
             $continutSetariCondica
         );
         self::assertStringContainsString(
-            "container.append(\$('<tr>').attr('data-view-key', cheie));",
+            "\$('<article>')",
+            $continutSetariCondica
+        );
+        self::assertStringContainsString(
+            ".addClass('setari-condica-rand-angajat')",
             $continutSetariCondica
         );
         self::assertStringContainsString(
@@ -507,6 +543,9 @@ class MetadatePrezentaTest extends TestCase
         self::assertStringContainsString('`views/fields/${tip}`', $continutRandSetari);
         self::assertStringContainsString("remoteActiv: 'bool'", $continutRandSetari);
         self::assertStringContainsString("dataInceputCic: 'date'", $continutRandSetari);
+        self::assertStringContainsString("'[data-role=\"comutator-optiune\"]'", $continutRandSetari);
+        self::assertStringContainsString('comutaOptiunea(eveniment, element)', $continutRandSetari);
+        self::assertStringContainsString("bifa.trigger('click')", $continutRandSetari);
         self::assertStringContainsString(
             'this.getDateTime().toDisplayDate(dataAngajare)',
             $continutRandSetari
@@ -533,17 +572,46 @@ class MetadatePrezentaTest extends TestCase
         self::assertStringContainsString('{{dataAngajareAfisata}}', $sablonRandSetari);
         self::assertSame(4, substr_count($sablonRandSetari, 'class="field" data-name="data'));
         self::assertStringContainsString(
-            'class="field" data-name="remoteActiv"',
+            'data-name="remoteActiv"',
             $sablonRandSetari
         );
         self::assertStringContainsString(
-            'class="field" data-name="cicActiv"',
+            'data-name="cicActiv"',
             $sablonRandSetari
         );
+        self::assertStringContainsString('setari-condica-optiune', $sablonRandSetari);
+        self::assertSame(2, substr_count($sablonRandSetari, 'data-role="comutator-optiune"'));
+        self::assertSame(2, substr_count($sablonRandSetari, 'data-camp-bool='));
         self::assertStringContainsString('{{{dataInceputRemote}}}', $sablonRandSetari);
         self::assertStringContainsString('{{{dataSfarsitRemote}}}', $sablonRandSetari);
         self::assertStringContainsString('{{{dataInceputCic}}}', $sablonRandSetari);
         self::assertStringContainsString('{{{dataSfarsitCic}}}', $sablonRandSetari);
+
+        $sablonSetariConcedii = file_get_contents(
+            self::CALE_CLIENT . '/res/templates/gestionare-angajati/concedii.tpl'
+        );
+        self::assertNotFalse($sablonSetariConcedii);
+        self::assertStringContainsString('setari-concedii-page', $sablonSetariConcedii);
+        self::assertStringContainsString('data-role="profiluri"', $sablonSetariConcedii);
+
+        $sablonRandProfilConcediu = file_get_contents(
+            self::CALE_CLIENT . '/res/templates/gestionare-angajati/rand-profil-concediu.tpl'
+        );
+        self::assertNotFalse($sablonRandProfilConcediu);
+        self::assertStringContainsString('profil-concediu-identitate', $sablonRandProfilConcediu);
+        self::assertStringContainsString('{{dataAngajareAfisata}}', $sablonRandProfilConcediu);
+        self::assertStringNotContainsString('istoricEticheta', $sablonRandProfilConcediu);
+        self::assertStringNotContainsString('istoric.length', $sablonRandProfilConcediu);
+
+        $continutRandProfilConcediu = file_get_contents(
+            self::CALE_CLIENT . '/src/views/gestionare-angajati/rand-profil-concediu.js'
+        );
+        self::assertNotFalse($continutRandProfilConcediu);
+        self::assertStringNotContainsString('istoricEticheta', $continutRandProfilConcediu);
+        self::assertStringContainsString(
+            'this.getDateTime().toDisplayDate(this.profil.dataAngajare)',
+            $continutRandProfilConcediu
+        );
 
         $continutInstalare = file_get_contents(
             dirname(self::CALE_MODUL, 5) . '/scripts/AfterInstall.php'
@@ -563,9 +631,12 @@ class MetadatePrezentaTest extends TestCase
             $continutInstalare
         );
         self::assertStringContainsString("'type' => 'group'", $continutInstalare);
-        self::assertSame(2, substr_count($continutInstalare, "'type' => 'group'"));
-        self::assertStringContainsString("'text' => '\$condicaPrezenta'", $continutInstalare);
-        self::assertStringContainsString("'text' => '\$managementAngajati'", $continutInstalare);
+        self::assertSame(1, substr_count($continutInstalare, "'type' => 'group'"));
+        self::assertStringContainsString("'text' => '\$management'", $continutInstalare);
+        self::assertStringContainsString(
+            '$listaNoua[] = self::SCOPE_GESTIONARE;',
+            $continutInstalare
+        );
         self::assertStringContainsString(
             "'itemList' => [",
             $continutInstalare

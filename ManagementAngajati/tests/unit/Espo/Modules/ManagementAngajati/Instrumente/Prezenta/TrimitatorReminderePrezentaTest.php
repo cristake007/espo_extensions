@@ -17,12 +17,51 @@ use Espo\ORM\EntityCollection;
 use Espo\ORM\EntityManager;
 use Espo\ORM\Repository\RDBRepository;
 use Espo\ORM\Repository\RDBSelectBuilder;
-use Espo\ORM\Repository\Repository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class TrimitatorReminderePrezentaTest extends TestCase
 {
+    public function testIgnoraLunileEditabileAnterioarePrimeiAngajari(): void
+    {
+        $condica = $this->createMock(CondicaPrezentaLunara::class);
+        $condica
+            ->expects(self::once())
+            ->method('obtineLunaMinimaDisponibila')
+            ->willReturn('2026-10');
+        $condica
+            ->expects(self::once())
+            ->method('obtineDinDateCurente')
+            ->with('2026-10')
+            ->willReturn(['angajati' => [], 'zile' => []]);
+        $ciclu = $this->createMock(CicluLunarCondica::class);
+        $ciclu->expects(self::once())->method('valideazaLuna')->with('2026-10');
+        $ciclu
+            ->expects(self::once())
+            ->method('esteInFereastraPersonalaEditabila')
+            ->with('2026-10')
+            ->willReturn(true);
+        $ciclu
+            ->expects(self::once())
+            ->method('obtineLuniDeschiseDinFereastraPersonala')
+            ->willReturn(['2026-10', '2026-09', '2026-08']);
+        $manager = $this->createMock(EntityManager::class);
+        $manager->expects(self::never())->method('getEntityById');
+
+        $rezultat = (new TrimitatorReminderePrezenta(
+            $manager,
+            $condica,
+            $ciclu,
+            $this->createStub(AclManager::class),
+            $this->createStub(LanguageFactory::class),
+            $this->createStub(Config::class),
+        ))->trimite('2026-10');
+
+        self::assertSame(['2026-10'], $rezultat['luniVerificate']);
+        self::assertSame(0, $rezultat['notificariCreate']);
+        self::assertSame(0, $rezultat['notificariActualizate']);
+    }
+
     #[DataProvider('cazuriNotificare')]
     public function testCreeazaSauActualizeazaOAgregareSiIgnoraAngajatulFaraLipsuri(
         string $stareNotificare,
@@ -125,12 +164,12 @@ class TrimitatorReminderePrezentaTest extends TestCase
             ->method('getNew')
             ->willReturn($notificare);
         $preferinte = $this->createStub(Preferences::class);
-        $depozitPreferinte = $this->createStub(Repository::class);
-        $depozitPreferinte->method('getById')->willReturn($preferinte);
         $manager = $this->createMock(EntityManager::class);
-        $manager->method('getEntityById')->with(User::ENTITY_TYPE, 'angajat-1')->willReturn($angajat);
+        $manager->method('getEntityById')->willReturnMap([
+            [User::ENTITY_TYPE, 'angajat-1', $angajat],
+            [Preferences::ENTITY_TYPE, 'angajat-1', $preferinte],
+        ]);
         $manager->method('getRDBRepositoryByClass')->willReturn($depozitNotificari);
-        $manager->method('getRepositoryByClass')->willReturn($depozitPreferinte);
         $manager->expects(self::once())->method('saveEntity')->with($notificare);
         $limba = $this->createStub(Language::class);
         $limba->method('translateLabel')->willReturnMap([

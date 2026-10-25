@@ -18,6 +18,7 @@ define(
             this.cicluLunar = {};
             this.esteLunaEditabila = true;
             this.lunaMinimaDisponibila = null;
+            this.situatieCic = {activa: false, dataInceput: null, dataSfarsit: null};
 
             this.addActionHandler('lunaAnterioara', () => this.schimbaLuna(-1));
             this.addActionHandler('lunaUrmatoare', () => this.schimbaLuna(1));
@@ -44,6 +45,7 @@ define(
             const prezentareAstazi = this.prezentareCod(this.ziAstazi?.codCurent);
             const stareAstazi = this.ziAstazi?.stare ||
                 this.translate('ziNelucratoare', 'labels', 'Prezenta');
+            const esteCicActiv = this.situatieCic.activa === true;
 
             return {
                 titlu: this.translate('prezentaPersonala', 'labels', 'Prezenta'),
@@ -51,6 +53,17 @@ define(
                 descriere: this.translate(
                     'descrierePrezentaPersonala', 'messages', 'Prezenta'
                 ),
+                esteCicActiv: esteCicActiv,
+                cicTitlu: this.translate('prezentaIndisponibilaCic', 'labels', 'Prezenta'),
+                cicStare: this.translate('cicActiv', 'labels', 'Prezenta'),
+                cicExplicatie: this.translate('prezentaSuspendataCic', 'messages', 'Prezenta'),
+                cicPerioada: this.translate('perioadaCic', 'labels', 'Prezenta'),
+                cicDataInceput: this.situatieCic.dataInceput ?
+                    this.getDateTime().toDisplayDate(this.situatieCic.dataInceput) : '',
+                cicDataSfarsit: this.situatieCic.dataSfarsit ?
+                    this.getDateTime().toDisplayDate(this.situatieCic.dataSfarsit) : '',
+                cicFaraActiune: this.translate('cicFaraPontare', 'labels', 'Prezenta'),
+                cicContactManager: this.translate('cicContactManager', 'messages', 'Prezenta'),
                 lunaAfisata: `${this.translate(luna, 'luni', 'Prezenta')} ${an}`,
                 lunaCurenta: this.translate('lunaCurenta', 'labels', 'Prezenta'),
                 anterior: this.translate('lunaAnterioara', 'labels', 'Prezenta'),
@@ -110,6 +123,25 @@ define(
                 ),
                 this.incarcaColectie(this.lunaSelectata),
             ]);
+            this.situatieCic = calendar.situatieCic || {
+                activa: false,
+                dataInceput: null,
+                dataSfarsit: null,
+            };
+            this.dataCurenta = calendar.dataCurenta || null;
+            this.cicluLunar = calendar.cicluLunar;
+            this.esteLunaEditabila = calendar.esteLunaEditabila === true;
+            this.lunaMinimaDisponibila = calendar.lunaMinimaDisponibila || null;
+
+            if (this.situatieCic.activa === true) {
+                this.colectiePrezente = colectie;
+                this.colectiePrezenteAstazi = colectie;
+                this.zile = [];
+                this.ziAstazi = null;
+
+                return;
+            }
+
             let calendarAstazi = calendar;
             let colectieAstazi = colectie;
 
@@ -126,9 +158,6 @@ define(
             this.colectiePrezente = colectie;
             this.colectiePrezenteAstazi = colectieAstazi;
             this.dataCurenta = calendarAstazi.dataCurenta || calendar.dataCurenta || null;
-            this.cicluLunar = calendar.cicluLunar;
-            this.esteLunaEditabila = calendar.esteLunaEditabila === true;
-            this.lunaMinimaDisponibila = calendar.lunaMinimaDisponibila || null;
             this.pregatesteZile(calendar.zile);
             this.pregatesteAstazi(calendarAstazi.zile, colectieAstazi, calendarAstazi);
         }

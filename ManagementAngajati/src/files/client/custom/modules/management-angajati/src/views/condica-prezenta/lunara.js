@@ -13,9 +13,11 @@ define(
             this.actiuniPrezenta = {};
             this.urmatoareaCheieActiune = 0;
             this.marcariInCurs = new Set();
+            this.lunaMinimaDisponibila = null;
             this.cicluLunar = {
                 stare: 'deschisa',
                 esteInchisa: false,
+                permiteExportCondicaIncompleta: false,
                 lunaMinimaEditabila: InstrumentePrezenta.obtineLunaCurenta(),
             };
 
@@ -36,13 +38,42 @@ define(
 
         data() {
             const [an, luna] = this.lunaSelectata.split('-');
+            const angajatiAfectatiLista = this.angajati.filter(
+                angajat => Number(angajat.zileLipsa || 0) > 0
+            ).sort((primul, alDoilea) =>
+                Number(alDoilea.zileLipsa || 0) - Number(primul.zileLipsa || 0) ||
+                String(primul.numeAngajat || '').localeCompare(String(alDoilea.numeAngajat || ''))
+            );
+            const angajatiAfectati = angajatiAfectatiLista.length;
+            const zileScadente = this.angajati.reduce(
+                (total, angajat) => total + Number(angajat.zileScadente || 0),
+                0
+            );
+            const zileCompletate = this.angajati.reduce(
+                (total, angajat) => total + Number(angajat.zileCompletate || 0),
+                0
+            );
+            const calendareLipsa = this.angajati.filter(
+                angajat => angajat.areCalendarLucru !== true
+            );
+            const motiveBlocare = this.obtineMotiveBlocare();
+            const poateExporta = this.cicluLunar.esteInchisa === true ||
+                this.cicluLunar.permiteExportCondicaIncompleta === true;
 
             return {
                 titlu: this.translate('condicaPrezenta', 'labels', 'CondicaPrezenta'),
+                spratitlu: this.translate('prezentaEchipei', 'labels', 'CondicaPrezenta'),
+                descrierePagina: this.translate(
+                    'descriereCondica',
+                    'messages',
+                    'CondicaPrezenta'
+                ),
                 lunaAfisata: `${this.translate(luna, 'luni', 'Prezenta')} ${an}`,
                 lunaCurenta: this.translate('lunaCurenta', 'labels', 'Prezenta'),
                 anterior: this.translate('lunaAnterioara', 'labels', 'Prezenta'),
                 urmator: this.translate('lunaUrmatoare', 'labels', 'Prezenta'),
+                poateMergeAnterior: !this.lunaMinimaDisponibila ||
+                    this.lunaSelectata > this.lunaMinimaDisponibila,
                 data: this.translate('dataPrezenta', 'fields', 'Prezenta'),
                 angajati: this.angajati,
                 zile: this.zile,
@@ -59,7 +90,7 @@ define(
                 ),
                 descarcaXlsx: this.translate('descarcaXlsx', 'labels', 'CondicaPrezenta'),
                 descarcaPdf: this.translate('descarcaPdf', 'labels', 'CondicaPrezenta'),
-                poateExporta: this.cicluLunar.esteInchisa === true,
+                poateExporta,
                 urlExportXlsx: this.obtineUrlExport('xlsx'),
                 urlExportPdf: this.obtineUrlExport('pdf'),
                 poateTrimiteRemindere:
@@ -71,6 +102,106 @@ define(
                     'stariLuna',
                     'CondicaPrezenta'
                 ),
+                actiuniRapide: this.translate('actiuniRapide', 'labels', 'CondicaPrezenta'),
+                actiuniRapideDescriere: this.translate(
+                    'actiuniRapideDescriere',
+                    'messages',
+                    'CondicaPrezenta'
+                ),
+                stareLunara: this.translate('stareLunara', 'labels', 'CondicaPrezenta'),
+                stareLunaraDescriere: this.translate(
+                    'stareLunaraDescriere',
+                    'messages',
+                    'CondicaPrezenta'
+                ),
+                vedereZilnica: this.translate('vedereZilnica', 'labels', 'CondicaPrezenta'),
+                vedereZilnicaDescriere: this.translate(
+                    'vedereZilnicaDescriere',
+                    'messages',
+                    'CondicaPrezenta'
+                ),
+                legendaStari: this.translate('legendaStari', 'labels', 'CondicaPrezenta'),
+                pregatireExport: this.translate('pregatireExport', 'labels', 'CondicaPrezenta'),
+                exportDisponibil: this.translate(
+                    poateExporta ? 'exportDisponibil' : 'exportIndisponibil',
+                    'labels',
+                    'CondicaPrezenta'
+                ),
+                angajatiAfectati,
+                detaliiCompletare: this.angajati.map(angajat => ({
+                    idAngajat: angajat.idAngajat,
+                    nume: angajat.numeAngajat,
+                    valoare: `${Number(angajat.zileCompletate || 0)}/${Number(angajat.zileScadente || 0)}`,
+                })),
+                detaliiLipsa: angajatiAfectatiLista.map(angajat => ({
+                    idAngajat: angajat.idAngajat,
+                    nume: angajat.numeAngajat,
+                    valoare: Number(angajat.zileLipsa || 0),
+                })),
+                detaliiCalendare: calendareLipsa.map(angajat => ({
+                    nume: angajat.numeAngajat,
+                })),
+                detaliiExport: poateExporta ? [] : motiveBlocare.map(motiv => ({nume: motiv})),
+                descriereCompletare: this.formateazaMesajTradus(
+                    'descriereCompletare',
+                    {completate: zileCompletate, scadente: zileScadente}
+                ),
+                descriereLipsa: this.formateazaMesajTradus(
+                    'descriereLipsa',
+                    {lipsa: Number(this.statistici.zileLipsa || 0), angajati: angajatiAfectati}
+                ),
+                descriereCalendare: this.formateazaMesajTradus(
+                    'descriereCalendare',
+                    {
+                        configurate: Number(this.statistici.calendareConfigurate || 0),
+                        total: Number(this.statistici.numarAngajati || 0),
+                    }
+                ),
+                descriereExport: this.translate(
+                    this.cicluLunar.esteInchisa ?
+                        'descriereExportDisponibil' :
+                        (poateExporta ?
+                            'descriereExportIncompletPermis' :
+                            'descriereExportIndisponibil'),
+                    'messages',
+                    'CondicaPrezenta'
+                ),
+                etichetaAngajatiAfectati: this.translate(
+                    'angajatiAfectati',
+                    'labels',
+                    'CondicaPrezenta'
+                ),
+                completatPeAngajat: this.translate(
+                    'completatPeAngajat',
+                    'labels',
+                    'CondicaPrezenta'
+                ),
+                calendareNeconfigurate: this.translate(
+                    'calendareNeconfigurate',
+                    'labels',
+                    'CondicaPrezenta'
+                ),
+                detalii: this.translate('detalii', 'labels', 'CondicaPrezenta'),
+                totalAngajatiZile: this.translate('angajatiZile', 'labels', 'CondicaPrezenta')
+                    .replace('{angajati}', String(this.statistici.numarAngajati || 0))
+                    .replace('{zile}', String(this.zile.length)),
+                legenda: [
+                    ['este-prezent', 'P'],
+                    ['este-delegatie', 'D'],
+                    ['este-medical', 'CM'],
+                    ['este-concediu', 'CO'],
+                    ['este-cic', 'CIC'],
+                ].map(([clasa, cod]) => ({
+                    clasa,
+                    eticheta: this.getLanguage().translateOption(
+                        cod,
+                        'codPrezenta',
+                        'Prezenta'
+                    ),
+                })).concat([{
+                    clasa: 'este-lipsa',
+                    eticheta: this.translate('prezenteLipsa', 'labels', 'CondicaPrezenta'),
+                }]),
                 etichete: {
                     completare: this.translate('completare', 'labels', 'CondicaPrezenta'),
                     lipsa: this.translate('prezenteLipsa', 'labels', 'CondicaPrezenta'),
@@ -94,6 +225,16 @@ define(
                     motiveBlocare: this.obtineMotiveBlocare(),
                 },
             };
+        }
+
+        formateazaMesajTradus(cheie, valori) {
+            let mesaj = this.translate(cheie, 'messages', 'CondicaPrezenta');
+
+            Object.entries(valori).forEach(([nume, valoare]) => {
+                mesaj = mesaj.replace(`{${nume}}`, String(valoare));
+            });
+
+            return mesaj;
         }
 
         obtineStareCompletitudine() {
@@ -169,6 +310,7 @@ define(
             }));
             this.statistici = raspuns.statistici;
             this.cicluLunar = raspuns.cicluLunar;
+            this.lunaMinimaDisponibila = raspuns.lunaMinimaDisponibila || null;
         }
 
         pregatesteCelula(celula, angajat, data) {
@@ -193,6 +335,7 @@ define(
                 data: data,
                 numeAngajat: angajat?.numeAngajat || celula.idAngajat,
                 stare: stare,
+                clasaVizuala: this.obtineClasaVizualaCelula(celula),
                 poateMarca: celula.poateFiCompletata || celula.poateFiCorectata,
                 optiuni: coduriPrezenta.map(cod => this.pregatesteActiunePrezenta(
                     celula,
@@ -201,6 +344,18 @@ define(
                     cod
                 )),
             };
+        }
+
+        obtineClasaVizualaCelula(celula) {
+            if (celula.esteLipsa) return 'este-lipsa';
+            if (celula.esteCic || celula.codPrezenta === 'CIC') return 'este-cic';
+            if (celula.esteConcediu || celula.codPrezenta === 'CO') return 'este-concediu';
+
+            return {
+                P: 'este-prezent',
+                D: 'este-delegatie',
+                CM: 'este-medical',
+            }[celula.codPrezenta] || 'este-inactiva';
         }
 
         pregatesteActiunePrezenta(celula, angajat, data, cod) {
@@ -357,6 +512,16 @@ define(
                 elementStare.textContent = cod;
             }
             elementCelula?.classList.remove('danger');
+            elementCelula?.classList.remove(
+                'este-lipsa',
+                'este-prezent',
+                'este-delegatie',
+                'este-medical',
+                'este-concediu',
+                'este-cic',
+                'este-inactiva'
+            );
+            elementCelula?.classList.add(this.obtineClasaVizualaCelula(celula));
 
             if (eraLipsa) {
                 this.actualizeazaStatisticiDupaCompletare(idAngajat);
@@ -415,6 +580,42 @@ define(
             if (lipsa) {
                 lipsa.textContent = String(this.statistici.zileLipsa || 0);
             }
+
+            const angajatiAfectati = this.angajati.filter(
+                angajat => Number(angajat.zileLipsa || 0) > 0
+            ).length;
+            const zileScadente = this.angajati.reduce(
+                (total, angajat) => total + Number(angajat.zileScadente || 0),
+                0
+            );
+            const zileCompletate = this.angajati.reduce(
+                (total, angajat) => total + Number(angajat.zileCompletate || 0),
+                0
+            );
+            const descriereCompletare = this.element.querySelector(
+                '[data-role="descriere-completare"]'
+            );
+            const descriereLipsa = this.element.querySelector('[data-role="descriere-lipsa"]');
+            const contorLipsa = this.element.querySelector('[data-role="contor-detalii-lipsa"]');
+
+            if (descriereCompletare) {
+                descriereCompletare.textContent = this.formateazaMesajTradus(
+                    'descriereCompletare',
+                    {completate: zileCompletate, scadente: zileScadente}
+                );
+            }
+            if (descriereLipsa) {
+                descriereLipsa.textContent = this.formateazaMesajTradus(
+                    'descriereLipsa',
+                    {
+                        lipsa: Number(this.statistici.zileLipsa || 0),
+                        angajati: angajatiAfectati,
+                    }
+                );
+            }
+            if (contorLipsa) {
+                contorLipsa.textContent = String(angajatiAfectati);
+            }
             if (stare) {
                 stare.textContent = this.obtineStareCompletitudine();
             }
@@ -435,6 +636,24 @@ define(
 
                 if (antet) {
                     antet.textContent = angajat.rezumat;
+                }
+
+                const valoareCompletare = this.element.querySelector(
+                    `[data-detaliu-completare="${angajat.idAngajat}"] strong`
+                );
+                const randLipsa = this.element.querySelector(
+                    `[data-detaliu-lipsa="${angajat.idAngajat}"]`
+                );
+
+                if (valoareCompletare) {
+                    valoareCompletare.textContent =
+                        `${Number(angajat.zileCompletate || 0)}/${Number(angajat.zileScadente || 0)}`;
+                }
+                if (randLipsa) {
+                    const numarLipsa = Number(angajat.zileLipsa || 0);
+
+                    randLipsa.classList.toggle('hidden', numarLipsa === 0);
+                    randLipsa.querySelector('strong').textContent = String(numarLipsa);
                 }
             });
         }
@@ -614,10 +833,17 @@ define(
         }
 
         async schimbaLuna(deplasare) {
-            this.lunaSelectata = InstrumentePrezenta.deplaseazaLuna(
+            const lunaNoua = InstrumentePrezenta.deplaseazaLuna(
                 this.lunaSelectata,
                 deplasare
             );
+
+            if (deplasare < 0 && this.lunaMinimaDisponibila &&
+                lunaNoua < this.lunaMinimaDisponibila) {
+                return;
+            }
+
+            this.lunaSelectata = lunaNoua;
             await this.reincarca();
         }
 

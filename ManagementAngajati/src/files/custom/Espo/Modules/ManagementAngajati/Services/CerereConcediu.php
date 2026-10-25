@@ -47,13 +47,13 @@ class CerereConcediu extends Record
         ];
 
         foreach ($this->metadata->get(['app', 'calendar', 'additionalAttributeList']) ?? [] as $atribut) {
-            $selectie[] = ['null', $atribut];
+            $selectie[] = $atribut === 'zileCalendar' ?
+                ['zileLucratoare', 'zileCalendar'] :
+                ['null', $atribut];
         }
 
         try {
             $interogare = $constructor->buildQueryBuilder();
-            $poateVedeaAltCalendar = $this->user->isAdmin() ||
-                $this->acl->checkScope('GestionareAngajati');
             $campurileSuntVizibile = $this->acl->checkField($this->entityType, 'name') &&
                 $this->acl->checkField($this->entityType, 'dataInceput') &&
                 $this->acl->checkField($this->entityType, 'dataSfarsit') &&
@@ -61,7 +61,6 @@ class CerereConcediu extends Record
 
             if ((!$this->user->isRegular() && !$this->user->isAdmin()) ||
                 !$this->user->isActive() || !$campurileSuntVizibile ||
-                ($userId !== $this->user->getId() && !$poateVedeaAltCalendar) ||
                 !$this->acl->checkScope($this->entityType, Table::ACTION_READ)) {
                 $interogare->where(['id' => null]);
             }
@@ -83,8 +82,11 @@ class CerereConcediu extends Record
     /** @return array{string, string} */
     private function limiteDate(string $from, string $to): array
     {
-        $preferinte = $this->entityManager->getRepositoryByClass(Preferences::class)
-            ->getById($this->user->getId());
+        $preferinte = $this->entityManager->getEntityById(
+            Preferences::ENTITY_TYPE,
+            $this->user->getId()
+        );
+        $preferinte = $preferinte instanceof Preferences ? $preferinte : null;
         $zona = new DateTimeZone(
             $preferinte?->getTimeZone() ?: (string) ($this->config->get('timeZone') ?? 'UTC')
         );

@@ -1,7 +1,7 @@
 {
     "espocrm": {
         "repository": "https://github.com/espocrm/espocrm.git",
-        "branch": "10.0.10"
+        "branch": "stable"
     },
     "database": {
         "host": "localhost",

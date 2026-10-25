@@ -288,6 +288,9 @@ class OperatiiPrezentaEspoTest extends TestCase
         ));
 
         self::assertCount(1, $ziCic);
+        self::assertTrue($dateCalendar['situatieCic']['activa']);
+        self::assertSame($dataInceputCic, $dateCalendar['situatieCic']['dataInceput']);
+        self::assertSame($dataCic, $dateCalendar['situatieCic']['dataSfarsit']);
         self::assertTrue($ziCic[0]['esteCic']);
         self::assertSame('CIC', $ziCic[0]['codPrezentaAutomat']);
         self::assertFalse($ziCic[0]['poateFiCompletata']);
@@ -326,6 +329,7 @@ class OperatiiPrezentaEspoTest extends TestCase
             $salvatorSetari->salveaza(
                 ConfiguratiiCondicaAngajati::MOD_REMOTE_CURENT,
                 ConfiguratiiCondicaAngajati::LUNI_ANTERIOARE_EDITABILE_IMPLICIT,
+                false,
                 [(object) [
                     'angajatId' => $angajatCuPrezenta->getId(),
                     'remoteActiv' => false,
@@ -362,6 +366,7 @@ class OperatiiPrezentaEspoTest extends TestCase
             $salvatorSetari->salveaza(
                 ConfiguratiiCondicaAngajati::MOD_REMOTE_CURENT,
                 ConfiguratiiCondicaAngajati::LUNI_ANTERIOARE_EDITABILE_IMPLICIT,
+                false,
                 [(object) [
                     'angajatId' => $angajatInainteDeAngajare->getId(),
                     'remoteActiv' => false,
@@ -388,6 +393,7 @@ class OperatiiPrezentaEspoTest extends TestCase
         $salvatorSetari->salveaza(
             ConfiguratiiCondicaAngajati::MOD_REMOTE_CURENT,
             ConfiguratiiCondicaAngajati::LUNI_ANTERIOARE_EDITABILE_IMPLICIT,
+            false,
             [(object) [
                 'angajatId' => $angajatInainteDeAngajare->getId(),
                 'remoteActiv' => false,
@@ -485,6 +491,7 @@ class OperatiiPrezentaEspoTest extends TestCase
         $this->fabricaInjectabila->create(SalvatorSetariCondica::class)->salveaza(
             $setariCondica['modAplicareRemote'],
             $setariCondica['numarLuniAnterioareEditabile'],
+            $setariCondica['permiteExportCondicaIncompleta'],
             [(object) [
                 'angajatId' => $angajat->getId(),
                 'remoteActiv' => false,
@@ -643,6 +650,7 @@ class OperatiiPrezentaEspoTest extends TestCase
 
         if ($poateGestionaAngajati) {
             $dateRol['GestionareAngajati'] = true;
+            $dateRol['CondicaPrezenta'] = true;
         }
 
         $rol = $this->managerEntitati->getNewEntity(Role::ENTITY_TYPE);

@@ -26,7 +26,8 @@
             "P": "Prezent",
             "D": "Delegație",
             "CM": "Concediu medical",
-            "CO": "Concediu de odihnă"
+            "CO": "Concediu de odihnă",
+            "CIC": "CIC"
         }
     },
     "labels": {
@@ -69,6 +70,10 @@
         "zileViitoare": "Zile viitoare",
         "nemarcat": "Nemarcat",
         "nicioActiuneNecesara": "Nu este necesară nicio acțiune"
+        ,"prezentaIndisponibilaCic": "Prezența este gestionată automat în perioada CIC"
+        ,"cicActiv": "CIC activ"
+        ,"perioadaCic": "Perioada CIC"
+        ,"cicFaraPontare": "Nu trebuie să completezi prezența"
     },
     "luni": {
         "01": "ianuarie",
@@ -119,6 +124,8 @@
         "descrierePrezentaAstazi": "Înregistrează rapid situația zilei curente.",
         "ajutorP": "Marchează ziua ca lucrată.",
         "ajutorD": "Marchează ziua ca delegație.",
-        "ajutorCM": "Marchează ziua ca concediu medical."
+        "ajutorCM": "Marchează ziua ca concediu medical.",
+        "prezentaSuspendataCic": "Contractul tău de muncă este suspendat pe durata concediului pentru creșterea copilului. Fiecare zi lucrătoare din interval este marcată automat cu CIC, fără acțiuni din partea ta.",
+        "cicContactManager": "Dacă perioada afișată nu este corectă, contactează managerul."
     }
 }

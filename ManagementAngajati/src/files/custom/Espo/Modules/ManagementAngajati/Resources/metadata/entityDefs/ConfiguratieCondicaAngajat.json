@@ -25,6 +25,11 @@
             "default": false,
             "audited": true
         },
+        "permiteExportCondicaIncompleta": {
+            "type": "bool",
+            "default": false,
+            "notStorable": true
+        },
         "dataInceputCic": {
             "type": "date",
             "audited": true

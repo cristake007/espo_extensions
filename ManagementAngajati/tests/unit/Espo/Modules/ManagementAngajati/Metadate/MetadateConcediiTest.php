@@ -8,7 +8,7 @@ class MetadateConcediiTest extends TestCase
 {
     private const string CALE = __DIR__ . '/../../../../../../src/files/custom/Espo/Modules/ManagementAngajati';
 
-    public function testCerereaFolosesteAclNativSiPaginaManagerialaMostenesteGestionarea(): void
+    public function testCerereaSiPaginaManagerialaFolosescAclNativIndependent(): void
     {
         $scopeCerere = $this->json('Resources/metadata/scopes/CerereConcediu.json');
         $scopeManager = $this->json('Resources/metadata/scopes/AdministrareConcedii.json');
@@ -22,10 +22,7 @@ class MetadateConcediiTest extends TestCase
         self::assertFalse($scopeCerere['customizable']);
         self::assertFalse($scopeManager['entity']);
         self::assertSame('boolean', $scopeManager['acl']);
-        self::assertSame(
-            'boolean:GestionareAngajati',
-            $acl['mandatory']['scopeLevel']['AdministrareConcedii']
-        );
+        self::assertArrayNotHasKey('AdministrareConcedii', $acl['mandatory']['scopeLevel']);
         self::assertArrayNotHasKey('adminMandatory', $acl);
 
         $caleClient = dirname(self::CALE, 4) . '/client/custom/modules/management-angajati';
@@ -37,6 +34,18 @@ class MetadateConcediiTest extends TestCase
         self::assertNotFalse($controlorAdministrare);
         self::assertStringContainsString('this.getUser().isAdmin()', $controlorCereri);
         self::assertStringContainsString('this.getUser().isAdmin()', $controlorAdministrare);
+
+        $cereri = file_get_contents(
+            self::CALE . '/Instrumente/Concedii/CereriConcediu.php'
+        );
+        $setari = file_get_contents(
+            self::CALE . '/Instrumente/Concedii/SetariConcedii.php'
+        );
+        self::assertNotFalse($cereri);
+        self::assertNotFalse($setari);
+        self::assertStringContainsString("checkScope('AdministrareConcedii')", $cereri);
+        self::assertStringNotContainsString("checkScope('GestionareAngajati')", $cereri);
+        self::assertStringContainsString("checkScope('AdministrareConcedii')", $setari);
     }
 
     public function testCerereaAprobataEsteIntegrataDirectInCalendar(): void
@@ -57,6 +66,8 @@ class MetadateConcediiTest extends TestCase
 
         $client = $this->json('Resources/metadata/clientDefs/CerereConcediu.json');
         self::assertSame('assignedUserName', $client['nameAttribute']);
+        self::assertSame('jsonArray', $cerere['fields']['zileLucratoare']['type']);
+        self::assertTrue($cerere['fields']['zileLucratoare']['readOnly']);
 
         $serviciu = file_get_contents(self::CALE . '/Services/CerereConcediu.php');
         $controlor = file_get_contents(self::CALE . '/Controllers/CerereConcediu.php');
@@ -66,6 +77,14 @@ class MetadateConcediiTest extends TestCase
         self::assertNotFalse($instalare);
         self::assertStringContainsString('getCalenderQuery', $serviciu);
         self::assertStringContainsString(
+            'getEntityById(',
+            $serviciu
+        );
+        self::assertStringContainsString(
+            'Preferences::ENTITY_TYPE',
+            $serviciu
+        );
+        self::assertStringNotContainsString(
             'getRepositoryByClass(Preferences::class)',
             $serviciu
         );
@@ -76,12 +95,107 @@ class MetadateConcediiTest extends TestCase
         self::assertStringContainsString("'assignedUserId' => \$userId", $serviciu);
         self::assertStringContainsString("'stare' => 'Aprobata'", $serviciu);
         self::assertStringContainsString("['assignedUserName', 'name']", $serviciu);
+        self::assertStringContainsString(
+            "['zileLucratoare', 'zileCalendar']",
+            $serviciu
+        );
         self::assertStringNotContainsString('AbsentaConcediu', $serviciu);
         self::assertStringContainsString('CereriConcediu::class)->creeaza', $controlor);
         self::assertStringContainsString("'dateStartDate' => null", $controlor);
         self::assertStringContainsString("'dateEndDate' => null", $controlor);
+
+        $calendar = $this->json('Resources/metadata/app/calendar.json');
+        $caleClientCalendar = dirname(self::CALE, 2) .
+            '/Custom/Resources/metadata/clientDefs/Calendar.json';
+        $continutClientCalendar = file_get_contents($caleClientCalendar);
+        self::assertNotFalse($continutClientCalendar);
+        $clientCalendar = json_decode(
+            $continutClientCalendar,
+            true,
+            flags: JSON_THROW_ON_ERROR
+        );
+        self::assertIsArray($clientCalendar);
+        $vizualizareCalendar = file_get_contents(
+            dirname(self::CALE, 4) .
+            '/client/custom/modules/management-angajati/src/views/calendar/calendar.js'
+        );
+        self::assertContains('color', $calendar['additionalAttributeList']);
+        self::assertContains('zileCalendar', $calendar['additionalAttributeList']);
+        self::assertSame(
+            'management-angajati:views/calendar/calendar',
+            $clientCalendar['calendarView']
+        );
+        self::assertNotFalse($vizualizareCalendar);
+        self::assertStringContainsString(
+            "define(['zile-sarbatoare:views/calendar/calendar']",
+            $vizualizareCalendar
+        );
+        self::assertStringContainsString(
+            "inregistrare.scope !== 'CerereConcediu'",
+            $vizualizareCalendar
+        );
+        self::assertStringContainsString('normalizeazaZileCalendar', $vizualizareCalendar);
+        self::assertStringContainsString('grupeazaZileConsecutive', $vizualizareCalendar);
         self::assertStringContainsString('...$listaEntitatiCalendar', $instalare);
         self::assertStringContainsString('self::SCOPE_CONCEDII,', $instalare);
+    }
+
+    public function testCalendarulConcediilorRespectaAclNativOwnTeamAll(): void
+    {
+        $cereri = file_get_contents(
+            self::CALE . '/Instrumente/Concedii/CereriConcediu.php'
+        );
+        $serviciuCalendar = file_get_contents(self::CALE . '/Services/CerereConcediu.php');
+        $sincronizator = file_get_contents(
+            self::CALE . '/Instrumente/Concedii/SincronizatorEchipeCereriConcediu.php'
+        );
+        $hookUtilizator = file_get_contents(
+            self::CALE . '/Hooks/User/SincronizeazaEchipeCereriConcediu.php'
+        );
+        $hookEchipa = file_get_contents(
+            self::CALE . '/Hooks/Team/SincronizeazaEchipeCereriConcediu.php'
+        );
+        $calendarClient = file_get_contents(
+            dirname(self::CALE, 4) .
+            '/client/custom/modules/management-angajati/src/views/calendar/calendar.js'
+        );
+        $rute = $this->json('Resources/routes.json');
+        $indexRute = [];
+
+        foreach ($rute as $ruta) {
+            $indexRute[$ruta['method'] . ' ' . $ruta['route']] = $ruta['actionClassName'];
+        }
+
+        self::assertNotFalse($cereri);
+        self::assertNotFalse($serviciuCalendar);
+        self::assertNotFalse($sincronizator);
+        self::assertNotFalse($hookUtilizator);
+        self::assertNotFalse($hookEchipa);
+        self::assertNotFalse($calendarClient);
+        self::assertStringContainsString(
+            "setLinkMultipleIdList('teams', \$angajat->getTeamIdList())",
+            $cereri
+        );
+        self::assertStringContainsString('withStrictAccessControl()', $serviciuCalendar);
+        self::assertStringNotContainsString('GestionareAngajati', $serviciuCalendar);
+        self::assertStringNotContainsString('poateVedeaAltCalendar', $serviciuCalendar);
+        self::assertStringContainsString("getRelation(\$angajat, Field::TEAMS)", $sincronizator);
+        self::assertStringContainsString(
+            'setLinkMultipleIdList(Field::TEAMS, $idEchipe)',
+            $sincronizator
+        );
+        self::assertStringContainsString("\$relationName === 'teams'", $hookUtilizator);
+        self::assertStringContainsString("\$relationName === 'users'", $hookEchipa);
+        self::assertSame(
+            'Espo\\Modules\\ManagementAngajati\\Api\\ObtineUtilizatoriCalendarConcedii',
+            $indexRute['get /Concedii/utilizatori-calendar']
+        );
+        self::assertStringContainsString(
+            "Espo.Ajax.getRequest('Concedii/utilizatori-calendar')",
+            $calendarClient
+        );
+        self::assertStringContainsString('&userIdList=', $calendarClient);
+        self::assertStringContainsString("encodeURIComponent('CerereConcediu')", $calendarClient);
     }
 
     public function testSelectiaNativaDinCalendarPrevizualizeazaZileleLucratoare(): void
@@ -139,7 +253,10 @@ class MetadateConcediiTest extends TestCase
             $serviciu,
             'public function previzualizeazaPerioada(array $date): array'
         );
-        $pozitieLista = strpos($serviciu, 'public function listaManageriala(): array');
+        $pozitieLista = strpos(
+            $serviciu,
+            'public function listaManageriala(?string $luna = null): array'
+        );
         self::assertIsInt($pozitiePrevizualizare);
         self::assertIsInt($pozitieLista);
         $metodaPrevizualizare = substr(
@@ -220,6 +337,35 @@ class MetadateConcediiTest extends TestCase
             self::assertSame($this->chei($ro), $this->chei($en), $scope);
             self::assertNotSame($ro, $en, $scope);
         }
+    }
+
+    public function testManagerulNuMaiVedeActiunileDupaPrimaAprobare(): void
+    {
+        $serviciu = file_get_contents(
+            self::CALE . '/Instrumente/Concedii/CereriConcediu.php'
+        );
+        $caleClient = dirname(self::CALE, 4) . '/client/custom/modules/management-angajati';
+        $vizualizare = file_get_contents(
+            $caleClient . '/src/views/administrare-concedii/index.js'
+        );
+        $sablon = file_get_contents(
+            $caleClient . '/res/templates/administrare-concedii/index.tpl'
+        );
+
+        self::assertNotFalse($serviciu);
+        self::assertNotFalse($vizualizare);
+        self::assertNotFalse($sablon);
+        self::assertStringContainsString('decizieManagerDejaInregistrata', $serviciu);
+        self::assertStringContainsString('!$aAprobatManagerulCurent', $serviciu);
+        self::assertStringContainsString(
+            "'aprobareInregistrataDeManager' =>",
+            $serviciu
+        );
+        self::assertStringContainsString('cerere.aprobareInregistrataDeManager', $vizualizare);
+        self::assertStringContainsString(
+            '{{#if aprobareInregistrataDeManager}}',
+            $sablon
+        );
     }
 
     public function testCorectiaSiResetareaAuRuteManagerialeExplicite(): void
@@ -355,6 +501,30 @@ class MetadateConcediiTest extends TestCase
         self::assertStringContainsString('profilConcediuNeinitializatExplicatie', $vizualizare);
         self::assertStringContainsString('administratorFaraConcediuPersonal', $vizualizare);
         self::assertStringContainsString("'#GestionareAngajati'", $vizualizare);
+        self::assertStringContainsString('angajatInCic', $serviciu);
+        self::assertStringContainsString('concediuIndisponibilInCic', $serviciu);
+        self::assertStringContainsString('{{#if esteCicActiv}}', $sablon);
+        self::assertStringContainsString('concedii-personale-page', $sablon);
+        self::assertStringContainsString('concedii-personale-indisponibil', $sablon);
+        self::assertStringContainsString('profilNecesitaConfigurare', $vizualizare);
+        self::assertStringContainsString('profilIndrumare', $vizualizare);
+        self::assertStringContainsString('poateInitializaProfilulPropriu', $vizualizare);
+        self::assertStringContainsString('profilPropriuNeinitializatIndrumare', $vizualizare);
+        self::assertStringContainsString('views/fields/date', $vizualizare);
+        self::assertStringNotContainsString('type="date"', $sablon);
+        self::assertStringContainsString('concedii-personale-rezumat', $sablon);
+        self::assertStringContainsString('concedii-personale-formular', $sablon);
+        self::assertStringContainsString('concedii-personale-gol', $sablon);
+        self::assertStringContainsString('stareClasa', $vizualizare);
+        self::assertMatchesRegularExpression(
+            '/translateOption\(\s*cerere\.stare,\s*[\'\"]stare[\'\"],\s*[\'\"]CerereConcediu[\'\"]\s*\)/',
+            $vizualizare
+        );
+        self::assertStringContainsString('Concedii/previzualizare-perioada', $vizualizare);
+        self::assertStringContainsString('data-name="previzualizareZile"', $sablon);
+        self::assertStringContainsString('trimiteDezactivat', $sablon);
+        self::assertStringContainsString('zileSolicitateDepasescSoldul', $vizualizare);
+        self::assertStringContainsString('concedii-personale-actiune-periculoasa', $sablon);
     }
 
     public function testInitializareaPastreazaConfiguratiaSoldulRealSiReportulSeparat(): void
@@ -530,6 +700,7 @@ class MetadateConcediiTest extends TestCase
         );
         self::assertStringContainsString("'dataInceput' => \$inceputEfectiv", $cereri);
         self::assertStringContainsString("'dataSfarsit' => \$sfarsitEfectiv", $cereri);
+        self::assertStringContainsString("'zileLucratoare' => \$calcul['date']", $cereri);
     }
 
     public function testNotificarileFolosescRuteleScopesNative(): void

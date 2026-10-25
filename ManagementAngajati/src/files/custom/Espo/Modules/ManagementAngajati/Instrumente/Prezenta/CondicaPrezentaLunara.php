@@ -5,6 +5,8 @@ namespace Espo\Modules\ManagementAngajati\Instrumente\Prezenta;
 use DateTimeImmutable;
 use Espo\Core\Acl;
 use Espo\Core\Acl\Table;
+use Espo\Core\Exceptions\BadRequest;
+use Espo\Core\Exceptions\Error\Body;
 use Espo\Core\Select\SelectBuilderFactory;
 use Espo\Core\Utils\DateTime;
 use Espo\Entities\User;
@@ -40,6 +42,11 @@ class CondicaPrezentaLunara
     public function obtine(string $luna): array
     {
         $this->cicluLunar->valideazaLuna($luna);
+        $angajatiAccesibili = $this->obtineAngajatiAccesibili();
+        $lunaMinimaDisponibila = $this->calculeazaLunaMinimaDisponibila(
+            $angajatiAccesibili
+        );
+        $this->valideazaLunaMinima($luna, $lunaMinimaDisponibila);
         $stare = $this->cicluLunar->obtine($luna);
 
         if ($stare?->get('stare') === CicluLunarCondica::STARE_INCHISA) {
@@ -50,19 +57,50 @@ class CondicaPrezentaLunara
 
             return [
                 ...$instantaneu,
+                'lunaMinimaDisponibila' => $lunaMinimaDisponibila,
                 'cicluLunar' => $this->cicluLunar->descrie($luna),
             ];
         }
 
-        return $this->obtineDinDateCurente($luna);
+        return $this->construiesteDinDateCurente(
+            $luna,
+            $angajatiAccesibili,
+            $lunaMinimaDisponibila
+        );
     }
 
     /** @return array<string, mixed> */
     public function obtineDinDateCurente(string $luna): array
     {
         $this->cicluLunar->valideazaLuna($luna);
+        $angajatiAccesibili = $this->obtineAngajatiAccesibili();
+        $lunaMinimaDisponibila = $this->calculeazaLunaMinimaDisponibila(
+            $angajatiAccesibili
+        );
+        $this->valideazaLunaMinima($luna, $lunaMinimaDisponibila);
 
-        $angajati = $this->obtineAngajatiPermisi($luna);
+        return $this->construiesteDinDateCurente(
+            $luna,
+            $angajatiAccesibili,
+            $lunaMinimaDisponibila
+        );
+    }
+
+    /**
+     * @param list<User> $angajatiAccesibili
+     * @return array<string, mixed>
+     */
+    private function construiesteDinDateCurente(
+        string $luna,
+        array $angajatiAccesibili,
+        ?string $lunaMinimaDisponibila,
+    ): array {
+
+        $angajati = array_values(array_filter(
+            $angajatiAccesibili,
+            fn (User $angajat): bool =>
+                $this->eligibilitateAngajat->participaLaCondicaLunii($angajat, $luna)
+        ));
         $idAngajati = array_map(
             static fn (User $angajat): string => $angajat->getId(),
             $angajati
@@ -212,6 +250,7 @@ class CondicaPrezentaLunara
 
         return [
             'luna' => $luna,
+            'lunaMinimaDisponibila' => $lunaMinimaDisponibila,
             'dataCurenta' => $dataCurenta,
             'cicluLunar' => $this->cicluLunar->descrie($luna),
             'angajati' => array_values($randuriAngajati),
@@ -298,7 +337,7 @@ class CondicaPrezentaLunara
     }
 
     /** @return list<User> */
-    private function obtineAngajatiPermisi(string $luna): array
+    private function obtineAngajatiAccesibili(): array
     {
         $angajati = $this->ordonatorAngajati->ordoneaza(
             $this->managerEntitati
@@ -312,15 +351,47 @@ class CondicaPrezentaLunara
         $rezultat = [];
 
         foreach ($angajati as $angajat) {
-            if (
-                $this->eligibilitateAngajat->participaLaCondicaLunii($angajat, $luna) &&
-                $this->accesAngajati->poateCiti($angajat)
-            ) {
+            if ($this->accesAngajati->poateCiti($angajat)) {
                 $rezultat[] = $angajat;
             }
         }
 
         return $rezultat;
+    }
+
+    /** Prima lună în care există cel puțin un angajat accesibil pentru condică. */
+    public function obtineLunaMinimaDisponibila(): ?string
+    {
+        return $this->calculeazaLunaMinimaDisponibila(
+            $this->obtineAngajatiAccesibili()
+        );
+    }
+
+    /** @param list<User> $angajati */
+    private function calculeazaLunaMinimaDisponibila(array $angajati): ?string
+    {
+        return $this->eligibilitateAngajat->obtineLunaMinimaDisponibila(
+            $angajati,
+            substr($this->dataOra->getToday()->toString(), 0, 7)
+        );
+    }
+
+    private function valideazaLunaMinima(
+        string $luna,
+        ?string $lunaMinimaDisponibila,
+    ): void {
+        if ($lunaMinimaDisponibila === null || $luna >= $lunaMinimaDisponibila) {
+            return;
+        }
+
+        throw BadRequest::createWithBody(
+            'condicaInainteDePrimulAngajat',
+            Body::create()->withMessageTranslation(
+                'condicaInainteDePrimulAngajat',
+                'CondicaPrezenta',
+                ['lunaMinima' => $lunaMinimaDisponibila]
+            )
+        );
     }
 
     /**

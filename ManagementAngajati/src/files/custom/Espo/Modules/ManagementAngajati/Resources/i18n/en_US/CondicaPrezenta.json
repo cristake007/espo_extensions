@@ -1,6 +1,19 @@
 {
     "labels": {
         "condicaPrezenta": "Attendance Register",
+        "prezentaEchipei": "Team attendance",
+        "actiuniRapide": "Quick actions",
+        "stareLunara": "Monthly status",
+        "vedereZilnica": "Daily overview",
+        "legendaStari": "Status legend",
+        "pregatireExport": "Register readiness",
+        "exportDisponibil": "Export available",
+        "exportIndisponibil": "Complete and close the month",
+        "angajatiAfectati": "affected employees",
+        "completatPeAngajat": "Completed by employee",
+        "calendareNeconfigurate": "Employees without a calendar",
+        "detalii": "Details",
+        "angajatiZile": "{angajati} employees · {zile} days",
         "completare": "Completion",
         "prezenteLipsa": "Missing attendance",
         "calendareLucru": "Working time calendars",
@@ -38,6 +51,16 @@
         "zileViitoare": "there are future working days"
     },
     "messages": {
+        "descriereCondica": "Review completion, missing attendance, schedule coverage and the daily register for the selected month.",
+        "actiuniRapideDescriere": "Send reminders, close completed months and download available registers.",
+        "stareLunaraDescriere": "The indicators summarize completion, missing information and export readiness.",
+        "vedereZilnicaDescriere": "Each row is a working day and each column is an employee. Select a status to complete or correct attendance.",
+        "descriereCompletare": "{completate} of {scadente} due entries are completed.",
+        "descriereLipsa": "{lipsa} missing entries across {angajati} employees.",
+        "descriereCalendare": "{configurate} of {total} employee calendars are configured.",
+        "descriereExportDisponibil": "The frozen register is available for download.",
+        "descriereExportIncompletPermis": "Downloads are allowed by the attendance settings; missing data will remain blank in the export.",
+        "descriereExportIndisponibil": "Complete and close the month before downloading the register.",
         "lunaCondicaNeincheiata": "Only a completed calendar month can be closed.",
         "lunaCondicaDejaInchisa": "The month is already closed.",
         "lunaCondicaIncompleta": "The month cannot be closed until attendance is 100% complete for every employee.",
@@ -53,6 +76,7 @@
         "marcarePrezentaInvalida": "The attendance marking data is invalid."
         ,"remindereInAfaraFerestreiEditabile": "Reminders can only be sent for months in which employees can still complete their attendance."
         ,"confirmareTrimitereRemindere": "Send each employee one notification containing every editable month with missing attendance?"
+        ,"condicaInainteDePrimulAngajat": "The attendance register cannot be viewed before the first configured employment month. The first available month is {lunaMinima}."
         ,"remindereTrimise": "{numar} reminders were sent or refreshed."
         ,"niciunReminderTrimis": "There are no eligible employees to notify."
         ,"reminderPrezentaFereastra": "You have missing attendance in the following months:"

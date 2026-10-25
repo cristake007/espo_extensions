@@ -8,7 +8,7 @@
         "RegistruConcediu": "Leave Ledger",
         "Prezenta": "Attendance",
         "CondicaPrezenta": "Attendance Register",
-        "GestionareAngajati": "Employee Management",
+        "GestionareAngajati": "Administration",
         "ConfiguratieCondicaAngajat": "Employee Attendance Configuration"
     },
     "scopeNamesPlural": {
@@ -20,7 +20,7 @@
         "RegistruConcediu": "Leave Ledger",
         "Prezenta": "Attendance",
         "CondicaPrezenta": "Attendance Register",
-        "GestionareAngajati": "Employee Management",
+        "GestionareAngajati": "Administration",
         "ConfiguratieCondicaAngajat": "Employee Attendance Configurations"
     },
     "navbarTabs": {
@@ -28,6 +28,7 @@
         "administrareConcedii": "Leave Management",
         "prezenta": "Attendance",
         "condicaPrezenta": "Attendance Register",
-        "managementAngajati": "Employee Management"
+        "managementAngajati": "Employee Management",
+        "management": "Management"
     }
 }

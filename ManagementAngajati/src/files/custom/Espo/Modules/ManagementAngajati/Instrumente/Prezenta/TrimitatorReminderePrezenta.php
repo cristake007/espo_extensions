@@ -53,6 +53,16 @@ class TrimitatorReminderePrezenta
         }
 
         $luniVerificate = $this->cicluLunar->obtineLuniDeschiseDinFereastraPersonala();
+        $lunaMinimaDisponibila = $this->condica->obtineLunaMinimaDisponibila();
+
+        if ($lunaMinimaDisponibila !== null) {
+            $luniVerificate = array_values(array_filter(
+                $luniVerificate,
+                static fn (string $lunaVerificata): bool =>
+                    $lunaVerificata >= $lunaMinimaDisponibila
+            ));
+        }
+
         $lipsuriDupaAngajat = [];
         $idAngajati = [];
 
@@ -273,9 +283,11 @@ class TrimitatorReminderePrezenta
 
     private function obtineLimba(User $angajat): Language
     {
-        $preferinte = $this->managerEntitati
-            ->getRepositoryByClass(Preferences::class)
-            ->getById($angajat->getId());
+        $preferinte = $this->managerEntitati->getEntityById(
+            Preferences::ENTITY_TYPE,
+            $angajat->getId()
+        );
+        $preferinte = $preferinte instanceof Preferences ? $preferinte : null;
         $codLimba = Language::detectLanguage($this->configuratie, $preferinte) ?? 'en_US';
 
         return $this->fabricaLimbi->create($codLimba);

@@ -37,6 +37,21 @@ class ConfiguratiiCondicaAngajatiTest extends TestCase
         self::assertFalse($serviciu->esteDataCic($configuratie, '2028-11-01'));
     }
 
+    public function testDescrieStareaCicIndiferentDeExistentaUneiZileInCalendar(): void
+    {
+        $serviciu = $this->creeazaServiciu();
+        $configuratie = $this->configuratieCic();
+
+        self::assertSame([
+            'activa' => true,
+            'dataInceput' => '2026-11-01',
+            'dataSfarsit' => '2027-06-30',
+        ], $serviciu->descrieSituatieCic($configuratie, '2026-11-01'));
+        self::assertFalse(
+            $serviciu->descrieSituatieCic($configuratie, '2027-07-01')['activa']
+        );
+    }
+
     public function testRemoteCurentSeAplicaIndiferentDeData(): void
     {
         $serviciu = $this->creeazaServiciu(ConfiguratiiCondicaAngajati::MOD_REMOTE_CURENT);
@@ -76,12 +91,21 @@ class ConfiguratiiCondicaAngajatiTest extends TestCase
         );
     }
 
+    public function testExportulIncompletEsteInterzisImplicitSiPoateFiActivat(): void
+    {
+        self::assertFalse($this->creeazaServiciu()->permiteExportCondicaIncompleta());
+        self::assertTrue(
+            $this->creeazaServiciu(permiteExportIncomplet: true)
+                ->permiteExportCondicaIncompleta()
+        );
+    }
+
     public function testSalveazaSetarileGeneralePrintrOSinguraScriere(): void
     {
         $valori = [];
         $scriitor = $this->createMock(ConfigWriter::class);
         $scriitor
-            ->expects(self::exactly(2))
+            ->expects(self::exactly(3))
             ->method('set')
             ->willReturnCallback(function (string $cheie, mixed $valoare) use (&$valori, $scriitor): ConfigWriter {
                 $valori[$cheie] = $valoare;
@@ -92,13 +116,15 @@ class ConfiguratiiCondicaAngajatiTest extends TestCase
 
         $this->creeazaServiciu(scriitor: $scriitor)->salveazaSetariGenerale(
             ConfiguratiiCondicaAngajati::MOD_REMOTE_INTERVAL,
-            4
+            4,
+            true
         );
 
         self::assertSame([
             ConfiguratiiCondicaAngajati::CHEIE_MOD_REMOTE =>
                 ConfiguratiiCondicaAngajati::MOD_REMOTE_INTERVAL,
             ConfiguratiiCondicaAngajati::CHEIE_LUNI_ANTERIOARE_EDITABILE => 4,
+            ConfiguratiiCondicaAngajati::CHEIE_PERMITE_EXPORT_CONDICA_INCOMPLETA => true,
         ], $valori);
     }
 
@@ -106,6 +132,7 @@ class ConfiguratiiCondicaAngajatiTest extends TestCase
         string $modRemote = 'curent',
         ?ConfigWriter $scriitor = null,
         int $numarLuniEditabile = 1,
+        bool $permiteExportIncomplet = false,
     ): ConfiguratiiCondicaAngajati
     {
         $configuratie = $this->createStub(Config::class);
@@ -114,6 +141,8 @@ class ConfiguratiiCondicaAngajatiTest extends TestCase
                 ConfiguratiiCondicaAngajati::CHEIE_MOD_REMOTE => $modRemote,
                 ConfiguratiiCondicaAngajati::CHEIE_LUNI_ANTERIOARE_EDITABILE =>
                     $numarLuniEditabile,
+                ConfiguratiiCondicaAngajati::CHEIE_PERMITE_EXPORT_CONDICA_INCOMPLETA =>
+                    $permiteExportIncomplet,
                 default => $implicit,
             }
         );

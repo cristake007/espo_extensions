@@ -17,7 +17,27 @@ define(['view'], (Vizualizare) => {
             this.numeCampuriData = Object.keys(this.tipuriCampuri)
                 .filter(nume => this.tipuriCampuri[nume] === 'date');
 
+            this.addHandler(
+                'click',
+                '[data-role="comutator-optiune"]',
+                (eveniment, element) => this.comutaOptiunea(eveniment, element)
+            );
             this.wait(this.pregatesteCampurileData());
+        }
+
+        comutaOptiunea(eveniment, antet) {
+            if ($(eveniment.target).closest('.setari-condica-bifa').length) {
+                return;
+            }
+
+            const optiune = $(antet).closest('[data-camp-bool]');
+            const bifa = optiune.find('input[type="checkbox"]').first();
+
+            if (!bifa.length || bifa.prop('disabled')) {
+                return;
+            }
+
+            bifa.trigger('click');
         }
 
         async pregatesteCampurileData() {
@@ -55,6 +75,9 @@ define(['view'], (Vizualizare) => {
 
             return {
                 ...this.configuratieAngajat,
+                etichetaAngajat: this.translate(
+                    'angajat', 'fields', 'GestionareAngajati'
+                ),
                 dataAngajareEticheta: this.translate(
                     'dataAngajare',
                     'fields',
@@ -66,6 +89,12 @@ define(['view'], (Vizualizare) => {
                 dataAngajareLipsa: !dataAngajare,
                 remote: this.translate('remoteActiv', 'fields', 'ConfiguratieCondicaAngajat'),
                 cic: this.translate('cicActiv', 'fields', 'ConfiguratieCondicaAngajat'),
+                explicatieRemote: this.translate(
+                    'explicatieRemote', 'messages', 'GestionareAngajati'
+                ),
+                explicatieCic: this.translate(
+                    'explicatieCic', 'messages', 'GestionareAngajati'
+                ),
                 dataInceput: this.translate('dataInceput', 'fields', 'GestionareAngajati'),
                 dataSfarsit: this.translate('dataSfarsit', 'fields', 'GestionareAngajati'),
                 faraCalendar: this.translate(

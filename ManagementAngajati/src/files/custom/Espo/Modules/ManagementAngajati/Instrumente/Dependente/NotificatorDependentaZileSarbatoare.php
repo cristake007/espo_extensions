@@ -87,9 +87,11 @@ class NotificatorDependentaZileSarbatoare
 
     private function obtineLimba(User $administrator): Language
     {
-        $preferinte = $this->managerEntitati
-            ->getRepositoryByClass(Preferences::class)
-            ->getById($administrator->getId());
+        $preferinte = $this->managerEntitati->getEntityById(
+            Preferences::ENTITY_TYPE,
+            $administrator->getId()
+        );
+        $preferinte = $preferinte instanceof Preferences ? $preferinte : null;
         $codLimba = Language::detectLanguage($this->configuratie, $preferinte) ?? 'en_US';
 
         return $this->fabricaLimbi->create($codLimba);

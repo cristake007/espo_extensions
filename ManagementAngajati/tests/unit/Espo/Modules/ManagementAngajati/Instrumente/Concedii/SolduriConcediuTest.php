@@ -86,6 +86,72 @@ class SolduriConcediuTest extends TestCase
         }
     }
 
+    public function testCronologiaCererilorReconstruiesteSoldulDinRegistru(): void
+    {
+        $profil = new BaseEntity('ProfilConcediu', ['attributes' => ['id' => []]]);
+        $profil->set('id', 'profil-1');
+        $cerereUnu = $this->creeazaCerereCronologie(
+            'cerere-1',
+            '2026-11-02',
+            '2026-11-04',
+            3,
+            'Aprobata',
+            'Odihnă'
+        );
+        $cerereDoi = $this->creeazaCerereCronologie(
+            'cerere-2',
+            '2027-01-11',
+            '2027-01-12',
+            2,
+            'Anulata',
+            null
+        );
+        $inregistrari = [
+            $this->creeazaInregistrareCronologie('registru-1', 'Initializare', 10, null),
+            $this->creeazaInregistrareCronologie('registru-2', 'Rezervare', -3, 'cerere-1'),
+            $this->creeazaInregistrareCronologie('registru-3', 'Consumare', -3, 'cerere-1'),
+            $this->creeazaInregistrareCronologie('registru-4', 'AcordareAnuala', 5, null),
+            $this->creeazaInregistrareCronologie('registru-5', 'Rezervare', -1, 'cerere-2'),
+            $this->creeazaInregistrareCronologie('registru-6', 'Rezervare', -1, 'cerere-2'),
+            $this->creeazaInregistrareCronologie('registru-7', 'Eliberare', 2, 'cerere-2'),
+        ];
+        $depozitRegistru = $this->createStub(RDBRepository::class);
+        $depozitRegistru->method('where')->willReturn($this->creeazaSelectie($inregistrari));
+        $manager = $this->createStub(EntityManager::class);
+        $manager->method('getRDBRepository')->with('RegistruConcediu')
+            ->willReturn($depozitRegistru);
+        $serviciu = new SolduriConcediu(
+            $manager,
+            $this->createStub(User::class),
+            $this->createStub(Language::class),
+            new DateTime(timeZone: 'UTC'),
+            $this->createStub(AcordariAnualeConcediu::class),
+        );
+
+        $cronologie = $serviciu->cronologieCereri($profil, [$cerereDoi, $cerereUnu]);
+
+        self::assertCount(4, $cronologie);
+        self::assertTrue($cronologie[0]['esteInitializare']);
+        self::assertNull($cronologie[0]['idCerere']);
+        self::assertSame(10, $cronologie[0]['soldDupa']);
+        self::assertSame('cerere-1', $cronologie[1]['idCerere']);
+        self::assertSame(10, $cronologie[1]['soldInainte']);
+        self::assertSame(7, $cronologie[1]['soldDupa']);
+        self::assertSame('cerere-2', $cronologie[2]['idCerere']);
+        self::assertSame(12, $cronologie[2]['soldInainte']);
+        self::assertSame(10, $cronologie[2]['soldDupa']);
+        self::assertSame(2, $cronologie[2]['zileRezervate']);
+        self::assertSame(0, $cronologie[2]['zileRestituite']);
+        self::assertSame(-2, $cronologie[2]['impactFinal']);
+        self::assertSame('Anulata', $cronologie[2]['stare']);
+        self::assertSame('Restituire', $cronologie[3]['tipEveniment']);
+        self::assertSame('cerere-2', $cronologie[3]['idCerere']);
+        self::assertSame(10, $cronologie[3]['soldInainte']);
+        self::assertSame(12, $cronologie[3]['soldDupa']);
+        self::assertSame(2, $cronologie[3]['zileRestituite']);
+        self::assertSame(2, $cronologie[3]['impactFinal']);
+    }
+
     public function testCorectiaNegativaNuPoateDepasiSoldulDisponibil(): void
     {
         $profil = new BaseEntity('ProfilConcediu', ['attributes' => [
@@ -286,6 +352,52 @@ class SolduriConcediuTest extends TestCase
         ]);
 
         return $drept;
+    }
+
+    private function creeazaCerereCronologie(
+        string $id,
+        string $dataInceput,
+        string $dataSfarsit,
+        int $numarZile,
+        string $stare,
+        ?string $descriere
+    ): BaseEntity {
+        $cerere = new BaseEntity('CerereConcediu', ['attributes' => [
+            'id' => [], 'dataInceput' => [], 'dataSfarsit' => [], 'numarZile' => [],
+            'stare' => [], 'descriere' => [],
+        ]]);
+        $cerere->set([
+            'id' => $id,
+            'dataInceput' => $dataInceput,
+            'dataSfarsit' => $dataSfarsit,
+            'numarZile' => $numarZile,
+            'stare' => $stare,
+            'descriere' => $descriere,
+        ]);
+
+        return $cerere;
+    }
+
+    private function creeazaInregistrareCronologie(
+        string $id,
+        string $tip,
+        int $numarZile,
+        ?string $idCerere
+    ): BaseEntity {
+        $inregistrare = new BaseEntity('RegistruConcediu', ['attributes' => [
+            'id' => [], 'tip' => [], 'numarZile' => [], 'cerereId' => [],
+            'dataEfectiva' => [], 'createdAt' => [],
+        ]]);
+        $inregistrare->set([
+            'id' => $id,
+            'tip' => $tip,
+            'numarZile' => $numarZile,
+            'cerereId' => $idCerere,
+            'dataEfectiva' => '2026-10-24',
+            'createdAt' => '2026-10-24 10:00:00',
+        ]);
+
+        return $inregistrare;
     }
 
     private function disponibile(BaseEntity $drept): int

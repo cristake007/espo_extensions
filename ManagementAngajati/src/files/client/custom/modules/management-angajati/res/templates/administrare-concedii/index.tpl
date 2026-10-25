@@ -13,18 +13,92 @@
         <div class="administrare-concedii-rezumat">{{contor}}</div>
     </header>
 
+    <section class="administrare-concedii-panou administrare-concedii-rezumat-lunar">
+        <div class="administrare-concedii-panou-antet administrare-concedii-rezumat-antet">
+            <div class="administrare-concedii-sectiune-identitate">
+                <span class="administrare-concedii-icon" aria-hidden="true">
+                    <span class="fas fa-chart-bar"></span>
+                </span>
+                <div>
+                    <h4>{{rezumatLunarTitlu}}</h4>
+                    <p>{{rezumatLunarDescriere}}</p>
+                </div>
+            </div>
+            <div class="administrare-concedii-selector-luna">
+                <strong>{{lunaAfisata}}</strong>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" data-action="lunaAnterioara" title="{{lunaAnterioara}}" {{#unless poateMergeAnterior}}disabled{{/unless}}>
+                        <span class="fas fa-chevron-left" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-default" data-action="lunaCurenta">{{lunaCurenta}}</button>
+                    <button type="button" class="btn btn-default" data-action="lunaUrmatoare" title="{{lunaUrmatoare}}">
+                        <span class="fas fa-chevron-right" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="administrare-concedii-statistici">
+            {{#each statisticiLunare}}
+            <article class="administrare-concedii-statistica administrare-concedii-statistica-{{clasa}}">
+                <div class="administrare-concedii-statistica-rezumat">
+                    <span class="administrare-concedii-icon" aria-hidden="true">
+                        <span class="fas {{icon}}"></span>
+                    </span>
+                    <div class="administrare-concedii-statistica-continut">
+                        <span class="administrare-concedii-statistica-titlu">{{titlu}}</span>
+                        <strong>{{valoare}}</strong>
+                        <small>{{descriere}}</small>
+                    </div>
+                </div>
+                {{#if areDetalii}}
+                <details class="administrare-concedii-statistica-detalii">
+                    <summary>
+                        <span>{{etichetaDetalii}}</span>
+                        <span class="administrare-concedii-statistica-contor">{{detalii.length}}</span>
+                    </summary>
+                    <div class="administrare-concedii-mini-tabel">
+                        {{#each detalii}}
+                        <div><span>{{eticheta}}</span><strong>{{valoare}}</strong></div>
+                        {{/each}}
+                    </div>
+                </details>
+                {{/if}}
+            </article>
+            {{/each}}
+        </div>
+    </section>
+
+    <nav class="administrare-concedii-sectiuni" aria-label="{{navigareSectiuni}}">
+        {{#each sectiuni}}
+        <button type="button"
+                class="administrare-concedii-selector {{clasaActiva}}"
+                data-action="schimbaSectiune"
+                data-sectiune="{{cheie}}"
+                aria-pressed="{{#if esteActiva}}true{{else}}false{{/if}}">
+            <span class="administrare-concedii-icon" aria-hidden="true">
+                <span class="fas {{icon}}"></span>
+            </span>
+            <span class="administrare-concedii-selector-text">
+                <strong>{{titlu}}</strong>
+                <small>{{descriere}}</small>
+            </span>
+            <span class="administrare-concedii-selector-contor">{{numar}}</span>
+        </button>
+        {{/each}}
+    </nav>
+
     <section class="administrare-concedii-panou">
         <div class="administrare-concedii-panou-antet">
             <div class="administrare-concedii-sectiune-identitate">
                 <span class="administrare-concedii-icon" aria-hidden="true">
-                    <span class="fas fa-calendar-check"></span>
+                    <span class="fas {{iconSectiune}}"></span>
                 </span>
                 <div>
                     <h4>{{listaCereri}}</h4>
                     <p>{{descriereLista}}</p>
                 </div>
             </div>
-            <div class="administrare-concedii-contor">{{contor}}</div>
+            <div class="administrare-concedii-contor">{{contorSectiune}}</div>
         </div>
 
         {{#if areCereri}}
@@ -86,6 +160,12 @@
                                 <span class="fas fa-times" aria-hidden="true"></span> {{../respinge}}
                             </button>
                             {{/if}}
+                            {{#if aprobareInregistrataDeManager}}
+                            <span class="text-success administrare-concedii-decizie-inregistrata">
+                                <span class="fas fa-check-circle" aria-hidden="true"></span>
+                                {{../aprobareInregistrata}}
+                            </span>
+                            {{/if}}
                             {{#if poateDecideAnulare}}
                             <button class="btn btn-success btn-sm" data-action="aprobaAnularea" data-id="{{id}}">
                                 <span class="fas fa-check" aria-hidden="true"></span> {{../aprobaAnularea}}
@@ -103,7 +183,7 @@
         </div>
         {{else}}
         <div class="administrare-concedii-gol">
-            <span class="fas fa-calendar-check" aria-hidden="true"></span>
+            <span class="fas {{iconSectiune}}" aria-hidden="true"></span>
             <h4>{{faraCereri}}</h4>
             <p>{{faraCereriExplicatie}}</p>
         </div>

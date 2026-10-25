@@ -26,7 +26,8 @@
             "P": "Present",
             "D": "Business trip",
             "CM": "Medical leave",
-            "CO": "Annual leave"
+            "CO": "Annual leave",
+            "CIC": "Childcare leave"
         }
     },
     "labels": {
@@ -69,6 +70,10 @@
         "zileViitoare": "Upcoming days",
         "nemarcat": "Not marked",
         "nicioActiuneNecesara": "No action is required"
+        ,"prezentaIndisponibilaCic": "Attendance is managed automatically during childcare leave"
+        ,"cicActiv": "Childcare leave active"
+        ,"perioadaCic": "Childcare leave period"
+        ,"cicFaraPontare": "You do not need to record attendance"
     },
     "luni": {
         "01": "January",
@@ -119,6 +124,8 @@
         "descrierePrezentaAstazi": "Quickly record the current day's attendance.",
         "ajutorP": "Mark the day as worked.",
         "ajutorD": "Mark the day as a business trip.",
-        "ajutorCM": "Mark the day as medical leave."
+        "ajutorCM": "Mark the day as medical leave.",
+        "prezentaSuspendataCic": "Your employment contract is suspended during childcare leave. Every working day in the interval is marked automatically as childcare leave, with no action required from you.",
+        "cicContactManager": "If the displayed period is incorrect, contact your manager."
     }
 }

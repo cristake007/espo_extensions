@@ -40,6 +40,7 @@ class SetariCondicaTest extends TestCase
             ->willReturn([
                 'modAplicareRemote' => 'curent',
                 'numarLuniAnterioareEditabile' => 1,
+                'permiteExportCondicaIncompleta' => false,
                 'angajati' => [],
             ]);
         $actiune = new ObtineSetariCondica($acl, $setari);
@@ -50,6 +51,7 @@ class SetariCondicaTest extends TestCase
             [
                 'modAplicareRemote' => 'curent',
                 'numarLuniAnterioareEditabile' => 1,
+                'permiteExportCondicaIncompleta' => false,
                 'angajati' => [],
             ],
             json_decode((string) $raspuns->getBody(), true, flags: JSON_THROW_ON_ERROR)
@@ -69,10 +71,16 @@ class SetariCondicaTest extends TestCase
         $salvator
             ->expects(self::once())
             ->method('salveaza')
-            ->with(ConfiguratiiCondicaAngajati::MOD_REMOTE_INTERVAL, 2, [$dateAngajat])
+            ->with(
+                ConfiguratiiCondicaAngajati::MOD_REMOTE_INTERVAL,
+                2,
+                true,
+                [$dateAngajat]
+            )
             ->willReturn([
                 'modAplicareRemote' => 'interval',
                 'numarLuniAnterioareEditabile' => 2,
+                'permiteExportCondicaIncompleta' => true,
                 'angajati' => [],
             ]);
         $cerere = $this->createStub(Request::class);
@@ -81,6 +89,7 @@ class SetariCondicaTest extends TestCase
             ->willReturn((object) [
                 'modAplicareRemote' => 'interval',
                 'numarLuniAnterioareEditabile' => 2,
+                'permiteExportCondicaIncompleta' => true,
                 'angajati' => [$dateAngajat],
             ]);
         $actiune = new SalveazaSetariCondica($acl, $salvator);
@@ -91,6 +100,7 @@ class SetariCondicaTest extends TestCase
             [
                 'modAplicareRemote' => 'interval',
                 'numarLuniAnterioareEditabile' => 2,
+                'permiteExportCondicaIncompleta' => true,
                 'angajati' => [],
             ],
             json_decode((string) $raspuns->getBody(), true, flags: JSON_THROW_ON_ERROR)
@@ -119,6 +129,24 @@ class SetariCondicaTest extends TestCase
         $cerere->method('getParsedBody')->willReturn((object) [
             'modAplicareRemote' => 'curent',
             'angajati' => ['valoare-invalida'],
+        ]);
+
+        $this->expectException(BadRequest::class);
+        (new SalveazaSetariCondica($acl, $salvator))->process($cerere);
+    }
+
+    public function testRespingePermisiuneaDeExportCareNuEsteBooleana(): void
+    {
+        $acl = $this->createStub(Acl::class);
+        $acl->method('checkScope')->willReturn(true);
+        $salvator = $this->createMock(SalvatorSetariCondica::class);
+        $salvator->expects(self::never())->method('salveaza');
+        $cerere = $this->createStub(Request::class);
+        $cerere->method('getParsedBody')->willReturn((object) [
+            'modAplicareRemote' => 'curent',
+            'numarLuniAnterioareEditabile' => 1,
+            'permiteExportCondicaIncompleta' => 'da',
+            'angajati' => [],
         ]);
 
         $this->expectException(BadRequest::class);

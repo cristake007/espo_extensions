@@ -3,6 +3,7 @@
 namespace Espo\Modules\ManagementAngajati\Instrumente\Concedii;
 
 use Espo\Core\AclManager;
+use Espo\Core\Acl\Table;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error\Body;
 use Espo\Core\Utils\Config;
@@ -130,8 +131,14 @@ class SetariConcedii
 
     private function esteManagerEligibil(User $utilizator): bool
     {
+        $acl = $this->managerAcl->createUserAcl($utilizator);
+
         return $utilizator->isActive() &&
             $utilizator->isRegular() &&
-            $this->managerAcl->createUserAcl($utilizator)->checkScope('GestionareAngajati');
+            $acl->checkScope('AdministrareConcedii') &&
+            $acl->checkScope('CerereConcediu', Table::ACTION_READ) &&
+            $acl->checkScope('CerereConcediu', Table::ACTION_EDIT) &&
+            $acl->getLevel('CerereConcediu', Table::ACTION_READ) === Table::LEVEL_ALL &&
+            $acl->getLevel('CerereConcediu', Table::ACTION_EDIT) === Table::LEVEL_ALL;
     }
 }

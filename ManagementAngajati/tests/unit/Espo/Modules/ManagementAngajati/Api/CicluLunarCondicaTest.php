@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class CicluLunarCondicaTest extends TestCase
 {
-    public function testInchidereaNecesitaPermisiuneaMostenitaPentruCondica(): void
+    public function testInchidereaNecesitaPermisiuneaIndependentaPentruCondica(): void
     {
         $acl = $this->createMock(Acl::class);
         $acl
@@ -59,7 +59,7 @@ class CicluLunarCondicaTest extends TestCase
         self::assertTrue($date['cicluLunar']['esteInchisa']);
     }
 
-    public function testCorectiaNecesitaPermisiuneaMostenitaPentruCondica(): void
+    public function testCorectiaNecesitaPermisiuneaIndependentaPentruCondica(): void
     {
         $acl = $this->createMock(Acl::class);
         $acl
@@ -76,7 +76,7 @@ class CicluLunarCondicaTest extends TestCase
         );
     }
 
-    public function testManagerulTrimiteMotivulCorectieiPrinCondicaMostenita(): void
+    public function testManagerulTrimiteMotivulCorectieiPrinCondica(): void
     {
         $acl = $this->createMock(Acl::class);
         $acl
@@ -107,7 +107,7 @@ class CicluLunarCondicaTest extends TestCase
         );
     }
 
-    public function testMarcareaNecesitaPermisiuneaMostenitaPentruCondica(): void
+    public function testMarcareaNecesitaPermisiuneaIndependentaPentruCondica(): void
     {
         $acl = $this->createMock(Acl::class);
         $acl
@@ -124,7 +124,7 @@ class CicluLunarCondicaTest extends TestCase
         );
     }
 
-    public function testMarcareaTrimiteIdulAngajatuluiPrinCondicaMostenita(): void
+    public function testMarcareaTrimiteIdulAngajatuluiPrinCondica(): void
     {
         $acl = $this->createMock(Acl::class);
         $acl

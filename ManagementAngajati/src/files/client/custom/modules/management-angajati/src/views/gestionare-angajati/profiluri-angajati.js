@@ -13,14 +13,19 @@ define(['view'], (Vizualizare) => {
         }
 
         data() {
+            const numarAngajati = this.dateProfiluri.angajati.length;
+
             return {
                 titlu: this.translate('profiluriAngajati', 'labels', 'GestionareAngajati'),
+                configurareProfiluri: this.translate('configurareProfiluriAngajati', 'labels', 'GestionareAngajati'),
                 explicatie: this.translate(
                     'explicatieProfiluri',
                     'messages',
                     'GestionareAngajati'
                 ),
-                angajat: this.translate('angajat', 'fields', 'GestionareAngajati'),
+                inapoiAdministrare: this.translate('inapoiAdministrare', 'labels', 'GestionareAngajati'),
+                cumFunctioneaza: this.translate('cumFunctioneazaProfilurile', 'labels', 'GestionareAngajati'),
+                explicatieConfigurare: this.translate('explicatieConfigurareProfiluri', 'messages', 'GestionareAngajati'),
                 dataAngajare: this.translate(
                     'dataAngajare',
                     'fields',
@@ -31,6 +36,13 @@ define(['view'], (Vizualizare) => {
                     'fields',
                     'GestionareAngajati'
                 ),
+                explicatieDataAngajare: this.translate('explicatieDataAngajareProfil', 'messages', 'GestionareAngajati'),
+                explicatieCalendarLucru: this.translate('explicatieCalendarLucruProfil', 'messages', 'GestionareAngajati'),
+                angajatiEticheta: this.translate('angajatiActiviProfiluri', 'labels', 'GestionareAngajati'),
+                explicatieLista: this.translate('explicatieListaProfiluri', 'messages', 'GestionareAngajati'),
+                numarAngajati: this.translate('numarAngajatiProfiluri', 'messages', 'GestionareAngajati')
+                    .replace('{numar}', numarAngajati),
+                explicatieSalvare: this.translate('explicatieSalvareProfiluri', 'messages', 'GestionareAngajati'),
                 salvare: this.translate('Save'),
             };
         }
@@ -54,7 +66,7 @@ define(['view'], (Vizualizare) => {
                 const cheie = `profil-angajat-${index}`;
 
                 this.cheiVizualizari.push(cheie);
-                container.append($('<tr>').attr('data-view-key', cheie));
+                container.append($('<div>').attr('data-view-key', cheie));
 
                 this.createView(
                     cheie,

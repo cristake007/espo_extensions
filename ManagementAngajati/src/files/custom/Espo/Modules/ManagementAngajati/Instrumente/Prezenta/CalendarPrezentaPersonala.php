@@ -39,6 +39,7 @@ use Espo\Tools\WorkingTime\Extractor;
  *     luna: string,
  *     lunaMinimaDisponibila: ?string,
  *     dataCurenta: string,
+ *     situatieCic: array{activa: bool, dataInceput: ?string, dataSfarsit: ?string},
  *     cicluLunar: array{
  *         stare: string,
  *         esteInchisa: bool,
@@ -86,6 +87,14 @@ class CalendarPrezentaPersonala
         $lunaMinimaDisponibila = $dataAngajare !== null ?
             substr($dataAngajare, 0, 7) :
             null;
+        $dataCurenta = $this->dataOra->getToday()->toString();
+        $configuratieAngajat = $this->configuratiiCondica->obtinePentruAngajat(
+            (string) $utilizator->getId()
+        );
+        $situatieCic = $this->configuratiiCondica->descrieSituatieCic(
+            $configuratieAngajat,
+            $dataCurenta
+        );
 
         if ($lunaMinimaDisponibila !== null && $luna < $lunaMinimaDisponibila) {
             throw BadRequest::createWithBody(
@@ -105,7 +114,8 @@ class CalendarPrezentaPersonala
                 $utilizator,
                 $luna,
                 $stareLuna->get('instantaneu'),
-                $lunaMinimaDisponibila
+                $lunaMinimaDisponibila,
+                $situatieCic
             );
         }
 
@@ -121,13 +131,9 @@ class CalendarPrezentaPersonala
         $utilitarCalendar = $this->fabricaUtilitareCalendar->create($calendar);
         $primaZi = new DateTimeImmutable($luna . '-01 12:00:00', $calendar->getTimezone());
         $ultimaZi = $primaZi->modify('last day of this month');
-        $dataCurenta = $this->dataOra->getToday()->toString();
         $sarbatori = $this->sarbatoriLegale->obtineIntre(
             $primaZi->format('Y-m-d'),
             $ultimaZi->format('Y-m-d')
-        );
-        $configuratieAngajat = $this->configuratiiCondica->obtinePentruAngajat(
-            (string) $utilizator->getId()
         );
         $zile = [];
         $cicluLunar = $this->cicluLunar->descrie($luna);
@@ -212,18 +218,23 @@ class CalendarPrezentaPersonala
             'luna' => $luna,
             'lunaMinimaDisponibila' => $lunaMinimaDisponibila,
             'dataCurenta' => $dataCurenta,
+            'situatieCic' => $situatieCic,
             'cicluLunar' => $cicluLunar,
             'esteLunaEditabila' => $esteLunaEditabila,
             'zile' => $zile,
         ];
     }
 
-    /** @return RezultatCalendar */
+    /**
+     * @param array{activa: bool, dataInceput: ?string, dataSfarsit: ?string} $situatieCic
+     * @return RezultatCalendar
+     */
     private function obtineDinInstantaneu(
         User $utilizator,
         string $luna,
         mixed $valoareInstantaneu,
         ?string $lunaMinimaDisponibila,
+        array $situatieCic,
     ): array {
         $instantaneu = $this->normalizatorInstantaneu->normalizeaza($valoareInstantaneu);
         $idAngajat = $utilizator->getId();
@@ -268,6 +279,7 @@ class CalendarPrezentaPersonala
             'luna' => $luna,
             'lunaMinimaDisponibila' => $lunaMinimaDisponibila,
             'dataCurenta' => $this->dataOra->getToday()->toString(),
+            'situatieCic' => $situatieCic,
             'cicluLunar' => $this->cicluLunar->descrie($luna),
             'esteLunaEditabila' => false,
             'zile' => $zile,

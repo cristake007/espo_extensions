@@ -2,11 +2,476 @@
     overflow-x: auto;
 }
 
+/* Pagina principală de administrare a extensiei. */
+.management-angajati.administrare-extensie-page {
+    --administrare-primary: var(--brand-primary);
+    --administrare-accent: var(--brand-danger);
+    --administrare-surface: var(--panel-bg, var(--body-bg));
+    --administrare-surface-soft: var(--panel-default-heading-bg, var(--well-bg));
+    --administrare-border: var(--panel-default-border, var(--border-color));
+    --administrare-muted: var(--text-muted-color, var(--text-muted));
+    width: calc(100% - 32px);
+    max-width: 1440px;
+    margin: 24px auto;
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-antet,
+.management-angajati.administrare-extensie-page .administrare-extensie-panou {
+    border: 1px solid var(--administrare-border);
+    border-radius: var(--border-radius-base);
+    background: var(--administrare-surface);
+    box-shadow: var(--panel-box-shadow, 0 1px 2px rgba(0, 0, 0, 0.08));
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-antet {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-height: 136px;
+    padding: 24px 28px;
+    border-left: 4px solid var(--administrare-accent);
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    color: var(--administrare-primary);
+    background: var(--administrare-surface-soft);
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-icon-mare {
+    width: 58px;
+    height: 58px;
+    color: var(--administrare-accent);
+    font-size: 18px;
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-spratitlu {
+    margin-bottom: 3px;
+    color: var(--administrare-accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-antet h2,
+.management-angajati.administrare-extensie-page .administrare-extensie-panou-antet h4 {
+    margin: 0;
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-antet p,
+.management-angajati.administrare-extensie-page .administrare-extensie-panou-antet p {
+    margin: 4px 0 0;
+    color: var(--administrare-muted);
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-panou {
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-panou-antet {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 82px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--administrare-border);
+    background: var(--administrare-surface-soft);
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-carduri {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    padding: 22px;
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 100px;
+    padding: 18px 20px;
+    border: 1px solid var(--administrare-border);
+    border-left: 3px solid var(--administrare-primary);
+    border-radius: var(--border-radius-base);
+    color: var(--text-color);
+    background: var(--administrare-surface);
+    text-decoration: none;
+    transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-card:hover,
+.management-angajati.administrare-extensie-page .administrare-extensie-card:focus {
+    border-color: var(--administrare-primary);
+    color: var(--text-color);
+    background: var(--administrare-surface-soft);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-card-text {
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-card-text strong {
+    color: var(--administrare-primary);
+    font-size: 15px;
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-card-text small {
+    color: var(--administrare-muted);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.management-angajati.administrare-extensie-page .administrare-extensie-card-sageata {
+    flex: 0 0 auto;
+    color: var(--administrare-muted);
+}
+
+@media (max-width: 767px) {
+    .management-angajati.administrare-extensie-page {
+        width: calc(100% - 20px);
+        margin-top: 14px;
+    }
+
+    .management-angajati.administrare-extensie-page .administrare-extensie-antet {
+        padding: 20px;
+    }
+
+    .management-angajati.administrare-extensie-page .administrare-extensie-carduri {
+        grid-template-columns: 1fr;
+        padding: 14px;
+    }
+}
+
+/* Profilurile angajaților: data angajării și calendarul WTC nativ. */
+.management-angajati.profiluri-angajati-page {
+    --profiluri-primary: var(--brand-primary);
+    --profiluri-accent: var(--brand-danger);
+    --profiluri-surface: var(--panel-bg, var(--body-bg));
+    --profiluri-surface-soft: var(--panel-default-heading-bg, var(--well-bg));
+    --profiluri-border: var(--panel-default-border, var(--border-color));
+    --profiluri-muted: var(--text-muted-color, var(--text-muted));
+    width: calc(100% - 32px);
+    max-width: 1440px;
+    margin: 24px auto;
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-antet,
+.management-angajati.profiluri-angajati-page .profiluri-angajati-panou {
+    overflow: hidden;
+    border: 1px solid var(--profiluri-border);
+    border-radius: var(--border-radius-base);
+    background: var(--profiluri-surface);
+    box-shadow: var(--panel-box-shadow, 0 1px 2px rgba(0, 0, 0, 0.08));
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-antet {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-height: 136px;
+    padding: 24px 28px;
+    border-left: 4px solid var(--profiluri-accent);
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-inapoi {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: var(--profiluri-muted);
+    text-decoration: none;
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-inapoi:hover,
+.management-angajati.profiluri-angajati-page .profiluri-angajati-inapoi:focus {
+    color: var(--profiluri-primary);
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-icon,
+.management-angajati.profiluri-angajati-page .profil-angajat-avatar {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    color: var(--profiluri-primary);
+    background: var(--profiluri-surface-soft);
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-icon-mare {
+    width: 58px;
+    height: 58px;
+    color: var(--profiluri-accent);
+    font-size: 18px;
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-spratitlu {
+    margin-bottom: 3px;
+    color: var(--profiluri-accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-antet h2,
+.management-angajati.profiluri-angajati-page .profiluri-angajati-panou-antet h4 {
+    margin: 0;
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-antet p,
+.management-angajati.profiluri-angajati-page .profiluri-angajati-panou-antet p {
+    margin: 4px 0 0;
+    color: var(--profiluri-muted);
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-panou {
+    margin-top: 20px;
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-panou-antet {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 82px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--profiluri-border);
+    background: var(--profiluri-surface-soft);
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-lista-antet > div {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-numar {
+    flex: 0 0 auto;
+    color: var(--profiluri-muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-ghid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    padding: 18px;
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-ghid-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 92px;
+    padding: 15px 16px;
+    border: 1px solid var(--profiluri-border);
+    border-left: 3px solid var(--profiluri-primary);
+    border-radius: var(--border-radius-base);
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-ghid-card > span:last-child,
+.management-angajati.profiluri-angajati-page .profil-angajat-nume {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-ghid-card small,
+.management-angajati.profiluri-angajati-page .profil-angajat-nume small,
+.management-angajati.profiluri-angajati-page .profil-angajat-camp > small {
+    margin-top: 4px;
+    color: var(--profiluri-muted);
+    font-weight: normal;
+    line-height: 1.4;
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-lista {
+    display: grid;
+    gap: 14px;
+    padding: 18px;
+    background: var(--profiluri-surface-soft);
+}
+
+.management-angajati.profiluri-angajati-page .profil-angajat-card {
+    display: grid;
+    grid-template-columns: minmax(260px, .8fr) minmax(520px, 1.8fr);
+    align-items: stretch;
+    min-width: 0;
+    border: 1px solid var(--profiluri-border);
+    border-radius: var(--border-radius-base);
+    background: var(--profiluri-surface);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+
+.management-angajati.profiluri-angajati-page .profil-angajat-identitate {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-content: center;
+    align-items: center;
+    gap: 10px 12px;
+    min-width: 0;
+    padding: 18px;
+    border-right: 1px solid var(--profiluri-border);
+}
+
+.management-angajati.profiluri-angajati-page .profil-angajat-nume strong {
+    overflow-wrap: anywhere;
+    font-size: 14px;
+}
+
+.management-angajati.profiluri-angajati-page .profil-angajat-stare {
+    display: inline-flex;
+    grid-column: 2;
+    justify-self: start;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border: 1px solid var(--profiluri-border);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.management-angajati.profiluri-angajati-page .profil-angajat-stare.este-configurat {
+    border-color: var(--state-success-border, var(--brand-success));
+    color: var(--state-success-text, var(--brand-success));
+    background: var(--state-success-bg);
+}
+
+.management-angajati.profiluri-angajati-page .profil-angajat-stare.este-incomplet {
+    border-color: var(--state-warning-border, var(--brand-warning));
+    color: var(--state-warning-text, var(--brand-warning));
+    background: var(--state-warning-bg);
+}
+
+.management-angajati.profiluri-angajati-page .profil-angajat-campuri {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 18px;
+    min-width: 0;
+    padding: 18px;
+}
+
+.management-angajati.profiluri-angajati-page .profil-angajat-camp {
+    min-width: 0;
+}
+
+.management-angajati.profiluri-angajati-page .profil-angajat-camp > label {
+    min-height: 20px;
+    margin-bottom: 6px;
+    font-size: 12px;
+}
+
+.management-angajati.profiluri-angajati-page .profil-angajat-camp .form-control,
+.management-angajati.profiluri-angajati-page .profil-angajat-camp .input-group-btn > .btn {
+    min-height: 36px;
+}
+
+.management-angajati.profiluri-angajati-page .profil-angajat-camp .input-group {
+    width: 100%;
+}
+
+.management-angajati.profiluri-angajati-page .profil-angajat-camp > small {
+    display: block;
+    min-height: 34px;
+    font-size: 11px;
+}
+
+.management-angajati.profiluri-angajati-page .profiluri-angajati-salvare {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 18px;
+    padding: 14px 18px;
+    border-top: 1px solid var(--profiluri-border);
+    color: var(--profiluri-muted);
+    background: var(--profiluri-surface-soft);
+}
+
+@media (max-width: 991px) {
+    .management-angajati.profiluri-angajati-page .profil-angajat-card {
+        grid-template-columns: 1fr;
+    }
+
+    .management-angajati.profiluri-angajati-page .profil-angajat-identitate {
+        border-right: 0;
+        border-bottom: 1px solid var(--profiluri-border);
+    }
+}
+
+@media (max-width: 767px) {
+    .management-angajati.profiluri-angajati-page {
+        width: calc(100% - 20px);
+        margin-top: 14px;
+    }
+
+    .management-angajati.profiluri-angajati-page .profiluri-angajati-antet {
+        align-items: flex-start;
+        padding: 18px 16px;
+    }
+
+    .management-angajati.profiluri-angajati-page .profiluri-angajati-ghid,
+    .management-angajati.profiluri-angajati-page .profil-angajat-campuri {
+        grid-template-columns: 1fr;
+    }
+
+    .management-angajati.profiluri-angajati-page .profiluri-angajati-lista-antet {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .management-angajati.profiluri-angajati-page .profiluri-angajati-numar {
+        width: 100%;
+        padding-left: 56px;
+    }
+
+    .management-angajati.profiluri-angajati-page .profiluri-angajati-salvare {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .management-angajati.profiluri-angajati-page .profiluri-angajati-salvare .btn {
+        width: 100%;
+    }
+}
+
 .management-angajati.condica-prezenta-lunara .condica-prezenta-tabel {
     width: max-content;
     min-width: 100%;
     margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
     table-layout: fixed;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-tabel > thead > tr > th,
+.management-angajati.condica-prezenta-lunara .condica-prezenta-tabel > tbody > tr > th,
+.management-angajati.condica-prezenta-lunara .condica-prezenta-tabel > tbody > tr > td {
+    border-top: 0;
+    border-left: 0;
+    border-right: 1px solid var(--condica-border);
+    border-bottom: 1px solid var(--condica-border);
+    background-clip: border-box;
 }
 
 .management-angajati.condica-prezenta-lunara .condica-prezenta-col-data {
@@ -59,6 +524,1014 @@
     opacity: 0.65;
 }
 
+.management-angajati.condica-prezenta-lunara {
+    --condica-primary: var(--tuvtk-primary, var(--brand-primary));
+    --condica-secondary: var(--tuvtk-secondary, var(--brand-danger));
+    --condica-surface: var(--tuvtk-surface, var(--panel-bg));
+    --condica-border: var(--tuvtk-border, var(--panel-default-border));
+    --condica-border-soft: var(--tuvtk-border-soft, var(--panel-default-border));
+    --condica-hover: var(--tuvtk-hover, var(--state-primary-bg));
+    --condica-text: var(--tuvtk-text, var(--text-color));
+    --condica-muted: var(--tuvtk-muted, var(--text-muted-color));
+    width: calc(100% - 32px);
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 16px 0 32px;
+    color: var(--condica-text);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-antet,
+.management-angajati.condica-prezenta-lunara .condica-actiuni-rapide,
+.management-angajati.condica-prezenta-lunara .condica-panou,
+.management-angajati.condica-prezenta-lunara .condica-indicator {
+    border: 1px solid var(--condica-border);
+    border-radius: var(--panel-border-radius, 4px);
+    background: var(--condica-surface);
+    box-shadow: var(--panel-box-shadow, 0 1px 3px var(--condica-border-soft));
+}
+
+.management-angajati.condica-prezenta-lunara .condica-antet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 16px;
+    padding: 22px 24px 22px 20px;
+    border-left: 4px solid var(--condica-secondary);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-antet-identitate,
+.management-angajati.condica-prezenta-lunara .condica-sectiune-identitate,
+.management-angajati.condica-prezenta-lunara .condica-actiuni-identitate {
+    display: flex;
+    align-items: center;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-antet-identitate {
+    gap: 18px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-icon,
+.management-angajati.condica-prezenta-lunara .condica-indicator-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: var(--condica-primary);
+    background: var(--condica-hover);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-icon-mare {
+    width: 52px;
+    height: 52px;
+    font-size: 18px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-spratitlu {
+    margin-bottom: 3px;
+    color: var(--condica-secondary);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-antet h2,
+.management-angajati.condica-prezenta-lunara .condica-panou-antet h4 {
+    margin: 0;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-antet h2 {
+    font-size: 24px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-antet p,
+.management-angajati.condica-prezenta-lunara .condica-panou-antet p,
+.management-angajati.condica-prezenta-lunara .condica-actiuni-identitate small {
+    color: var(--condica-muted);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-antet p {
+    max-width: 760px;
+    margin: 5px 0 0;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-selector-luna {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    justify-items: end;
+    gap: 7px 10px;
+    flex: 0 0 auto;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-selector-luna small {
+    color: var(--condica-muted);
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-selector-luna .btn-group {
+    grid-column: 1 / -1;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-actiuni-rapide {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 16px;
+    padding: 11px 16px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-actiuni-identitate {
+    gap: 10px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-actiuni-identitate > .fas {
+    color: var(--condica-primary);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-actiuni-identitate > span:last-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-actiuni-butoane {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-panou {
+    margin-bottom: 18px;
+    overflow: hidden;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-panou:last-child {
+    margin-bottom: 0;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-panou-antet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--condica-border);
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-sectiune-identitate {
+    gap: 12px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-panou-antet p {
+    margin: 2px 0 0;
+    font-size: 12px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicatori {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    padding: 16px 18px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator {
+    --condica-indicator-culoare: var(--condica-primary);
+    display: flex;
+    flex-direction: column;
+    min-height: 176px;
+    padding: 15px;
+    border-top: 3px solid var(--condica-indicator-culoare);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator-rezumat {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 0;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator.este-lipsa {
+    --condica-indicator-culoare: var(--brand-danger);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator.este-calendare {
+    --condica-indicator-culoare: var(--brand-success);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator.este-export {
+    --condica-indicator-culoare: var(--brand-warning);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator-icon {
+    color: var(--condica-indicator-culoare);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator-rezumat > span:last-child {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator small {
+    color: var(--condica-text);
+    font-weight: 600;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator strong {
+    margin-top: 8px;
+    color: var(--condica-indicator-culoare);
+    font-size: 27px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.05;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator.este-export strong {
+    font-size: 20px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator em {
+    margin-top: 5px;
+    color: var(--condica-muted);
+    font-size: 11px;
+    font-style: normal;
+    line-height: 1.35;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator-detalii {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--condica-border-soft);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator-detalii > summary {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--condica-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .035em;
+    list-style: none;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator-detalii > summary::-webkit-details-marker {
+    display: none;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator-detalii > summary::before {
+    content: '';
+    flex: 0 0 auto;
+    width: 6px;
+    height: 6px;
+    border-right: 2px solid var(--condica-indicator-culoare);
+    border-bottom: 2px solid var(--condica-indicator-culoare);
+    transform: rotate(-45deg);
+    transition: transform .15s ease;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator-detalii[open] > summary::before {
+    transform: rotate(45deg);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator-detalii > summary > span:first-child {
+    margin-right: auto;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-indicator-contor {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 19px;
+    height: 19px;
+    padding: 0 5px;
+    border-radius: 999px;
+    color: var(--condica-indicator-culoare);
+    background: var(--condica-hover);
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-mini-tabel {
+    max-height: 170px;
+    margin-top: 8px;
+    overflow: auto;
+    scrollbar-color: var(--condica-indicator-culoare) var(--condica-hover);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-mini-tabel > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    padding: 4px 5px;
+    font-size: 12px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-mini-tabel > div:nth-child(even) {
+    background: var(--condica-hover);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-mini-tabel span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-mini-tabel strong {
+    flex: 0 0 auto;
+    margin: 0;
+    color: var(--condica-text);
+    font-size: 12px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-stare-detalii {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin: 0 18px 16px;
+    padding: 10px 12px;
+    border: 1px solid var(--condica-border-soft);
+    border-radius: var(--border-radius, 3px);
+    background: var(--condica-hover);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-stare-detalii > .fas {
+    margin-top: 2px;
+    color: var(--condica-primary);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-stare-detalii > span:last-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-stare-detalii small {
+    margin-top: 2px;
+    color: var(--condica-muted);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-contor {
+    color: var(--condica-primary);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-contor .fas {
+    margin-right: 5px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-legenda {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 11px 18px;
+    border-bottom: 1px solid var(--condica-border);
+    background: var(--default-heading-bg-color);
+    color: var(--condica-muted);
+    font-size: 11px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-legenda > strong {
+    padding-left: 10px;
+    border-left: 3px solid var(--condica-primary);
+    color: var(--condica-text);
+    font-size: 10px;
+    letter-spacing: .045em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-legenda > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 7px 14px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-legenda span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 8px;
+    border: 1px solid var(--condica-border-soft);
+    border-radius: 999px;
+    background: var(--condica-surface);
+    color: var(--condica-text);
+    line-height: 1.2;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-legenda i {
+    flex: 0 0 auto;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--condica-muted);
+    box-shadow: 0 0 0 2px var(--condica-surface);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-container {
+    max-height: 68vh;
+    overflow: auto;
+    scrollbar-color: var(--condica-primary) var(--condica-hover);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-tabel > thead > tr > th {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    height: 62px;
+    padding: 10px 8px;
+    border-bottom-width: 1px;
+    color: var(--condica-primary);
+    background: var(--condica-surface);
+    background-clip: border-box;
+    text-align: center;
+    box-shadow: inset 0 -1px 0 var(--condica-border);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-tabel .condica-prezenta-data {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: var(--condica-surface);
+    background-clip: border-box;
+    box-shadow: inset -1px 0 0 var(--condica-border);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-tabel > thead .condica-prezenta-data {
+    z-index: 6;
+    color: var(--condica-muted);
+    box-shadow:
+        inset -1px 0 0 var(--condica-border),
+        inset 0 -1px 0 var(--condica-border);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-tabel > tbody .condica-prezenta-data {
+    padding: 10px 8px;
+    text-align: center;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-tabel > tbody > tr:hover .condica-prezenta-data {
+    background: var(--condica-hover);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-celula {
+    height: 64px;
+    border-left: 3px solid transparent;
+    text-align: center;
+    transition: opacity 0.12s ease, background-color 0.12s ease;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-celula.este-prezent,
+.management-angajati.condica-prezenta-lunara .condica-legenda i.este-prezent {
+    border-left-color: var(--brand-success);
+    background: var(--state-success-bg);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-celula.este-delegatie,
+.management-angajati.condica-prezenta-lunara .condica-legenda i.este-delegatie {
+    border-left-color: var(--brand-warning);
+    background: var(--state-warning-bg);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-celula.este-medical,
+.management-angajati.condica-prezenta-lunara .condica-legenda i.este-medical,
+.management-angajati.condica-prezenta-lunara .condica-prezenta-celula.este-lipsa,
+.management-angajati.condica-prezenta-lunara .condica-legenda i.este-lipsa {
+    border-left-color: var(--brand-danger);
+    background: var(--state-danger-bg);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-celula.este-concediu,
+.management-angajati.condica-prezenta-lunara .condica-legenda i.este-concediu {
+    border-left-color: var(--brand-info);
+    background: var(--state-info-bg);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-celula.este-cic,
+.management-angajati.condica-prezenta-lunara .condica-legenda i.este-cic {
+    border-left-color: var(--condica-primary);
+    background: var(--condica-hover);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-legenda i[class*="este-"] {
+    border-left-width: 0;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-legenda i.este-prezent {
+    background: var(--brand-success);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-legenda i.este-delegatie {
+    background: var(--brand-warning);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-legenda i.este-medical,
+.management-angajati.condica-prezenta-lunara .condica-legenda i.este-lipsa {
+    background: var(--brand-danger);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-legenda i.este-concediu {
+    background: var(--brand-info);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-legenda i.este-cic {
+    background: var(--condica-primary);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-celula.este-inactiva {
+    color: var(--condica-muted);
+    background: var(--condica-surface);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-stare {
+    color: var(--condica-muted);
+    font-size: 11px;
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-stare strong {
+    color: var(--condica-text);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-actiuni > .btn {
+    border-color: var(--condica-border-soft);
+    color: var(--condica-primary);
+    background: var(--condica-surface);
+}
+
+.management-angajati.condica-prezenta-lunara .condica-prezenta-actiuni > .btn.btn-primary {
+    border-color: var(--condica-primary);
+    color: #fff;
+    background: var(--condica-primary);
+}
+
+@media (max-width: 1100px) {
+    .management-angajati.condica-prezenta-lunara .condica-indicatori {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .management-angajati.condica-prezenta-lunara {
+        padding-top: 12px;
+    }
+
+    .management-angajati.condica-prezenta-lunara .condica-antet,
+    .management-angajati.condica-prezenta-lunara .condica-actiuni-rapide,
+    .management-angajati.condica-prezenta-lunara .condica-panou-antet,
+    .management-angajati.condica-prezenta-lunara .condica-legenda {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .management-angajati.condica-prezenta-lunara .condica-antet {
+        padding: 18px 16px 18px 14px;
+    }
+
+    .management-angajati.condica-prezenta-lunara .condica-selector-luna {
+        width: 100%;
+        justify-items: start;
+    }
+
+    .management-angajati.condica-prezenta-lunara .condica-actiuni-butoane,
+    .management-angajati.condica-prezenta-lunara .condica-legenda > div {
+        justify-content: flex-start;
+    }
+
+    .management-angajati.condica-prezenta-lunara .condica-indicatori {
+        grid-template-columns: 1fr;
+    }
+}
+
+.management-angajati.setari-condica-page {
+    --setari-condica-primary: var(--tuvtk-primary, var(--brand-primary));
+    --setari-condica-secondary: var(--tuvtk-secondary, var(--brand-danger));
+    --setari-condica-surface: var(--tuvtk-surface, var(--panel-bg));
+    --setari-condica-border: var(--tuvtk-border, var(--panel-default-border));
+    --setari-condica-border-soft: var(--tuvtk-border-soft, var(--panel-default-border));
+    --setari-condica-hover: var(--tuvtk-hover, var(--state-primary-bg));
+    --setari-condica-text: var(--tuvtk-text, var(--text-color));
+    --setari-condica-muted: var(--tuvtk-muted, var(--text-muted-color));
+    width: calc(100% - 32px);
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 16px 0 32px;
+    color: var(--setari-condica-text);
+}
+
+.management-angajati.setari-condica-page .setari-condica-antet,
+.management-angajati.setari-condica-page .setari-condica-panou,
+.management-angajati.setari-condica-page .setari-condica-actiuni {
+    border: 1px solid var(--setari-condica-border);
+    border-radius: var(--panel-border-radius, 4px);
+    background: var(--setari-condica-surface);
+    box-shadow: var(--panel-box-shadow, 0 1px 3px var(--setari-condica-border-soft));
+}
+
+.management-angajati.setari-condica-page .setari-condica-antet {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    margin-bottom: 18px;
+    padding: 22px 24px 22px 20px;
+    border-left: 4px solid var(--setari-condica-secondary);
+}
+
+.management-angajati.setari-condica-page .setari-condica-inapoi {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    color: var(--setari-condica-muted);
+    text-decoration: none;
+}
+
+.management-angajati.setari-condica-page .setari-condica-inapoi:hover,
+.management-angajati.setari-condica-page .setari-condica-inapoi:focus {
+    color: var(--setari-condica-primary);
+}
+
+.management-angajati.setari-condica-page .setari-condica-icon,
+.management-angajati.setari-condica-page .setari-condica-avatar {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--setari-condica-border-soft);
+    border-radius: 50%;
+    color: var(--setari-condica-primary);
+    background: var(--setari-condica-hover);
+}
+
+.management-angajati.setari-condica-page .setari-condica-icon-mare {
+    width: 52px;
+    height: 52px;
+    color: var(--setari-condica-secondary);
+    font-size: 18px;
+}
+
+.management-angajati.setari-condica-page .setari-condica-spratitlu {
+    margin-bottom: 3px;
+    color: var(--setari-condica-secondary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .075em;
+    text-transform: uppercase;
+}
+
+.management-angajati.setari-condica-page .setari-condica-antet h2,
+.management-angajati.setari-condica-page .setari-condica-panou-antet h4 {
+    margin: 0;
+}
+
+.management-angajati.setari-condica-page .setari-condica-antet p,
+.management-angajati.setari-condica-page .setari-condica-panou-antet p {
+    margin: 3px 0 0;
+    color: var(--setari-condica-muted);
+}
+
+.management-angajati.setari-condica-page .setari-condica-panou {
+    margin-bottom: 18px;
+    overflow: hidden;
+}
+
+.management-angajati.setari-condica-page .setari-condica-panou-antet {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--setari-condica-border);
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.setari-condica-page .setari-condica-panou-antet > div {
+    min-width: 0;
+}
+
+.management-angajati.setari-condica-page .setari-condica-panou-antet p {
+    font-size: 12px;
+}
+
+.management-angajati.setari-condica-page .setari-condica-contor {
+    margin-left: auto;
+    color: var(--setari-condica-muted);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.management-angajati.setari-condica-page .setari-condica-reguli {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    padding: 16px 18px;
+}
+
+.management-angajati.setari-condica-page .setari-condica-regula {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(180px, .75fr);
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+    margin: 0;
+    padding: 16px;
+    border: 1px solid var(--setari-condica-border-soft);
+    border-radius: var(--border-radius, 3px);
+    background: var(--setari-condica-surface);
+    font-weight: normal;
+}
+
+.management-angajati.setari-condica-page .setari-condica-regula-identitate {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.management-angajati.setari-condica-page .setari-condica-regula-identitate strong {
+    color: var(--setari-condica-text);
+}
+
+.management-angajati.setari-condica-page .setari-condica-regula-identitate small {
+    color: var(--setari-condica-muted);
+    line-height: 1.35;
+}
+
+.management-angajati.setari-condica-page .setari-condica-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.setari-condica-page .setari-condica-rand-angajat {
+    display: grid;
+    grid-template-columns: minmax(210px, .8fr) minmax(280px, 1fr) minmax(280px, 1fr);
+    align-items: start;
+    gap: 14px;
+    padding: 14px;
+    border: 1px solid var(--setari-condica-border-soft);
+    border-radius: var(--border-radius, 3px);
+    background: var(--setari-condica-surface);
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.management-angajati.setari-condica-page .setari-condica-rand-angajat:focus-within {
+    border-color: var(--setari-condica-primary);
+    box-shadow: 0 0 0 1px var(--setari-condica-primary);
+}
+
+.management-angajati.setari-condica-page .setari-condica-angajat-identitate {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+    min-height: 64px;
+}
+
+.management-angajati.setari-condica-page .setari-condica-angajat-identitate > span:last-child {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.management-angajati.setari-condica-page .setari-condica-angajat-identitate small {
+    color: var(--setari-condica-muted);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.management-angajati.setari-condica-page .setari-condica-angajat-identitate strong {
+    margin-top: 2px;
+    overflow-wrap: anywhere;
+}
+
+.management-angajati.setari-condica-page .setari-condica-angajat-identitate em {
+    margin-top: 3px;
+    font-size: 11px;
+    font-style: normal;
+}
+
+.management-angajati.setari-condica-page .setari-condica-optiune {
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--setari-condica-border-soft);
+    border-radius: var(--border-radius, 3px);
+}
+
+.management-angajati.setari-condica-page .setari-condica-optiune-antet {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    min-height: 38px;
+    cursor: pointer;
+}
+
+.management-angajati.setari-condica-page .setari-condica-optiune-antet > .fas {
+    color: var(--setari-condica-primary);
+}
+
+.management-angajati.setari-condica-page .setari-condica-optiune-antet > div:nth-child(2) {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.management-angajati.setari-condica-page .setari-condica-optiune-antet small {
+    margin-top: 2px;
+    color: var(--setari-condica-muted);
+    font-size: 10px;
+    font-weight: normal;
+    line-height: 1.25;
+}
+
+.management-angajati.setari-condica-page .setari-condica-bifa {
+    min-width: 24px;
+    margin: 0;
+}
+
+.management-angajati.setari-condica-page .setari-condica-bifa .field-control,
+.management-angajati.setari-condica-page .setari-condica-bifa .checkbox {
+    margin: 0;
+}
+
+.management-angajati.setari-condica-page .setari-condica-date {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(115px, 1fr));
+    gap: 10px;
+    margin-top: 11px;
+    padding-top: 11px;
+    border-top: 1px solid var(--setari-condica-border-soft);
+}
+
+.management-angajati.setari-condica-page .setari-condica-date.hidden {
+    display: none;
+}
+
+.management-angajati.setari-condica-page .setari-condica-date label {
+    display: flex;
+    min-width: 0;
+    margin: 0;
+    flex-direction: column;
+    gap: 5px;
+    color: var(--setari-condica-muted);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.management-angajati.setari-condica-page .setari-condica-date .field {
+    display: block;
+    min-width: 0;
+}
+
+.management-angajati.setari-condica-page .setari-condica-resetare {
+    border-color: var(--state-danger-border, var(--setari-condica-border));
+}
+
+.management-angajati.setari-condica-page .setari-condica-resetare-corp {
+    padding: 16px 18px 18px;
+}
+
+.management-angajati.setari-condica-page .setari-condica-avertisment {
+    margin-bottom: 14px;
+}
+
+.management-angajati.setari-condica-page .setari-condica-resetare-statistici {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0 0 14px;
+}
+
+.management-angajati.setari-condica-page .setari-condica-resetare-statistici > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 9px 11px;
+    border: 1px solid var(--setari-condica-border-soft);
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.setari-condica-page .setari-condica-resetare-statistici dt,
+.management-angajati.setari-condica-page .setari-condica-resetare-statistici dd {
+    margin: 0;
+}
+
+.management-angajati.setari-condica-page .setari-condica-resetare-statistici dt {
+    color: var(--setari-condica-muted);
+    font-size: 11px;
+}
+
+.management-angajati.setari-condica-page .setari-condica-resetare-statistici dd {
+    font-weight: 700;
+}
+
+.management-angajati.setari-condica-page .setari-condica-confirmare-resetare {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) auto;
+    align-items: end;
+    gap: 8px;
+}
+
+.management-angajati.setari-condica-page .setari-condica-confirmare-resetare label {
+    grid-column: 1 / -1;
+    margin: 0;
+}
+
+.management-angajati.setari-condica-page .setari-condica-actiuni {
+    position: sticky;
+    bottom: 0;
+    z-index: 8;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 12px 16px;
+}
+
+.management-angajati.setari-condica-page .setari-condica-actiuni > span {
+    color: var(--setari-condica-muted);
+    font-size: 11px;
+}
+
+@media (max-width: 1100px) {
+    .management-angajati.setari-condica-page .setari-condica-reguli,
+    .management-angajati.setari-condica-page .setari-condica-resetare-statistici {
+        grid-template-columns: 1fr;
+    }
+
+    .management-angajati.setari-condica-page .setari-condica-rand-angajat {
+        grid-template-columns: minmax(190px, .7fr) minmax(250px, 1fr) minmax(250px, 1fr);
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    .management-angajati.setari-condica-page {
+        width: calc(100% - 20px);
+        padding-top: 12px;
+    }
+
+    .management-angajati.setari-condica-page .setari-condica-antet {
+        align-items: flex-start;
+        padding: 18px 14px;
+    }
+
+    .management-angajati.setari-condica-page .setari-condica-icon-mare {
+        display: none;
+    }
+
+    .management-angajati.setari-condica-page .setari-condica-reguli,
+    .management-angajati.setari-condica-page .setari-condica-lista {
+        padding: 12px;
+    }
+
+    .management-angajati.setari-condica-page .setari-condica-regula,
+    .management-angajati.setari-condica-page .setari-condica-rand-angajat,
+    .management-angajati.setari-condica-page .setari-condica-confirmare-resetare {
+        grid-template-columns: 1fr;
+    }
+
+    .management-angajati.setari-condica-page .setari-condica-rand-angajat {
+        overflow: visible;
+    }
+
+    .management-angajati.setari-condica-page .setari-condica-contor {
+        display: none;
+    }
+
+    .management-angajati.setari-condica-page .setari-condica-actiuni {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .management-angajati.setari-condica-page .setari-condica-actiuni .btn {
+        width: 100%;
+    }
+}
+
 .management-angajati.administrare-concedii-page {
     --concedii-primary: var(--tuvtk-primary, var(--brand-primary));
     --concedii-secondary: var(--tuvtk-secondary, var(--brand-danger));
@@ -68,8 +1541,9 @@
     --concedii-hover: var(--tuvtk-hover, var(--state-primary-bg));
     --concedii-text: var(--tuvtk-text, var(--text-color));
     --concedii-muted: var(--tuvtk-muted, var(--text-muted-color));
+    width: calc(100% - 32px);
     margin: 0 auto;
-    max-width: 1180px;
+    max-width: 1440px;
     padding: 16px 0 32px;
     color: var(--concedii-text);
 }
@@ -154,8 +1628,81 @@
     white-space: nowrap;
 }
 
+.management-angajati.administrare-concedii-page .administrare-concedii-sectiuni {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-selector {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    min-height: 96px;
+    padding: 14px 16px;
+    border: 1px solid var(--concedii-border);
+    border-radius: var(--panel-border-radius, 4px);
+    color: var(--concedii-text);
+    background: var(--concedii-surface);
+    box-shadow: var(--panel-box-shadow, 0 1px 3px var(--concedii-border-soft));
+    text-align: left;
+    transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-selector:hover,
+.management-angajati.administrare-concedii-page .administrare-concedii-selector:focus {
+    border-color: var(--concedii-primary);
+    outline: 0;
+    background: var(--concedii-hover);
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-selector.este-activa {
+    border-color: var(--concedii-primary);
+    border-top: 3px solid var(--concedii-secondary);
+    padding-top: 12px;
+    box-shadow: 0 2px 7px var(--concedii-border-soft);
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-selector-text {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-selector-text strong {
+    color: var(--concedii-primary);
+    font-size: 14px;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-selector-text small {
+    margin-top: 4px;
+    color: var(--concedii-muted);
+    font-weight: normal;
+    line-height: 1.35;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-selector-contor {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 26px;
+    height: 26px;
+    padding: 0 7px;
+    border-radius: 999px;
+    color: var(--concedii-primary);
+    background: var(--concedii-hover);
+    font-size: 12px;
+    font-weight: 700;
+}
+
 .management-angajati.administrare-concedii-page .administrare-concedii-panou {
     overflow: hidden;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-rezumat-lunar {
+    margin-bottom: 20px;
 }
 
 .management-angajati.administrare-concedii-page .administrare-concedii-panou-antet {
@@ -175,6 +1722,171 @@
 .management-angajati.administrare-concedii-page .administrare-concedii-panou-antet p {
     margin: 2px 0 0;
     color: var(--concedii-muted);
+    font-size: 12px;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-selector-luna {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 14px;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-selector-luna > strong {
+    color: var(--concedii-primary);
+    white-space: nowrap;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistici {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    padding: 16px 18px 18px;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica {
+    --concedii-statistica-culoare: var(--concedii-primary);
+    display: flex;
+    min-height: 126px;
+    flex-direction: column;
+    padding: 16px;
+    border: 1px solid var(--concedii-border);
+    border-top: 3px solid var(--concedii-statistica-culoare);
+    border-radius: var(--panel-border-radius, 4px);
+    background: var(--concedii-surface);
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-aprobate {
+    --concedii-statistica-culoare: var(--state-success-text, #3c763d);
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-asteptare {
+    --concedii-statistica-culoare: var(--state-warning-text, #8a6d3b);
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-anulari {
+    --concedii-statistica-culoare: var(--concedii-secondary);
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-rezumat {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-continut {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-titlu {
+    color: var(--concedii-text);
+    font-weight: 600;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-continut > strong {
+    margin: 4px 0 2px;
+    color: var(--concedii-statistica-culoare);
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.05;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-continut > small {
+    color: var(--concedii-muted);
+    font-weight: normal;
+    line-height: 1.35;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-detalii {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--concedii-border-soft);
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-detalii > summary {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--concedii-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .035em;
+    list-style: none;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-detalii > summary::-webkit-details-marker {
+    display: none;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-detalii > summary::before {
+    content: '';
+    flex: 0 0 auto;
+    width: 6px;
+    height: 6px;
+    border-right: 2px solid var(--concedii-statistica-culoare);
+    border-bottom: 2px solid var(--concedii-statistica-culoare);
+    transform: rotate(-45deg);
+    transition: transform .15s ease;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-detalii[open] > summary::before {
+    transform: rotate(45deg);
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-detalii > summary > span:first-child {
+    margin-right: auto;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-statistica-contor {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 19px;
+    height: 19px;
+    padding: 0 5px;
+    border-radius: 999px;
+    color: var(--concedii-statistica-culoare);
+    background: var(--concedii-hover);
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-mini-tabel {
+    max-height: 170px;
+    margin-top: 8px;
+    overflow: auto;
+    scrollbar-color: var(--concedii-statistica-culoare) var(--concedii-hover);
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-mini-tabel > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    padding: 4px 5px;
+    font-size: 12px;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-mini-tabel > div:nth-child(even) {
+    background: var(--concedii-hover);
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-mini-tabel span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.management-angajati.administrare-concedii-page .administrare-concedii-mini-tabel strong {
+    flex: 0 0 auto;
+    color: var(--concedii-text);
     font-size: 12px;
 }
 
@@ -274,6 +1986,20 @@
     .management-angajati.administrare-concedii-page .administrare-concedii-rezumat {
         display: none;
     }
+
+    .management-angajati.administrare-concedii-page .administrare-concedii-statistici {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .management-angajati.administrare-concedii-page .administrare-concedii-sectiuni {
+        grid-template-columns: 1fr;
+    }
+
+    .management-angajati.administrare-concedii-page .administrare-concedii-selector {
+        min-height: 82px;
+    }
 }
 
 @media (max-width: 767px) {
@@ -282,7 +2008,8 @@
     }
 
     .management-angajati.administrare-concedii-page .administrare-concedii-antet,
-    .management-angajati.administrare-concedii-page .administrare-concedii-panou-antet {
+    .management-angajati.administrare-concedii-page .administrare-concedii-panou-antet,
+    .management-angajati.administrare-concedii-page .administrare-concedii-selector-luna {
         align-items: flex-start;
         flex-direction: column;
     }
@@ -301,6 +2028,16 @@
         padding-left: 50px;
         white-space: normal;
     }
+
+    .management-angajati.administrare-concedii-page .administrare-concedii-statistici {
+        grid-template-columns: 1fr;
+        padding: 14px;
+    }
+
+    .management-angajati.administrare-concedii-page .administrare-concedii-selector-luna {
+        width: 100%;
+        gap: 8px;
+    }
 }
 
 .management-angajati.prezenta-personala-page {
@@ -312,10 +2049,984 @@
     --prezenta-hover: var(--tuvtk-hover, var(--state-primary-bg));
     --prezenta-text: var(--tuvtk-text, var(--text-color));
     --prezenta-muted: var(--tuvtk-muted, var(--text-muted-color));
+    width: calc(100% - 32px);
     margin: 0 auto;
-    max-width: 1180px;
+    max-width: 1440px;
     padding: 16px 0 32px;
     color: var(--prezenta-text);
+}
+
+.management-angajati.prezenta-personala-page .stare-cic-panou {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px;
+    border: 1px solid var(--prezenta-border);
+    border-left: 4px solid var(--prezenta-primary);
+    border-radius: var(--panel-border-radius, 4px);
+    background: var(--prezenta-surface);
+    box-shadow: var(--panel-box-shadow, var(--default-box-shadow));
+}
+
+.management-angajati.prezenta-personala-page .stare-cic-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    color: var(--prezenta-primary);
+    background: var(--prezenta-hover);
+    font-size: 20px;
+}
+
+.management-angajati.prezenta-personala-page .stare-cic-continut {
+    flex: 1 1 auto;
+    max-width: 760px;
+}
+
+.management-angajati.prezenta-personala-page .stare-cic-continut h3 {
+    margin: 9px 0 8px;
+}
+
+.management-angajati.prezenta-personala-page .stare-cic-continut > p,
+.management-angajati.prezenta-personala-page .stare-cic-mesaj small {
+    color: var(--prezenta-muted);
+}
+
+.management-angajati.prezenta-personala-page .stare-cic-perioada {
+    display: grid;
+    grid-template-columns: minmax(120px, auto) 1fr;
+    gap: 6px 16px;
+    margin: 22px 0;
+    padding: 16px;
+    border: 1px solid var(--prezenta-border);
+    border-radius: var(--panel-border-radius, 4px);
+    background: var(--prezenta-hover);
+}
+
+.management-angajati.prezenta-personala-page .stare-cic-perioada dt,
+.management-angajati.prezenta-personala-page .stare-cic-perioada dd {
+    margin: 0;
+}
+
+.management-angajati.prezenta-personala-page .stare-cic-mesaj {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.management-angajati.prezenta-personala-page .stare-cic-mesaj > .fas {
+    color: var(--prezenta-primary);
+    font-size: 18px;
+}
+
+.management-angajati.prezenta-personala-page .stare-cic-mesaj > span:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+@media (max-width: 767px) {
+    .management-angajati.prezenta-personala-page .stare-cic-panou {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .management-angajati.prezenta-personala-page .stare-cic-perioada {
+        grid-template-columns: 1fr;
+    }
+}
+
+.management-angajati.concedii-personale-page {
+    --concedii-personale-primary: var(--tuvtk-primary, var(--brand-primary));
+    --concedii-personale-secondary: var(--tuvtk-secondary, var(--brand-danger));
+    --concedii-personale-surface: var(--tuvtk-surface, var(--panel-bg));
+    --concedii-personale-border: var(--tuvtk-border, var(--panel-default-border));
+    --concedii-personale-border-soft: var(--tuvtk-border-soft, var(--panel-default-border));
+    --concedii-personale-hover: var(--tuvtk-hover, var(--state-primary-bg));
+    --concedii-personale-text: var(--tuvtk-text, var(--text-color));
+    --concedii-personale-muted: var(--tuvtk-muted, var(--text-muted-color));
+    width: calc(100% - 32px);
+    margin: 0 auto;
+    max-width: 1440px;
+    padding: 16px 0 32px;
+    color: var(--concedii-personale-text);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-antet,
+.management-angajati.concedii-personale-page .concedii-personale-panou,
+.management-angajati.concedii-personale-page .concedii-personale-indicator {
+    border: 1px solid var(--concedii-personale-border);
+    border-radius: var(--panel-border-radius, 4px);
+    background: var(--concedii-personale-surface);
+    box-shadow: var(--panel-box-shadow, 0 1px 3px var(--concedii-personale-border-soft));
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-antet {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 22px 24px 22px 20px;
+    border-left: 4px solid var(--concedii-personale-secondary);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-antet-identitate,
+.management-angajati.concedii-personale-page .concedii-personale-sectiune-identitate {
+    display: flex;
+    align-items: center;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-antet-identitate {
+    gap: 18px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-icon,
+.management-angajati.concedii-personale-page .concedii-personale-indicator-icon,
+.management-angajati.concedii-personale-page .concedii-personale-stare-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: var(--concedii-personale-primary);
+    background: var(--concedii-personale-hover);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-icon-mare {
+    width: 52px;
+    height: 52px;
+    font-size: 18px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-spratitlu {
+    margin-bottom: 3px;
+    color: var(--concedii-personale-secondary);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-antet h2,
+.management-angajati.concedii-personale-page .concedii-personale-panou-antet h4,
+.management-angajati.concedii-personale-page .concedii-personale-gol h4 {
+    margin: 0;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-antet h2 {
+    font-size: 24px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-antet p,
+.management-angajati.concedii-personale-page .concedii-personale-panou-antet p,
+.management-angajati.concedii-personale-page .concedii-personale-indisponibil p,
+.management-angajati.concedii-personale-page .concedii-personale-nota small {
+    color: var(--concedii-personale-muted);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-antet p {
+    max-width: 800px;
+    margin: 5px 0 0;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-rezumat {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-indicator {
+    --concedii-indicator-culoare: var(--concedii-personale-primary);
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-height: 92px;
+    padding: 15px 17px;
+    border-top: 3px solid var(--concedii-indicator-culoare);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-indicator.este-disponibil {
+    --concedii-indicator-culoare: var(--brand-success);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-indicator.este-rezervat {
+    --concedii-indicator-culoare: var(--brand-warning);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-indicator.este-consumat {
+    --concedii-indicator-culoare: var(--concedii-personale-primary);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-indicator-icon {
+    color: var(--concedii-indicator-culoare);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-indicator > span:last-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-indicator small {
+    color: var(--concedii-personale-muted);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-indicator strong {
+    margin-top: 5px;
+    color: var(--concedii-indicator-culoare);
+    font-size: 27px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-panou {
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-panou:last-child {
+    margin-bottom: 0;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-panou-antet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 15px 18px;
+    border-bottom: 1px solid var(--concedii-personale-border);
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-sectiune-identitate {
+    gap: 12px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-panou-antet p {
+    margin: 2px 0 0;
+    font-size: 12px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-contor {
+    flex: 0 0 auto;
+    color: var(--concedii-personale-muted);
+    white-space: nowrap;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-formular-continut {
+    display: grid;
+    grid-template-columns: minmax(420px, 1fr) minmax(180px, 0.36fr);
+    align-items: stretch;
+    gap: 14px 18px;
+    padding: 18px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-perioada-solicitata {
+    padding: 14px;
+    border: 1px solid var(--concedii-personale-border-soft);
+    border-radius: var(--border-radius, 3px);
+    background: var(--concedii-personale-surface);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-subtitlu-formular {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 12px;
+    color: var(--concedii-personale-text);
+    font-weight: 600;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-subtitlu-formular .fas {
+    color: var(--concedii-personale-primary);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-campuri-perioada {
+    display: grid;
+    grid-template-columns: minmax(170px, 1fr) auto minmax(170px, 1fr);
+    align-items: end;
+    gap: 12px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-separator-perioada {
+    align-self: center;
+    margin-top: 20px;
+    color: var(--concedii-personale-muted);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--concedii-personale-border-soft);
+    border-left: 3px solid var(--concedii-personale-primary);
+    border-radius: var(--border-radius, 3px);
+    background: var(--concedii-personale-hover);
+    transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: var(--concedii-personale-primary);
+    background: var(--concedii-personale-surface);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-text {
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile small {
+    color: var(--concedii-personale-muted);
+    font-weight: 600;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-numar {
+    flex: 0 0 auto;
+    min-width: 34px;
+    color: var(--concedii-personale-primary);
+    font-size: 27px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    text-align: right;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-detalii-cerere {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(260px, 1fr) auto;
+    align-items: end;
+    gap: 16px;
+    padding-top: 2px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile em {
+    color: var(--concedii-personale-muted);
+    font-size: 11px;
+    font-style: normal;
+    line-height: 1.3;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile em:not(:empty) {
+    max-width: 210px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile.se-calculeaza .concedii-personale-previzualizare-icon {
+    animation: management-angajati-pulseaza 0.8s ease-in-out infinite alternate;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile.este-valida {
+    border-left-color: var(--brand-success);
+    background: var(--state-success-bg);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile.este-valida .concedii-personale-previzualizare-icon,
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile.este-valida .concedii-personale-previzualizare-numar {
+    color: var(--state-success-text, var(--brand-success));
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile.este-incompatibila {
+    border-color: var(--state-danger-border, var(--concedii-personale-secondary));
+    border-left-color: var(--concedii-personale-secondary);
+    background: var(--state-danger-bg);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile.este-incompatibila .concedii-personale-previzualizare-icon {
+    color: var(--state-danger-text, var(--concedii-personale-secondary));
+    background: var(--concedii-personale-surface);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile.este-incompatibila .concedii-personale-previzualizare-numar,
+.management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile.este-incompatibila em {
+    color: var(--state-danger-text, var(--concedii-personale-secondary));
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-formular-continut .form-group {
+    margin-bottom: 0;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-trimitere .btn {
+    min-width: 150px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-interactiv {
+    padding: 18px;
+    border-bottom: 1px solid var(--concedii-personale-border);
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-carduri {
+    display: grid;
+    grid-template-columns: minmax(230px, .38fr) minmax(420px, 1fr);
+    gap: 14px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-sold,
+.management-angajati.concedii-personale-page .concedii-personale-istoric-detaliu {
+    min-width: 0;
+    border: 1px solid var(--concedii-personale-border-soft);
+    border-radius: var(--panel-border-radius, 4px);
+    background: var(--concedii-personale-surface);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-sold {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 19px 21px;
+    flex-direction: column;
+    border-left: 4px solid var(--brand-success);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    color: var(--concedii-personale-primary);
+    background: var(--concedii-personale-hover);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-detaliu-antet > span:nth-child(2) {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-sold-jos {
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 18px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-sold-valoare {
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-sold small,
+.management-angajati.concedii-personale-page .concedii-personale-istoric-detaliu small {
+    color: var(--concedii-personale-muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-sold strong {
+    margin: 4px 0 2px;
+    color: var(--brand-success);
+    font-size: 34px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-sold em,
+.management-angajati.concedii-personale-page .concedii-personale-istoric-motiv {
+    color: var(--concedii-personale-muted);
+    font-size: 12px;
+    font-style: normal;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-impact {
+    display: flex;
+    padding: 7px 10px;
+    flex-direction: column;
+    border-radius: 999px;
+    background: var(--default-heading-bg-color);
+    text-align: center;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-impact small {
+    font-size: 9px;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: nowrap;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-impact strong {
+    margin: 0;
+    font-size: 14px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-impact.este-negativ strong {
+    color: var(--state-danger-text, var(--concedii-personale-secondary));
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-impact.este-pozitiv strong {
+    color: var(--state-success-text, var(--brand-success));
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-impact.este-neutru strong {
+    color: var(--concedii-personale-muted);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-explicatie {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--concedii-personale-border-soft);
+    border-left: 3px solid var(--concedii-personale-primary);
+    border-radius: var(--panel-border-radius, 4px);
+    background: var(--concedii-personale-surface);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-explicatie > span:last-child {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-explicatie small {
+    color: var(--concedii-personale-muted);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-explicatie strong {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-detaliu {
+    padding: 16px 18px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-detaliu-antet {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-detaliu-antet strong {
+    margin-top: 4px;
+    overflow: hidden;
+    font-size: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-informatii {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 12px;
+    margin-top: 13px;
+    padding-top: 12px;
+    border-top: 1px solid var(--concedii-personale-border-soft);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-informatii > span:first-child {
+    color: var(--concedii-personale-primary);
+    white-space: nowrap;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-motiv {
+    overflow-wrap: anywhere;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-slider-wrap {
+    margin-top: 16px;
+    padding: 13px 16px 12px;
+    border: 1px solid var(--concedii-personale-border-soft);
+    border-radius: var(--panel-border-radius, 4px);
+    background: var(--concedii-personale-surface);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-slider-etichete {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    margin-bottom: 9px;
+    color: var(--concedii-personale-muted);
+    font-size: 11px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-slider-etichete strong {
+    color: var(--concedii-personale-primary);
+    font-weight: 600;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-slider-etichete > span:last-child {
+    text-align: right;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-slider {
+    --istoric-progres: 100%;
+    width: 100%;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-slider::-webkit-slider-runnable-track {
+    height: 5px;
+    border-radius: 999px;
+    background: linear-gradient(
+        to right,
+        var(--concedii-personale-primary) 0,
+        var(--concedii-personale-primary) var(--istoric-progres),
+        var(--concedii-personale-border) var(--istoric-progres),
+        var(--concedii-personale-border) 100%
+    );
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-slider::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+    margin-top: -6.5px;
+    border: 3px solid var(--concedii-personale-surface);
+    border-radius: 50%;
+    background: var(--concedii-personale-primary);
+    box-shadow: 0 0 0 1px var(--concedii-personale-primary);
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-slider::-moz-range-track {
+    height: 5px;
+    border-radius: 999px;
+    background: var(--concedii-personale-border);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-slider::-moz-range-progress {
+    height: 5px;
+    border-radius: 999px;
+    background: var(--concedii-personale-primary);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-slider::-moz-range-thumb {
+    width: 13px;
+    height: 13px;
+    border: 3px solid var(--concedii-personale-surface);
+    border-radius: 50%;
+    background: var(--concedii-personale-primary);
+    box-shadow: 0 0 0 1px var(--concedii-personale-primary);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-istoric-slider:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px var(--concedii-personale-hover);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-tabel {
+    min-width: 980px;
+    margin-bottom: 0;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-tabel > thead > tr > th {
+    padding: 11px 14px;
+    border-bottom-width: 1px;
+    color: var(--concedii-personale-muted);
+    font-weight: 500;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-tabel > tbody > tr > td {
+    padding: 12px 14px;
+    vertical-align: middle;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-tabel > tbody > tr:hover {
+    background: var(--concedii-personale-hover);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-perioada > .fas {
+    margin-right: 6px;
+    color: var(--concedii-personale-muted);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-document {
+    display: flex;
+    max-width: 300px;
+    align-items: center;
+    gap: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-document + .concedii-personale-document {
+    margin-top: 5px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-document > .fas {
+    flex: 0 0 auto;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-documente {
+    min-width: 210px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-zile {
+    display: inline-flex;
+    min-width: 38px;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-zile.este-rezervat {
+    color: var(--state-danger-text, var(--concedii-personale-secondary));
+    background: var(--state-danger-bg);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-zile.este-restituit {
+    color: var(--state-success-text, var(--brand-success));
+    background: var(--state-success-bg);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-zile.este-neutru {
+    color: var(--concedii-personale-muted);
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-actiuni {
+    min-width: 260px;
+    white-space: nowrap;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-actiuni .btn + .btn {
+    margin-left: 4px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-stare {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 8px;
+    line-height: 1.2;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-stare .fas {
+    width: 12px;
+    text-align: center;
+    line-height: 1;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-actiune-periculoasa,
+.management-angajati.concedii-personale-page .concedii-personale-actiune-periculoasa:focus {
+    border-color: var(--concedii-personale-secondary);
+    color: #fff;
+    background-color: var(--concedii-personale-secondary);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-actiune-periculoasa:hover,
+.management-angajati.concedii-personale-page .concedii-personale-actiune-periculoasa:active {
+    border-color: var(--concedii-personale-secondary);
+    color: #fff;
+    background-color: var(--concedii-personale-secondary);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.16);
+}
+
+@keyframes management-angajati-pulseaza {
+    from { opacity: 0.45; }
+    to { opacity: 1; }
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-indisponibil {
+    padding: 28px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-indisponibil-continut {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    max-width: 850px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-stare-icon {
+    width: 54px;
+    height: 54px;
+    color: var(--brand-warning);
+    background: var(--state-warning-bg);
+    font-size: 20px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-stare-icon.este-info {
+    color: var(--brand-info);
+    background: var(--state-info-bg);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-indisponibil h3 {
+    margin: 8px 0;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-detalii {
+    display: grid;
+    grid-template-columns: minmax(130px, auto) 1fr;
+    gap: 6px 16px;
+    margin: 20px 0;
+    padding: 14px 16px;
+    border: 1px solid var(--concedii-personale-border-soft);
+    border-radius: var(--panel-border-radius, 4px);
+    background: var(--concedii-personale-hover);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-detalii dt,
+.management-angajati.concedii-personale-page .concedii-personale-detalii dd {
+    margin: 0;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-nota {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin: 20px 0;
+    padding: 13px 15px;
+    border: 1px solid var(--concedii-personale-border-soft);
+    border-radius: var(--panel-border-radius, 4px);
+    background: var(--concedii-personale-hover);
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-nota > .fas {
+    color: var(--concedii-personale-primary);
+    font-size: 18px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-nota > span:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-gol {
+    padding: 48px 24px;
+    color: var(--concedii-personale-muted);
+    text-align: center;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-gol > .fas {
+    margin-bottom: 12px;
+    color: var(--concedii-personale-primary);
+    font-size: 28px;
+}
+
+.management-angajati.concedii-personale-page .concedii-personale-gol p {
+    margin: 5px 0 0;
+}
+
+@media (max-width: 991px) {
+    .management-angajati.concedii-personale-page .concedii-personale-formular-continut {
+        grid-template-columns: 1fr;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-previzualizare-zile {
+        min-height: 78px;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-detalii-cerere {
+        grid-column: auto;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-istoric-carduri {
+        grid-template-columns: minmax(200px, .55fr) minmax(360px, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .management-angajati.concedii-personale-page {
+        padding-top: 12px;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-antet,
+    .management-angajati.concedii-personale-page .concedii-personale-panou-antet,
+    .management-angajati.concedii-personale-page .concedii-personale-indisponibil-continut {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-antet {
+        padding: 18px 16px 18px 14px;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-antet-identitate {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-rezumat,
+    .management-angajati.concedii-personale-page .concedii-personale-formular-continut {
+        grid-template-columns: 1fr;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-observatii,
+    .management-angajati.concedii-personale-page .concedii-personale-trimitere {
+        grid-column: auto;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-campuri-perioada,
+    .management-angajati.concedii-personale-page .concedii-personale-detalii-cerere,
+    .management-angajati.concedii-personale-page .concedii-personale-istoric-carduri,
+    .management-angajati.concedii-personale-page .concedii-personale-istoric-informatii {
+        grid-template-columns: 1fr;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-istoric-interactiv {
+        padding: 12px;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-istoric-detaliu-antet {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-istoric-detaliu-antet .concedii-personale-stare {
+        grid-column: 1 / -1;
+        justify-self: start;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-separator-perioada {
+        display: none;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-trimitere .btn,
+    .management-angajati.concedii-personale-page .concedii-personale-indisponibil .btn {
+        width: 100%;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-indisponibil {
+        padding: 20px;
+    }
+
+    .management-angajati.concedii-personale-page .concedii-personale-detalii {
+        grid-template-columns: 1fr;
+    }
 }
 
 .management-angajati.prezenta-personala-page .prezenta-personala-antet,
@@ -938,5 +3649,649 @@
     .management-angajati.prezenta-personala-page .prezenta-astazi-continut,
     .management-angajati.prezenta-personala-page .prezenta-indicatori-lunari {
         padding: 14px;
+    }
+}
+
+/* Configurarea concediilor și profilurile de sold. */
+.management-angajati.setari-concedii-page {
+    --setari-concedii-primary: var(--tuvtk-primary, var(--brand-primary));
+    --setari-concedii-secondary: var(--tuvtk-secondary, var(--brand-danger));
+    --setari-concedii-surface: var(--tuvtk-surface, var(--panel-bg));
+    --setari-concedii-border: var(--tuvtk-border, var(--panel-default-border));
+    --setari-concedii-border-soft: var(--tuvtk-border-soft, var(--panel-default-border));
+    --setari-concedii-hover: var(--tuvtk-hover, var(--state-primary-bg));
+    --setari-concedii-text: var(--tuvtk-text, var(--text-color));
+    --setari-concedii-muted: var(--tuvtk-muted, var(--text-muted-color));
+    width: calc(100% - 32px);
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 16px 0 32px;
+    color: var(--setari-concedii-text);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-antet,
+.management-angajati.setari-concedii-page .setari-concedii-panou {
+    border: 1px solid var(--setari-concedii-border);
+    border-radius: var(--panel-border-radius, 4px);
+    background: var(--setari-concedii-surface);
+    box-shadow: var(--panel-box-shadow, 0 1px 3px var(--setari-concedii-border-soft));
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-antet {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    margin-bottom: 18px;
+    padding: 22px 24px 22px 20px;
+    border-left: 4px solid var(--setari-concedii-secondary);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-inapoi {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    color: var(--setari-concedii-muted);
+    text-decoration: none;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-inapoi:hover,
+.management-angajati.setari-concedii-page .setari-concedii-inapoi:focus {
+    color: var(--setari-concedii-primary);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-icon,
+.management-angajati.setari-concedii-page .profil-concediu-avatar {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--setari-concedii-border-soft);
+    border-radius: 50%;
+    color: var(--setari-concedii-primary);
+    background: var(--setari-concedii-hover);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-icon-mare {
+    width: 52px;
+    height: 52px;
+    color: var(--setari-concedii-secondary);
+    font-size: 18px;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-spratitlu {
+    margin-bottom: 3px;
+    color: var(--setari-concedii-secondary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .075em;
+    text-transform: uppercase;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-antet h2,
+.management-angajati.setari-concedii-page .setari-concedii-panou-antet h4 {
+    margin: 0;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-antet p,
+.management-angajati.setari-concedii-page .setari-concedii-panou-antet p {
+    margin: 3px 0 0;
+    color: var(--setari-concedii-muted);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-panou {
+    margin-bottom: 18px;
+    overflow: hidden;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-panou-antet {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--setari-concedii-border);
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-panou-antet > div {
+    min-width: 0;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-reguli {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    padding: 18px;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-regula {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    min-height: 96px;
+    padding: 16px;
+    border: 1px solid var(--setari-concedii-border-soft);
+    border-radius: var(--border-radius, 3px);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-regula-aprobatori {
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(240px, .7fr) minmax(300px, 1.3fr);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-regula:not(.setari-concedii-regula-aprobatori) {
+    border-color: var(--setari-concedii-primary);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-regula-identitate {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-regula-identitate > .fas {
+    width: 18px;
+    margin-top: 3px;
+    color: var(--setari-concedii-primary);
+    text-align: center;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-regula-identitate > span:last-child,
+.management-angajati.setari-concedii-page .profil-concediu-identitate > span:last-child {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-regula-identitate small {
+    margin-top: 4px;
+    color: var(--setari-concedii-muted);
+    font-weight: normal;
+    line-height: 1.35;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-bifa,
+.management-angajati.setari-concedii-page .setari-concedii-bifa .checkbox {
+    margin: 0;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-bifa input.form-checkbox {
+    border-color: var(--setari-concedii-primary) !important;
+    accent-color: var(--setari-concedii-primary);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-regula-aprobatori > .field {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    min-width: 0;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-regula-aprobatori .checklist-item-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--setari-concedii-border-soft);
+    border-radius: var(--border-radius, 3px);
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-regula-aprobatori .checklist-item-container:focus-within,
+.management-angajati.setari-concedii-page .setari-concedii-regula-aprobatori .checklist-item-container:hover {
+    border-color: var(--setari-concedii-primary);
+    background: var(--setari-concedii-hover);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-regula-aprobatori .form-checkbox {
+    flex: 0 0 auto;
+    margin: 0;
+    accent-color: var(--setari-concedii-primary);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-regula-aprobatori .checklist-label {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    align-self: stretch;
+    margin: 0;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-salvare-setari {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 18px;
+    padding: 12px 18px;
+    border-top: 1px solid var(--setari-concedii-border);
+    color: var(--setari-concedii-muted);
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-ghid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--setari-concedii-border);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-ghid > div {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--setari-concedii-border-soft);
+    border-radius: var(--border-radius, 3px);
+    background: var(--setari-concedii-hover);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-ghid > div > .fas {
+    width: 18px;
+    margin-top: 2px;
+    color: var(--setari-concedii-primary);
+    text-align: center;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-ghid > div > span:last-child {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-ghid small {
+    margin-top: 4px;
+    color: var(--setari-concedii-muted);
+    font-weight: normal;
+    line-height: 1.35;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-profiluri {
+    display: grid;
+    gap: 18px;
+    padding: 20px 18px;
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--setari-concedii-border-soft);
+    border-radius: var(--border-radius, 3px);
+    background: var(--setari-concedii-surface);
+    box-shadow: 0 1px 2px var(--setari-concedii-border-soft);
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-antet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--setari-concedii-border-soft);
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-rezumat {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(150px, 1fr)) minmax(180px, auto);
+    align-items: end;
+    gap: 16px;
+    padding: 18px;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-identitate {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-identitate strong {
+    overflow-wrap: anywhere;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-identitate small {
+    margin-top: 4px;
+    color: var(--setari-concedii-muted);
+    font-weight: normal;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-identitate small > .far {
+    margin-right: 3px;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-stare {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    border: 1px solid var(--setari-concedii-border-soft);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-stare.este-initializat {
+    border-color: var(--state-success-border, var(--brand-success));
+    color: var(--state-success-text, var(--brand-success));
+    background: var(--state-success-bg);
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-stare.necesita-initializare {
+    border-color: var(--state-warning-border, var(--brand-warning));
+    color: var(--state-warning-text, var(--brand-warning));
+    background: var(--state-warning-bg);
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-explicatie {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin: 14px 18px 0;
+    padding: 10px 12px;
+    border-left: 3px solid var(--setari-concedii-primary);
+    color: var(--setari-concedii-muted);
+    background: var(--setari-concedii-hover);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-explicatie > .fas {
+    margin-top: 2px;
+    color: var(--setari-concedii-primary);
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-camp,
+.management-angajati.setari-concedii-page .profil-concediu-corectie-camp {
+    min-width: 0;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-camp > label,
+.management-angajati.setari-concedii-page .profil-concediu-corectie-camp > label {
+    display: flex;
+    align-items: flex-end;
+    min-height: 32px;
+    margin-bottom: 6px;
+    color: var(--setari-concedii-muted);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-camp .form-control,
+.management-angajati.setari-concedii-page .profil-concediu-corectie-camp .form-control {
+    min-height: 36px;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-camp .input-group,
+.management-angajati.setari-concedii-page .profil-concediu-corectie-camp .input-group {
+    width: 100%;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-camp .input-group-btn > .btn,
+.management-angajati.setari-concedii-page .profil-concediu-corectie-camp .input-group-btn > .btn {
+    min-height: 36px;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-valoare {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 36px;
+    padding: 7px 10px;
+    border: 1px solid var(--setari-concedii-border-soft);
+    border-radius: var(--border-radius, 3px);
+    background: var(--default-heading-bg-color);
+    font-size: 15px;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-valoare small {
+    color: var(--setari-concedii-muted);
+    font-size: 10px;
+    font-weight: normal;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-actiune-principala {
+    align-self: end;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-actiune-principala .btn {
+    width: 100%;
+    min-height: 36px;
+    white-space: normal;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectii {
+    border-top: 1px solid var(--setari-concedii-border-soft);
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectii > summary {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectii > summary::-webkit-details-marker {
+    display: none;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectii > summary:hover {
+    background: var(--setari-concedii-hover);
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectii > summary > span:nth-child(2) {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectii > summary small,
+.management-angajati.setari-concedii-page .profil-concediu-corectie-antet small {
+    margin-top: 3px;
+    color: var(--setari-concedii-muted);
+    font-weight: normal;
+    line-height: 1.35;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectii-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    color: var(--setari-concedii-primary);
+    background: var(--setari-concedii-hover);
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectii-sageata {
+    color: var(--setari-concedii-muted);
+    transition: transform 120ms ease;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectii[open] .profil-concediu-corectii-sageata {
+    transform: rotate(180deg);
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectii-continut {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    padding: 0 18px 18px;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectie {
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    border: 1px solid var(--setari-concedii-border-soft);
+    border-radius: var(--border-radius, 3px);
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectie-antet {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-height: 58px;
+    margin-bottom: 12px;
+    color: var(--setari-concedii-primary);
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectie-antet > .fas {
+    margin-top: 2px;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectie-antet > span:last-child {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectie-formular {
+    display: grid;
+    grid-template-columns: minmax(210px, 1fr) minmax(190px, 1.2fr) auto;
+    align-items: end;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectie-formular >
+    .profil-concediu-corectie-camp:first-child > label {
+    white-space: nowrap;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectie-camp > .field,
+.management-angajati.setari-concedii-page .profil-concediu-corectie-camp .input-group,
+.management-angajati.setari-concedii-page .profil-concediu-corectie-camp .form-control,
+.management-angajati.setari-concedii-page .profil-concediu-corectie-camp
+    .input-group-btn > .btn,
+.management-angajati.setari-concedii-page .profil-concediu-corectie-formular > .btn {
+    height: 36px;
+    min-height: 36px;
+}
+
+.management-angajati.setari-concedii-page .profil-concediu-corectie-formular .btn {
+    white-space: normal;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-resetare-corp {
+    padding: 18px;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-resetare-statistici {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-resetare-statistici > div {
+    padding: 12px;
+    border: 1px solid var(--setari-concedii-border-soft);
+    border-radius: var(--border-radius, 3px);
+    background: var(--default-heading-bg-color);
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-resetare-statistici dt {
+    color: var(--setari-concedii-muted);
+    font-size: 11px;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-resetare-statistici dd {
+    margin: 4px 0 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-confirmare-resetare {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) auto;
+    align-items: end;
+    gap: 10px 14px;
+}
+
+.management-angajati.setari-concedii-page .setari-concedii-confirmare-resetare > label {
+    grid-column: 1 / -1;
+    margin: 0;
+}
+
+@media (max-width: 1199px) {
+    .management-angajati.setari-concedii-page .setari-concedii-ghid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .management-angajati.setari-concedii-page .profil-concediu-rezumat {
+        grid-template-columns: repeat(2, minmax(160px, 1fr));
+    }
+
+    .management-angajati.setari-concedii-page .profil-concediu-corectii-continut {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    .management-angajati.setari-concedii-page {
+        width: calc(100% - 20px);
+        padding-top: 10px;
+    }
+
+    .management-angajati.setari-concedii-page .setari-concedii-antet {
+        align-items: flex-start;
+        padding: 18px 16px;
+    }
+
+    .management-angajati.setari-concedii-page .setari-concedii-reguli,
+    .management-angajati.setari-concedii-page .setari-concedii-ghid,
+    .management-angajati.setari-concedii-page .profil-concediu-rezumat,
+    .management-angajati.setari-concedii-page .profil-concediu-corectie-formular,
+    .management-angajati.setari-concedii-page .setari-concedii-resetare-statistici,
+    .management-angajati.setari-concedii-page .setari-concedii-confirmare-resetare {
+        grid-template-columns: 1fr;
+    }
+
+    .management-angajati.setari-concedii-page .setari-concedii-regula-aprobatori {
+        grid-column: auto;
+        grid-template-columns: 1fr;
+    }
+
+    .management-angajati.setari-concedii-page .setari-concedii-regula-aprobatori > .field {
+        grid-template-columns: 1fr;
+    }
+
+    .management-angajati.setari-concedii-page .setari-concedii-salvare-setari {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .management-angajati.setari-concedii-page .profil-concediu-antet {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .management-angajati.setari-concedii-page .profil-concediu-actiune-principala .btn,
+    .management-angajati.setari-concedii-page .profil-concediu-corectie .btn,
+    .management-angajati.setari-concedii-page .setari-concedii-confirmare-resetare .btn {
+        width: 100%;
+    }
+
+    .management-angajati.setari-concedii-page .profil-concediu-corectie-formular >
+        .profil-concediu-corectie-camp:first-child > label {
+        white-space: normal;
     }
 }

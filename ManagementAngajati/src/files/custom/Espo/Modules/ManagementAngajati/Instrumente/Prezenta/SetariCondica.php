@@ -19,6 +19,7 @@ class SetariCondica
      * @return array{
      *     modAplicareRemote: string,
      *     numarLuniAnterioareEditabile: int,
+     *     permiteExportCondicaIncompleta: bool,
      *     angajati: list<array{
      *         idAngajat: string,
      *         numeAngajat: string,
@@ -78,6 +79,8 @@ class SetariCondica
             'modAplicareRemote' => $this->configuratii->obtineModAplicareRemote(),
             'numarLuniAnterioareEditabile' =>
                 $this->configuratii->obtineNumarLuniAnterioareEditabile(),
+            'permiteExportCondicaIncompleta' =>
+                $this->configuratii->permiteExportCondicaIncompleta(),
             'angajati' => $rezultat,
         ];
     }

@@ -67,19 +67,32 @@ define(['view'], (Vizualizare) => {
             const disponibileReportate = drepturi
                 .filter(drept => Number(drept.anOrigine) < anCurent)
                 .reduce((total, drept) => total + Number(drept.disponibile || 0), 0);
-            const istoric = (this.profil.istoric || []).map(inregistrare => ({
-                ...inregistrare,
-                tipAfisat: this.translate(inregistrare.tip, 'options', 'RegistruConcediu'),
-                dataAfisata: this.getDateTime().toDisplayDate(inregistrare.dataEfectiva),
-                numarZileAfisat: Number(inregistrare.numarZile) > 0 ?
-                    `+${inregistrare.numarZile}` : String(inregistrare.numarZile),
-            }));
-
             return {...this.profil,
                 disponibileAnCurent,
                 disponibileReportate,
+                profilInitializat: this.translate(
+                    'profilInitializat', 'labels', 'ProfilConcediu'
+                ),
+                profilNeinitializat: this.translate(
+                    'profilNeinitializat', 'labels', 'ProfilConcediu'
+                ),
+                explicatieProfilInitializat: this.translate(
+                    'explicatieProfilInitializat', 'messages', 'ProfilConcediu'
+                ),
+                explicatieProfilNeinitializat: this.translate(
+                    'explicatieProfilNeinitializat', 'messages', 'ProfilConcediu'
+                ),
+                dataAngajareEticheta: this.translate(
+                    'dataAngajare', 'fields', 'GestionareAngajati'
+                ),
+                dataAngajareAfisata: this.profil.dataAngajare ?
+                    this.getDateTime().toDisplayDate(this.profil.dataAngajare) : '—',
                 salvare: this.translate('Save'),
+                salveazaDreptAnual: this.translate(
+                    'salveazaDreptAnual', 'labels', 'ProfilConcediu'
+                ),
                 initializare: this.translate('initializeaza', 'labels', 'ProfilConcediu'),
+                zile: this.translate('zile', 'labels', 'ProfilConcediu'),
                 zileAnualeEticheta: this.translate('zileAnuale', 'fields', 'ProfilConcediu'),
                 disponibileInitialEticheta: this.translate('zileDisponibileAnCurent', 'fields', 'ProfilConcediu'),
                 reportateInitialEticheta: this.translate('zileReportateAnAnterior', 'fields', 'ProfilConcediu'),
@@ -95,11 +108,24 @@ define(['view'], (Vizualizare) => {
                 corecteazaProgramAcordareEticheta: this.translate(
                     'corecteazaProgramAcordare', 'labels', 'ProfilConcediu'
                 ),
-                istoric,
-                istoricEticheta: this.translate('istoricSold', 'labels', 'ProfilConcediu'),
+                aplicaEticheta: this.translate(
+                    'aplica', 'labels', 'ProfilConcediu'
+                ),
+                corectiiAdministrative: this.translate(
+                    'corectiiAdministrative', 'labels', 'ProfilConcediu'
+                ),
+                explicatieCorectiiAdministrative: this.translate(
+                    'explicatieCorectiiAdministrative', 'messages', 'ProfilConcediu'
+                ),
+                explicatieCorectieProgram: this.translate(
+                    'explicatieCorectieProgram', 'messages', 'ProfilConcediu'
+                ),
                 diferentaEticheta: this.translate('diferentaCorectie', 'fields', 'ProfilConcediu'),
                 motivEticheta: this.translate('motivCorectie', 'fields', 'ProfilConcediu'),
                 corecteazaEticheta: this.translate('corecteazaSold', 'labels', 'ProfilConcediu'),
+                explicatieCorectieSold: this.translate(
+                    'explicatieCorectieSold', 'messages', 'ProfilConcediu'
+                ),
             };
         }
         async salveaza() {

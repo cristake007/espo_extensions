@@ -58,21 +58,14 @@ class AfterInstall
         $listaNoua[] = self::SCOPE_CONCEDII;
         $listaNoua[] = [
             'type' => 'group',
-            'text' => '$condicaPrezenta',
+            'text' => '$management',
             'iconClass' => 'fas fa-users',
             'itemList' => [
                 self::SCOPE_CONDICA,
                 self::SCOPE_ADMINISTRARE_CONCEDII,
             ],
         ];
-        $listaNoua[] = [
-            'type' => 'group',
-            'text' => '$managementAngajati',
-            'iconClass' => 'fas fa-user-cog',
-            'itemList' => [
-                self::SCOPE_GESTIONARE,
-            ],
-        ];
+        $listaNoua[] = self::SCOPE_GESTIONARE;
 
         $scriitorConfiguratie = $containerServicii
             ->getByClass(InjectableFactory::class)

@@ -6,7 +6,7 @@ use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Conflict;
 use Espo\Core\Exceptions\Error\Body;
 
-/** Valideaza si exporta exclusiv revizia curenta a unei luni inchise. */
+/** Valideaza si exporta condica potrivit regulii administrative configurate. */
 class ExportatorCondica
 {
     public function __construct(
@@ -25,8 +25,11 @@ class ExportatorCondica
         }
 
         $date = $this->condica->obtine($luna);
+        $permiteExportIncomplet =
+            ($date['cicluLunar']['permiteExportCondicaIncompleta'] ?? false) === true;
 
-        if (($date['cicluLunar']['esteInchisa'] ?? false) !== true) {
+        if (!$permiteExportIncomplet &&
+            ($date['cicluLunar']['esteInchisa'] ?? false) !== true) {
             throw Conflict::createWithBody(
                 'exportCondicaNecesitaLunaInchisa',
                 Body::create()->withMessageTranslation(
@@ -36,7 +39,7 @@ class ExportatorCondica
             );
         }
 
-        if (($date['statistici']['zileLipsa'] ?? 1) !== 0) {
+        if (!$permiteExportIncomplet && ($date['statistici']['zileLipsa'] ?? 1) !== 0) {
             throw Conflict::createWithBody(
                 'exportCondicaIncompleta',
                 Body::create()->withMessageTranslation('exportCondicaIncompleta', 'CondicaPrezenta')

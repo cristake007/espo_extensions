@@ -5,9 +5,20 @@ define(['view'], (Vizualizare) => {
 
         data() {
             return {
-                titlu: this.translate('managementAngajati', 'labels', 'GestionareAngajati'),
+                spratitlu: this.translate('managementAngajati', 'labels', 'GestionareAngajati'),
+                titlu: this.translate('administrareExtensie', 'labels', 'GestionareAngajati'),
                 explicatie: this.translate(
-                    'explicatieManagement',
+                    'explicatieAdministrareExtensie',
+                    'messages',
+                    'GestionareAngajati'
+                ),
+                zoneAdministrare: this.translate(
+                    'zoneAdministrare',
+                    'labels',
+                    'GestionareAngajati'
+                ),
+                explicatieZoneAdministrare: this.translate(
+                    'explicatieZoneAdministrare',
                     'messages',
                     'GestionareAngajati'
                 ),

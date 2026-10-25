@@ -27,12 +27,23 @@
     },
     "labels": {
         "concediileMele": "Concediile mele",
+        "spatiuPersonal": "Concedii personale",
+        "rezumatSold": "Rezumatul soldului de concediu",
         "cerereNoua": "Cerere nouă de concediu",
+        "perioadaSolicitata": "Perioada solicitată",
+        "zileEligibile": "Zile eligibile",
         "trimiteCerere": "Trimite cererea",
         "soldDisponibil": "Zile disponibile",
         "soldRezervat": "Zile rezervate",
         "soldConsumat": "Zile consumate în anul curent",
         "perioada": "Perioada",
+        "istoricCereri": "Istoricul cererilor",
+        "cerere": "cerere",
+        "cereri": "cereri",
+        "faraCereri": "Nu ai trimis încă nicio cerere",
+        "actiuni": "Acțiuni",
+        "profilNecesitaConfigurare": "Este necesară configurarea profilului",
+        "initializeazaProfilulPropriu": "Inițializează-ți profilul de concediu",
         "retrageCerere": "Retrage cererea",
         "solicitaAnulare": "Solicită anularea",
         "confirmaRetragere": "Retragi această cerere de concediu?",
@@ -41,8 +52,40 @@
         "concediiIndisponibile": "Concedii indisponibile",
         "concediiIndisponibileAdministrator": "Concediul personal nu este disponibil administratorului",
         "configureazaProfiluriConcediu": "Configurează profilurile de concediu"
+        ,"concediiIndisponibileCic": "Concediul de odihnă este suspendat în perioada CIC"
+        ,"cicActiv": "CIC activ"
+        ,"perioadaCic": "Perioada CIC"
+        ,"cicFaraCereri": "Nu poți trimite cereri de concediu de odihnă în această perioadă"
+        ,"zileDisponibileEticheta": "zile disponibile"
+        ,"impactFinalCerere": "Impact final"
+        ,"evolutieSoldCerere": "Cum s-a modificat soldul"
+        ,"primaCerere": "Prima cerere"
+        ,"ultimaCerere": "Cea mai recentă"
+        ,"navigareIstoricSold": "Navighează prin istoricul soldului de concediu"
+        ,"initializareSold": "Inițializare sold"
+        ,"initializare": "Inițializare"
+        ,"soldInitialIstoric": "Sold disponibil la început"
+        ,"punctPornireIstoric": "Înainte de prima cerere"
+        ,"zileDisponibileInitial": "zile disponibile inițial"
+        ,"soldDupaRezervare": "Sold după rezervare"
+        ,"soldDupaRestituire": "Sold după restituire"
+        ,"rezervarePentruCerere": "Rezervare pentru cerere"
+        ,"restituirePentruCerere": "Restituire pentru cerere"
+        ,"rezervare": "Rezervare"
+        ,"restituire": "Restituire"
+        ,"zileRezervateIstoric": "zile rezervate"
+        ,"zileRestituiteIstoric": "zile restituite"
     },
     "messages": {
+        "descriereConcediiPersonale": "Verifică soldul disponibil, trimite cereri noi și urmărește starea concediilor tale.",
+        "cerereNouaDescriere": "Alege perioada dorită. Sistemul calculează numai zilele lucrătoare eligibile.",
+        "selecteazaPerioadaPentruCalcul": "Selectează ambele date pentru calcul.",
+        "seCalculeazaZilele": "Se calculează zilele lucrătoare eligibile…",
+        "zileSolicitateDepasescSoldul": "Perioada solicitată depășește soldul disponibil.",
+        "istoricCereriDescriere": "Urmărește aprobările, anulările și documentele disponibile pentru fiecare cerere.",
+        "faraCereriExplicatie": "Cererile trimise vor apărea aici împreună cu starea și documentele lor.",
+        "profilIndrumare": "Contactează un manager pentru inițializare. După configurare vei putea vedea soldul și trimite cereri.",
+        "profilPropriuNeinitializatIndrumare": "Deschide Administration și inițializează-ți profilul, soldul disponibil și data următoarei acordări.",
         "cerereTrimisa": "Cererea de concediu a fost trimisă.",
         "cerereRetrasa": "Cererea de concediu a fost retrasă.",
         "anulareSolicitata": "Solicitarea de anulare a fost trimisă managerilor.",
@@ -62,6 +105,7 @@
         "cerereConcediuSuprapusa": "Există deja o cerere de concediu pentru această perioadă.",
         "decizieConcediuInvalida": "Decizia nu este validă.",
         "cerereDejaDecisa": "Cererea a fost deja soluționată.",
+        "decizieManagerDejaInregistrata": "Decizia ta pentru această cerere a fost deja înregistrată.",
         "autoAprobareInterzisa": "Un manager nu își poate aproba propria cerere.",
         "concediuCuPrezentaExistenta": "Cererea nu poate fi aprobată deoarece angajatul are deja prezență înregistrată în perioada solicitată. Corectați mai întâi condica.",
         "cerereCuPrezentaExistenta": "Cererea nu poate fi trimisă deoarece ai deja prezență înregistrată în cel puțin una dintre zilele solicitate. Corectează mai întâi prezența.",
@@ -71,6 +115,10 @@
         "decizieAnulareInvalida": "Decizia privind anularea nu este validă.",
         "anulareDejaDecisa": "Solicitarea de anulare a fost deja soluționată.",
         "autoAprobareAnulareInterzisa": "Un manager nu își poate aproba propria solicitare de anulare.",
+        "notificareCerereNoua": "{angajat} a trimis o cerere de concediu pentru perioada {inceput}–{sfarsit}. [Deschide administrarea concediilor]({ruta})",
+        "notificareAprobarePartiala": "{manager} a aprobat cererea lui {angajat} pentru perioada {inceput}–{sfarsit}. Este necesară și decizia ta. [Deschide administrarea concediilor]({ruta})",
+        "notificareCerereAprobata": "Cererea ta de concediu pentru perioada {inceput}–{sfarsit} a fost aprobată. [Deschide concediile mele]({ruta})",
+        "notificareCerereRespinsa": "Cererea ta de concediu pentru perioada {inceput}–{sfarsit} a fost respinsă. [Deschide concediile mele]({ruta})",
         "notificareCerereRetrasa": "{angajat} a retras cererea de concediu pentru perioada {inceput}–{sfarsit}. [Deschide administrarea concediilor]({ruta})",
         "notificareSolicitareAnulare": "{angajat} solicită anularea concediului din perioada {inceput}–{sfarsit}. [Deschide administrarea concediilor]({ruta})",
         "notificareAnulareAprobata": "Anularea concediului din perioada {inceput}–{sfarsit} a fost aprobată. [Deschide concediile mele]({ruta})",
@@ -80,5 +128,17 @@
         "instantaneuDocumenteLipsa": "Cererea a fost aprobată înainte de activarea documentelor și nu are datele contabile necesare generării.",
         "profilConcediuNeinitializatExplicatie": "Profilul tău de concediu nu a fost încă inițializat. Un manager trebuie să configureze dreptul anual, soldul disponibil și data următoarei acordări înainte de a putea trimite cereri.",
         "administratorFaraConcediuPersonal": "Administratorul nu este un angajat și nu are concediu personal. Folosește pagina «Managementul angajaților» pentru configurarea extensiei și a profilurilor angajaților."
+        ,"concediiSuspendateCic": "Contractul tău de muncă este suspendat pe durata concediului pentru creșterea copilului. Cererile de concediu de odihnă vor deveni din nou disponibile după încheierea perioadei CIC."
+        ,"concediuIndisponibilInCic": "Nu poți trimite o cerere de concediu de odihnă cât timp contractul este suspendat pentru concediul de creștere a copilului."
+        ,"cicContactManager": "Dacă perioada afișată nu este corectă, contactează managerul."
+        ,"faraObservatiiIstoric": "Nu au fost adăugate observații pentru această cerere."
+        ,"pozitieIstoricSold": "Etapa {curenta} din {total}"
+        ,"descriereInitializareIstoric": "Punctul de pornire al istoricului, înainte de depunerea primei cereri."
+        ,"explicatieInitializareIstoric": "Istoricul începe cu {soldInitial} zile disponibile. Nicio cerere nu modificase încă soldul."
+        ,"explicatieEtapaRezervare": "Sold inițial: {soldInainte}. Rezervare: −{zileRezervate}. Sold rezultat: {soldFinal}."
+        ,"explicatieEtapaRestituire": "Sold inițial: {soldInainte}. Restituire: +{zileRestituite}. Sold rezultat: {soldFinal}."
+        ,"zileRezervateTabel": "Zile rezervate sau consumate din sold"
+        ,"zileRestituiteTabel": "Zile restituite în sold"
+        ,"zileFaraImpactTabel": "Cererea respinsă nu modifică soldul"
     }
 }

@@ -145,7 +145,8 @@ class CicluLunarCondica
      *     inchisaDeId: ?string,
      *     revizie: int,
      *     lunaMinimaEditabila: string,
-     *     numarLuniAnterioareEditabile: int
+     *     numarLuniAnterioareEditabile: int,
+     *     permiteExportCondicaIncompleta: bool
      * }
      */
     public function descrie(string $luna): array
@@ -162,6 +163,8 @@ class CicluLunarCondica
             'lunaMinimaEditabila' => $this->obtineLunaMinimaEditabila(),
             'numarLuniAnterioareEditabile' =>
                 $this->configuratii->obtineNumarLuniAnterioareEditabile(),
+            'permiteExportCondicaIncompleta' =>
+                $this->configuratii->permiteExportCondicaIncompleta(),
         ];
     }
 

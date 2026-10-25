@@ -35,4 +35,31 @@ class EligibilitateAngajat
 
         return $dataAngajare <= $ultimaZi;
     }
+
+    /** @param iterable<int, User> $angajati */
+    public function obtineLunaMinimaDisponibila(
+        iterable $angajati,
+        string $lunaImplicita,
+    ): ?string {
+        $lunaMinima = null;
+        $existaAngajati = false;
+
+        foreach ($angajati as $angajat) {
+            $existaAngajati = true;
+            $dataAngajare = $this->obtineDataAngajare($angajat);
+
+            // Fara data angajarii nu putem afirma corect cat de vechi este istoricul.
+            if ($dataAngajare === null) {
+                return null;
+            }
+
+            $lunaAngajare = substr($dataAngajare, 0, 7);
+
+            if ($lunaMinima === null || $lunaAngajare < $lunaMinima) {
+                $lunaMinima = $lunaAngajare;
+            }
+        }
+
+        return $existaAngajati ? $lunaMinima : $lunaImplicita;
+    }
 }

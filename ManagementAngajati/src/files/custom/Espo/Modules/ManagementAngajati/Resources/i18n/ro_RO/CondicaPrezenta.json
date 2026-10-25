@@ -1,6 +1,19 @@
 {
     "labels": {
         "condicaPrezenta": "Condica de prezență",
+        "prezentaEchipei": "Prezența echipei",
+        "actiuniRapide": "Acțiuni rapide",
+        "stareLunara": "Starea lunii",
+        "vedereZilnica": "Situația zilnică",
+        "legendaStari": "Legenda stărilor",
+        "pregatireExport": "Pregătirea condicii",
+        "exportDisponibil": "Export disponibil",
+        "exportIndisponibil": "Completează și închide luna",
+        "angajatiAfectati": "angajați afectați",
+        "completatPeAngajat": "Completat pe angajat",
+        "calendareNeconfigurate": "Angajați fără calendar",
+        "detalii": "Detalii",
+        "angajatiZile": "{angajati} angajați · {zile} zile",
         "completare": "Completare",
         "prezenteLipsa": "Prezențe lipsă",
         "calendareLucru": "Calendare de lucru",
@@ -38,6 +51,16 @@
         "zileViitoare": "există zile lucrătoare viitoare"
     },
     "messages": {
+        "descriereCondica": "Verifică gradul de completare, prezențele lipsă, acoperirea calendarelor și condica zilnică pentru luna selectată.",
+        "actiuniRapideDescriere": "Trimite remindere, închide lunile completate și descarcă registrele disponibile.",
+        "stareLunaraDescriere": "Indicatorii rezumă completarea, informațiile lipsă și disponibilitatea exportului.",
+        "vedereZilnicaDescriere": "Fiecare rând reprezintă o zi lucrătoare, iar fiecare coloană un angajat. Selectează o stare pentru completare sau corectare.",
+        "descriereCompletare": "{completate} din {scadente} înregistrări scadente sunt completate.",
+        "descriereLipsa": "{lipsa} înregistrări lipsă pentru {angajati} angajați.",
+        "descriereCalendare": "{configurate} din {total} calendare ale angajaților sunt configurate.",
+        "descriereExportDisponibil": "Condica înghețată este disponibilă pentru descărcare.",
+        "descriereExportIncompletPermis": "Descărcarea este permisă din setările condicii; datele lipsă vor rămâne necompletate în export.",
+        "descriereExportIndisponibil": "Completează și închide luna înainte de descărcarea condicii.",
         "lunaCondicaNeincheiata": "Poate fi închisă numai o lună calendaristică încheiată.",
         "lunaCondicaDejaInchisa": "Luna este deja închisă.",
         "lunaCondicaIncompleta": "Luna nu poate fi închisă până când prezența tuturor angajaților nu este completată 100%.",
@@ -53,6 +76,7 @@
         "marcarePrezentaInvalida": "Datele pentru marcarea prezenței nu sunt valide."
         ,"remindereInAfaraFerestreiEditabile": "Reminderele pot fi trimise numai pentru lunile în care angajații își mai pot completa prezența."
         ,"confirmareTrimitereRemindere": "Trimite fiecărui angajat o singură notificare cu toate lunile editabile în care are prezențe lipsă?"
+        ,"condicaInainteDePrimulAngajat": "Condica nu poate fi consultată înainte de prima lună de angajare configurată. Prima lună disponibilă este {lunaMinima}."
         ,"remindereTrimise": "Au fost trimise sau actualizate {numar} remindere."
         ,"niciunReminderTrimis": "Nu există angajați eligibili pentru notificare."
         ,"reminderPrezentaFereastra": "Ai prezențe necompletate în următoarele luni:"

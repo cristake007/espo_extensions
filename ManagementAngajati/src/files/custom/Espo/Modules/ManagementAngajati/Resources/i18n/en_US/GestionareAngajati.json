@@ -5,6 +5,7 @@
         "dataInceput": "Start date",
         "dataSfarsit": "End date",
         "numarLuniAnterioareEditabile": "Editable previous months",
+        "permiteExportCondicaIncompleta": "Allow incomplete attendance register exports",
         "dataAngajare": "Employment date",
         "calendarLucru": "Working Time Calendar"
         ,"aprobatoriConcedii": "Approving managers"
@@ -13,6 +14,8 @@
     },
     "labels": {
         "managementAngajati": "Employee Management",
+        "administrareExtensie": "Administration",
+        "zoneAdministrare": "Administration areas",
         "setariCondica": "Attendance Settings",
         "profiluriAngajati": "Employee Profiles",
         "resetareDateTestCondica": "Reset attendance test data",
@@ -23,12 +26,25 @@
         "configuratiiCicRemoteSterse": "CIC/Remote configurations removed",
         "dateAngajareGolire": "Employment dates cleared",
         "calendareLucruPastrate": "WTC calendars preserved"
+        ,"configurareCondica": "Attendance configuration"
+        ,"reguliCondica": "Attendance rules"
+        ,"configurareAngajatiCondica": "Employee attendance settings"
+        ,"angajatiActivi": "{numar} active employees"
+        ,"zonaResetareCondica": "Attendance data maintenance"
+        ,"inapoiAdministrare": "Back to Administration"
         ,"setariConcedii": "Leave settings"
+        ,"configurareConcedii": "Leave configuration"
+        ,"reguliAprobareConcedii": "Approval and annual grant rules"
         ,"resetareDateTestConcedii": "Reset leave test data"
         ,"confirmareResetConcedii": "Type RESET DATE CONCEDII to confirm"
         ,"profiluriConcediu": "Leave profiles"
         ,"cereriConcediu": "Leave requests"
         ,"registruConcediu": "History entries"
+        ,"configurareProfiluriAngajati": "Employee administration"
+        ,"cumFunctioneazaProfilurile": "How this information is used"
+        ,"angajatiActiviProfiluri": "Active employee profiles"
+        ,"profilConfigurat": "Configured"
+        ,"profilIncomplet": "Configuration required"
     },
     "options": {
         "curent": "Current option, without a date range",
@@ -37,10 +53,20 @@
     "messages": {
         "setariCondicaInvalide": "The attendance register settings contain an invalid or duplicate employee.",
         "explicatieManagement": "Configure the ManagementAngajati extension features.",
-        "explicatieSetari": "Configure Remote display and the childcare leave period for each active employee.",
+        "explicatieAdministrareExtensie": "Configure attendance, leave rules and employee profiles from one place.",
+        "explicatieZoneAdministrare": "Choose an area to review or update its configuration.",
+        "explicatieSetari": "Configure attendance rules, exports, Remote display and the childcare leave period for each active employee.",
+        "explicatieReguliCondica": "These rules control attendance editing, exports and Remote display for all employees.",
+        "explicatieModRemote": "Choose whether Remote is a current attribute or applies only during a date range.",
+        "explicatieConfigurareAngajatiCondica": "Enable only the options that apply to each employee. All changes are saved together.",
+        "explicatieZonaResetareCondica": "Administrative test-data tools are separated from normal attendance configuration.",
+        "explicatieSalvareCondica": "Saves the general rules and every employee configuration in one operation.",
+        "explicatieRemote": "Marks the employee's work arrangement as Remote for display in the attendance register.",
+        "explicatieCic": "Suspends regular attendance and automatically marks eligible working days as CIC.",
         "setariSalvate": "Attendance settings have been saved.",
         "faraCalendarLucru": "The employee does not have a working time calendar.",
         "explicatieLuniEditabile": "The number of previous months in which regular changes are allowed (0–120).",
+        "explicatieExportCondicaIncompleta": "Allows PDF and XLSX downloads before the month is closed or while attendance entries are missing. Missing data remains blank in the export.",
         "numarLuniEditabileInvalid": "The number of editable previous months must be between 0 and 120.",
         "explicatieProfiluri": "Configure the employment date and native working time calendar for every active employee.",
         "profiluriAngajatiInvalide": "The employee profiles contain invalid, incomplete, or duplicate data.",
@@ -54,10 +80,25 @@
         "confirmareResetCondicaInvalida": "The attendance reset confirmation phrase is invalid.",
         "resetareDateTestCondicaReusita": "The attendance test data was reset."
         ,"explicatieConcedii": "Configure approvers and initialize employee balances."
+        ,"explicatieReguliAprobareConcedii": "Define who approves leave requests and how annual entitlements are granted."
+        ,"explicatieAprobatoriConcedii": "Select the managers who can approve or reject leave requests."
+        ,"explicatieAmbiiManageri": "When enabled, each request requires a decision from both selected managers."
+        ,"explicatieSalvareSetariConcedii": "Saves the approval and automatic annual-grant rules."
+        ,"explicatieZonaResetareConcedii": "Administrative tools for removing leave test data."
+        ,"avertismentResetareDateTestConcedii": "Destructive and irreversible operation."
         ,"explicatieAcordareAnualaAutomata": "When enabled, the system grants the annual entitlement on the date configured in the profile and automatically catches up missed dates. Disabling it does not remove entitlements already granted or reserved."
         ,"explicatieResetareDateTestConcedii": "Permanently removes leave profiles, entitlements, requests, allocations and history. Users, roles, working calendars and approver settings are preserved."
         ,"confirmareFinalaResetareDateTestConcedii": "Permanently reset all leave test data? This operation cannot be undone."
         ,"confirmareResetConcediiInvalida": "The leave reset confirmation phrase is invalid."
         ,"resetareDateTestConcediiReusita": "The leave test data was reset."
+        ,"explicatieConfigurareProfiluri": "These two values establish the eligible period and working days for every employee."
+        ,"explicatieDataAngajareProfil": "The first date from which the employee can have attendance and leave. Earlier days are excluded from calculations."
+        ,"explicatieCalendarLucruProfil": "The WTC calendar defines the working days and schedule used by attendance and leave."
+        ,"explicatieListaProfiluri": "Complete both fields for every active employee."
+        ,"numarAngajatiProfiluri": "{numar} active employees"
+        ,"explicatieSalvareProfiluri": "All changes on this page are saved together."
+        ,"profilAngajatActiv": "Active employee"
+        ,"ajutorDataAngajareProfil": "Defines the first eligible date in the extension modules."
+        ,"ajutorCalendarLucruProfil": "Defines working days and scheduled hours."
     }
 }

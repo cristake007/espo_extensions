@@ -18,7 +18,10 @@ class ExportatorCondicaTest extends TestCase
     {
         $condica = $this->createStub(CondicaPrezentaLunara::class);
         $condica->method('obtine')->willReturn([
-            'cicluLunar' => ['esteInchisa' => false],
+            'cicluLunar' => [
+                'esteInchisa' => false,
+                'permiteExportCondicaIncompleta' => false,
+            ],
             'statistici' => ['zileLipsa' => 0],
         ]);
         $exportator = new ExportatorCondica(
@@ -28,6 +31,34 @@ class ExportatorCondicaTest extends TestCase
 
         $this->expectException(Conflict::class);
         $exportator->exporta('2026-09', 'xlsx');
+    }
+
+    public function testPermiteExportulUneiLuniDeschiseSiIncompleteCandRegulaEsteActiva(): void
+    {
+        $date = [
+            'cicluLunar' => [
+                'esteInchisa' => false,
+                'permiteExportCondicaIncompleta' => true,
+            ],
+            'statistici' => ['zileLipsa' => 7],
+        ];
+        $condica = $this->createStub(CondicaPrezentaLunara::class);
+        $condica->method('obtine')->willReturn($date);
+        $generator = $this->createMock(GeneratorExportCondica::class);
+        $generator
+            ->expects(self::once())
+            ->method('genereazaXlsx')
+            ->with($date, [])
+            ->willReturn([
+                'nume' => 'condica-incompleta.xlsx',
+                'continut' => 'continut',
+                'tip' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            ]);
+
+        $rezultat = (new ExportatorCondica($condica, $generator))
+            ->exporta('2026-09', 'xlsx');
+
+        self::assertSame('condica-incompleta.xlsx', $rezultat['nume']);
     }
 
     public function testGenereazaXlsxSiPdfDinReviziaInghetata(): void

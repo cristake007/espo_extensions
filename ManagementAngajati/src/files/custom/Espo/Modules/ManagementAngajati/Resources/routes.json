@@ -5,6 +5,11 @@
         "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ObtineConcediileMele"
     },
     {
+        "route": "/Concedii/utilizatori-calendar",
+        "method": "get",
+        "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\ObtineUtilizatoriCalendarConcedii"
+    },
+    {
         "route": "/Concedii/cereri",
         "method": "post",
         "actionClassName": "Espo\\Modules\\ManagementAngajati\\Api\\CreeazaCerereConcediu"

@@ -5,6 +5,7 @@
         "dataInceput": "Data de început",
         "dataSfarsit": "Data de sfârșit",
         "numarLuniAnterioareEditabile": "Luni anterioare editabile",
+        "permiteExportCondicaIncompleta": "Permite descărcarea condicii incomplete",
         "dataAngajare": "Data angajării",
         "calendarLucru": "Calendar de lucru"
         ,"aprobatoriConcedii": "Manageri aprobatori"
@@ -13,6 +14,8 @@
     },
     "labels": {
         "managementAngajati": "Managementul angajaților",
+        "administrareExtensie": "Administrare",
+        "zoneAdministrare": "Zone de administrare",
         "setariCondica": "Setări condică",
         "profiluriAngajati": "Profiluri angajați",
         "resetareDateTestCondica": "Resetează datele de test ale condicii",
@@ -23,12 +26,25 @@
         "configuratiiCicRemoteSterse": "Configurații CIC/Remote eliminate",
         "dateAngajareGolire": "Date de angajare golite",
         "calendareLucruPastrate": "Calendare WTC păstrate"
+        ,"configurareCondica": "Configurarea condicii"
+        ,"reguliCondica": "Regulile condicii"
+        ,"configurareAngajatiCondica": "Configurarea prezenței angajaților"
+        ,"angajatiActivi": "{numar} angajați activi"
+        ,"zonaResetareCondica": "Administrarea datelor condicii"
+        ,"inapoiAdministrare": "Înapoi la Administrare"
         ,"setariConcedii": "Setări concedii"
+        ,"configurareConcedii": "Configurarea concediilor"
+        ,"reguliAprobareConcedii": "Reguli de aprobare și acordare anuală"
         ,"resetareDateTestConcedii": "Resetează datele de test ale concediilor"
         ,"confirmareResetConcedii": "Scrie RESET DATE CONCEDII pentru confirmare"
         ,"profiluriConcediu": "Profiluri de concediu"
         ,"cereriConcediu": "Cereri de concediu"
         ,"registruConcediu": "Înregistrări în istoric"
+        ,"configurareProfiluriAngajati": "Administrarea angajaților"
+        ,"cumFunctioneazaProfilurile": "Cum sunt folosite aceste informații"
+        ,"angajatiActiviProfiluri": "Profilurile angajaților activi"
+        ,"profilConfigurat": "Configurat"
+        ,"profilIncomplet": "Necesită configurare"
     },
     "options": {
         "curent": "Opțiune curentă, fără interval",
@@ -37,10 +53,20 @@
     "messages": {
         "setariCondicaInvalide": "Setările condicii conțin un angajat invalid sau duplicat.",
         "explicatieManagement": "Configurează funcționalitățile extensiei ManagementAngajati.",
-        "explicatieSetari": "Configurează afișarea Remote și perioada CIC pentru fiecare angajat activ.",
+        "explicatieAdministrareExtensie": "Configurează prezența, regulile concediilor și profilurile angajaților dintr-un singur loc.",
+        "explicatieZoneAdministrare": "Alege zona a cărei configurație dorești să o verifici sau să o actualizezi.",
+        "explicatieSetari": "Configurează regulile condicii, exporturile, afișarea Remote și perioada CIC pentru fiecare angajat activ.",
+        "explicatieReguliCondica": "Aceste reguli controlează editarea prezenței, exporturile și afișarea Remote pentru toți angajații.",
+        "explicatieModRemote": "Alege dacă Remote este o opțiune curentă sau se aplică numai într-un interval de date.",
+        "explicatieConfigurareAngajatiCondica": "Activează numai opțiunile aplicabile fiecărui angajat. Toate modificările se salvează împreună.",
+        "explicatieZonaResetareCondica": "Instrumentele administrative pentru datele de test sunt separate de configurarea normală a condicii.",
+        "explicatieSalvareCondica": "Salvează regulile generale și configurațiile tuturor angajaților într-o singură operație.",
+        "explicatieRemote": "Marchează regimul de lucru Remote pentru afișarea în condica de prezență.",
+        "explicatieCic": "Suspendă pontarea obișnuită și marchează automat cu CIC zilele lucrătoare eligibile.",
         "setariSalvate": "Setările condicii au fost salvate.",
         "faraCalendarLucru": "Angajatul nu are calendar de lucru.",
         "explicatieLuniEditabile": "Numărul lunilor anterioare în care sunt permise modificări obișnuite (0–120).",
+        "explicatieExportCondicaIncompleta": "Permite descărcarea PDF și XLSX înainte de închiderea lunii sau când există zile necompletate. Datele lipsă rămân necompletate în export.",
         "numarLuniEditabileInvalid": "Numărul lunilor anterioare editabile trebuie să fie între 0 și 120.",
         "explicatieProfiluri": "Configurează data angajării și calendarul de lucru nativ pentru fiecare angajat activ.",
         "profiluriAngajatiInvalide": "Profilurile angajaților conțin date invalide, incomplete sau duplicate.",
@@ -54,10 +80,25 @@
         "confirmareResetCondicaInvalida": "Expresia de confirmare pentru resetarea condicii nu este validă.",
         "resetareDateTestCondicaReusita": "Datele de test ale condicii au fost resetate."
         ,"explicatieConcedii": "Configurează aprobatorii și inițializează soldurile angajaților."
+        ,"explicatieReguliAprobareConcedii": "Stabilește cine aprobă cererile și cum se acordă drepturile anuale."
+        ,"explicatieAprobatoriConcedii": "Selectează managerii care pot aproba sau respinge cererile de concediu."
+        ,"explicatieAmbiiManageri": "Când opțiunea este activă, fiecare cerere necesită decizia ambilor manageri selectați."
+        ,"explicatieSalvareSetariConcedii": "Salvează regulile de aprobare și de acordare anuală automată."
+        ,"explicatieZonaResetareConcedii": "Instrumente administrative pentru eliminarea datelor de test ale concediilor."
+        ,"avertismentResetareDateTestConcedii": "Operație distructivă și ireversibilă."
         ,"explicatieAcordareAnualaAutomata": "Când opțiunea este activă, sistemul acordă dreptul anual la data stabilită în profil și recuperează automat eventualele date ratate. Dezactivarea nu șterge drepturile deja acordate sau rezervate."
         ,"explicatieResetareDateTestConcedii": "Șterge definitiv profilurile, drepturile, cererile, alocările și istoricul concediilor. Utilizatorii, rolurile, calendarele de lucru și configurarea aprobatorilor sunt păstrate."
         ,"confirmareFinalaResetareDateTestConcedii": "Resetați definitiv toate datele de test ale concediilor? Operația nu poate fi anulată."
         ,"confirmareResetConcediiInvalida": "Expresia de confirmare pentru resetarea concediilor nu este validă."
         ,"resetareDateTestConcediiReusita": "Datele de test ale concediilor au fost resetate."
+        ,"explicatieConfigurareProfiluri": "Aceste două informații stabilesc perioada eligibilă și zilele de lucru ale fiecărui angajat."
+        ,"explicatieDataAngajareProfil": "Prima zi din care angajatul poate avea prezență și concedii. Zilele anterioare nu intră în calcule."
+        ,"explicatieCalendarLucruProfil": "Calendarul WTC stabilește zilele lucrătoare și programul folosit de prezență și concedii."
+        ,"explicatieListaProfiluri": "Completează ambele câmpuri pentru fiecare angajat activ."
+        ,"numarAngajatiProfiluri": "{numar} angajați activi"
+        ,"explicatieSalvareProfiluri": "Toate modificările de pe pagină se salvează împreună."
+        ,"profilAngajatActiv": "Angajat activ"
+        ,"ajutorDataAngajareProfil": "Determină prima zi eligibilă în modulele extensiei."
+        ,"ajutorCalendarLucruProfil": "Determină zilele lucrătoare și orele programului."
     }
 }

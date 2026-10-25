@@ -57,4 +57,43 @@ class EligibilitateAngajatTest extends TestCase
             (new EligibilitateAngajat())->participaLaCondicaLunii($angajat, '2026-03')
         );
     }
+
+    public function testObtineCeaMaiVecheLunaDeAngajare(): void
+    {
+        $angajatUnu = $this->createStub(User::class);
+        $angajatUnu->method('get')->willReturn('2020-06-15');
+        $angajatDoi = $this->createStub(User::class);
+        $angajatDoi->method('get')->willReturn('2019-11-04');
+
+        self::assertSame(
+            '2019-11',
+            (new EligibilitateAngajat())->obtineLunaMinimaDisponibila(
+                [$angajatUnu, $angajatDoi],
+                '2026-10'
+            )
+        );
+    }
+
+    public function testFolosesteLunaCurentaCandNuExistaAngajati(): void
+    {
+        self::assertSame(
+            '2026-10',
+            (new EligibilitateAngajat())->obtineLunaMinimaDisponibila([], '2026-10')
+        );
+    }
+
+    public function testNuInventeazaLimitaCandUnAngajatNuAreDataConfigurata(): void
+    {
+        $angajatConfigurat = $this->createStub(User::class);
+        $angajatConfigurat->method('get')->willReturn('2020-06-15');
+        $angajatNeconfigurat = $this->createStub(User::class);
+        $angajatNeconfigurat->method('get')->willReturn(null);
+
+        self::assertNull(
+            (new EligibilitateAngajat())->obtineLunaMinimaDisponibila(
+                [$angajatConfigurat, $angajatNeconfigurat],
+                '2026-10'
+            )
+        );
+    }
 }

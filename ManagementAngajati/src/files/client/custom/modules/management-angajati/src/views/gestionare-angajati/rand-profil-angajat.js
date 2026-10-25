@@ -49,7 +49,26 @@ define(['view'], (Vizualizare) => {
         }
 
         data() {
-            return this.profilAngajat;
+            const configurat = Boolean(
+                this.profilAngajat.dataAngajare &&
+                this.profilAngajat.calendarLucruId
+            );
+
+            return {
+                ...this.profilAngajat,
+                descriereAngajat: this.translate('profilAngajatActiv', 'messages', 'GestionareAngajati'),
+                dataAngajareEticheta: this.translate('dataAngajare', 'fields', 'GestionareAngajati'),
+                calendarLucruEticheta: this.translate('calendarLucru', 'fields', 'GestionareAngajati'),
+                dataAngajareAjutor: this.translate('ajutorDataAngajareProfil', 'messages', 'GestionareAngajati'),
+                calendarLucruAjutor: this.translate('ajutorCalendarLucruProfil', 'messages', 'GestionareAngajati'),
+                stare: this.translate(
+                    configurat ? 'profilConfigurat' : 'profilIncomplet',
+                    'labels',
+                    'GestionareAngajati'
+                ),
+                clasaStare: configurat ? 'este-configurat' : 'este-incomplet',
+                iconStare: configurat ? 'fa-check' : 'fa-exclamation',
+            };
         }
 
         obtineProfil() {

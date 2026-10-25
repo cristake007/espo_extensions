@@ -7,6 +7,7 @@ define(['view'], (Vizualizare) => {
             this.setari = {
                 modAplicareRemote: 'curent',
                 numarLuniAnterioareEditabile: 1,
+                permiteExportCondicaIncompleta: false,
                 angajati: [],
             };
             this.cheiVizualizariAngajati = [];
@@ -34,7 +35,20 @@ define(['view'], (Vizualizare) => {
             return {
                 titlu: this.translate('setariCondica', 'labels', 'GestionareAngajati'),
                 explicatie: this.translate('explicatieSetari', 'messages', 'GestionareAngajati'),
+                configurareCondica: this.translate(
+                    'configurareCondica', 'labels', 'GestionareAngajati'
+                ),
+                inapoiAdministrare: this.translate(
+                    'inapoiAdministrare', 'labels', 'GestionareAngajati'
+                ),
+                reguliCondica: this.translate('reguliCondica', 'labels', 'GestionareAngajati'),
+                explicatieReguliCondica: this.translate(
+                    'explicatieReguliCondica', 'messages', 'GestionareAngajati'
+                ),
                 modRemote: this.translate('modAplicareRemote', 'fields', 'GestionareAngajati'),
+                explicatieModRemote: this.translate(
+                    'explicatieModRemote', 'messages', 'GestionareAngajati'
+                ),
                 modCurent: this.translate('curent', 'options', 'GestionareAngajati'),
                 modInterval: this.translate('interval', 'options', 'GestionareAngajati'),
                 salvare: this.translate('Save'),
@@ -51,9 +65,39 @@ define(['view'], (Vizualizare) => {
                     'messages',
                     'GestionareAngajati'
                 ),
+                etichetaExportCondicaIncompleta: this.translate(
+                    'permiteExportCondicaIncompleta',
+                    'fields',
+                    'GestionareAngajati'
+                ),
+                explicatieExportCondicaIncompleta: this.translate(
+                    'explicatieExportCondicaIncompleta',
+                    'messages',
+                    'GestionareAngajati'
+                ),
                 modAplicareRemote: this.setari.modAplicareRemote,
                 numarLuniAnterioareEditabile:
                     this.setari.numarLuniAnterioareEditabile,
+                configurareAngajati: this.translate(
+                    'configurareAngajatiCondica', 'labels', 'GestionareAngajati'
+                ),
+                explicatieConfigurareAngajati: this.translate(
+                    'explicatieConfigurareAngajatiCondica',
+                    'messages',
+                    'GestionareAngajati'
+                ),
+                numarAngajati: this.translate(
+                    'angajatiActivi', 'labels', 'GestionareAngajati'
+                ).replace('{numar}', String(this.setari.angajati.length)),
+                zonaResetare: this.translate(
+                    'zonaResetareCondica', 'labels', 'GestionareAngajati'
+                ),
+                explicatieZonaResetare: this.translate(
+                    'explicatieZonaResetareCondica', 'messages', 'GestionareAngajati'
+                ),
+                explicatieSalvare: this.translate(
+                    'explicatieSalvareCondica', 'messages', 'GestionareAngajati'
+                ),
                 resetareTitlu: this.translate(
                     'resetareDateTestCondica',
                     'labels',
@@ -104,6 +148,35 @@ define(['view'], (Vizualizare) => {
                 Espo.Ajax.getRequest('ManagementAngajati/setari-condica'),
                 Espo.Ajax.getRequest('ManagementAngajati/reset-date-condica'),
             ]);
+            await this.pregatesteCampExportIncomplet();
+        }
+
+        async pregatesteCampExportIncomplet() {
+            if (!this.modelSetariGenerale) {
+                this.modelSetariGenerale = await this.getModelFactory().create(
+                    'ConfiguratieCondicaAngajat'
+                );
+            }
+
+            this.modelSetariGenerale.set(
+                'permiteExportCondicaIncompleta',
+                this.setari.permiteExportCondicaIncompleta === true
+            );
+
+            if (this.getView('permiteExportCondicaIncompleta')) {
+                return;
+            }
+
+            await this.createView(
+                'permiteExportCondicaIncompleta',
+                'views/fields/bool',
+                {
+                    selector: '.field[data-name="permiteExportCondicaIncompleta"]',
+                    model: this.modelSetariGenerale,
+                    mode: 'edit',
+                    defs: {name: 'permiteExportCondicaIncompleta'},
+                }
+            );
         }
 
         afterRender() {
@@ -119,7 +192,11 @@ define(['view'], (Vizualizare) => {
                 const cheie = `rand-angajat-${index}`;
 
                 this.cheiVizualizariAngajati.push(cheie);
-                container.append($('<tr>').attr('data-view-key', cheie));
+                container.append(
+                    $('<article>')
+                        .addClass('setari-condica-rand-angajat')
+                        .attr('data-view-key', cheie)
+                );
 
                 this.createView(
                     cheie,
@@ -181,6 +258,7 @@ define(['view'], (Vizualizare) => {
         }
 
         async salveaza() {
+            this.getView('permiteExportCondicaIncompleta').fetchToModel();
             const mod = this.$el.find('[data-camp="modAplicareRemote"]').val();
             const numarLuni = Number(
                 this.$el.find('[data-camp="numarLuniAnterioareEditabile"]').val()
@@ -199,6 +277,8 @@ define(['view'], (Vizualizare) => {
                 await Espo.Ajax.putRequest('ManagementAngajati/setari-condica', {
                     modAplicareRemote: mod,
                     numarLuniAnterioareEditabile: numarLuni,
+                    permiteExportCondicaIncompleta:
+                        this.modelSetariGenerale.get('permiteExportCondicaIncompleta') === true,
                     angajati: angajati,
                 });
                 await this.incarca();

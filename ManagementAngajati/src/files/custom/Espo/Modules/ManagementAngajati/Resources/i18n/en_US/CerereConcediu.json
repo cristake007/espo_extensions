@@ -27,12 +27,23 @@
     },
     "labels": {
         "concediileMele": "My leave",
+        "spatiuPersonal": "Personal leave",
+        "rezumatSold": "Leave balance summary",
         "cerereNoua": "New leave request",
+        "perioadaSolicitata": "Requested period",
+        "zileEligibile": "Eligible days",
         "trimiteCerere": "Submit request",
         "soldDisponibil": "Available days",
         "soldRezervat": "Reserved days",
         "soldConsumat": "Days used in the current year",
         "perioada": "Period",
+        "istoricCereri": "Request history",
+        "cerere": "request",
+        "cereri": "requests",
+        "faraCereri": "You have not submitted any requests yet",
+        "actiuni": "Actions",
+        "profilNecesitaConfigurare": "Your leave profile must be configured",
+        "initializeazaProfilulPropriu": "Initialize your leave profile",
         "retrageCerere": "Withdraw request",
         "solicitaAnulare": "Request cancellation",
         "confirmaRetragere": "Withdraw this leave request?",
@@ -41,8 +52,40 @@
         "concediiIndisponibile": "Leave is unavailable",
         "concediiIndisponibileAdministrator": "Personal leave is unavailable to administrators",
         "configureazaProfiluriConcediu": "Configure leave profiles"
+        ,"concediiIndisponibileCic": "Annual leave is suspended during childcare leave"
+        ,"cicActiv": "Childcare leave active"
+        ,"perioadaCic": "Childcare leave period"
+        ,"cicFaraCereri": "You cannot submit annual-leave requests during this period"
+        ,"zileDisponibileEticheta": "available days"
+        ,"impactFinalCerere": "Final impact"
+        ,"evolutieSoldCerere": "How the balance changed"
+        ,"primaCerere": "First request"
+        ,"ultimaCerere": "Most recent"
+        ,"navigareIstoricSold": "Navigate through the leave balance history"
+        ,"initializareSold": "Balance initialization"
+        ,"initializare": "Initialization"
+        ,"soldInitialIstoric": "Starting available balance"
+        ,"punctPornireIstoric": "Before the first request"
+        ,"zileDisponibileInitial": "days initially available"
+        ,"soldDupaRezervare": "Balance after reservation"
+        ,"soldDupaRestituire": "Balance after return"
+        ,"rezervarePentruCerere": "Reservation for request"
+        ,"restituirePentruCerere": "Return for request"
+        ,"rezervare": "Reservation"
+        ,"restituire": "Return"
+        ,"zileRezervateIstoric": "days reserved"
+        ,"zileRestituiteIstoric": "days returned"
     },
     "messages": {
+        "descriereConcediiPersonale": "Review your available balance, submit new requests and follow the status of your leave.",
+        "cerereNouaDescriere": "Choose the requested period. The system counts only eligible working days.",
+        "selecteazaPerioadaPentruCalcul": "Select both dates to calculate.",
+        "seCalculeazaZilele": "Calculating eligible working days…",
+        "zileSolicitateDepasescSoldul": "The requested period exceeds your available balance.",
+        "istoricCereriDescriere": "Follow approvals, cancellations and the documents available for each request.",
+        "faraCereriExplicatie": "Submitted requests will appear here together with their status and documents.",
+        "profilIndrumare": "Contact a manager to initialize it. Once configured, you can review your balance and submit requests.",
+        "profilPropriuNeinitializatIndrumare": "Open Administration and initialize your profile, available balance and next grant date.",
         "cerereTrimisa": "The leave request has been submitted.",
         "cerereRetrasa": "The leave request has been withdrawn.",
         "anulareSolicitata": "The cancellation request has been sent to the managers.",
@@ -62,6 +105,7 @@
         "cerereConcediuSuprapusa": "A leave request already exists for this period.",
         "decizieConcediuInvalida": "The decision is invalid.",
         "cerereDejaDecisa": "The request has already been decided.",
+        "decizieManagerDejaInregistrata": "Your decision for this request has already been recorded.",
         "autoAprobareInterzisa": "A manager cannot approve their own request.",
         "concediuCuPrezentaExistenta": "The request cannot be approved because the employee already has attendance recorded during the requested period. Correct the attendance register first.",
         "cerereCuPrezentaExistenta": "The request cannot be submitted because you already have attendance recorded on at least one requested day. Correct your attendance first.",
@@ -71,6 +115,10 @@
         "decizieAnulareInvalida": "The cancellation decision is invalid.",
         "anulareDejaDecisa": "The cancellation request has already been decided.",
         "autoAprobareAnulareInterzisa": "A manager cannot approve their own cancellation request.",
+        "notificareCerereNoua": "{angajat} submitted a leave request for {inceput}–{sfarsit}. [Open leave management]({ruta})",
+        "notificareAprobarePartiala": "{manager} approved {angajat}'s request for {inceput}–{sfarsit}. Your decision is also required. [Open leave management]({ruta})",
+        "notificareCerereAprobata": "Your leave request for {inceput}–{sfarsit} was approved. [Open my leave]({ruta})",
+        "notificareCerereRespinsa": "Your leave request for {inceput}–{sfarsit} was rejected. [Open my leave]({ruta})",
         "notificareCerereRetrasa": "{angajat} withdrew the leave request for {inceput}–{sfarsit}. [Open leave management]({ruta})",
         "notificareSolicitareAnulare": "{angajat} requested cancellation of leave for {inceput}–{sfarsit}. [Open leave management]({ruta})",
         "notificareAnulareAprobata": "The cancellation of leave for {inceput}–{sfarsit} was approved. [Open my leave]({ruta})",
@@ -80,5 +128,17 @@
         "instantaneuDocumenteLipsa": "The request was approved before document support was enabled and has no accounting data required for generation.",
         "profilConcediuNeinitializatExplicatie": "Your leave profile has not been initialized yet. A manager must configure the annual entitlement, available balance and next grant date before requests can be submitted.",
         "administratorFaraConcediuPersonal": "The administrator is not an employee and does not have personal leave. Use the Employee Management page to configure the extension and employee profiles."
+        ,"concediiSuspendateCic": "Your employment contract is suspended during childcare leave. Annual-leave requests will become available again after the childcare-leave period ends."
+        ,"concediuIndisponibilInCic": "You cannot submit an annual-leave request while your employment contract is suspended for childcare leave."
+        ,"cicContactManager": "If the displayed period is incorrect, contact your manager."
+        ,"faraObservatiiIstoric": "No notes were added to this request."
+        ,"pozitieIstoricSold": "Step {curenta} of {total}"
+        ,"descriereInitializareIstoric": "The starting point of the history, before the first request was submitted."
+        ,"explicatieInitializareIstoric": "The history starts with {soldInitial} available days. No request had changed the balance yet."
+        ,"explicatieEtapaRezervare": "Starting balance: {soldInainte}. Reservation: −{zileRezervate}. Resulting balance: {soldFinal}."
+        ,"explicatieEtapaRestituire": "Starting balance: {soldInainte}. Return: +{zileRestituite}. Resulting balance: {soldFinal}."
+        ,"zileRezervateTabel": "Days reserved or consumed from the balance"
+        ,"zileRestituiteTabel": "Days returned to the balance"
+        ,"zileFaraImpactTabel": "The rejected request does not change the balance"
     }
 }

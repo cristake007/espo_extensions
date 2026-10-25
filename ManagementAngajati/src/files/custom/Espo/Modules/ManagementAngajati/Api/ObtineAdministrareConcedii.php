@@ -13,6 +13,10 @@ class ObtineAdministrareConcedii implements Action
     public function __construct(private CereriConcediu $cereri) {}
     public function process(Request $cerere): Response
     {
-        return ResponseComposer::json($this->cereri->listaManageriala());
+        $luna = $cerere->getQueryParam('luna');
+
+        return ResponseComposer::json(
+            $this->cereri->listaManageriala(is_string($luna) ? $luna : null)
+        );
     }
 }

@@ -69,6 +69,30 @@ define(['view'], (Vizualizare) => {
         data() {
             return {
                 titlu: this.translate('setariConcedii', 'labels', 'GestionareAngajati'),
+                configurareConcedii: this.translate(
+                    'configurareConcedii', 'labels', 'GestionareAngajati'
+                ),
+                explicatie: this.translate(
+                    'explicatieConcedii', 'messages', 'GestionareAngajati'
+                ),
+                inapoiAdministrare: this.translate(
+                    'inapoiAdministrare', 'labels', 'GestionareAngajati'
+                ),
+                reguliAprobare: this.translate(
+                    'reguliAprobareConcedii', 'labels', 'GestionareAngajati'
+                ),
+                explicatieReguliAprobare: this.translate(
+                    'explicatieReguliAprobareConcedii', 'messages', 'GestionareAngajati'
+                ),
+                explicatieAprobatori: this.translate(
+                    'explicatieAprobatoriConcedii', 'messages', 'GestionareAngajati'
+                ),
+                explicatieAmbiiManageri: this.translate(
+                    'explicatieAmbiiManageri', 'messages', 'GestionareAngajati'
+                ),
+                explicatieSalvareSetari: this.translate(
+                    'explicatieSalvareSetariConcedii', 'messages', 'GestionareAngajati'
+                ),
                 profiluri: this.date.profiluri,
                 aprobatoriEticheta: this.translate('aprobatoriConcedii', 'fields', 'GestionareAngajati'),
                 ambiiEticheta: this.translate('necesitaAmbiiManageri', 'fields', 'GestionareAngajati'),
@@ -89,7 +113,27 @@ define(['view'], (Vizualizare) => {
                 soldReportat: this.translate('disponibileReportate', 'fields', 'ProfilConcediu'),
                 dataAcordare: this.translate('dataUrmatoareiAcordari', 'fields', 'ProfilConcediu'),
                 explicatieInitializare: this.translate('explicatieInitializare', 'messages', 'ProfilConcediu'),
+                explicatieDreptAnual: this.translate(
+                    'explicatieDreptAnual', 'messages', 'ProfilConcediu'
+                ),
+                explicatieSoldCurent: this.translate(
+                    'explicatieSoldCurent', 'messages', 'ProfilConcediu'
+                ),
+                explicatieSoldReportat: this.translate(
+                    'explicatieSoldReportat', 'messages', 'ProfilConcediu'
+                ),
+                explicatieDataAcordare: this.translate(
+                    'explicatieDataAcordare', 'messages', 'ProfilConcediu'
+                ),
                 resetareTitlu: this.translate('resetareDateTestConcedii', 'labels', 'GestionareAngajati'),
+                explicatieResetare: this.translate(
+                    'explicatieZonaResetareConcedii', 'messages', 'GestionareAngajati'
+                ),
+                avertismentResetare: this.translate(
+                    'avertismentResetareDateTestConcedii',
+                    'messages',
+                    'GestionareAngajati'
+                ),
                 resetareExplicatie: this.translate('explicatieResetareDateTestConcedii', 'messages', 'GestionareAngajati'),
                 confirmareReset: this.translate('confirmareResetConcedii', 'labels', 'GestionareAngajati'),
                 profiluriEticheta: this.translate('profiluriConcediu', 'labels', 'GestionareAngajati'),
@@ -109,7 +153,11 @@ define(['view'], (Vizualizare) => {
                 const cheie = `profil-concediu-${i}`;
 
                 this.chei.push(cheie);
-                container.append($('<tr>').attr('data-view-key', cheie));
+                container.append(
+                    $('<article>')
+                        .addClass('profil-concediu-card')
+                        .attr('data-view-key', cheie)
+                );
 
                 this.createView(
                     cheie,

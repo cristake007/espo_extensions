@@ -26,18 +26,23 @@ class SalvatorSetariCondica
     public function salveaza(
         string $modAplicareRemote,
         int $numarLuniAnterioareEditabile,
+        bool $permiteExportCondicaIncompleta,
         array $dateAngajati,
     ): array
     {
         $modAnterior = $this->configuratii->obtineModAplicareRemote();
         $numarLuniAnterior = $this->configuratii->obtineNumarLuniAnterioareEditabile();
+        $permiteExportAnterior = $this->configuratii->permiteExportCondicaIncompleta();
         $modSchimbat = $modAnterior !== $modAplicareRemote;
         $numarLuniSchimbat = $numarLuniAnterior !== $numarLuniAnterioareEditabile;
+        $permisiuneExportSchimbata =
+            $permiteExportAnterior !== $permiteExportCondicaIncompleta;
 
-        if ($modSchimbat || $numarLuniSchimbat) {
+        if ($modSchimbat || $numarLuniSchimbat || $permisiuneExportSchimbata) {
             $this->configuratii->salveazaSetariGenerale(
                 $modAplicareRemote,
-                $numarLuniAnterioareEditabile
+                $numarLuniAnterioareEditabile,
+                $permiteExportCondicaIncompleta
             );
         }
 
@@ -46,10 +51,11 @@ class SalvatorSetariCondica
                 fn () => $this->salveazaAngajati($dateAngajati)
             );
         } catch (Throwable $exceptie) {
-            if ($modSchimbat || $numarLuniSchimbat) {
+            if ($modSchimbat || $numarLuniSchimbat || $permisiuneExportSchimbata) {
                 $this->configuratii->salveazaSetariGenerale(
                     $modAnterior,
-                    $numarLuniAnterior
+                    $numarLuniAnterior,
+                    $permiteExportAnterior
                 );
             }
 

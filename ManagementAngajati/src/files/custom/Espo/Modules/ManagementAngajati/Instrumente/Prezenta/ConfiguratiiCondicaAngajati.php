@@ -17,6 +17,8 @@ class ConfiguratiiCondicaAngajati
     public const string CHEIE_MOD_REMOTE = 'managementAngajatiModAplicareRemote';
     public const string CHEIE_LUNI_ANTERIOARE_EDITABILE =
         'managementAngajatiNumarLuniAnterioareEditabile';
+    public const string CHEIE_PERMITE_EXPORT_CONDICA_INCOMPLETA =
+        'managementAngajatiPermiteExportCondicaIncompleta';
     public const int LUNI_ANTERIOARE_EDITABILE_IMPLICIT = 1;
 
     public function __construct(
@@ -78,6 +80,32 @@ class ConfiguratiiCondicaAngajati
         return $this->esteDataCic($this->obtinePentruAngajat($idAngajat), $data);
     }
 
+    /**
+     * @return array{activa: bool, dataInceput: ?string, dataSfarsit: ?string}
+     */
+    public function obtineSituatieCic(string $idAngajat, string $data): array
+    {
+        return $this->descrieSituatieCic(
+            $this->obtinePentruAngajat($idAngajat),
+            $data
+        );
+    }
+
+    /**
+     * @param array<string, bool|string|null> $configuratieAngajat
+     * @return array{activa: bool, dataInceput: ?string, dataSfarsit: ?string}
+     */
+    public function descrieSituatieCic(array $configuratieAngajat, string $data): array
+    {
+        return [
+            'activa' => $this->esteDataCic($configuratieAngajat, $data),
+            'dataInceput' => is_string($configuratieAngajat['dataInceputCic'] ?? null) ?
+                $configuratieAngajat['dataInceputCic'] : null,
+            'dataSfarsit' => is_string($configuratieAngajat['dataSfarsitCic'] ?? null) ?
+                $configuratieAngajat['dataSfarsitCic'] : null,
+        ];
+    }
+
     /** @param array<string, bool|string|null> $configuratieAngajat */
     public function esteDataRemote(array $configuratieAngajat, string $data): bool
     {
@@ -116,8 +144,20 @@ class ConfiguratiiCondicaAngajati
             self::LUNI_ANTERIOARE_EDITABILE_IMPLICIT;
     }
 
+    public function permiteExportCondicaIncompleta(): bool
+    {
+        return $this->configuratie->get(
+            self::CHEIE_PERMITE_EXPORT_CONDICA_INCOMPLETA,
+            false
+        ) === true;
+    }
+
     /** @throws BadRequest */
-    public function salveazaSetariGenerale(string $mod, int $numarLuni): void
+    public function salveazaSetariGenerale(
+        string $mod,
+        int $numarLuni,
+        bool $permiteExportCondicaIncompleta,
+    ): void
     {
         $this->valideazaModAplicareRemote($mod);
         $this->valideazaNumarLuniAnterioareEditabile($numarLuni);
@@ -125,6 +165,10 @@ class ConfiguratiiCondicaAngajati
         $this->scriitorConfiguratie->set(
             self::CHEIE_LUNI_ANTERIOARE_EDITABILE,
             $numarLuni
+        );
+        $this->scriitorConfiguratie->set(
+            self::CHEIE_PERMITE_EXPORT_CONDICA_INCOMPLETA,
+            $permiteExportCondicaIncompleta
         );
         $this->scriitorConfiguratie->save();
     }

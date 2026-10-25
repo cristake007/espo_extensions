@@ -5,6 +5,7 @@ namespace tests\integration\Espo\Modules\ManagementAngajati\Concedii;
 use Espo\Core\Application;
 use Espo\Core\Application\ApplicationParams;
 use Espo\Core\InjectableFactory;
+use Espo\Core\Utils\Config;
 use Espo\Entities\User;
 use Espo\Entities\WorkingTimeCalendar;
 use Espo\Modules\ManagementAngajati\Instrumente\Concedii\CalculatorZileConcediu;
@@ -12,6 +13,7 @@ use Espo\Modules\ManagementAngajati\Instrumente\Concedii\CorectorProgramAcordare
 use Espo\Modules\ManagementAngajati\Instrumente\Concedii\GeneratorDocumentConcediu;
 use Espo\Modules\ManagementAngajati\Instrumente\Concedii\InstantaneuDocumenteConcediu;
 use Espo\Modules\ManagementAngajati\Instrumente\Concedii\ProfiluriConcediu;
+use Espo\Modules\ManagementAngajati\Instrumente\Concedii\SetariConcedii;
 use Espo\Modules\ManagementAngajati\Instrumente\Concedii\SolduriConcediu;
 use Espo\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
@@ -40,6 +42,10 @@ class CalculatorZileConcediuEspoTest extends TestCase
             $container = $this->aplicatie->getContainer();
             $this->managerEntitati = $container->getByClass(EntityManager::class);
             $this->fabricaInjectabila = $container->getByClass(InjectableFactory::class);
+            $container->getByClass(Config::class)->set(
+                SetariConcedii::CHEIE_ACORDARE_ANUALA_AUTOMATA,
+                true
+            );
             $this->managerEntitati->getTransactionManager()->start();
         } catch (\Throwable $exceptie) {
             chdir($this->directorInitial);

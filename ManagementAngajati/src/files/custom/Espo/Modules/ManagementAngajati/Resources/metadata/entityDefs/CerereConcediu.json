@@ -10,6 +10,7 @@
         "dateEndDate": {"type": "date", "notStorable": true, "required": true, "useNumericFormat": true, "after": "dateStartDate", "afterOrEqual": true, "select": {"select": "dataSfarsit"}},
         "dataInceput": {"type": "date", "required": true, "readOnlyAfterCreate": true, "audited": true, "useNumericFormat": true},
         "dataSfarsit": {"type": "date", "required": true, "readOnlyAfterCreate": true, "audited": true, "useNumericFormat": true, "after": "dataInceput", "afterOrEqual": true},
+        "zileLucratoare": {"type": "jsonArray", "readOnly": true},
         "numarZile": {"type": "int", "required": true, "readOnly": true, "default": 0, "view": "management-angajati:views/cerere-concediu/fields/numar-zile"},
         "stare": {"type": "enum", "options": ["InAsteptare", "Aprobata", "AnulareSolicitata", "Respinsa", "Anulata"], "required": true, "default": "InAsteptare", "readOnly": true, "audited": true, "displayAsLabel": true, "style": {"InAsteptare": "warning", "Aprobata": "success", "AnulareSolicitata": "warning", "Respinsa": "danger", "Anulata": "default"}},
         "descriere": {"type": "text", "audited": true},

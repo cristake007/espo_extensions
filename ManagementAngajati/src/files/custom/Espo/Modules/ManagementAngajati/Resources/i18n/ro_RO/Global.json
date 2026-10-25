@@ -8,7 +8,7 @@
         "RegistruConcediu": "Registru concediu",
         "Prezenta": "Prezență",
         "CondicaPrezenta": "Condica de prezență",
-        "GestionareAngajati": "Managementul angajaților",
+        "GestionareAngajati": "Administrare",
         "ConfiguratieCondicaAngajat": "Configurație condică angajat"
     },
     "scopeNamesPlural": {
@@ -20,7 +20,7 @@
         "RegistruConcediu": "Registru concediu",
         "Prezenta": "Prezență",
         "CondicaPrezenta": "Condica de prezență",
-        "GestionareAngajati": "Managementul angajaților",
+        "GestionareAngajati": "Administrare",
         "ConfiguratieCondicaAngajat": "Configurații condică angajați"
     },
     "navbarTabs": {
@@ -28,6 +28,7 @@
         "administrareConcedii": "Administrare concedii",
         "prezenta": "Prezență",
         "condicaPrezenta": "Condica de prezență",
-        "managementAngajati": "Managementul angajaților"
+        "managementAngajati": "Managementul angajaților",
+        "management": "Management"
     }
 }

@@ -32,10 +32,21 @@ class SalveazaSetariCondica implements Action
         $numarLuni = is_int($corp->numarLuniAnterioareEditabile ?? null) ?
             $corp->numarLuniAnterioareEditabile :
             -1;
+        $permiteExportIncomplet = $corp->permiteExportCondicaIncompleta ?? null;
+
+        if (!is_bool($permiteExportIncomplet)) {
+            $this->aruncaSetariInvalide();
+        }
+
         $angajati = $this->extrageAngajati($corp->angajati ?? null);
 
         return ResponseComposer::json(
-            $this->salvatorSetari->salveaza($mod, $numarLuni, $angajati)
+            $this->salvatorSetari->salveaza(
+                $mod,
+                $numarLuni,
+                $permiteExportIncomplet,
+                $angajati
+            )
         );
     }
 
