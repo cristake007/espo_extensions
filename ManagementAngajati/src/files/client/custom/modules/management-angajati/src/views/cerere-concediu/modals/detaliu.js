@@ -1,4 +1,4 @@
-define(['views/modals/detail'], (FereastraDetaliu) => {
+define('modules/management-angajati/views/cerere-concediu/modals/detaliu', ['views/modals/detail'], (FereastraDetaliu) => {
     /**
      * Cererile de concediu se modifică exclusiv prin operațiile dedicate
      * de aprobare, respingere și anulare. Fereastra Calendarului rămâne
