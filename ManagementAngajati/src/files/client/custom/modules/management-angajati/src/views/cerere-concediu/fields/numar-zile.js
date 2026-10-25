@@ -1,4 +1,4 @@
-define(['views/fields/int'], (CampIntreg) => {
+define('modules/management-angajati/views/cerere-concediu/fields/numar-zile', ['views/fields/int'], (CampIntreg) => {
     return class CampNumarZileConcediu extends CampIntreg {
         setup() {
             super.setup();
