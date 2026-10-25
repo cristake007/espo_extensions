@@ -78,11 +78,11 @@ function sourceModulePaths(directory, prefix = '') {
             return sourceModulePaths(absolute, relative);
         }
 
-        if (!entry.isFile() || !/\\.(js|ts)$/.test(entry.name) || entry.name.endsWith('.d.ts')) {
+        if (!entry.isFile() || !/\.(js|ts)$/.test(entry.name) || entry.name.endsWith('.d.ts')) {
             return [];
         }
 
-        return [relative.replace(/\\.(js|ts)$/, '')];
+        return [relative.replace(/\.(js|ts)$/, '')];
     });
 }
 
@@ -93,23 +93,15 @@ if (modulePaths.length === 0) {
 }
 
 const bundleContents = archive.getEntry(frontendBundle).getData().toString('utf8');
+const definedModules = new Set(
+    [...bundleContents.matchAll(/\bdefine\s*\(\s*(['"])([^'"]+)\1\s*,/g)]
+        .map(match => match[2])
+);
 
 for (const modulePath of modulePaths) {
     const moduleId = 'modules/management-angajati/' + modulePath;
-    const escapedId = moduleId.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\if (
-    !Array.isArray(clientMetadata.scriptList) ||
-    !clientMetadata.scriptList.includes('__APPEND__') ||
-    !clientMetadata.scriptList.includes(frontendInitUrl)
-) {
-    throw new Error(
-        'Bundled frontend is not registered in app/client.json scriptList: ' +
-        frontendInitUrl
-    );
-}
-');
-    const definitionPattern = new RegExp('\\\\bdefine\\\\s*\\\\(\\\\s*[\\\'"]' + escapedId + '[\\\'"]\\\\s*,');
 
-    if (!definitionPattern.test(bundleContents)) {
+    if (!definedModules.has(moduleId)) {
         throw new Error('Bundled frontend does not define AMD module: ' + moduleId);
     }
 }
