@@ -1,4 +1,4 @@
-define(['zile-sarbatoare:views/calendar/calendar'], (CalendarZileSarbatoare) => {
+define('modules/management-angajati/views/calendar/calendar', ['zile-sarbatoare:views/calendar/calendar'], (CalendarZileSarbatoare) => {
     /**
      * Extinde Calendarul furnizat de dependenta ZileSarbatoare, pastrand
      * decorarea zilelor nelucratoare si adaptand exclusiv afisarea concediilor
