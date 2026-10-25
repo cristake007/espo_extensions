@@ -19,9 +19,10 @@ Examples:
   ./test-php.sh build EmployeeManagement
   ./test-php.sh php -v
 
-The repository is mounted read-only for validation and PHP commands. Builds
-can write only to dist/. All runner containers are ephemeral and have no
-network access. The local runner image is built once and reused by Docker.
+Legacy extensions use a read-only PHP Docker runner for validation, with
+write access only to dist/ during packaging. Containers have no network.
+Modern ext-template extensions delegate full validation and packaging to
+their own build tools on the host (after --bootstrap); Docker is not needed.
 USAGE
 }
 
@@ -61,6 +62,17 @@ validate_extension() {
     local extension="$1"
 
     require_extension "$extension"
+
+    if [ -f "${repo_root}/${extension}/extension.json" ] &&
+        [ -d "${repo_root}/${extension}/src/files" ]; then
+        # Modern extensions run their own complete test suite on the host.
+        # The read-only PHP Docker runner has neither Node/Composer nor
+        # the writable test runtime that the official scaffold requires.
+        "${repo_root}/build.sh" --extension "${repo_root}/${extension}" --validate
+        return
+    fi
+
+    ensure_runner_image
     run_read_only ./build.sh --extension "./${extension}" --validate
 }
 
@@ -109,14 +121,13 @@ build_extension() {
 
     if [ -f "${repo_root}/${extension}/extension.json" ] &&
         [ -d "${repo_root}/${extension}/src/files" ]; then
-        [ -x "${repo_root}/${extension}/build.sh" ] ||
-            fail "modern extension build script is missing or not executable: $extension"
         mkdir -p "${repo_root}/dist"
-        "${repo_root}/${extension}/build.sh" --zip "${repo_root}/dist"
+        "${repo_root}/build.sh" --extension "${repo_root}/${extension}" --zip
         return
     fi
 
     [ -d "${repo_root}/${extension}/files" ] || fail "extension files directory not found: $extension"
+    ensure_runner_image
     mkdir -p "${repo_root}/dist"
 
     if [ -d "${repo_root}/${extension}/scripts" ]; then
@@ -139,7 +150,6 @@ shift
 case "$mode" in
     validate)
         [ "$#" -eq 1 ] || { usage; exit 2; }
-        ensure_runner_image
         if [ "$1" = '--all' ]; then
             validate_all
         else
@@ -148,7 +158,6 @@ case "$mode" in
         ;;
     build)
         [ "$#" -eq 1 ] || { usage; exit 2; }
-        ensure_runner_image
         build_extension "$1"
         ;;
     php)
