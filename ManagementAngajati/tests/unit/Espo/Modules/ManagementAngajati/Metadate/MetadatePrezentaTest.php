@@ -294,7 +294,7 @@ class MetadatePrezentaTest extends TestCase
         );
 
         self::assertNotFalse($continutControlor);
-        self::assertStringContainsString("define(['controllers/record']", $continutControlor);
+        self::assertStringContainsString("define('modules/management-angajati/controllers/prezenta', ['controllers/record']", $continutControlor);
         self::assertStringContainsString('this.getUser().isAdmin()', $continutControlor);
         self::assertStringContainsString(
             "return 'management-angajati:views/prezenta/prezenta-indisponibila'",
