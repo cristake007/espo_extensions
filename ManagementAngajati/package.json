@@ -1,6 +1,6 @@
 {
   "name": "espocrm-ext-management-angajati",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "scripts": {
     "sa": "vendor/bin/phpstan",
