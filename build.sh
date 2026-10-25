@@ -9,6 +9,7 @@ usage() {
 Usage:
   ./build.sh
   ./build.sh --new
+  ./build.sh --extension /path/to/Extension --bootstrap
   ./build.sh --extension /path/to/Extension --validate
   ./build.sh --extension /path/to/Extension --zip [VERSION] [paths...]
 
@@ -16,6 +17,11 @@ Modes:
   No args / --new
       Interactively asks for an extension name and creates a new extension scaffold
       in the repository root.
+
+  --extension PATH --bootstrap
+      Prepares npm and Composer dependencies for ext-template extensions.
+      Run once after cloning, or when dependencies change. Legacy extensions
+      do not need this step.
 
   --extension PATH --zip [VERSION] [paths...]
       Builds an installable EspoCRM ZIP from a specific extension root folder.
@@ -29,13 +35,16 @@ Modes:
       generated before the final ZIP is copied to dist/.
 
   --extension PATH --validate
-      Validates the manifest and module descriptors, all JSON under files and
-      scripts, and PHP syntax where PHP files are present.
+      For legacy projects: static validation of manifest, module descriptors,
+      JSON and PHP syntax (not runtime/integration tests).
+      For ext-template projects: those static checks followed by the extension's
+      own complete validation (e.g. PHPUnit and PHPStan).
 
 Examples:
   ./build.sh
-  ./build.sh --extension /opt/DemoExtension --validate
-  ./build.sh --extension /opt/DemoExtension --zip files scripts
+  ./build.sh --extension ./ManagementAngajati --bootstrap
+  ./build.sh --extension ./ManagementAngajati --validate
+  ./build.sh --extension ./ManagementAngajati --zip
   ./build.sh --extension ./GeneratorPerioadeCursuri --zip files scripts
 USAGE
 }
@@ -55,6 +64,15 @@ require_php() {
     if ! command -v php >/dev/null 2>&1; then
         fail "php is required for JSON and PHP syntax validation"
     fi
+}
+
+is_modern_extension() {
+    [ -f "$1/extension.json" ] && [ -d "$1/src/files" ]
+}
+
+require_modern_build_script() {
+    [ -x "$1/build.sh" ] ||
+        fail "modern extension build script is missing or not executable: $1/build.sh"
 }
 
 trim() {
@@ -174,7 +192,7 @@ validate_extension() {
         fi
     done < <(find "${validation_roots[@]}" -type f -name '*.php' -print0)
 
-    echo "Validated ${extension_abs}"
+    echo "Static validation passed: ${extension_abs}"
 }
 
 validate_extension_command() {
@@ -186,6 +204,27 @@ validate_extension_command() {
 
     extension_abs="$(cd "$2" 2>/dev/null && pwd)" || fail "extension path not found: $2"
     validate_extension "$extension_abs"
+
+    if is_modern_extension "$extension_abs"; then
+        require_modern_build_script "$extension_abs"
+        "$extension_abs/build.sh" --validate
+    else
+        echo "Legacy extension: static checks only (no unit or integration tests)."
+    fi
+}
+
+bootstrap_extension_command() {
+    local extension_abs
+
+    [ "$#" -eq 3 ] || fail "bootstrap usage: --extension PATH --bootstrap"
+    [ "$1" = "--extension" ] || fail "bootstrap usage: --extension PATH --bootstrap"
+    [ "$3" = "--bootstrap" ] || fail "bootstrap usage: --extension PATH --bootstrap"
+
+    extension_abs="$(cd "$2" 2>/dev/null && pwd)" || fail "extension path not found: $2"
+    is_modern_extension "$extension_abs" ||
+        fail "--bootstrap is only supported by modern ext-template extensions; legacy extensions need no bootstrap."
+    require_modern_build_script "$extension_abs"
+    "$extension_abs/build.sh" --bootstrap
 }
 
 create_extension() {
@@ -374,14 +413,13 @@ zip_extension() {
     extension_abs="$(cd "$extension_path" 2>/dev/null && pwd)" || fail "extension path not found: ${extension_path}"
     manifest_path="${extension_abs}/manifest.json"
 
-    if [ -f "${extension_abs}/extension.json" ] && [ -d "${extension_abs}/src/files" ]; then
+    if is_modern_extension "$extension_abs"; then
         [ "${#paths[@]}" -eq 0 ] ||
             fail 'modern projects do not accept VERSION or path arguments; use --zip only'
-        [ -x "${extension_abs}/build.sh" ] ||
-            fail "modern project build script is missing or not executable: ${extension_abs}/build.sh"
+        require_modern_build_script "$extension_abs"
 
         validate_extension "$extension_abs"
-        "${extension_abs}/build.sh" --zip "$DIST_DIR"
+        "$extension_abs/build.sh" --zip "$DIST_DIR"
         return
     fi
 
@@ -447,11 +485,20 @@ main() {
             create_extension
             ;;
         --extension)
-            if [ "${3:-}" = "--validate" ]; then
-                validate_extension_command "$@"
-            else
-                zip_extension "$@"
-            fi
+            case "${3:-}" in
+                --bootstrap)
+                    bootstrap_extension_command "$@"
+                    ;;
+                --validate)
+                    validate_extension_command "$@"
+                    ;;
+                *)
+                    zip_extension "$@"
+                    ;;
+            esac
+            ;;
+        --bootstrap|--validate)
+            fail "$1 requires --extension PATH (example: ./build.sh --extension ManagementAngajati $1)"
             ;;
         --zip)
             zip_extension "$@"
