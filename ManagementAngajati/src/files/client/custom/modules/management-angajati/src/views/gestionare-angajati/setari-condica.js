@@ -1,4 +1,4 @@
-define(['view'], (Vizualizare) => {
+define('modules/management-angajati/views/gestionare-angajati/setari-condica', ['view'], (Vizualizare) => {
     return class VizualizareSetariCondica extends Vizualizare {
 
         template = 'management-angajati:gestionare-angajati/setari-condica'
