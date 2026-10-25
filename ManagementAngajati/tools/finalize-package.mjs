@@ -61,6 +61,59 @@ if (
     );
 }
 
+// Check actual AMD definitions, not just the bundle-mapping table. EspoCRM
+// may map a module to this bundle even when its anonymous define() was
+// packaged without the required module ID.
+const sourceDir = path.join(
+    path.dirname(manifestPath),
+    'src/files/client/custom/modules/management-angajati/src'
+);
+
+function sourceModulePaths(directory, prefix = '') {
+    return fs.readdirSync(directory, {withFileTypes: true}).flatMap(entry => {
+        const relative = path.posix.join(prefix, entry.name);
+        const absolute = path.join(directory, entry.name);
+
+        if (entry.isDirectory()) {
+            return sourceModulePaths(absolute, relative);
+        }
+
+        if (!entry.isFile() || !/\\.(js|ts)$/.test(entry.name) || entry.name.endsWith('.d.ts')) {
+            return [];
+        }
+
+        return [relative.replace(/\\.(js|ts)$/, '')];
+    });
+}
+
+const modulePaths = sourceModulePaths(sourceDir);
+
+if (modulePaths.length === 0) {
+    throw new Error('No frontend source modules found.');
+}
+
+const bundleContents = archive.getEntry(frontendBundle).getData().toString('utf8');
+
+for (const modulePath of modulePaths) {
+    const moduleId = 'modules/management-angajati/' + modulePath;
+    const escapedId = moduleId.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\if (
+    !Array.isArray(clientMetadata.scriptList) ||
+    !clientMetadata.scriptList.includes('__APPEND__') ||
+    !clientMetadata.scriptList.includes(frontendInitUrl)
+) {
+    throw new Error(
+        'Bundled frontend is not registered in app/client.json scriptList: ' +
+        frontendInitUrl
+    );
+}
+');
+    const definitionPattern = new RegExp('\\\\bdefine\\\\s*\\\\(\\\\s*[\\\'"]' + escapedId + '[\\\'"]\\\\s*,');
+
+    if (!definitionPattern.test(bundleContents)) {
+        throw new Error('Bundled frontend does not define AMD module: ' + moduleId);
+    }
+}
+
 fs.mkdirSync(path.dirname(outputZip), {recursive: true});
 archive.writeZip(outputZip);
 
