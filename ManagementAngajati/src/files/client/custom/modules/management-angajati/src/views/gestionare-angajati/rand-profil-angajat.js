@@ -1,4 +1,4 @@
-define(['view'], (Vizualizare) => {
+define('modules/management-angajati/views/gestionare-angajati/rand-profil-angajat', ['view'], (Vizualizare) => {
     return class VizualizareRandProfilAngajat extends Vizualizare {
 
         template = 'management-angajati:gestionare-angajati/rand-profil-angajat'
